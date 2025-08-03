@@ -111,12 +111,18 @@ website:
       search: false
       background: "#f7f7f7"
       contents:
-        - project/index.qmd
-        - project/proposal.qmd
-        - project/presentation.qmd
-        - project/peer-review.qmd
-        - project/report.qmd
-        - project/team-evals.qmd
+        - href: project/index.qmd
+          text: "Project Overview"
+        - href: project/proposal.qmd
+          text: "Proposal"
+        - href: project/presentation.qmd
+          text: "Presentation"
+        - href: project/peer-review.qmd
+          text: "Peer Review"
+        - href: project/report.qmd
+          text: "Report"
+        - href: project/team-evals.qmd
+          text: "Team Evaluations"
     - title: "Tutorials"
       style: docked
       search: false
