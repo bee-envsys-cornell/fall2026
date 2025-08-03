@@ -6,7 +6,7 @@ anchor-sections: true
 ## How Work Is Graded
 
 - **Exercises** are auto-graded on Canvas. These can be submitted as often as you'd like prior to the deadline.
-- **Homework assignments** are graded by the TA on Gradescope based on the [rubrics](../rubrics/standard.qmd). Homework will be graded as soon as possible, ideally within a couple of weeks.
+- **Homework assignments** are graded by the TA on Gradescope based on the [rubrics](rubric.qmd). Homework will be graded as soon as possible, ideally within a couple of weeks.
 - **Exams** are graded by Prof. Srikrishnan and the TA using similar rubrics to the homework, though exams will focus less on solving problems. These will be scanned and graded on Gradescope.
 - **Projects** are graded by Prof. Srikrishnan. The proposals will be graded primarily for completeness and for feedback and will be returned ASAP. Presentations will be graded by a combination of peer reviewers and Prof. Srikrishnan.
 
