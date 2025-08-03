@@ -20,23 +20,8 @@ format:
     toc: true
     toc-depth: 2
     number-sections: false
-engine: julia
-julia:
-  exeflags: ["+1.11"]
 ---
 
-```{julia}
-#| echo: false
-#| output: false
-
-import Pkg
-Pkg.activate(".")
-Pkg.instantiate()
-
-using Dates
-using DataFrames
-using PrettyTables
-```
 
 ## Course Overview
 
@@ -46,6 +31,7 @@ This is a 3 credit course which is required for the Environmental Engineering ma
 :::: {.columns .course-details}
 
 ::: {.column width="30%"}
+
 ### Instructor
 
 - {{< fa sharp user title="Name" >}} [[{{< var instructor.name_no_title >}}]({{< var instructor.url >}})]{.ms-1}
@@ -57,8 +43,8 @@ This is a 3 credit course which is required for the Environmental Engineering ma
 ::: {.column width="30%"}
 ### TA
 
-- {{< fa sharp user title="Name" >}} [TBD]{.ms-1}
-- {{< fa sharp envelope title="Email" >}} [TBD]{.ms-1}
+- {{< fa sharp user title="Name" >}} [Samantha Davies]{.ms-1}
+- {{< fa sharp envelope title="Email" >}} [[sld238@cornell.edu](mailto:{{< var instructor.email >}})]{.ms-1}
 - {{< fa sharp building title="Office" >}} [TBD]{.ms-2}
 - {{< fa sharp door-open title="Office Hours" >}}[TBD]{.ms-1}
 ::::
@@ -252,23 +238,16 @@ The collaborative environment in this class **should not be viewed as an invitat
 
 ### AI/ML Resource Policy
 
-As noted, all work submitted for a grade in this course must reflect your own understanding. The use and consulation of AI/ML tools, such as ChatGPT or similar, for any purpose whatsoever, **must be pre-approved and clearly referenced**. 
+Large language models (LLMs), such as GPT, and other generative AI models are powerful tools for predicting text and code patterns. However, while they can save time (though you'd be surprised at how little time their careful use saves), they often make mistakes that can be hard to detect or fail to communicate key ideas or insights at the expense of more general and banal text. As you are likely to encounter an ever-widening use of these tools when you leave Cornell, it is critical that you learn how to use these tools responsibly and effectively.
 
-::: {.callout-important}
-## What are Large Language Models Useful For?
+However, this class will not focus on teaching you how to use LLMs responsibly; we assume that if you are using these tools, you are doing so in a way which benefits your learning and helps you communicate your already-existing understanding, rather than substituting for it. You are **generally** permitted to use these tools, but you are ultimately responsible for guaranteeing, understanding, and interpreting your results. If you submit work that was LLM generated, and this work receives a poor grade due to the LLM's inability to demonstrate understanding, your grade will reflect that substantive assessment.
 
-ChatGPT and other large-language models can predictively generate text, but note that there is no *idea* underlying its prediction model (it is purely statistical). You should therefore think about it as a glorified and stochastic Google search, albeit one which synthesizes the material for you, so you can't access or understand its judgement or reasoning.
+General guidelines for AI/ML use:
 
-As a result, simply submitting ChatGPT output is likely to get you zero credit for any analysis or interpretation questions, and may be less helpful than you think for questions about derivations or model setups. Where ChatGPT can be helpful is in starting or debugging code (particularly interpreting error messages), especially if you're unsure about syntax. However, in our experience, the interpretations and solutions from ChatGPT may often also just be wrong due to the LLM drawing from sufficiently different code examples users have provided in other forums; you'll still need to exercise judgement and figure out if what ChatGPT output works or makes sense to ensure credit. You'd be surprised --- careful use of LLMs does not actually save very much time!
-:::
+* **AI tools for code**: You may use LLM tools for code development and debugging, particularly for translating between other languages that you already have a better knowledge of (*e.g.* Python) and Julia. However, LLMs often make bad decisions about how to structure code, can introduce bugs (including suggesting packages that do not exist or outdated syntax), and can mislead you about what your code is doing. You are responsible for understanding and debugging any code involved in solving computational exercises. Notably, if you ask for help debugging LLM-generated code, this will not be possible unless you have already developed your own understanding of what each piece of the code does (or should do) and which parts work and don't work.
+* **AI tools for writing**: LLMs **should not be used to generate text that you submit as your own work**. The point of written assessments (including model derivations and interpretations) is to stimulate your own critical thinking and mathematical skills, and you short-cut this process by substituting LLM use for your own process of formulating and articulating ideas. Even using LLMs to do the initial writing and editing that output will result in shallower thinking. As we are not teaching you in this class to critically engage with LLMs, However, you *may* use LLMs or similar tools (*e.g.* Grammarly) to help you edit your writing. As mentioned before, you are ultimately responsible for the content of any work you turn in: if a tool used to edit grammar changed the substance of your writing, you will be responsible for the submission.
 
-If approved, you must:
-
-- reference the URL of the service you are using, including the specific date you accessed it;
-- provide the exact query or queries used to interact with the tool; and
-- report the exact response received.
-
-**Failure to attain prior approval or fully reference the interaction, as described above, will be treated as plagiarism and referred to the University accordingly.**
+To distinguish between these permissible and impermissible uses, you are required to cite your use of the tool (as with any other external reference). In particular, you must disclose how you use the LLM and how you incorporated any output into your final submission. **Failure to fully reference the interaction, as described above, will be treated as plagiarism and referred to the University accordingly.** If you have any questions about whether your planned use of an AI/ML tool complies with the academic integrity policy, please consult a member of the course staff ahead of its use.
 
 ### Late Work Policy
 
@@ -321,7 +300,7 @@ Space at office hours can be limited (we may shift to the conference room in 316
 ::: {.callout-tip}
 ## What If I Can't Make Office Hours?
 
-While we will try to select office hours that work for as much of the class as possible, both the course staff and students have busy schedules and no time will work for everyone. **If you need help outside of office hours (*e.g.* office hours do not fit your schedule), please send an email to the TA or Prof. Srikrishnan as soon as possible**. These requests may not be accepted on short notice (*e.g.* if you have a question about a homework due on Friday and send a request on Thursday; schedules for course staff may already be full). We recommend starting your homework promptly so you can take advantage of office hours or make an appointment over a longer period.
+While we will try to select office hours that work for as much of the class as possible, both the course staff and students have busy schedules and no time will work for everyone. **If you need help outside of office hours (*e.g.* office hours do not fit your schedule), please send an email to the TA or Prof. Srikrishnan as soon as possible**. These requests may not be accepted on short notice (*e.g.* if you have a question about a homework due on Thursday and send a request on the immediately prior Wednesday; schedules for course staff may already be full). We recommend starting your homework promptly so you can take advantage of office hours or make an appointment over a longer period.
 :::
 
 ## Assessments
@@ -330,9 +309,11 @@ Your grade will be computed as the weighted average of the following assessment 
 
 | Category | Weight |
 |:--------|:------:|
+| Participation (4750) | 10% |
+| Reading Assignments (5750) | 10% |
 | Exercises | 10% |
 | Labs | 10% |
-| Homework | 25% |
+| Homework | 15% |
 | Prelims | 30% |
 | Term Project | 25% |
 
@@ -353,13 +334,24 @@ Participating fully in the class allows you to gain more from the class and cont
 
 Note that just passively attending class will not yield full participation points. Participation points are not free: you are likely to lose points if you consistently skip class or do not ask or answer questions online or in person. At the end of the term, you will be asked to evaluate your own participation over the course of the semester, in addition to my documentation of your participation.
 
+### Reading Assignments
+
+We will provide topical readings throughout the semester; these will typically be drawn from textbooks or journal articles. These readings are optional (but may be interesting) for students enrolled in BEE 4750. Students enrolled in BEE 5750 will be required to submit 1-2 page discussions of these readings, including:
+
+* Summaries of the key questions, hypotheses, methods, and insights of the paper;
+* Discussion of the connection(s) between the reading and our in-class content (lectures, discussions, etc.); these can be substantive or methodological.
+
+Each discussion will be graded on a scale of 0-3. Your discussion should make specific references to the paper and your personal takeaways and insights from the reading. Submissions which lack these specifics will not receive much credit. 
+
+While discussions are not required for students enrolled in 4750, doing the readings and posting your thoughts on Ed Discussion is a good way to improve your participation grade.
+
 ### Exercises
 
 Most weeks will involve a short problem set aimed at assessing key concepts. We will use Canvas for these exercises. These will be released Monday at the start of class and are due before class (2:55PM) the following Monday. The exercises will be multiple choice or similar (categorization, multiple answer, etc), automatically graded, and you can submit them as often as you like. It is highly recommended that you do these promptly and take them seriously, as concepts and simple code practice will be useful for the homeworks and midterm exams. We will automatically drop one exercise set, but no late exercises will be accepted.
 
 ### Labs
 
-Approximately 5 class periods will be dedicated to working through simple examples to guide you through applying concepts and methods from class. Students should bring their laptops to class, and will be given a worksheet to complete (as much as they can) during these lab classes. Labs will be designed to be completed in class, though you may occasionally require additional time; however, lab worksheets must be submitted by 9:00pm on the lab day. As a result, I encourage you to make sure that you download and set up the lab materials ahead of time; these will be provided for you on Ed Discussion. Labs will be graded on a scale of 0-3 on the basis of effort towards demonstrated work, rather than absolute correctness or completion. No labs will be dropped by default. If you cannot bring a laptop to class, you can work with other students, though you must turn in your own worksheet for grading.
+Approximately 4 class periods will be dedicated to working through simple examples to guide you through applying concepts and methods from class. Students should bring their laptops to class, and will be given a worksheet to complete (as much as they can) during these lab classes. Labs will be designed to be completed in class, though you may occasionally require additional time; however, lab worksheets must be submitted by 9:00pm on the day after the lab day. As a result, I encourage you to make sure that you download and set up the lab materials ahead of time; these will be provided for you on Ed Discussion. Labs will be graded on a scale of 0-3 on the basis of effort towards demonstrated work, rather than absolute correctness or completion. No labs will be dropped by default. If you cannot bring a laptop to class, you can work with other students, though you must turn in your own worksheet for grading.
 
 ### Homework Assignments
 
@@ -367,9 +359,9 @@ Approximately 5-6 homework assignments will be assigned throughout the semester,
 
 You will generally have two class weeks to work on an assignment. This is intended to provide you enough time to work on the problem and debug and evaluate your code (including troubleshooting any technical problems); these are not reasons for late submission. Each homework assignment will build on material from the prior classes and possibly from the day the homework is assigned.
 
-Students are encouraged to collaborate and learn from each other on homework assignments, and groups of up to three students can submit a single group homework solution. Students are responsible for forming their own homework groups, which can differ for each assignment. Only one student from a group should submit a solution (unless the group involves students from both BEE 4750 and 5750), and it is the responsibility of the student submitting the assignment to tell Gradescope the names of the other group members. If a group involves students from both BEE 4750 and 5750, solutions should be submitted separately for each sub-group due to the additional problem for 5750 students. Otherwise, if multiple solutions from the same group are submitted, only one will be graded (whichever first comes up in Gradescope) and the rest ignored.
+Students are encouraged to collaborate and learn from each other on homework assignments, and groups of up to three students can submit a single group homework solution. Students are responsible for forming their own homework groups, which can differ for each assignment. Only one student from a group should submit a solution, and it is the responsibility of the student submitting the assignment to tell Gradescope the names of the other group members. Otherwise, if multiple solutions from the same group are submitted, only one will be graded (whichever first comes up in Gradescope) and the rest ignored.
 
-Consulting and referencing external resources and your peers is encouraged (engineering is a collaborative discipline!), but plagiarism is a violation of academic integrity. Graduate students in BEE 5750 can expect one additional problem for each homework assignment aimed at developing greater depth or familiarity with the material.
+Consulting and referencing external resources and your peers is encouraged (engineering is a collaborative discipline!), but plagiarism is a violation of academic integrity. 
 
 Some notes on assignment and grading logistics:
 
@@ -381,7 +373,7 @@ Some notes on assignment and grading logistics:
 
 ### Prelims
 
-Two in-class prelims will be given as an opportunity to review relevant material. The dates for the exams are **October 15** and **November 19**. The exams are closed-book and closed-note. As a result, the exams will emphasize conceptual material such as model derivations and interpretation of results; any calculations can be done with a pen(cil) and paper. Conflict and extended-time exams will be handled through SDS. Exams will be scanned into Gradescope for grading and feedback.
+Two in-class prelims will be given as an opportunity to review relevant material. The dates for the exams are **October 08** and **November 12**. The exams are closed-book and closed-note. As a result, the exams will emphasize conceptual material such as model derivations and interpretation of results; any calculations can be done with a pen(cil) and paper. Conflict and extended-time exams will be handled through SDS. Exams will be scanned into Gradescope for grading and feedback.
 
 Solutions will not be posted for the midterms, but Prof. Srikrishnan will review and discuss midterm problems in class. The review will occur approximately two weeks after the exam to provide time for conflict exams and grading.
 
@@ -446,123 +438,3 @@ We reserve the right to give any student meeting at least one of the following c
 3. Extremely low levels of participation and effort.
 
 This should not generally be a concern; students putting in a good faith effort by attending class, participating in online discussions, doing most of the work, and taking the exams will not be at risk of this policy.
-
-::: {.content-visible unless-format="html"}
-## Tentative Schedule
-
-```{julia}
-#| echo: false
-#| output: false
-
-start_date = Date(2025, 8, 25)
-end_date = Date(2025, 12, 8)
-
-# set vector of class dates (including holidays)
-cdates = filter(d -> Dates.dayname(d) ∈ ["Monday", "Wednesday"], Date(start_date):Day(1):Date(end_date));
-# find weeks from first week of classes
-cweeks = week.(cdates) .- (week(Date(start_date)) - 1);
-# get days of the week
-cdays = dayabbr.(cdates)
-
-# set vector of class topics
-topics = [ 
-  "Welcome to BEE 4750!",
-  "Lab 1: Setting up Julia and GitHub",
-  "Introduction to Systems Analysis",
-  "Modeling Systems",
-  "Feedbacks and Bifurcations",
-  "Simulation Modeling",
-  "Dissolved Oxygen",
-  "Uncertainty and Monte Carlo Simulation",
-  "Lab: Monte Carlo Simulation",
-  "Multiple Objectives and Tradeoffs",
-  "Model Calibration and Validation",
-  "Linear Programming",
-  "Prelim 1",
-  "Lab 3: Optimization with JuMP.jl",
-  "Power Systems and Economic Dispatch",
-  "Prelim 1 Review",
-  "Fixed Costs and Unit Commitment",
-  "Network Models ",
-  "Simulation-Optimization",
-  "Lab 4: Simulation-Optimization",
-  "Prelim 2",
-  "Robustness and Sensitivity Analysis",
-  "Scenario Trees and Value of Uncertainty",
-  "Lab 5: Two-Stage Linear Programs",
-  "Prelim 2 Review",
-  "Sequential Decision-Making",
-  "Reservoir Management",
-  "Project Work"
-]
-
-holiday_dates = ["2024-09-01", "2024-10-13", "2024-11-26"];
-holidays = DataFrame(Date=Dates.format.(Date.(holiday_dates), "mm-dd"), 
-                    Holiday=["Labor Day", "Fall Break", "Thanksgiving Break"]);
-
-# add in holidays
-ctopics = Vector{String}(undef, length(cdates)); # initialize array
-cschedule = DataFrame(Date=Dates.format.(cdates, "mm-dd"), Day=cdays);
-leftjoin!(cschedule, holidays, on=:Date);
-rename!(cschedule, :Holiday => :Topic);
-cschedule[ismissing.(cschedule.Topic), :Topic] = topics;
-
-
-# number class meetings
-class_nums = missings(Int, length(cdates))
-class_nums[cschedule.Date .∉ [holidays.Date]] = collect(range(1, length=length(cdates) - nrow(holidays)))
-
-# set headers
-headers_idx = [1, 8, 15, 27]
-headers = DataFrame([
-  "" "" "Introduction to Systems Analysis";
-  "" "" "Systems Simulation";
-  "" "" "Optimization and Decision-Making";
-  "" "" "Decision-Making Under Uncertainty";
-], ["Date", "Day", "Topic"])
-
-for i = 1:length(headers_idx)
-  insert!(cschedule, headers_idx[i], headers[i, :]; promote=true)
-  insert!(class_nums, headers_idx[i], missing)
-end
-
-class_nums = coalesce.(class_nums, "")
-
-
-```
-:::
-
-::: {.content-visible when-format="pdf"}
-
-```{julia}
-#| echo: false
-#| output: asis
-
-# highlight holidays
-hl_smallfont = LatexHighlighter((data,i,j)->true, ["small"])
-hl_hol = LatexHighlighter((data, i, j) -> data[i, :Date] ∈ holidays[:, :Date], ["emph", "small"])
-hl_header = LatexHighlighter((data, i, j) -> i ∈ headers_idx, ["emph", "textbf", "small"])
-
-pretty_table(cschedule, highlighters=(hl_header, hl_hol, hl_smallfont), 
-  body_hlines = headers_idx[2:end] .- 1, show_subheader=false,
-  backend=Val(:latex), tf=tf_latex_modern, formatters=ft_nomissing, wrap_table=true, table_type=:longtable,
-  alignment = [:c, :c, :l])
-```
-:::
-
-::: {.content-visible when-format="docx"}
-
-```{julia}
-#| echo: false
-#| output: asis
-
-using Latexify
-
-bold_headers(x) = x in headers.Topic ? "***$x***" : x  
-cschedule = bold_headers.(cschedule)
-italicize_holidays(x) = x in unique(holidays.Holiday) ? "*$x*" : x
-cschedule = italicize_holidays.(cschedule)
-print(latexify(cschedule; env=:mdtable, latex=:false, adjustment=:l))
-```
-:::
-

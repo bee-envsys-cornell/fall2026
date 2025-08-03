@@ -1,8 +1,11 @@
 ---
-title: "Tutorial: Using LaTeX in Jupyter Notebooks"
+title: "Using LaTeX in Jupyter Notebooks"
 execute:
     error: true
     warning: true
+engine: julia
+julia:
+    exeflags: ["+1.11.5"]
 ---
 
 This tutorial was inspired and draws from [Justin Bois' tutorial](http://chebe163.caltech.edu/2018w/handouts/intro_to_latex.html).

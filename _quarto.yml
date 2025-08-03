@@ -36,21 +36,17 @@ website:
           - syllabus.qmd
           - policies/index.qmd
           - faq/index.qmd
-          - background/index.qmd
           - setup/index.qmd
       - schedule.qmd
-      - text: "Content"
-        href: content/index.qmd
       - text: "Coursework"
         menu:
           - labs/index.qmd
           - hw/index.qmd
-          - prelim/index.html
           - project/index.qmd
       - text: "Resources"
         menu:
           - tutorials/index.qmd
-          - links/index.qmd
+          - resources/index.qmd
     right:
       - href: https://github.com/bee-envsys-cornell/fall2025
         text: "{{< fa brands github >}} GitHub"
@@ -66,61 +62,50 @@ website:
         aria-label: "Gradescope"
 
   sidebar:
-    - title: "Policies"
+    - title: "Course Policies"
       style: docked
       search: false
       background: "#f7f7f7"
       contents:
-        - policies/index.qmd
-        - policies/integrity.qmd
-        - policies/grading.qmd
-        - policies/rubric.qmd
-        - policies/group/qmd
-        - policies/homework.qmd
-        - policies/exam.qmd
-    - title: "Setup"
-      style: docked
-      search: false
-      background: "#f7f7f7"
-      contents:
-        - setup/index.qmd
-        - setup/julia.qmd
-        - setup/git.qmd
-        - setup/vscode.qmd
-    - title: "Course Content"
-      style: docked
-      search: false
-      background: "#f7f7f7"
-      contents:
-        - content/index.qmd
-        - section: "Systems and Models"
+        - section: "Policies"
+          href: policies/index.qmd
+        - section: "Expectations"
           contents:
-            - content/week01.qmd
-            - content/week02.qmd
-        - section: "Simulation and Risk"
-        - section: "Optimization and Decision-Making"
+          - policies/integrity.qmd
+          - policies/groups.qmd
+        - section: "Grading"
+          contents:
+          - policies/grading.qmd
+          - policies/rubric.qmd
+          - policies/homework.qmd
+          - policies/exam.qmd
+    - title: "Setup and Workflow"
+      contents:
+        - section: "Tools Setup"
+          href: setup/index.qmd
+        - section: "Software"
+          contents: 
+          - setup/julia.qmd
+          - setup/git.qmd
+          - setup/vscode.qmd
+        - section: "Workflow"
+          contents:
+            - setup: setup/homework.qmd
     - title: "Labs"
       style: docked
       search: false
       background: "#f7f7f7"
       contents:
         - labs/index.qmd
-        - labs/lab01/index.qmd
-        - labs/lab02/index.qmd
-        - labs/lab03/index.qmd
-        - labs/lab04/index.qmd
     - title: "Homework"
       style: docked
       search: false
       background: "#f7f7f7"
       contents:
-        - hw/index.qmd
-        - hw/hw01/index.qmd 
-        - hw/hw02/index.qmd 
-        - hw/hw03/index.qmd 
-        - hw/hw04/index.qmd 
-        - hw/hw05/index.qmd 
-        - hw/hw06/index.qmd    
+        - href: hw/index.qmd
+          text: "Homework Overview"
+        - href: hw/hw01/hw01.qmd
+          text: "Homework 1"
     - title: "Project"
       style: docked
       search: false
@@ -132,14 +117,6 @@ website:
         - project/peer-review.qmd
         - project/report.qmd
         - project/team-evals.qmd
-    - title: "Prelims"
-      style: docked
-      search: false
-      background: "#f7f7f7"
-      contents:
-        - prelim/index.qmd
-        - prelim/prelim1.qmd
-        - prelim/prelim2.qmd
     - title: "Tutorials"
       style: docked
       search: false
@@ -150,17 +127,18 @@ website:
         - tutorials/latex-notebook.qmd
         - tutorials/julia-plots.qmd
         - tutorials/julia-jump.qmd
-    - title: "Links"
+    - title: "Resources"
       style: docked
       search: false
       background: "#f7f7f7"
       contents:
-        - links/index.qmd
-        - links/general.qmd
-        - links/julia.qmd
-        - links/github.qmd
-        - links/markdown.qmd
-        - links/optimization.qmd
+        - resources/index.qmd
+        - resources/general.qmd
+        - resources/julia.qmd
+        - resources/ai.qmd
+        - resources/github.qmd
+        - resources/markdown.qmd
+        - resources/optimization.qmd
 
 format:
   html:
@@ -177,6 +155,7 @@ format:
     code-annotations: select
     html-math-method: mathjax
     include-in-header: mathjax-config.html
+    footnotes-hover: false
 
 bibliography: references.bib
 csl: _assets/references/american-geophysical-union.csl

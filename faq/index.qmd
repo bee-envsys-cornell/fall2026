@@ -63,13 +63,20 @@ That's certainly possible! If you believe I've made a mistake in writing the ass
 
 ### Help! My code isn't working.
 
-Here are some steps I would follow:
+Bugs are a feature of life when you program. This [debugging manifesto](https://jvns.ca/blog/2022/12/08/a-debugging-manifesto/) has some good tips and principles to keep in mind.
 
-1. Search for the error message you're seeing. Often, you can find posts in the [r/Julia subreddit](https://www.reddit.com/r/Julia/), the [official Julia forum](https://discourse.julialang.org), or [Stack Overflow](https://stackoverflow.com) for the same or similar issues. ***You should do this first***: if you can find the answer this way, it will be faster than other options, and if you can rule out some approaches that you've already tried, it will make the following steps go more smoothly. 
-2. Post on [Ed Discussion](https://us.edstem.org). For the most effective help, follow the following guidelines (adapted from Stack Overflow's ["How Do I Ask A Good Question?"](https://stackoverflow.com/help/how-to-ask)):
-    - ***Make your post subject specific and descriptive***. "Problem with HW 1 Problem 3" makes it hard for other members of the class community to know if they're having a similar issue or if they can help. Since the TA and I may not be checking Ed religiously, you'll get faster responses if other students feel prepared to help.
-    - ***Introduce the problem***. What have you tried? What error message are you getting? Have you been able to identify a specific line of code or section of code that's causing the problem?
-    - ***Provide code***. It's very difficult to get a sense of what might be going wrong if you just say that you have a problem, even if you share the error message. If you have a small question (you can demonstrate the error with a brief snippet of code), you can directly put this into your Ed post, but otherwise, please provide a link to your GitHub repository and where to find the relevant codes.
+Additionally, here are some steps I would follow:
+
+1. Search for the error message you're seeing. Often, you can find posts in the [r/Julia subreddit](https://www.reddit.com/r/Julia/), the [official Julia forum](https://discourse.julialang.org), or [Stack Overflow](https://stackoverflow.com) for the same or similar issues. ***You should do this first***: if you can find the answer this way, it will be faster than other options, and if you can rule out some approaches that you've already tried, it will make the following steps go more smoothly. It will also help you understand what has gone wrong!
+2. Post on [Ed Discussion](https://us.edstem.org). For the most effective help, follow the following guidelines (adapted from Stack Overflow's ["How Do I Ask A Good Question?"](https://stackoverflow.com/help/how-to-ask) and Julia's ["Make It Easier To Help You"](https://discourse.julialang.org/t/please-read-make-it-easier-to-help-you/14757)):
+    - ***Make your post subject specific and descriptive***. "Problem with HW 1 Problem 3" makes it hard for other members of the class community to know if they're having a similar issue or if they can help. Since the TA and I may not be checking Ed religiously, you'll get faster responses if other students feel prepared to help. A subject like "Loop not updating properly" makes it much more clear what your core problem is and will help others find your post if they have the same problem.
+    - ***Introduce the problem***. What have you tried? What error message are you getting? Have you been able to identify a specific line of code or section of code that's causing the problem? Ideally, you know what parts of your code work and which have the problem; you will be asked to investigate and test your code accordingly if you haven't, as otherwise you're relying on course staff or your fellow students to do basic due diligence.
+    - ***Provide code***. It's very difficult to get a sense of what might be going wrong if you just say that you have a problem, even if you share the error message. If you have a small question (you can demonstrate the error with a brief snippet of code which creates the same error), you can directly put this into your Ed post (use the `Insert Code` button). This is the easiest way to get help! If that's not possible, please provide a link to your GitHub repository and where to find the relevant codes (files/line numbers). 
+
+      ::: {.callout-note}
+      ## Don't Post Screenshots!
+      Screenshots of code are the most useless way to ask for help. Screenshots don't allow for code to be downloaded or copy-pasted (limiting the ability to test), often can be hard to read, and aren't accessible. If you post a screenshot, we will ask you to post an illustrative code snippet or a link to the file in your GitHub repository.
+      :::
 
       ::: {.callout-note}
       ## Update Your Repository!
@@ -103,7 +110,7 @@ There are two main options, depending on what you've already got set up on your 
 Remember to "Run All" cells prior to conversion and submission, or else we won't see your results!
 :::
 
-1. If you have a Python installation, you can use a tool called [`nbconvert`](https://nbconvert.readthedocs.io/en/latest/) to convert to a PDF (if you also have LaTeX installed) or HTML (and then you can use your browser to print to a PDF).
+1. If you have a Python installation, you can use a tool called [`nbconvert`](https://nbconvert.readthedocs.io/en/latest/) to convert to a PDF. This is the easiest thing to do within VS Code: with `nbconvert` and the [Jupyter extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter), you can [export your notebook] to HTML (which can be saved as a PDF) or directly to a PDF (if you have a TeX installation).
 2. If you don't have a Python installation, within VS Code, you can use `IJulia.jl` (which will be included in the environments provided with assignments in this class) as follows (enter these commands into the REPL) to open your notebook in your browser:
 
     ```julia
@@ -112,6 +119,9 @@ Remember to "Run All" cells prior to conversion and submission, or else we won't
     ```
 
     This should open a Jupyter notebook interface in your browser. Navigate to and open the notebook, and once it has completed running, go to `File -> Print Preview` in the browser menu and Print to PDF.
+3. The least reliable option is to use an online renderer, such as [`nbviewer`](https://nbviewer.org/). `nbviewer` will import your notebook from GitHub and render it, in which case you can just print to a PDF from your browser. The downside to `nbviewer` is it sometimes doesn't render figures properly.
+
+But remember, you also don't **need** to submit a PDF derived from a notebook! The code in the notebook will not be graded; this is just a means to an end. You are graded on how you set up the problem, the results, and your analysis: you can write up solutions in Word or some text editor and include plots, then export that to a PDF.
 
 ### How do I submit my PDF to Gradescope?
 

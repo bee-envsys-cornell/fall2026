@@ -1,8 +1,14 @@
 ---
-title: "Tutorial: Julia Basics"
+title: "Julia Basics"
 execute:
     error: true
     warning: true
+format:
+    html: default
+    ipynb: default
+engine: julia
+julia:
+    exeflags: ["+1.11.5"]
 ---
 
 ## Overview

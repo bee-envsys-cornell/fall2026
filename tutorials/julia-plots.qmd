@@ -1,8 +1,14 @@
 ---
-title: "Tutorial: Making Plots with Julia"
+title: "Making Plots with Julia"
 execute:
     error: true
     warning: true
+format:
+    html: default
+    ipynb: default
+engine: julia
+julia:
+    exeflags: ["+1.11.5"]
 ---
 
 
@@ -27,9 +33,17 @@ This tutorial will give some examples of plotting and plotting features in Julia
 
 ## Making a Basic Plot
 
-Let's walk through making a basic line or scatter plot in Julia, using `Plots.jl`^[There are some other plotting libraries in Julia, but `Plots.jl` is a standard starting point. Feel free to experiment, though!]. 
+Let's walk through making a basic line or scatter plot in Julia, using `Plots.jl`^[There are some other plotting libraries in Julia, but `Plots.jl` is a standard starting point. Feel free to experiment, though! You could look into [`Makie.jl`](https://docs.makie.org/stable/) or [`VegaLite.jl`](https://github.com/queryverse/VegaLite.jl)].
 
-Since we'll be generating random numbers, let's import `Random.jl` to let us set a seed to reproduce the same plot in addition to `Plots.jl`.
+::: {.callout-note}
+### `Plots.jl` Backends
+
+`Plots.jl` is more of a common interface for several different plotting ecosystems (called **backends**) than a self-contained plotting package. By default, `Plots.jl` uses the `GR` backend, which is pretty basic and fast; I will be using this in all my examples in this tutorial and in class for simplicity. 
+
+You can and should feel free to use [other backends](https://docs.juliaplots.org/latest/backends/) if you find them more intuitive or useful for the plot(s) you are trying to make. In particular, you might find `PythonPlot` simple to use if you feel comfortable with `matplotlib` in Python. The downside to `PythonPlot` is that it relies on Python to render the plots, which could create setup problems if you don't already have Python installed.
+:::
+
+Since we'll be generating random numbers, let's import `Random.jl` to allow us set a seed to reproduce the same plot every time we run this code. We'll also import `Plots.jl`, `LaTeXStrings.jl` (which allows us to use LaTeX for mathematical markup of variables in axis labels and titles), and `Measures.jl` (which lets us adjust margins using intuitive units, such as `in` and `mm`).
 
 ```{julia}
 using Plots
@@ -42,29 +56,31 @@ Random.seed!(1);
 First, to generate a basic line plot, use `plot()`:
 
 ```{julia}
-y = rand(5)
-plot(y, label="original data", legend=:topleft)
+x = 1:5 # <1>
+y = rand(length(x)) # <2>
+plot(x, y, label="Original Data", legend=:topleft) # <3>
 ```
+1. This creates `x` as a range of integers between 1 and 5 (inclusive of both endpoints). You can use arbitrary steps with syntax like `x = 1:0.1:5`. To turn `x` into a vector instead of a range, you can use `collect(x)`, but this is not needed for plotting (Julia does this under the hood).
+2. `y` is a vector of random values (uniformly distributed between 0 and 1) with the same length as `x`. This type of syntax is better than hard-coding the length into `y`, since you might want to use different lengths.
+3. We use two different arguments related to constructing the legend: `label` sets the text associated with the line we just created (to not include an element in the legend, use `label=false`), and `legend` either sets the position of the legend (in this case, at the top left) or can be used to turn off the legend (with `label=false`). But there are [many others](https://docs.juliaplots.org/latest/generated/attributes_plot/) [you could use](https://data1010.github.io/docs/cheatsheets/plotsjl-cheatsheet.pdf) to customize the plot.
 
-We could also explicitly pass $x$-axis coordinates by passing an array with these coordinates first, as in `plot(x, y, ...)`. If only one array is passed, `Plots.jl` will interpret the values as $y$ coordinates and use their indices for the $x$ positions.
-
-Notice the use of the `label` and `legend` keywords to label the plot element and position the legend. To not label a particular plotting element, use `label=false`, and to turn off any legend (including a colorbar) from the plot, use `legend=false`.
+Here, we explicitly passed in `x` to provide the $x$ coordinates for the plotted values. If only one array is passed^[This syntax might look like `plot(y, ...)` instead of `plot(x, y, ...)`.], `Plots.jl` will interpret the values as $y$ coordinates and use their indices for the $x$ positions.
 
 Now we can add some other lines and point markers. We will use `plot!` and `scatter!` to add another line and some points. 
 
 ::: {.callout-tip}
 ### Mutating Function
 
-The exclamation mark says that `plot!()` is a **mutating function**, which changes an existing variable instead of creating a new one. In this case, these functions change or add to an existing plot, instead of creating a new one.
+The exclamation mark says that `plot!()` is a **mutating function**, which changes an existing variable instead of creating a new one. In this case, these functions change or add to an existing plot, instead of creating a new one. Try to remove the exclamation mark: you will get a new plot that no longer contains the old elements. You can contrast this explicit behavior with a language like R, which often requires an argument within the same function to add an element to an existing plot.
 :::
 
-Notice the arguments in `plot!()` and `scatter!()`, which let us set properties for the line and scatterplot markers.
+Notice the arguments in `plot!()` and `scatter!()`, which let us set properties such as color , size, and shape, for the line and scatterplot markers.
 
 ```{julia}
 y2 = rand(5)
 y3 = rand(5)
-plot!(y2, color=:red, linewidth=2, linestyle=:dot, label="new data")
-scatter!(y3, markercolor=:black, markershape=:square, markersize=5, label="even more data")
+plot!(y2, color=:red, linewidth=2, linestyle=:dot, label="New Data")
+scatter!(y3, markercolor=:black, markershape=:square, markersize=5, label="Point Data")
 ```
 
 Let's now add axis labels. We can use [LaTeX syntax](latex-notebook.html) to add mathematical markup elements to labels (such as superscripts, subscripts, Greek letters, and mathematical symbols) using the `LaTeXStrings.jl` package. If we indicate that a string should be interpreted as a LaTeXString using the `L"..."` syntax, it will render content inside `$..$` using LaTeX, as seen below.
@@ -88,7 +104,7 @@ Notice that this unintentionally modified the image dimensions to move the axis 
 plot!(size=(400, 400))
 ```
 
-The lesson is that sometimes the `Plots.jl` defaults don't look ideal, and we need to adjust sizes and margins.
+The lesson is that sometimes the `Plots.jl` defaults don't look ideal, and we need to adjust sizes and margins. Don't shy away from these tweaks if they make your figures easier to read or interpret!
 
 ### Aspect Ratio
 
@@ -109,29 +125,31 @@ This section includes some examples of how to make other types of plots.
 A heatmap is effectively a plotted matrix with colors chosen according to the values. Use `clim` to specify a fixed range for the color limits.
 
 ```{julia}
-A = rand(10, 10)
+A = rand(10, 10) # <1>
 heatmap(A, clim=(0, 1), ratio=1, legend=false, axis=false, ticks=false)
 ```
+1. Create a random 10x10 matrix, but this could come from actual data.
 
 
 ```{julia}
 M = [ 0 1 0; 0 0 0; 1 0 0]
-whiteblack = [RGBA(1,1,1,0), RGB(0,0,0)]
-heatmap(c=whiteblack, M, aspect_ratio = 1, ticks=.5:3.5, lims=(.5,3.5), gridalpha=1, legend=false, axis=false, ylabel="i", xlabel="j")
+whiteblack = [RGBA(1,1,1,0), RGB(0,0,0)] # <1>
+heatmap(M, c=whiteblack, aspect_ratio = 1, ticks=.5:3.5, lims=(.5,3.5), gridalpha=1, legend=false, axis=false, ylabel="i", xlabel="j")
 ```
-
+1. This creates a vector of colors, so `0` (the lower value) will map to `whiteblack[1]` (which is white) and `1` will map to `whiteblack[2]` (black). The specific `0` and `1` values don't matter for this syntax, just that there are two distinct values; the lower one will always be mapped to white. Try changing the values of `M` to `1` and `2`!
 
 
 #### Custom Colors
 
 ```{julia}
-using Colors
+using Colors # <1>
 
-mycolors = [colorant"lightslateblue",colorant"limegreen",colorant"red"]
-A = [i for i=50:300, j=1:100]
+mycolors = [colorant"lightslateblue",colorant"limegreen",colorant"red"] # <1>
+A = [i for i=50:300, j=1:100] # <2>
 heatmap(A, c=mycolors, clim=(1,300))
 ```
-
+1. `Colors.jl` provides a lot more granular control over colors, including [many named colors](https://juliagraphics.github.io/Colors.jl/stable/namedcolors/) and [the ability to generate your own colormaps and scales](https://juliagraphics.github.io/Colors.jl/stable/colormapsandcolorscales/). The `colorant` syntax converts an interpretable string (such as `red`) to an RGB value. You don't often need to explicitly load `Colors.jl` as much of this functionality is available through the `Plots.jl` interface, which includes `Colors.jl` as a dependency, but sometimes it's useful to create your own colormaps or functions. 
+2. This is an example of a **comprehension**, which creates a vector based on the loop(s) inside the array. This comprehension creates a 251x100 array where the values of each row (indexed by `i` ) increase from 50 to 300 in order.
 
 
 ### Plotting Areas Under Curves
@@ -140,29 +158,35 @@ We can plot the area between a curve and the $x$-axis using `areaplot()`.
 
 ```{julia}
 x = -3:.01:3
-areaplot(x, exp.(-x.^2/2)/√(2π),alpha=.25,legend=false)
+areaplot(x, exp.(-x.^2/2)/√(2π), alpha=0.25, legend=false) # <1>
 ```
+1. `alpha` sets the transparency of the plotted color: 1 is totally opaque. Lower alpha values are useful when you want to show an area around a line or if you have a lot of points on a scatterplot.
 
-We can also use this functionality for stacked area plots.
+We can also use this functionality for stacked area plots. The snippet below is good for you to experiment with to see what changes break the plot and why.
 
 ```{julia}
 M = [1 2 3; 7 8 9; 4 5 6; 0 .5 1.5]
-areaplot(1:3, M, seriescolor = [:red :green :blue ], fillalpha = [0.2 0.3 0.4])
+areaplot(1:3, M, seriescolor = [:red :green :blue], fillalpha = [0.2 0.3 0.4]) # <1>
 ```
+1. The shape of the `seriescolor` and `fillalpha` arguments is very important, and also extends to multiple legend labels. 
 
 
 The `fillrange` option lets us color the area between two arbitrary lines/curves if we only want to treat one of those curves as a boundary. `fillcolor` and `fillalpha` let you change the color and transparency of the filled area.
+
 ```{julia}
 y = rand(10)
 plot(y, fillrange= y.*0 .+ .5, label= "above/below 1/2", fillcolor=:red, legend =:top)
 ```
 
+Here's a similar example to plot something like a confidence interval around a central estimate.
+
 ```{julia}
-x = LinRange(0,2,100)
+x = LinRange(0,2,100) # <1>
 y1 = exp.(x)
 y2 = exp.(1.3 .* x)
 plot(x, y1, fillrange = y2, fillalpha = 0.35, c = 1, label = "Confidence band", legend = :topleft)
 ```
+1. `LinRange` creates a range between the first two arguments (0 and 2 in this case) with the specified number of steps (here, 100). This is slightly different than `0:0.01:2`, which will create a length 101 array, not 100, but has steps that are more predictable.
 
 We can also get more creative and color different parts of a curve differently. Here, we divide a normal distribution into 100 quantiles and alternate red and blue stripes. We'll do this using the `erfinv()` function from `SpecialFunctions.jl` to calculate the quantiles using the inverse cumulative distribution function, but there are other approaches using `Distributions.jl`.
 
@@ -170,7 +194,7 @@ We can also get more creative and color different parts of a curve differently. 
 using SpecialFunctions
 
 # write a function for the normal distribution density
-f = x -> exp(-x^2/2)/√(2π)
+f(x) = exp(-x^2/2)/√(2π) 
 # get the edges of the quantiles
 δ = .01
 x = √2 .* erfinv.(2 .* (δ/2 : δ : 1) .- 1)
@@ -215,15 +239,14 @@ We can also use this functionality to plot distributions of data in tabular data
 ```{julia}
 using DataFrames
 dat = DataFrame(a = 1:10, b = 10 .+ rand(10), c = 10 .* rand(10))
-@df dat density([:b :c], color=[:black :red])
+@df dat density([:b :c], color=[:black :red]) # <1>
 ```
-
-
+1. `@df` is an example of a **macro**, which modifies the subsequent function. There are many other examples of macros in Julia.
 
 ### Log-Scaled Axes
 
 ```{julia}
-xx = .1:.1:10
+xx = 0.1:0.1:10
 plot(xx.^2, xaxis=:log, yaxis=:log)
 ```
 
@@ -235,23 +258,28 @@ plot(exp.(x), yaxis=:log)
 
 ## Editing Plots Manually
 
+Now let's look at how to modify plot attributes directly.
+
 ```{julia}
 pl = plot(1:4,[1, 4, 9, 16])
 ```
 
-
+To get a list of properties we can modify, use `p.attr`:
 
 ```{julia}
 pl.attr
 ```
+
+We can also directly access properties of the plotted series.
 
 ```{julia}
 pl.series_list[1]
 ```
 
 ```{julia}
-pl[:size]=(300,200)
+pl[:size]=(300,200) # <1>
 ```
+1. This is a little contrived: we could just use `plot!(pl, size=(300, 200))` to do the same thing.
 
 ```{julia}
 pl

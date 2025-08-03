@@ -1,8 +1,14 @@
 ---
-title: "Tutorial: Linear Optimization in Julia"
+title: "Linear Optimization in Julia"
 execute:
     error: true
     warning: true
+format:
+    html: default
+    ipynb: default
+engine: julia
+julia:
+    exeflags: ["+1.11.5"]
 ---
 
 ```{julia}
@@ -20,7 +26,7 @@ using HiGHS
 
 ## Overview
 
-This tutorial will demonstrate how to solve linear optimization problems graphically and using the `JuMP` package in Julia. It draws heavily from [this tutorial](https://github.com/east-winds/power-systems-optimization/blob/master/Notebooks/02-Anatomy-of-a-Model.ipynb) by Jesse D. Jenkins and Michael R. Davidson.
+This tutorial will demonstrate how to solve linear optimization problems graphically and using the `JuMP` package in Julia. It draws heavily from [this tutorial](https://github.com/Power-Systems-Optimization-Course/power-systems-optimization/blob/master/Notebooks/02-Anatomy-of-a-Model.ipynb) by Jesse D. Jenkins and Michael R. Davidson.
 
 [JuMP](https://jump.dev/) ("**Ju**lia for **M**athematical **P**rogramming") is an open-source Julia package that adds functionality for formulating and solving a variety of optimization problems. One advantage of JuMP is that its syntax matches the typical mathematical formalism used to specify optimization problems. We will use JuMP in this class for our optimization work.
 
@@ -101,12 +107,12 @@ Let's do some plotting to examine the geometry of our optimization problem. We c
 #| fig-align: center
 
 ## set up objective function parameters and variables
-pa = 100
-pb = 75
 a = range(0, 8, step=0.25)
 b = range(0, 8, step=0.25)
 
 ## define objective function
+pa = 100
+pb = 75
 f(a, b) = pa * a + pb * b
 
 ## start plotting
@@ -155,7 +161,7 @@ Decision variables ($x$ and $y$ in this case) in JuMP are defined using the `@va
 
 If we had a free (or unbounded) variable $z$, we could declare that variable using `@variable(model, z)`. JuMP also requires unique names for each variable, or it will throw an error. This is one place where it's nice that Julia lets us use sub- and superscripts in variable names!
 
-If we did want to modify the bounds after defining the variable, we could do so using the `set_lower_bound` and `set_upper_bound` functions, or we could remove them using `delete_lower_bound` and `delete_upper_bound`.
+If we did want to modify the bounds after defining the variable, we could do so using the `set_lower_bound()` and `set_upper_bound()` functions, or we could remove them using `delete_lower_bound()` and `delete_upper_bound()`.
 
 Finally, if we want to see all of the variables associated with a model, we can use the `all_variables` function to obtain an array.
 
@@ -165,7 +171,7 @@ all_variables(factory_model)
 
 ### Define Constraints
 
-When defining variables, we were able to declare constraints on their values by specifying upper and lower bounds. However, we also have other constraints, which involve multiple decision variables. These are specified using the `@constraint` macro. Unlike variables, we also need to pass names for each constraint. We will use `time` for the time constraint and `materials` for the materials constraint. These names must be unique.
+When defining variables, we were able to declare constraints on their values by specifying upper and lower bounds. However, we also have other constraints, which involve multiple decision variables. These are specified using the `@constraint` macro. We also can pass names for each constraint^[Constraint names aren't required, but are useful if you want to modify constraints or [get dual variables/shadow prices](http://localhost:4200/tutorials/julia-jump.html#dual-solutions).]. We will use `time` for the time constraint and `materials` for the materials constraint. These names must be unique.
 
 ```{julia}
 #| output: false
@@ -202,7 +208,7 @@ Now it's time to solve the model and find the optimal values $(x^*, y^*)$. Since
 optimize!(factory_model)
 ```
 
-### Query the Solution
+## Query the Solution
 
 To find the optimal values of our decision variables, we need to query the values of the variables using `value.()`. We use `value.()` (the vectorized version of `value()`) because JuMP stores decision variables differently depending on their number and how they were defined. Uses the dot-syntax here works with any model specification, while the plain `value()` will not work if a queried decision variable is stored as a vector.
 

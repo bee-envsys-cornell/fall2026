@@ -13,15 +13,21 @@ This page contains information about and a schedule of the homework assignments 
 - Submit assignments by 9:00pm Eastern Time on the due date on [Gradescope](https://gradescope.com).
 - Starting with HW2, groups of at most two students can submit group solutions. Groups do not have the be the same for all assignments. **Exactly one member of each group should submit the solution**. If you submit as a group, **it is the responsibility of the submitter to tell Gradescope the names of the other group members**. If this information is not entered, the other group members' grades can be delayed or even lost. Also include the names and NetIDs of all group members on the first page.
 - If a student in BEE 5750 works in a group with a student from BEE 4750, they should submit separate PDFs to Gradescope (these can be different versions of the same PDF) due to the additional 5750 problem; this will just not be graded for the 4750 student(s). A single submission can be used for multiple students within the same course number who share a group.
-- More detailed [homework instructions and logistics](policies/homework.qmd#homework-logistics) are available.
+- More detailed [homework instructions and logistics](../policies/homework.qmd#homework-logistics) are available.
 - Submissions must be PDFs. Make sure that you tag the pages corresponding to each question; points will be deducted otherwise.
 - To convert the assignment notebook to PDF, you can use VS Code to render the notebook to HTML, and then use your browser to print to PDF. If you have set up LaTeX with VS Code, you can convert directly to a PDF.
 
 ## Grading
 
-Make sure to look over the [standard homework rubric](rubrics/standard.qmd) and familiarize yourself with the [homework](policies/homework.qmd) and [grading policies](policies/grading.qmd).
+Make sure to look over the [standard homework rubric](../policies/rubric.qmd) and familiarize yourself with the [homework](../policies/homework.qmd) and [grading policies](../policies/grading.qmd).
 
 ## Schedule
 
 | Assignment | Instructions | Solutions | Due Date |
 |:----------:|:------------:|:---------:|:--------:|
+| Homework 1 | [{{< fa sharp pen-field >}}](hw01/hw01.qmd) | [{{< fa sharp key-skeleton >}}]{style="color: grey;"} | Sep. 11, 2025 |
+| Homework 2 | | | Sep. 25, 2025 |
+| Homework 3 | | | Oct. 09, 2025 |
+| Homework 4 | | | Nov. 06, 2025 |
+| Homework 5 | | | Nov. 20, 2025 |
+| Homework 6 | | | Dec. 04, 2025 |

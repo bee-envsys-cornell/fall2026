@@ -4,17 +4,31 @@
 
 @import 'https://kit.fontawesome.com/d16123e5b5.css';
 
+// Colors
+$darkgray: #222222; 
+$cornellred: #b31b1b;
+$lightred: #DF1E12;
+$lightgray: #f7f7f7;
+$seagray: #9fad9f;
+$blue: #006699;
+$orange: #D47500;
+$warmgray: #A2998B;
+
 $font-family-sans-serif: "IBM Plex Sans", sans-serif;
 $font-family-monospace: "Source Code Pro", "IBM Plex Mono", monospace;
 $font-family-serif: "Source Serif Pro", "IBM Plex Serif", serif;
 
 $headings-font-family: $font-family-serif;
 
+$toc-font-size: 0.95rem;
+$sidebar-font-size: 0.95rem;
+$sidebar-font-size-section: 0.95rem;
+$footer-font-size: 0.95rem;
 
 // Bootstrap inputs
 
-$code-block-bg: #e7e7e7;
-$code-bg: #e7e7e7;
+$code-block-bg: #f7f7f7;
+$code-bg: #f7f7f7;
 
 /*-- scss:rules --*/
 
@@ -54,7 +68,6 @@ figcaption {
 
 .course-details {
   margin: 0 0 1em;
-  border-bottom: 3px solid $gray-200;
   padding-bottom: 1em;
   padding-top: 1em;
 }
@@ -86,4 +99,34 @@ figcaption {
 }
 .course-details ul > li {
   position: relative;
+}
+
+.navbar-dark .navbar-nav .show>.nav-link,
+.navbar-dark .navbar-nav .active>.nav-link,
+.navbar-dark .navbar-nav .nav-link.active,
+div.sidebar-item-container .active,
+div.sidebar-item-container .show>.nav-link,
+div.sidebar-item-container .sidebar-link>code{
+  color: $lightred;
+}
+
+.sidebar-item-text.sidebar-link.text-start {
+    font-weight: bold;
+}
+
+li .sidebar-item-section {
+  font-size: 1.1rem;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-brand:hover {
+  color: $orange;
+}
+
+.sidebar nav[role="doc-toc"] > ul li a {
+
+  &.active {
+    border-left: 1px solid $lightred;
+    color: $lightred !important;
+  }
 }
