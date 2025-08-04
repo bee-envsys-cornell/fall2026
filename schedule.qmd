@@ -1,7 +1,9 @@
 ---
 title: "Course Schedule"
-page-layout: full
-tbl-colwidths: [5, 10, 25, 5, 5, 5, 5]
+format:
+    html:
+        page-layout: article
+tbl-colwidths: [3, 5, 12, 3, 3, 3, 3]
 ---
 
 This page contains a schedule of the topics, content, and assignments for the semester.
@@ -11,25 +13,25 @@ Note that this schedule will be updated as necessary the semester progresses, wi
 | Week | Date        | Topic | Slides | Lab | HW | 
 :-----:|:------------|:------|:------:|:--:|:---:|
 | | | ***Module 1: Introduction to Systems Analysis*** | | | | |
-| 1    | Mon, Aug 25 | [Welcome to BEE 4750!](slides/lecture01-1-intro.qmd) |  | | [HW1 released](hw/hw01/hw01.qmd) |  
+| 1    | Mon, Aug 25 | Welcome to BEE 4750! | [{{< fa sharp presentation-screen >}}]((slides/lecture01-1-intro.qmd))  | | [{{< fa sharp file-pen >}}](hw/hw01/hw01.qmd) |  
 |      | Wed, Aug 27 | Lab: Setting up Julia and GitHub |  | | |
 | 2    | Mon, Sep 01 | **No Class: Labor Day** |  | | | |
-|      | Wed, Sep 03 | Modeling Systems | | | | 
-| 3    | Mon, Sep 08 | Stocks and Flows: LCA | | |  | 
-|      | Wed, Sep 10 | Stability and Feedbacks | | | | 
+|      | Wed, Sep 03 |  | | | | 
+| 3    | Mon, Sep 08 | | | |  | 
+|      | Wed, Sep 10 |  | | | | 
 |  4   | Mon, Sep 15 | | | | | 
-|      | Wed, Sep 17 | Lab:  | | | | 
+|      | Wed, Sep 17 |   | | | | 
 |  5    | Mon, Sep 22 |  | | | | 
 |   | Wed, Sep 24 | | | | | 
 |  6  | Mon, Sep 29 | | | |  | 
 |    | Wed, Oct 01 |  | | | | 
-|  7   | Mon, Oct 06 | Lab  | | | | 
+|  7   | Mon, Oct 06 |  | | | | 
 |      | Wed, Oct 08 | *Prelim 1*  | | | | 
 |  8  | Mon, Oct 13 | **No Class: Fall Break** |  | |  |
 |   | Wed, Oct 15 |  | | | | 
 |  9 | Mon, Oct 20 |  | | |  | 
 |    | Wed, Oct 22 |  | | | | 
-|  10  | Mon, Oct 27 | Lab | | | | 
+|  10  | Mon, Oct 27 |  | | | | 
 |     | Wed, Oct 29 |  | | | | 
 |  11  | Mon, Nov 03 |  | | |  | 
 |    | Wed, Nov 05 |  | | | | 
@@ -37,7 +39,7 @@ Note that this schedule will be updated as necessary the semester progresses, wi
 |    | Wed, Nov 12 | *Prelim 2* | | | | 
 | 13   | Mon, Nov 17 |  | | | | 
 |    | Wed, Nov 19 |  | |  | | |
-|  14  | Mon, Nov 24 | Lab |  |  |    |  |
+|  14  | Mon, Nov 24 |  |  |  |    |  |
 |     | Wed, Nov 26 | **No Class: Thanksgiving Break** | | | | 
 | 15 | Mon, Dec 01 |  | | | | 
 |    | Wed, Dec 03 |  | |  | | 
