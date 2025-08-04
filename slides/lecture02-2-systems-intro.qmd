@@ -4,7 +4,7 @@ subtitle: "Lecture 03"
 author: "Vivek Srikrishnan"
 course: "BEE 4750"
 institution: "Cornell University"
-date: "September 04, 2024"
+date: "September 03, 2024"
 format:
     revealjs:
         slide-number: c/t
@@ -32,6 +32,8 @@ format:
             buttons: true
         controls: true
 engine: julia
+julia:
+  exeflags: ["+1.11.5"]
 execute:
     freeze: auto
     daemon: 600
@@ -399,15 +401,17 @@ Source: [XKCD 2355](https://xkcd.com/2355)
 
 ## Next Classes
 
-**Monday**: Example of Formulating/Analyzing Models.
+**Monday**: Nonlinear Systems Dynamics
 
-**Wednesday**: Overview of System Dynamics
+**Wednesday**: Life Cycle Assessment
 
 ## Assessments
 
-**Homework 1**: Due Thursday at 9pm.
+**Homework 1**: Due next Thursday (9/11) at 9pm.
 
 **Weekly Exercises**: Due Monday before class.
+
+**Reading**: @Liu2007-hy (discussion due Monday before class)
 
 # References
 

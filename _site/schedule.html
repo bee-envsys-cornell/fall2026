@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -236,13 +256,14 @@ window.MathJax = {
 </header>
 
 
-<p>This page contains a schedule of the topics, content, and assignments for the semester. Note that this schedule will be updated as necessary the semester progresses, with all changes documented here.</p>
+<p>This page contains a schedule of the topics, content, and assignments for the semester. Note that this schedule will be updated as necessary the semester progresses, with all changes documented here. Readings requiring institutional subscriptions can be accessed through the <a href="https://www.library.cornell.edu/">Cornell Library</a>.</p>
 <div class="column-screen-inset">
 <table class="caption-top table">
 <colgroup>
 <col style="width: 3%">
 <col style="width: 5%">
 <col style="width: 12%">
+<col style="width: 3%">
 <col style="width: 3%">
 <col style="width: 3%">
 <col style="width: 3%">
@@ -255,6 +276,7 @@ window.MathJax = {
 <th style="text-align: center;">Slides</th>
 <th style="text-align: center;">Lab</th>
 <th style="text-align: center;">HW</th>
+<th style="text-align: center;">Reading</th>
 </tr>
 </thead>
 <tbody>
@@ -262,6 +284,7 @@ window.MathJax = {
 <td style="text-align: center;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><strong><em>Module 1: Introduction to Systems Analysis</em></strong></td>
+<td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -273,6 +296,7 @@ window.MathJax = {
 <td style="text-align: center;"><a href="./slides/lecture01-1-intro.html"><i class="fa-sharp fa-presentation-screen" aria-label="presentation-screen"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"><a href="./hw/hw01/hw01.html"><i class="fa-sharp fa-file-pen" aria-label="file-pen"></i></a></td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"></td>
@@ -280,6 +304,7 @@ window.MathJax = {
 <td style="text-align: left;">Lab: Setting up Julia and GitHub</td>
 <td style="text-align: center;"><a href="./slides/lecture01-2-lab-setup.html"><i class="fa-sharp fa-presentation-screen" aria-label="presentation-screen"></i></a></td>
 <td style="text-align: center;"><a href="./labs/lab01/lab01.html"><i class="fa-sharp fa-laptop" aria-label="laptop"></i></a></td>
+<td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 </tr>
 <tr class="even">
@@ -289,11 +314,13 @@ window.MathJax = {
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
+<td style="text-align: center;"><span class="citation" data-cites="Liu2007-hy">Liu et al. (<a href="#ref-Liu2007-hy" role="doc-biblioref">2007</a>)</span></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"></td>
 <td style="text-align: left;">Wed, Sep 03</td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><a href="./slides/lecture02-2-systems-intro.html">Introduction to Systems Models</a></td>
+<td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -305,11 +332,13 @@ window.MathJax = {
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"></td>
 <td style="text-align: left;">Wed, Sep 10</td>
 <td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -321,11 +350,13 @@ window.MathJax = {
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"></td>
 <td style="text-align: left;">Wed, Sep 17</td>
 <td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -337,11 +368,13 @@ window.MathJax = {
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"></td>
 <td style="text-align: left;">Wed, Sep 24</td>
 <td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -353,11 +386,13 @@ window.MathJax = {
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"></td>
 <td style="text-align: left;">Wed, Oct 01</td>
 <td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -369,11 +404,13 @@ window.MathJax = {
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"></td>
 <td style="text-align: left;">Wed, Oct 08</td>
 <td style="text-align: left;"><em>Prelim 1</em></td>
+<td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -385,11 +422,13 @@ window.MathJax = {
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"></td>
 <td style="text-align: left;">Wed, Oct 15</td>
 <td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -401,11 +440,13 @@ window.MathJax = {
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"></td>
 <td style="text-align: left;">Wed, Oct 22</td>
 <td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -417,11 +458,13 @@ window.MathJax = {
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"></td>
 <td style="text-align: left;">Wed, Oct 29</td>
 <td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -433,11 +476,13 @@ window.MathJax = {
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"></td>
 <td style="text-align: left;">Wed, Nov 05</td>
 <td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -449,11 +494,13 @@ window.MathJax = {
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"></td>
 <td style="text-align: left;">Wed, Nov 12</td>
 <td style="text-align: left;"><em>Prelim 2</em></td>
+<td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -465,11 +512,13 @@ window.MathJax = {
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"></td>
 <td style="text-align: left;">Wed, Nov 19</td>
 <td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -481,11 +530,13 @@ window.MathJax = {
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"></td>
 <td style="text-align: left;">Wed, Nov 26</td>
 <td style="text-align: left;"><strong>No Class: Thanksgiving Break</strong></td>
+<td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -497,11 +548,13 @@ window.MathJax = {
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"></td>
 <td style="text-align: left;">Wed, Dec 03</td>
 <td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -513,6 +566,7 @@ window.MathJax = {
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
 </tbody>
 </table>
@@ -520,7 +574,12 @@ window.MathJax = {
 
 
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-Liu2007-hy" class="csl-entry" role="listitem">
+Liu, J., Dietz, T., Carpenter, S. R., Alberti, M., Folke, C., Moran, E., et al. (2007). <span class="nocase">Complexity of coupled human and natural systems</span>. <em>Science</em>, <em>317</em>, 1513–1516. <a href="https://doi.org/10.1126/science.1144004">https://doi.org/10.1126/science.1144004</a>
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

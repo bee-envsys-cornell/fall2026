@@ -3,45 +3,46 @@ title: "Course Schedule"
 format:
     html:
         page-layout: article
-tbl-colwidths: [3, 5, 12, 3, 3, 3, 3]
+tbl-colwidths: [3, 5, 12, 3, 3, 3, 3, 10]
+citation-location: document
 ---
 
 This page contains a schedule of the topics, content, and assignments for the semester.
-Note that this schedule will be updated as necessary the semester progresses, with all changes documented here.
+Note that this schedule will be updated as necessary the semester progresses, with all changes documented here. Readings requiring institutional subscriptions can be accessed through the [Cornell Library](https://www.library.cornell.edu/).
 
 ::: column-screen-inset
-| Week | Date        | Topic | Slides | Lab | HW | 
-:-----:|:------------|:------|:------:|:--:|:---:|
-| | | ***Module 1: Introduction to Systems Analysis*** | | | | |
-| 1    | Mon, Aug 25 | Welcome to BEE 4750! | [{{< fa sharp presentation-screen >}}](slides/lecture01-1-intro.qmd)  | | [{{< fa sharp file-pen >}}](hw/hw01/hw01.qmd) |  
-|      | Wed, Aug 27 | Lab: Setting up Julia and GitHub | [{{< fa sharp presentation-screen >}}](slides/lecture01-2-lab-setup.qmd)  | [{{< fa sharp laptop >}}](labs/lab01/lab01.qmd) | |
-| 2    | Mon, Sep 01 | **No Class: Labor Day** |  | | | |
-|      | Wed, Sep 03 |  | | | | 
-| 3    | Mon, Sep 08 | | | |  | 
-|      | Wed, Sep 10 |  | | | | 
-|  4   | Mon, Sep 15 | | | | | 
-|      | Wed, Sep 17 |   | | | | 
-|  5    | Mon, Sep 22 |  | | | | 
-|   | Wed, Sep 24 | | | | | 
-|  6  | Mon, Sep 29 | | | |  | 
-|    | Wed, Oct 01 |  | | | | 
-|  7   | Mon, Oct 06 |  | | | | 
-|      | Wed, Oct 08 | *Prelim 1*  | | | | 
-|  8  | Mon, Oct 13 | **No Class: Fall Break** |  | |  |
-|   | Wed, Oct 15 |  | | | | 
-|  9 | Mon, Oct 20 |  | | |  | 
-|    | Wed, Oct 22 |  | | | | 
-|  10  | Mon, Oct 27 |  | | | | 
-|     | Wed, Oct 29 |  | | | | 
-|  11  | Mon, Nov 03 |  | | |  | 
-|    | Wed, Nov 05 |  | | | | 
-| 12    | Mon, Nov 10 |   | | |  | 
-|    | Wed, Nov 12 | *Prelim 2* | | | | 
-| 13   | Mon, Nov 17 |  | | | | 
-|    | Wed, Nov 19 |  | |  | | |
-|  14  | Mon, Nov 24 |  |  |  |    |  |
-|     | Wed, Nov 26 | **No Class: Thanksgiving Break** | | | | 
-| 15 | Mon, Dec 01 |  | | | | 
-|    | Wed, Dec 03 |  | |  | | 
-|  16 | Mon, Dec 08 | | | | |  
+| Week | Date        | Topic | Slides | Lab | HW | Reading |
+:-----:|:------------|:------|:------:|:--:|:---:|:-------:|
+| | | ***Module 1: Introduction to Systems Analysis*** | | | | | |
+| 1    | Mon, Aug 25 | Welcome to BEE 4750! | [{{< fa sharp presentation-screen >}}](slides/lecture01-1-intro.qmd)  | | [{{< fa sharp file-pen >}}](hw/hw01/hw01.qmd) |  |
+|      | Wed, Aug 27 | Lab: Setting up Julia and GitHub | [{{< fa sharp presentation-screen >}}](slides/lecture01-2-lab-setup.qmd)  | [{{< fa sharp laptop >}}](labs/lab01/lab01.qmd) | | |
+| 2    | Mon, Sep 01 | **No Class: Labor Day** |  | | | @Liu2007-hy |
+|      | Wed, Sep 03 | [Introduction to Systems Models](slides/lecture02-2-systems-intro.qmd)  | | | | |
+| 3    | Mon, Sep 08 | | | |  | |
+|      | Wed, Sep 10 |  | | | | |
+|  4   | Mon, Sep 15 | | | | | |
+|      | Wed, Sep 17 |   | | | | |
+|  5    | Mon, Sep 22 |  | | | | |
+|   | Wed, Sep 24 | | | | | |
+|  6  | Mon, Sep 29 | | | |  | |
+|    | Wed, Oct 01 |  | | | | |
+|  7   | Mon, Oct 06 |  | | | | |
+|      | Wed, Oct 08 | *Prelim 1*  | | | |  |
+|  8  | Mon, Oct 13 | **No Class: Fall Break** |  | |  | |
+|   | Wed, Oct 15 |  | | | | |
+|  9 | Mon, Oct 20 |  | | |  | | 
+|    | Wed, Oct 22 |  | | | | |
+|  10  | Mon, Oct 27 |  | | | | | 
+|     | Wed, Oct 29 |  | | | | |
+|  11  | Mon, Nov 03 |  | | |  | | 
+|    | Wed, Nov 05 |  | | | | |
+| 12    | Mon, Nov 10 |   | | |  | |
+|    | Wed, Nov 12 | *Prelim 2* | | | | |
+| 13   | Mon, Nov 17 |  | | | | |
+|    | Wed, Nov 19 |  | |  | | ||
+|  14  | Mon, Nov 24 |  |  |  |    |  | |
+|     | Wed, Nov 26 | **No Class: Thanksgiving Break** | | | | |
+| 15 | Mon, Dec 01 |  | | | | |
+|    | Wed, Dec 03 |  | |  | | |
+|  16 | Mon, Dec 08 | | | | |  |
 :::
