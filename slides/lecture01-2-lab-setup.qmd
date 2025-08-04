@@ -38,7 +38,15 @@ execute:
 ## Lab Instructions
 
 - Try to finish by the end of class, ok if it takes a little longer.
-- Submit PDF **tonight** by 9pm: ok if it isn't 100% complete, but we want to see evidence of effort.
+- Submit PDF **tomorrow** by 9pm: ok if it isn't 100% complete, but we want to see evidence of effort.
+
+## Lab Goals
+
+At the end, make sure you:
+
+1. Have Julia installed and can open a notebook with a Julia kernel.
+2. Have a GitHub account and be able to accept assignments, clone, and push back to GitHub.
+3. Can export submissions to PDF for submission to Gradescope.
 
 # Upcoming Schedule
 
@@ -50,5 +58,5 @@ execute:
 
 ## Assessments
 
-- Weekly Exercises: Basically a syllabus quiz.
-- HW 1: Available, due 9/6.
+- Weekly Exercises: Basically a syllabus quiz this week.
+- HW 1: Available, due 9/11.

@@ -13,8 +13,8 @@ Note that this schedule will be updated as necessary the semester progresses, wi
 | Week | Date        | Topic | Slides | Lab | HW | 
 :-----:|:------------|:------|:------:|:--:|:---:|
 | | | ***Module 1: Introduction to Systems Analysis*** | | | | |
-| 1    | Mon, Aug 25 | Welcome to BEE 4750! | [{{< fa sharp presentation-screen >}}]((slides/lecture01-1-intro.qmd))  | | [{{< fa sharp file-pen >}}](hw/hw01/hw01.qmd) |  
-|      | Wed, Aug 27 | Lab: Setting up Julia and GitHub |  | | |
+| 1    | Mon, Aug 25 | Welcome to BEE 4750! | [{{< fa sharp presentation-screen >}}](slides/lecture01-1-intro.qmd)  | | [{{< fa sharp file-pen >}}](hw/hw01/hw01.qmd) |  
+|      | Wed, Aug 27 | Lab: Setting up Julia and GitHub | [{{< fa sharp presentation-screen >}}](slides/lecture01-2-lab-setup.qmd)  | [{{< fa sharp laptop >}}](labs/lab01/lab01.qmd) | |
 | 2    | Mon, Sep 01 | **No Class: Labor Day** |  | | | |
 |      | Wed, Sep 03 |  | | | | 
 | 3    | Mon, Sep 08 | | | |  | 

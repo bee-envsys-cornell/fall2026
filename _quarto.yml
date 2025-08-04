@@ -46,7 +46,12 @@ website:
       - text: "Resources"
         menu:
           - tutorials/index.qmd
-          - resources/index.qmd
+          - resources/general.qmd
+          - resources/julia.qmd
+          - resources/ai.qmd
+          - resources/github.qmd
+          - resources/markdown.qmd
+          - resources/optimization.qmd
     right:
       - href: https://github.com/bee-envsys-cornell/fall2025
         text: "{{< fa brands github >}} GitHub"
@@ -96,7 +101,10 @@ website:
       search: false
       background: "#f7f7f7"
       contents:
-        - labs/index.qmd
+        - href: labs/index.qmd
+          text: "Lab Overview"
+        - href: labs/lab01/lab01.qmd
+          text: "Lab 1"
     - title: "Homework"
       style: docked
       search: false
@@ -121,7 +129,7 @@ website:
           text: "Peer Review"
         - href: project/report.qmd
           text: "Report"
-        - href: project/team-evals.qmd
+        - href: project/evaluations.qmd
           text: "Team Evaluations"
     - title: "Tutorials"
       style: docked
@@ -133,19 +141,6 @@ website:
         - tutorials/latex-notebook.qmd
         - tutorials/julia-plots.qmd
         - tutorials/julia-jump.qmd
-    - title: "Resources"
-      style: docked
-      search: false
-      background: "#f7f7f7"
-      contents:
-        - resources/index.qmd
-        - resources/general.qmd
-        - resources/julia.qmd
-        - resources/ai.qmd
-        - resources/github.qmd
-        - resources/markdown.qmd
-        - resources/optimization.qmd
-
 format:
   html:
     theme: 
