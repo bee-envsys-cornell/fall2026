@@ -51,6 +51,21 @@ Pkg.instantiate()
 using Random
 using Plots
 using Measures
+
+plot_font = "Palatino Roman"
+default(
+    fontfamily=plot_font,
+    linewidth=3, 
+    framestyle=:box, 
+    label=nothing, 
+    grid=false,
+    guidefontsize=18,
+    legendfontsize=16,
+    tickfontsize=16,
+    titlefontsize=20,
+    bottom_margin=10mm,
+    left_margin=5mm
+)
 ```
 
 # Review of Last Week

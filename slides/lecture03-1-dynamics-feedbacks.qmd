@@ -1,0 +1,179 @@
+---
+title: "System Boundaries and Feedbacks"
+subtitle: "Lecture 04"
+author: "Vivek Srikrishnan"
+course: "BEE 4750"
+institution: "Cornell University"
+date: "September 08, 2025"
+format:
+    revealjs:
+        slide-number: c/t
+        show-slide-number: all
+        center-title-slide: true
+        width: 1280
+        height: 720
+        transition: none
+        toc: true
+        toc-depth: 1
+        toc-title: "Overview"
+        history: false
+        link-external-newwindow: true
+        theme: ../sass/slides.scss
+        template-partials:
+            - title-slide.html
+        menu:
+            numbers: true
+        html-math-method: mathjax
+        include-in-header: mathjax-config.html
+        date-format: long
+        email-obfuscation: javascript
+        chalkboard:
+            theme: whiteboard
+            buttons: true
+        controls: true
+engine: julia
+julia:
+  exeflags: ["+1.11.5"]
+execute:
+    freeze: auto
+    daemon: 600
+---
+
+```{julia}
+#| output: false
+import Pkg
+Pkg.activate(@__DIR__)
+Pkg.instantiate()
+```
+
+```{julia}
+#| output: false
+using Random
+using Plots
+using Measures
+```
+
+# Review of Last Class
+
+## Systems Analysis
+
+:::: {.columns}
+
+::: {.column width=50%}
+### What We Study
+
+- System dynamics;
+- Response to inputs;
+- Alternatives for management or design.
+
+:::
+
+::: {.column width=50%}
+### Needs
+
+::: {.fragment  .fade-in}
+- *Definition of the system*
+- System model
+
+:::
+:::
+::::
+
+
+## What Do We Need To Define A System?
+
+::: {.incremental}
+- **Components**: relevant processes, agents, etc
+- **Interconnections**: relationships between system components
+- **Control volume**: unit of the system we are trying to model and/or manage
+- **Inputs**: control policies and/or external forcings
+- **Outputs**: measured quantities of interest
+:::
+
+## Mathematical Models of Systems
+
+![Conceptual Model of a System](figures/system-conceptual.svg)
+
+## Environmental Systems
+
+:::: {.columns}
+::: {.column width=60%}
+![Conceptual Model of an Environmental System](figures/system-environmental.svg){width=100%}
+:::
+
+::: {.column width=40%}
+
+- Municipal sewage into lakes, rivers, etc.
+- Power plant emissions into air
+- Solid waste placed on landfill
+- CO<sub>2</sub> into atmosphere
+
+:::
+::::
+
+## Other Aspects of Models
+
+- Deterministic vs. Stochastic
+- Descriptive vs. Prescriptive
+- Mechanistic vs. Statistical
+
+## "All Models Are Wrong, But Some Are Useful"
+
+::: {.quote}
+
+> ...all models are approximations. Essentially, **all models are wrong, but some are useful**. However, the approximate nature of the model must always be borne in mind....
+
+::: {.cite}
+--- Box & Draper, *Empirical Model Building and Response Surfaces*, 1987
+:::
+:::
+
+## Questions?
+
+{{< include _poll-prompt.qmd >}}
+
+
+# System Boundaries
+
+## Defining the System Scope
+
+## Example: EV Life Cycle Assessment
+
+
+# Feedbacks
+
+## System Couplings
+
+## Feedback Types
+
+## Example: Climate Feedbacks
+
+# Modeling Feedbacks
+
+## Example: Ice-Albedo Feedback
+
+
+# Key Takeaways
+
+## Key Takeaways
+
+- Systems modeling lets us account for influence of multiple inputs, controls, and dynamics
+- Mass (or equivalent) Balances as starting points for fate & transport models
+- Constraints and thresholds from environmental quality/regulatory standards
+- Need to identify prescriptive vs. descriptive use for model
+
+# Upcoming Schedule
+
+## Next Classes
+
+**Wednesday**: System Dynamics (Feedbacks/Bifurcations)
+
+**Next Week**: Simulation Models
+
+## Assessments
+
+**Homework 2**: Released, due 9/19 at 9pm
+
+# References
+
+## References
