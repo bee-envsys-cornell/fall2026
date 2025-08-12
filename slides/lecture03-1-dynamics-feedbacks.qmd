@@ -152,6 +152,23 @@ using Measures
 
 ## Example: Ice-Albedo Feedback
 
+![Ice-Albedo Feedback Loop](figures/ice-albedo.svg){width=100%}
+
+## Simple Energy Balance
+
+\begin{align*}
+\Delta \text{Heat Content} = &+\text{Absorbed Solar Radiation} \\
+&- \text{Outgoing Thermal Radiation} \\
+&+ \text{Anthropogenic Greenhouse Effect}
+\end{align*}
+
+![Simple Planetary Energy Balance](https://raw.githubusercontent.com/hdrake/hdrake.github.io/master/figures/planetary_energy_balance.png)
+
+::: {.caption}
+Source: [Climate of the Earth](https://florianboergel.github.io/climateoftheocean/2020-11-11-energy-model.html)
+:::
+
+## 
 
 # Key Takeaways
 
