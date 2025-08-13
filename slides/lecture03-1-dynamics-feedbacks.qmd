@@ -162,13 +162,27 @@ using Measures
 &+ \text{Anthropogenic Greenhouse Effect}
 \end{align*}
 
-![Simple Planetary Energy Balance](https://raw.githubusercontent.com/hdrake/hdrake.github.io/master/figures/planetary_energy_balance.png)
+![Simple Planetary Energy Balance](https://brian-rose.github.io/ClimateLaboratoryBook/build/GlobalEnergyBudget-7545c1ec88fc05e7f1b2ebfd9548ffd1.webp)
+
+::: {.caption}
+Source: [The Climate Laboratory](https://brian-rose.github.io/ClimateLaboratoryBook/courseware/zero-dim-ebm/)
+:::
+
+## Absorbed Solar Radiation
+
+:::: {.columns}
+::: {.column width=50%}
+
+:::
+
+::: {.column width=50%}
+![Incoming Solar Radiation Model](https://www.open.edu/openlearn/ocw/pluginfile.php/101161/mod_oucontent/oucontent/890/639dcd57/ce3f1c3a/s250_3_002i.jpg)
 
 ::: {.caption}
 Source: [Climate of the Earth](https://florianboergel.github.io/climateoftheocean/2020-11-11-energy-model.html)
 :::
-
-## 
+:::
+::::
 
 # Key Takeaways
 
