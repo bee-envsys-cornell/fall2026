@@ -2818,14 +2818,14 @@
     "href": "slides/lecture03-1-dynamics-feedbacks.html#defining-the-system-scope",
     "title": "System Boundaries and Feedbacks",
     "section": "Defining the System Scope",
-    "text": "Defining the System Scope"
+    "text": "Defining the System Scope\n\n\n\n“Internal” system dynamics vs. “external” conditions is somewhat arbitrary.\nInternal dynamics go into a model.\nExternal conditions are “forcings,” initial conditions, or assumptions.\n\n\n\n\n\nConceptual Model of an Environmental System"
   },
   {
     "objectID": "slides/lecture03-1-dynamics-feedbacks.html#example-ev-life-cycle-assessment",
     "href": "slides/lecture03-1-dynamics-feedbacks.html#example-ev-life-cycle-assessment",
     "title": "System Boundaries and Feedbacks",
     "section": "Example: EV Life Cycle Assessment",
-    "text": "Example: EV Life Cycle Assessment"
+    "text": "Example: EV Life Cycle Assessment\nWhat factors contribute to the environmental impact of a battery electric vehicle (versus an internal cumbustion engine)?"
   },
   {
     "objectID": "slides/lecture03-1-dynamics-feedbacks.html#system-couplings",
@@ -2839,35 +2839,35 @@
     "href": "slides/lecture03-1-dynamics-feedbacks.html#feedback-types",
     "title": "System Boundaries and Feedbacks",
     "section": "Feedback Types",
-    "text": "Feedback Types"
+    "text": "Feedback Types\nFeedbacks are “loops” in a system diagram.\nFeedbacks can be:\n\nAmplifying (sometimes called “positive”)\nDampening (sometimes called “negative”)"
   },
   {
     "objectID": "slides/lecture03-1-dynamics-feedbacks.html#example-climate-feedbacks",
     "href": "slides/lecture03-1-dynamics-feedbacks.html#example-climate-feedbacks",
     "title": "System Boundaries and Feedbacks",
     "section": "Example: Climate Feedbacks",
-    "text": "Example: Climate Feedbacks"
+    "text": "Example: Climate Feedbacks\n\nClimate Feedbacks Comparisons\nSource: Woodard et al. (2019)"
   },
   {
     "objectID": "slides/lecture03-1-dynamics-feedbacks.html#example-ice-albedo-feedback",
     "href": "slides/lecture03-1-dynamics-feedbacks.html#example-ice-albedo-feedback",
     "title": "System Boundaries and Feedbacks",
     "section": "Example: Ice-Albedo Feedback",
-    "text": "Example: Ice-Albedo Feedback"
+    "text": "Example: Ice-Albedo Feedback\n\nIce-Albedo Feedback Loop"
   },
   {
     "objectID": "slides/lecture03-1-dynamics-feedbacks.html#key-takeaways-1",
     "href": "slides/lecture03-1-dynamics-feedbacks.html#key-takeaways-1",
     "title": "System Boundaries and Feedbacks",
     "section": "Key Takeaways",
-    "text": "Key Takeaways\n\nSystems modeling lets us account for influence of multiple inputs, controls, and dynamics\nMass (or equivalent) Balances as starting points for fate & transport models\nConstraints and thresholds from environmental quality/regulatory standards\nNeed to identify prescriptive vs. descriptive use for model"
+    "text": "Key Takeaways\n\nDefinition of system boundary strongly influences modeled dynamics and assessments of outcome s (e.g. life-cycle assessment or attribution of effects);\nFeedbacks can be amplifying or dampening;\nAmplifying feedbacks can cause instabilities in system dynamics."
   },
   {
     "objectID": "slides/lecture03-1-dynamics-feedbacks.html#next-classes",
     "href": "slides/lecture03-1-dynamics-feedbacks.html#next-classes",
     "title": "System Boundaries and Feedbacks",
     "section": "Next Classes",
-    "text": "Next Classes\nWednesday: System Dynamics (Feedbacks/Bifurcations)\nNext Week: Simulation Models"
+    "text": "Next Classes\nWednesday: System Dynamics (Equilibria/Bifurcations)\nNext Week: Simulation Models"
   },
   {
     "objectID": "slides/lecture03-1-dynamics-feedbacks.html#assessments",
@@ -2881,7 +2881,7 @@
     "href": "slides/lecture03-1-dynamics-feedbacks.html#references-1",
     "title": "System Boundaries and Feedbacks",
     "section": "References",
-    "text": "References"
+    "text": "References\n\n\n\n\nWoodard, D. L., Davis, S. J., & Randerson, J. T. (2019). Economic carbon cycle feedbacks may offset additional warming from natural feedbacks. Proceedings of the National Academy of Sciences, 116, 759–764. https://doi.org/10.1073/pnas.1805187115\n\n\nYuksel, T., Tamayao, M.-A. M., Hendrickson, C., Azevedo, I. M. L., & Michalek, J. J. (2016). Effect of regional grid mix, driving patterns and climate on the comparative carbon footprint of gasoline and plug-in electric vehicles in the United States. Environ. Res. Lett., 11, 044007. https://doi.org/10.1088/1748-9326/11/4/044007"
   },
   {
     "objectID": "policies/integrity.html",
@@ -6417,5 +6417,145 @@
     "title": "Syllabus",
     "section": "Grading",
     "text": "Grading\n\nGrading Scale\nThe following grading scale will be used to convert the numerical weighted average from the assessments (above) to letter grades.\n\n\n\nGrade\nRange\n\n\n\n\nA\n93–100\n\n\nA-\n90–93\n\n\nB+\n87–90\n\n\nB\n83–87\n\n\nB-\n80–83\n\n\nC+\n77–80\n\n\nC\n73–77\n\n\nC-\n70–73\n\n\nD+\n67–70\n\n\nD\n63–67\n\n\nD-\n60–63\n\n\nF\n&lt; 60\n\n\n\nWe reserve the right to lower these cutoffs as appropriate, but will not raise them from these levels.\n\n\n\n\n\n\nWill You Round Up or Curve My Grade?\n\n\n\nGrades may be rounded up if they are just below the cutoff, but this is not a given, and requests for grade round-ups will be ignored. For example, you should assume that a score of 92.9% has missed the A cutoff of 93% (it is, after all, below the cutoff). Consider it a pleasant surprise if the round-up is given.\nWhile final grades will not be curved, individual assessments (mainly exams) may be curved if they prove to be more difficult than intended, but this will not be with a view towards achieving a particular grade distribution.\n\n\n\n\nForgiven Assignments\nForgiven assignments (due to extenuating circumstances, discussed with and approved by Prof. Srikrishnan) will be treated as though they do not exist, and the appropriate grading component will be computed without them. This does mean that e.g. submitted homeworks will carry more weight in the overall grade computation. In exceptional cases, we will compute course grades based entirely on exams.\n\n\nExceptions\nWe reserve the right to give any student meeting at least one of the following conditions an automatic F:\n\nOverall exam average below 25%;\nSubmitted less than half of the assigned homework problems;\nExtremely low levels of participation and effort.\n\nThis should not generally be a concern; students putting in a good faith effort by attending class, participating in online discussions, doing most of the work, and taking the exams will not be at risk of this policy."
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#example-lake-eutrophication",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#example-lake-eutrophication",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Example: Lake Eutrophication",
+    "text": "Example: Lake Eutrophication\n\n\nSimple model of lake eutrophication:\nAssume steady-state behavior, first-order linear decay, well-mixed, constant volume.\n\nBut in reality:\n\n\n\nSchematic of processes resulting in lake eutrophication"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#systems-diagrams",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#systems-diagrams",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Systems Diagrams",
+    "text": "Systems Diagrams\n\nSchematic of processes resulting in lake eutrophication"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#possible-systemlife-cycle-framework",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#possible-systemlife-cycle-framework",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Possible System/Life Cycle Framework",
+    "text": "Possible System/Life Cycle Framework\n\nSchematic of PHEV LCA Framework\nSource: Yuksel et al. (2016)"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#phev-vs.-gasoline-outcomes",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#phev-vs.-gasoline-outcomes",
+    "title": "System Boundaries and Feedbacks",
+    "section": "PHEV vs. Gasoline Outcomes",
+    "text": "PHEV vs. Gasoline Outcomes\n\nPHEV Comparison\nSource: Yuksel et al. (2016)"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#constructing-systems-models",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#constructing-systems-models",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Constructing Systems Models",
+    "text": "Constructing Systems Models\nSimilar principles to models you’ve seen previously:\n\nMass/Energy Balance for stocks;\nFlows can increase stocks or can decay.\n\nMain difference: potential presence of feedbacks/non-steady state behavior."
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#amplifying-feedbacks",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#amplifying-feedbacks",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Amplifying Feedbacks",
+    "text": "Amplifying Feedbacks\n\n\nLoop of all “+” or all “-” effects implies shocks will amplify as they are propagated.\n\n\n\n\nAmplifying Feedback Example"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#impact-of-including-feedbacks",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#impact-of-including-feedbacks",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Impact of Including Feedbacks",
+    "text": "Impact of Including Feedbacks\n\nClimate Feedbacks Comparisons\nSource: Woodard et al. (2019)"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#impact-of-including-feedbacks-1",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#impact-of-including-feedbacks-1",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Impact of Including Feedbacks",
+    "text": "Impact of Including Feedbacks\n\nClimate Feedbacks Comparisons\nSource: Woodard et al. (2019)"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#simple-energy-balance",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#simple-energy-balance",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Simple Energy Balance",
+    "text": "Simple Energy Balance\n\\[\\begin{align*}\n\\Delta \\text{Heat Content} = &+\\text{Absorbed Solar Radiation} \\\\\n&- \\text{Outgoing Thermal Radiation} \\\\\n&+ \\text{Anthropogenic Greenhouse Effect}\n\\end{align*}\\]\n\nSimple Planetary Energy Balance\nSource: Climate of the Earth"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#absorbed-solar-radiation",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#absorbed-solar-radiation",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Absorbed Solar Radiation",
+    "text": "Absorbed Solar Radiation\n\n\n\\[\\text{ASR} \\approx \\frac{S(1 - \\alpha)}{4}\\]\nwhere:\n\n\\(S = 1368 \\text{W/m}^2\\) is the solar constant;\n\\(\\alpha\\) is the average albedo of the Earth, \\(\\alpha \\approx 0.3\\).\n\n\n\n\n\nAbsorbed Solar Radiation\n\n\n\nSource: Open University"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#outgoing-thermal-radiation",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#outgoing-thermal-radiation",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Outgoing Thermal Radiation",
+    "text": "Outgoing Thermal Radiation\nMix of positive/negative feedbacks which dampen or amplify temperature increases, e.g.\n\nBlackbody radiation: \\(\\tau \\sigma T^4\\) (dampen).\nWater vapor feedbacks (amplify)"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#linearization-of-otr",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#linearization-of-otr",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Linearization of OTR",
+    "text": "Linearization of OTR\nLots of complicated physics: let’s instead consider a linearization \\[\\text{OTR} \\approx B(T_0 - T).\\]\nThis comes from the Taylor approximation:\n\\[\\mathcal{G}(T) \\approx \\mathcal{G}(T_0) + \\mathcal{G}'(T_0)(T - T_0)= \\mathcal{G}'(T_0)T + (G(T_0) - G'(T_0)(T_0)) \\]"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#linearization-of-otr-1",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#linearization-of-otr-1",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Linearization of OTR",
+    "text": "Linearization of OTR\nSet \\[\\begin{align*}\nA &= \\mathcal{G}(T_0) - G'(T_0)(T_0) \\\\\nB &= -\\mathcal{G}'(T_0) \\\\\n\\mathcal{G}(T) &\\approx A - BT\n\\end{align*}\n\\]"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#linearization-of-otr-2",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#linearization-of-otr-2",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Linearization of OTR",
+    "text": "Linearization of OTR\nFitting \\(\\text{OTR} \\approx A - BT\\) to temperature data around the pre-industrial temperature \\(T_0 = 14^\\circ C\\) yields \\[B \\approx -1.3 \\text{W}/(\\text{m}^2 \\cdot^\\circ \\text{C}),\\] and assuming \\(T_0\\) was “stable” lets us solve \\[A = \\frac{S(1 - \\alpha)}{4} - B * T_0.\\]"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#heat-and-temperature",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#heat-and-temperature",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Heat and Temperature",
+    "text": "Heat and Temperature\nIgnoring the greenhouse effect for now:\n\\[\\Delta H = \\frac{S(1 - \\alpha)}{4} - 1.3(14 - T)\\]\nAnd \\(H = CT,\\) where \\(C\\) is the effective heat capacity of the combined atmosphere/ocean. Assume \\(C\\) is the same as heating 100m of water yields \\[C \\approx 51 \\text{W yr}/(\\text{m}^2 \\cdot^\\circ \\text{C}).\\]"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#simple-energy-balance-1",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#simple-energy-balance-1",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Simple Energy Balance",
+    "text": "Simple Energy Balance\n\n\nSo the final “simple” model is:\n\\[\n\\begin{align*}\n51\\frac{dT}{dt} &= \\frac{1368(1 - 0.3)}{4} \\\\\n    &\\qquad - 18.2 + T \\\\[0.5em]\n\\frac{dT}{dt} &= 4.4 + \\frac{1}{51}T\n\\end{align*}\n\\]\n\n\n\nCode\nfunction absorbed_solar_radiation(α=0.3; S=1368.0)\n    return S*(1 - α)/4\nend\n\n\nconst B = -1.3 # climate feedback parameter\nconst A = 1368 * (1 - 0.3) / 4 + B * 14\n\nfunction outgoing_thermal_radiation(T, A=A, B=B)\n    return A - B*T\nend\n\nconst C = 51.0 # heat capacity of atmosphere and upper ocean # Wyr/m^2/°C\n\nfunction solve_ebm(T0)\n    prob1 = ODEProblem(\n        (temp, p, t) -&gt; (1/C) * (absorbed_solar_radiation() - outgoing_thermal_radiation(temp)),\n        T0,\n        (0.0, 170)\n    )\n    return solve(prob1)\nend\n\n# initialize plot\np = plot(; xlabel=\"Time (yrs)\", ylabel=\"Temperature (°C)\", legend=false)\nfor S0 in 0:2:20\n    s1 = solve_ebm(S0)\n    plot!(p, s1)\nend\nplot!(p, size=(600, 500))\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n0\n\n\n50\n\n\n100\n\n\n150\n\n\nt\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n0\n\n\n5\n\n\n10\n\n\n15\n\n\n20\n\n\nTemperature (°C)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 1: Trajectories of the simple energy balance model without feedbacks"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#ice-albedo-feedback",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#ice-albedo-feedback",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Ice-Albedo Feedback",
+    "text": "Ice-Albedo Feedback\nOK, but what if albedo is not constant, but now depends on temperature?\n\\[\n\\alpha(T) = \\begin{cases}\n    \\alpha_i & \\text{if } T \\leq -10^\\circ C \\\\\n    \\alpha_i + (\\alpha_0 - \\alpha_i)\\frac{T+10}{20} & \\text{if } -10^\\circ C \\leq T \\leq 10^\\circ C \\\\\n    \\alpha_0 & \\text{if } T \\geq 10^\\circ C\n\\end{cases}\n\\]"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#impact-of-ice-albedo-feedback",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#impact-of-ice-albedo-feedback",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Impact of Ice-Albedo Feedback",
+    "text": "Impact of Ice-Albedo Feedback\n\n\nCode\nfunction albedo(T; α0=0.3, αi=0.5)\n    if T &lt; -10\n        return αi\n    elseif -10 &lt;= T &lt; 10\n        return αi + (α0-αi)*(T+10)/(20)\n    elseif T &gt;= 10\n        return α0\n    end\nend\n\nfunction solve_ebm2(T0)\n    prob = ODEProblem(\n        (temp, p, t) -&gt; (1/C) * (absorbed_solar_radiation(albedo(temp)) - outgoing_thermal_radiation(temp)),\n        T0,\n        (0.0, 170)\n    )\n    return solve(prob)\nend\n\np = plot(; xlabel=\"Time (yrs)\", ylabel=\"Temperature (°C)\", legend=false, linewidth=2)\nfor S0 in 0:2:20\n    s1 = solve_ebm2(S0)\n    plot!(p, s1)\nend\nhline!(p, [14]; color=:black, linestyle=:dot)\np\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n0\n\n\n50\n\n\n100\n\n\n150\n\n\nt\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n−30\n\n\n−20\n\n\n−10\n\n\n0\n\n\n10\n\n\n20\n\n\nTemperature (°C)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 2: Trajectories of the simple energy balance model with the ice-albedo feedbacks"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#snowball-earth-hypothesis",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#snowball-earth-hypothesis",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Snowball Earth Hypothesis",
+    "text": "Snowball Earth Hypothesis\nThis is the Snowball Earth Hypothesis:\n\nEarth was completely ice-covered;\nCO2 slowly accumulated from volcanoes and reduced rock-weathering;\nEventually greenhouse effect melted ice, reducing planetary albedo;\nEarth entered relatively warm climate."
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#dampening-feedbacks",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#dampening-feedbacks",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Dampening Feedbacks",
+    "text": "Dampening Feedbacks\n\n\nMixed “+” and “-” effectsx implies a dampening feedback:\n\n\n\n\nDampening Feedback Example"
   }
 ]
