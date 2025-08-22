@@ -2821,6 +2821,20 @@
     "text": "Defining the System Scope\n\n\n\n“Internal” system dynamics vs. “external” conditions is somewhat arbitrary.\nInternal dynamics go into a model.\nExternal conditions are “forcings,” initial conditions, or assumptions.\n\n\n\n\n\nConceptual Model of an Environmental System"
   },
   {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#example-lake-eutrophication",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#example-lake-eutrophication",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Example: Lake Eutrophication",
+    "text": "Example: Lake Eutrophication\n\n\nSimple model of lake eutrophication:\nAssume steady-state behavior, first-order linear decay, well-mixed, constant volume.\n\nBut in reality:\n\n\n\nSchematic of processes resulting in lake eutrophication"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#systems-diagrams",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#systems-diagrams",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Systems Diagrams",
+    "text": "Systems Diagrams\n\nSchematic of processes resulting in lake eutrophication"
+  },
+  {
     "objectID": "slides/lecture03-1-dynamics-feedbacks.html#example-ev-life-cycle-assessment",
     "href": "slides/lecture03-1-dynamics-feedbacks.html#example-ev-life-cycle-assessment",
     "title": "System Boundaries and Feedbacks",
@@ -2828,11 +2842,25 @@
     "text": "Example: EV Life Cycle Assessment\nWhat factors contribute to the environmental impact of a battery electric vehicle (versus an internal cumbustion engine)?"
   },
   {
-    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#system-couplings",
-    "href": "slides/lecture03-1-dynamics-feedbacks.html#system-couplings",
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#possible-systemlife-cycle-framework",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#possible-systemlife-cycle-framework",
     "title": "System Boundaries and Feedbacks",
-    "section": "System Couplings",
-    "text": "System Couplings"
+    "section": "Possible System/Life Cycle Framework",
+    "text": "Possible System/Life Cycle Framework\n\nSchematic of PHEV LCA Framework\nSource: Yuksel et al. (2016)"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#phev-vs.-gasoline-outcomes",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#phev-vs.-gasoline-outcomes",
+    "title": "System Boundaries and Feedbacks",
+    "section": "PHEV vs. Gasoline Outcomes",
+    "text": "PHEV vs. Gasoline Outcomes\n\nPHEV Comparison\nSource: Yuksel et al. (2016)"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#constructing-systems-models",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#constructing-systems-models",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Constructing Systems Models",
+    "text": "Constructing Systems Models\nSimilar principles to models you’ve seen previously:\n\nMass/Energy Balance for stocks;\nFlows can increase stocks or can decay.\n\nMain difference: potential presence of feedbacks/non-steady state behavior."
   },
   {
     "objectID": "slides/lecture03-1-dynamics-feedbacks.html#feedback-types",
@@ -2842,6 +2870,20 @@
     "text": "Feedback Types\nFeedbacks are “loops” in a system diagram.\nFeedbacks can be:\n\nAmplifying (sometimes called “positive”)\nDampening (sometimes called “negative”)"
   },
   {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#amplifying-feedbacks",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#amplifying-feedbacks",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Amplifying Feedbacks",
+    "text": "Amplifying Feedbacks\n\n\nShocks will amplify as they are propagated:\n\n\n\n\nAmplifying Feedback Example"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#dampening-feedbacks",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#dampening-feedbacks",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Dampening Feedbacks",
+    "text": "Dampening Feedbacks\n\n\nShocks are attenuated (dampened) as they propagate:\n\n\n\n\nDampening Feedback Example"
+  },
+  {
     "objectID": "slides/lecture03-1-dynamics-feedbacks.html#example-climate-feedbacks",
     "href": "slides/lecture03-1-dynamics-feedbacks.html#example-climate-feedbacks",
     "title": "System Boundaries and Feedbacks",
@@ -2849,11 +2891,109 @@
     "text": "Example: Climate Feedbacks\n\nClimate Feedbacks Comparisons\nSource: Woodard et al. (2019)"
   },
   {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#impact-of-including-feedbacks",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#impact-of-including-feedbacks",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Impact of Including Feedbacks",
+    "text": "Impact of Including Feedbacks\n\nClimate Feedbacks Comparisons\nSource: Woodard et al. (2019)"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#impact-of-including-feedbacks-1",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#impact-of-including-feedbacks-1",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Impact of Including Feedbacks",
+    "text": "Impact of Including Feedbacks\n\nClimate Feedbacks Comparisons\nSource: Woodard et al. (2019)"
+  },
+  {
     "objectID": "slides/lecture03-1-dynamics-feedbacks.html#example-ice-albedo-feedback",
     "href": "slides/lecture03-1-dynamics-feedbacks.html#example-ice-albedo-feedback",
     "title": "System Boundaries and Feedbacks",
     "section": "Example: Ice-Albedo Feedback",
     "text": "Example: Ice-Albedo Feedback\n\nIce-Albedo Feedback Loop"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#simple-energy-balance",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#simple-energy-balance",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Simple Energy Balance",
+    "text": "Simple Energy Balance\n\\[\\begin{align*}\n\\Delta \\text{Heat Content} = &+\\text{Absorbed Solar Radiation} \\\\\n&- \\text{Outgoing Thermal Radiation} \\\\\n&+ \\text{Anthropogenic Greenhouse Effect}\n\\end{align*}\\]\n\nSimple Planetary Energy Balance\nSource: The Climate Laboratory"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#absorbed-solar-radiation",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#absorbed-solar-radiation",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Absorbed Solar Radiation",
+    "text": "Absorbed Solar Radiation\n\n\n\n\n\n\n\nIncoming Solar Radiation Model\n\n\n\nSource: Climate of the Earth\n\n\nAbsorbed Solar Radiation\n\n\n\\[\\text{ASR} \\approx \\frac{S(1 - \\alpha)}{4}\\]\nwhere:\n\n\\(S = 1368 \\text{W/m}^2\\) is the solar constant;\n\\(\\alpha\\) is the average albedo of the Earth, \\(\\alpha \\approx 0.3\\).\n\n\n\n\n\nAbsorbed Solar Radiation\n\n\n\nSource: Open University\n\n\n\n\nOutgoing Thermal Radiation\nMix of positive/negative feedbacks which dampen or amplify temperature increases, e.g.\n\nBlackbody radiation: \\(\\tau \\sigma T^4\\) (dampen).\nWater vapor feedbacks (amplify)\n\n\n\nLinearization of OTR\nLots of complicated physics: let’s instead consider a linearization \\[\\text{OTR} \\approx B(T_0 - T).\\]\nThis comes from the Taylor approximation:\n\\[\\mathcal{G}(T) \\approx \\mathcal{G}(T_0) + \\mathcal{G}'(T_0)(T - T_0)= \\mathcal{G}'(T_0)T + (G(T_0) - G'(T_0)(T_0)) \\]\n\n\nLinearization of OTR\nSet \\[\\begin{align*}\nA &= \\mathcal{G}(T_0) - G'(T_0)(T_0) \\\\\nB &= -\\mathcal{G}'(T_0) \\\\\n\\mathcal{G}(T) &\\approx A - BT\n\\end{align*}\n\\]\n\n\nLinearization of OTR\nFitting \\(\\text{OTR} \\approx A - BT\\) to temperature data around the pre-industrial temperature \\(T_0 = 14^\\circ C\\) yields \\[B \\approx -1.3 \\text{W}/(\\text{m}^2 \\cdot^\\circ \\text{C}),\\] and assuming \\(T_0\\) was “stable” lets us solve \\[A = \\frac{S(1 - \\alpha)}{4} - B * T_0.\\]\n\n\nHeat and Temperature\nIgnoring the greenhouse effect for now:\n\\[\\Delta H = \\frac{S(1 - \\alpha)}{4} - 1.3(14 - T)\\]\nAnd \\(H = CT,\\) where \\(C\\) is the effective heat capacity of the combined atmosphere/ocean. Assume \\(C\\) is the same as heating 100m of water yields \\[C \\approx 51 \\text{W yr}/(\\text{m}^2 \\cdot^\\circ \\text{C}).\\]\n\n\nSimple Energy Balance\n\n\nSo the final “simple” model is:\n\\[\n\\begin{align*}\n51\\frac{dT}{dt} &= \\frac{1368(1 - 0.3)}{4} \\\\\n    &\\qquad - 18.2 + T \\\\[0.5em]\n\\frac{dT}{dt} &= 4.4 + \\frac{1}{51}T\n\\end{align*}\n\\]\n\n\n\nCode\nfunction absorbed_solar_radiation(α=0.3; S=1368.0)\n    return S*(1 - α)/4\nend\n\n\nconst B = -1.3 # climate feedback parameter\nconst A = 1368 * (1 - 0.3) / 4 + B * 14\n\nfunction outgoing_thermal_radiation(T, A=A, B=B)\n    return A - B*T\nend\n\nconst C = 51.0 # heat capacity of atmosphere and upper ocean # Wyr/m^2/°C\n\nfunction solve_ebm(T0)\n    prob1 = ODEProblem(\n        (temp, p, t) -&gt; (1/C) * (absorbed_solar_radiation() - outgoing_thermal_radiation(temp)),\n        T0,\n        (0.0, 170)\n    )\n    return solve(prob1)\nend\n\n# initialize plot\np = plot(; xlabel=\"Time (yrs)\", ylabel=\"Temperature (°C)\", legend=false)\nfor S0 in 0:2:20\n    s1 = solve_ebm(S0)\n    plot!(p, s1)\nend\nplot!(p, size=(600, 500))\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n0\n\n\n50\n\n\n100\n\n\n150\n\n\nt\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n0\n\n\n5\n\n\n10\n\n\n15\n\n\n20\n\n\nTemperature (°C)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 1: Trajectories of the simple energy balance model without feedbacks\n\n\n\n\n\n\n\nIce-Albedo Feedback\nOK, but what if albedo is not constant, but now depends on temperature?\n\\[\n\\alpha(T) = \\begin{cases}\n    \\alpha_i & \\text{if } T \\leq -10^\\circ C \\\\\n    \\alpha_i + (\\alpha_0 - \\alpha_i)\\frac{T+10}{20} & \\text{if } -10^\\circ C \\leq T \\leq 10^\\circ C \\\\\n    \\alpha_0 & \\text{if } T \\geq 10^\\circ C\n\\end{cases}\n\\]\n\n\nImpact of Ice-Albedo Feedback\n\n\nCode\nfunction albedo(T; α0=0.3, αi=0.5)\n    if T &lt; -10\n        return αi\n    elseif -10 &lt;= T &lt; 10\n        return αi + (α0-αi)*(T+10)/(20)\n    elseif T &gt;= 10\n        return α0\n    end\nend\n\nfunction solve_ebm2(T0)\n    prob = ODEProblem(\n        (temp, p, t) -&gt; (1/C) * (absorbed_solar_radiation(albedo(temp)) - outgoing_thermal_radiation(temp)),\n        T0,\n        (0.0, 170)\n    )\n    return solve(prob)\nend\n\np = plot(; xlabel=\"Time (yrs)\", ylabel=\"Temperature (°C)\", legend=false, linewidth=2)\nfor S0 in 0:2:20\n    s1 = solve_ebm2(S0)\n    plot!(p, s1)\nend\nhline!(p, [14]; color=:black, linestyle=:dot)\np\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n0\n\n\n50\n\n\n100\n\n\n150\n\n\nt\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n−30\n\n\n−20\n\n\n−10\n\n\n0\n\n\n10\n\n\n20\n\n\nTemperature (°C)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 2: Trajectories of the simple energy balance model with the ice-albedo feedbacks\n\n\n\n\n\n\nSnowball Earth Hypothesis\nThis is the Snowball Earth Hypothesis:\n\nEarth was completely ice-covered;\nCO2 slowly accumulated from volcanoes and reduced rock-weathering;\nEventually greenhouse effect melted ice, reducing planetary albedo;\nEarth entered relatively warm climate.\n\n\n\nKey Takeaways\n\n\n\nKey Takeaways\n\nDefinition of system boundary strongly influences modeled dynamics and assessments of outcome s (e.g. life-cycle assessment or attribution of effects);\nFeedbacks can be amplifying or dampening;\nAmplifying feedbacks can cause instabilities in system dynamics.\n\n\n\n\nUpcoming Schedule\n\n\n\nNext Classes\nWednesday: System Dynamics (Equilibria/Bifurcations)\nNext Week: Simulation Models\n\n\nAssessments\nHomework 2: Released, due 9/19 at 9pm\n\n\n\nReferences\n\n\n\nReferences\n\n\n\n\n\n\n\nWoodard, D. L., Davis, S. J., & Randerson, J. T. (2019). Economic carbon cycle feedbacks may offset additional warming from natural feedbacks. Proceedings of the National Academy of Sciences, 116, 759–764. https://doi.org/10.1073/pnas.1805187115\n\n\nYuksel, T., Tamayao, M.-A. M., Hendrickson, C., Azevedo, I. M. L., & Michalek, J. J. (2016). Effect of regional grid mix, driving patterns and climate on the comparative carbon footprint of gasoline and plug-in electric vehicles in the United States. Environ. Res. Lett., 11, 044007. https://doi.org/10.1088/1748-9326/11/4/044007"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#absorbed-solar-radiation-1",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#absorbed-solar-radiation-1",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Absorbed Solar Radiation",
+    "text": "Absorbed Solar Radiation\n\n\n\\[\\text{ASR} \\approx \\frac{S(1 - \\alpha)}{4}\\]\nwhere:\n\n\\(S = 1368 \\text{W/m}^2\\) is the solar constant;\n\\(\\alpha\\) is the average albedo of the Earth, \\(\\alpha \\approx 0.3\\).\n\n\n\n\n\nAbsorbed Solar Radiation\n\n\n\nSource: Open University"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#outgoing-thermal-radiation",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#outgoing-thermal-radiation",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Outgoing Thermal Radiation",
+    "text": "Outgoing Thermal Radiation\nMix of positive/negative feedbacks which dampen or amplify temperature increases, e.g.\n\nBlackbody radiation: \\(\\tau \\sigma T^4\\) (dampen).\nWater vapor feedbacks (amplify)"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#linearization-of-otr",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#linearization-of-otr",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Linearization of OTR",
+    "text": "Linearization of OTR\nLots of complicated physics: let’s instead consider a linearization \\[\\text{OTR} \\approx B(T_0 - T).\\]\nThis comes from the Taylor approximation:\n\\[\\mathcal{G}(T) \\approx \\mathcal{G}(T_0) + \\mathcal{G}'(T_0)(T - T_0)= \\mathcal{G}'(T_0)T + (G(T_0) - G'(T_0)(T_0)) \\]"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#linearization-of-otr-1",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#linearization-of-otr-1",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Linearization of OTR",
+    "text": "Linearization of OTR\nSet \\[\\begin{align*}\nA &= \\mathcal{G}(T_0) - G'(T_0)(T_0) \\\\\nB &= -\\mathcal{G}'(T_0) \\\\\n\\mathcal{G}(T) &\\approx A - BT\n\\end{align*}\n\\]"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#linearization-of-otr-2",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#linearization-of-otr-2",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Linearization of OTR",
+    "text": "Linearization of OTR\nFitting \\(\\text{OTR} \\approx A - BT\\) to temperature data around the pre-industrial temperature \\(T_0 = 14^\\circ C\\) yields \\[B \\approx -1.3 \\text{W}/(\\text{m}^2 \\cdot^\\circ \\text{C}),\\] and assuming \\(T_0\\) was “stable” lets us solve \\[A = \\frac{S(1 - \\alpha)}{4} - B * T_0.\\]"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#heat-and-temperature",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#heat-and-temperature",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Heat and Temperature",
+    "text": "Heat and Temperature\nIgnoring the greenhouse effect for now:\n\\[\\Delta H = \\frac{S(1 - \\alpha)}{4} - 1.3(14 - T)\\]\nAnd \\(H = CT,\\) where \\(C\\) is the effective heat capacity of the combined atmosphere/ocean. Assume \\(C\\) is the same as heating 100m of water yields \\[C \\approx 51 \\text{W yr}/(\\text{m}^2 \\cdot^\\circ \\text{C}).\\]"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#simple-energy-balance-1",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#simple-energy-balance-1",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Simple Energy Balance",
+    "text": "Simple Energy Balance\n\n\nSo the final “simple” model is:\n\\[\n\\begin{align*}\n51\\frac{dT}{dt} &= \\frac{1368(1 - 0.3)}{4} \\\\\n    &\\qquad - 18.2 + T \\\\[0.5em]\n\\frac{dT}{dt} &= 4.4 + \\frac{1}{51}T\n\\end{align*}\n\\]\n\n\n\nCode\nfunction absorbed_solar_radiation(α=0.3; S=1368.0)\n    return S*(1 - α)/4\nend\n\n\nconst B = -1.3 # climate feedback parameter\nconst A = 1368 * (1 - 0.3) / 4 + B * 14\n\nfunction outgoing_thermal_radiation(T, A=A, B=B)\n    return A - B*T\nend\n\nconst C = 51.0 # heat capacity of atmosphere and upper ocean # Wyr/m^2/°C\n\nfunction solve_ebm(T0)\n    prob1 = ODEProblem(\n        (temp, p, t) -&gt; (1/C) * (absorbed_solar_radiation() - outgoing_thermal_radiation(temp)),\n        T0,\n        (0.0, 170)\n    )\n    return solve(prob1)\nend\n\n# initialize plot\np = plot(; xlabel=\"Time (yrs)\", ylabel=\"Temperature (°C)\", legend=false)\nfor S0 in 0:2:20\n    s1 = solve_ebm(S0)\n    plot!(p, s1)\nend\nplot!(p, size=(600, 500))\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n0\n\n\n50\n\n\n100\n\n\n150\n\n\nt\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n0\n\n\n5\n\n\n10\n\n\n15\n\n\n20\n\n\nTemperature (°C)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 1: Trajectories of the simple energy balance model without feedbacks"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#ice-albedo-feedback",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#ice-albedo-feedback",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Ice-Albedo Feedback",
+    "text": "Ice-Albedo Feedback\nOK, but what if albedo is not constant, but now depends on temperature?\n\\[\n\\alpha(T) = \\begin{cases}\n    \\alpha_i & \\text{if } T \\leq -10^\\circ C \\\\\n    \\alpha_i + (\\alpha_0 - \\alpha_i)\\frac{T+10}{20} & \\text{if } -10^\\circ C \\leq T \\leq 10^\\circ C \\\\\n    \\alpha_0 & \\text{if } T \\geq 10^\\circ C\n\\end{cases}\n\\]"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#impact-of-ice-albedo-feedback",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#impact-of-ice-albedo-feedback",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Impact of Ice-Albedo Feedback",
+    "text": "Impact of Ice-Albedo Feedback\n\n\nCode\nfunction albedo(T; α0=0.3, αi=0.5)\n    if T &lt; -10\n        return αi\n    elseif -10 &lt;= T &lt; 10\n        return αi + (α0-αi)*(T+10)/(20)\n    elseif T &gt;= 10\n        return α0\n    end\nend\n\nfunction solve_ebm2(T0)\n    prob = ODEProblem(\n        (temp, p, t) -&gt; (1/C) * (absorbed_solar_radiation(albedo(temp)) - outgoing_thermal_radiation(temp)),\n        T0,\n        (0.0, 170)\n    )\n    return solve(prob)\nend\n\np = plot(; xlabel=\"Time (yrs)\", ylabel=\"Temperature (°C)\", legend=false, linewidth=2)\nfor S0 in 0:2:20\n    s1 = solve_ebm2(S0)\n    plot!(p, s1)\nend\nhline!(p, [14]; color=:black, linestyle=:dot)\np\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n0\n\n\n50\n\n\n100\n\n\n150\n\n\nt\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n−30\n\n\n−20\n\n\n−10\n\n\n0\n\n\n10\n\n\n20\n\n\nTemperature (°C)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 2: Trajectories of the simple energy balance model with the ice-albedo feedbacks"
+  },
+  {
+    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#snowball-earth-hypothesis",
+    "href": "slides/lecture03-1-dynamics-feedbacks.html#snowball-earth-hypothesis",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Snowball Earth Hypothesis",
+    "text": "Snowball Earth Hypothesis\nThis is the Snowball Earth Hypothesis:\n\nEarth was completely ice-covered;\nCO2 slowly accumulated from volcanoes and reduced rock-weathering;\nEventually greenhouse effect melted ice, reducing planetary albedo;\nEarth entered relatively warm climate."
   },
   {
     "objectID": "slides/lecture03-1-dynamics-feedbacks.html#key-takeaways-1",
@@ -2881,7 +3021,7 @@
     "href": "slides/lecture03-1-dynamics-feedbacks.html#references-1",
     "title": "System Boundaries and Feedbacks",
     "section": "References",
-    "text": "References\n\n\n\n\nWoodard, D. L., Davis, S. J., & Randerson, J. T. (2019). Economic carbon cycle feedbacks may offset additional warming from natural feedbacks. Proceedings of the National Academy of Sciences, 116, 759–764. https://doi.org/10.1073/pnas.1805187115\n\n\nYuksel, T., Tamayao, M.-A. M., Hendrickson, C., Azevedo, I. M. L., & Michalek, J. J. (2016). Effect of regional grid mix, driving patterns and climate on the comparative carbon footprint of gasoline and plug-in electric vehicles in the United States. Environ. Res. Lett., 11, 044007. https://doi.org/10.1088/1748-9326/11/4/044007"
+    "text": "References"
   },
   {
     "objectID": "policies/integrity.html",
@@ -2998,7 +3138,7 @@
     "href": "policies/homework.html#homework-logistics",
     "title": "Homework Policies",
     "section": "Homework Logistics",
-    "text": "Homework Logistics\n\nAccepting Assignments\n\nHomework assignments will be distributed through GitHub Classroom. When an assignment is released, a link to accept the assignment will be posted on Ed Discussion. You must click this link to accept the assignment or subsequent steps will not work properly. Clicking this link will create your own repository with the files for the assignment. The first time you do this, you will be prompted to connect your GitHub username with your entry in the class roster.\nClone your repository to your computer.\n\n\n\n\n\n\nIt is important that you clone the repository created in the previous step, not the “original” repository. Make sure that the URL looks like https://www.github.com/BEE4750-FA25/&lt;username&gt;-hwxx.git, not https://www.github.com/bee-envsys-cornell/hwxx.git.\n\n\n\n\n\n\nWorking On Assignments\n\nOpen the local repository folder you created when you cloned the remote repository.\n\n\n\n\n\n\nUse File -&gt; Open Folder rather than File -&gt; Open to open the folder; this will make sure that all paths point to the right location and you can use the “Explorer” to see the different files.\n\n\n\nAfter the notebook loads, if prompted to, select the julia-1.11 kernel.\nMake sure that you run the initial notebook cell (starting with Pkg.activate()) to load the Julia environment and install any needed packages.\nYou don’t need to work in the notebook, per se, but if you choose to write your own code files, make sure to add them to the repository with git add. Make sure that you copy the initial notebook cell into your new script(s) to use the appropriate environment.\nAs you work on assignments, make sure to save and frequently push and commit back to GitHub.\nYou can toggle line numbers in a notebook cell with the L key.\n\n\n\nAsking for Assistance\n\nIf you need to share code to ask for help or to provide help, provide a link to the relevant file in your GitHub repository, along with an idea of the relevant cell and line number(s).\nMinimal code snippets can also be copied and pasted into Ed, but these should be self-contained, not chunks copied from your homework. These snippets should illustrate what you think the correct concept and/or syntax should be with a self-contained example; it’s unlikely you will receive useful help if the snippet can’t be evaluated.\nMake sure you document what you’ve tried (including any searches) so we can focus on new solutions, not repeating things that haven’t already worked. If you haven’t looked for help (e.g. searching for an error message), start there.\n\n\n\nSubmitting Assignments\n\nYour final submission must be in a PDF. You can generate this in several ways:\n\nIf you have set up LaTeX on your system, you can convert a notebook directly to PDF in VS Code or Jupyter Lab (this will automatically work on BioHPC without any additional setup);\n\n\n\n\n\n\nIf you are submitting a PDF from a notebook, make sure that you evaluate all cells in order with Run Cells before converting.\n\n\n\nIf you have not set up LaTeX, you can export a notebook to HTML and save it from your browser as a PDF;\nIf you have written a report outside of a notebook (e.g. in Word), save this to a PDF.\n\nYou do not need to include code in a written submission, but make sure your final notebook and/or scripts are on your GitHub repository in case there’s an issue.\nPDFs must be submitted by the due date and time to Gradescope with pages tagged. Failure to tag pages will receive a 10% deduction.\nIf you did not receive credit for your group’s submission, please have someone in your group use a regrade request to bring this to our attention, and we will use the list of names at the top of the page to confirm that you contributed to the assignment.\nLate submissions are accepted within 24 hours with a 50% penalty unless an extension was arranged ahead of the original deadline.",
+    "text": "Homework Logistics\n\nAccepting Assignments\n\nHomework assignments will be distributed through GitHub Classroom. When an assignment is released, a link to accept the assignment will be posted on Ed Discussion. You must click this link to accept the assignment or subsequent steps will not work properly. Clicking this link will create your own repository with the files for the assignment. The first time you do this, you will be prompted to connect your GitHub username with your entry in the class roster.\nClone your repository to your computer.\n\n\n\n\n\n\nIt is important that you clone the repository created in the previous step, not the “original” repository. Make sure that the URL looks like https://www.github.com/BEE4750-FA25/&lt;username&gt;-hwxx.git, not https://www.github.com/bee-envsys-cornell/hwxx.git.\n\n\n\n\n\n\nWorking On Assignments\n\nOpen the local repository folder you created when you cloned the remote repository.\n\n\n\n\n\n\nUse File -&gt; Open Folder rather than File -&gt; Open to open the folder; this will make sure that all paths point to the right location and you can use the “Explorer” to see the different files.\n\n\n\nAfter the notebook loads, if prompted to, select the julia-1.11 kernel.\nMake sure that you run the initial notebook cell (starting with Pkg.activate()) to load the Julia environment and install any needed packages.\nYou don’t need to work in the notebook, per se, but if you choose to write your own code files, make sure to add them to the repository with git add. Make sure that you copy the initial notebook cell into your new script(s) to use the appropriate environment.\nAs you work on assignments, make sure to save and frequently push and commit back to GitHub.\nYou can toggle line numbers in a notebook cell with the L key.\n\n\n\nAsking for Assistance\n\nIf you need to share code to ask for help or to provide help, provide a link to the relevant file in your GitHub repository, along with an idea of the relevant cell and line number(s).\nMinimal code snippets can also be copied and pasted into Ed, but these should be self-contained, not chunks copied from your homework. These snippets should illustrate what you think the correct concept and/or syntax should be with a self-contained example; it’s unlikely you will receive useful help if the snippet can’t be evaluated.\nMake sure you document what you’ve tried (including any searches) so we can focus on new solutions, not repeating things that haven’t already worked. If you haven’t looked for help (e.g. searching for an error message), start there.\n\n\n\nSubmitting Assignments\n\nYour final submission must be in a PDF. You can generate this in several ways:\n\nIf you have set up LaTeX on your system, you can convert a notebook directly to PDF in VS Code or Jupyter Lab (this will automatically work on BioHPC without any additional setup);\n\n\n\n\n\n\nIf you are submitting a PDF from a notebook (versus a separate writeup in e.g. Word), make sure that you evaluate all cells in order with Run Cells before converting.\n\n\n\nIf you have not set up LaTeX, you can export a notebook to HTML and save it from your browser as a PDF;\nAs an alternative, when you commit and push a .ipynb file (a Jupyter Notebook) to your repository, we have set up a GitHub Action to automatically render your notebook to a PDF, which you can then download and submit to Gradescope. However, sometimes GitHub actions can take a while or can stall out, so you’ll need to monitor this and give yourself some time. If you’ve waited a while and your notebook isn’t rendering, reach out on Ed and we can figure out what’s going on. In the worst case (you push your changes close to the deadline), the timestamp of your commit will be evidence that you completed the assignment on time, even if we can’t render the PDF until the next day.\nDon’t worry if the GitHub Action says its failed if your assignment (or any given problem) isn’t complete: you may have an error due to your incomplete code that causes the Action to fail. You can ignore this unless you think everything should work!\nIf you have written a report outside of a notebook (e.g. in Word), save this to a PDF.\n\nYou do not need to include code in a written submission, but make sure your final notebook and/or scripts are on your GitHub repository in case there’s an issue.\nPDFs must be submitted by the due date and time to Gradescope with pages tagged. Failure to tag pages will receive a 10% deduction.\nIf you did not receive credit for your group’s submission, please have someone in your group use a regrade request to bring this to our attention, and we will use the list of names at the top of the page to confirm that you contributed to the assignment.\nLate submissions are accepted within 24 hours with a 50% penalty unless an extension was arranged ahead of the original deadline.",
     "crumbs": [
       "Grading",
       "Homework Policies"
@@ -3161,7 +3301,7 @@
     "href": "hw/hw01/hw01.html#problems-total-30-points",
     "title": "BEE 4750 Homework 1: Introduction to Using Julia",
     "section": "Problems (Total: 30 Points)",
-    "text": "Problems (Total: 30 Points)\n\nProblem 1 (12 points)\nThe following subproblems all involve code snippets that require debugging. You are encouraged to use online resources (e.g. Julia documentation and forums, Stack Overflow, Reddit, etc) to help find diagnose error messages and find solutions, but make sure that you clearly document which resources you used and how you used them.\n\nProblem 1.1\nYou’ve been tasked with writing code to identify the minimum value in an array. You cannot use a predefined function. Your colleague suggested the function below, but it does not return the minimum value.\n\nfunction minimum(array)\n    # initialize the minimum value counter\n    min_value = 0\n    # update minimum values\n    for i in 1:length(array)\n        if array[i] &lt; min_value\n            min_value = array[i]\n        end\n    end\n    # return found minimum\n    return min_value\nend\n\narray_values = [89, 90, 95, 100, 100, 78, 99, 98, 100, 95]\n@show minimum(array_values);\n\nminimum(array_values) = 0\n\n\nWhat is the logical flaw in the code? Fix it and show that your fixed code solves the problem.\n\n\nProblem 1.2\nYour team is trying to compute the average grade for your class, but the following code produces an UndefVarError.\n\n# enter student grade vector\nstudent_grades = [89, 90, 95, 100, 100, 78, 99, 98, 100, 95]\n# compute class average\nfunction class_average(grades)\n  average_grade = mean(student_grades)\n  return average_grade\nend\n\n@show average_grade;\n\n\nUndefVarError: `average_grade` not defined in `Main.Notebook`\nSuggestion: check for spelling errors or missing imports.\nStacktrace:\n [1] macro expansion\n   @ show.jl:1232 [inlined]\n [2] top-level scope\n   @ ~/Teaching/BEE4750/website/hw/hw01/hw01.qmd:131\n\n\n\nWhat does this UndefVarError mean? Why does this code produce one? Fix the error and solve the problem.\n\n\nProblem 1.3\nYour team wants to know the expected payout of an old Italian dice game called passadieci (which was analyzed by Galileo as one of the first examples of a rigorous study of probability). The goal of passadieci is to get at least an 11 from rolling three fair, six-sided dice. Your strategy is to compute the average wins from 1,000 trials, but the code you’ve written below produces a MethodError.\n\n# function to simulate a passadieci roll: 3 6-sided dice\nfunction passadieci()\n    # this rand() call samples 3 values from the vector [1, 6]\n    roll = rand(1:6, 3) \n    return roll\nend\n# set number of trials and initialize outcome vector\nn_trials = 1_000\noutcomes = zero(n_trials)\n# simulate number of passadieci rolls and count wins\nfor i = 1:n_trials\n    outcomes[i] = (sum(passadieci()) &gt; 11)\nend\nwin_prob = sum(outcomes) / n_trials # compute average number of wins\n@show win_prob;\n\n\nMethodError: no method matching setindex!(::Int64, ::Bool, ::Int64)\nThe function `setindex!` exists, but no method is defined for this combination of argument types.\nStacktrace:\n [1] top-level scope\n   @ ~/Teaching/BEE4750/website/hw/hw01/hw01.qmd:153\n\n\n\nWhat does this MethodError mean? Why does this code produce one? Fix the error and solve the problem.\n\n\nProblem 1.4\nYou’re interested in writing some code to remove the mean of a vector from all of its components. You’ve written the following code and tried to test it on a random vector, but your code returns a MethodError.\n\n# function to remove mean from a vector\nfunction remove_mean(vect)\n    # fucntion to compute the mean\n    function compute_mean(vect)\n        element_sum = 0 # initialize sum\n        # compute mean and return\n        for v in vect\n            element_sum += v\n        end\n        return element_sum / length(vect)\n    end\n\n    m = compute_mean(vect) # compute mean\n    # return demeaned vector\n    return vect - m\nend\n\nrandom_vect = rand(1_000)\n@show remove_mean(random_vect)\n\n\nMethodError: no method matching -(::Vector{Float64}, ::Float64)\nFor element-wise subtraction, use broadcasting with dot syntax: array .- scalar\nThe function `-` exists, but no method is defined for this combination of argument types.\n\nClosest candidates are:\n  -(::ChainRulesCore.NotImplemented, ::Any)\n   @ ChainRulesCore ~/.julia/packages/ChainRulesCore/XAgYn/src/tangent_arithmetic.jl:49\n  -(::Any, ::ChainRulesCore.NotImplemented)\n   @ ChainRulesCore ~/.julia/packages/ChainRulesCore/XAgYn/src/tangent_arithmetic.jl:50\n  -(::ChainRulesCore.NoTangent, ::Any)\n   @ ChainRulesCore ~/.julia/packages/ChainRulesCore/XAgYn/src/tangent_arithmetic.jl:61\n  ...\n\nStacktrace:\n [1] remove_mean(vect::Vector{Float64})\n   @ Main.Notebook ~/Teaching/BEE4750/website/hw/hw01/hw01.qmd:180\n [2] macro expansion\n   @ show.jl:1232 [inlined]\n [3] top-level scope\n   @ ~/Teaching/BEE4750/website/hw/hw01/hw01.qmd:184\n\n\n\nWhat does this MethodError mean? Why does this code produce one? Fix the error and solve the problem.\n\n\n\nProblem 2 (18 points)\nCheap Plastic Products, Inc. is operating a plant that produces \\(100 \\text{m}^3\\text{/day}\\) of wastewater that is discharged into Pristine Brook. The wastewater contains \\(1 \\text{kg/m}^3\\) of YUK, a toxic substance. The US Environmental Protection Agency has imposed an effluent standard on the plant prohibiting discharge of more than \\(20 \\text{kg/day}\\) of YUK into Pristine Brook.\nCheap Plastic Products has analyzed two methods for reducing its discharges of YUK. Method 1 is land disposal, which costs \\(X_1^2/20\\) dollars per day, where \\(X_1\\) is the amount of wastewater disposed of on the land (\\(\\text{m}^3\\text{/day}\\)). With this method, 20% of the YUK applied to the land will eventually drain into the stream (i.e., 80% of the YUK is removed by the soil).\nMethod 2 is a chemical treatment procedure which costs $1.50 per \\(\\text{m}^3\\) of wastewater treated. The chemical treatment has an efficiency of \\(e= 1 - 0.005X_2\\), where \\(X_2\\) is the quantity of wastewater (\\(\\text{m}^3\\text{/day}\\)) treated. For example, if \\(X_2 = 50 \\text{m}^3\\text{/day}\\), then \\(e = 1 - 0.005(50) = 0.75\\), so that 75% of the YUK is removed.\nCheap Plastic Products is wondering how to allocate their wastewater between these three disposal and treatment methods (land disposal, chemical treatment, and direct disposal) to meet the effluent standard while keeping costs manageable.\nThe flow of wastewater through this treatment system is shown in Figure 1. Modify the edge labels (by editing the edge_labels dictionary in the code producing Figure 1) to show how the wastewater allocations result in the final YUK discharge into Pristine Brook. For the edge_label dictionary, the tuple \\((i, j)\\) corresponds to the arrow going from node \\(i\\) to node \\(j\\). The syntax for any entry is (i, j) =&gt; \"label text\", and the label text can include mathematical notation if the string is prefaced with an L, as in L\"x_1\" will produce \\(x_1\\).\n\nA = [0 1 1 1;\n    0 0 0 1;\n    0 0 0 1;\n    0 0 0 0]\n\nnames = [\"Plant\", \"Land Treatment\", \"Chem Treatment\", \"Pristine Brook\"]\n# modify this dictionary to add labels\nedge_labels = Dict((1, 2) =&gt; \"\", (1,3) =&gt; \"\", (1, 4) =&gt; \"\",(2, 4) =&gt; \"\",(3, 4) =&gt; \"\")\nshapes=[:hexagon, :rect, :rect, :hexagon]\nxpos = [0, -1.5, -0.25, 1]\nypos = [1, 0, 0, -1]\n\np = graphplot(A, names=names,edgelabel=edge_labels, markersize=0.15, markershapes=shapes, markercolor=:white, x=xpos, y=ypos)\ndisplay(p)\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 1: System diagram of the wastewater treatment options in Problem 4.\n\n\n\n\n\nProblem 2.1\nFormulate a mathematical model for the treatment cost and the amount of YUK that will be discharged into Pristine Brook based on the wastewater allocations. This is best done with some equations and supporting text explaining the derivation. Make sure you include, as additional equations in the model, any needed constraints on relevant values. You can find some basics on writing mathematical equations using the LaTeX typesetting syntax here, and a cheatsheet with LaTeX commands can be found on the course website’s Resources page.\n\n\nProblem 2.2\nImplement your systems model as a Julia function which computes the resulting YUK concentration and cost for a particular treatment plan. You can return multiple values from a function with a tuple, as in:\n\nfunction multiple_return_values(x, y)\n    return (x+y, x*y)\nend\n\na, b = multiple_return_values(2, 5)\n@show a;\n@show b;\n\na = 7\nb = 10\n\n\nTo evalute the function over vectors of inputs, you can broadcast the function by adding a decimal . before the function arguments and accessing the resulting values by writing a comprehension to loop over the individual outputs in the vector:\n\nx = [1, 2, 3, 4, 5]\ny = [6, 7, 8, 9, 10]\n\noutput = multiple_return_values.(x, y)\na = [out[1] for out in output]\nb = [out[2] for out in output]\n@show a;\n@show b;\n\na = [7, 9, 11, 13, 15]\nb = [6, 14, 24, 36, 50]\n\n\nMake sure you comment your code appropriately to make it clear what is going on and why.\n\n\nProblem 2.3\nUse your function to experiment with 1,000 different combinations of wastewater discharge and treatment. You can do this with either a grid search or by sampling from a Dirichlet distribution (a \\(\\text{Dirichlet}(1, n)\\) distribution will generate uniformly-weighted \\(n\\)-dimensional vectors whose components add up to 1; see the Distributions.jl documentation for how to sample from probability distributions in Julia). Plot the results of these experiments. Do any satisfy the YUK effluent standard (plot this as well as a dashed red line). What was the cost of solutions satisfying the standard? What can you say about the tradeoff between treatment cost and YUK concentration? You don’t have to find an “optimal” solution to this problem, but what do you think would be needed to find a better solution?\n\n\nProblem 2.4\nFind the strategies which minimize cost and YUK concentration (these will be different strategies) analytically and find the values of the objective metrics. Plot these values in the plot that you created for Problem 3.3. How do their values compare to the spread of values that you found in that problem? Would you select either of them (explain why or why not)?",
+    "text": "Problems (Total: 30 Points)\n\nProblem 1 (12 points)\nThe following subproblems all involve code snippets that require debugging. You are encouraged to use online resources (e.g. Julia documentation and forums, Stack Overflow, Reddit, etc) to help find diagnose error messages and find solutions, but make sure that you clearly document which resources you used and how you used them.\n\nProblem 1.1\nYou’ve been tasked with writing code to identify the minimum value in an array. You cannot use a predefined function. Your colleague suggested the function below, but it does not return the minimum value.\n\nfunction minimum(array)\n    # initialize the minimum value counter\n    min_value = 0\n    # update minimum values\n    for i in 1:length(array)\n        if array[i] &lt; min_value\n            min_value = array[i]\n        end\n    end\n    # return found minimum\n    return min_value\nend\n\narray_values = [89, 90, 95, 100, 100, 78, 99, 98, 100, 95]\n@show minimum(array_values);\n\nminimum(array_values) = 0\n\n\nWhat is the logical flaw in the code? Fix it and show that your fixed code solves the problem.\n\n\nProblem 1.2\nYour team is trying to compute the average grade for your class, but the following code produces an UndefVarError.\n\n# enter student grade vector\nstudent_grades = [89, 90, 95, 100, 100, 78, 99, 98, 100, 95]\n# compute class average\nfunction class_average(grades)\n  average_grade = mean(student_grades)\n  return average_grade\nend\n\n@show average_grade;\n\n\nUndefVarError: `average_grade` not defined in `Main.Notebook`\nSuggestion: check for spelling errors or missing imports.\nStacktrace:\n [1] macro expansion\n   @ show.jl:1232 [inlined]\n [2] top-level scope\n   @ ~/Teaching/BEE4750/website/hw/hw01/hw01.qmd:131\n\n\n\nWhat does this UndefVarError mean? Why does this code produce one? Fix the error and solve the problem.\n\n\nProblem 1.3\nYour team wants to know the expected payout of an old Italian dice game called passadieci (which was analyzed by Galileo as one of the first examples of a rigorous study of probability). The goal of passadieci is to get at least an 11 from rolling three fair, six-sided dice. Your strategy is to compute the average wins from 1,000 trials, but the code you’ve written below produces a MethodError.\n\n# function to simulate a passadieci roll: 3 6-sided dice\nfunction passadieci()\n    # this rand() call samples 3 values from the vector [1, 6]\n    roll = rand(1:6, 3) \n    return roll\nend\n# set number of trials and initialize outcome vector\nn_trials = 1_000\noutcomes = zero(n_trials)\n# simulate number of passadieci rolls and count wins\nfor i = 1:n_trials\n    outcomes[i] = (sum(passadieci()) &gt; 11)\nend\nwin_prob = sum(outcomes) / n_trials # compute average number of wins\n@show win_prob;\n\n\nMethodError: no method matching setindex!(::Int64, ::Bool, ::Int64)\nThe function `setindex!` exists, but no method is defined for this combination of argument types.\nStacktrace:\n [1] top-level scope\n   @ ~/Teaching/BEE4750/website/hw/hw01/hw01.qmd:153\n\n\n\nWhat does this MethodError mean? Why does this code produce one? Fix the error and solve the problem.\n\n\nProblem 1.4\nYou’re interested in writing some code to remove the mean of a vector from all of its components. You’ve written the following code and tried to test it on a random vector, but your code returns a MethodError.\n\n# function to remove mean from a vector\nfunction remove_mean(vect)\n    # fucntion to compute the mean\n    function compute_mean(vect)\n        element_sum = 0 # initialize sum\n        # compute mean and return\n        for v in vect\n            element_sum += v\n        end\n        return element_sum / length(vect)\n    end\n\n    m = compute_mean(vect) # compute mean\n    # return demeaned vector\n    return vect - m\nend\n\nrandom_vect = rand(1_000)\n@show remove_mean(random_vect)\n\n\nMethodError: no method matching -(::Vector{Float64}, ::Float64)\nFor element-wise subtraction, use broadcasting with dot syntax: array .- scalar\nThe function `-` exists, but no method is defined for this combination of argument types.\n\nClosest candidates are:\n  -(::ChainRulesCore.NotImplemented, ::Any)\n   @ ChainRulesCore ~/.julia/packages/ChainRulesCore/XAgYn/src/tangent_arithmetic.jl:49\n  -(::Any, ::ChainRulesCore.NotImplemented)\n   @ ChainRulesCore ~/.julia/packages/ChainRulesCore/XAgYn/src/tangent_arithmetic.jl:50\n  -(::ChainRulesCore.NoTangent, ::Any)\n   @ ChainRulesCore ~/.julia/packages/ChainRulesCore/XAgYn/src/tangent_arithmetic.jl:61\n  ...\n\nStacktrace:\n [1] remove_mean(vect::Vector{Float64})\n   @ Main.Notebook ~/Teaching/BEE4750/website/hw/hw01/hw01.qmd:180\n [2] macro expansion\n   @ show.jl:1232 [inlined]\n [3] top-level scope\n   @ ~/Teaching/BEE4750/website/hw/hw01/hw01.qmd:184\n\n\n\nWhat does this MethodError mean? Why does this code produce one? Fix the error and solve the problem.\n\n\n\nProblem 2 (18 points)\nCheap Plastic Products, Inc. is operating a plant that produces \\(100 \\text{m}^3\\text{/day}\\) of wastewater that is discharged into Pristine Brook. The wastewater contains \\(1 \\text{kg/m}^3\\) of YUK, a toxic substance. The US Environmental Protection Agency has imposed an effluent standard on the plant prohibiting discharge of more than \\(20 \\text{kg/day}\\) of YUK into Pristine Brook.\nCheap Plastic Products has analyzed two methods for reducing its discharges of YUK. Method 1 is land disposal, which costs \\(X_1^2/20\\) dollars per day, where \\(X_1\\) is the amount of wastewater disposed of on the land (\\(\\text{m}^3\\text{/day}\\)). With this method, 20% of the YUK applied to the land will eventually drain into the stream (i.e., 80% of the YUK is removed by the soil).\nMethod 2 is a chemical treatment procedure which costs $1.50 per \\(\\text{m}^3\\) of wastewater treated. The chemical treatment has an efficiency of \\(e= 1 - 0.005X_2\\), where \\(X_2\\) is the quantity of wastewater (\\(\\text{m}^3\\text{/day}\\)) treated. For example, if \\(X_2 = 50 \\text{m}^3\\text{/day}\\), then \\(e = 1 - 0.005(50) = 0.75\\), so that 75% of the YUK is removed.\nCheap Plastic Products is wondering how to allocate their wastewater between these three disposal and treatment methods (land disposal, chemical treatment, and direct disposal) to meet the effluent standard while keeping costs manageable.\nThe flow of wastewater through this treatment system is shown in Figure 1. Modify the edge labels (by editing the edge_labels dictionary in the code producing Figure 1) to show how the wastewater allocations result in the final YUK discharge into Pristine Brook. For the edge_label dictionary, the tuple \\((i, j)\\) corresponds to the arrow going from node \\(i\\) to node \\(j\\). The syntax for any entry is (i, j) =&gt; \"label text\", and the label text can include mathematical notation if the string is prefaced with an L, as in L\"x_1\" will produce \\(x_1\\).\n\nA = [0 1 1 1;\n    0 0 0 1;\n    0 0 0 1;\n    0 0 0 0]\n\nnames = [\"Plant\", \"Land Treatment\", \"Chem Treatment\", \"Pristine Brook\"]\n# modify this dictionary to add labels\nedge_labels = Dict((1, 2) =&gt; \"\", (1,3) =&gt; \"\", (1, 4) =&gt; \"\",(2, 4) =&gt; \"\",(3, 4) =&gt; \"\")\nshapes=[:hexagon, :rect, :rect, :hexagon]\nxpos = [0, -1.5, -0.25, 1]\nypos = [1, 0, 0, -1]\n\np = graphplot(A, names=names,edgelabel=edge_labels, markersize=0.15, markershapes=shapes, markercolor=:white, x=xpos, y=ypos)\ndisplay(p)\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 1: System diagram of the wastewater treatment options in Problem 4.\n\n\n\n\n\nProblem 2.1\nFormulate a mathematical model for the treatment cost and the amount of YUK that will be discharged into Pristine Brook based on the wastewater allocations. This is best done with some equations and supporting text explaining the derivation. Make sure you include, as additional equations in the model, any needed constraints on relevant values. You can find some basics on writing mathematical equations using the LaTeX typesetting syntax here, and a cheatsheet with LaTeX commands can be found on the course website’s Resources page.\n\n\nProblem 2.2\nImplement your systems model as a Julia function which computes the resulting YUK discharge and cost for a particular treatment plan. You can return multiple values from a function with a tuple, as in:\n\nfunction multiple_return_values(x, y)\n    return (x+y, x*y)\nend\n\na, b = multiple_return_values(2, 5)\n@show a;\n@show b;\n\na = 7\nb = 10\n\n\nTo evalute the function over vectors of inputs, you can broadcast the function by adding a decimal . before the function arguments and accessing the resulting values by writing a comprehension to loop over the individual outputs in the vector:\n\nx = [1, 2, 3, 4, 5]\ny = [6, 7, 8, 9, 10]\n\noutput = multiple_return_values.(x, y)\na = [out[1] for out in output]\nb = [out[2] for out in output]\n@show a;\n@show b;\n\na = [7, 9, 11, 13, 15]\nb = [6, 14, 24, 36, 50]\n\n\nMake sure you comment your code appropriately to make it clear what is going on and why.\n\n\nProblem 2.3\nUse your function to experiment with 1,000 different combinations of wastewater discharge and treatment. You can do this with either a grid search or by sampling from a Dirichlet distribution (a \\(\\text{Dirichlet}(1, n)\\) distribution will generate uniformly-weighted \\(n\\)-dimensional vectors whose components add up to 1; see the Distributions.jl documentation for how to sample from probability distributions in Julia). Plot the results of these experiments. Do any satisfy the YUK effluent standard (plot this as well as a dashed red line). What was the cost of solutions satisfying the standard? What can you say about the tradeoff between treatment cost and YUK discharge? You don’t have to find an “optimal” solution to this problem, but what do you think would be needed to find a better solution?\n\n\nProblem 2.4\nFind the strategies which minimize cost and YUK discharge (these will be different strategies) analytically and find the values of the objective metrics. Plot these values in the plot that you created for Problem 2.3. How do their values compare to the spread of values that you found in that problem? Would you select either of them (explain why or why not)?",
     "crumbs": [
       "Homework 1"
     ]
@@ -3271,7 +3411,7 @@
     "href": "labs/lab01/lab01.html#submitting-pdf",
     "title": "BEE 4750 Lab 1: Julia and GitHub Basics",
     "section": "Submitting PDF",
-    "text": "Submitting PDF\n\n\n\n\n\n\nThese submission instructions will not be repeated on future assignments!\n\n\n\nExport your writeup as a PDF (this doesn’t have to be a notebook if you’re struggling to export: you can do your writeup in e.g. Microsoft Word) and submit it to the “Lab 1” assignment on Gradescope. Make sure that you tag pages corresponding to relevant problems to avoid a 10% penalty.\n\n\n\n\n\n\nPrinting Code to PDF\n\n\n\nYou are not required to submit your code when submitting assignments. However, when printing a notebook to PDF, long lines will run off the edge of code cells, which may result in comments or code being hidden. If you see this, go back to the notebook and break up long lines into shorter onces (for example, see the comment in the above code cell) to ensure key parts of your results aren’t missing.",
+    "text": "Submitting PDF\n\n\n\n\n\n\nThese submission instructions will not be repeated on future assignments!\n\n\n\nExport your writeup as a PDF (this doesn’t have to be a notebook if you’re struggling to export: you can do your writeup in e.g. Microsoft Word) and submit it to the “Lab 1” assignment on Gradescope. Make sure that you tag pages corresponding to relevant problems to avoid a 10% penalty.\n\n\n\n\n\n\nPrinting Code to PDF\n\n\n\nYou are not required to submit your code when submitting assignments. However, when printing a notebook to PDF (whether you do this locally or via the GitHub Action), long lines will run off the edge of code cells, which may result in comments or code being hidden. If you see this, go back to the notebook and break up long lines into shorter onces (for example, see the comment in the above code cell) to ensure key parts of your results aren’t missing.",
     "crumbs": [
       "Lab 1"
     ]
@@ -3291,7 +3431,7 @@
     "href": "hw/index.html#general-information",
     "title": "Homework",
     "section": "General Information",
-    "text": "General Information\n\nWhile the instructions for each assignment are available through the linked pages for quick and public access, if you are in the class you must use the link provided in Ed Discussion to accept the assignment. This will ensure that:\n\nYou have compatible versions of all relevant packages provided in the environment;\nYou have a GitHub repository that you can use to share your code.\n\nSubmit assignments by 9:00pm Eastern Time on the due date on Gradescope.\nStarting with HW2, groups of at most two students can submit group solutions. Groups do not have the be the same for all assignments. Exactly one member of each group should submit the solution. If you submit as a group, it is the responsibility of the submitter to tell Gradescope the names of the other group members. If this information is not entered, the other group members’ grades can be delayed or even lost. Also include the names and NetIDs of all group members on the first page.\nIf a student in BEE 5750 works in a group with a student from BEE 4750, they should submit separate PDFs to Gradescope (these can be different versions of the same PDF) due to the additional 5750 problem; this will just not be graded for the 4750 student(s). A single submission can be used for multiple students within the same course number who share a group.\nMore detailed homework instructions and logistics are available.\nSubmissions must be PDFs. Make sure that you tag the pages corresponding to each question; points will be deducted otherwise.\nTo convert the assignment notebook to PDF, you can use VS Code to render the notebook to HTML, and then use your browser to print to PDF. If you have set up LaTeX with VS Code, you can convert directly to a PDF.",
+    "text": "General Information\n\nWhile the instructions for each assignment are available through the linked pages for quick and public access, if you are in the class you must use the link provided in Ed Discussion to accept the assignment. This will ensure that:\n\nYou have compatible versions of all relevant packages provided in the environment;\nYou have a GitHub repository that you can use to share your code.\n\nSubmit assignments by 9:00pm Eastern Time on the due date on Gradescope.\nStarting with HW2, groups of at most two students can submit group solutions. Groups do not have the be the same for all assignments. Exactly one member of each group should submit the solution. If you submit as a group, it is the responsibility of the submitter to tell Gradescope the names of the other group members. If this information is not entered, the other group members’ grades can be delayed or even lost. Also include the names and NetIDs of all group members on the first page.\nIf a student in BEE 5750 works in a group with a student from BEE 4750, they should submit separate PDFs to Gradescope (these can be different versions of the same PDF) due to the additional 5750 problem; this will just not be graded for the 4750 student(s). A single submission can be used for multiple students within the same course number who share a group.\nMore detailed homework instructions and logistics are available.\nSubmissions must be PDFs. Make sure that you tag the pages corresponding to each question; points will be deducted otherwise.\nTo convert the assignment notebook to PDF, you can use VS Code to render the notebook to HTML, and then use your browser to print to PDF. If you have set up LaTeX with VS Code, you can convert directly to a PDF.\nAs an alternative, when you commit and push a .ipynb file (a Jupyter Notebook) to your repository, we have set up a GitHub Action to automatically render your notebook to a PDF, which you can then download and submit to Gradescope. However, sometimes GitHub actions can take a while or can stall out, so you’ll need to monitor this and give yourself some time. If you’ve waited a while and your notebook isn’t rendering, reach out on Ed and we can figure out what’s going on. In the worst case (you push your changes close to the deadline), the timestamp of your commit will be evidence that you completed the assignment on time, even if we can’t render the PDF until the next day.",
     "crumbs": [
       "Homework Overview"
     ]
@@ -6417,145 +6557,5 @@
     "title": "Syllabus",
     "section": "Grading",
     "text": "Grading\n\nGrading Scale\nThe following grading scale will be used to convert the numerical weighted average from the assessments (above) to letter grades.\n\n\n\nGrade\nRange\n\n\n\n\nA\n93–100\n\n\nA-\n90–93\n\n\nB+\n87–90\n\n\nB\n83–87\n\n\nB-\n80–83\n\n\nC+\n77–80\n\n\nC\n73–77\n\n\nC-\n70–73\n\n\nD+\n67–70\n\n\nD\n63–67\n\n\nD-\n60–63\n\n\nF\n&lt; 60\n\n\n\nWe reserve the right to lower these cutoffs as appropriate, but will not raise them from these levels.\n\n\n\n\n\n\nWill You Round Up or Curve My Grade?\n\n\n\nGrades may be rounded up if they are just below the cutoff, but this is not a given, and requests for grade round-ups will be ignored. For example, you should assume that a score of 92.9% has missed the A cutoff of 93% (it is, after all, below the cutoff). Consider it a pleasant surprise if the round-up is given.\nWhile final grades will not be curved, individual assessments (mainly exams) may be curved if they prove to be more difficult than intended, but this will not be with a view towards achieving a particular grade distribution.\n\n\n\n\nForgiven Assignments\nForgiven assignments (due to extenuating circumstances, discussed with and approved by Prof. Srikrishnan) will be treated as though they do not exist, and the appropriate grading component will be computed without them. This does mean that e.g. submitted homeworks will carry more weight in the overall grade computation. In exceptional cases, we will compute course grades based entirely on exams.\n\n\nExceptions\nWe reserve the right to give any student meeting at least one of the following conditions an automatic F:\n\nOverall exam average below 25%;\nSubmitted less than half of the assigned homework problems;\nExtremely low levels of participation and effort.\n\nThis should not generally be a concern; students putting in a good faith effort by attending class, participating in online discussions, doing most of the work, and taking the exams will not be at risk of this policy."
-  },
-  {
-    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#example-lake-eutrophication",
-    "href": "slides/lecture03-1-dynamics-feedbacks.html#example-lake-eutrophication",
-    "title": "System Boundaries and Feedbacks",
-    "section": "Example: Lake Eutrophication",
-    "text": "Example: Lake Eutrophication\n\n\nSimple model of lake eutrophication:\nAssume steady-state behavior, first-order linear decay, well-mixed, constant volume.\n\nBut in reality:\n\n\n\nSchematic of processes resulting in lake eutrophication"
-  },
-  {
-    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#systems-diagrams",
-    "href": "slides/lecture03-1-dynamics-feedbacks.html#systems-diagrams",
-    "title": "System Boundaries and Feedbacks",
-    "section": "Systems Diagrams",
-    "text": "Systems Diagrams\n\nSchematic of processes resulting in lake eutrophication"
-  },
-  {
-    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#possible-systemlife-cycle-framework",
-    "href": "slides/lecture03-1-dynamics-feedbacks.html#possible-systemlife-cycle-framework",
-    "title": "System Boundaries and Feedbacks",
-    "section": "Possible System/Life Cycle Framework",
-    "text": "Possible System/Life Cycle Framework\n\nSchematic of PHEV LCA Framework\nSource: Yuksel et al. (2016)"
-  },
-  {
-    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#phev-vs.-gasoline-outcomes",
-    "href": "slides/lecture03-1-dynamics-feedbacks.html#phev-vs.-gasoline-outcomes",
-    "title": "System Boundaries and Feedbacks",
-    "section": "PHEV vs. Gasoline Outcomes",
-    "text": "PHEV vs. Gasoline Outcomes\n\nPHEV Comparison\nSource: Yuksel et al. (2016)"
-  },
-  {
-    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#constructing-systems-models",
-    "href": "slides/lecture03-1-dynamics-feedbacks.html#constructing-systems-models",
-    "title": "System Boundaries and Feedbacks",
-    "section": "Constructing Systems Models",
-    "text": "Constructing Systems Models\nSimilar principles to models you’ve seen previously:\n\nMass/Energy Balance for stocks;\nFlows can increase stocks or can decay.\n\nMain difference: potential presence of feedbacks/non-steady state behavior."
-  },
-  {
-    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#amplifying-feedbacks",
-    "href": "slides/lecture03-1-dynamics-feedbacks.html#amplifying-feedbacks",
-    "title": "System Boundaries and Feedbacks",
-    "section": "Amplifying Feedbacks",
-    "text": "Amplifying Feedbacks\n\n\nLoop of all “+” or all “-” effects implies shocks will amplify as they are propagated.\n\n\n\n\nAmplifying Feedback Example"
-  },
-  {
-    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#impact-of-including-feedbacks",
-    "href": "slides/lecture03-1-dynamics-feedbacks.html#impact-of-including-feedbacks",
-    "title": "System Boundaries and Feedbacks",
-    "section": "Impact of Including Feedbacks",
-    "text": "Impact of Including Feedbacks\n\nClimate Feedbacks Comparisons\nSource: Woodard et al. (2019)"
-  },
-  {
-    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#impact-of-including-feedbacks-1",
-    "href": "slides/lecture03-1-dynamics-feedbacks.html#impact-of-including-feedbacks-1",
-    "title": "System Boundaries and Feedbacks",
-    "section": "Impact of Including Feedbacks",
-    "text": "Impact of Including Feedbacks\n\nClimate Feedbacks Comparisons\nSource: Woodard et al. (2019)"
-  },
-  {
-    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#simple-energy-balance",
-    "href": "slides/lecture03-1-dynamics-feedbacks.html#simple-energy-balance",
-    "title": "System Boundaries and Feedbacks",
-    "section": "Simple Energy Balance",
-    "text": "Simple Energy Balance\n\\[\\begin{align*}\n\\Delta \\text{Heat Content} = &+\\text{Absorbed Solar Radiation} \\\\\n&- \\text{Outgoing Thermal Radiation} \\\\\n&+ \\text{Anthropogenic Greenhouse Effect}\n\\end{align*}\\]\n\nSimple Planetary Energy Balance\nSource: Climate of the Earth"
-  },
-  {
-    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#absorbed-solar-radiation",
-    "href": "slides/lecture03-1-dynamics-feedbacks.html#absorbed-solar-radiation",
-    "title": "System Boundaries and Feedbacks",
-    "section": "Absorbed Solar Radiation",
-    "text": "Absorbed Solar Radiation\n\n\n\\[\\text{ASR} \\approx \\frac{S(1 - \\alpha)}{4}\\]\nwhere:\n\n\\(S = 1368 \\text{W/m}^2\\) is the solar constant;\n\\(\\alpha\\) is the average albedo of the Earth, \\(\\alpha \\approx 0.3\\).\n\n\n\n\n\nAbsorbed Solar Radiation\n\n\n\nSource: Open University"
-  },
-  {
-    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#outgoing-thermal-radiation",
-    "href": "slides/lecture03-1-dynamics-feedbacks.html#outgoing-thermal-radiation",
-    "title": "System Boundaries and Feedbacks",
-    "section": "Outgoing Thermal Radiation",
-    "text": "Outgoing Thermal Radiation\nMix of positive/negative feedbacks which dampen or amplify temperature increases, e.g.\n\nBlackbody radiation: \\(\\tau \\sigma T^4\\) (dampen).\nWater vapor feedbacks (amplify)"
-  },
-  {
-    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#linearization-of-otr",
-    "href": "slides/lecture03-1-dynamics-feedbacks.html#linearization-of-otr",
-    "title": "System Boundaries and Feedbacks",
-    "section": "Linearization of OTR",
-    "text": "Linearization of OTR\nLots of complicated physics: let’s instead consider a linearization \\[\\text{OTR} \\approx B(T_0 - T).\\]\nThis comes from the Taylor approximation:\n\\[\\mathcal{G}(T) \\approx \\mathcal{G}(T_0) + \\mathcal{G}'(T_0)(T - T_0)= \\mathcal{G}'(T_0)T + (G(T_0) - G'(T_0)(T_0)) \\]"
-  },
-  {
-    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#linearization-of-otr-1",
-    "href": "slides/lecture03-1-dynamics-feedbacks.html#linearization-of-otr-1",
-    "title": "System Boundaries and Feedbacks",
-    "section": "Linearization of OTR",
-    "text": "Linearization of OTR\nSet \\[\\begin{align*}\nA &= \\mathcal{G}(T_0) - G'(T_0)(T_0) \\\\\nB &= -\\mathcal{G}'(T_0) \\\\\n\\mathcal{G}(T) &\\approx A - BT\n\\end{align*}\n\\]"
-  },
-  {
-    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#linearization-of-otr-2",
-    "href": "slides/lecture03-1-dynamics-feedbacks.html#linearization-of-otr-2",
-    "title": "System Boundaries and Feedbacks",
-    "section": "Linearization of OTR",
-    "text": "Linearization of OTR\nFitting \\(\\text{OTR} \\approx A - BT\\) to temperature data around the pre-industrial temperature \\(T_0 = 14^\\circ C\\) yields \\[B \\approx -1.3 \\text{W}/(\\text{m}^2 \\cdot^\\circ \\text{C}),\\] and assuming \\(T_0\\) was “stable” lets us solve \\[A = \\frac{S(1 - \\alpha)}{4} - B * T_0.\\]"
-  },
-  {
-    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#heat-and-temperature",
-    "href": "slides/lecture03-1-dynamics-feedbacks.html#heat-and-temperature",
-    "title": "System Boundaries and Feedbacks",
-    "section": "Heat and Temperature",
-    "text": "Heat and Temperature\nIgnoring the greenhouse effect for now:\n\\[\\Delta H = \\frac{S(1 - \\alpha)}{4} - 1.3(14 - T)\\]\nAnd \\(H = CT,\\) where \\(C\\) is the effective heat capacity of the combined atmosphere/ocean. Assume \\(C\\) is the same as heating 100m of water yields \\[C \\approx 51 \\text{W yr}/(\\text{m}^2 \\cdot^\\circ \\text{C}).\\]"
-  },
-  {
-    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#simple-energy-balance-1",
-    "href": "slides/lecture03-1-dynamics-feedbacks.html#simple-energy-balance-1",
-    "title": "System Boundaries and Feedbacks",
-    "section": "Simple Energy Balance",
-    "text": "Simple Energy Balance\n\n\nSo the final “simple” model is:\n\\[\n\\begin{align*}\n51\\frac{dT}{dt} &= \\frac{1368(1 - 0.3)}{4} \\\\\n    &\\qquad - 18.2 + T \\\\[0.5em]\n\\frac{dT}{dt} &= 4.4 + \\frac{1}{51}T\n\\end{align*}\n\\]\n\n\n\nCode\nfunction absorbed_solar_radiation(α=0.3; S=1368.0)\n    return S*(1 - α)/4\nend\n\n\nconst B = -1.3 # climate feedback parameter\nconst A = 1368 * (1 - 0.3) / 4 + B * 14\n\nfunction outgoing_thermal_radiation(T, A=A, B=B)\n    return A - B*T\nend\n\nconst C = 51.0 # heat capacity of atmosphere and upper ocean # Wyr/m^2/°C\n\nfunction solve_ebm(T0)\n    prob1 = ODEProblem(\n        (temp, p, t) -&gt; (1/C) * (absorbed_solar_radiation() - outgoing_thermal_radiation(temp)),\n        T0,\n        (0.0, 170)\n    )\n    return solve(prob1)\nend\n\n# initialize plot\np = plot(; xlabel=\"Time (yrs)\", ylabel=\"Temperature (°C)\", legend=false)\nfor S0 in 0:2:20\n    s1 = solve_ebm(S0)\n    plot!(p, s1)\nend\nplot!(p, size=(600, 500))\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n0\n\n\n50\n\n\n100\n\n\n150\n\n\nt\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n0\n\n\n5\n\n\n10\n\n\n15\n\n\n20\n\n\nTemperature (°C)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 1: Trajectories of the simple energy balance model without feedbacks"
-  },
-  {
-    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#ice-albedo-feedback",
-    "href": "slides/lecture03-1-dynamics-feedbacks.html#ice-albedo-feedback",
-    "title": "System Boundaries and Feedbacks",
-    "section": "Ice-Albedo Feedback",
-    "text": "Ice-Albedo Feedback\nOK, but what if albedo is not constant, but now depends on temperature?\n\\[\n\\alpha(T) = \\begin{cases}\n    \\alpha_i & \\text{if } T \\leq -10^\\circ C \\\\\n    \\alpha_i + (\\alpha_0 - \\alpha_i)\\frac{T+10}{20} & \\text{if } -10^\\circ C \\leq T \\leq 10^\\circ C \\\\\n    \\alpha_0 & \\text{if } T \\geq 10^\\circ C\n\\end{cases}\n\\]"
-  },
-  {
-    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#impact-of-ice-albedo-feedback",
-    "href": "slides/lecture03-1-dynamics-feedbacks.html#impact-of-ice-albedo-feedback",
-    "title": "System Boundaries and Feedbacks",
-    "section": "Impact of Ice-Albedo Feedback",
-    "text": "Impact of Ice-Albedo Feedback\n\n\nCode\nfunction albedo(T; α0=0.3, αi=0.5)\n    if T &lt; -10\n        return αi\n    elseif -10 &lt;= T &lt; 10\n        return αi + (α0-αi)*(T+10)/(20)\n    elseif T &gt;= 10\n        return α0\n    end\nend\n\nfunction solve_ebm2(T0)\n    prob = ODEProblem(\n        (temp, p, t) -&gt; (1/C) * (absorbed_solar_radiation(albedo(temp)) - outgoing_thermal_radiation(temp)),\n        T0,\n        (0.0, 170)\n    )\n    return solve(prob)\nend\n\np = plot(; xlabel=\"Time (yrs)\", ylabel=\"Temperature (°C)\", legend=false, linewidth=2)\nfor S0 in 0:2:20\n    s1 = solve_ebm2(S0)\n    plot!(p, s1)\nend\nhline!(p, [14]; color=:black, linestyle=:dot)\np\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n0\n\n\n50\n\n\n100\n\n\n150\n\n\nt\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n−30\n\n\n−20\n\n\n−10\n\n\n0\n\n\n10\n\n\n20\n\n\nTemperature (°C)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 2: Trajectories of the simple energy balance model with the ice-albedo feedbacks"
-  },
-  {
-    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#snowball-earth-hypothesis",
-    "href": "slides/lecture03-1-dynamics-feedbacks.html#snowball-earth-hypothesis",
-    "title": "System Boundaries and Feedbacks",
-    "section": "Snowball Earth Hypothesis",
-    "text": "Snowball Earth Hypothesis\nThis is the Snowball Earth Hypothesis:\n\nEarth was completely ice-covered;\nCO2 slowly accumulated from volcanoes and reduced rock-weathering;\nEventually greenhouse effect melted ice, reducing planetary albedo;\nEarth entered relatively warm climate."
-  },
-  {
-    "objectID": "slides/lecture03-1-dynamics-feedbacks.html#dampening-feedbacks",
-    "href": "slides/lecture03-1-dynamics-feedbacks.html#dampening-feedbacks",
-    "title": "System Boundaries and Feedbacks",
-    "section": "Dampening Feedbacks",
-    "text": "Dampening Feedbacks\n\n\nMixed “+” and “-” effectsx implies a dampening feedback:\n\n\n\n\nDampening Feedback Example"
   }
 ]

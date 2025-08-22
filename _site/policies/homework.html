@@ -410,11 +410,13 @@ window.MathJax = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>If you are submitting a PDF from a notebook, make sure that you evaluate all cells in order with <code>Run Cells</code> before converting.</p>
+<p>If you are submitting a PDF from a notebook (versus a separate writeup in <em>e.g.</em> Word), make sure that you evaluate all cells in order with <code>Run Cells</code> before converting.</p>
 </div>
 </div>
 </div></li>
 <li><p>If you have not set up LaTeX, you can export a notebook to HTML and save it from your browser as a PDF;</p></li>
+<li><p>As an alternative, when you commit and push a <code>.ipynb</code> file (a Jupyter Notebook) to your repository, we have set up a <a href="https://docs.github.com/en/actions">GitHub Action</a> to automatically render your notebook to a PDF, which you can then download and submit to Gradescope. However, sometimes GitHub actions can take a while or can stall out, so you’ll need to monitor this and give yourself some time. If you’ve waited a while and your notebook isn’t rendering, reach out on Ed and we can figure out what’s going on. In the worst case (you push your changes close to the deadline), the timestamp of your commit will be evidence that you completed the assignment on time, even if we can’t render the PDF until the next day.</p></li>
+<li><p>Don’t worry if the GitHub Action says its failed if your assignment (or any given problem) isn’t complete: you may have an error due to your incomplete code that causes the Action to fail. You can ignore this unless you think everything should work!</p></li>
 <li><p>If you have written a report outside of a notebook (<em>e.g.</em> in Word), save this to a PDF.</p></li>
 </ul></li>
 <li>You <strong>do not need</strong> to include code in a written submission, but make sure your final notebook and/or scripts are on your GitHub repository in case there’s an issue.</li>
