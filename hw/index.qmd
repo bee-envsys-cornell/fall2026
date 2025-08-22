@@ -15,7 +15,8 @@ This page contains information about and a schedule of the homework assignments 
 - If a student in BEE 5750 works in a group with a student from BEE 4750, they should submit separate PDFs to Gradescope (these can be different versions of the same PDF) due to the additional 5750 problem; this will just not be graded for the 4750 student(s). A single submission can be used for multiple students within the same course number who share a group.
 - More detailed [homework instructions and logistics](../policies/homework.qmd#homework-logistics) are available.
 - Submissions must be PDFs. Make sure that you tag the pages corresponding to each question; points will be deducted otherwise.
-- To convert the assignment notebook to PDF, you can use VS Code to render the notebook to HTML, and then use your browser to print to PDF. If you have set up LaTeX with VS Code, you can convert directly to a PDF.
+- To convert the assignment notebook to PDF, you can use VS Code to render the notebook to HTML, and then use your browser to print to PDF. If you have set up LaTeX with VS Code, you can convert directly to a PDF. 
+- As an alternative, when you commit and push a `.ipynb` file (a Jupyter Notebook) to your repository, we have set up a [GitHub Action](https://docs.github.com/en/actions) to automatically render your notebook to a PDF, which you can then download and submit to Gradescope. However, sometimes GitHub actions can take a while or can stall out, so you'll need to monitor this and give yourself some time. If you've waited a while and your notebook isn't rendering, reach out on Ed and we can figure out what's going on. In the worst case (you push your changes close to the deadline), the timestamp of your commit will be evidence that you completed the assignment on time, even if we can't render the PDF until the next day.
 
 ## Grading
 

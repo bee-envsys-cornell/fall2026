@@ -60,10 +60,12 @@ But this emphasis on homework as practice also means that you should start the h
   - If you have set up LaTeX on your system, you can convert a notebook directly to PDF in VS Code or Jupyter Lab (this will automatically work on BioHPC without any additional setup);
     
     ::: {.callout-important}
-    If you are submitting a PDF from a notebook, make sure that you evaluate all cells in order with `Run Cells` before converting.
+    If you are submitting a PDF from a notebook (versus a separate writeup in *e.g.* Word), make sure that you evaluate all cells in order with `Run Cells` before converting.
     :::
   
   - If you have not set up LaTeX, you can export a notebook to HTML and save it from your browser as a PDF;
+  - As an alternative, when you commit and push a `.ipynb` file (a Jupyter Notebook) to your repository, we have set up a [GitHub Action](https://docs.github.com/en/actions) to automatically render your notebook to a PDF, which you can then download and submit to Gradescope. However, sometimes GitHub actions can take a while or can stall out, so you'll need to monitor this and give yourself some time. If you've waited a while and your notebook isn't rendering, reach out on Ed and we can figure out what's going on. In the worst case (you push your changes close to the deadline), the timestamp of your commit will be evidence that you completed the assignment on time, even if we can't render the PDF until the next day.
+  - Don't worry if the GitHub Action says its failed if your assignment (or any given problem) isn't complete: you may have an error due to your incomplete code that causes the Action to fail. You can ignore this unless you think everything should work!
   - If you have written a report outside of a notebook (*e.g.* in Word), save this to a PDF.
 - You **do not need** to include code in a written submission, but make sure your final notebook and/or scripts are on your GitHub repository in case there's an issue.
 - PDFs must be submitted by the due date and time to Gradescope **with pages tagged**. Failure to tag pages will receive a 10% deduction.
