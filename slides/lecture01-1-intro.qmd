@@ -149,7 +149,7 @@ Lack of attendance could contribute to a low participation grade.
 ## Office Hours
 
 - Prof. Srikrishnan: TBD in 318 Riley-Robb
-- TA: TBD
+- TA: MW 4:15-4:15 in 217 Riley-Robb.
 - Will send out a poll, but almost impossible to find a time that works for all (or even most); please feel free to email to make appointments as/if needed.
 - Can be busy, will triage based on urgency (e.g. if you want code help but have not done basic debugging steps, you will be asked to wait until others are helped).
 
@@ -262,7 +262,7 @@ Homework assignments and labs will be distributed using GitHub Classroom.
 
 ## Exercises
 
-- Auto-graded "quizzes" on Canvas.
+- Auto-graded "quizzes" on Gradescope.
 - Focus on conceptual questions or quick setups/calculations (at most minor coding)
 - Can submit as many times as you like.
 - Due before Monday class the next week.
@@ -326,7 +326,7 @@ But often lines aren't that simple. Let's quickly consider some scenarios (h/t t
 
 ## Academic Integrity: Scenario 1
 
-Dan searches the internet for relevant code and copy-pastes it into his Jupyter notebook.  They cites the source of the codes.
+Dan searches the internet for relevant code and copy-pastes it into his Jupyter notebook.  They cite the source of the codes.
 
 ::: {.callout-important}
 ### Is this ok?
@@ -390,7 +390,7 @@ Felix and Rachel are working together on a problem involving a derivation. Rache
 ::: {.fragment .fade-in}
 - **Think of LLMs as a ranting drunk**: It's stringing together words or code it heard in a way that sounds reasonable, but there's no sense of concept.
 - **LLM debugging can be useful**: Think of it as a (error-prone) approximation of a Google search. But it  can also lead to new errors with no clear way to fix them, since you don't understand what you did.
-- **Hallucinations**: LLM often just makes stuff up. Do you want your grade to involve a ChatGPT hallucination?
+- **Hallucinations**: LLMs often just makes stuff up. Do you want your grade to involve a ChatGPT hallucination?
 :::
 
 ## AI Policy
@@ -409,7 +409,7 @@ Using AI tools is not prohibited. **But**:
 **Wednesday**: Lab 1: Julia and GitHub setup.
 
 - Lab 1 link is available on Ed. Click it to accept the lab before class.
-- Follow setup instructions on website: choose whether you'd like to try local or remote workflows (this isn't a permanent decision!).
+- Follow setup instructions on website.
 
 **Next Week**: Introduction to Systems Analysis
 
