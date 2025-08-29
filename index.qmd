@@ -45,7 +45,7 @@ format:
 ::: {.g-col-12 .g-col-sm-6 .g-col-md-3 .contact-policy}
 ### Contacting staff
 
-- {{< fa sharp door-open title="Office Hours" >}}[(Instructor) TBD]{.ms-1}
+- {{< fa sharp door-open title="Office Hours" >}}[(Instructor) M 1-2, T 4-5]{.ms-1}
 - {{< fa sharp door-open title="TA Office Hours" >}}[(TA) MW 4:15-5:15]{.ms-1}
 - [{{< fa sharp comments title="Ed Discussion" >}}[Ed Discussion]{.ms-1}](https://edstem.org)
 
