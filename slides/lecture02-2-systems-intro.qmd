@@ -79,8 +79,8 @@ If you missed class last week, make sure you [read the syllabus!](../syllabus.qm
 - Tag pages on Gradescope **which are relevant for a given problem** (labs this is the whole thing sans the intro/setup).
 - Explain what your code is trying to accomplish **outside of the code block**.
   - For example: here are the equations you're implementing or this is how you're iterating through a problem.
+- Make sure you include all elements needed for interpretation of e.g. plots.
 - **When in doubt, ask!**
-- Regrade requests should be made on Gradescope.
 
 ## Questions?
 
@@ -111,7 +111,7 @@ A system is:
 
 ## Example: Climate Change
 
-Changes to climate occur based on a variety of processes across scales, including:
+Changes to climate occur based on a variety of processes (***interconnected elements***) across scales which **influence the planet's energy balance** (***function***), including:
 
 - carbon sources/sinks;
 - aerosol emissions;
@@ -119,7 +119,7 @@ Changes to climate occur based on a variety of processes across scales, includin
 - surface albedo;
 - El Niño/La Niña (ENSO)
 
-## Example: Climate Change
+## Process Compensation
 
 ![Correlations among Climate Parameters](figures/climate-correlate.svg)
 
@@ -127,7 +127,7 @@ Changes to climate occur based on a variety of processes across scales, includin
 Source: @Errickson2021-kr
 :::
 
-## Example: Climate Change
+## Compensations Change Range Of Outcomes
 
 ![Correlations among Climate Parameters](figures/temperature-projections.svg)
 
@@ -416,9 +416,9 @@ Source: [XKCD 2355](https://xkcd.com/2355)
 
 ## Next Classes
 
-**Monday**: Nonlinear Systems Dynamics
+**Monday**: System Dynamics and Feedbacks 
 
-**Wednesday**: Life Cycle Assessment
+**Wednesday**: Equilibria and System Stability
 
 ## Assessments
 

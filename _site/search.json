@@ -767,7 +767,7 @@
     "href": "slides/lecture02-2-systems-intro.html#recap-of-grading-policies",
     "title": "Introduction to Systems Analysis",
     "section": "Recap of Grading Policies",
-    "text": "Recap of Grading Policies\n\nTag pages on Gradescope which are relevant for a given problem (labs this is the whole thing sans the intro/setup).\nExplain what your code is trying to accomplish outside of the code block.\n\nFor example: here are the equations you’re implementing or this is how you’re iterating through a problem.\n\nWhen in doubt, ask!\nRegrade requests should be made on Gradescope."
+    "text": "Recap of Grading Policies\n\nTag pages on Gradescope which are relevant for a given problem (labs this is the whole thing sans the intro/setup).\nExplain what your code is trying to accomplish outside of the code block.\n\nFor example: here are the equations you’re implementing or this is how you’re iterating through a problem.\n\nMake sure you include all elements needed for interpretation of e.g. plots.\nWhen in doubt, ask!"
   },
   {
     "objectID": "slides/lecture02-2-systems-intro.html#questions",
@@ -795,21 +795,21 @@
     "href": "slides/lecture02-2-systems-intro.html#example-climate-change",
     "title": "Introduction to Systems Analysis",
     "section": "Example: Climate Change",
-    "text": "Example: Climate Change\nChanges to climate occur based on a variety of processes across scales, including:\n\ncarbon sources/sinks;\naerosol emissions;\nocean heat uptake;\nsurface albedo;\nEl Niño/La Niña (ENSO)"
+    "text": "Example: Climate Change\nChanges to climate occur based on a variety of processes (interconnected elements) across scales which influence the planet’s energy balance (function), including:\n\ncarbon sources/sinks;\naerosol emissions;\nocean heat uptake;\nsurface albedo;\nEl Niño/La Niña (ENSO)"
   },
   {
-    "objectID": "slides/lecture02-2-systems-intro.html#example-climate-change-1",
-    "href": "slides/lecture02-2-systems-intro.html#example-climate-change-1",
+    "objectID": "slides/lecture02-2-systems-intro.html#process-compensation",
+    "href": "slides/lecture02-2-systems-intro.html#process-compensation",
     "title": "Introduction to Systems Analysis",
-    "section": "Example: Climate Change",
-    "text": "Example: Climate Change\n\nCorrelations among Climate Parameters\nSource: Errickson et al. (2021)"
+    "section": "Process Compensation",
+    "text": "Process Compensation\n\nCorrelations among Climate Parameters\nSource: Errickson et al. (2021)"
   },
   {
-    "objectID": "slides/lecture02-2-systems-intro.html#example-climate-change-2",
-    "href": "slides/lecture02-2-systems-intro.html#example-climate-change-2",
+    "objectID": "slides/lecture02-2-systems-intro.html#compensations-change-range-of-outcomes",
+    "href": "slides/lecture02-2-systems-intro.html#compensations-change-range-of-outcomes",
     "title": "Introduction to Systems Analysis",
-    "section": "Example: Climate Change",
-    "text": "Example: Climate Change\n\nCorrelations among Climate Parameters\nSource: Errickson et al. (2021)"
+    "section": "Compensations Change Range Of Outcomes",
+    "text": "Compensations Change Range Of Outcomes\n\nCorrelations among Climate Parameters\nSource: Errickson et al. (2021)"
   },
   {
     "objectID": "slides/lecture02-2-systems-intro.html#example-water-pollution",
@@ -984,7 +984,7 @@
     "href": "slides/lecture02-2-systems-intro.html#next-classes",
     "title": "Introduction to Systems Analysis",
     "section": "Next Classes",
-    "text": "Next Classes\nMonday: Nonlinear Systems Dynamics\nWednesday: Life Cycle Assessment"
+    "text": "Next Classes\nMonday: System Dynamics and Feedbacks\nWednesday: Equilibria and System Stability"
   },
   {
     "objectID": "slides/lecture02-2-systems-intro.html#assessments",
