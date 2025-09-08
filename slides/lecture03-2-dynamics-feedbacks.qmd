@@ -488,47 +488,15 @@ Bifurcations have the following implications:
 - Uncertainty about system dynamics can dramatically change equilibria locations and behavior;
 - "Shocks" (in this case, sedimentation/recycling disturbances or massive non-point source inflows) can irreversibly alter system outcomes.
 
-# Feedbacks
-
-## Feedback Loops
-
-:::: {.columns}
-
-::: {.column width=60%}
-Unstable equilibria can result from **reinforcing (positive) feedback loops**, where a shock to the system state gets amplified.
-
-Feedback loops can also be **dampening (negative)**, where a shock is weakened (stable equilibria).
-:::
-
-::: {.column width=40%}
-![Ice-Albedo Feedback Loop](figures/ice-albedo.svg){width=100%}
-:::
-
-::::
-
-## Feedbacks for Lake Eutrophication
-
-![Eutrophication Feedback Loop](figures/eutrophication-feedbacks.svg)
-
-## Other Environmental Feedbacks
-
-**Can we think of other examples of environmental feedback loops?**
-
-**Are they reinforcing or dampening?**
 
 # Key Takeaways
 
 ## Key Takeaways (Equilibria)
 
 - System equilibria states can be **stable** or **unstable**.
-- Unstable equilbria can be responsible for thresholds/tipping points.
+- Stability implies **resilience** to shocks.
 - **Bifurcations**: Changes to number/qualitative behavior of equilibria as system properties vary.
 
-## Key Takeaways (Feedbacks)
-
-- Feedback loops can be **reinforcing** or **dampening**.
-- Reinforcing feedbacks: changes to system state are amplified, resulting in instability and evolution away from equilibrium state.
-- Dampening feedbacks: changes to system state are dampened, system reverts to stable equilibrium state.
 
 # Upcoming Schedule
 
