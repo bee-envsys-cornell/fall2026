@@ -174,9 +174,11 @@ default(
 Assume steady-state behavior, first-order linear decay, well-mixed, constant volume.
 :::
 ::: {.column width=60%}
+::: {.fragment}
 **But in reality**:
 
 ![Schematic of processes resulting in lake eutrophication](figures/eutrophication-system-schematic.svg)
+:::
 :::
 ::::
 
@@ -186,7 +188,7 @@ Assume steady-state behavior, first-order linear decay, well-mixed, constant vol
 
 ## Example: EV Life Cycle Assessment
 
-**What factors contribute to the environmental impact of a battery electric vehicle (versus an internal cumbustion engine)?**
+**What factors contribute to the environmental impact of a battery electric vehicle (versus an internal combustion engine)?**
 
 ## Possible System/Life Cycle Framework
 
