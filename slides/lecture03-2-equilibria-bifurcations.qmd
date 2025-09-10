@@ -77,6 +77,52 @@ default(
 
 # Review of Last Class
 
+## Feedbacks
+
+:::: {.columns}
+::: {.column width=60%}
+Feedbacks are "loops" in a system diagram.
+
+Feedbacks can be:
+
+- **Amplifying** (sometimes called "positive")
+- **Dampening** (sometimes called "negative")
+
+:::
+
+::: {.column width=40%}
+![Ice-Albedo Feedback Loop](figures/ice-albedo.png){width=100%}
+:::
+
+::::
+
+## Amplifying Feedbacks
+
+:::: {.columns}
+::: {.column width=50%}
+Shocks will amplify as they are propagated:
+:::
+::: {.column width=50%}
+
+![Amplifying Feedback Example](figures/eutrophication-feedbacks.svg)
+
+:::
+::::
+
+## Dampening Feedbacks
+
+:::: {.columns}
+::: {.column width=50%}
+Shocks are attenuated (dampened) as they propagate: 
+:::
+::: {.column width=50%}
+
+![Dampening Feedback Example](figures/eutrophication-feedbacks.svg)
+
+:::
+::::
+
+
 ## Questions?
 
 {{< include _poll-prompt.qmd >}}
@@ -87,14 +133,12 @@ default(
 
 System dynamics are often understood relative to their **equilibria** (or fixed points).
 
-* If $X_{t+1} = f(X_t)$, equilibria occur where $f(X_t) = X_t$.
+* If $X_{t+1} = F(X_t)$, equilibria occur where $F(X_t) = X_t$.
 * If $\frac{dx}{dt} = f(x)$, equilibria occur where $f(x) = 0$.
 
 In other words, **a system at an equilibrium will stay at an equilibrium**.
 
-## Example: Predator-Prey
-
-## Lynx and Hare Pelts
+## Example: Predator-Prey Dynamics
 
 ```{julia}
 #| label: fig-lynxhare-data
@@ -115,7 +159,7 @@ plot!(size=(1100, 500))
 $$
 \begin{align*}
 \frac{dH}{dt} &= H_t \underbrace{b_H}_{\substack{\text{birth} \\ \text{rate}}} - H_t (\underbrace{L_t m_H}_{\substack{\text{impact of} \\ \text{lynxes}}}) \\
-\frac{dL}{dt} &= L_t (H_t b_L) - L_t m_L
+\frac{dL}{dt} &= L_t (H_t b_L)_{\substack{\text{impact of} \\ \text{hares}}}) - \underbrace{L_t m_L}__{\substack{\text{mortality} \\ \text{rate}}})
 \end{align*}
 $$
 
@@ -178,6 +222,20 @@ This simple model has two fixed points:
 :::
 ::::
 
+## Stability
+
+
+:::: {.columns}
+::: {.column width=40%}
+Equilibria can be **stable** or **unstable**.
+
+:::
+::: {.column width=60%}
+![Initial Conditions Diagram](figures/state-plot.png)
+:::
+::::
+
+
 # Shallow Lake Model
 
 ## Shallow Lake Model
@@ -214,7 +272,7 @@ Random runoffs $y_t$ are sampled from a LogNormal distribution.
 #| echo: true
 
 # this uses StatsPlots.jl's recipe for plotting distributions directly; otherwise use something like plot(-5:0.01:5, pdf.(LogNormal(0.25, 1), -5:0.1:5))
-plot(LogNormal(0.25, 1), linewidth=3, label="LogNormal(0.25, 1)", guidefontsize=18, legendfontsize=16, tickfontsize=16)
+plot(LogNormal(0.25, 1), linewidth=3, label="LogNormal(0.25, 1)")
 plot!(LogNormal(0.5, 1), linewidth=3, label="LogNormal(0.5, 2)")
 plot!(LogNormal(0.25, 2), linewidth=3, label="LogNormal(0.25, 2)")
 plot!(size=(1000, 400), grid=:false, left_margin=10mm, right_margin=10mm, bottom_margin=10mm)
@@ -298,8 +356,8 @@ p_noinflow = plot(X, label=false, ylabel=L"X_t", xlabel="Time", size=(600, 500))
 x = 0:0.05:2.5;
 
 # plot recycling and outflows for selected values of b and q
-p1 = plot(x, lake_P_cycling(x, 2.5), color=:black, linewidth=5,legend=:topleft, label="P Recycling", ylabel="P Flux", xlabel=L"$X_t$", tickfontsize=16, guidefontsize=18, legendfontsize=16, palette=:tol_muted, framestyle=:zerolines, grid=:false)
-plot!(x, lake_P_out(x, 0.4), linewidth=3, linestyle=:dash, label=L"$b=0.4$", color=:blue)
+p1 = plot(x, lake_P_cycling(x, 2.5), color=:black, linewidth=5,legend=:topleft, label="P Recycling", ylabel="P Flux", xlabel=L"$X_t$", palette=:tol_muted, framestyle=:zerolines, grid=:false)
+plot!(x, lake_P_out(x, 0.4), linewidth=3, linestyle=:dash, label="b=0.4", color=:blue)
 quiver!([1], [0.35], quiver=([1], [0.4]), color=:red, linewidth=2)
 quiver!([0.4], [0.13], quiver=([-0.125], [-0.05]), color=:red, linewidth=2)
 quiver!([2.5], [0.97], quiver=([-0.125], [-0.05]), color=:red, linewidth=2)
@@ -333,6 +391,7 @@ scatter!(p1, eq1, (y -> lake_P_cycling(y, 2.5)).(eq1), label="Equilibria", marke
 ```
 :::
 ::::
+
 
 ## Stability of Equilibria
 
@@ -394,9 +453,9 @@ How do the equilibria change as system parameters vary?
 
 eq_45 = [0.8, 1.8]
 eq_5 = [1.0, 1.4]
-plot!(x, lake_P_out(x, 0.45), linewidth=3, linestyle=:dash, label=L"$b=0.45$", color=:orange)
-plot!(x, lake_P_out(x, 0.5), linewidth=3, linestyle=:dash, label=L"$b=0.5$", color=:purple)
-plot!(x, lake_P_out(x, 0.6), linewidth=3, linestyle=:dash, label=L"$b=0.6$", color=:green)
+plot!(p1, x, lake_P_out(x, 0.45), linewidth=3, linestyle=:dash, label="b=0.45", color=:orange)
+plot!(p1, x, lake_P_out(x, 0.5), linewidth=3, linestyle=:dash, label="b=0.5", color=:purple)
+plot!(p1, x, lake_P_out(x, 0.6), linewidth=3, linestyle=:dash, label="b=0.6", color=:green)
 scatter!(p1, eq_45, (y -> lake_P_cycling(y, 2.5)).(eq_45), label=false, markersize=10, markercolor=:orange)
 scatter!(p1, eq_5, (y -> lake_P_cycling(y, 2.5)).(eq_5), label=false, markersize=10, markercolor=:purple)
 
@@ -414,7 +473,7 @@ scatter!(p1, eq_5, (y -> lake_P_cycling(y, 2.5)).(eq_5), label=false, markersize
 #| code-fold: true
 
 function plot_P_flux(b_vals)
-    p = plot(; xlabel=L"b", ylabel=L"X", legend=:outerright, tickfontsize=16, legendfontsize=16, guidefontsize=18, left_margin=5mm, bottom_margin=10mm, size=(1200, 500))
+    p = plot(; xlabel="b", ylabel="X", legend=:outerright, size=(1200, 500), leftmargin=10mm)
 
     flux_func(x, b) = lake_P_cycling(x, 2.5) - lake_P_out(x, b)
     X_un = []
