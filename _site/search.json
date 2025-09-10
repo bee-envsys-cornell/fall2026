@@ -5620,7 +5620,7 @@
     "href": "slides/lecture03-2-equilibria-bifurcations.html#predator-prey-dynamics-lotka-volterra",
     "title": "System Dynamics: Equilibria and Bifurcations",
     "section": "Predator-Prey Dynamics (Lotka-Volterra)",
-    "text": "Predator-Prey Dynamics (Lotka-Volterra)\n\\[\n\\begin{align*}\n\\frac{dH}{dt} &= H_t \\underbrace{b_H}_{\\substack{\\text{birth} \\\\ \\text{rate}}} - H_t (\\underbrace{L_t m_H}_{\\substack{\\text{impact of} \\\\ \\text{lynxes}}}) \\\\\n\\frac{dL}{dt} &= L_t (H_t b_L)_{\\substack{\\text{impact of} \\\\ \\text{hares}}}) - \\underbrace{L_t m_L}__{\\substack{\\text{mortality} \\\\ \\text{rate}}})\n\\end{align*}\n\\]"
+    "text": "Predator-Prey Dynamics (Lotka-Volterra)\n\\[\n\\begin{align*}\n\\frac{dH}{dt} &= H_t \\underbrace{b_H}_{\\substack{\\text{birth} \\\\ \\text{rate}}} - H_t (\\underbrace{L_t m_H}_{\\substack{\\text{impact of} \\\\ \\text{lynxes}}}) \\\\\n\\frac{dL}{dt} &= L_t (H_t b_L)_{\\substack{\\text{impact of} \\\\ \\text{hares}}}) - \\underbrace{L_t m_L}_{\\substack{\\text{mortality} \\\\ \\text{rate}}})\n\\end{align*}\n\\]"
   },
   {
     "objectID": "slides/lecture03-2-equilibria-bifurcations.html#lotka-volterra-fixed-points",
@@ -5753,7 +5753,7 @@
     "href": "slides/lecture03-2-equilibria-bifurcations.html#assessments",
     "title": "System Dynamics: Equilibria and Bifurcations",
     "section": "Assessments",
-    "text": "Assessments\nHomework 2: Due 9/19 at 9pm"
+    "text": "Assessments\nHomework 1: Due 9/11 at 9pm"
   },
   {
     "objectID": "slides/lecture03-2-equilibria-bifurcations.html#references-1",

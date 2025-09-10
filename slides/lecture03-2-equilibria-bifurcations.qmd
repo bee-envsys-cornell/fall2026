@@ -159,7 +159,7 @@ plot!(size=(1100, 500))
 $$
 \begin{align*}
 \frac{dH}{dt} &= H_t \underbrace{b_H}_{\substack{\text{birth} \\ \text{rate}}} - H_t (\underbrace{L_t m_H}_{\substack{\text{impact of} \\ \text{lynxes}}}) \\
-\frac{dL}{dt} &= L_t (H_t b_L)_{\substack{\text{impact of} \\ \text{hares}}}) - \underbrace{L_t m_L}__{\substack{\text{mortality} \\ \text{rate}}})
+\frac{dL}{dt} &= L_t (H_t b_L)_{\substack{\text{impact of} \\ \text{hares}}}) - \underbrace{L_t m_L}_{\substack{\text{mortality} \\ \text{rate}}})
 \end{align*}
 $$
 
@@ -565,7 +565,8 @@ Bifurcations have the following implications:
 
 ## Assessments
 
-**Homework 2**: Due 9/19 at 9pm
+**Homework 1**: Due 9/11 at 9pm
+
 
 # References
 
