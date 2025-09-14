@@ -114,6 +114,8 @@ website:
           text: "Homework Overview"
         - href: hw/hw01/hw01.qmd
           text: "Homework 1"
+        - href: hw/hw02/hw02.qmd
+          text: "Homework 2" 
     - title: "Project"
       style: docked
       search: false

@@ -4,7 +4,7 @@ subtitle: "Lecture 06"
 author: "Vivek Srikrishnan"
 course: "BEE 4750"
 institution: "Cornell University"
-date: "September 16, 2024"
+date: "September 15, 2025"
 format:
     revealjs:
         slide-number: c/t
@@ -32,6 +32,8 @@ format:
             buttons: true
         controls: true
 engine: julia
+julia:
+    exeflags: ["+1.11.5"]
 execute:
     freeze: auto
     daemon: 600
@@ -82,7 +84,7 @@ default(
 :::: {.columns}
 
 ::: {.column width=60%}
-Unstable equilibria can result from **reinforcing (positive) feedback loops**, where a shock to the system state gets amplified.
+Unstable equilibria can result from **amplifying (positive) feedback loops**, where a shock to the system state gets amplified.
 
 Feedback loops can also be **dampening (negative)**, where a shock is weakened (stable equilibria).
 :::
@@ -490,11 +492,13 @@ display(p2)
 
 ## Next Classes
 
-**Next Week**: Dissolved Oxygen
+**Wednesday**: Dissolved Oxygen Simulation
 
 ## Assessments
 
-**Homework 2**: Due 9/19 at 9pm
+**Homework 2**: Assigned, Due 9/25 at 9pm
+
+**Reading**: @Oreskes1994-br
 
 # References
 
