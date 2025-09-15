@@ -1540,39 +1540,53 @@
     "text": "Steady-State Airshed Box Model\nSteady-state box ⇒ \\(\\dot{m} = 0\\).\n\n\\[\\begin{align}\n0 &= m_\\text{in} - m_\\text{out} + S - D \\\\[0.5em]\n&\\class{\\fragment}{{} = (u WH) C_\\text{in} - (u WH) C + S - D } \\\\[0.5em]\n\\end{align}\\]\n\n\nSolving for \\(C\\): \\[C = C_{in} + \\frac{S-D}{uWH}\\]"
   },
   {
-    "objectID": "slides/lecture04-1-simulation.html#decay-processes",
-    "href": "slides/lecture04-1-simulation.html#decay-processes",
+    "objectID": "slides/lecture04-1-simulation.html#residence-time",
+    "href": "slides/lecture04-1-simulation.html#residence-time",
     "title": "Simulation and Box Models",
-    "section": "Decay Processes",
-    "text": "Decay Processes\nNow let’s assume some process affecting \\(m\\) depends on time.\nFor example: let’s say we care about an air pollutant which has a first-order decay rate \\(k\\), so \\(D(t) = D_0 - km(t)\\).\n\\[\n\\Rightarrow \\frac{dm}{dt} = m_\\text{in} - m_\\text{out} + S - D_0 - km\n\\]\n\n\\[\n\\dot{m} = \\frac{d(CV)}{dt} = \\overbrace{(u WH) C_\\text{in}}^{\\text{inflow}} - \\overbrace{(u WH) C}^{\\text{outflow}} + \\overbrace{S - D_0}^{\\text{net emissions}} - \\overbrace{kCV}^{\\text{mass decay}}\n\\]"
+    "section": "Residence Time",
+    "text": "Residence Time\nReminder: residence time of a stock \\(\\omega\\) is $$= :\nFor steady-state, this is easy:\n\\[\\begin{align*}\n\\tau &= \\frac{C(WHL)}{uCWH} \\\\\n&= \\frac{L}{u}\n\\end{align*}\\]"
+  },
+  {
+    "objectID": "slides/lecture04-1-simulation.html#non-steady-state-model",
+    "href": "slides/lecture04-1-simulation.html#non-steady-state-model",
+    "title": "Simulation and Box Models",
+    "section": "Non-Steady State Model",
+    "text": "Non-Steady State Model\nNow let’s assume some process affecting \\(m\\) depends on time.\nFor example: let’s say we care about an air pollutant which has a first-order decay rate \\(k\\), so \\(D(t) = D_0 - km(t)\\).\n\\[\n\\Rightarrow \\frac{dm}{dt} = m_\\text{in} - m_\\text{out} + S - D_0 - km\n\\]\n\n\\[\n\\dot{m} = \\frac{d(CV)}{dt} = \\overbrace{(u WH) C_\\text{in}}^{\\text{inflow}} - \\overbrace{(u WH) C}^{\\text{outflow}} + \\overbrace{S - D_0}^{\\text{net emissions}} - \\overbrace{kCV}^{\\text{mass decay}}\n\\]"
+  },
+  {
+    "objectID": "slides/lecture04-1-simulation.html#non-steady-state-solution",
+    "href": "slides/lecture04-1-simulation.html#non-steady-state-solution",
+    "title": "Simulation and Box Models",
+    "section": "Non-Steady State Solution",
+    "text": "Non-Steady State Solution\nSolution (derivation here): \\(C(t) = \\color{red}C_0 e^{-lt} \\color{black}+ \\color{blue}\\frac{P}{l}\\left(1 - e^{-lt}\\right)\\)\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInitial condition is transient (decays to zero eventually);\nConcentration converges to a steady-state solution: ratio of inflows \\(P\\) and outflows \\(l\\)."
   },
   {
     "objectID": "slides/lecture04-1-simulation.html#discretizing-continuous-models",
     "href": "slides/lecture04-1-simulation.html#discretizing-continuous-models",
     "title": "Simulation and Box Models",
     "section": "Discretizing Continuous Models",
-    "text": "Discretizing Continuous Models\nWe could analytically solve this particular differential equation, but in general this may not be possible without strong assumptions.\nInstead, we can discretize these models using methods from CEE 3200!"
+    "text": "Discretizing Continuous Models\nWe could solve this differential equation, but in general this may not be possible without strong assumptions.\nInstead, we can discretize these models using methods from CEE 3200!"
   },
   {
-    "objectID": "slides/lecture04-1-simulation.html#euler-discretization",
-    "href": "slides/lecture04-1-simulation.html#euler-discretization",
+    "objectID": "slides/lecture04-1-simulation.html#forward-euler-discretization",
+    "href": "slides/lecture04-1-simulation.html#forward-euler-discretization",
     "title": "Simulation and Box Models",
-    "section": "Euler Discretization",
-    "text": "Euler Discretization\nRecall that \\[\\frac{df}{dt} = \\lim_{\\Delta t \\to 0} \\frac{\\Delta f(t)}{\\Delta t}.\\]\nSo if we pick a sufficiently small step size \\(\\Delta t\\), can use this as an approximation:\n\\[\\frac{df}{dt} \\approx \\frac{\\Delta f(t)}{\\Delta t}\\]"
+    "section": "Forward Euler Discretization",
+    "text": "Forward Euler Discretization\nRecall that \\[\\frac{df}{dt} = \\lim_{\\Delta t \\to 0} \\frac{\\Delta f(t)}{\\Delta t}.\\]\nSo if we pick a sufficiently small step size \\(\\Delta t\\), can use this as an approximation:\n\\[\\frac{df}{dt} \\approx \\frac{\\Delta f(t)}{\\Delta t} = \\frac{f(t + \\Delta t) - f(t)}{\\Delta t}\\]"
   },
   {
     "objectID": "slides/lecture04-1-simulation.html#discretizing-the-airshed-model",
     "href": "slides/lecture04-1-simulation.html#discretizing-the-airshed-model",
     "title": "Simulation and Box Models",
     "section": "Discretizing the Airshed Model",
-    "text": "Discretizing the Airshed Model\n\\[\n\\begin{align*}\n\\frac{d(CV)}{dt} &= (u WH) C_\\text{in} - (u WH) C(t) + S - D_0 - kC(t)V \\\\[0.5em]\n\\frac{d(C)}{dt} &= \\frac{u}{L} C_\\text{in} - \\frac{u}{L} C(t) + \\frac{S - D_0}{V} - kC(t) \\\\\n\\end{align*}\n\\]\n\n\\[\n\\frac{C(t+1) - C(t)}{\\Delta t} = \\frac{u}{L} C_\\text{in} - \\frac{u}{L} C(t) + \\frac{S - D_0}{V} - kC(t)\n\\]\n\n\n\\[\n\\bbox[5px, border: red 5px solid]{C(t+1) = C(t) + \\Delta t \\left(\\frac{u}{L} \\left(C_\\text{in} - C(t)\\right) + \\frac{S - D_0}{V} - kC(t)\\right)}\n\\]"
+    "text": "Discretizing the Airshed Model\n\\[\n\\frac{dC}{dt} = \\frac{u}{L} C_\\text{in} - \\frac{u}{L} C + \\frac{S - D}{V} - kC \\\\\n\\]\n\n\\[\n\\frac{C(t+\\Delta t) - C(t)}{\\Delta t} = \\frac{u}{L} C_\\text{in} - \\frac{u}{L} C(t) + \\frac{S - D}{V} - kC(t)\n\\]\n\n\n\\[\n\\bbox[5px, border: red 5px solid]{C(t+\\Delta t) = C(t) + \\Delta t \\left(\\frac{u}{L} \\left(C_\\text{in} - C(t)\\right) + \\frac{S - D}{V} - kC(t)\\right)}\n\\]"
   },
   {
     "objectID": "slides/lecture04-1-simulation.html#how-to-simulate",
     "href": "slides/lecture04-1-simulation.html#how-to-simulate",
     "title": "Simulation and Box Models",
     "section": "How To Simulate?",
-    "text": "How To Simulate?\n\nPick \\(\\Delta t\\);\nStarting at \\(t=1\\), iterate equation until end-time \\(T\\)."
+    "text": "How To Simulate?\n\nPick \\(\\Delta t\\);\nStarting at \\(t=1\\), iterate equation until end-time \\(T\\).\n\nNote: Forward Euler can suffer from numerical instability or truncation error due to large time steps. Can substitute other numerical integration methods!"
   },
   {
     "objectID": "slides/lecture04-1-simulation.html#simple-simulation-code",
@@ -1600,7 +1614,7 @@
     "href": "slides/lecture04-1-simulation.html#time-varying-dynamic-simulation",
     "title": "Simulation and Box Models",
     "section": "Time-Varying (Dynamic) Simulation",
-    "text": "Time-Varying (Dynamic) Simulation\nIn our prior example, inflow conditions were static (often an assumption needed for analytic solutions).\nThe simulation framework lets us make these time-varying:\n\\[\n\\begin{aligned}\nC(t+1) &= C(t) + \\\\\n& \\qquad \\Delta t \\left(\\frac{{\\color{red}u(t)}}{L} \\left({\\color{red}C_\\text{in}(t)} - C(t)\\right) + {\\color{red}S(t)} - {\\color{red}D(t)} - kC(t)\\right)\n\\end{aligned}\n\\]"
+    "text": "Time-Varying (Dynamic) Simulation\nIn our prior example, inflow conditions were static (often an assumption needed for analytic solutions).\nThe simulation framework lets us make these time-varying:\n\\[\n\\begin{aligned}\nC(t+\\Delta t) &= C(t) + \\\\\n& \\qquad \\Delta t \\left(\\frac{{\\color{red}u(t)}}{L} \\left({\\color{red}C_\\text{in}(t)} - C(t)\\right) + {\\color{red}S(t)} - {\\color{red}D(t)} - kC(t)\\right)\n\\end{aligned}\n\\]"
   },
   {
     "objectID": "slides/lecture04-1-simulation.html#dynamic-simulation-code",
@@ -1649,14 +1663,14 @@
     "href": "slides/lecture04-1-simulation.html#two-box-simulation-results",
     "title": "Simulation and Box Models",
     "section": "Two-Box Simulation Results",
-    "text": "Two-Box Simulation Results\n\nCode\nΔt = 0.1\nT = 10\nC1₀ = 0.05\nC2₀ = 0.1\nk = 0.3\nu = 2\nW1 = 6\nH1 = 6\nL1 = 6\nW2 = 4\nH2 = 4\nL2 = 4\nCi = 0.01\nS1 = 30\nD1 = 20\nS2 = 10\nD2 = 13\nC = airshed_twobox_simulate(C1₀, C2₀, Ci, u, W1, W2, H1, H2, L1, L2, S1, D1, S2, D2, k, T, Δt)\n\np1 = plot(0:0.1:T, C[1], linewidth=3, color=:purple, xlabel=\"Time\", ylabel=L\"Concentration ($\\mathrm{g/m}^3$)\", title=\"Box 1\", size=(600, 500))\np2 = plot(0:0.1:T, C[2], linewidth=3, color=:red, xlabel=\"Time\", ylabel=L\"Concentration ($\\mathrm{g/m}^3$)\", title=\"Box 2\", size=(600, 500))\ndisplay(p1)\ndisplay(p2)\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(a) Simulation results for two-box airshed model.\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(b)\n\n\n\n\n\n\n\nFigure 5"
+    "text": "Two-Box Simulation Results\n\nCode\nΔt = 0.1\nT = 10\nC1₀ = 0.05\nC2₀ = 0.1\nk = 0.3\nu = 2\nW1 = 6\nH1 = 6\nL1 = 6\nW2 = 4\nH2 = 4\nL2 = 4\nCi = 0.01\nS1 = 30\nD1 = 20\nS2 = 10\nD2 = 13\nC = airshed_twobox_simulate(C1₀, C2₀, Ci, u, W1, W2, H1, H2, L1, L2, S1, D1, S2, D2, k, T, Δt)\n\np1 = plot(0:0.1:T, C[1], linewidth=3, color=:purple, xlabel=\"Time\", ylabel=L\"Concentration ($\\mathrm{g/m}^3$)\", title=\"Box 1\", size=(600, 500))\np2 = plot(0:0.1:T, C[2], linewidth=3, color=:red, xlabel=\"Time\", ylabel=L\"Concentration ($\\mathrm{g/m}^3$)\", title=\"Box 2\", size=(600, 500))\ndisplay(p1)\ndisplay(p2)\n\n\n\n\n\n\nread: Connection reset by peer\nsend: Broken pipe\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(a) Simulation results for two-box airshed model.\n\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(b)\n\n\n\n\n\n\n\nFigure 5"
   },
   {
-    "objectID": "slides/lecture04-1-simulation.html#key-takeaways-1",
-    "href": "slides/lecture04-1-simulation.html#key-takeaways-1",
+    "objectID": "slides/lecture04-1-simulation.html#key-takeaways",
+    "href": "slides/lecture04-1-simulation.html#key-takeaways",
     "title": "Simulation and Box Models",
     "section": "Key Takeaways",
-    "text": "Key Takeaways\n\nSimulation modeling involves using a model to generate “data” under certain conditions.\nSimulations are the main approach to descriptive modeling.\nDivide domain into spatial domains and/or temporal steps and iterate.\nDiscretize equations if needed."
+    "text": "Key Takeaways\n\nSimulation modeling involves using a model to generate “data” under certain conditions.\nSimulations are the main approach to descriptive modeling.\nDivide domain into spatial domains and/or temporal steps and iterate.\nNumerical vs. Analytic Integration"
   },
   {
     "objectID": "slides/lecture04-1-simulation.html#next-classes",
@@ -1671,6 +1685,27 @@
     "title": "Simulation and Box Models",
     "section": "Assessments",
     "text": "Assessments\nHomework 2: Assigned, Due 9/25 at 9pm\nReading: Oreskes et al. (1994)"
+  },
+  {
+    "objectID": "slides/lecture04-1-simulation.html#nss-solution",
+    "href": "slides/lecture04-1-simulation.html#nss-solution",
+    "title": "Simulation and Box Models",
+    "section": "Non-Steady State Model Solution",
+    "text": "Non-Steady State Model Solution\n\\[\\begin{gather}\n\\dot{m} = \\frac{d(CV)}{dt} = \\overbrace{(u WH) C_\\text{in}}^{\\text{inflow}} - \\overbrace{(u WH) C}^{\\text{outflow}} + \\overbrace{S - D}^{\\text{net emissions}} - \\overbrace{kCV}^{\\text{mass decay}} \\\\[0.5em]\n\\frac{dC}{dt} = \\underbrace{\\frac{u WH}{V} C_\\text{in} + \\frac{S - D}{V}}_{\\Large =P} - \\underbrace{\\left(\\frac{u WH}{V} + k\\right)}_{\\Large =l} C \\\\[0.5em]\n\\frac{dC}{dt} = P - l C\n\\end{gather}\\]"
+  },
+  {
+    "objectID": "slides/lecture04-1-simulation.html#non-steady-state-model-solution",
+    "href": "slides/lecture04-1-simulation.html#non-steady-state-model-solution",
+    "title": "Simulation and Box Models",
+    "section": "Non-Steady State Model Solution",
+    "text": "Non-Steady State Model Solution\n\\[\\begin{gather}\n\\frac{dC}{dt} = P - l C \\\\[0.5em]\n\\int \\frac{dC}{P-lC} = \\int dt \\\\[0.5em]\n-\\frac{1}{l} \\ln\\left(P-lC\\right) = t + A \\\\[0.5em]\n\\underbrace{C(0) = C_0}_\\text{initial condition} \\Rightarrow A = -\\frac{1}{l} \\ln\\left(P-lC_0\\right)\n\\end{gather}\\]"
+  },
+  {
+    "objectID": "slides/lecture04-1-simulation.html#non-steady-state-solution-1",
+    "href": "slides/lecture04-1-simulation.html#non-steady-state-solution-1",
+    "title": "Simulation and Box Models",
+    "section": "Non-Steady State Solution",
+    "text": "Non-Steady State Solution\n\\[\\begin{gather}\n-\\frac{1}{l} \\ln\\left(P-lC\\right) = t - \\frac{1}{l} \\ln\\left(P-lC_0\\right) \\\\[0.5em]\n-\\frac{1}{l} \\ln\\left(\\frac{P-lC}{P-lC_0}\\right) = t \\\\[0.5em]\nC = -\\frac{1}{l} \\left(P - e^{-lt}\\left(P-lC_0\\right)\\right) \\\\[0.5em]\nC(t) = C_0 e^{-lt} + \\frac{P}{l}\\left(1 - e^{-lt}\\right)\n\\end{gather}\\]"
   },
   {
     "objectID": "slides/lecture04-1-simulation.html#references-1",
