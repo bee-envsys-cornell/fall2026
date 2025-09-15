@@ -1544,7 +1544,7 @@
     "href": "slides/lecture04-1-simulation.html#residence-time",
     "title": "Simulation and Box Models",
     "section": "Residence Time",
-    "text": "Residence Time\nReminder: residence time of a stock \\(\\omega\\) is $$= :\nFor steady-state, this is easy:\n\\[\\begin{align*}\n\\tau &= \\frac{C(WHL)}{uCWH} \\\\\n&= \\frac{L}{u}\n\\end{align*}\\]"
+    "text": "Residence Time\nReminder: residence time of a stock \\(\\omega\\) is \\[\\tau = \\frac{\\text{Mass}}{\\text{Flow}}\\]:\nFor steady-state, this is easy:\n\\[\\begin{align*}\n\\tau &= \\frac{C(WHL)}{uCWH} \\\\\n&= \\frac{L}{u}\n\\end{align*}\\]"
   },
   {
     "objectID": "slides/lecture04-1-simulation.html#non-steady-state-model",
@@ -1663,7 +1663,7 @@
     "href": "slides/lecture04-1-simulation.html#two-box-simulation-results",
     "title": "Simulation and Box Models",
     "section": "Two-Box Simulation Results",
-    "text": "Two-Box Simulation Results\n\nCode\nΔt = 0.1\nT = 10\nC1₀ = 0.05\nC2₀ = 0.1\nk = 0.3\nu = 2\nW1 = 6\nH1 = 6\nL1 = 6\nW2 = 4\nH2 = 4\nL2 = 4\nCi = 0.01\nS1 = 30\nD1 = 20\nS2 = 10\nD2 = 13\nC = airshed_twobox_simulate(C1₀, C2₀, Ci, u, W1, W2, H1, H2, L1, L2, S1, D1, S2, D2, k, T, Δt)\n\np1 = plot(0:0.1:T, C[1], linewidth=3, color=:purple, xlabel=\"Time\", ylabel=L\"Concentration ($\\mathrm{g/m}^3$)\", title=\"Box 1\", size=(600, 500))\np2 = plot(0:0.1:T, C[2], linewidth=3, color=:red, xlabel=\"Time\", ylabel=L\"Concentration ($\\mathrm{g/m}^3$)\", title=\"Box 2\", size=(600, 500))\ndisplay(p1)\ndisplay(p2)\n\n\n\n\n\n\nread: Connection reset by peer\nsend: Broken pipe\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(a) Simulation results for two-box airshed model.\n\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(b)\n\n\n\n\n\n\n\nFigure 5"
+    "text": "Two-Box Simulation Results\n\nCode\nΔt = 0.1\nT = 10\nC1₀ = 0.05\nC2₀ = 0.1\nk = 0.3\nu = 2\nW1 = 6\nH1 = 6\nL1 = 6\nW2 = 4\nH2 = 4\nL2 = 4\nCi = 0.01\nS1 = 30\nD1 = 20\nS2 = 10\nD2 = 13\nC = airshed_twobox_simulate(C1₀, C2₀, Ci, u, W1, W2, H1, H2, L1, L2, S1, D1, S2, D2, k, T, Δt)\n\np1 = plot(0:0.1:T, C[1], linewidth=3, color=:purple, xlabel=\"Time\", ylabel=L\"Concentration ($\\mathrm{g/m}^3$)\", title=\"Box 1\", size=(600, 500))\np2 = plot(0:0.1:T, C[2], linewidth=3, color=:red, xlabel=\"Time\", ylabel=L\"Concentration ($\\mathrm{g/m}^3$)\", title=\"Box 2\", size=(600, 500))\ndisplay(p1)\ndisplay(p2)\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(a) Simulation results for two-box airshed model.\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(b)\n\n\n\n\n\n\n\nFigure 5"
   },
   {
     "objectID": "slides/lecture04-1-simulation.html#key-takeaways",

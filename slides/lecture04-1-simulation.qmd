@@ -198,7 +198,7 @@ $$C = C_{in} + \frac{S-D}{uWH}$$
 
 ## Residence Time
 
-Reminder: residence time of a stock $\omega$ is $$\tau = \frac{\text{Mass}_\omega}{\text{Flow}_\omega}:
+Reminder: residence time of a stock $\omega$ is $$\tau = \frac{\text{Mass}}{\text{Flow}}$$:
 
 For steady-state, this is easy:
 
