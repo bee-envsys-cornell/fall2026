@@ -294,7 +294,7 @@ For nitrification, if $k_n$ is the deoxygenation rate (d$^{-1}$):
 
 $$N(x) = N_0 \exp(-k_n x / U).$$
 
-## Steady-State Waste, DO Mass Balance
+## DO Mass Balance
 
 So the corresponding oxygen uptake rates are 
 $$k_c B(x) = k_c B_0 \exp(-k_c x / U)$$
@@ -303,7 +303,7 @@ $$k_c B(x) = k_c B_0 \exp(-k_c x / U)$$
  $$k_n N(x) = k_n N_0 \exp(-k_n x / U).$$
 
 
-## Steady-State Waste, DO Mass Balance
+## DO Mass Balance
 
 Other processes:
 
@@ -311,7 +311,7 @@ Other processes:
 - Assume measured, constant values for photosynthesis ($P$), respiration ($R$), benthal uptake ($S_B$)
 - $P$, $R$, $S_B$ can be varying for simulation.
 
-## Steady-State Waste, DO Mass Balance
+## DO Mass Balance
 
 Putting it all together:
 
@@ -340,9 +340,6 @@ C(x) &= C_s(1 - \alpha_1) + C_0 \alpha_1 - B_0 \alpha_2 - N_0 \alpha_3 + \left(\
 \end{align}
 :::
 
-## Model Assu*mptions
-
-**What assumptions did we make while deriving and solving this equation**?
 
 # Simulation Example
 
@@ -440,6 +437,86 @@ xaxis!((0, 40))
 ```
 
 
+## Multiple Discharges
+
+What happens if we have multiple discharge sites?
+
+![Schematic for Multiple Discharge Example](figures/do-multi-release.svg){width=75%}
+
+## Simulating Multiple Discharges
+
+:::: {.columns}
+::: {.column width=40%}
+Think of this as a multi-box system.
+
+1. Flow from waste release 1 to waste release 2.
+2. Flow from waste release 2 on.
+:::
+
+::: {.column width=60%}
+![Schematic for Multiple Discharge Example](figures/do-multi-release.svg)
+
+::: {.fragment .fade-in}
+**How do we compute the initial conditions at release 2?**
+:::
+:::
+::::
+
+## Who is Responsible for Non-Compliance?
+
+```{julia}
+#| label: fig-do-multi
+#| fig-cap: "Multi-Release Dissolved Oxygen Example"
+#| fig-width: 100%
+
+Q1 = 100000
+Q2 = 20000
+Q3 = 25000
+
+x0 = 0
+x1 = 18
+x2 = 30
+x3 = 45
+
+C01 = 6
+B01 = 5
+N01 = 4.5
+
+do_out1 = (y -> do_simulate.(y, C01, B01, N01, ka, kc, kn, 9, 6))(x0:x1)
+
+C1 = [d[1] for d in do_out1]
+B1 = [d[2] for d in do_out1]
+N1 = [d[3] for d in do_out1]
+
+C02 = (C1[length(C1)] * Q1 + 3 * Q2) / (Q1 + Q2)
+B02 = (B1[length(B1)] * Q1 + 50 * Q2) / (Q1 + Q2)
+N02 = (N1[length(N1)] * Q1 + 45 * Q2) / (Q1 + Q2)
+
+do_out2 = (y -> do_simulate.(y, C02, B02, N02, ka, kc, kn, 9, 6))(x0:(x2-x1))
+
+C2 = [d[1] for d in do_out2]
+B2 = [d[2] for d in do_out2]
+N2 = [d[3] for d in do_out2]
+
+C03 = (C2[length(C2)] * (Q1 + Q2) + 4 * Q3) / (Q1 + Q2 + Q3)
+B03 = (B2[length(B2)] * (Q1 + Q2) + 40 * Q3) / (Q1 + Q2 + Q3)
+N03 = (N2[length(N2)] * (Q1 + Q2) + 30 * Q3) / (Q1 + Q2 + Q3)
+
+do_out3 = (y -> do_simulate.(y, C03, B03, N03, ka, kc, kn, 9, 6))(x0:(x3-x2))
+
+C3 = [d[1] for d in do_out3]
+B3 = [d[2] for d in do_out3]
+N3 = [d[3] for d in do_out3]
+
+plot(x0:x1, C1, grid=false, color=:black, ylabel="DO (mg/L)", xlabel="Distance (km)", label="DO", linewidth=4, left_margin=12mm, top_margin=10mm, bottom_margin=20mm, guidefontsize=18, tickfontsize=16, legendfontsize=16)
+plot!(x1:x2, C2, color=:black, label=false, linewidth=4)
+plot!(x2:x3, C3, color=:black, label=false, linewidth=4)
+plot!(size=(1200, 500))
+
+vline!([x0, x1, x2], color=:green, linewidth=3, label="Discharge")
+hline!([3], color=:red, linewidth=3, label="Regulation", linestyle=:dash)
+```
+
 # Key Points
 
 ## Key Points
@@ -453,9 +530,7 @@ xaxis!((0, 40))
 
 ## Next Classes
 
-**Monday**: More Complex DO Simulations
-
-**Wednesday**: Uncertainty and Risk
+**Next Week**: Uncertainty and Monte Carlo
 
 ## Assessments
 
