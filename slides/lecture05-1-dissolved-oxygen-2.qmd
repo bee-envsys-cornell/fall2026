@@ -1,10 +1,10 @@
 ---
-title: "Simulation Example: Dissolved Oxygen"
-subtitle: "Lecture 07"
+title: "More Dissolved Oxygen and Simulation"
+subtitle: "Lecture 08"
 author: "Vivek Srikrishnan"
 course: "BEE 4750"
 institution: "Cornell University"
-date: "September 17, 2025"
+date: "September 22, 2025"
 format:
     revealjs:
         slide-number: c/t
@@ -60,47 +60,20 @@ using Roots
 plot_font = "Computer Modern"
 default(
     fontfamily=plot_font,
-    linewidth=2, 
+    linewidth=3, 
     framestyle=:box, 
     label=nothing, 
-    grid=false
+    grid=false,
+    guidefontsize=18,
+    legendfontsize=16,
+    tickfontsize=16,
+    titlefontsize=20,
+    bottom_margin=10mm,
+    left_margin=5mm
 )
 ```
 
 # Review of Last Class
-
-## Last Class
-
-- Model-based simulation as a way to understand system dynamics and response.
-- Box models: mass-balance in some region of the domain
-- Can generalize single box models by:
-    - Adding more complexity;
-    - combining multiple boxes.
-
-## Why Simulate?
-
-1. System involves complex, nonlinear dynamics that may not be analytically tractable.
-2. Setting up and running a real-world experiment is not possible.
-3. State depends on prior states or states of nearby locations, so need to iterate over multiple spatial or temporal steps.
-4. Need to understand range of system performance across rarely-seen conditions.  
-
-## Questions
-
-{{< include _poll-prompt.qmd >}}
-
-# Dissolved Oxygen Overview
-
-## Fate & Transport Modeling
-
-**How do nutrients and other quantities move through environmental mediums?**
-
-What can make fate & transport modeling more complex?
-
-::: {.fragment .fade-in}
-- Multiple points of inflow;
-- More complex growth/decay dynamics.
-- Stochasticity/randomness.
-:::
 
 ## Dissolved Oxygen
 
@@ -121,13 +94,7 @@ Source: [fondriest.com](https://www.fondriest.com/environmental-measurements/par
 :::
 ::::
 
-## Temperature Impact on DO
 
-![Dissolved Oxygen and Temperature Plot](https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/do_temp_0.png){width=60%}
-
-::: {.caption}
-Source: [usgs.gov](https://www.usgs.gov/special-topics/water-science-school/science/dissolved-oxygen-and-water)
-:::
 
 ## Dissolved Oxygen and Life
 
@@ -154,14 +121,6 @@ Source: [fondriest.com](https://www.fondriest.com/environmental-measurements/par
 ::::
 
 
-## Factors Influencing DO
-
-- Temperature, Pressure, Depth
-- Salinity
-- Mixing
-- Plant and Microbial Life
-- Organic Matter
-
 ## Impact of Paris On Seine DO, 1874
 
 ![Dissolved Oxygen Downstream of Paris, 1874](https://www.researchgate.net/publication/325721176/figure/fig10/AS:962439298445322@1606474818380/Longitudinal-profiles-x-axis-in-km-downstream-of-Paris-center-of-dissolved-oxygen_W640.jpg)
@@ -170,90 +129,11 @@ Source: [fondriest.com](https://www.fondriest.com/environmental-measurements/par
 Source: Dmitrieva, T., et al. (2018). <https://doi.org/10.1007/s12685-018-0216-7>
 :::
 
-## DO Regulatory Standards
-
-**Objective**: Keep DO *above* the regulatory standard.
-
-In NY (via [Westlaw](https://govt.westlaw.com/nycrr/Document/I4ed90412cd1711dda432a117e6e0f345?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)&bhcp=1)): 
-
-- DO levels may not fall below 3 mg/L
-- DO may not be below 4.8 mg/L for an extended period
-
 # Modeling Dissolved Oxygen
 
 ## Oxygen Balance in Rivers and Streams
 
 ![Processes influencing oxygen balance in moving freshwater](figures/do-processes.svg){height=100%}
-
-## Selecting a Metric for DO Fluxes
-
-Typically use **oxygen demand** (OD): 
-
-- measure of the concentration of oxidizable materials in a water sample
-- metric for organic waste contamination
-- reflects how oxygen will be depleted in a given segment
-
-But there are several different processes affecting total OD!
-
-## Biochemical Oxygen Demand (BOD)
-
-Oxygen used by microbes during aerobic decomposition of organic materials:
-$$\text{Organic Matter} + \text{O}_2 \rightarrow \text{CO}_2 +  \text{H}_2\text{O} + \text{NO}_3 + \text{SO}_2 + \text{Residuals}$$
-
-Broadly speaking, we care about two types of BOD: **Carbonaceous BOD** and **Nitrogenous BOD**.
-
-## Carbonaceous BOD (CBOD)
-
-Oxygen consumed during microbial decomposition of carbon compounds, *e.g.*:
-$$\text{C}_a\text{H}_b\text{O}_c + d\text{O}_2 \rightarrow e\text{H}_2\text{O} + f\text{CO}_2$$
-
-## Nitrogenous BOD (NBOD)
-
-Oxygen consumed during microbial decomposition of nitrogen compounds:
-$$2\text{NH}_2^+ + 4\text{O}_2 \rightarrow 2\text{H}_2\text{O} + 4\text{H}^+ + 2\text{NO}_3^-$$
-
-## BOD and Time
-
-Moreover, BOD is differentiated based on time frame, *e.g.*:
-
-- **BOD<sub>5</sub>: oxygen demand over 5 days**
-- BOD<sub>20</sub>: oxygen demand over 20 days
-
-## DO Modeling Needs
-
-Need a model that will predict DO as a function of CBOD, NBOD.
-
-Use a *fate and transport* modeling approach: how are relevant quantities moved downstream?
-
-## Modeling DO
-
-:::: {.columns}
-::: {.column width=40%}
-So what do we do?
-
-Start by assuming *steady-state* waste in each section (or box...).
-
-:::
-::: {.column width=60%}
-
-![Processes influencing oxygen balance in moving freshwater](figures/do-processes.svg)
-:::
-::::
-
-## Modeling DO
-
-:::: {.columns}
-::: {.column width=40%}
-
-We'll track the mass balance in terms of rates (not absolute mass).
-
-What happens to an element of water as it moves downstream?
-:::
-::: {.column width=60%}
-
-![Processes influencing oxygen balance in moving freshwater](figures/do-processes.svg)
-:::
-::::
 
 ## DO Mass Balance
 
@@ -265,51 +145,6 @@ U \frac{dC}{dx} &= \Delta\ \text{DO}  \\[0.5em]
 & \qquad - \text{Benthal Uptake} - \text{CBOD} - \text{NBOD}
 
 \end{align}
-
-## BOD Oxygen Uptake
-
-Assume deoxygenation from waste decomposition is first-order (rate $k$):
-
-$$\begin{aligned}
-\frac{dM}{dt} &= -kM \\
-\Rightarrow M &= M_0 \exp(-kt)
-\end{aligned}$$
-
-
-::: {.fragment .fade-in}
-But our equations are formulated in terms of distance:
-
-$$M = M_0 \exp(-kx/U)$$
-
-:::
-
-
-## BOD Oxygen Uptake
-
-For biochemical organics, if $k_c$ is the deoxygenation rate (d$^{-1}$);
-
-$$B(x) = B_0 \exp(-k_c x / U);$$
-
-For nitrification, if $k_n$ is the deoxygenation rate (d$^{-1}$):
-
-$$N(x) = N_0 \exp(-k_n x / U).$$
-
-## DO Mass Balance
-
-So the corresponding oxygen uptake rates are 
-$$k_c B(x) = k_c B_0 \exp(-k_c x / U)$$
- and 
-
- $$k_n N(x) = k_n N_0 \exp(-k_n x / U).$$
-
-
-## DO Mass Balance
-
-Other processes:
-
-- **Reaeration**, assume a simple linear model based on difference from saturation level $C_s$: $k_a (C_s - C)$
-- Assume measured, constant values for photosynthesis ($P$), respiration ($R$), benthal uptake ($S_B$)
-- $P$, $R$, $S_B$ can be varying for simulation.
 
 ## DO Mass Balance
 
@@ -340,47 +175,6 @@ C(x) &= C_s(1 - \alpha_1) + C_0 \alpha_1 - B_0 \alpha_2 - N_0 \alpha_3 + \left(\
 \end{align}
 :::
 
-
-# Simulation Example
-
-## Single-Discharge Example
-
-Consider a single waste release along a river:
-
-![Single-Discharge DO Setup](figures/do_setup.svg){width=75%}
-
-## Single-Discharge Example
-
-| Parameter | River | Waste | General |
-|:---------:|:-----:|:-----:|:-------:|
-| Volume (m^3^/d)	 		| 100,000 | 10,000  | --- |
-| DO (mg/L)           		 	| 6.4 	   | 4.2 	 | --- |
-| CBOD	(mg/L)	 		        | 5  		   | 49 	 | --- |
-| NBOD	(mg/L)	 		        | 5 	   | 27 | --- |
-| $C_s$ (mg/L)                    | ---              | ---         | 7 |
-| $k_a$, $k_c$, $k_n$       | ---              | ---         | 0.6, 0.4, 0.25 |   
-
-## Single-Discharge Example: Initial Condition
-
-How do we find the initial state ($x=0$)?
-
-::: {.fragment .fade-in}
-Need to compute the mixed concentrations of DO, CBOD, and NBOD ($Q$ is the flow volume):
-
-$$C_0 = C_\text{mixed} = \frac{C_\text{river} \times Q_\text{river} + C_\text{waste} \times Q_\text{waste}}{Q_\text{river} + Q_\text{waste}}$$
-:::
-
-## Single-Discharge Example: Initial Condition
-
-So the initial values:
-
-$$C_0 = 6.2 \ \text{mg/L}$$
-
-$$B_0 = 9 \ \text{mg/L}$$
-
-$$N_0 = 7 \ \text{mg/L}$$
-
-
 ## Simulation Outputs ("Sag Curve")
 
 ```{julia}
@@ -389,7 +183,7 @@ $$N_0 = 7 \ \text{mg/L}$$
 #| label: fig-do-sim
 #| fig-cap: "Sag curve for dissolved oxygen"
 
-function do_simulate(x, C0, B0, N0, ka, kn, kc, Cs, U)
+function do_analytic(x, C0, B0, N0, ka, kn, kc, Cs, U)
     B = B0 * exp(-kc * x / U)
     N = N0 * exp(-kn * x / U)
     α1 = exp(-ka * x / U)
@@ -415,7 +209,7 @@ x = 0:40
 
 # evaluate model over all x's
 # this uses broadcasting
-do_out = (y -> do_simulate(y, C0, B0, N0, ka, kc, kn, Cs, U)).(x)
+do_out = (y -> do_analytic(y, C0, B0, N0, ka, kc, kn, Cs, U)).(x)
 # unpack outputs into individual arrays for C, B, and N
 # this uses comprehensions to pull out the relevant components 
 #of the tuples that our function outputs
@@ -424,7 +218,7 @@ B = [d[2] for d in do_out]
 N = [d[3] for d in do_out]
 
 # plot outputs
-p1 = plot(; ylabel="DO/OD (mg/l)", xlabel="Distance (km)", left_margin=8mm, top_margin=10mm, guidefontsize=18, legendfontsize=16, tickfontsize=16, legend=:outerright, bottom_margin=10mm)
+p1 = plot(; ylabel="DO/OD (mg/l)", xlabel="Distance (km)", left_margin=8mm, legend=:outerright, bottom_margin=10mm)
 plot!(p1, x, C, color=:black, linewidth=4, label="DO")
 plot!(p1, x, B, color=:green, label="CBOD", linestyle=:dash, linewidth=3)
 plot!(p1, x, N, color=:blue, label="NBOD", linestyle=:dash, linewidth=3)
@@ -436,6 +230,11 @@ plot!(size=(1200, 450))
 xaxis!((0, 40))
 ```
 
+## Questions
+
+{{< include _poll-prompt.qmd >}}
+
+# Multiple Waste Discharges Impact on DO
 
 ## Multiple Discharges
 
@@ -482,7 +281,7 @@ C01 = 6
 B01 = 5
 N01 = 4.5
 
-do_out1 = (y -> do_simulate.(y, C01, B01, N01, ka, kc, kn, 9, 6))(x0:x1)
+do_out1 = (y -> do_analytic.(y, C01, B01, N01, ka, kc, kn, 9, 6))(x0:x1)
 
 C1 = [d[1] for d in do_out1]
 B1 = [d[2] for d in do_out1]
@@ -492,7 +291,7 @@ C02 = (C1[length(C1)] * Q1 + 3 * Q2) / (Q1 + Q2)
 B02 = (B1[length(B1)] * Q1 + 50 * Q2) / (Q1 + Q2)
 N02 = (N1[length(N1)] * Q1 + 45 * Q2) / (Q1 + Q2)
 
-do_out2 = (y -> do_simulate.(y, C02, B02, N02, ka, kc, kn, 9, 6))(x0:(x2-x1))
+do_out2 = (y -> do_analytic.(y, C02, B02, N02, ka, kc, kn, 9, 6))(x0:(x2-x1))
 
 C2 = [d[1] for d in do_out2]
 B2 = [d[2] for d in do_out2]
@@ -502,7 +301,7 @@ C03 = (C2[length(C2)] * (Q1 + Q2) + 4 * Q3) / (Q1 + Q2 + Q3)
 B03 = (B2[length(B2)] * (Q1 + Q2) + 40 * Q3) / (Q1 + Q2 + Q3)
 N03 = (N2[length(N2)] * (Q1 + Q2) + 30 * Q3) / (Q1 + Q2 + Q3)
 
-do_out3 = (y -> do_simulate.(y, C03, B03, N03, ka, kc, kn, 9, 6))(x0:(x3-x2))
+do_out3 = (y -> do_analytic.(y, C03, B03, N03, ka, kc, kn, 9, 6))(x0:(x3-x2))
 
 C3 = [d[1] for d in do_out3]
 B3 = [d[2] for d in do_out3]
@@ -517,22 +316,141 @@ vline!([x0, x1, x2], color=:green, linewidth=3, label="Discharge")
 hline!([3], color=:red, linewidth=3, label="Regulation", linestyle=:dash)
 ```
 
+
+# Numerical Simulation of DO ODE
+
+## Numerical Solution
+
+**What is the discretized version of the DO ODE?**
+
+$$
+\begin{aligned}
+U \frac{dC}{dx} &= k_a (C_s - C) + P - R - S_B \\
+&\quad - k_cB_0\exp\left(\frac{-k_cx}{U}\right) - k_n N_0\exp\left(\frac{-k_nx}{U}\right)
+\end{aligned}
+$$
+
+## Simulation Model Workflow
+
+![Simulation Workflow](figures/simulation_workflow.svg){width=90%}
+
+## Numerical Solution
+
+Divide river length into discrete spatial boxes of resolution $\Delta x$ (*e.g.* 1km resolution).
+
+::: {.small-math}
+$$
+\begin{aligned}
+C(x+\Delta x) &= C(x) + \frac{\Delta x}{U}(k_a (C_s - C(x)) + P - R - S_B \\
+    &\quad - k_cB(x) - k_n N(x)) \\[0.5em]
+B(x + \Delta x) &= B(x)\exp\left(\frac{-k_c\Delta x}{U}\right) \\
+N(x + \Delta x) &= N(x)\exp\left(\frac{-k_n\Delta x}{U}\right)
+\end{aligned}
+$$
+:::
+
+## Numerical Implementation
+
+```{julia}
+#| echo: true
+#| output: false
+#| label: do-numerical
+#| code-line-numbers: "|2|3-5|9-13"
+
+function do_numerical(L, Δx, C0, B0, N0, ka, kn, kc, Cs, U)
+    n = Int(L / Δx) # number of length steps
+    C = zeros(n + 1)
+    B = zeros(n + 1)
+    N = zeros(n + 1)
+    C[1] = C0
+    B[1] = B0
+    N[1] = N0
+    for i = 1:n
+        B[i+1] = B[i] * exp(-kc * Δx / U)
+        N[i+1] = N[i] * exp(-kn * Δx / U)
+        C[i+1] = C[i] + (Δx / U) * (ka * (Cs - C[i]) - kc * B[i] - kn * N[i])
+    end
+    return (C, B, N)
+end  
+```
+
+## Numerical vs. Analytic Solution
+
+```{julia}
+#| code-fold: true
+#| echo: true
+#| label: fig-do-numerical
+#| fig-cap: Numerical vs. Analytic Solutions for DO model
+
+C1, B1, N1 = do_numerical(40, 1, C0, B0, N0, ka, kc, kn, Cs, U)
+C2, B2, N2 = do_numerical(40, 0.5, C0, B0, N0, ka, kc, kn, Cs, U)
+C3, B3, N3 = do_numerical(40, 0.25, C0, B0, N0, ka, kc, kn, Cs, U)
+
+p2 = plot(; ylabel="DO/OD (mg/l)", xlabel="Distance (km)", left_margin=10mm)
+plot!(p2, 0:1:40, C, color=:black, linewidth=4, label="Analytic")
+plot!(p2, 0:1:40, C1, color=:blue, linewidth=3, linestyle=:dash, label="Numerical (Δx = 1km)")
+plot!(p2, 0:0.5:40, C2, color=:orange, linewidth=3, linestyle=:dash, label="Numerical (Δx = 0.5km)")
+plot!(p2, 0:0.25:40, C3, color=:purple, linewidth=3, linestyle=:dash, label="Numerical (Δx = 0.25km)")
+ylims!(p2, (2.25, 6.25))
+plot!(size=(1200, 500))
+```
+
+## Pros and Cons of Numerical Simulation
+
+- Defined more generally (analytic solution undefined when $k_a = k_c$ or $k_a = k_n$)
+- Can add more complexity (time/temperature-variation by modeling change in time)
+- But be careful of numerical errors and computational complexity.
+
+# Validation and Calibration of Simulation Models
+
+## Calibration vs. Validation 
+
+Framework from @Oreskes1994-br:
+
+- **Calibration**: Selection of model parameters and structures to match simulations with observations.
+- **Validation**: Establishment of model legitimacy through evidence of consistency between simulation and real-world dynamics.
+
+
+## How Do We Calibrate?
+
+Typical procedures include:
+
+- Selection of parameters based on experimental results;
+- "Curve-fitting": minimize some error metric, such as root-mean-square-error: $$\text{RMSE} = \sqrt{\frac{1}{n}\sum_{i=1^n} (y_\text{sim} - y_\text{obs})^2}$$
+
+Curve-fitting can run into problems when systems have multiple compensating processes. 
+
+**Nonuniqueness**: multiple parameter combinations/model structures provide equally good fits to observations.
+
+## How Do We Validate?
+
+Typical procedures include:
+
+- Compare simulations to **out-of-sample** data (not used for calibration!) (**empirical validity**).
+- Mechanistic justifications/assessments about which processes were included/not included and how they were parameterized (**face validity**).
+
+"Validation" is also sometimes known as "verification."
+
 # Key Points
 
 ## Key Points
 
-- Dissolved oxygen (DO) is essential for water quality and aquatic life.
-- Commonly regulated to keep DO above a minimum threshold.
-- DO impacted by a number of factors, notably organic waste decomposition and nitrification.
-- "Sag Curve": DO reduced near a discharge until waste decomposition reduces OD and re-aeration can occur.
+- Attributing blame/liability for environmental degradation can be challenged by system complexity.
+- Numerical simulation example: be careful of potential for numerical errors, particularly near thresholds.
+- Calibration vs. validation: language often used in very loose fashion, but "calibration" refers to parameter selection and "validation" to positive assessment of model performance.
 
 # Upcoming Schedule
 
 ## Next Classes
 
-**Next Week**: Uncertainty and Monte Carlo
+**Wednesday**: Uncertainty and Risk
+
+**Next Week**: Monte Carlo Simulation
 
 ## Assessments
 
-**Homework 2**: Due 9/25 at 9pm.
+**Homework 2**: Due Thursday (9/25) at 9pm.
 
+# References
+
+## References

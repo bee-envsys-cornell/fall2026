@@ -22,10 +22,10 @@ Note that this schedule will be updated as necessary the semester progresses, wi
 |      | Wed, Sep 10 | Equilibria and Bifurcations  | [{{< fa sharp presentation-screen >}}](slides/lecture03-2-equilibria-bifurcations.qmd) | | | |
 |  4   | Mon, Sep 15 | Simulation Models | [{{< fa sharp presentation-screen >}}](slides/lecture04-1-simulation.qmd) | | [{{< fa sharp file-pen >}}](hw/hw02/hw02.qmd) | @Oreskes1994-br |
 |      | Wed, Sep 17 | Dissolved Oxygen | [{{< fa sharp presentation-screen >}}](slides/lecture04-2-dissolved-oxygen.qmd) | | | |
-|  5    | Mon, Sep 22 |  | | | | |
-|   | Wed, Sep 24 | | | | | |
-|  6  | Mon, Sep 29 | | | |  | |
-|    | Wed, Oct 01 |  | | | | |
+|  5    | Mon, Sep 22 | More Dissolved Oxygen and Simulation | [{{< fa sharp presentation-screen >}}](slides/lecture05-1-dissolved-oxygen-2.qmd) | | | @Simpson2021-dj |
+|   | Wed, Sep 24 | Uncertainty and Monte Carlo |  [{{< fa sharp presentation-screen >}}](slides/lecture05-2-uncertainty-monte-carlo.qmd) | | | |
+|  6  | Mon, Sep 29 | Monte Carlo Lab | | |  | |
+|    | Wed, Oct 01 | Monte Carlo: Why It Works | | | | |
 |  7   | Mon, Oct 06 |  | | | | |
 |      | Wed, Oct 08 | *Prelim 1*  | | | |  |
 |  8  | Mon, Oct 13 | **No Class: Fall Break** |  | |  | |

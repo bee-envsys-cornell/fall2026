@@ -4,7 +4,7 @@ subtitle: "Lecture 08"
 author: "Vivek Srikrishnan"
 course: "BEE 4750"
 institution: "Cornell University"
-date: "September 23, 2024"
+date: "September 24, 2025"
 format:
     revealjs:
         slide-number: c/t
@@ -33,6 +33,8 @@ format:
         auto-stretch: false
         controls: true
 engine: julia
+julia:
+    exeflags: ["+1.11.5"]
 execute:
     freeze: auto
     daemon: 600
@@ -86,11 +88,10 @@ default(
 - Often requires some type of discretization (not always!)
 - More complex approaches (*e.g.* discrete-event simulation) for specific use cases.
 
-## What We Haven't Discussed
+## Calibration and Validation
 
 - **Calibration**: How do we select parameter values?
 - **Validation**: Does the model adequately reproduce the system dynamics?
-
 
 ## Dissolved Oxygen
 
@@ -181,7 +182,7 @@ Multiple components which contribute to risk:
 ![Overview of the Components of Risk](figures/simpson_risk.svg)
 
 ::: {.caption}
-Source: [Simpson et al (2021)](https://doi.org/10.1016/j.oneear.2021.03.005)
+Source: @Simpson2021-dj
 :::
 :::
 ::::
@@ -194,6 +195,8 @@ Risk management is often a key consideration in systems analysis. For example, c
 - Systems modeling is a key way to understand 
     - the impacts of changing a regulation
     - the probability of failure to meet standards.
+
+## Examples of Risk
   
 # Probability
 
@@ -509,6 +512,7 @@ For example, consider our dissolved oxygen model. Suppose that we have a probabi
 ## Key Takeaways
 
 - Systems analysis features many uncertainties, which may be neglected with certain methods/model setups.
+- Risk: Combination of hazard, exposure, vulnerability, and response.
 - Choice of probability distribution can have large impacts on uncertainty and risk estimates: **try not to use distributions just because they're convenient.**
 - **Monte Carlo**: Estimate expected values of outcomes using simulation.
 
@@ -521,8 +525,5 @@ For example, consider our dissolved oxygen model. Suppose that we have a probabi
 
 **Monday**: Why Does Monte Carlo Work?
 
-## Assessments
-
-**HW3**: Released today, due 10/03 at 9pm.
 
 
