@@ -55,6 +55,7 @@ using Measures
 using Distributions
 using StatsPlots
 using LaTeXStrings
+using Optim
 using Roots
 
 plot_font = "Computer Modern"
@@ -422,6 +423,76 @@ Curve-fitting can run into problems when systems have multiple compensating proc
 
 **Nonuniqueness**: multiple parameter combinations/model structures provide equally good fits to observations.
 
+## Calibration Example
+
+Suppose we don't know $k_a$, $k_c$, and $k_n$ but we have data:
+
+```{julia}
+#| code-fold: true
+#| echo: true
+#| label: fig-do-calibration-data
+#| fig-cap: Calibration data example with DO.
+
+sim_dat = (x -> do_analytic(x, C0, B0, N0, 0.6, 0.4, 0.3, Cs, U)).(0:40)
+C_dat = [d[1] for d in sim_dat]
+C_noise = C_dat + rand(Normal(0, 0.4), length(C_dat))
+p_calib = scatter(0:40, C_noise, xlabel="Distance (km)", ylabel="Dissolved Oxygen (mg/L)", label="Data", color=:blue, markersize=5)
+plot!(p_calib, 0:40, C_dat, label="True Model", linewidth=3, color=:blue)
+plot!(p_calib, size=(1000, 400))
+```
+
+## RMSE Minimization
+
+```{julia}
+#| echo: true
+
+rmse(x, y) = sqrt(mean((y .- x).^2))
+
+function do_rmse(p, dat)
+    ka, kc, kn = p # unpack parameter vector into unknown model variables
+    C_sim, B, N = do_numerical(40, 0.25, C0, B0, N0, ka, kc, kn, Cs, U)
+    return rmse(C_sim[1:4:length(C_sim)], dat)
+end
+
+lb = zeros(3)
+ub = ones(3)
+x0 = 0.5 * ones(3)
+optim_out = Optim.optimize(p -> do_rmse(p, C_noise), lb, ub, x0)
+@show round.(optim_out.minimizer; digits=1);
+@show round.(optim_out.minimum; digits=2);
+```
+
+## Calibration Results
+
+```{julia}
+#| code-fold: true
+#| echo: true
+#| label: fig-do-calibration-outcome
+#| fig-cap: Calibration data example with DO.
+
+p_fit = optim_out.minimizer
+C_fit, B, N = do_numerical(40, 0.25, C0, B0, N0, p_fit[1], p_fit[2], p_fit[3], Cs, U)
+plot!(p_calib, 0:0.25:40, C_fit, linewidth=3, color=:orange, label="Calibrated Model")
+plot!(p_calib, size=(1000, 500))
+```
+
+## Nonuniqueness
+
+The calibration model produced the "wrong" parameter values:
+
+- Fitted: `{julia} round.(p_fit; digits=1)`
+- True: $0.6, 0.4, 0.3$.
+
+The RMSE was slightly lower than for the "true" model (`{julia} round.(optim_out.minimum; digits=3)` vs `{julia} round.(do_rmse([0.6, 0.4, 0.3], C_noise); digits=3)`)...
+
+**What can we attribute this "error" to? Do we care? How could we fix it**?
+
+## Positive and Negative Controls
+
+What we just did is called a **"positive control" experiment**: we tested the ability of our numerical model + calibration procedure to recover the parameters for synthetically generated data (so we know the "true" parameters).
+
+We can also do a **negative control**: if we feed the model/procedure no signal (*e.g.* white noise), do we falsely recover a signal?
+
 ## How Do We Validate?
 
 Typical procedures include:
@@ -439,7 +510,7 @@ Typical procedures include:
 - Numerical simulation example: be careful of potential for numerical errors, particularly near thresholds.
 - Calibration vs. validation: language often used in very loose fashion, but "calibration" refers to parameter selection and "validation" to positive assessment of model performance.
 
-# Upcoming Schedule
+# Upcoming Schedule and References
 
 ## Next Classes
 
@@ -450,7 +521,5 @@ Typical procedures include:
 ## Assessments
 
 **Homework 2**: Due Thursday (9/25) at 9pm.
-
-# References
 
 ## References

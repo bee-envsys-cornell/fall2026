@@ -5558,6 +5558,41 @@
     "text": "How Do We Calibrate?\nTypical procedures include:\n\nSelection of parameters based on experimental results;\n“Curve-fitting”: minimize some error metric, such as root-mean-square-error: \\[\\text{RMSE} = \\sqrt{\\frac{1}{n}\\sum_{i=1^n} (y_\\text{sim} - y_\\text{obs})^2}\\]\n\nCurve-fitting can run into problems when systems have multiple compensating processes.\nNonuniqueness: multiple parameter combinations/model structures provide equally good fits to observations."
   },
   {
+    "objectID": "slides/lecture05-1-dissolved-oxygen-2.html#calibration-example",
+    "href": "slides/lecture05-1-dissolved-oxygen-2.html#calibration-example",
+    "title": "More Dissolved Oxygen and Simulation",
+    "section": "Calibration Example",
+    "text": "Calibration Example\nSuppose we don’t know \\(k_a\\), \\(k_c\\), and \\(k_n\\) but we have data:\n\n\nCode\nsim_dat = (x -&gt; do_analytic(x, C0, B0, N0, 0.6, 0.4, 0.3, Cs, U)).(0:40)\nC_dat = [d[1] for d in sim_dat]\nC_noise = C_dat + rand(Normal(0, 0.4), length(C_dat))\np_calib = scatter(0:40, C_noise, xlabel=\"Distance (km)\", ylabel=\"Dissolved Oxygen (mg/L)\", label=\"Data\", color=:blue, markersize=5)\nplot!(p_calib, 0:40, C_dat, label=\"True Model\", linewidth=3, color=:blue)\nplot!(p_calib, size=(1000, 400))\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 4: Calibration data example with DO."
+  },
+  {
+    "objectID": "slides/lecture05-1-dissolved-oxygen-2.html#rmse-minimization",
+    "href": "slides/lecture05-1-dissolved-oxygen-2.html#rmse-minimization",
+    "title": "More Dissolved Oxygen and Simulation",
+    "section": "RMSE Minimization",
+    "text": "RMSE Minimization\n\nrmse(x, y) = sqrt(mean((y .- x).^2))\n\nfunction do_rmse(p, dat)\n    ka, kc, kn = p # unpack parameter vector into unknown model variables\n    C_sim, B, N = do_numerical(40, 0.25, C0, B0, N0, ka, kc, kn, Cs, U)\n    return rmse(C_sim[1:4:length(C_sim)], dat)\nend\n\nlb = zeros(3)\nub = ones(3)\nx0 = 0.5 * ones(3)\noptim_out = Optim.optimize(p -&gt; do_rmse(p, C_noise), lb, ub, x0)\n@show round.(optim_out.minimizer; digits=1);\n@show round.(optim_out.minimum; digits=2);\n\nround.(optim_out.minimizer; digits = 1) = [0.5, 0.1, 0.5]\nround.(optim_out.minimum; digits = 2) = 0.36"
+  },
+  {
+    "objectID": "slides/lecture05-1-dissolved-oxygen-2.html#calibration-results",
+    "href": "slides/lecture05-1-dissolved-oxygen-2.html#calibration-results",
+    "title": "More Dissolved Oxygen and Simulation",
+    "section": "Calibration Results",
+    "text": "Calibration Results\n\n\nCode\np_fit = optim_out.minimizer\nC_fit, B, N = do_numerical(40, 0.25, C0, B0, N0, p_fit[1], p_fit[2], p_fit[3], Cs, U)\nplot!(p_calib, 0:0.25:40, C_fit, linewidth=3, color=:orange, label=\"Calibrated Model\")\nplot!(p_calib, size=(1000, 500))\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 5: Calibration data example with DO."
+  },
+  {
+    "objectID": "slides/lecture05-1-dissolved-oxygen-2.html#nonuniqueness",
+    "href": "slides/lecture05-1-dissolved-oxygen-2.html#nonuniqueness",
+    "title": "More Dissolved Oxygen and Simulation",
+    "section": "Nonuniqueness",
+    "text": "Nonuniqueness\nThe calibration model produced the “wrong” parameter values:\n\nFitted: [0.5, 0.1, 0.5]\nTrue: \\(0.6, 0.4, 0.3\\).\n\nThe RMSE was slightly lower than for the “true” model (0.363 vs 0.372)…\nWhat can we attribute this “error” to? Do we care? How could we fix it?"
+  },
+  {
+    "objectID": "slides/lecture05-1-dissolved-oxygen-2.html#positive-and-negative-controls",
+    "href": "slides/lecture05-1-dissolved-oxygen-2.html#positive-and-negative-controls",
+    "title": "More Dissolved Oxygen and Simulation",
+    "section": "Positive and Negative Controls",
+    "text": "Positive and Negative Controls\nWhat we just did is called a “positive control” experiment: we tested the ability of our numerical model + calibration procedure to recover the parameters for synthetically generated data (so we know the “true” parameters).\nWe can also do a negative control: if we feed the model/procedure no signal (e.g. white noise), do we falsely recover a signal?"
+  },
+  {
     "objectID": "slides/lecture05-1-dissolved-oxygen-2.html#how-do-we-validate",
     "href": "slides/lecture05-1-dissolved-oxygen-2.html#how-do-we-validate",
     "title": "More Dissolved Oxygen and Simulation",
@@ -5586,8 +5621,8 @@
     "text": "Assessments\nHomework 2: Due Thursday (9/25) at 9pm."
   },
   {
-    "objectID": "slides/lecture05-1-dissolved-oxygen-2.html#references-1",
-    "href": "slides/lecture05-1-dissolved-oxygen-2.html#references-1",
+    "objectID": "slides/lecture05-1-dissolved-oxygen-2.html#references",
+    "href": "slides/lecture05-1-dissolved-oxygen-2.html#references",
     "title": "More Dissolved Oxygen and Simulation",
     "section": "References",
     "text": "References\n\n\n\n\nOreskes, N., Shrader-Frechette, K., & Belitz, K. (1994). Verification, validation, and confirmation of numerical models in the Earth sciences. Science, 263, 641–646. https://doi.org/10.1126/science.263.5147.641"
