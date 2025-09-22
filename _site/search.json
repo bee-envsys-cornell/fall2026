@@ -5569,7 +5569,7 @@
     "href": "slides/lecture05-1-dissolved-oxygen-2.html#rmse-minimization",
     "title": "More Dissolved Oxygen and Simulation",
     "section": "RMSE Minimization",
-    "text": "RMSE Minimization\n\nrmse(x, y) = sqrt(mean((y .- x).^2))\n\nfunction do_rmse(p, dat)\n    ka, kc, kn = p # unpack parameter vector into unknown model variables\n    C_sim, B, N = do_numerical(40, 0.25, C0, B0, N0, ka, kc, kn, Cs, U)\n    return rmse(C_sim[1:4:length(C_sim)], dat)\nend\n\nlb = zeros(3)\nub = ones(3)\nx0 = 0.5 * ones(3)\noptim_out = Optim.optimize(p -&gt; do_rmse(p, C_noise), lb, ub, x0)\n@show round.(optim_out.minimizer; digits=1);\n@show round.(optim_out.minimum; digits=2);\n\nround.(optim_out.minimizer; digits = 1) = [0.5, 0.1, 0.5]\nround.(optim_out.minimum; digits = 2) = 0.36"
+    "text": "RMSE Minimization\n\nrmse(x, y) = sqrt(mean((y .- x).^2))\n\nfunction do_rmse(p, dat)\n    ka, kc, kn = p # unpack parameter vector into unknown model variables\n    C_sim, B, N = do_numerical(40, 0.25, C0, B0, N0, ka, kc, kn, Cs, U)\n    return rmse(C_sim[1:4:length(C_sim)], dat)\nend\n\nlb = zeros(3)\nub = ones(3)\nx0 = 0.5 * ones(3)\noptim_out = Optim.optimize(p -&gt; do_rmse(p, C_noise), lb, ub, x0)\n@show round.(optim_out.minimizer; digits=1);\n@show round.(optim_out.minimum; digits=2);\n\nround.(optim_out.minimizer; digits = 1) = [0.6, 0.3, 0.3]\nround.(optim_out.minimum; digits = 2) = 0.43"
   },
   {
     "objectID": "slides/lecture05-1-dissolved-oxygen-2.html#calibration-results",
@@ -5583,7 +5583,7 @@
     "href": "slides/lecture05-1-dissolved-oxygen-2.html#nonuniqueness",
     "title": "More Dissolved Oxygen and Simulation",
     "section": "Nonuniqueness",
-    "text": "Nonuniqueness\nThe calibration model produced the “wrong” parameter values:\n\nFitted: [0.5, 0.1, 0.5]\nTrue: \\(0.6, 0.4, 0.3\\).\n\nThe RMSE was slightly lower than for the “true” model (0.363 vs 0.372)…\nWhat can we attribute this “error” to? Do we care? How could we fix it?"
+    "text": "Nonuniqueness\nThe calibration model produced the “wrong” parameter values:\n\nFitted: [0.6, 0.3, 0.3]\nTrue: \\(0.6, 0.4, 0.3\\).\n\nThe RMSE was slightly lower than for the “true” model (0.427 vs 0.429)…\nWhat can we attribute this “error” to? Do we care? How could we fix it?"
   },
   {
     "objectID": "slides/lecture05-1-dissolved-oxygen-2.html#positive-and-negative-controls",
@@ -5597,14 +5597,14 @@
     "href": "slides/lecture05-1-dissolved-oxygen-2.html#how-do-we-validate",
     "title": "More Dissolved Oxygen and Simulation",
     "section": "How Do We Validate?",
-    "text": "How Do We Validate?\nTypical procedures include:\n\nCompare simulations to out-of-sample data (not used for calibration!) (empirical validity).\nMechanistic justifications/assessments about which processes were included/not included and how they were parameterized (face validity).\n\n“Validation” is also sometimes known as “verification.”"
+    "text": "How Do We Validate?\nTypical procedures include:\n\nCompare simulations to out-of-sample data (not used for calibration!) (empirical validity).\nMechanistic justifications/assessments about which processes were included/not included and how they were parameterized (face validity)."
   },
   {
     "objectID": "slides/lecture05-1-dissolved-oxygen-2.html#key-points-1",
     "href": "slides/lecture05-1-dissolved-oxygen-2.html#key-points-1",
     "title": "More Dissolved Oxygen and Simulation",
     "section": "Key Points",
-    "text": "Key Points\n\nAttributing blame/liability for environmental degradation can be challenged by system complexity.\nNumerical simulation example: be careful of potential for numerical errors, particularly near thresholds.\nCalibration vs. validation: language often used in very loose fashion, but “calibration” refers to parameter selection and “validation” to positive assessment of model performance."
+    "text": "Key Points\n\nAttributing blame/liability for environmental degradation can be challenged by system complexity.\nNumerical simulation example: be careful of potential for numerical errors, particularly near thresholds.\nCalibration vs. validation: language often used in very loose fashion, but “calibration” refers to parameter selection and “validation” to assessment of model adequacy."
   },
   {
     "objectID": "slides/lecture05-1-dissolved-oxygen-2.html#next-classes",

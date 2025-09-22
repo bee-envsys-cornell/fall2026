@@ -500,15 +500,13 @@ Typical procedures include:
 - Compare simulations to **out-of-sample** data (not used for calibration!) (**empirical validity**).
 - Mechanistic justifications/assessments about which processes were included/not included and how they were parameterized (**face validity**).
 
-"Validation" is also sometimes known as "verification."
-
 # Key Points
 
 ## Key Points
 
 - Attributing blame/liability for environmental degradation can be challenged by system complexity.
 - Numerical simulation example: be careful of potential for numerical errors, particularly near thresholds.
-- Calibration vs. validation: language often used in very loose fashion, but "calibration" refers to parameter selection and "validation" to positive assessment of model performance.
+- Calibration vs. validation: language often used in very loose fashion, but "calibration" refers to parameter selection and "validation" to assessment of model adequacy.
 
 # Upcoming Schedule and References
 
