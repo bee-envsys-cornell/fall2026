@@ -4767,6 +4767,13 @@
     "text": "Systems and Uncertainty\n\n\n\nDeterministic models: uncertainty due to the separation between the “internals” of the system and the “external” environment.\nStochastic models: additional uncertainty from internal stochasticity\n\n\n\n\n\nConceptual Schematic of a Systems Model"
   },
   {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#uncertainty-and-models",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#uncertainty-and-models",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Uncertainty and Models",
+    "text": "Uncertainty and Models\n\n\nUncertainty can come from:\n\nStochastic models;\nUncertain external conditions (forcings);\nUncertain parameters;\nUncertain model dynamics.\n\n\n\n\n\nConceptual Schematic of a Systems Model"
+  },
+  {
     "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#types-of-uncertainty",
     "href": "slides/lecture05-2-uncertainty-monte-carlo.html#types-of-uncertainty",
     "title": "Uncertainty and Monte Carlo",
@@ -4778,7 +4785,14 @@
     "href": "slides/lecture05-2-uncertainty-monte-carlo.html#axioms-of-probability",
     "title": "Uncertainty and Monte Carlo",
     "section": "Axioms of Probability",
-    "text": "Axioms of Probability\nProbability is a language for expressing uncertainty.\nThe axioms of probability are straightforward:\n\n\\(E\\) is some “event”: \\(\\mathcal{P}(E) \\geq 0\\);\n\\(\\Omega\\) is the total event space: \\(\\mathcal{P}(\\Omega) = 1\\);\n\\(\\mathcal{P}(\\cup_{i=1}^\\infty E_i) = \\sum_{i=1}^\\infty \\mathcal{P}(E_i)\\) for disjoint (or “independent”) \\(E_i\\).\n\nProbability distributions associate a probability to every event under consideration (the event space) and have to follow these rules."
+    "text": "Axioms of Probability\nProbability is a language for expressing uncertainty.\nThe axioms of probability are straightforward:\n\n\\(E\\) is some “event”: \\(\\mathcal{P}(E) \\geq 0\\);\n\\(\\Omega\\) is the total event space: \\(\\mathcal{P}(\\Omega) = 1\\);\n\\(\\mathcal{P}(\\cup_{i=1}^\\infty E_i) = \\sum_{i=1}^\\infty \\mathcal{P}(E_i)\\) for disjoint (or “independent”) \\(E_i\\)"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-distributions",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-distributions",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Probability Distributions",
+    "text": "Probability Distributions\nProbability distributions associate a probability to every event under consideration (the event space) and have to follow these axioms."
   },
   {
     "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#key-features-of-probability-distributions",
@@ -4827,7 +4841,7 @@
     "href": "slides/lecture05-2-uncertainty-monte-carlo.html#quantiles",
     "title": "Uncertainty and Monte Carlo",
     "section": "Quantiles",
-    "text": "Quantiles\n\n\nThe quantile function is the inverse of the CDF:\n\\[q(\\alpha) = F^{-1}_\\mathcal{D}(\\alpha)\\]\nSo \\[x_0 = q(\\alpha) \\iff \\mathbb{P}_\\mathcal{D}(X &lt; x_0) = \\alpha.\\]\n\n\n\nread: Connection reset by peer\nsend: Broken pipe\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(a) Relationship of CDF and PDF\n\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(b)\n\n\n\n\n\n\n\nFigure 2"
+    "text": "Quantiles\n\n\nThe quantile function is the inverse of the CDF:\n\\[q(\\alpha) = F^{-1}_\\mathcal{D}(\\alpha)\\]\nSo \\[x_0 = q(\\alpha) \\iff \\mathbb{P}_\\mathcal{D}(X &lt; x_0) = \\alpha.\\]\n\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(a) Relationship of CDF and PDF\n\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(b)\n\n\n\n\n\n\n\nFigure 2"
   },
   {
     "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#distributions-are-assumptions",
@@ -4897,7 +4911,7 @@
     "href": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-simulation",
     "title": "Uncertainty and Monte Carlo",
     "section": "Monte Carlo Simulation",
-    "text": "Monte Carlo Simulation\nGoal: Estimate \\(\\mathbb{E}_p\\left[h(x)\\right]\\), \\(x \\sim f(x)\\)\nMonte Carlo principle:\n\nSample \\(x^1, x^2, \\ldots, x^N \\sim f(x)\\)\nEstimate \\[\\mathbb{E}_p\\left[h(x)\\right] = \\int_{x \\in X} h(x)p(x)dx  \\approx \\frac{1}{N} \\sum_{n=1}^N h(x^n)\\]"
+    "text": "Monte Carlo Simulation\nGoal: Estimate \\(\\mathbb{E}_f\\left[h(x)\\right]\\), \\(x \\sim f(x)\\)\nMonte Carlo principle:\n\nSample \\(x^1, x^2, \\ldots, x^N \\sim f(x)\\)\nEstimate \\[\\mathbb{E}_f\\left[h(x)\\right] = \\int_{x \\in X} h(x)f(x)dx  \\approx \\frac{1}{N} \\sum_{n=1}^N h(x^n)\\]"
   },
   {
     "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-finding-pi",
@@ -4911,7 +4925,7 @@
     "href": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-finding-pi-1",
     "title": "Uncertainty and Monte Carlo",
     "section": "MC Example: Finding \\(\\pi\\)",
-    "text": "MC Example: Finding \\(\\pi\\)\n\n\nFinding \\(\\pi\\) by sampling random values from the unit square and computing the fraction in the unit circle. This is an example of Monte Carlo integration.\n\n\\[\\frac{\\text{Area of Circle}}{\\text{Area of Square}} = \\frac{\\pi}{4}\\]\n\n\n\n\n\n\n\n\n\n\n\nFigure 4: Monte Carlo simualtion for Estimating pi"
+    "text": "MC Example: Finding \\(\\pi\\)\n\n\nFinding \\(\\pi\\) by sampling random values from the unit square and computing the fraction in the unit circle. This is an example of Monte Carlo integration.\n\n\\[\\frac{\\text{Area of Circle}}{\\text{Area of Square}} = \\frac{\\pi}{4}\\]\n\n\n\n\n\n\n\n\n\n\n\nFigure 4: Monte Carlo simualtion for Estimating pi\n\n\n\n\n\n::::"
   },
   {
     "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-dice",
