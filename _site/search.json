@@ -4753,13 +4753,6 @@
     "text": "Calibration and Validation\n\nCalibration: How do we select parameter values?\nValidation: Does the model adequately reproduce the system dynamics?"
   },
   {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#dissolved-oxygen",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#dissolved-oxygen",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Dissolved Oxygen",
-    "text": "Dissolved Oxygen\n\nDissolved oxygen (DO) is essential for water quality and aquatic life.\nCommonly regulated to keep DO above a minimum threshold.\nDO impacted by a number of factors, notably organic waste decomposition and nitrification.\n“Sag Curve”: DO reduced near a discharge until waste decomposition reduces OD and re-aeration can occur."
-  },
-  {
     "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#questions",
     "href": "slides/lecture05-2-uncertainty-monte-carlo.html#questions",
     "title": "Uncertainty and Monte Carlo",
@@ -4774,109 +4767,18 @@
     "text": "Systems and Uncertainty\n\n\n\nDeterministic models: uncertainty due to the separation between the “internals” of the system and the “external” environment.\nStochastic models: additional uncertainty from internal stochasticity\n\n\n\n\n\nConceptual Schematic of a Systems Model"
   },
   {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#what-is-uncertainty",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#what-is-uncertainty",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "What is Uncertainty?",
-    "text": "What is Uncertainty?\n\nGlib Answer: A lack of certainty!\n\n\nMore Seriously: Uncertainty refers to an inability to exactly describe current or future values or states."
-  },
-  {
     "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#types-of-uncertainty",
     "href": "slides/lecture05-2-uncertainty-monte-carlo.html#types-of-uncertainty",
     "title": "Uncertainty and Monte Carlo",
     "section": "Types of Uncertainty",
-    "text": "Types of Uncertainty\nTwo (broad) types of uncertainties:\n\nAleatory uncertainty, or uncertainties resulting from randomness;\nEpistemic uncertainty, or uncertainties resulting from lack of knowledge."
+    "text": "Types of Uncertainty\n\n\nTwo (broad) types of uncertainties:\n\nAleatory uncertainty, or uncertainties resulting from randomness;\nEpistemic uncertainty, or uncertainties resulting from lack of knowledge.\n\n\n\n\n\nDissolved Oxygen by temperature\n\n\n\nSource: XKCD 2440"
   },
   {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#systems-and-risk",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#systems-and-risk",
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#axioms-of-probability",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#axioms-of-probability",
     "title": "Uncertainty and Monte Carlo",
-    "section": "Systems and Risk",
-    "text": "Systems and Risk\nDesigning and managing environmental systems is often about minimizing or managing risk:\n\nMaintaining clean air/water;\nPower grid reliabiliy standards;\nFlooding/other hazards;\nClimate change mitigation/adaptation."
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#what-is-risk",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#what-is-risk",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "What is Risk?",
-    "text": "What is Risk?\nThe Society for Risk Analysis definition:\n\n\n“risk” involves uncertainty about the effects/implications of an activity with respect to something that humans value (such as health, well-being, wealth, property or the environment), often focusing on negative, undesirable consequences."
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#so-what-is-risk",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#so-what-is-risk",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "So What is Risk?",
-    "text": "So What is Risk?\nImportant: “Risk” is not just another words for probability, but:\n\nInvolves uncertainty;\nUndesireable outcomes;\nEffects matter, not just the events themselves."
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#components-of-risk",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#components-of-risk",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Components of Risk",
-    "text": "Components of Risk\n\n\nMultiple components which contribute to risk:\n\nProbability of a hazard;\nExposure to that hazard;\nVulnerability to outcomes;\nSocioeconomic responses.\n\n\n\n\n\nOverview of the Components of Risk\n\n\n\nSource: Simpson et al. (2021)"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#systems-and-risk-management",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#systems-and-risk-management",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Systems and Risk Management",
-    "text": "Systems and Risk Management\nRisk management is often a key consideration in systems analysis. For example, consider regulatory standards.\n\nOften a tradeoff between strictness of a regulation and costs of compliance.\nSystems modeling is a key way to understand\n\nthe impacts of changing a regulation\nthe probability of failure to meet standards."
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#examples-of-risk",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#examples-of-risk",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Examples of Risk",
-    "text": "Examples of Risk"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#two-definitions-of-probability",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#two-definitions-of-probability",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Two Definitions of Probability",
-    "text": "Two Definitions of Probability\nWe often represent uncertainties with probabilities. What is a probability?\n\nLong-run frequency of an event (frequentist)\nDegree of belief that a proposition is true (Bayesian)"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#conditional-probabilities",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#conditional-probabilities",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Conditional Probabilities",
-    "text": "Conditional Probabilities\nWe often don’t want to just know if a particular event \\(A\\) has a certain probability, but also how other events (call them \\(B\\)) might depend on that outcome.\nIn other words:\nWe want the conditional probability of \\(B\\) given \\(A\\), denoted \\(\\mathbb{P}(B|A)\\)."
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#conditional-probabilities-1",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#conditional-probabilities-1",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Conditional Probabilities",
-    "text": "Conditional Probabilities\nWe can write conditional probabilities in terms of unconditional probabilities:\n\\[\\mathbb{P}(B|A) = \\frac{\\mathbb{P}(BA)}{\\mathbb{P}(A)}.\\]"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#bayes-theorem",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#bayes-theorem",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Bayes’ Theorem",
-    "text": "Bayes’ Theorem\nConditional probabilities can be inverted according to Bayes’ Theorem:\n\\[\\mathbb{P}(A|B) = \\frac{\\mathbb{P}(B|A) \\times \\mathbb{P}(A)}{\\mathbb{B}}.\\]"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-distributions",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-distributions",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Probability Distributions",
-    "text": "Probability Distributions\nThe probability of possible values of an unknown quantity are often represented as a probability distribution.\nProbability distributions associate a probability to every event under consideration (the event space) and have to follow certain rules (for example, total probability = 1)."
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#selecting-a-distribution",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#selecting-a-distribution",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Selecting a Distribution",
-    "text": "Selecting a Distribution\n\n\nThe specification of distributions can strongly influence the analysis.\n\n\n\n\nProbabilistic interactions between sea-levels and exposure"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#selecting-a-distribution-1",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#selecting-a-distribution-1",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Selecting a Distribution",
-    "text": "Selecting a Distribution\nA distribution implicitly answers questions like:\n\nWhat is the most probable event? How much more likely is it than the others?\nAre larger or smaller events more, less, or equally probable?\nHow probable are extreme events?\nAre different events correlated, or are they independent?"
+    "section": "Axioms of Probability",
+    "text": "Axioms of Probability\nProbability is a language for expressing uncertainty.\nThe axioms of probability are straightforward:\n\n\\(E\\) is some “event”: \\(\\mathcal{P}(E) \\geq 0\\);\n\\(\\Omega\\) is the total event space: \\(\\mathcal{P}(\\Omega) = 1\\);\n\\(\\mathcal{P}(\\cup_{i=1}^\\infty E_i) = \\sum_{i=1}^\\infty \\mathcal{P}(E_i)\\) for disjoint (or “independent”) \\(E_i\\).\n\nProbability distributions associate a probability to every event under consideration (the event space) and have to follow these rules."
   },
   {
     "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#key-features-of-probability-distributions",
@@ -4893,11 +4795,88 @@
     "text": "Common Distributions\n\nGaussian / Normal\nLognormal\nBinomial\nUniform / Discrete Uniform"
   },
   {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-density-function",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-density-function",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Probability Density Function",
+    "text": "Probability Density Function\nA continuous distribution \\(\\mathcal{D}\\) has a probability density function (PDF) \\(f_\\mathcal{D}(x) = p(x | \\theta)\\).\nThe probability of \\(x\\) occurring in an interval \\((a, b)\\) is \\[\\mathbb{P}[a \\leq x \\leq b] = \\int_a^b f_\\mathcal{D}(x)dx.\\]\nImportant: \\(\\mathbb{P}(x = x^*)\\) is zero!"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-mass-functions",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-mass-functions",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Probability Mass Functions",
+    "text": "Probability Mass Functions\nDiscrete distributions have probability mass functions (PMFs) which are defined at point values, e.g. \\(p(x = x^*) \\neq 0\\).\n\nUnlike continuous distributions, we can talk about the probability of individual values for discrete distributions, which a PMF provides versus a PDF. But in general these are the same things."
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#cumulative-density-functions",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#cumulative-density-functions",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Cumulative Density Functions",
+    "text": "Cumulative Density Functions\n\n\nIf \\(\\mathcal{D}\\) is a distribution with PDF \\(f_\\mathcal{D}(x)\\), the cumulative density function (CDF) of \\(\\mathcal{D}\\) is \\(F_\\mathcal{D}(x)\\):\n\\[F_\\mathcal{D}(x) = \\int_{-\\infty}^x f_\\mathcal{D}(u)du.\\]\n\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(a) Relationship of CDF and PDF\n\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(b)\n\n\n\n\n\n\n\nFigure 1"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#relationship-between-pdfs-and-cdfs",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#relationship-between-pdfs-and-cdfs",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Relationship Between PDFs and CDFs",
+    "text": "Relationship Between PDFs and CDFs\nSince \\[F_\\mathcal{D}(x) = \\int_{-\\infty}^x f_\\mathcal{D}(u)du,\\]\nif \\(f_\\mathcal{D}\\) is continuous at \\(x\\), the Fundamental Theorem of Calculus gives: \\[f_\\mathcal{D}(x) = \\frac{d}{dx}F_\\mathcal{D}(x).\\]\n\nThe value of the CDF is the amount of probability “below” the value. So e.g. for a one-sided statistical test, the p-value is the complement of the CDF at the value of the test statistic."
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#quantiles",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#quantiles",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Quantiles",
+    "text": "Quantiles\n\n\nThe quantile function is the inverse of the CDF:\n\\[q(\\alpha) = F^{-1}_\\mathcal{D}(\\alpha)\\]\nSo \\[x_0 = q(\\alpha) \\iff \\mathbb{P}_\\mathcal{D}(X &lt; x_0) = \\alpha.\\]\n\n\n\nread: Connection reset by peer\nsend: Broken pipe\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(a) Relationship of CDF and PDF\n\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(b)\n\n\n\n\n\n\n\nFigure 2"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#distributions-are-assumptions",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#distributions-are-assumptions",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Distributions Are Assumptions",
+    "text": "Distributions Are Assumptions\nSpecifying a distribution is making an assumption about observations and any applicable constraints.\nExamples: If your observations are…\n\nContinuous and fat-tailed? Cauchy distribution\nContinuous and bounded? Beta distribution\nSums of positive random variables? Gamma or Normal distribution."
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#selecting-a-distribution",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#selecting-a-distribution",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Selecting a Distribution",
+    "text": "Selecting a Distribution\nA distribution implicitly answers questions like:\n\nWhat is the most probable event? How much more likely is it than the others?\nAre larger or smaller events more, less, or equally probable?\nHow probable are extreme events?\nAre different events correlated, or are they independent?"
+  },
+  {
     "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-distribution-tails",
     "href": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-distribution-tails",
     "title": "Uncertainty and Monte Carlo",
     "section": "Probability Distribution Tails",
-    "text": "Probability Distribution Tails\n\n\nThe tails of distributions represent the probability of high-impact outcomes.\nKey consideration: Small changes to these (low) probabilities can greatly influence risk."
+    "text": "Probability Distribution Tails\n\n\nThe tails of distributions represent the probability of high-impact outcomes.\nKey consideration: Small changes to these (low) probabilities can greatly influence risk.\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 3: Comparison of Cauchy and Normal tails"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#what-distribution-should-i-use",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#what-distribution-should-i-use",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "“What Distribution Should I Use?”",
+    "text": "“What Distribution Should I Use?”\nThere is no right answer to this, no matter what a statistical test tells you.\n\nWhat assumptions are justifiable?\n\nParticularly: think about tails, symmetry/skew\n\nWhat information do you have?"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#what-distribution-should-i-use-1",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#what-distribution-should-i-use-1",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "“What Distribution Should I Use?”",
+    "text": "“What Distribution Should I Use?”\nFor example, suppose our data are counts of events:\n\nIf you know something about rates, you can use a Poisson distribution\nIf you know something about probabilities, you can use a Binomial distribution."
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#conditional-probabilities",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#conditional-probabilities",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Conditional Probabilities",
+    "text": "Conditional Probabilities\nWe often don’t want to just know if a particular event \\(A\\) has a certain probability, but also how other events (call them \\(B\\)) might depend on that outcome.\nIn other words:\nWe want the conditional probability of \\(B\\) given \\(A\\), denoted \\(\\mathbb{P}(B|A)\\)."
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#conditional-probabilities-1",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#conditional-probabilities-1",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Conditional Probabilities",
+    "text": "Conditional Probabilities\nWe can write conditional probabilities in terms of unconditional probabilities:\n\\[\\mathbb{P}(B|A) = \\frac{\\mathbb{P}(BA)}{\\mathbb{P}(A)}.\\]"
   },
   {
     "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#stochastic-simulation",
@@ -4911,32 +4890,46 @@
     "href": "slides/lecture05-2-uncertainty-monte-carlo.html#goals-of-monte-carlo",
     "title": "Uncertainty and Monte Carlo",
     "section": "Goals of Monte Carlo",
-    "text": "Goals of Monte Carlo\nMonte Carlo is a broad method, which can be used to:\n\nObtain probability distributions of outputs;\nEstimate deterministic quantities (Monte Carlo estimation)."
+    "text": "Goals of Monte Carlo\nMonte Carlo is a broad method, which can be used to:\n\nObtain probability distributions of outputs;\nEstimate deterministic quantities."
   },
   {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-estimation",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-estimation",
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-simulation",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-simulation",
     "title": "Uncertainty and Monte Carlo",
-    "section": "Monte Carlo Estimation",
-    "text": "Monte Carlo Estimation\nMonte Carlo estimation involves framing the quantity of interest as a summary statistic (such as an expected value)."
+    "section": "Monte Carlo Simulation",
+    "text": "Monte Carlo Simulation\nGoal: Estimate \\(\\mathbb{E}_p\\left[h(x)\\right]\\), \\(x \\sim f(x)\\)\nMonte Carlo principle:\n\nSample \\(x^1, x^2, \\ldots, x^N \\sim f(x)\\)\nEstimate \\[\\mathbb{E}_p\\left[h(x)\\right] = \\int_{x \\in X} h(x)p(x)dx  \\approx \\frac{1}{N} \\sum_{n=1}^N h(x^n)\\]"
   },
   {
     "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-finding-pi",
     "href": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-finding-pi",
     "title": "Uncertainty and Monte Carlo",
     "section": "MC Example: Finding \\(\\pi\\)",
-    "text": "MC Example: Finding \\(\\pi\\)\n\n\n\nFinding \\(\\pi\\) by sampling random values from the unit square and computing the fraction in the unit circle. This is an example of Monte Carlo integration.\n\n\\[\\frac{\\text{Area of Circle}}{\\text{Area of Square}} = \\frac{\\pi}{4}\\]\n\n\n\n\n\n\n\n\n\n\n\nFigure 1: Monte Carlo simualtion for Estimating pi"
+    "text": "MC Example: Finding \\(\\pi\\)\nHow can we use MC to estimate \\(\\pi\\)?\nHint: Think of \\(\\pi\\) as an expected value…"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-finding-pi-1",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-finding-pi-1",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "MC Example: Finding \\(\\pi\\)",
+    "text": "MC Example: Finding \\(\\pi\\)\n\n\nFinding \\(\\pi\\) by sampling random values from the unit square and computing the fraction in the unit circle. This is an example of Monte Carlo integration.\n\n\\[\\frac{\\text{Area of Circle}}{\\text{Area of Square}} = \\frac{\\pi}{4}\\]\n\n\n\n\n\n\n\n\n\n\n\nFigure 4: Monte Carlo simualtion for Estimating pi"
   },
   {
     "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-dice",
     "href": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-dice",
     "title": "Uncertainty and Monte Carlo",
     "section": "MC Example: Dice",
-    "text": "MC Example: Dice\n\n\nWhat is the probability of rolling 4 dice for a total of 19?\n\nCan simulate dice rolls and find the frequency of 19s among the samples.\n\n\n\n\n\n\n\n\n\n\nFigure 2: Monte Carlo simualtion for Dice Rolls"
+    "text": "MC Example: Dice\n\n\nWhat is the probability of rolling 4 dice for a total of 19?\n\nCan simulate dice rolls and find the frequency of 19s among the samples.\n\n\n\n\n\n\n\n\n\n\nFigure 5: Monte Carlo simualtion for Dice Rolls"
   },
   {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-estimation-1",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-estimation-1",
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-estimate-of-quantiles",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-estimate-of-quantiles",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "MC Estimate of Quantiles",
+    "text": "MC Estimate of Quantiles\nWould like to estimate the CDF \\(F\\) with some approximation \\(\\hat{F}_n\\), then compute \\(\\hat{z}^\\alpha_n = \\hat{F}_n^{-1}(\\alpha)\\) as an estimator of the \\(\\alpha\\)-quantile \\(z^\\alpha\\).\nGiven samples \\(\\hat{\\mathbf{y}} = y_1, \\ldots, y_n \\sim F\\), define \\[\\hat{F}_n(y) = \\frac{1}{n} \\sum_{i=1}^n \\mathbb{I}(y_i \\leq y)\\] and \\(\\hat{z}^\\alpha_n = \\hat{F}_n^{-1}(\\alpha)\\)."
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-estimation",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-estimation",
     "title": "Uncertainty and Monte Carlo",
     "section": "Monte Carlo Estimation",
     "text": "Monte Carlo Estimation\nThis type of estimation can be repeated with any simulation model that has a stochastic component.\nFor example, consider our dissolved oxygen model. Suppose that we have a probability distribution for the inflow DO.\nHow could we compute the probability of DO falling below the regulatory standard somewhere downstream?"
@@ -4946,7 +4939,7 @@
     "href": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-and-uncertainty-propagation",
     "title": "Uncertainty and Monte Carlo",
     "section": "Monte Carlo and Uncertainty Propagation",
-    "text": "Monte Carlo and Uncertainty Propagation\n\nDraw samples from some distribution;\nEun them through one or more models;\nCompute the (conditional) probability of outcomes of interest (for good or bad)."
+    "text": "Monte Carlo and Uncertainty Propagation\n\nDraw samples from some distribution;\nRun them through one or more models;\nCompute the (conditional) probability of outcomes of interest (for good or bad)."
   },
   {
     "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#key-takeaways-1",
@@ -4960,7 +4953,7 @@
     "href": "slides/lecture05-2-uncertainty-monte-carlo.html#next-classes",
     "title": "Uncertainty and Monte Carlo",
     "section": "Next Classes",
-    "text": "Next Classes\nWednesday: Monte Carlo Lab (clone before class, maybe instantiate environment too)\nMonday: Why Does Monte Carlo Work?\n\n\n\n\nSimpson, N. P., Mach, K. J., Constable, A., Hess, J., Hogarth, R., Howden, M., et al. (2021). A framework for complex climate change risk assessment. One Earth, 4, 489–501. https://doi.org/10.1016/j.oneear.2021.03.005"
+    "text": "Next Classes\nMonday: Monte Carlo Lab (clone before class, maybe instantiate environment too)\nWednesday: Why Does Monte Carlo Work?"
   },
   {
     "objectID": "slides/lecture13-1-stochastic-optimization.html#example-solid-waste-management",

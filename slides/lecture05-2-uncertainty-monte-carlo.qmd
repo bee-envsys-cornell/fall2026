@@ -64,10 +64,16 @@ Random.seed!(1)
 plot_font = "Computer Modern"
 default(
     fontfamily=plot_font,
-    linewidth=2, 
+    linewidth=3, 
     framestyle=:box, 
     label=nothing, 
-    grid=false
+    grid=false,
+    guidefontsize=18,
+    legendfontsize=16,
+    tickfontsize=16,
+    titlefontsize=20,
+    bottom_margin=10mm,
+    left_margin=5mm
 )
 ```
 
@@ -93,13 +99,6 @@ default(
 - **Calibration**: How do we select parameter values?
 - **Validation**: Does the model adequately reproduce the system dynamics?
 
-## Dissolved Oxygen
-
-- Dissolved oxygen (DO) is essential for water quality and aquatic life.
-- Commonly regulated to keep DO above a minimum threshold.
-- DO impacted by a number of factors, notably organic waste decomposition and nitrification.
-- "Sag Curve": DO reduced near a discharge until waste decomposition reduces OD and re-aeration can occur.
-
 ## Questions?
 
 {{< include _poll-prompt.qmd >}}
@@ -119,139 +118,43 @@ default(
 :::
 ::::
 
-## What is Uncertainty?
-
-::: {.fragment .fade-in}
-**Glib Answer**: *A lack of certainty!*
-:::
-
-::: {.fragment .fade-in}
-**More Seriously**: Uncertainty refers to an inability to exactly describe current or future values or states.
-:::
-
 ## Types of Uncertainty
+
+:::: {.columns}
+::: {.column width=50%}
 
 Two (broad) types of uncertainties:
 
 - **Aleatory** uncertainty, or uncertainties resulting from randomness;
 - **Epistemic** uncertainty, or uncertainties resulting from lack of knowledge. 
 
-
-# Risk
-
-## Systems and Risk
-
-Designing and managing environmental systems is often about **minimizing or managing risk**:
-
-- Maintaining clean air/water;
-- Power grid reliabiliy standards;
-- Flooding/other hazards;
-- Climate change mitigation/adaptation.
-
-## What is Risk?
-
-The [*Society for Risk Analysis* definition](https://www.sra.org/wp-content/uploads/2020/04/SRA-Glossary-FINAL.pdf): 
-
-::: {.quote}
-
-> "risk" involves uncertainty about the effects/implications of an activity with respect to something that humans value (such as health, well-being, wealth, property or the environment), often focusing on negative, undesirable consequences.
-
-:::
-
-## So What is Risk?
-
-**Important**: "Risk" is not just another words for probability, but:
-
-- Involves uncertainty;
-- Undesireable outcomes;
-- Effects matter, not just the events themselves.
-
-## Components of Risk
-
-::: {.columns}
-::: {.column width=50%}
-Multiple components which contribute to risk:
-
-- Probability of a **hazard**;
-- **Exposure** to that hazard;
-- **Vulnerability** to outcomes;
-- Socioeconomic **responses**.
 :::
 
 ::: {.column width=50%}
-![Overview of the Components of Risk](figures/simpson_risk.svg)
+
+
+![Dissolved Oxygen by temperature](https://imgs.xkcd.com/comics/epistemic_uncertainty_2x.png){width=80%}
 
 ::: {.caption}
-Source: @Simpson2021-dj
+Source: [XKCD 2440](https://xkcd.com/2440/)
 :::
 :::
 ::::
 
-## Systems and Risk Management
-
-Risk management is often a key consideration in systems analysis. For example, consider regulatory standards.
-
-- Often a tradeoff between strictness of a regulation and costs of compliance.
-- Systems modeling is a key way to understand 
-    - the impacts of changing a regulation
-    - the probability of failure to meet standards.
-
-## Examples of Risk
   
 # Probability
 
-## Two Definitions of Probability
+## Axioms of Probability
 
-We often represent uncertainties with *probabilities*. What is a probability?
+Probability is a language for expressing uncertainty.
 
-1. Long-run frequency of an event (**frequentist**)
-2. Degree of belief that a proposition is true (**Bayesian**)
+The **axioms of probability** are straightforward:
 
-## Conditional Probabilities
+1. $E$ is some "event": $\mathcal{P}(E) \geq 0$;
+2. $\Omega$ is the total event space: $\mathcal{P}(\Omega) = 1$;
+3. $\mathcal{P}(\cup_{i=1}^\infty E_i) = \sum_{i=1}^\infty \mathcal{P}(E_i)$ for disjoint (or "independent") $E_i$.
 
-We often don't want to just know if a particular event $A$ has a certain probability, but also how other events (call them $B$) might depend on that outcome.
-
-**In other words:**
-
-We want the *conditional probability* of $B$ given $A$, denoted $\mathbb{P}(B|A)$.
-
-## Conditional Probabilities
-
-We can write conditional probabilities in terms of unconditional probabilities:
-
-$$\mathbb{P}(B|A) = \frac{\mathbb{P}(BA)}{\mathbb{P}(A)}.$$
-
-## Bayes' Theorem
-
-Conditional probabilities can be inverted according to **Bayes' Theorem**:
-
-$$\mathbb{P}(A|B) = \frac{\mathbb{P}(B|A) \times \mathbb{P}(A)}{\mathbb{B}}.$$
-
-## Probability Distributions
-
-The probability of possible values of an unknown quantity are often represented as a probability distribution.
-
-Probability distributions associate a probability to every event under consideration (the *event space*) and have to follow certain rules (for example, total probability = 1).
-
-## Selecting a Distribution
-
-:::: {.columns}
-::: {.column width=35%}
-The specification of distributions can *strongly* influence the analysis. 
-:::
-::: {.column width=65%}
-![Probabilistic interactions between sea-levels and exposure](figures/Risk_Interactions.jpg){width=90%}
-:::
-::::
-
-## Selecting a Distribution
-
-A distribution implicitly answers questions like:
-
-- What is the most probable event? How much more likely is it than the others?
-- Are larger or smaller events more, less, or equally probable?
-- How probable are extreme events?
-- Are different events correlated, or are they independent?
+Probability distributions associate a probability to every event under consideration (the *event space*) and have to follow these rules.
 
 ## Key Features of Probability Distributions
 
@@ -267,6 +170,120 @@ A distribution implicitly answers questions like:
 - Binomial
 - Uniform / Discrete Uniform
 
+## Probability Density Function
+
+A continuous distribution $\mathcal{D}$ has a probability density function (PDF) $f_\mathcal{D}(x) = p(x | \theta)$.
+
+The probability of $x$ occurring in an interval $(a, b)$ is
+$$\mathbb{P}[a \leq x \leq b] = \int_a^b f_\mathcal{D}(x)dx.$$
+
+**Important**: $\mathbb{P}(x = x^*)$ is zero!
+
+## Probability Mass Functions
+
+Discrete distributions have *probability mass functions* (PMFs) which are defined at point values, e.g. $p(x = x^*) \neq 0$.
+
+::: {.notes}
+Unlike continuous distributions, we can talk about the probability of individual values for discrete distributions, which a PMF provides versus a PDF. But in general these are the same things.
+:::
+
+## Cumulative Density Functions
+
+:::: {.columns}
+::: {.column width=50%}
+If $\mathcal{D}$ is a distribution with PDF $f_\mathcal{D}(x)$, the **cumulative density function** (CDF) of $\mathcal{D}$ is $F_\mathcal{D}(x)$:
+
+$$F_\mathcal{D}(x) = \int_{-\infty}^x f_\mathcal{D}(u)du.$$
+
+:::
+::: {.column width=50%}
+```{julia}
+#| echo: false
+#| code-fold: false
+#| label: fig-cdf-pdf
+#| fig-cap: Relationship of CDF and PDF
+#| layout-nrow: 2
+
+dist = TDist(4)
+x = -5:0.01:5
+q = 0.25
+p1 = plot(x, x -> cdf(dist, x), ylabel="Cumulative Density", xlabel=L"$x$", linewidth=3, label=false, top_margin=10mm)
+plot!([-5, quantile(dist, q)], [q, q], color=:gray, linestyle=:dash, linewidth=2, label=false)
+plot!([quantile(dist, q), quantile(dist, q)], [0, q], color=:gray, linestyle=:dash, linewidth=2, label=false, size=(500, 250))
+
+p2 = plot(x, x -> pdf(dist, x), linewidth=3, ylabel="Density", xlabel=L"$x$", label=false)
+xpdf = -5:0.01:quantile(dist, q)
+plot!(xpdf, zeros(length(xpdf)), fillrange=pdf.(dist, xpdf), fillalpha=0.5, color=:gray, label=false, size=(500, 250))
+
+display(p1)
+display(p2)
+```
+:::
+::::
+
+## Relationship Between PDFs and CDFs
+
+Since $$F_\mathcal{D}(x) = \int_{-\infty}^x f_\mathcal{D}(u)du,$$
+
+if $f_\mathcal{D}$ is continuous at $x$, the Fundamental Theorem of Calculus gives:
+$$f_\mathcal{D}(x) = \frac{d}{dx}F_\mathcal{D}(x).$$
+
+::: {.notes}
+The value of the CDF is the amount of probability "below" the value. So e.g. for a one-sided statistical test, the p-value is the complement of the CDF at the value of the test statistic.
+:::
+
+## Quantiles
+
+:::: {.columns}
+::: {.column width=50%}
+The quantile function is the **inverse of the CDF**:
+
+$$q(\alpha) = F^{-1}_\mathcal{D}(\alpha)$$
+
+So $$x_0 = q(\alpha) \iff \mathbb{P}_\mathcal{D}(X < x_0) = \alpha.$$
+
+:::
+::: {.column width=50%}
+```{julia}
+#| label: fig-cdf-pdf-2
+#| fig-cap: Relationship of CDF and PDF
+#| layout-nrow: 2
+dist = TDist(4)
+x = -5:0.01:5
+q = 0.25
+p1 = plot(x, x -> cdf(dist, x), ylabel="Cumulative Density", xlabel=L"$x$", linewidth=3, label=false)
+plot!([-5, quantile(dist, q)], [q, q], color=:gray, linestyle=:dash, linewidth=2, label=false)
+plot!([quantile(dist, q), quantile(dist, q)], [0, q], color=:gray, linestyle=:dash, linewidth=2, label=false, size=(500, 300))
+
+p2 = plot(x, x -> pdf(dist, x), linewidth=3, ylabel="Density", xlabel=L"$x$", label=false)
+xpdf = -5:0.01:quantile(dist, q)
+plot!(xpdf, zeros(length(xpdf)), fillrange=pdf.(dist, xpdf), fillalpha=0.5, color=:gray, label=false, size=(500, 300))
+
+display(p1)
+display(p2)
+```
+:::
+::::
+
+## Distributions Are Assumptions
+
+**Specifying a distribution is making an assumption about observations and any applicable constraints.**
+
+Examples: If your observations are...
+
+- Continuous and fat-tailed? **Cauchy distribution**
+- Continuous and bounded? **Beta distribution**
+- Sums of positive random variables? **Gamma or Normal distribution**.
+
+## Selecting a Distribution
+
+A distribution implicitly answers questions like:
+
+- What is the most probable event? How much more likely is it than the others?
+- Are larger or smaller events more, less, or equally probable?
+- How probable are extreme events?
+- Are different events correlated, or are they independent?
+
 ## Probability Distribution Tails
 
 :::: {.columns}
@@ -278,14 +295,48 @@ The tails of distributions represent the probability of high-impact outcomes.
 
 ::: {.column width=50%}
 ```{julia}
+#| echo: false
+#| label: fig-tails
+#| fig-cap: Comparison of Cauchy and Normal tails
+
 x = range(-5, 10; length = 100)
-plot(x, pdf.(Cauchy(), x), linewidth=3, linecolor = :red, linestyle = :dash, yaxis = false, yticks = false, grid = false, label = "Cauchy Distribution", size=(500, 400), guidefontsize=16, legendfontsize=14, tickfontsize=16)
+plot(x, pdf.(Cauchy(), x), linewidth=3, linecolor = :red, linestyle = :dash, yaxis = false, yticks = false, grid = false, label = "Cauchy Distribution", size=(500, 400), left_margin=10mm)
 plot!(x, pdf.(Normal(), x), linewidth=3, linecolor = :blue, label = "Normal Distribution")
 plot!(x[x .> 1.75], pdf.(Cauchy(), x[x .> 1.75]), fillrange = pdf.(Normal(), x[x .> 1.75]), fillcolor = :red, fillalpha = 0.2, label = false, linecolor= false)
 xlabel!("Value")
 ```
 :::
 ::::
+
+## "What Distribution Should I Use?"
+
+**There is no right answer to this, no matter what a statistical test tells you.**
+
+- What assumptions are justifiable?
+  - Particularly: think about tails, symmetry/skew
+- What information do you have? 
+
+## "What Distribution Should I Use?"
+
+For example, suppose our data are counts of events:
+
+- If you know something about **rates**, you can use a Poisson distribution
+- If you know something about **probabilities**, you can use a Binomial distribution. 
+
+
+## Conditional Probabilities
+
+We often don't want to just know if a particular event $A$ has a certain probability, but also how other events (call them $B$) might depend on that outcome.
+
+**In other words:**
+
+We want the *conditional probability* of $B$ given $A$, denoted $\mathbb{P}(B|A)$.
+
+## Conditional Probabilities
+
+We can write conditional probabilities in terms of unconditional probabilities:
+
+$$\mathbb{P}(B|A) = \frac{\mathbb{P}(BA)}{\mathbb{P}(A)}.$$
 
 # Monte Carlo
 
@@ -337,17 +388,28 @@ digraph G {
 Monte Carlo is a broad method, which can be used to:
 
 1. Obtain probability distributions of outputs;
-2. Estimate deterministic quantities (***Monte Carlo estimation***).
+2. Estimate deterministic quantities.
 
-## Monte Carlo Estimation
+## Monte Carlo Simulation
 
-Monte Carlo estimation involves framing the quantity of interest as a summary statistic (such as an expected value).
+**Goal**: Estimate $\mathbb{E}_p\left[h(x)\right]$, $x \sim f(x)$
+
+**Monte Carlo principle**: 
+
+- Sample $x^1, x^2, \ldots, x^N \sim f(x)$
+- Estimate $$\mathbb{E}_p\left[h(x)\right] = \int_{x \in X} h(x)p(x)dx  \approx \frac{1}{N} \sum_{n=1}^N h(x^n)$$
+
+
+## MC Example: Finding $\pi$
+
+How can we use MC to estimate $\pi$?
+
+**Hint**: Think of $\pi$ as an expected value...
 
 ## MC Example: Finding $\pi$
 
 :::: {.columns}
 ::: {.column width=50%}
-::: {.fragment .fade-in}
 Finding $\pi$ by sampling random values from the unit square and computing the fraction in the unit circle. This is an example of **Monte Carlo integration**.
 
 ::: {.fragment .fade-in}
@@ -417,7 +479,6 @@ end every 100
 gif(mc_anim, "figures/mc_pi.gif", fps=2)    
 
 ```
-:::
 :::
 ::::
 
@@ -492,6 +553,13 @@ gif(mc_anim, "figures/mc_dice.gif", fps=3)
 :::
 ::::
 
+## MC Estimate of Quantiles
+
+Would like to estimate the CDF $F$ with some approximation $\hat{F}_n$, then compute $\hat{z}^\alpha_n = \hat{F}_n^{-1}(\alpha)$ as an estimator of the $\alpha$-quantile $z^\alpha$.
+
+Given samples $\hat{\mathbf{y}} = y_1, \ldots, y_n \sim F$, define $$\hat{F}_n(y) = \frac{1}{n} \sum_{i=1}^n \mathbb{I}(y_i \leq y)$$ and $\hat{z}^\alpha_n = \hat{F}_n^{-1}(\alpha)$.
+
+
 ## Monte Carlo Estimation
 
 This type of estimation can be repeated with any simulation model that has a stochastic component.
@@ -503,7 +571,7 @@ For example, consider our dissolved oxygen model. Suppose that we have a probabi
 ## Monte Carlo and Uncertainty Propagation
 
 1. Draw samples from some distribution;
-2. Eun them through one or more models;
+2. Run them through one or more models;
 3. Compute the (conditional) probability of outcomes of interest (for good or bad).
 
 
@@ -521,9 +589,9 @@ For example, consider our dissolved oxygen model. Suppose that we have a probabi
 
 ## Next Classes
 
-**Wednesday**: Monte Carlo Lab (clone before class, maybe instantiate environment too)
+**Monday**: Monte Carlo Lab (clone before class, maybe instantiate environment too)
 
-**Monday**: Why Does Monte Carlo Work?
+**Wednesday**: Why Does Monte Carlo Work?
 
 
 
