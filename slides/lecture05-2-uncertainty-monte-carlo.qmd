@@ -438,7 +438,6 @@ Finding $\pi$ by sampling random values from the unit square and computing the f
 $$\frac{\text{Area of Circle}}{\text{Area of Square}} = \frac{\pi}{4}$$
 :::
 :::
-:::
 ::: {.column width=50%}
 :::{.fragment .fade-in}
 ```{julia}

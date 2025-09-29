@@ -4965,7 +4965,7 @@
     "href": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-finding-pi-1",
     "title": "Uncertainty and Monte Carlo",
     "section": "MC Example: Finding \\(\\pi\\)",
-    "text": "MC Example: Finding \\(\\pi\\)\n\n\nFinding \\(\\pi\\) by sampling random values from the unit square and computing the fraction in the unit circle. This is an example of Monte Carlo integration.\n\n\\[\\frac{\\text{Area of Circle}}{\\text{Area of Square}} = \\frac{\\pi}{4}\\]\n\n\n\n\n\n\n\n\n\n\n\nFigure 4: Monte Carlo simualtion for Estimating pi\n\n\n\n\n\n::::"
+    "text": "MC Example: Finding \\(\\pi\\)\n\n\nFinding \\(\\pi\\) by sampling random values from the unit square and computing the fraction in the unit circle. This is an example of Monte Carlo integration.\n\n\\[\\frac{\\text{Area of Circle}}{\\text{Area of Square}} = \\frac{\\pi}{4}\\]\n\n\n\n\n\n\n\n\n\n\nFigure 4: Monte Carlo simualtion for Estimating pi"
   },
   {
     "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-dice",
