@@ -2289,46 +2289,11 @@
     "text": "MC Example: Finding \\(\\pi\\)\n\n\n\nFinding \\(\\pi\\) by sampling random values from the unit square and computing the fraction in the unit circle. This is an example of Monte Carlo integration.\n\n\\[\\frac{\\text{Area of Circle}}{\\text{Area of Square}} = \\frac{\\pi}{4}\\]\n\n\n\n\n\n\n\n\n\n\n\nFigure 1: Monte Carlo simualtion for Estimating pi"
   },
   {
-    "objectID": "slides/lecture06-1-monte-carlo.html#mc-example-dice",
-    "href": "slides/lecture06-1-monte-carlo.html#mc-example-dice",
-    "title": "Monte Carlo: Why It Works",
-    "section": "MC Example: Dice",
-    "text": "MC Example: Dice\n\n\nWhat is the probability of rolling 4 dice for a total of 19?\n\nCan simulate dice rolls and find the frequency of 19s among the samples.\n\n\n\n\n\n\n\n\n\n\nFigure 2: Monte Carlo simualtion for Dice Rolls"
-  },
-  {
-    "objectID": "slides/lecture06-1-monte-carlo.html#monte-carlo-estimation-1",
-    "href": "slides/lecture06-1-monte-carlo.html#monte-carlo-estimation-1",
-    "title": "Monte Carlo: Why It Works",
-    "section": "Monte Carlo Estimation",
-    "text": "Monte Carlo Estimation\nThis type of estimation can be repeated with any simulation model that has a stochastic component.\nFor example, consider our dissolved oxygen model. Suppose that we have a probability distribution for the inflow DO.\nHow could we compute the probability of DO falling below the regulatory standard somewhere downstream?"
-  },
-  {
     "objectID": "slides/lecture06-1-monte-carlo.html#monte-carlo-and-uncertainty-propagation",
     "href": "slides/lecture06-1-monte-carlo.html#monte-carlo-and-uncertainty-propagation",
     "title": "Monte Carlo: Why It Works",
     "section": "Monte Carlo and Uncertainty Propagation",
     "text": "Monte Carlo and Uncertainty Propagation\n\nDraw samples from some distribution;\nRun them through one or more models;\nCompute the (conditional) probability of outcomes of interest (for good or bad)."
-  },
-  {
-    "objectID": "slides/lecture06-1-monte-carlo.html#monte-carlo-simulation",
-    "href": "slides/lecture06-1-monte-carlo.html#monte-carlo-simulation",
-    "title": "Monte Carlo: Why It Works",
-    "section": "Monte Carlo Simulation",
-    "text": "Monte Carlo Simulation\nMonte Carlo is stochastic simulation.\n\n\n\n\n\n\n\nG\n\n\n\na\n\nProbability\n Distribution\n\n\n\nb\n\nRandom\n Samples\n\n\n\na-&gt;b\n\n\nSample\n\n\n\nc\n\nModel\n\n\n\nb-&gt;c\n\n\nInput\n\n\n\nd\n\nOutputs\n\n\n\nc-&gt;d\n\n\nSimulate"
-  },
-  {
-    "objectID": "slides/lecture06-1-monte-carlo.html#goals-of-monte-carlo-1",
-    "href": "slides/lecture06-1-monte-carlo.html#goals-of-monte-carlo-1",
-    "title": "Monte Carlo: Why It Works",
-    "section": "Goals of Monte Carlo",
-    "text": "Goals of Monte Carlo\nMonte Carlo is a broad method, which can be used to:\n\nObtain probability distributions of outputs (uncertainty propagation);\nEstimate deterministic quantities (Monte Carlo estimation)."
-  },
-  {
-    "objectID": "slides/lecture06-1-monte-carlo.html#monte-carlo-estimation-2",
-    "href": "slides/lecture06-1-monte-carlo.html#monte-carlo-estimation-2",
-    "title": "Monte Carlo: Why It Works",
-    "section": "Monte Carlo Estimation",
-    "text": "Monte Carlo Estimation\nMonte Carlo estimation involves framing the (deterministic) quantity of interest as a summary statistic of a random process."
   },
   {
     "objectID": "slides/lecture06-1-monte-carlo.html#questions",
@@ -2471,25 +2436,25 @@
     "text": "Implications of Monte Carlo Error\nIf you can compute your answer analytically, you probably should.\nBut often this is difficult if not impossible without many simplifying assumptions."
   },
   {
+    "objectID": "slides/lecture06-1-monte-carlo.html#mc-example-dice",
+    "href": "slides/lecture06-1-monte-carlo.html#mc-example-dice",
+    "title": "Monte Carlo: Why It Works",
+    "section": "MC Example: Dice",
+    "text": "MC Example: Dice\nWhat is the probability of rolling 4 dice for a total of 19?\n\nfunction dice_roll_repeated(n_trials, n_dice)\n    dice_dist = DiscreteUniform(1, 6) \n    roll_results = zeros(n_trials)\n    for i=1:n_trials\n        roll_results[i] = sum(rand(dice_dist, n_dice))\n    end\n    return roll_results\nend\n\nnsamp = 10_000\n# roll four dice 10,000 times\nrolls = dice_roll_repeated(nsamp, 4) \n\n# initialize storage for frequencies by sample length\navg_freq = zeros(length(rolls)) \n# initialize storage for standard error of estimate\nstd_freq = zeros(length(rolls))\n# compute average frequencies of 19\navg_freq[1] = (rolls[1] == 19)\nstd_freq[1] = 0 # no standard error for the first sample\n\nfor i in 2:length(rolls)\n    avg_freq[i] = (avg_freq[i-1] * (i-1) + (rolls[i] == 19)) / i\n    std_freq[i] = std(rolls[1:i] .== 19) / sqrt(i)\nend"
+  },
+  {
     "objectID": "slides/lecture06-1-monte-carlo.html#mc-example-dice-1",
     "href": "slides/lecture06-1-monte-carlo.html#mc-example-dice-1",
     "title": "Monte Carlo: Why It Works",
     "section": "MC Example: Dice",
-    "text": "MC Example: Dice\nWhat is the probability of rolling 4 dice for a total of 19?\n\nfunction dice_roll_repeated(n_trials, n_dice)\n    dice_dist = DiscreteUniform(1, 6) \n    roll_results = zeros(n_trials)\n    for i=1:n_trials\n        roll_results[i] = sum(rand(dice_dist, n_dice))\n    end\n    return roll_results\nend\n\nnsamp = 10_000\n# roll four dice 10,000 times\nrolls = dice_roll_repeated(nsamp, 4) \n\n# initialize storage for frequencies by sample length\navg_freq = zeros(length(rolls)) \n# initialize storage for standard error of estimate\nstd_freq = zeros(length(rolls))\n# compute average frequencies of 19\navg_freq[1] = (rolls[1] == 19)\nstd_freq[1] = 0 # no standard error for the first sample\n\nfor i in 2:length(rolls)\n    avg_freq[i] = (avg_freq[i-1] * (i-1) + (rolls[i] == 19)) / i\n    std_freq[i] = std(rolls[1:i] .== 19) / sqrt(i)\nend"
+    "text": "MC Example: Dice\n\n\nCode\nplt = plot(\n    avg_freq, ribbon=1.96 * std_freq,\n    xlim = (1, nsamp),\n    ylim = (0, 0.1),\n    legend = :false,\n    xlabel=\"Iteration\",\n    ylabel=\"Estimate\",\n    left_margin=10mm,\n    bottom_margin=10mm,\n    right_margin=10mm,\n    color=:black,\n    linewidth=3\n)\nplot!(size=(1200, 500))\n\nhline!(plt, [0.0432], color=\"red\", \n    linestyle=:dash)"
   },
   {
     "objectID": "slides/lecture06-1-monte-carlo.html#mc-example-dice-2",
     "href": "slides/lecture06-1-monte-carlo.html#mc-example-dice-2",
     "title": "Monte Carlo: Why It Works",
     "section": "MC Example: Dice",
-    "text": "MC Example: Dice\n\n\nCode\nplt = plot(\n    avg_freq, ribbon=1.96 * std_freq,\n    xlim = (1, nsamp),\n    ylim = (0, 0.1),\n    legend = :false,\n    xlabel=\"Iteration\",\n    ylabel=\"Estimate\",\n    left_margin=10mm,\n    bottom_margin=10mm,\n    right_margin=10mm,\n    color=:black,\n    linewidth=3\n)\nplot!(size=(1200, 500))\n\nhline!(plt, [0.0432], color=\"red\", \n    linestyle=:dash)"
-  },
-  {
-    "objectID": "slides/lecture06-1-monte-carlo.html#mc-example-dice-3",
-    "href": "slides/lecture06-1-monte-carlo.html#mc-example-dice-3",
-    "title": "Monte Carlo: Why It Works",
-    "section": "MC Example: Dice",
-    "text": "MC Example: Dice\nAfter 10,000 iterations, the 95% confidence interval for the MC estimate is 4.3 \\(\\pm\\) 0.4%.\nIs this good enough? Should we keep going?"
+    "text": "MC Example: Dice\nAfter 10,000 iterations, the 95% confidence interval for the MC estimate is 4.5 \\(\\pm\\) 0.4%.\nIs this good enough? Should we keep going?"
   },
   {
     "objectID": "slides/lecture06-1-monte-carlo.html#more-advanced-monte-carlo-methods",
