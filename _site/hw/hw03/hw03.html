@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-09-14">
+<meta name="dcterms.date" content="2025-09-28">
 
-<title>BEE 4750 Homework 2: Systems Modeling and Simulation – Environmental Systems Analysis</title>
+<title>BEE 4750 Homework 3: Dissolved Oxygen and Monte Carlo – Environmental Systems Analysis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,8 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../hw/hw03/hw03.html" rel="next">
-<link href="../../hw/hw01/hw01.html" rel="prev">
+<link href="../../hw/hw02/hw02.html" rel="prev">
 <link href="../../_assets/logos/favicon.png" rel="icon" type="image/png">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -146,12 +145,9 @@ window.Quarto = {
 };
 </script>
 
-<meta property="og:title" content="BEE 4750 Homework 2: Systems Modeling and Simulation – Environmental Systems Analysis">
+<meta property="og:title" content="BEE 4750 Homework 3: Dissolved Oxygen and Monte Carlo – Environmental Systems Analysis">
 <meta property="og:description" content="Homepage for the Fall 2025 version of BEE 4750/5750, Environmental Systems Analysis, at Cornell University.">
-<meta property="og:image" content="https://envsys.viveks.me/fall2025/hw/hw02/figures/river_diagram.png">
 <meta property="og:site_name" content="Environmental Systems Analysis">
-<meta property="og:image:height" content="371">
-<meta property="og:image:width" content="922">
 </head>
 
 <body class="nav-sidebar docked nav-fixed quarto-light">
@@ -281,7 +277,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../hw/hw02/hw02.html">Homework 2</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../hw/hw03/hw03.html">Homework 3</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -307,13 +303,13 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../hw/hw02/hw02.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../hw/hw02/hw02.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Homework 2</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../hw/hw03/hw03.html" class="sidebar-item-text sidebar-link">
+  <a href="../../hw/hw03/hw03.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Homework 3</span></a>
   </div>
 </li>
@@ -334,20 +330,23 @@ window.Quarto = {
   </ul></li>
   <li><a href="#problems-total-30-points" id="toc-problems-total-30-points" class="nav-link" data-scroll-target="#problems-total-30-points">Problems (Total: 30 Points)</a>
   <ul class="collapse">
-  <li><a href="#problem-1-5-points" id="toc-problem-1-5-points" class="nav-link" data-scroll-target="#problem-1-5-points">Problem 1 (5 points)</a></li>
-  <li><a href="#problem-2-15-points" id="toc-problem-2-15-points" class="nav-link" data-scroll-target="#problem-2-15-points">Problem 2 (15 points)</a></li>
-  <li><a href="#problem-3-10-points" id="toc-problem-3-10-points" class="nav-link" data-scroll-target="#problem-3-10-points">Problem 3 (10 points)</a></li>
+  <li><a href="#problem-1-30-points" id="toc-problem-1-30-points" class="nav-link" data-scroll-target="#problem-1-30-points">Problem 1 (30 points)</a></li>
+  <li><a href="#problem-1.1" id="toc-problem-1.1" class="nav-link" data-scroll-target="#problem-1.1">Problem 1.1</a></li>
+  <li><a href="#problem-1.2" id="toc-problem-1.2" class="nav-link" data-scroll-target="#problem-1.2">Problem 1.2</a></li>
+  <li><a href="#problem-1.3" id="toc-problem-1.3" class="nav-link" data-scroll-target="#problem-1.3">Problem 1.3</a></li>
+  <li><a href="#problem-1.4" id="toc-problem-1.4" class="nav-link" data-scroll-target="#problem-1.4">Problem 1.4</a></li>
+  <li><a href="#problem-1.5" id="toc-problem-1.5" class="nav-link" data-scroll-target="#problem-1.5">Problem 1.5</a></li>
   </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/hw/hw02/hw02.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="hw02.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="hw02.ipynb" download="hw02.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/hw/hw03/hw03.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="hw03.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="hw03.ipynb" download="hw03.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">BEE 4750 Homework 2: Systems Modeling and Simulation</h1>
+<h1 class="title">BEE 4750 Homework 3: Dissolved Oxygen and Monte Carlo</h1>
 </div>
 
 
@@ -358,7 +357,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 14, 2025</p>
+      <p class="date">September 28, 2025</p>
     </div>
   </div>
   
@@ -380,7 +379,7 @@ Due Date
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Thursday, 09/25/25, 9:00pm</p>
+<p>Thursday, 10/16/25, 9:00pm</p>
 </div>
 </div>
 <div class="callout callout-style-simple callout-caution">
@@ -390,7 +389,7 @@ Due Date
 </div>
 <div class="callout-body-container">
 <p>If you are enrolled in the course, make sure that you use the GitHub Classroom link provided in Ed Discussion, or you may not be able to get help if you run into problems.</p>
-<p>Otherwise, you can <a href="https://github.com/BEE4750/hw02">find the Github repository here</a>.</p>
+<p>Otherwise, you can <a href="https://github.com/BEE4750/hw03">find the Github repository here</a>.</p>
 </div>
 </div>
 </div>
@@ -399,9 +398,7 @@ Due Date
 <section id="instructions" class="level3">
 <h3 class="anchored" data-anchor-id="instructions">Instructions</h3>
 <ul>
-<li>Problem 1 asks you to draw a systems diagram and identify the type of a feedback.</li>
-<li>Problem 2 asks you to model contaminant concentrations in a river and use simulation to compare the concentrations to a regulatory standard.</li>
-<li>Problem 3 asks you to explore the implications of an ice-albedo feedback in the Earth’s climate system by understanding the equilibria of the modeled system and their stabilities.</li>
+<li>Problem 1 asks you to implement a model for dissolved oxygen in a river with multiple waste releases and use this to develop a strategy to ensure regulatory compliance.</li>
 </ul>
 </section>
 <section id="load-environment" class="level3">
@@ -413,97 +410,84 @@ Due Date
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">instantiate</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="4" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Plots</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">LaTeXStrings</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Roots</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Random</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Plots</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">LaTeXStrings</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Distributions</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
 <section id="problems-total-30-points" class="level2">
 <h2 class="anchored" data-anchor-id="problems-total-30-points">Problems (Total: 30 Points)</h2>
-<section id="problem-1-5-points" class="level3 markdown cell">
-<h3 class="anchored" data-anchor-id="problem-1-5-points">Problem 1 (5 points)</h3>
-<p>Draw a systems diagram for the relationship between global mean temperature, atmospheric CO<sub>2</sub> concentrations, and ocean CO<sub>2</sub> concentrations. What are the signs of the interactions between these components and why? What does this suggest about the overall feedback between temperature and the ocean carbon cycle?</p>
-</section>
-<div class="callout callout-style-simple callout-tip">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<section id="problem-1-30-points" class="level3 cell markdown">
+<h3 class="anchored" data-anchor-id="problem-1-30-points">Problem 1 (30 points)</h3>
+<p>A river which flows at 6 km/d is receiving waste discharges from two sources which are 15 km apart. The oxygen reaeration rate is 0.55 day<sup>-1</sup>, and the decay rates of CBOD and NBOD are are 0.35 and 0.25 day<sup>-1</sup>, respectively. The river’s saturated dissolved oxygen concentration is 10m g/L.</p>
+<p>If the characteristics of the river inflow and waste discharges are given in <a href="#tbl-river" class="quarto-xref">Table&nbsp;1</a>, write a Julia model to compute the dissolved oxygen concentration from the first wastewater discharge to an arbitrary distance <code>d</code> km downstream. Use your model to compute the minimum dissolved oxygen concentration up to 50 km downstream and how far downriver this maximum occurs.</p>
+<div id="tbl-river" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-river-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: River inflow and waste stream characteristics for Problem 1.
+</figcaption>
+<div aria-describedby="tbl-river-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Parameter</th>
+<th style="text-align: right;">River Inflow</th>
+<th style="text-align: right;">Waste Stream 1</th>
+<th style="text-align: right;">Waste Stream 2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Inflow</td>
+<td style="text-align: right;">100,000 m<sup>3</sup>/d</td>
+<td style="text-align: right;">10,000 m<sup>3</sup>/d</td>
+<td style="text-align: right;">15,000 m<sup>3</sup>/d</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">DO Concentration</td>
+<td style="text-align: right;">7.5 mg/L</td>
+<td style="text-align: right;">5 mg/L</td>
+<td style="text-align: right;">5 mg/L</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">CBOD</td>
+<td style="text-align: right;">5 mg/L</td>
+<td style="text-align: right;">50 mg/L</td>
+<td style="text-align: right;">45 mg/L</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">NBOD</td>
+<td style="text-align: right;">5 mg/L</td>
+<td style="text-align: right;">35 mg/L</td>
+<td style="text-align: right;">35 mg/L</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div class="callout-body-container">
-<p>Think about Henry’s law for CO<sub>2</sub>.</p>
-</div>
-</div>
-</div>
-<section id="problem-2-15-points" class="level3">
-<h3 class="anchored" data-anchor-id="problem-2-15-points">Problem 2 (15 points)</h3>
-<p>A river which flows at 10 km/d is receiving discharges of wastewater contaminated with CRUD from two sources which are 15 km apart, as shown in the Figure below. CRUD decays exponentially in the river at a rate of 0.36 <span class="math inline">\(\mathrm{d}^{-1}\)</span> and is deposited by the atmosphere along the river at a rate of 54 kg/km/d.&nbsp;</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figures/river_diagram.png" class="img-fluid figure-img"></p>
-<figcaption>Schematic of the river system in Problem 2</figcaption>
 </figure>
 </div>
-<section id="problem-2.1" class="level4 markdown cell">
-<h4 class="anchored" data-anchor-id="problem-2.1">Problem 2.1</h4>
-<p>Draw a systems diagram with the relevant control volume(s) denoted and any relevant in/out-flows between these boxes. How did you decide how many boxes were needed?</p>
 </section>
-<section id="problem-2.2" class="level4 markdown cell">
-<h4 class="anchored" data-anchor-id="problem-2.2">Problem 2.2</h4>
-<p>Develop a model for the concentration of CRUD downriver by formulating and solving the appropriate differential equation(s) analytically.</p>
+<section id="problem-1.1" class="level3 cell markdown">
+<h3 class="anchored" data-anchor-id="problem-1.1">Problem 1.1</h3>
+<p>Implement the Streeter-Phelps (analytic) solution for the dissolved oxygen concentration. Plot the dissolved oxygen concentration from the first waste stream to 50 km downriver. What is the minimum value in mg/L?</p>
 </section>
-<div class="callout callout-style-simple callout-tip">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>Formulate your model in terms of distance downriver, rather than leaving it in terms of time from discharge.</p>
-</div>
-</div>
-</div>
-<section id="problem-2.3" class="level4 markdown cell">
-<h4 class="anchored" data-anchor-id="problem-2.3">Problem 2.3</h4>
-<p>Determine if the system in compliance with a regulatory limit of <span class="math inline">\(2.3\ \text{kg}/(1000 \text{m}^3)\)</span>. You can do this analytically or computationally.</p>
+<section id="problem-1.2" class="level3 cell markdown">
+<h3 class="anchored" data-anchor-id="problem-1.2">Problem 1.2</h3>
+<p>Implement a numerically-integrated (discretized) solution for the dissolved oxygen concentration. Using a resolution of 0.5km, conduct a simulation and plot the results on the same axis as the plot from Problem 1.1. How has the minimum value changed? What do you attribute this difference to (be specific about the source of the difference(s) in terms of the simulation dynamics, not just that one is a numerical approximation).</p>
 </section>
+<section id="problem-1.3" class="level3 cell markdown">
+<h3 class="anchored" data-anchor-id="problem-1.3">Problem 1.3</h3>
+<p>Using the analytic model, what is the minimum level of treatment (% removal of organic waste; assume this is equivalent to the same level of reduction of the CBOD and NBOD) for waste stream 1 that will ensure that the dissolved oxygen concentration is in compliance with the 4 mg/L standard along with a 5% margin of safety, assuming that waste stream 2 remains untreated? How about if only waste stream 2 is treated?</p>
 </section>
-<section id="problem-3-10-points" class="level3">
-<h3 class="anchored" data-anchor-id="problem-3-10-points">Problem 3 (10 points)</h3>
-<p>In class, we discussed the ice-albedo feedback and its possible influence on melting the hypothesized <a href="https://en.wikipedia.org/wiki/Snowball_Earth">“Snowball Earth”</a>. In this problem, we’ll introduce a simple model of the Earth’s energy balance with includes this feedback and examine the stability of the climate.</p>
-<p>This simple model of the energy balance (averaged over the entire planet) is:</p>
-<p><span id="eq-climate"><span class="math display">\[
-\underbrace{C\frac{dT}{dt}}_{\text{change in heat}} = \underbrace{\frac{(1-\alpha)S}{4}}_{\text{incoming radiation}} - \underbrace{(A - BT)}_{\text{outgoing radiation}} + \underbrace{a\ln \left(\frac{[CO_2]}{[CO_2]_{PI}}\right)}_{\text{greenhouse effect}},
-\tag{1}\]</span></span></p>
-<p>where:</p>
-<ul>
-<li><span class="math inline">\(T\)</span> is the Earth’s global mean temperature (in <span class="math inline">\(^\circ\text{C}\)</span>);</li>
-<li><span class="math inline">\(C\)</span> is the heat capacity of the atmosphere and shallow ocean, taken to be <span class="math inline">\(51\ \text{J}/\text{m}^2/^\circ\text{C}\)</span>;</li>
-<li><span class="math inline">\(\alpha\)</span> is the planetary albedo, or the fraction of incoming radiation reflected by the Earth, which has a present-day value of approximately 0.3;</li>
-<li><span class="math inline">\(S\)</span> is the solar constant, or the amount of solar radiation received by the Earth averaged over area, which has a present-day value of <span class="math inline">\(1368\ \text{W}/\text{m}^2\)</span> but during the Neoproteorozoic Era had a value of <span class="math inline">\(1272\ \text{W}/\text{m}^2\)</span> (this is divided by four because the Earth is a sphere but <span class="math inline">\(S\)</span> is the radiation captured by a disc with radius equal to that of the Earth);</li>
-<li><span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are coefficients from the linearization of outgoing radiation physics, and have corresponding values <span class="math inline">\(B=-1.3\ \text{W}/\text{m}^2/^\circ\text{C}\)</span> (estimated from a number of lines of evidence about the sensitivity of outgoing radiation to temperature; this is negative due to a sign convention about the direction of incoming vs.&nbsp;outgoing radiation) and <span class="math inline">\(A=221.2\ \text{W}/\text{m}^2\)</span> (estimated by assuming the pre-industrial temperature of <span class="math inline">\(14^\circ\text{C}\)</span> was stable without anthropogenic greenhouse gas emissions).</li>
-</ul>
-<p>We will ignore the greenhouse effect term as we are considering the Earth system well before humans were around.</p>
-<section id="problem-3.1" class="level4 markdown cell">
-<h4 class="anchored" data-anchor-id="problem-3.1">Problem 3.1</h4>
-<p>Discretize the climate model (<a href="#eq-climate" class="quarto-xref">Equation&nbsp;1</a>) using forward Euler integration and a time step of <span class="math inline">\(\Delta t = 1\)</span> yr.</p>
+<section id="problem-1.4" class="level3 cell markdown">
+<h3 class="anchored" data-anchor-id="problem-1.4">Problem 1.4</h3>
+<p>Suppose you are responsible for designing a waste treatment plan for discharges into the river, with a regulatory mandate to keep the dissolved oxygen concentration above 4 mg/L. Discuss whether you’d opt to treat waste stream 2 alone or both waste streams equally. What other information might you need to make a conclusion, if any?</p>
 </section>
-<section id="problem-3.2" class="level4 markdown cell">
-<h4 class="anchored" data-anchor-id="problem-3.2">Problem 3.2</h4>
-<p>Rather than assuming a constant value for the albedo <span class="math inline">\(\alpha\)</span>, we will represent the ice-albedo feedback by letting <span class="math inline">\(\alpha\)</span> depend on <span class="math inline">\(T\)</span>:</p>
-<p><span class="math display">\[\alpha(T) =
-    \begin{cases}
-        \alpha_i &amp; \quad \text{if } T \leq -10^\circ \text{C} \\
-        \alpha_i + (\alpha_0 - \alpha_i)((T+10) / 20) &amp; \quad \text{if } -10^\circ \text{C} \leq T \leq 10^\circ \text{C} \\
-        \alpha_0 &amp; \quad \text{if } T \geq 10^\circ \text{C}.
-    \end{cases}\]</span></p>
-<p>Let <span class="math inline">\(\alpha_i = 0.5\)</span> and <span class="math inline">\(\alpha_0 = 0.3\)</span>. Simulate the simple climate model using the Neoprotereozoic value of <span class="math inline">\(S\)</span> with temperature-varying albedo for initial values of <span class="math inline">\(T\)</span> spanning <span class="math inline">\(-60^\circ\text{C} \leq T_0 \leq 30^\circ\text{C}\)</span> over a period of 200 years. Plot the temperature trajectories. How many equilibria are there and what are their stabilities?</p>
-</section>
-<section id="problem-3.3" class="level4 markdown cell">
-<h4 class="anchored" data-anchor-id="problem-3.3">Problem 3.3</h4>
-<p>One might hypothesize that one cause for the transition from Snowball Earth (the stable frozen equilibrium from Problem 3.2) was an increasing amount of incoming solar radiation (as expressed by an increase in <span class="math inline">\(S\)</span>). Examine this hypothesis using our simple model. Is this factor enough to cause the planet to warm to the pre-industrial temperature of <span class="math inline">\(14^\circ\text{C}\)</span>?</p>
-</section>
+<section id="problem-1.5" class="level3 cell markdown">
+<h3 class="anchored" data-anchor-id="problem-1.5">Problem 1.5</h3>
+<p>Suppose that it is known that the DO concentrations at the river inflow can vary according to a <span class="math inline">\(\text{LogNormal}(2.0, 0.15)\)</span> distribution. Conduct a Monte Carlo simulation of the DO concentration in the river. If you treat only waste stream 1 (based on your analysis from Problem 1.3), what is the expected probability and 95% confidence interval that the river fails to comply with the regulatory standard of 4 mg/L? How did you decide that your Monte Carlo sample size was sufficiently large?</p>
 </section>
 </section>
 <section id="references" class="level2 cell markdown">
@@ -940,14 +924,11 @@ Due Date
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../hw/hw01/hw01.html" class="pagination-link" aria-label="Homework 1">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Homework 1</span>
+      <a href="../../hw/hw02/hw02.html" class="pagination-link" aria-label="Homework 2">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Homework 2</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../hw/hw03/hw03.html" class="pagination-link" aria-label="Homework 3">
-        <span class="nav-page-text">Homework 3</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
@@ -962,7 +943,7 @@ Due Date
  <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">LICENSE: CC-BY-SA  <i class="fab fa-creative-commons"></i><i class="fab fa-creative-commons-by"></i><i class="fab fa-creative-commons-sa"></i></a>
   </li>  
 </ul>
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/hw/hw02/hw02.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/hw/hw03/hw03.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>Made with <a href="https://julialang.org">Julia</a> and <a href="https://quarto.org/">Quarto</a><br> <a href="https://www.github.com/BEE4750/bee4750.github.io">View the source at <i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
 </div>

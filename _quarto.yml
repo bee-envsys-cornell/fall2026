@@ -116,6 +116,8 @@ website:
           text: "Homework 1"
         - href: hw/hw02/hw02.qmd
           text: "Homework 2" 
+        - href: hw/hw03/hw03.qmd
+          text: "Homework 3" 
     - title: "Project"
       style: docked
       search: false
@@ -165,6 +167,6 @@ csl: _assets/references/american-geophysical-union.csl
 
 engine: julia
 julia:
-  exeflags: ["+1.11"]
+  exeflags: ["+1.11.5"]
 execute: 
   freeze: auto  
