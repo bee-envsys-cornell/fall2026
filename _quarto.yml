@@ -105,6 +105,8 @@ website:
           text: "Lab Overview"
         - href: labs/lab01/lab01.qmd
           text: "Lab 1"
+        - href: labs/lab02/lab02.qmd
+          text: "Lab 2"
     - title: "Homework"
       style: docked
       search: false

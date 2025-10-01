@@ -4,7 +4,7 @@
     "href": "schedule.html",
     "title": "Course Schedule",
     "section": "",
-    "text": "This page contains a schedule of the topics, content, and assignments for the semester. Note that this schedule will be updated as necessary the semester progresses, with all changes documented here. Readings requiring institutional subscriptions can be accessed through the Cornell Library.\n\n\n\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nSlides\nLab\nHW\nReading\n\n\n\n\n\n\nModule 1: Introduction to Systems Analysis\n\n\n\n\n\n\n1\nMon, Aug 25\nWelcome to BEE 4750!\n\n\n\n\n\n\n\nWed, Aug 27\nLab: Setting up Julia and GitHub\n\n\n\n\n\n\n2\nMon, Sep 01\nNo Class: Labor Day\n\n\n\nLiu et al. (2007)\n\n\n\nWed, Sep 03\nIntroduction to Systems Models\n\n\n\n\n\n\n3\nMon, Sep 08\nSystem Dynamics: Feedbacks\n\n\n\nWoodard et al. (2019)\n\n\n\nWed, Sep 10\nEquilibria and Bifurcations\n\n\n\n\n\n\n4\nMon, Sep 15\nSimulation Models\n\n\n\nOreskes et al. (1994)\n\n\n\nWed, Sep 17\nDissolved Oxygen\n\n\n\n\n\n\n5\nMon, Sep 22\nMore Dissolved Oxygen and Simulation\n\n\n\nSimpson et al. (2021)\n\n\n\nWed, Sep 24\nUncertainty and Monte Carlo\n\n\n\n\n\n\n6\nMon, Sep 29\nMonte Carlo: Why It Works\n\n\n\n\n\n\n\nWed, Oct 01\nMonte Carlo Lab\n\n\n\n\n\n\n7\nMon, Oct 06\nIntroduction to Prescriptive Modeling\n\n\n\n\n\n\n\nWed, Oct 08\nPrelim 1\n\n\n\n\n\n\n8\nMon, Oct 13\nNo Class: Fall Break\n\n\n\n\n\n\n\nWed, Oct 15\n\n\n\n\n\n\n\n9\nMon, Oct 20\n\n\n\n\n\n\n\n\nWed, Oct 22\n\n\n\n\n\n\n\n10\nMon, Oct 27\n\n\n\n\n\n\n\n\nWed, Oct 29\n\n\n\n\n\n\n\n11\nMon, Nov 03\n\n\n\n\n\n\n\n\nWed, Nov 05\n\n\n\n\n\n\n\n12\nMon, Nov 10\n\n\n\n\n\n\n\n\nWed, Nov 12\nPrelim 2\n\n\n\n\n\n\n13\nMon, Nov 17\n\n\n\n\n\n\n\n\nWed, Nov 19\n\n\n\n\n\n\n\n14\nMon, Nov 24\n\n\n\n\n\n\n\n\nWed, Nov 26\nNo Class: Thanksgiving Break\n\n\n\n\n\n\n15\nMon, Dec 01\n\n\n\n\n\n\n\n\nWed, Dec 03\n\n\n\n\n\n\n\n16\nMon, Dec 08\n\n\n\n\n\n\n\n\n\n\n\n\n\nReferences\n\nLiu, J., Dietz, T., Carpenter, S. R., Alberti, M., Folke, C., Moran, E., et al. (2007). Complexity of coupled human and natural systems. Science, 317, 1513–1516. https://doi.org/10.1126/science.1144004\n\n\nOreskes, N., Shrader-Frechette, K., & Belitz, K. (1994). Verification, validation, and confirmation of numerical models in the Earth sciences. Science, 263, 641–646. https://doi.org/10.1126/science.263.5147.641\n\n\nSimpson, N. P., Mach, K. J., Constable, A., Hess, J., Hogarth, R., Howden, M., et al. (2021). A framework for complex climate change risk assessment. One Earth, 4, 489–501. https://doi.org/10.1016/j.oneear.2021.03.005\n\n\nWoodard, D. L., Davis, S. J., & Randerson, J. T. (2019). Economic carbon cycle feedbacks may offset additional warming from natural feedbacks. Proceedings of the National Academy of Sciences, 116, 759–764. https://doi.org/10.1073/pnas.1805187115"
+    "text": "This page contains a schedule of the topics, content, and assignments for the semester. Note that this schedule will be updated as necessary the semester progresses, with all changes documented here. Readings requiring institutional subscriptions can be accessed through the Cornell Library.\n\n\n\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nSlides\nLab\nHW\nReading\n\n\n\n\n\n\nModule 1: Introduction to Systems Analysis\n\n\n\n\n\n\n1\nMon, Aug 25\nWelcome to BEE 4750!\n\n\n\n\n\n\n\nWed, Aug 27\nLab: Setting up Julia and GitHub\n\n\n\n\n\n\n2\nMon, Sep 01\nNo Class: Labor Day\n\n\n\nLiu et al. (2007)\n\n\n\nWed, Sep 03\nIntroduction to Systems Models\n\n\n\n\n\n\n3\nMon, Sep 08\nSystem Dynamics: Feedbacks\n\n\n\nWoodard et al. (2019)\n\n\n\nWed, Sep 10\nEquilibria and Bifurcations\n\n\n\n\n\n\n4\nMon, Sep 15\nSimulation Models\n\n\n\nOreskes et al. (1994)\n\n\n\nWed, Sep 17\nDissolved Oxygen\n\n\n\n\n\n\n5\nMon, Sep 22\nMore Dissolved Oxygen and Simulation\n\n\n\nSimpson et al. (2021)\n\n\n\nWed, Sep 24\nUncertainty and Monte Carlo\n\n\n\n\n\n\n6\nMon, Sep 29\nMonte Carlo: Why It Works\n\n\n\n\n\n\n\nWed, Oct 01\nLab: Monte Carlo\n\n\n\n\n\n\n7\nMon, Oct 06\nIntroduction to Prescriptive Modeling\n\n\n\n\n\n\n\nWed, Oct 08\nPrelim 1\n\n\n\n\n\n\n8\nMon, Oct 13\nNo Class: Fall Break\n\n\n\n\n\n\n\nWed, Oct 15\n\n\n\n\n\n\n\n9\nMon, Oct 20\n\n\n\n\n\n\n\n\nWed, Oct 22\n\n\n\n\n\n\n\n10\nMon, Oct 27\n\n\n\n\n\n\n\n\nWed, Oct 29\n\n\n\n\n\n\n\n11\nMon, Nov 03\n\n\n\n\n\n\n\n\nWed, Nov 05\n\n\n\n\n\n\n\n12\nMon, Nov 10\n\n\n\n\n\n\n\n\nWed, Nov 12\nPrelim 2\n\n\n\n\n\n\n13\nMon, Nov 17\n\n\n\n\n\n\n\n\nWed, Nov 19\n\n\n\n\n\n\n\n14\nMon, Nov 24\n\n\n\n\n\n\n\n\nWed, Nov 26\nNo Class: Thanksgiving Break\n\n\n\n\n\n\n15\nMon, Dec 01\n\n\n\n\n\n\n\n\nWed, Dec 03\n\n\n\n\n\n\n\n16\nMon, Dec 08\n\n\n\n\n\n\n\n\n\n\n\n\n\nReferences\n\nLiu, J., Dietz, T., Carpenter, S. R., Alberti, M., Folke, C., Moran, E., et al. (2007). Complexity of coupled human and natural systems. Science, 317, 1513–1516. https://doi.org/10.1126/science.1144004\n\n\nOreskes, N., Shrader-Frechette, K., & Belitz, K. (1994). Verification, validation, and confirmation of numerical models in the Earth sciences. Science, 263, 641–646. https://doi.org/10.1126/science.263.5147.641\n\n\nSimpson, N. P., Mach, K. J., Constable, A., Hess, J., Hogarth, R., Howden, M., et al. (2021). A framework for complex climate change risk assessment. One Earth, 4, 489–501. https://doi.org/10.1016/j.oneear.2021.03.005\n\n\nWoodard, D. L., Davis, S. J., & Randerson, J. T. (2019). Economic carbon cycle feedbacks may offset additional warming from natural feedbacks. Proceedings of the National Academy of Sciences, 116, 759–764. https://doi.org/10.1073/pnas.1805187115"
   },
   {
     "objectID": "tutorials/julia-plots.html",
@@ -3139,6 +3139,56 @@
     ]
   },
   {
+    "objectID": "labs/lab02/lab02.html",
+    "href": "labs/lab02/lab02.html",
+    "title": "BEE 4750 Lab 2: Monte Carlo",
+    "section": "",
+    "text": "Due Date\n\n\n\nThursday, 10/02/25, 9:00pm",
+    "crumbs": [
+      "Lab 2"
+    ]
+  },
+  {
+    "objectID": "labs/lab02/lab02.html#setup",
+    "href": "labs/lab02/lab02.html#setup",
+    "title": "BEE 4750 Lab 2: Monte Carlo",
+    "section": "Setup",
+    "text": "Setup\nThe following code should go at the top of most Julia scripts; it will load the local package environment and install any needed packages. You will see this often and shouldn’t need to touch it.\n\nimport Pkg\nPkg.activate(\".\")\nPkg.instantiate()\n\n\nusing Random # random number generation\nusing Distributions # probability distributions and interface\nusing Statistics # basic statistical functions, including mean\nusing Plots # plotting",
+    "crumbs": [
+      "Lab 2"
+    ]
+  },
+  {
+    "objectID": "labs/lab02/lab02.html#overview",
+    "href": "labs/lab02/lab02.html#overview",
+    "title": "BEE 4750 Lab 2: Monte Carlo",
+    "section": "Overview",
+    "text": "Overview\nIn this lab, we will conduct a Monte Carlo experiment and explore how sensitive Monte Carlo estimates are to the underlying probability distribution(s).\nYou should always start any computing with random numbers by setting a “seed,” which controls the sequence of numbers which are generated (since these are not really random, just “pseudorandom”). In Julia, we do this with the Random.seed!() function.\n\nRandom.seed!(1)\n\nTaskLocalRNG()\n\n\nIt doesn’t matter what seed you set, though different seeds might result in slightly different values. But setting a seed means every time your notebook is run, the answer will be the same.\n\n\n\n\n\n\nSeeds and Reproducing Solutions\n\n\n\nIf you don’t re-run your code in the same order or if you re-run the same cell repeatedly, you will not get the same solution. If you’re working on a specific problem, you might want to re-use Random.seed() near any block of code you want to re-evaluate repeatedly.\n\n\n\nProbability Distributions and Julia\nJulia provides a common interface for probability distributions with the Distributions.jl package. The basic workflow for sampling from a distribution is:\n\nSet up the distribution. The specific syntax depends on the distribution and what parameters are required, but the general call is the similar. For a normal distribution or a uniform distribution, the syntax is\n# you don't have to name this \"normal_distribution\"\n# μ is the mean and σ is the standard deviation\nnormal_distribution = Normal(μ, σ)\n# a is the upper bound and b is the lower bound; these can be set to +Inf or -Inf for an unbounded distribution in one or both directions.\nuniform_distribution = Uniform(a, b)\nThere are lots of both univariate and multivariate distributions, as well as the ability to create your own, but we won’t do anything too exotic here.\nDraw samples. This uses the rand() command (which, when used without a distribution, just samples uniformly from the interval \\([0, 1]\\).) For example, to sample from our normal distribution above:\n# draw n samples\nrand(normal_distribution, n)\n\nPutting this together, let’s say that we wanted to simulate 100 six-sided dice rolls. We could use a Discrete Uniform distribution.\n\ndice_dist = DiscreteUniform(1, 6) # can generate any integer between 1 and 6\ndice_rolls = rand(dice_dist, 100) # simulate rolls\n\n100-element Vector{Int64}:\n 1\n 3\n 5\n 4\n 6\n 2\n 5\n 5\n 5\n 2\n ⋮\n 3\n 6\n 5\n 5\n 6\n 3\n 6\n 6\n 6\n\n\nAnd then we can plot a histogram of these rolls:\n\nhistogram(dice_rolls, legend=:false, bins=6)\nylabel!(\"Count\")\nxlabel!(\"Dice Value\")\n\n\n\n\n\n\nInstructions\nRemember to:\n\nEvaluate all of your code cells, in order (using a Run All command). This will make sure all output is visible and that the code cells were evaluated in the correct order.\nTag each of the problems when you submit to Gradescope; a 10% penalty will be deducted if this is not done.",
+    "crumbs": [
+      "Lab 2"
+    ]
+  },
+  {
+    "objectID": "labs/lab02/lab02.html#problem",
+    "href": "labs/lab02/lab02.html#problem",
+    "title": "BEE 4750 Lab 2: Monte Carlo",
+    "section": "Problem",
+    "text": "Problem\nA common engineering problem is to quantify flood risk, which is typically computed by propagating a flood hazard distribution through a depth-damage function relating flood depths to economic damages. A reasonable depth-damage function for a house without a basement is a bounded logistic function, \\[d(h) = \\mathbb{1}_{h &gt; 0} \\frac{L}{1 + \\exp(-k (h - h_0))},\\]\nwhere \\(d\\) is the damage as a percent of total structure value, \\(h\\) is the water depth (relative to the house’s ground floor elevation) in m, \\(\\mathbb{1}_{x &gt; 0}\\) is the indicator function, \\(L\\) is the maximum loss in USD, \\(k\\) is the slope of the depth-damage relationship, and \\(h_0\\) is the inflection point. We’ll assume \\(L=\\$200,000\\), \\(k=0.8\\), and \\(h_0=3\\).\nFor this problem, suppose that we have two different probability distributions characterizing annual maxima flood depths:\n\n\\(h \\sim LogNormal(1.2, 0.3)\\);\n\\(h \\sim GeneralizedExtremeValue(3, 0.9, -0.15)\\).\n\nPlot histograms of samples from these distributions and conduct a Monte Carlo experiment for annual maximum flood damages using each. Answer the following questions:\n\nWhat are the Monte Carlo estimates of the expected value and the 99% quantile for the annual maximum damage the structure would suffer for each of these flood hazard distributions?\nHow did you decide on your sample size?\nWhy do you think the estimates differed or did not differ (you can also plot the depth-damage function to compare with the samples)?\nHow might you decide (based on getting additional information, if needed) which distribution is “better”?\nTry redoing the analysis for one of the distributions with a different seed. How much of a difference does that make?",
+    "crumbs": [
+      "Lab 2"
+    ]
+  },
+  {
+    "objectID": "labs/lab02/lab02.html#references",
+    "href": "labs/lab02/lab02.html#references",
+    "title": "BEE 4750 Lab 2: Monte Carlo",
+    "section": "References",
+    "text": "References\nPut any consulted sources here, including classmates you worked with/who helped you.",
+    "crumbs": [
+      "Lab 2"
+    ]
+  },
+  {
     "objectID": "labs/index.html",
     "href": "labs/index.html",
     "title": "Labs",
@@ -3173,7 +3223,7 @@
     "href": "labs/index.html#schedule",
     "title": "Labs",
     "section": "Schedule",
-    "text": "Schedule\n\n\n\n\n\n\n\n\n\nLab\nInstructions\nSolutions\nDue Date\n\n\n\n\nLab 1\n\n\nAug. 28, 2025\n\n\nLab 2\n\n\nSep. 18, 2025\n\n\nLab 3\n\n\nOct. 07, 2025\n\n\nLab 4\n\n\nOct. 28, 2025\n\n\nLab 5\n\n\nNov. 25, 2025",
+    "text": "Schedule\n\n\n\n\n\n\n\n\n\nLab\nInstructions\nSolutions\nDue Date\n\n\n\n\nLab 1\n\n\nAug. 28, 2025\n\n\nLab 2\n\n\nSep. 30, 2025",
     "crumbs": [
       "Lab Overview"
     ]

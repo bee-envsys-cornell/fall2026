@@ -14,3 +14,7 @@
 	path = hw/hw03
 	url = https://github.com/bee-envsys-cornell/hw03
 	branch = Fall25
+[submodule "labs/lab02"]
+	path = labs/lab02
+	url = https://github.com/bee-envsys-cornell/lab02
+	branch = Fall25
