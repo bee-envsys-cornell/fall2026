@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://envsys.viveks.me/fall2025/schedule.html</loc>
-    <lastmod>2025-10-01T00:04:44.935Z</lastmod>
+    <lastmod>2025-10-05T19:57:58.870Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/tutorials/julia-plots.html</loc>
@@ -57,20 +57,20 @@
     <lastmod>2025-08-04T11:24:36.859Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture06-2-prescriptive-modeling.html</loc>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture08-2-jump-lp.html</loc>
     <lastmod>2025-06-04T20:58:07.095Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture04-1-simulation.html</loc>
-    <lastmod>2025-09-15T18:51:10.568Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture01-1-intro.html</loc>
+    <lastmod>2025-08-25T12:12:17.859Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture13-2-limits-optimization.html</loc>
-    <lastmod>2025-06-05T14:42:14.425Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture11-1-mixed-integer.html</loc>
+    <lastmod>2025-06-04T20:58:07.097Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture12-1-waste-management.html</loc>
-    <lastmod>2025-06-04T20:58:07.098Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture07-1-prescriptive-modeling.html</loc>
+    <lastmod>2025-10-05T19:58:19.801Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecture06-1-monte-carlo.html</loc>
@@ -213,16 +213,16 @@
     <lastmod>2025-06-04T20:58:07.096Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture11-1-mixed-integer.html</loc>
-    <lastmod>2025-06-04T20:58:07.097Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture12-1-waste-management.html</loc>
+    <lastmod>2025-06-04T20:58:07.098Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture01-1-intro.html</loc>
-    <lastmod>2025-08-25T12:12:17.859Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture13-2-limits-optimization.html</loc>
+    <lastmod>2025-06-05T14:42:14.425Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture08-2-jump-lp.html</loc>
-    <lastmod>2025-06-04T20:58:07.095Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture04-1-simulation.html</loc>
+    <lastmod>2025-09-15T18:51:10.568Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecture05-2-uncertainty-monte-carlo.html</loc>

@@ -1,0 +1,672 @@
+---
+title: "Prescriptive Modeling"
+subtitle: "Lecture 10"
+author: "Vivek Srikrishnan"
+course: "BEE 4750"
+institution: "Cornell University"
+date: "October 06, 2025"
+format:
+    revealjs:
+        slide-number: c/t
+        show-slide-number: all
+        center-title-slide: true
+        width: 1280
+        height: 720
+        transition: none
+        toc: true
+        toc-depth: 1
+        toc-title: "Overview"
+        history: false
+        link-external-newwindow: true
+        theme: ../sass/slides.scss
+        template-partials:
+            - title-slide.html
+        menu:
+            numbers: true
+        html-math-method: mathjax
+        include-in-header: mathjax-config.html
+        date-format: long
+        email-obfuscation: javascript
+        chalkboard:
+            theme: whiteboard
+            buttons: true
+        auto-stretch: false
+        controls: true
+engine: julia
+execute:
+    freeze: auto
+    daemon: 600
+---
+
+```{julia}
+#| output: false
+import Pkg
+Pkg.activate(@__DIR__)
+Pkg.instantiate()
+```
+
+```{julia}
+#| output: false
+using Random
+using Distributions
+using Roots
+using DataFrames
+using Plots
+using LaTeXStrings
+using Measures
+
+Random.seed!(1)
+plot_font = "Computer Modern"
+default(
+    fontfamily=plot_font,
+    linewidth=2, 
+    framestyle=:box, 
+    label=nothing, 
+    grid=false,
+    tickfontsize=16,
+    guidefontsize=18,
+    legendfontsize=16,
+    titlefontsize=18
+)
+```
+
+# Review of Previous Classes
+
+## Monte Carlo
+
+- Stochastic simulation of $Y = f(X)$
+- Useful to compute expected values of quantities (integrals)
+- Monte Carlo Estimate of $\mu = \mathbb{E}[Y]$:
+$$\tilde{\mu}_n = \mathbb{E}[\{Y_1, \ldots, Y_n\}]$$
+
+## Why Monte Carlo Works
+
+- Unbiased estimates (across multiple samples)
+- Convergence of single sample:
+  - Law of Large Numbers
+
+## Monte Carlo Standard Error
+
+ - Standard error: $\sigma_Y / \sqrt{n} \approx \tilde{\sigma}_{\hat{Y}_n} / \sqrt{n}$
+- Central Limit Theorem: 
+    $$\tilde{\mu} \sim \mathcal{N}\left(0, \frac{\sigma_Y^2}{n}\right)$$
+
+## Monte Carlo Confidence Intervals
+
+- Construct CIs using this normal approximation: $$\tilde{\mu}_n \pm \Phi^{-1}\left(1 - \frac{\alpha}{2}\right) \frac{\sigma_Y}{\sqrt{n}}.$$ For example, the 95% confidence interval is $$\tilde{\mu}_n \pm 1.96 \frac{\sigma_Y}{\sqrt{n}}.$$
+
+## CI Interpretation: Mean of $N(0.4, 2)$
+
+```{julia}
+#| label: fig-cis
+#| code-fold: true
+#| code-overflow: wrap
+#| echo: true
+#| layout-ncol: 2
+#| fig-cap: "Display of 95% confidence intervals"
+#| fig-subcap: 
+#|  - "Sample Size 100"
+#|  - "Sample Size 1,000"
+
+# set up distribution
+mean_true = 0.4
+n_cis = 100 # number of CIs to compute
+dist = Normal(mean_true, 2)
+
+# use sample size of 100
+samples = rand(dist, (100, n_cis))
+# mapslices broadcasts over a matrix dimension, could also use a loop
+sample_means = mapslices(mean, samples; dims=1)
+sample_sd = mapslices(std, samples; dims=1) 
+mc_sd = 1.96 * sample_sd / sqrt(100)
+mc_ci = zeros(n_cis, 2) # preallocate
+for i = 1:n_cis
+    mc_ci[i, 1] = sample_means[i] - mc_sd[i]
+    mc_ci[i, 2] = sample_means[i] + mc_sd[i]
+end
+# find which CIs contain the true value
+ci_true = (mc_ci[:, 1] .< mean_true) .&& (mc_ci[:, 2] .> mean_true)
+# compute percentage of CIs which contain the true value
+ci_frac1 = 100 * sum(ci_true) ./ n_cis
+
+# plot CIs
+p1 = plot([mc_ci[1, :]], [1, 1], linewidth=3, color=:deepskyblue, label="95% Confidence Interval", title="Sample Size 100", yticks=:false, legend=:false)
+for i = 2:n_cis
+    if ci_true[i]
+        plot!(p1, [mc_ci[i, :]], [i, i], linewidth=2, color=:deepskyblue, label=:false)
+    else
+        plot!(p1, [mc_ci[i, :]], [i, i], linewidth=2, color=:red, label=:false)
+    end
+end
+vline!(p1, [mean_true], color=:black, linewidth=2, linestyle=:dash, label="True Value") # plot true value as a vertical line
+xaxis!(p1, "Estimate")
+plot!(p1, size=(500, 500)) # resize to fit slide
+
+# use sample size of 1000
+samples = rand(dist, (1000, n_cis))
+# mapslices broadcasts over a matrix dimension, could also use a loop
+sample_means = mapslices(mean, samples; dims=1)
+sample_sd = mapslices(std, samples; dims=1) 
+mc_sd = 1.96 * sample_sd / sqrt(1000)
+mc_ci = zeros(n_cis, 2) # preallocate
+for i = 1:n_cis
+    mc_ci[i, 1] = sample_means[i] - mc_sd[i]
+    mc_ci[i, 2] = sample_means[i] + mc_sd[i]
+end
+# find which CIs contain the true value
+ci_true = (mc_ci[:, 1] .< mean_true) .&& (mc_ci[:, 2] .> mean_true)
+# compute percentage of CIs which contain the true value
+ci_frac2 = 100 * sum(ci_true) ./ n_cis
+
+# plot CIs
+p2 = plot([mc_ci[1, :]], [1, 1], linewidth=3, color=:deepskyblue, label="95% Confidence Interval", title="Sample Size 1,000", yticks=:false, legend=:false)
+for i = 2:n_cis
+    if ci_true[i]
+        plot!(p2, [mc_ci[i, :]], [i, i], linewidth=2, color=:deepskyblue, label=:false)
+    else
+        plot!(p2, [mc_ci[i, :]], [i, i], linewidth=2, color=:red, label=:false)
+    end
+end
+vline!(p2, [mean_true], color=:black, linewidth=2, linestyle=:dash, label="True Value") # plot true value as a vertical line
+xaxis!(p2, "Estimate")
+plot!(p2, size=(500, 500)) # resize to fit slide
+
+display(p1)
+display(p2)
+```
+
+## Questions?
+
+{{< include _poll-prompt.qmd >}}
+
+# Prescriptive Modeling
+
+## Prescriptive Modeling
+
+If we want to design a treatment strategy, we are now in the world of *prescriptive modeling*.
+
+**Recall**: Precriptive modeling is intended to specify an action, policy, or decision.
+
+::: {.fragment .fade-in}
+
+- Descriptive modeling question: "What happens if I do something?"
+- Prescriptive modeling question: "What should I do?"
+:::
+
+## Decision Models
+
+To make a decision, we need certain pieces of information which:
+
+- define decision options (or **alternatives**);
+- provide one or more **objectives** to assess performance;
+- specify **constraints** to tell us what decisions are possible or acceptable.
+
+## Be Careful...
+
+::: {.quote}
+The  **optimal  solution  of  a  model  is  not  an  optimal  solution  of  a  problem  unless  the  model  is a  perfect  representation  of the  problem**,  which  it  never  is.
+
+::: {.cite}
+--- Ackoff, R. L. (1979). "The Future of Operational Research is Past." *The Journal of the Operational Research Society*, 30(2), 93–104. <https://doi.org/10.1057/jors.1979.22>
+:::
+:::
+
+
+## Objectives
+
+Typical objectives can include:
+
+- Minimizing costs (or maximizing profits);
+- Minimizing environmental impacts;
+- Maximizing some other performance metric.
+
+## Decision Modeling for Wastewater Treatment
+
+
+:::: {.columns}
+::: {.column width=60%}
+![Wastewater Release Model](figures/crud-baseline.svg)
+:::
+::: {.column width=40%}
+**Goal**: Identify treatment levels for each factory which ensure compliance with regulatory standard of $1 \ \text{mg}/\text{L}$.
+:::
+::::
+
+## Optimization Problem Formulation
+
+Need 3 components:
+
+1. Decision variable(s)
+2. Objective function(s)
+3. Constraint(s)
+
+
+## Decision Variables
+
+:::: {.columns}
+::: {.column width=60%}
+![Wastewater Release Model](figures/crud-baseline.svg)
+:::
+::: {.column width=40%}
+**What are the decision variables?**
+:::
+::::
+
+## Formulating The Objective
+
+**What might our objective be?**
+
+**What information do we need?**
+
+::: {.fragment .fade-in}
+Suppose treatment costs $$\$50 E^2 \text{ per } 1000 \ \text{m}^3,$$ where $E$ is the treatment efficiency.
+:::
+
+## Objectives and Metrics
+
+**Objectives** are goals, such as "minimize cost" or "maximize environmental quantity".
+
+**Metrics** are functions which measure some relevant quantity, in this case the specific cost function.
+
+Many different metrics can be used to specify an objective function!
+
+## Objective Function
+
+The objective function includes a goal and a metric:
+
+\begin{align*}
+\min_{E_1, E_2} \quad &50(100)E_1^2 + 50(60)E_2^2 \\
+= \min_{E_1, E_2} \quad &5000E_1^2 + 3000E_2^2.
+\end{align*}
+
+
+## Identifying Constraints
+
+:::: {.columns}
+::: {.column width=60%}
+![Wastewater Release Model](figures/crud-baseline.svg)
+:::
+::: {.column width=40%}
+**What are relevant constraints?**
+
+**What information do we need?**
+:::
+::::
+
+## Constraint for First Segment
+
+**Where does the maximum value of the first segment occur?**
+
+![Wastewater Schematic](figures/crud-baseline.svg)
+
+## Constraint for First Segment
+
+**Where does the maximum value of the first segment occur?**
+
+::: {.fragment .fade-in}
+$$100 + 1000(1-E_1) \leq 600 $$
+
+::: {.fragment .fade-in}
+$$\Rightarrow \boxed{1000E_1 \geq 500}$$
+:::
+:::
+
+## Constraint for Second Segment
+
+**What is the concentration at the second release with treatment level $E_2$?**
+
+![Wastewater Schematic](figures/crud-baseline.svg)
+
+## Constraint for Second Segment
+
+**What is the concentration at the second release with treatment level $E_2$?**
+
+::: {.fragment .fade-in}
+
+$$(1100 - 1000E_1) \exp(-0.18) + 1200(1 - E_2) \leq 660 $$
+
+::: {.fragment .fade-in}
+$$\begin{aligned}
+(1100 - 1000E_1) 0.835 + 1200(1 - E_2) &\leq 660  \\[0.5em]
+2119 - 835E_1 - 1200E_2 &\leq 660
+\end{aligned}$$
+
+::: {.fragment .fade-in}
+$$\Rightarrow \boxed{835E_1 + 1200E_2 \geq 1459}$$
+:::
+:::
+:::
+
+## Additional Constraints?
+
+We have two concentration compliance constraints:
+
+\begin{align*}
+1000 E_1  &\geq 500\\[0.5em]
+835E_1 + 1200E_2  &\geq 1459
+\end{align*}
+
+**Are these a complete set?**
+
+
+## Boundary Constraints
+
+We need to add **boundary** constraints for $E_1$, $E_2$ to avoid implausible treatment levels.
+
+\begin{align*}
+1000 E_1  &\geq 500\\[0.5em]
+835E_1 + 1200E_2  &\geq 1459\\[0.5em]
+\color{purple}E_1, E_2 &\;\color{purple}\geq 0 \\[0.5em]
+\color{purple}E_1, E_2 &\;\color{purple}\leq 1
+\end{align*}
+
+## Final Problem
+
+$$\begin{alignat}{3}
+& \min_{E_1, E_2} &\quad  5000E_1^2 + 3000E_2^2 &  \\\\
+& \text{subject to:} & 1000 E_1 &\geq 500 \\
+& & 835E_1 + 1200E_2 &\geq 1459 \\
+& & E_1, E_2 &\;\geq 0 \\
+& & E_1, E_2 &\;\leq 1
+\end{alignat}$$
+
+# Solving The Problem
+
+## Plotting the Decision Space
+
+```{julia}
+# define objective function
+a = range(0, 1, step=0.05)
+b = range(0, 1, step=0.05)
+f(a, b) = 5000 * a.^2 + 3000 * b.^2
+# plotting contours
+plt = contour(a,b,(a,b)->f(a,b), nlevels=15, 
+  c=:heat, linewidth=5, colorbar = false, 
+  contour_labels = true, grid = false, 
+  right_margin=8mm, bottom_margin=5mm, left_margin=5mm, tickfontsize=14, guidefontsize=16) 
+xaxis!(L"E_1", ticks=0:0.1:1, 
+  limits=(0, 1))
+yaxis!(L"E_2", ticks=0:0.1:1, 
+  limits=(0, 1))
+plot!(size=(1200, 600))
+```
+
+## Plotting the Feasible Region
+
+```{julia}
+vline!([0.5], color=:green, linewidth=3,
+  label=false) # Equation 2
+plot!(a, (1459 .- 835 .* a) ./ 1200, 
+  color=:green, linewidth=3,
+  label=false) # Equation 3
+# plot feasible region
+fa = a[a .>= 0.5]
+fb = (1459 .- 835 .* a[a .>= 0.5])./1200
+plot!(fa, fb, fillrange=1, 
+  label="Feasible Region", opacity=0.4, 
+  color=:green, legend=:bottomleft, legendfontsize=16)
+scatter!([0.5], [(1459 - 835 * 0.5) / 1200],
+  markershape=:star, color=:yellow, 
+  markersize=20, label="Optimum")
+plot!(right_margin=8mm)
+```
+
+## The Solution!
+
+So the solution occurs at the intersection of the two constraints, where:
+
+$$E_1 = 0.5, E_2 = 0.85$$
+
+and the cost of this treatment plan is 
+
+$$C(0.5, 0.85) = \$ 3417.$$
+
+**Does this solution make sense**?
+
+## Waste Load Allocation Problem
+
+This is an example of a *waste load allocation* problem.
+
+Each source is allocated a "load" they can discharge based on waste fate and transport.
+
+
+## Waste Load Allocation Problem
+
+Waste loads affect quality $Q$ based on F&T model: 
+
+$$Q=f(W_1, W_2, \ldots, W_n)$$
+
+
+So the general form for a prescriptive waste load allocation model:
+
+$$\begin{aligned}
+\text{determine} & \quad  W_1, W_2, \ldots, W_n \notag \\\\
+\text{subject to:} & \quad f(W_1, W_2, \ldots, W_n) \geq Q^* \notag
+\end{aligned}$$
+
+# Approaches to Optimization
+
+## Generalized Search Algorithms
+
+:::: {.columns}
+::: {.column width=50%}
+
+![Function with Multiple Minima](figures/multiple-optima.svg)
+:::
+
+::: {.column width=50%}
+Most search algorithms look for critical points to find candidate optima. Then the "best" of the critical points is the **global optimum**.
+:::
+
+::::
+
+## Generalized Search Algorithms
+
+:::: {.columns}
+::: {.column width=50%}
+
+![Function with Multiple Minima](figures/multiple-optima.svg)
+:::
+
+::: {.column width=50%}
+Two common approaches:
+
+- **Gradient-based methods**
+- **Evolutionary algorithms**
+
+:::
+
+::::
+
+## Gradient Descent
+
+:::: {.columns}
+::: {.column width=50%}
+Find estimate of gradient near current point and step in positive/negative direction (depending on max/min).
+
+$$x_{n+1} = x_n \pm \alpha_n \nabla f(x_n)$$
+
+:::
+::: {.column width=50%}
+```{julia}
+f(x) = 4 .* x.^4 - 10 .* (x.+2).^3 - 6 .* (x.-15).^2 + 2 .* (x.+4).^2
+x = -4:0.01:5
+
+plot(x, f(x), grid=false, linewidth=3, label=false, yticks=false, xticks=false, ylabel="Objective", xlabel="Decision Variable", left_margin=8mm, right_margin=5mm, legendfontsize=16, guidefontsize=16)
+scatter!([-2.36 3.69], f.([-2.36 3.69]), color=[:blue :red], markersize=[8 12], label=["Local Optimum" "Global Optimum"])
+ylims!((-1800, -1100))
+xlims!((-4, 5))
+scatter!([0], [f(0)], color=:black, label="Start Point", markersize=6)
+plot!([0, 0], [-1800, f(0)], color=:gray, linestyle=:dot, label=:false)
+plot!([-1, -1], [-1800, f(-1)], color=:gray, linestyle=:dot, label=:false)
+plot!([-1.75, -1.75], [-1800, f(-1.75)], color=:gray, linestyle=:dot, label=:false)
+quiver!([0], [-1775], quiver=([-1], [0]), color=:red)
+quiver!([-1], [-1775], quiver=([-0.75], [0]), color=:red)
+annotate!([0.25], [-1750], text(L"x_1", :red, 18))
+annotate!([-0.75], [-1750], text(L"x_2", :red, 18))
+annotate!([-1.5], [-1750], text(L"x_3", :red, 18))
+plot!(size=(600, 500))
+```
+:::
+::::
+
+## Gradient Descent: Challenges
+
+1. Need to tune stepsize for convergence; some use adaptive methods;
+2. May not have information about the gradient.
+
+::: {.fragment .fade-in}
+The second is more problematic: in some cases, methods like stochastic gradient approximation or automatic differentiation can be used.
+:::
+
+## "Random" Search
+
+:::: {.columns}
+::: {.column width=50%}
+Use a sampling strategy to find a new proposal, then evaluate, keep if improvement.
+
+**Evolutionary Algorithms** fall into this category.
+:::
+::: {.column width=50%}
+```{julia}
+
+f(x) = 4 .* x.^4 - 10 .* (x.+2).^3 - 6 .* (x.-15).^2 + 2 .* (x.+4).^2
+x = -4:0.01:5
+
+plot(x, f(x), grid=false, linewidth=3, label=false, yticks=false, xticks=false, ylabel="Objective", xlabel="Decision Variable", left_margin=8mm, legendfontsize=16, guidefontsize=16)
+scatter!([-2.36 3.69], f.([-2.36 3.69]), color=[:blue :red], markersize=[10 12], label=["Local Optimum" "Global Optimum"])
+ylims!((-1800, -1100))
+xlims!((-4, 5))
+Random.seed!(1)
+y = -4 .+ 9 .* rand(5)
+scatter!([y], [f.(y)], color=:black, label=:false, markersize=8)
+annotate!([y[1] + 0.5], [f.(y[1])], text(L"x_1", :black, 18))
+annotate!([y[2] + 0.5], [f.(y[2])], text(L"x_2", :black, 18))
+annotate!([y[3] + 0.5], [f.(y[3])], text(L"x_3", :black, 18))
+annotate!([y[4] + 0.5], [f.(y[4])], text(L"x_4", :black, 18))
+annotate!([y[5] + 0.5], [f.(y[5])], text(L"x_5", :black, 18))
+plot!(size=(600, 500))
+```
+:::
+::::
+
+## Random Search with Constraints
+
+:::: {.columns}
+::: {.column width=50%}
+Can also incorporate constraints into search.
+:::
+::: {.column width=50%}
+```{julia}
+f(x) = 4 .* x.^4 - 10 .* (x.+2).^3 - 6 .* (x.-15).^2 + 2 .* (x.+4).^2
+x1 = -4:0.01:3.1
+x2 = 3.1:0.01:5
+plot(x1, f(x1), grid=false, linewidth=3, label=false, yticks=false, xticks=false, ylabel="Objective", xlabel="Decision Variable", left_margin=8mm, legendfontsize=16, guidefontsize=16)
+plot!(x2, f(x2), linestyle=:dash, color=:purple, linewidth=3, label=false)
+vline!([3.1], color=:orange, linewidth=5, label=false)
+scatter!([-2.36 3.1], f.([-2.36 3.1]), color=[:blue :red], markersize=[10 12], label=["Local Optimum" "Constrained Optimum"])
+ylims!((-1800, -1100))
+xlims!((-4, 5))
+Random.seed!(1)
+y = -4 .+ 9 .* rand(5)
+scatter!([y[1:4]], [f.(y[1:4])], color=:black, label=:false, markersize=8)
+scatter!([(y[5], f(y[5]))], color=:orange, label=:false, markersize=8)
+annotate!([y[1] + 0.5], [f.(y[1])], text(L"x_1", :black, 18))
+annotate!([y[2] + 0.5], [f.(y[2])], text(L"x_2", :black, 18))
+annotate!([y[3] + 0.5], [f.(y[3])], text(L"x_3", :black, 18))
+annotate!([y[4] + 0.5], [f.(y[4])], text(L"x_4", :black, 18))
+annotate!([y[5] + 0.5], [f.(y[5])], text(L"x_5", :orange, 18))
+plot!(size=(600, 500))
+```
+:::
+::::
+
+## Drawbacks of Search Algorithms
+
+:::: {.columns}
+::: {.column width=50%}
+These methods work pretty well, but can:
+
+- **require a lot of evaluations**;
+- may get stuck at local optima;
+- may not converge if step sizes aren't set correctly
+:::
+
+::: {.column width=50%}
+![waiting model evaluation meme](figures/expensive-model-optimization.jpeg)
+:::
+::::
+
+## Generalized Search Algorithms
+
+:::: {.columns}
+::: {.column width=50%}
+These methods work pretty well, but can:
+
+- require a lot of evaluations;
+- **may get stuck at local optima**;
+- may not converge if step sizes aren't set correctly
+:::
+
+::: {.column width=50%}
+![waiting model evaluation meme](figures/gradient-descent-meme.jpeg)
+:::
+::::
+
+## Generalized Search Algorithms
+
+:::: {.columns}
+::: {.column width=50%}
+These methods work pretty well, but can:
+
+- require a lot of evaluations;
+- may get stuck at local optima;
+- **may not converge if not tuned well**.
+:::
+
+::: {.column width=50%}
+![waiting model evaluation meme](figures/stochastic-gradient-descent-meme.png){width=65%}
+:::
+::::
+
+## Mathematical Programming
+
+It can be convenient (and sometimes appropriate!) to formulate problems where we can guarantee finding a solution is a reasonable amount of time.
+
+These approaches are called **mathematical programs**.
+
+We will spend the next few weeks talking about linear programming and its variants.
+
+# Key Takeaways
+
+## Prescriptive Modeling
+
+- Prescriptive modeling involves **decision models**.
+- Key components of a decision model:
+  - Decision Variables;
+  - Objectives;
+  - Constraints.
+- Need to bring to bear relevant engineering, economic, and environmental information to formulate these.
+
+## Approaches to Optimization
+
+- General approaches can be computationally expensive or we may not be able to guarantee convergence.
+- An alternative is mathematical programming: can often guarantee ability to find solutions but at the expense of needing very specific problem formulations.
+
+# Upcoming Schedule
+
+## Next Classes
+
+**Wednesday**: **Prelim 1**, does not include material from today's lecture.
+
+**Monday**: Fall Break
+
+**Next Wednesday**: Linear Programming
+
+
+## Assessments
+
+**HW3**: Due next Thursday (10/16) at 9pm.
+
+
+
