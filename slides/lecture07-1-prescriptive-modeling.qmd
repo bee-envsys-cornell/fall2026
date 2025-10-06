@@ -319,10 +319,26 @@ $$\Rightarrow \boxed{1000E_1 \geq 500}$$
 
 ## Constraint for Second Segment
 
-**What is the concentration at the second release with treatment level $E_2$?**
+Assume decay rate of $0.45\ \text{d}^{-1}$:
 
 ::: {.fragment .fade-in}
 
+$$
+\begin{aligned}
+\frac{dM}{dt} &= -0.45 M \Rightarrow \frac{dM}{M} = -0.45 dt \\[0.5em]
+M(t) &= M(0) \exp\left(-0.45 t\right) \\[0.5em]
+M(x) &= M_0 \exp\left(-\frac{0.45 x}{25}\right), \quad x \leq 10 \ \text{km} \\[0.5em]
+M(10) &= (1100 - 1000E_1) \exp(-0.18) \ \text{kg}
+\end{aligned}
+$$
+
+:::
+
+## Constraint for Second Segment
+
+**What is the concentration at the second release with treatment level $E_2$?**
+
+::: {.fragment .fade-in}
 $$(1100 - 1000E_1) \exp(-0.18) + 1200(1 - E_2) \leq 660 $$
 
 ::: {.fragment .fade-in}
