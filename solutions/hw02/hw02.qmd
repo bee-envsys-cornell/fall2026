@@ -53,7 +53,7 @@ The systems diagram should look like this:
 
 * The positive connection between atmospheric CO~2~ concentrations and global temperatures is just capturing the greenhouse effect: CO~2~ blocks the transmission of radiation along certain frequencies which would normally cause a loss of energy back to space. 
 * The negative connection between global temperatures and ocean CO~2~ concentrations is a result of Henry's law for the solubility of CO~2~. While the oceans are not an ideal mixture and the atmospheres and oceans aren't in equilibrium (so one would be cautious in using Henry's law to make specific predictions about concentrations), the key insight is the temperature dependence of Henry's constant, where increasing temperature decreases solubility.
-* The negative connection between ocean and atmospheric CO~2~ concentrations is the result of the mass balance of CO~2~: CO~2~ which degasses from the oceans must end up in the atmosphere, and the uptake of CO~2~ from the oceans must come from the atmosphere.
+* The negative connection between ocean and atmospheric CO~2~ concentrations^[There is a slight error in the figure: this should ideally be a bidirectional arrow, but both are negative connections] is the result of the mass balance of CO~2~: CO~2~ which degasses from the oceans must end up in the atmosphere, and the uptake of CO~2~ from the oceans must come from the atmosphere.
 
 The overall feedback is therefore amplifying: increases in temperature decrease the concentration of CO~2~ in oceans, which increase the atmospheric concentration, causing further temperature increases.
 
