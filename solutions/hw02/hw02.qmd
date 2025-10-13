@@ -53,7 +53,7 @@ The systems diagram should look like this:
 
 * The positive connection between atmospheric CO~2~ concentrations and global temperatures is just capturing the greenhouse effect: CO~2~ blocks the transmission of radiation along certain frequencies which would normally cause a loss of energy back to space. 
 * The negative connection between global temperatures and ocean CO~2~ concentrations is a result of Henry's law for the solubility of CO~2~. While the oceans are not an ideal mixture and the atmospheres and oceans aren't in equilibrium (so one would be cautious in using Henry's law to make specific predictions about concentrations), the key insight is the temperature dependence of Henry's constant, where increasing temperature decreases solubility.
-* The negative connection between ocean and atmospheric CO~2~ concentrations^[There is a slight error in the figure: this should ideally be a bidirectional arrow, but both are negative connections] is the result of the mass balance of CO~2~: CO~2~ which degasses from the oceans must end up in the atmosphere, and the uptake of CO~2~ from the oceans must come from the atmosphere.
+* The negative connection between ocean and atmospheric CO~2~ concentrations is the result of the mass balance of CO~2~: CO~2~ which degasses from the oceans must end up in the atmosphere, and the uptake of CO~2~ from the oceans must come from the atmosphere.
 
 The overall feedback is therefore amplifying: increases in temperature decrease the concentration of CO~2~ in oceans, which increase the atmospheric concentration, causing further temperature increases.
 
@@ -69,9 +69,9 @@ This is a two box (or two control volume) model, as there is a change in the mas
 
 #### Problem 2.2
 
-CRUD decays exponentially at a rate of $0.36\ \mathrm{d}^{-1}$ and is deposited at a rate of $54\ \text{kg}/\text{d}$, so the differential equation for its mass $M$ as a function of time is $$\frac{dM}{dt} = -0.36M + 54.$$ 
+CRUD decays exponentially at a rate of $0.36\ \mathrm{d}^{-1}$ and is deposited at a rate of $54\ \text{kg}/\text{km}/\text{d}$, so the differential equation for its mass $M$ as a function of time is $$\frac{dM}{dt} = -0.36M + 54 \times 10.$$ 
 
-By separating variables, the solution to this equation is $$M(t) = M_0 \exp(-0.36t) + 150\left(1-\exp(-0.36t)\right),$$ where $M_0$ is the initial condition in each box. However, we need to convert time $t$ (d) to distance $x$ (km) as the discharges are constant in time and given in terms of spatial distance rather than time. As the velocity of the river is $10\ \mathrm{km/d}$, $$t = \frac{x}{10},$$ so $$M(x) = M_0 \exp(-0.36x/10)  + 150\left(1-\exp(-0.36x/10)\right).$$ {#eq-river-1}
+By separating variables, the solution to this equation is $$M(t) = M_0 \exp(-0.36t) + 1500\left(1-\exp(-0.36t)\right),$$ where $M_0$ is the initial condition in each box. However, we need to convert time $t$ (d) to distance $x$ (km) as the discharges are constant in time and given in terms of spatial distance rather than time. As the velocity of the river is $10\ \mathrm{km/d}$, $$t = \frac{x}{10},$$ so $$M(x) = M_0 \exp(-0.36x/10)  + 1500\left(1-\exp(-0.36x/10)\right).$$ {#eq-river-1}
 
 We need to find the initial conditions at the entry to each box. The first segment goes from $x=0$ (the first wastewater discharge) to $x=15$ (the second discharge), and the initial condition satisfies $M_0 = M(0)$. To calculate this mass, we have to compute the total mass of CRUD in the combined inflow and wastewater discharge, which is 
 
@@ -80,18 +80,18 @@ M_0 = M(0) &= \left(250,000 \mathrm{m}^3\right)\left(0.5\mathrm{kg}/(1000 \mathr
 &= 485 \mathrm{kg}.
 \end{align*}
 
-The second segment starts at $x=15$ and follows the equation $$M(x) = M_1 \exp(-0.36(x-15)/10) + 150\left(1-\exp(-0.36(x-15)/10)\right), \qquad x \leq 15.$$ The outflowing mass of the first box (evaluating @eq-river-1 at $x=15$) is approximately $345 kg$, so the initial condition at the second box is:
+The second segment starts at $x=15$ and follows the equation $$M(x) = M_1 \exp(-0.36(x-15)/10) + 1500\left(1-\exp(-0.36(x-15)/10)\right), \qquad x \leq 15.$$ The outflowing mass of the first box (evaluating @eq-river-1 at $x=15$) is approximately $909 kg$, so the initial condition at the second box is:
 
 
 \begin{align*}
-M_1 = M(15) &= 345 \mathrm{kg} + \left(60,000 \mathrm{m}^3\right)\left(7\mathrm{kg}/(1000 \mathrm{m}^3)\right) \\
-&= 345 \mathrm{kg} + 420 \mathrm{kg} \\
-&\approx 765 \mathrm{kg}/\mathrm{d}.
+M_1 = M(15) &= 908 \mathrm{kg} + \left(60,000 \mathrm{m}^3\right)\left(7\mathrm{kg}/(1000 \mathrm{m}^3)\right) \\
+&= 909 \mathrm{kg} + 420 \mathrm{kg} \\
+&\approx 1329 \mathrm{kg}/\mathrm{d}.
 \end{align*}
 
 $$
-M(t) = \begin{cases} 485 \exp(-0.36x/10) + 150\left(1-\exp(-0.36x/10)\right), &\text{if}\ 0 \leq x < 15 \\
-                    765 \exp(-0.36(x-15)/10) + 150\left(1-\exp(-0.36(x-15)/10)\right), & \text{if}\ x > 15.
+M(t) = \begin{cases} 485 \exp(-0.36x/10) + 1500\left(1-\exp(-0.36x/10)\right), &\text{if}\ 0 \leq x < 15 \\
+                    1329 \exp(-0.36(x-15)/10) + 1500\left(1-\exp(-0.36(x-15)/10)\right), & \text{if}\ x > 15.
 \end{cases}
 $$ {#eq-river-2}
 
@@ -109,10 +109,10 @@ Plotting concentration over distance (we need to evaluate a bit downstream from 
 # this function will return concentration in terms of kg/(1000 m^3)
 function yuk_concentration(x)
     if x < 15
-        M = 485 * exp(-0.36 * x / 10) + 150 * (1 - exp(-0.36 * x /10 ))
+        M = 485 * exp(-0.36 * x / 10) + 1500 * (1 - exp(-0.36 * x /10 ))
         C = M / 290 
     else
-        M = 765 * exp(-0.36 * (x - 15) / 10) + 150 * (1 - exp(-0.36 * (x - 15) /10 ))
+        M = 1329 * exp(-0.36 * (x - 15) / 10) + 1500 * (1 - exp(-0.36 * (x - 15) /10 ))
         C = M / 350
     end
     return C
@@ -126,7 +126,7 @@ xlabel!(p, "Distance (km)")
 ylabel!(p, "Concentration (kg/1000 m³)")
 ```
 
-We can see that the river is in compliance, though not by much!
+We can see that the river is not in compliance.
 
 ### Problem 3 (10 points)
 
