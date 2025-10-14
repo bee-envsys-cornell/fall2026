@@ -4,7 +4,7 @@
     "href": "schedule.html",
     "title": "Course Schedule",
     "section": "",
-    "text": "This page contains a schedule of the topics, content, and assignments for the semester. Note that this schedule will be updated as necessary the semester progresses, with all changes documented here. Readings requiring institutional subscriptions can be accessed through the Cornell Library.\n\n\n\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nSlides\nLab\nHW\nReading\n\n\n\n\n\n\nModule 1: Introduction to Systems Analysis\n\n\n\n\n\n\n1\nMon, Aug 25\nWelcome to BEE 4750!\n\n\n\n\n\n\n\nWed, Aug 27\nLab: Setting up Julia and GitHub\n\n\n\n\n\n\n2\nMon, Sep 01\nNo Class: Labor Day\n\n\n\nLiu et al. (2007)\n\n\n\nWed, Sep 03\nIntroduction to Systems Models\n\n\n\n\n\n\n3\nMon, Sep 08\nSystem Dynamics: Feedbacks\n\n\n\nWoodard et al. (2019)\n\n\n\nWed, Sep 10\nEquilibria and Bifurcations\n\n\n\n\n\n\n4\nMon, Sep 15\nSimulation Models\n\n\n\nOreskes et al. (1994)\n\n\n\nWed, Sep 17\nDissolved Oxygen\n\n\n\n\n\n\n5\nMon, Sep 22\nMore Dissolved Oxygen and Simulation\n\n\n\nSimpson et al. (2021)\n\n\n\nWed, Sep 24\nUncertainty and Monte Carlo\n\n\n\n\n\n\n6\nMon, Sep 29\nMonte Carlo: Why It Works\n\n\n\n\n\n\n\nWed, Oct 01\nLab: Monte Carlo\n\n\n\n\n\n\n7\nMon, Oct 06\nPrescriptive Modeling\n\n\n\n\n\n\n\nWed, Oct 08\nPrelim 1\n\n\n\n\n\n\n8\nMon, Oct 13\nNo Class: Fall Break\n\n\n\n\n\n\n\nWed, Oct 15\n\n\n\n\n\n\n\n9\nMon, Oct 20\n\n\n\n\n\n\n\n\nWed, Oct 22\n\n\n\n\n\n\n\n10\nMon, Oct 27\n\n\n\n\n\n\n\n\nWed, Oct 29\n\n\n\n\n\n\n\n11\nMon, Nov 03\n\n\n\n\n\n\n\n\nWed, Nov 05\n\n\n\n\n\n\n\n12\nMon, Nov 10\n\n\n\n\n\n\n\n\nWed, Nov 12\nPrelim 2\n\n\n\n\n\n\n13\nMon, Nov 17\n\n\n\n\n\n\n\n\nWed, Nov 19\n\n\n\n\n\n\n\n14\nMon, Nov 24\n\n\n\n\n\n\n\n\nWed, Nov 26\nNo Class: Thanksgiving Break\n\n\n\n\n\n\n15\nMon, Dec 01\n\n\n\n\n\n\n\n\nWed, Dec 03\n\n\n\n\n\n\n\n16\nMon, Dec 08\n\n\n\n\n\n\n\n\n\n\n\n\n\nReferences\n\nLiu, J., Dietz, T., Carpenter, S. R., Alberti, M., Folke, C., Moran, E., et al. (2007). Complexity of coupled human and natural systems. Science, 317, 1513–1516. https://doi.org/10.1126/science.1144004\n\n\nOreskes, N., Shrader-Frechette, K., & Belitz, K. (1994). Verification, validation, and confirmation of numerical models in the Earth sciences. Science, 263, 641–646. https://doi.org/10.1126/science.263.5147.641\n\n\nSimpson, N. P., Mach, K. J., Constable, A., Hess, J., Hogarth, R., Howden, M., et al. (2021). A framework for complex climate change risk assessment. One Earth, 4, 489–501. https://doi.org/10.1016/j.oneear.2021.03.005\n\n\nWoodard, D. L., Davis, S. J., & Randerson, J. T. (2019). Economic carbon cycle feedbacks may offset additional warming from natural feedbacks. Proceedings of the National Academy of Sciences, 116, 759–764. https://doi.org/10.1073/pnas.1805187115"
+    "text": "This page contains a schedule of the topics, content, and assignments for the semester. Note that this schedule will be updated as necessary the semester progresses, with all changes documented here. Readings requiring institutional subscriptions can be accessed through the Cornell Library.\n\n\n\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nSlides\nLab\nHW\nReading\n\n\n\n\n\n\nModule 1: Introduction to Systems Analysis\n\n\n\n\n\n\n1\nMon, Aug 25\nWelcome to BEE 4750!\n\n\n\n\n\n\n\nWed, Aug 27\nLab: Setting up Julia and GitHub\n\n\n\n\n\n\n2\nMon, Sep 01\nNo Class: Labor Day\n\n\n\nLiu et al. (2007)\n\n\n\nWed, Sep 03\nIntroduction to Systems Models\n\n\n\n\n\n\n3\nMon, Sep 08\nSystem Dynamics: Feedbacks\n\n\n\nWoodard et al. (2019)\n\n\n\nWed, Sep 10\nEquilibria and Bifurcations\n\n\n\n\n\n\n4\nMon, Sep 15\nSimulation Models\n\n\n\nOreskes et al. (1994)\n\n\n\nWed, Sep 17\nDissolved Oxygen\n\n\n\n\n\n\n5\nMon, Sep 22\nMore Dissolved Oxygen and Simulation\n\n\n\nSimpson et al. (2021)\n\n\n\nWed, Sep 24\nUncertainty and Monte Carlo\n\n\n\n\n\n\n6\nMon, Sep 29\nMonte Carlo: Why It Works\n\n\n\n\n\n\n\nWed, Oct 01\nLab: Monte Carlo\n\n\n\n\n\n\n7\nMon, Oct 06\nPrescriptive Modeling\n\n\n\n\n\n\n\nWed, Oct 08\nPrelim 1\n\n\n\n\n\n\n8\nMon, Oct 13\nNo Class: Fall Break\n\n\n\n\n\n\n\nWed, Oct 15\nDecision Models and Optimization\n\n\n\n\n\n\n9\nMon, Oct 20\n\n\n\n\n\n\n\n\nWed, Oct 22\n\n\n\n\n\n\n\n10\nMon, Oct 27\n\n\n\n\n\n\n\n\nWed, Oct 29\n\n\n\n\n\n\n\n11\nMon, Nov 03\n\n\n\n\n\n\n\n\nWed, Nov 05\n\n\n\n\n\n\n\n12\nMon, Nov 10\n\n\n\n\n\n\n\n\nWed, Nov 12\nPrelim 2\n\n\n\n\n\n\n13\nMon, Nov 17\n\n\n\n\n\n\n\n\nWed, Nov 19\n\n\n\n\n\n\n\n14\nMon, Nov 24\n\n\n\n\n\n\n\n\nWed, Nov 26\nNo Class: Thanksgiving Break\n\n\n\n\n\n\n15\nMon, Dec 01\n\n\n\n\n\n\n\n\nWed, Dec 03\n\n\n\n\n\n\n\n16\nMon, Dec 08\n\n\n\n\n\n\n\n\n\n\n\n\n\nReferences\n\nLiu, J., Dietz, T., Carpenter, S. R., Alberti, M., Folke, C., Moran, E., et al. (2007). Complexity of coupled human and natural systems. Science, 317, 1513–1516. https://doi.org/10.1126/science.1144004\n\n\nOreskes, N., Shrader-Frechette, K., & Belitz, K. (1994). Verification, validation, and confirmation of numerical models in the Earth sciences. Science, 263, 641–646. https://doi.org/10.1126/science.263.5147.641\n\n\nSimpson, N. P., Mach, K. J., Constable, A., Hess, J., Hogarth, R., Howden, M., et al. (2021). A framework for complex climate change risk assessment. One Earth, 4, 489–501. https://doi.org/10.1016/j.oneear.2021.03.005\n\n\nWoodard, D. L., Davis, S. J., & Randerson, J. T. (2019). Economic carbon cycle feedbacks may offset additional warming from natural feedbacks. Proceedings of the National Academy of Sciences, 116, 759–764. https://doi.org/10.1073/pnas.1805187115"
   },
   {
     "objectID": "tutorials/julia-plots.html",
@@ -1232,67 +1232,466 @@
     "text": "Next Classes\nMonday: Network Models and Solid Waste Management\nWednesday: Prelim (in class)!"
   },
   {
-    "objectID": "slides/lecture01-2-lab-setup.html#lab-instructions",
-    "href": "slides/lecture01-2-lab-setup.html#lab-instructions",
-    "title": "Julia and GitHub Basics",
-    "section": "Lab Instructions",
-    "text": "Lab Instructions\n\nTry to finish by the end of class, ok if it takes a little longer.\nSubmit PDF tomorrow by 9pm: ok if it isn’t 100% complete, but we want to see evidence of effort."
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#example-solid-waste-management",
+    "href": "slides/lecture13-1-stochastic-optimization.html#example-solid-waste-management",
+    "title": "Stochastic Optimization",
+    "section": "Example: Solid Waste Management",
+    "text": "Example: Solid Waste Management\n\nHierarchy of solid waste management (reduce -&gt; recycle -&gt; WTE -&gt; landfill)\nExample of a network model: need to represent flows between sources and sinks.\nResidual material flows can result in need to operate additional facilities."
   },
   {
-    "objectID": "slides/lecture01-2-lab-setup.html#lab-goals",
-    "href": "slides/lecture01-2-lab-setup.html#lab-goals",
-    "title": "Julia and GitHub Basics",
-    "section": "Lab Goals",
-    "text": "Lab Goals\nAt the end, make sure you:\n\nHave Julia installed and can open a notebook with a Julia kernel.\nHave a GitHub account and be able to accept assignments, clone, and push back to GitHub.\nCan export submissions to PDF for submission to Gradescope."
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#questions",
+    "href": "slides/lecture13-1-stochastic-optimization.html#questions",
+    "title": "Stochastic Optimization",
+    "section": "Questions",
+    "text": "Questions\n\n\n\n\n\n\n\n\nText: VSRIKRISH to 22333\nURL: https://pollev.com/vsrikrish  See Results"
   },
   {
-    "objectID": "slides/lecture01-2-lab-setup.html#next-classes",
-    "href": "slides/lecture01-2-lab-setup.html#next-classes",
-    "title": "Julia and GitHub Basics",
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#certainty-and-lp",
+    "href": "slides/lecture13-1-stochastic-optimization.html#certainty-and-lp",
+    "title": "Stochastic Optimization",
+    "section": "Certainty and LP",
+    "text": "Certainty and LP\nCertainty (e.g. all parameters and relationships between decision variables and outcomes are known) is a key assumption of linear programming.\nBut most systems problems aren’t actually deterministic."
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#approaches-to-decision-making-under-uncertainty",
+    "href": "slides/lecture13-1-stochastic-optimization.html#approaches-to-decision-making-under-uncertainty",
+    "title": "Stochastic Optimization",
+    "section": "Approaches to Decision-Making Under Uncertainty",
+    "text": "Approaches to Decision-Making Under Uncertainty\n\nA Common Approach:\n\nSolve deterministic problem using best estimates.\nStress-test solution with Monte Carlo or include additional safety margins (more on this later)."
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#representing-uncertainty-in-mathematical-programs",
+    "href": "slides/lecture13-1-stochastic-optimization.html#representing-uncertainty-in-mathematical-programs",
+    "title": "Stochastic Optimization",
+    "section": "Representing Uncertainty in Mathematical Programs",
+    "text": "Representing Uncertainty in Mathematical Programs\nAlternative:\n\nSolve a stochastic problem for best expected performance (or similar summary statistic).\n\n\nWe can represent uncertainty through scenarios and (conditional) sequential events, then rewrite the decision problem."
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#general-objective-for-stochastic-lp",
+    "href": "slides/lecture13-1-stochastic-optimization.html#general-objective-for-stochastic-lp",
+    "title": "Stochastic Optimization",
+    "section": "General Objective for Stochastic LP",
+    "text": "General Objective for Stochastic LP\n\\[\\min_x \\mathbb{E}_\\xi\\left\\[f(x; \\xi)\\right]\\]\n\nTwo Stage:\n\\[\\min_x f(x) + \\mathbb{E}_\\xi\\left[Q(x; \\xi)]\\right\\]\nwhere \\(Q(x; \\xi)\\) is the recourse decision made after realizing the uncertainty \\(\\xi\\)."
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#representation-of-uncertainties",
+    "href": "slides/lecture13-1-stochastic-optimization.html#representation-of-uncertainties",
+    "title": "Stochastic Optimization",
+    "section": "Representation of Uncertainties",
+    "text": "Representation of Uncertainties\nThis framework can work for:\n\ndiscrete scenarios (scenario trees)\ncontinuous uncertainties"
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#land-allocationfarmer-problem",
+    "href": "slides/lecture13-1-stochastic-optimization.html#land-allocationfarmer-problem",
+    "title": "Stochastic Optimization",
+    "section": "Land Allocation/Farmer Problem",
+    "text": "Land Allocation/Farmer Problem\nA farmer can grow wheat, corn, and sugar beets on 500 ha of land. How much land should they allocate to each crop?"
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#key-information-for-problem",
+    "href": "slides/lecture13-1-stochastic-optimization.html#key-information-for-problem",
+    "title": "Stochastic Optimization",
+    "section": "Key information For Problem",
+    "text": "Key information For Problem\n\nPlanting costs are $150, $230, and $260 per acre for wheat, corn, and sugar beets, respectively.\nThe farmer requires 200T of wheat and 240T kg of corn for feed, and excess can be sold for $170 and $150 per T, respectively.\nPurchasing crops costs $40 more than the selling prices.\nSugar beets are sold at $36/T up to 6000T, at which point the price drops to $10 per T."
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#farm-yields",
+    "href": "slides/lecture13-1-stochastic-optimization.html#farm-yields",
+    "title": "Stochastic Optimization",
+    "section": "Farm Yields",
+    "text": "Farm Yields\nFrom prior experience, the farmer knows that in an average year, yields are:\n\n2.5 T/acre for wheat;\n3 T/acre per corn;\n\n20T/acre for beets."
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#decision-variables",
+    "href": "slides/lecture13-1-stochastic-optimization.html#decision-variables",
+    "title": "Stochastic Optimization",
+    "section": "Decision Variables",
+    "text": "Decision Variables\nWhat are the decision variables?\n\n\n\n\nVariable\nDefinition\n\n\n\n\n\\(x_i\\)\nacres of crop \\(i\\) planted\n\n\n\\(y_i\\)\nT of crop \\(i\\) purchased\n\n\n\\(z_i\\)\nT of crop \\(i\\) sold\n\n\n\n\nOne twist: sold beets will be represented by two different \\(z\\)-variables (\\(z_3\\) and \\(z_4\\)), based on whether we exceed 6000T."
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#deterministic-problem-formulation",
+    "href": "slides/lecture13-1-stochastic-optimization.html#deterministic-problem-formulation",
+    "title": "Stochastic Optimization",
+    "section": "Deterministic Problem Formulation",
+    "text": "Deterministic Problem Formulation\n\\[\n\\begin{align}\n\\min_{x, y, z} & \\quad 150x_1 + 230 x_2 + 260 x_3 + 238 y_1 + 210 y_2 - 170 z_1 \\\\\n& \\qquad -150z_2 - 36z_3 - 10z_4 \\\\[1ex]\n\\text{subject to:} \\quad & x_1 + x_2 + x_3 \\leq 500 \\\\[0.5ex]\n& 2.5 x_1 + y_1 - z_1 \\geq 200 \\\\[0.5ex]\n& 3 x_2 + y_2 - z_2 \\geq 240 \\\\[0.5ex]\n& z_3 + z_4 \\leq 20 x_3 \\\\[0.5ex]\n& z_3 \\leq 6000 \\\\[0.5ex]\n& x_i, y_i, z_i \\geq 0\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#deterministic-solution",
+    "href": "slides/lecture13-1-stochastic-optimization.html#deterministic-solution",
+    "title": "Stochastic Optimization",
+    "section": "Deterministic Solution",
+    "text": "Deterministic Solution\n\n\n\nVariable\nWheat\nCorn\nBeets\n\n\n\n\nArea (acres)\n120\n80\n300\n\n\nYield (T)\n300\n240\n6000\n\n\nSales (T)\n100\n–\n6000\n\n\nPurchased (T)\n–\n–\n–\n\n\n\nThis solution yields a profit of $118,600."
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#what-about-uncertainty",
+    "href": "slides/lecture13-1-stochastic-optimization.html#what-about-uncertainty",
+    "title": "Stochastic Optimization",
+    "section": "What About Uncertainty?",
+    "text": "What About Uncertainty?\nBut yields tend to vary from year to year. From prior experience, the historical variability is:\n\nin a good year, yields can be 20% above average;\nin a bad year, yields can be 20% below average.\n\n\nTo simplify things, let’s assume these yields vary consistently across crops and that each scenario (average, good, bad) has an equal probability of occurrence."
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#stochastic-decision-variables",
+    "href": "slides/lecture13-1-stochastic-optimization.html#stochastic-decision-variables",
+    "title": "Stochastic Optimization",
+    "section": "Stochastic Decision Variables",
+    "text": "Stochastic Decision Variables\nWhat should change about our decision variables?\n\n\n\n\nVariable\nDefinition\n\n\n\n\n\\(x_i\\)\nacres of crop \\(i\\) planted\n\n\n\\(y_{ij}\\)\nT of crop \\(i\\) purchased in scenario \\(j\\)\n\n\n\\(z_{ij}\\)\nT of crop \\(i\\) sold in scenario \\(j\\)"
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#two-stage-problems",
+    "href": "slides/lecture13-1-stochastic-optimization.html#two-stage-problems",
+    "title": "Stochastic Optimization",
+    "section": "Two-Stage Problems",
+    "text": "Two-Stage Problems\nThis is typical of a two-stage decision problem:\n\nMake an initial decision (e.g. how much to plant) which must be committed to ahead of knowing the stochastic realization;\nMake a subsequent recourse decision based on the realization (e.g. do we have to purchase additional crops?)"
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#stochastic-objective",
+    "href": "slides/lecture13-1-stochastic-optimization.html#stochastic-objective",
+    "title": "Stochastic Optimization",
+    "section": "Stochastic Objective",
+    "text": "Stochastic Objective\nHow can we formulate an objective?\n\nFirst choice: what statistic are we trying to optimize?\n\nLet’s choose the expected value \\(\\mathbb{E}\\left[\\text{Profit}\\right]\\).\nOther possible choices: quantiles (robust optimization) to hedge against worst-case outcomes, variance (to minimize year-on-year fluctuations)."
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#probabilities-and-scenario-trees",
+    "href": "slides/lecture13-1-stochastic-optimization.html#probabilities-and-scenario-trees",
+    "title": "Stochastic Optimization",
+    "section": "Probabilities and Scenario Trees",
+    "text": "Probabilities and Scenario Trees\n\n\nSince we have a discrete (and small) set of possible outcomes, we can use a scenario tree to write out the possible outcomes.\n\n\n\n\nScenario Tree for Farmer Problem"
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#stochastic-objective-1",
+    "href": "slides/lecture13-1-stochastic-optimization.html#stochastic-objective-1",
+    "title": "Stochastic Optimization",
+    "section": "Stochastic Objective",
+    "text": "Stochastic Objective\nOur new objective becomes:\n\\[\\begin{alignedat}{2}\n&\\min_{x, y, z} & & \\quad 150x_1 + 230x_2 + 260x_3 \\\\[0.5ex]\n& &&\\qquad -\\frac{1}{3} \\left(170z_{11} + 150z_{21} + 36z_{31} + 10z_{41} - 238y_{11} - 210 y_{21}\\right) \\\\[0.5ex]\n& &&\\qquad -\\frac{1}{3} \\left(170z_{12} + 150z_{22} + 36z_{32} + 10z_{42} - 238y_{12} - 210 y_{22}\\right) \\\\[0.5ex]\n& &&\\qquad -\\frac{1}{3} \\left(170z_{13} + 150z_{23} + 36z_{33} + 10z_{43} - 238y_{13} - 210 y_{23}\\right)\n\\end{alignedat}\\]"
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#stochastic-contraints",
+    "href": "slides/lecture13-1-stochastic-optimization.html#stochastic-contraints",
+    "title": "Stochastic Optimization",
+    "section": "Stochastic Contraints",
+    "text": "Stochastic Contraints\n\\[\\begin{alignedat}{2}\n&x_1 + x_2 + x_3 \\leq 500 \\\\[0.5ex]\n&\\color{blue}3x_1 + y_{11} - z_{11} \\geq 200, && \\qquad  \\color{blue}3.6x_2 + y_{21} - z_{21} \\geq 240 \\\\[0.5ex]\n&\\color{blue}z_{31} + z_{41} \\leq 24x_3, && \\qquad \\color{blue}z_{31} \\leq 6000 \\\\[0.5ex]\n&\\color{purple}2.5x_1 + y_{12} - z_{12} \\geq 200, && \\qquad \\color{purple}3x_2 + y_{22} - z_{22} \\geq 240 \\\\[0.5ex]\n&\\color{purple}z_{32} + z_{42} \\leq 20x_3, && \\qquad \\color{purple}z_{32} \\leq 6000 \\\\[0.5ex]\n&\\color{red}2x_1 + y_{13} - z_{13} \\geq 200, && \\qquad \\color{red}2.4x_2 + y_{23} - z_{23} \\geq 240 \\\\[0.5ex]\n&\\color{red}z_{33} + z_{43} \\leq 16x_3, && \\qquad \\color{red}z_{33} \\leq 6000 \\\\[0.5ex]\n&x_i, y_i, z_i \\geq 0\n\\end{alignedat}\\]"
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#stochastic-solution",
+    "href": "slides/lecture13-1-stochastic-optimization.html#stochastic-solution",
+    "title": "Stochastic Optimization",
+    "section": "Stochastic Solution",
+    "text": "Stochastic Solution\n\n\n\nVariable\nWheat\nCorn\nBeets\n\n\n\n\nDeterministic Area (acres)\n120\n80\n300\n\n\nStochastic Area (acres)\n170\n80\n250\n\n\n\nHow do we interpret the differences?\n\n\nGood year: Won’t waste acreage on extra beets (6000T yield in stochastic solution, 7200T for deterministic)\nBad year: Will make less off beets, profits from wheat should help cover extra corn purchase."
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#comparing-deterministic-and-stochastic-solution",
+    "href": "slides/lecture13-1-stochastic-optimization.html#comparing-deterministic-and-stochastic-solution",
+    "title": "Stochastic Optimization",
+    "section": "Comparing Deterministic and Stochastic Solution",
+    "text": "Comparing Deterministic and Stochastic Solution\n\nDeterministic Solution: “Expected” Profit (no uncertainty) = $118,600\nStochastic Solution: \\(\\mathbb{E}[\\text{Profit}]\\) = $108,390.\n\n\nCan we directly compare the deterministic and stochastic solution values that we have obtained so far?"
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#expected-performance-of-deterministic-solution",
+    "href": "slides/lecture13-1-stochastic-optimization.html#expected-performance-of-deterministic-solution",
+    "title": "Stochastic Optimization",
+    "section": "Expected Performance of Deterministic Solution",
+    "text": "Expected Performance of Deterministic Solution\n\n\n\nYear\nDeterministic Profit\nStochastic Profit\n\n\n\n\nGood\n$148,000\n$167,000\n\n\nAverage\n$118,600\n$109,350\n\n\nBad\n$56,800\n$48,820\n\n\n\nExpected Profit from Deterministic Solution under uncertainty: $107,240"
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#value-of-the-stochastic-solution-1",
+    "href": "slides/lecture13-1-stochastic-optimization.html#value-of-the-stochastic-solution-1",
+    "title": "Stochastic Optimization",
+    "section": "Value of the Stochastic Solution",
+    "text": "Value of the Stochastic Solution\nWe can now compare the difference in expected profits under uncertainty, which is the fair comparison.\nThis is called the value of the stochastic solution (VSS), or sometimes the expected value of including uncertainty (EVIU).\n\\[\\begin{aligned}\nVSS &= \\mathbb{E}[\\text{Stochastic Profit}] - \\mathbb{E}[\\text{Deterministic Profit}] \\\\[0.5ex]\n&= \\$108,390 - \\$107,240 \\\\[0.5ex]\n&= \\$1,150.\n\\end{aligned}\\]"
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#expected-value-of-perfect-information",
+    "href": "slides/lecture13-1-stochastic-optimization.html#expected-value-of-perfect-information",
+    "title": "Stochastic Optimization",
+    "section": "Expected Value of Perfect Information",
+    "text": "Expected Value of Perfect Information\nAnother relevant quantity, the expected value of perfect information (EVPI), concerns the value associated with better forecasts."
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#expected-value-of-perfect-information-1",
+    "href": "slides/lecture13-1-stochastic-optimization.html#expected-value-of-perfect-information-1",
+    "title": "Stochastic Optimization",
+    "section": "Expected Value of Perfect Information",
+    "text": "Expected Value of Perfect Information\nIf the farmer had perfect foresight and could allocate acreage \\(x\\) accordingly and sell/purchase \\(z\\) and \\(y\\) optimally (versus taking the 1/3-probability stochastic solution),\n\\[\\mathbb{E}[\\text{Profits} | \\text{perfect information}] = \\sum_j p_j \\times \\text{Profits}_j = \\$115,405.\\]\n\n\\[\\text{EVPI} = \\$115,405 - \\$108,390 = \\$7,015\\]\nThe EVPI can be interpreted as the amount the farmer might be willing to pay for an improved forecast."
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#decision-making-and-uncertainty",
+    "href": "slides/lecture13-1-stochastic-optimization.html#decision-making-and-uncertainty",
+    "title": "Stochastic Optimization",
+    "section": "Decision-Making and Uncertainty",
+    "text": "Decision-Making and Uncertainty\n\nA solution obtained assuming deterministic outcomes might “on paper” yield better anticipated outcomes.\nCommon approach is a two-stage optimization framework:\n\nMake an initial decision;\nRecourse based on which scenario is realized.\n\nScenario trees help build out the representation of outcomes and probabilities."
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#value-of-the-stochastic-solution-2",
+    "href": "slides/lecture13-1-stochastic-optimization.html#value-of-the-stochastic-solution-2",
+    "title": "Stochastic Optimization",
+    "section": "Value of the Stochastic Solution",
+    "text": "Value of the Stochastic Solution\n\nSolutions to stochastic problems can produce a better expected outcome than the deterministic solution, but will perform better/worse in any given scenario.\nValue of the stochastic solution quantifies expected improvement in performance.\nExpected value of perfect information: amount you might be willing to pay for improved forecasts."
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#next-classes",
+    "href": "slides/lecture13-1-stochastic-optimization.html#next-classes",
+    "title": "Stochastic Optimization",
     "section": "Next Classes",
-    "text": "Next Classes\nMonday: Labor Day!\nWednesday: Intro to Systems Analysis"
+    "text": "Next Classes\nWednesday: Limits of Mathematical Programming\nMonday: Prelim 2 Review, Wrap-Up"
   },
   {
-    "objectID": "slides/lecture01-2-lab-setup.html#assessments",
-    "href": "slides/lecture01-2-lab-setup.html#assessments",
-    "title": "Julia and GitHub Basics",
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#no-class-after-thanksgiving",
+    "href": "slides/lecture13-1-stochastic-optimization.html#no-class-after-thanksgiving",
+    "title": "Stochastic Optimization",
+    "section": "No Class after Thanksgiving!",
+    "text": "No Class after Thanksgiving!\n\nWork on project!\nWill have open office hours for project check-ins (remotely on 12/4)"
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#assessments",
+    "href": "slides/lecture13-1-stochastic-optimization.html#assessments",
+    "title": "Stochastic Optimization",
     "section": "Assessments",
-    "text": "Assessments\n\nWeekly Exercises: Basically a syllabus quiz this week.\nHW 1: Available, due 9/11."
+    "text": "Assessments\nHW5: Will be due last week of class (12/5)."
   },
   {
-    "objectID": "slides/lecture08-2-jump-lp.html#lab-instructions",
-    "href": "slides/lecture08-2-jump-lp.html#lab-instructions",
-    "title": "Linear Programming with JuMP.jl",
-    "section": "Lab Instructions",
-    "text": "Lab Instructions\n\nSpend first 30 minutes working through the LP formulation;\nThen implement LP in JuMP."
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#simulation",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#simulation",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Simulation",
+    "text": "Simulation\n\n“Mimic” data generation given a certain model for the relevant processes;\nOften requires some type of discretization (not always!)"
   },
   {
-    "objectID": "slides/lecture08-2-jump-lp.html#problem-statement",
-    "href": "slides/lecture08-2-jump-lp.html#problem-statement",
-    "title": "Linear Programming with JuMP.jl",
-    "section": "Problem Statement",
-    "text": "Problem Statement\nGoal: How much lumber to produce to maximize profit from wood sales?"
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#simulation-workflow",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#simulation-workflow",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Simulation Workflow",
+    "text": "Simulation Workflow\n\n\n\nSimulation Workflow"
   },
   {
-    "objectID": "slides/lecture08-2-jump-lp.html#problem-statement-1",
-    "href": "slides/lecture08-2-jump-lp.html#problem-statement-1",
-    "title": "Linear Programming with JuMP.jl",
-    "section": "Problem Statement",
-    "text": "Problem Statement\n\nForest consists of 320,000 bf of spruce, 720,000 bf of fir.\nSpruce costs \\(\\$0.12\\) per bf to purchase and fir costs \\(\\$0.08\\) per bf.\n\n\n\n\nTable 1: Wood inputs and revenue by plywood grade. S refers to spruce inputs, F fir inputs.\n\n\n\n\n\nPlywood Grade\nInputs (bf/bf plywood)\nRevenue ($/1000 bf)\n\n\n\n\n1\n0.5 (S) + 1.5 (F)\n400\n\n\n2\n1.0 (S) + 2.0 (F)\n520\n\n\n3\n1.5 (S) + 2.0 (F)\n700"
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#simulation-1",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#simulation-1",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Simulation",
+    "text": "Simulation\n\n“Mimic” data generation given a certain model for the relevant processes;\nOften requires some type of discretization (not always!)\nMore complex approaches (e.g. discrete-event simulation) for specific use cases."
   },
   {
-    "objectID": "slides/lecture08-2-jump-lp.html#next-classes",
-    "href": "slides/lecture08-2-jump-lp.html#next-classes",
-    "title": "Linear Programming with JuMP.jl",
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#calibration-and-validation",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#calibration-and-validation",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Calibration and Validation",
+    "text": "Calibration and Validation\n\nCalibration: How do we select parameter values?\nValidation: Does the model adequately reproduce the system dynamics?"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#questions",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#questions",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Questions?",
+    "text": "Questions?\n\n\n\n\n\n\n\n\nText: VSRIKRISH to 22333\nURL: https://pollev.com/vsrikrish  See Results"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#systems-and-uncertainty",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#systems-and-uncertainty",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Systems and Uncertainty",
+    "text": "Systems and Uncertainty\n\n\n\nDeterministic models: uncertainty due to the separation between the “internals” of the system and the “external” environment.\nStochastic models: additional uncertainty from internal stochasticity\n\n\n\n\n\nConceptual Schematic of a Systems Model"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#uncertainty-and-models",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#uncertainty-and-models",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Uncertainty and Models",
+    "text": "Uncertainty and Models\n\n\nUncertainty can come from:\n\nStochastic models;\nUncertain external conditions (forcings);\nUncertain parameters;\nUncertain model dynamics.\n\n\n\n\n\nConceptual Schematic of a Systems Model"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#types-of-uncertainty",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#types-of-uncertainty",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Types of Uncertainty",
+    "text": "Types of Uncertainty\n\n\nTwo (broad) types of uncertainties:\n\nAleatory uncertainty, or uncertainties resulting from randomness;\nEpistemic uncertainty, or uncertainties resulting from lack of knowledge.\n\n\n\n\n\nDissolved Oxygen by temperature\n\n\n\nSource: XKCD 2440"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#axioms-of-probability",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#axioms-of-probability",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Axioms of Probability",
+    "text": "Axioms of Probability\nProbability is a language for expressing uncertainty.\nThe axioms of probability are straightforward:\n\n\\(E\\) is some “event”: \\(\\mathcal{P}(E) \\geq 0\\);\n\\(\\Omega\\) is the total event space: \\(\\mathcal{P}(\\Omega) = 1\\);\n\\(\\mathcal{P}(\\cup_{i=1}^\\infty E_i) = \\sum_{i=1}^\\infty \\mathcal{P}(E_i)\\) for disjoint (or “independent”) \\(E_i\\)"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-distributions",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-distributions",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Probability Distributions",
+    "text": "Probability Distributions\nProbability distributions associate a probability to every event under consideration (the event space) and have to follow these axioms."
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#key-features-of-probability-distributions",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#key-features-of-probability-distributions",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Key Features of Probability Distributions",
+    "text": "Key Features of Probability Distributions\n\nMean/Mode (what events are “typical”)\nSkew (are larger or smaller events more or equally probable)\nVariance (how spread out is the distribution around the mode)\nTail Probabilities (how probable are extreme events)"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#common-distributions",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#common-distributions",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Common Distributions",
+    "text": "Common Distributions\n\nGaussian / Normal\nLognormal\nBinomial\nUniform / Discrete Uniform"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-density-function",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-density-function",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Probability Density Function",
+    "text": "Probability Density Function\nA continuous distribution \\(\\mathcal{D}\\) has a probability density function (PDF) \\(f_\\mathcal{D}(x) = p(x | \\theta)\\).\nThe probability of \\(x\\) occurring in an interval \\((a, b)\\) is \\[\\mathbb{P}[a \\leq x \\leq b] = \\int_a^b f_\\mathcal{D}(x)dx.\\]\nImportant: \\(\\mathbb{P}(x = x^*)\\) is zero!"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-mass-functions",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-mass-functions",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Probability Mass Functions",
+    "text": "Probability Mass Functions\nDiscrete distributions have probability mass functions (PMFs) which are defined at point values, e.g. \\(p(x = x^*) \\neq 0\\).\n\nUnlike continuous distributions, we can talk about the probability of individual values for discrete distributions, which a PMF provides versus a PDF. But in general these are the same things."
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#cumulative-density-functions",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#cumulative-density-functions",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Cumulative Density Functions",
+    "text": "Cumulative Density Functions\n\n\nIf \\(\\mathcal{D}\\) is a distribution with PDF \\(f_\\mathcal{D}(x)\\), the cumulative density function (CDF) of \\(\\mathcal{D}\\) is \\(F_\\mathcal{D}(x)\\):\n\\[F_\\mathcal{D}(x) = \\int_{-\\infty}^x f_\\mathcal{D}(u)du.\\]\n\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(a) Relationship of CDF and PDF\n\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(b)\n\n\n\n\n\n\n\nFigure 1"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#relationship-between-pdfs-and-cdfs",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#relationship-between-pdfs-and-cdfs",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Relationship Between PDFs and CDFs",
+    "text": "Relationship Between PDFs and CDFs\nSince \\[F_\\mathcal{D}(x) = \\int_{-\\infty}^x f_\\mathcal{D}(u)du,\\]\nif \\(f_\\mathcal{D}\\) is continuous at \\(x\\), the Fundamental Theorem of Calculus gives: \\[f_\\mathcal{D}(x) = \\frac{d}{dx}F_\\mathcal{D}(x).\\]\n\nThe value of the CDF is the amount of probability “below” the value. So e.g. for a one-sided statistical test, the p-value is the complement of the CDF at the value of the test statistic."
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#quantiles",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#quantiles",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Quantiles",
+    "text": "Quantiles\n\n\nThe quantile function is the inverse of the CDF:\n\\[q(\\alpha) = F^{-1}_\\mathcal{D}(\\alpha)\\]\nSo \\[x_0 = q(\\alpha) \\iff \\mathbb{P}_\\mathcal{D}(X &lt; x_0) = \\alpha.\\]\n\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(a) Relationship of CDF and PDF\n\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(b)\n\n\n\n\n\n\n\nFigure 2"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#distributions-are-assumptions",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#distributions-are-assumptions",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Distributions Are Assumptions",
+    "text": "Distributions Are Assumptions\nSpecifying a distribution is making an assumption about observations and any applicable constraints.\nExamples: If your observations are…\n\nContinuous and fat-tailed? Cauchy distribution\nContinuous and bounded? Beta distribution\nSums of positive random variables? Gamma or Normal distribution."
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#selecting-a-distribution",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#selecting-a-distribution",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Selecting a Distribution",
+    "text": "Selecting a Distribution\nA distribution implicitly answers questions like:\n\nWhat is the most probable event? How much more likely is it than the others?\nAre larger or smaller events more, less, or equally probable?\nHow probable are extreme events?\nAre different events correlated, or are they independent?"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-distribution-tails",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-distribution-tails",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Probability Distribution Tails",
+    "text": "Probability Distribution Tails\n\n\nThe tails of distributions represent the probability of high-impact outcomes.\nKey consideration: Small changes to these (low) probabilities can greatly influence risk.\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 3: Comparison of Cauchy and Normal tails"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#what-distribution-should-i-use",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#what-distribution-should-i-use",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "“What Distribution Should I Use?”",
+    "text": "“What Distribution Should I Use?”\nThere is no right answer to this, no matter what a statistical test tells you.\n\nWhat assumptions are justifiable?\n\nParticularly: think about tails, symmetry/skew\n\nWhat information do you have?"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#what-distribution-should-i-use-1",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#what-distribution-should-i-use-1",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "“What Distribution Should I Use?”",
+    "text": "“What Distribution Should I Use?”\nFor example, suppose our data are counts of events:\n\nIf you know something about rates, you can use a Poisson distribution\nIf you know something about probabilities, you can use a Binomial distribution."
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#conditional-probabilities",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#conditional-probabilities",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Conditional Probabilities",
+    "text": "Conditional Probabilities\nWe often don’t want to just know if a particular event \\(A\\) has a certain probability, but also how other events (call them \\(B\\)) might depend on that outcome.\nIn other words:\nWe want the conditional probability of \\(B\\) given \\(A\\), denoted \\(\\mathbb{P}(B|A)\\)."
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#conditional-probabilities-1",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#conditional-probabilities-1",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Conditional Probabilities",
+    "text": "Conditional Probabilities\nWe can write conditional probabilities in terms of unconditional probabilities:\n\\[\\mathbb{P}(B|A) = \\frac{\\mathbb{P}(BA)}{\\mathbb{P}(A)}.\\]"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#stochastic-simulation",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#stochastic-simulation",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Stochastic Simulation",
+    "text": "Stochastic Simulation\nMonte Carlo simulation: Propagating random samples through a model to estimate a value (usually an expectation or a quantile).\n\n\n\n\n\n\n\nG\n\n\n\na\n\nProbability\n Distribution\n\n\n\nb\n\nRandom\n Samples\n\n\n\na-&gt;b\n\n\nSample\n\n\n\nc\n\nModel\n\n\n\nb-&gt;c\n\n\nInput\n\n\n\nd\n\nOutputs\n\n\n\nc-&gt;d\n\n\nSimulate"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#goals-of-monte-carlo",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#goals-of-monte-carlo",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Goals of Monte Carlo",
+    "text": "Goals of Monte Carlo\nMonte Carlo is a broad method, which can be used to:\n\nObtain probability distributions of outputs;\nEstimate deterministic quantities."
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-simulation",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-simulation",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Monte Carlo Simulation",
+    "text": "Monte Carlo Simulation\nGoal: Estimate \\(\\mathbb{E}_f\\left[h(x)\\right]\\), \\(x \\sim f(x)\\)\nMonte Carlo principle:\n\nSample \\(x^1, x^2, \\ldots, x^N \\sim f(x)\\)\nEstimate \\[\\mathbb{E}_f\\left[h(x)\\right] = \\int_{x \\in X} h(x)f(x)dx  \\approx \\frac{1}{N} \\sum_{n=1}^N h(x^n)\\]"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-finding-pi",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-finding-pi",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "MC Example: Finding \\(\\pi\\)",
+    "text": "MC Example: Finding \\(\\pi\\)\nHow can we use MC to estimate \\(\\pi\\)?\nHint: Think of \\(\\pi\\) as an expected value…"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-finding-pi-1",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-finding-pi-1",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "MC Example: Finding \\(\\pi\\)",
+    "text": "MC Example: Finding \\(\\pi\\)\n\n\nFinding \\(\\pi\\) by sampling random values from the unit square and computing the fraction in the unit circle. This is an example of Monte Carlo integration.\n\n\\[\\frac{\\text{Area of Circle}}{\\text{Area of Square}} = \\frac{\\pi}{4}\\]\n\n\n\n\n\n\n\n\n\n\nFigure 4: Monte Carlo simualtion for Estimating pi"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-dice",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-dice",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "MC Example: Dice",
+    "text": "MC Example: Dice\n\n\nWhat is the probability of rolling 4 dice for a total of 19?\n\nCan simulate dice rolls and find the frequency of 19s among the samples.\n\n\n\n\n\n\n\n\n\n\nFigure 5: Monte Carlo simualtion for Dice Rolls"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-estimate-of-quantiles",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-estimate-of-quantiles",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "MC Estimate of Quantiles",
+    "text": "MC Estimate of Quantiles\nWould like to estimate the CDF \\(F\\) with some approximation \\(\\hat{F}_n\\), then compute \\(\\hat{z}^\\alpha_n = \\hat{F}_n^{-1}(\\alpha)\\) as an estimator of the \\(\\alpha\\)-quantile \\(z^\\alpha\\).\nGiven samples \\(\\hat{\\mathbf{y}} = y_1, \\ldots, y_n \\sim F\\), define \\[\\hat{F}_n(y) = \\frac{1}{n} \\sum_{i=1}^n \\mathbb{I}(y_i \\leq y)\\] and \\(\\hat{z}^\\alpha_n = \\hat{F}_n^{-1}(\\alpha)\\)."
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-estimation",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-estimation",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Monte Carlo Estimation",
+    "text": "Monte Carlo Estimation\nThis type of estimation can be repeated with any simulation model that has a stochastic component.\nFor example, consider our dissolved oxygen model. Suppose that we have a probability distribution for the inflow DO.\nHow could we compute the probability of DO falling below the regulatory standard somewhere downstream?"
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-and-uncertainty-propagation",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-and-uncertainty-propagation",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Monte Carlo and Uncertainty Propagation",
+    "text": "Monte Carlo and Uncertainty Propagation\n\nDraw samples from some distribution;\nRun them through one or more models;\nCompute the (conditional) probability of outcomes of interest (for good or bad)."
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#key-takeaways-1",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#key-takeaways-1",
+    "title": "Uncertainty and Monte Carlo",
+    "section": "Key Takeaways",
+    "text": "Key Takeaways\n\nSystems analysis features many uncertainties, which may be neglected with certain methods/model setups.\nRisk: Combination of hazard, exposure, vulnerability, and response.\nChoice of probability distribution can have large impacts on uncertainty and risk estimates: try not to use distributions just because they’re convenient.\nMonte Carlo: Estimate expected values of outcomes using simulation."
+  },
+  {
+    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#next-classes",
+    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#next-classes",
+    "title": "Uncertainty and Monte Carlo",
     "section": "Next Classes",
-    "text": "Next Classes\nMonday: Labor Day!\nWednesday: Intro to Systems Analysis"
-  },
-  {
-    "objectID": "slides/lecture08-2-jump-lp.html#assessments",
-    "href": "slides/lecture08-2-jump-lp.html#assessments",
-    "title": "Linear Programming with JuMP.jl",
-    "section": "Assessments",
-    "text": "Assessments\n\nWeekly Exercises: Basically a syllabus quiz.\nHW 1: Available, due 9/6."
+    "text": "Next Classes\nMonday: Monte Carlo Lab (clone before class, maybe instantiate environment too)\nWednesday: Why Does Monte Carlo Work?"
   },
   {
     "objectID": "slides/lecture04-1-simulation.html#shallow-lake-model",
@@ -4549,802 +4948,410 @@
     "text": "Assessments\n\nLab 1: Wednesday\nHW 1: Available, due 9/11."
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#last-class",
-    "href": "slides/lecture08-1-linear-programming.html#last-class",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-jump-lp.html#lab-instructions",
+    "href": "slides/lecture08-2-jump-lp.html#lab-instructions",
+    "title": "Linear Programming with JuMP.jl",
+    "section": "Lab Instructions",
+    "text": "Lab Instructions\n\nSpend first 30 minutes working through the LP formulation;\nThen implement LP in JuMP."
+  },
+  {
+    "objectID": "slides/lecture08-2-jump-lp.html#problem-statement",
+    "href": "slides/lecture08-2-jump-lp.html#problem-statement",
+    "title": "Linear Programming with JuMP.jl",
+    "section": "Problem Statement",
+    "text": "Problem Statement\nGoal: How much lumber to produce to maximize profit from wood sales?"
+  },
+  {
+    "objectID": "slides/lecture08-2-jump-lp.html#problem-statement-1",
+    "href": "slides/lecture08-2-jump-lp.html#problem-statement-1",
+    "title": "Linear Programming with JuMP.jl",
+    "section": "Problem Statement",
+    "text": "Problem Statement\n\nForest consists of 320,000 bf of spruce, 720,000 bf of fir.\nSpruce costs \\(\\$0.12\\) per bf to purchase and fir costs \\(\\$0.08\\) per bf.\n\n\n\n\nTable 1: Wood inputs and revenue by plywood grade. S refers to spruce inputs, F fir inputs.\n\n\n\n\n\nPlywood Grade\nInputs (bf/bf plywood)\nRevenue ($/1000 bf)\n\n\n\n\n1\n0.5 (S) + 1.5 (F)\n400\n\n\n2\n1.0 (S) + 2.0 (F)\n520\n\n\n3\n1.5 (S) + 2.0 (F)\n700"
+  },
+  {
+    "objectID": "slides/lecture08-2-jump-lp.html#next-classes",
+    "href": "slides/lecture08-2-jump-lp.html#next-classes",
+    "title": "Linear Programming with JuMP.jl",
+    "section": "Next Classes",
+    "text": "Next Classes\nMonday: Labor Day!\nWednesday: Intro to Systems Analysis"
+  },
+  {
+    "objectID": "slides/lecture08-2-jump-lp.html#assessments",
+    "href": "slides/lecture08-2-jump-lp.html#assessments",
+    "title": "Linear Programming with JuMP.jl",
+    "section": "Assessments",
+    "text": "Assessments\n\nWeekly Exercises: Basically a syllabus quiz.\nHW 1: Available, due 9/6."
+  },
+  {
+    "objectID": "slides/lecture01-2-lab-setup.html#lab-instructions",
+    "href": "slides/lecture01-2-lab-setup.html#lab-instructions",
+    "title": "Julia and GitHub Basics",
+    "section": "Lab Instructions",
+    "text": "Lab Instructions\n\nTry to finish by the end of class, ok if it takes a little longer.\nSubmit PDF tomorrow by 9pm: ok if it isn’t 100% complete, but we want to see evidence of effort."
+  },
+  {
+    "objectID": "slides/lecture01-2-lab-setup.html#lab-goals",
+    "href": "slides/lecture01-2-lab-setup.html#lab-goals",
+    "title": "Julia and GitHub Basics",
+    "section": "Lab Goals",
+    "text": "Lab Goals\nAt the end, make sure you:\n\nHave Julia installed and can open a notebook with a Julia kernel.\nHave a GitHub account and be able to accept assignments, clone, and push back to GitHub.\nCan export submissions to PDF for submission to Gradescope."
+  },
+  {
+    "objectID": "slides/lecture01-2-lab-setup.html#next-classes",
+    "href": "slides/lecture01-2-lab-setup.html#next-classes",
+    "title": "Julia and GitHub Basics",
+    "section": "Next Classes",
+    "text": "Next Classes\nMonday: Labor Day!\nWednesday: Intro to Systems Analysis"
+  },
+  {
+    "objectID": "slides/lecture01-2-lab-setup.html#assessments",
+    "href": "slides/lecture01-2-lab-setup.html#assessments",
+    "title": "Julia and GitHub Basics",
+    "section": "Assessments",
+    "text": "Assessments\n\nWeekly Exercises: Basically a syllabus quiz this week.\nHW 1: Available, due 9/11."
+  },
+  {
+    "objectID": "slides/lecture08-2-optimization.html#last-class",
+    "href": "slides/lecture08-2-optimization.html#last-class",
+    "title": "Decision Models and Optimization",
     "section": "Last Class",
     "text": "Last Class\n\nOptimization for solving decision problems.\nDecision problems involve:\n\nDecision Variables;\nObjective(s);\nConstraints."
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#questions",
-    "href": "slides/lecture08-1-linear-programming.html#questions",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#questions",
+    "href": "slides/lecture08-2-optimization.html#questions",
+    "title": "Decision Models and Optimization",
     "section": "Questions?",
     "text": "Questions?\n\n\n\n\n\n\n\n\nText: VSRIKRISH to 22333\nURL: https://pollev.com/vsrikrish  See Results"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#decision-modeling-for-wastewater-treatment",
-    "href": "slides/lecture08-1-linear-programming.html#decision-modeling-for-wastewater-treatment",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#decision-modeling-for-wastewater-treatment",
+    "href": "slides/lecture08-2-optimization.html#decision-modeling-for-wastewater-treatment",
+    "title": "Decision Models and Optimization",
     "section": "Decision Modeling for Wastewater Treatment",
-    "text": "Decision Modeling for Wastewater Treatment\n\n\n\n\n\nWastewater Release Model\n\n\n\nGoal: Identify treatment levels for each factory which ensure compliance with regulatory standard of \\(1 \\ \\text{mg}/\\text{L}\\)."
+    "text": "Decision Modeling for Wastewater Treatment\n\n\n\n\n\nWastewater Release Model\n\n\n\nGoal: Identify treatment levels for each release which ensure compliance with regulatory standard of \\(1 \\ \\text{mg}/\\text{L}\\)."
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#optimization-problem-formulation",
-    "href": "slides/lecture08-1-linear-programming.html#optimization-problem-formulation",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#optimization-problem-formulation",
+    "href": "slides/lecture08-2-optimization.html#optimization-problem-formulation",
+    "title": "Decision Models and Optimization",
     "section": "Optimization Problem Formulation",
     "text": "Optimization Problem Formulation\nNeed 3 components:\n\nDecision variable(s)\nObjective function(s)\nConstraint(s)"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#decision-variables",
-    "href": "slides/lecture08-1-linear-programming.html#decision-variables",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#decision-variables",
+    "href": "slides/lecture08-2-optimization.html#decision-variables",
+    "title": "Decision Models and Optimization",
     "section": "Decision Variables",
     "text": "Decision Variables\n\n\n\n\n\nWastewater Release Model\n\n\n\nWhat are the decision variables?"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#formulating-the-objective",
-    "href": "slides/lecture08-1-linear-programming.html#formulating-the-objective",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#formulating-the-objective",
+    "href": "slides/lecture08-2-optimization.html#formulating-the-objective",
+    "title": "Decision Models and Optimization",
     "section": "Formulating The Objective",
     "text": "Formulating The Objective\nWhat might our objective be?\nWhat information do we need?\n\nSuppose treatment costs \\[\\$50 E^2 \\text{ per } 1000 \\ \\text{m}^3,\\] where \\(E\\) is the treatment efficiency."
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#objectives-and-metrics",
-    "href": "slides/lecture08-1-linear-programming.html#objectives-and-metrics",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#objectives-and-metrics",
+    "href": "slides/lecture08-2-optimization.html#objectives-and-metrics",
+    "title": "Decision Models and Optimization",
     "section": "Objectives and Metrics",
     "text": "Objectives and Metrics\nObjectives are goals, such as “minimize cost” or “maximize environmental quantity”.\nMetrics are functions which measure some relevant quantity, in this case the specific cost function.\nMany different metrics can be used to specify an objective function!"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#objective-function",
-    "href": "slides/lecture08-1-linear-programming.html#objective-function",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#objective-function",
+    "href": "slides/lecture08-2-optimization.html#objective-function",
+    "title": "Decision Models and Optimization",
     "section": "Objective Function",
     "text": "Objective Function\nThe objective function includes a goal and a metric:\n\\[\\begin{align*}\n\\min_{E_1, E_2} \\quad &50(100)E_1^2 + 50(60)E_2^2 \\\\\n= \\min_{E_1, E_2} \\quad &5000E_1^2 + 3000E_2^2.\n\\end{align*}\\]"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#identifying-constraints",
-    "href": "slides/lecture08-1-linear-programming.html#identifying-constraints",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#identifying-constraints",
+    "href": "slides/lecture08-2-optimization.html#identifying-constraints",
+    "title": "Decision Models and Optimization",
     "section": "Identifying Constraints",
     "text": "Identifying Constraints\n\n\n\n\n\nWastewater Release Model\n\n\n\nWhat are relevant constraints?\nWhat information do we need?"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#constraint-for-first-segment",
-    "href": "slides/lecture08-1-linear-programming.html#constraint-for-first-segment",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#constraint-for-first-segment",
+    "href": "slides/lecture08-2-optimization.html#constraint-for-first-segment",
+    "title": "Decision Models and Optimization",
     "section": "Constraint for First Segment",
     "text": "Constraint for First Segment\nWhere does the maximum value of the first segment occur?\n\n\n\nWastewater Schematic"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#constraint-for-first-segment-1",
-    "href": "slides/lecture08-1-linear-programming.html#constraint-for-first-segment-1",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#constraint-for-first-segment-1",
+    "href": "slides/lecture08-2-optimization.html#constraint-for-first-segment-1",
+    "title": "Decision Models and Optimization",
     "section": "Constraint for First Segment",
     "text": "Constraint for First Segment\nWhere does the maximum value of the first segment occur?\n\n\\[100 + 1000(1-E_1) \\leq 600 \\]\n\n\\[\\Rightarrow \\boxed{1000E_1 \\geq 500}\\]"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#constraint-for-second-segment",
-    "href": "slides/lecture08-1-linear-programming.html#constraint-for-second-segment",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#constraint-for-second-segment",
+    "href": "slides/lecture08-2-optimization.html#constraint-for-second-segment",
+    "title": "Decision Models and Optimization",
     "section": "Constraint for Second Segment",
     "text": "Constraint for Second Segment\nWhat is the concentration at the second release with treatment level \\(E_2\\)?\n\n\n\nWastewater Schematic"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#constraint-for-second-segment-1",
-    "href": "slides/lecture08-1-linear-programming.html#constraint-for-second-segment-1",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#constraint-for-second-segment-1",
+    "href": "slides/lecture08-2-optimization.html#constraint-for-second-segment-1",
+    "title": "Decision Models and Optimization",
     "section": "Constraint for Second Segment",
     "text": "Constraint for Second Segment\nAssume decay rate of \\(0.45\\ \\text{d}^{-1}\\):\n\n\\[\n\\begin{aligned}\n\\frac{dM}{dt} &= -0.45 M \\Rightarrow \\frac{dM}{M} = -0.45 dt \\\\[0.5em]\nM(t) &= M(0) \\exp\\left(-0.45 t\\right) \\\\[0.5em]\nM(x) &= M_0 \\exp\\left(-\\frac{0.45 x}{25}\\right), \\quad x \\leq 10 \\ \\text{km} \\\\[0.5em]\nM(10) &= (1100 - 1000E_1) \\exp(-0.18) \\ \\text{kg}\n\\end{aligned}\n\\]"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#constraint-for-second-segment-2",
-    "href": "slides/lecture08-1-linear-programming.html#constraint-for-second-segment-2",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#constraint-for-second-segment-2",
+    "href": "slides/lecture08-2-optimization.html#constraint-for-second-segment-2",
+    "title": "Decision Models and Optimization",
     "section": "Constraint for Second Segment",
     "text": "Constraint for Second Segment\nWhat is the concentration at the second release with treatment level \\(E_2\\)?\n\n\\[(1100 - 1000E_1) \\exp(-0.18) + 1200(1 - E_2) \\leq 660 \\]\n\n\\[\\begin{aligned}\n(1100 - 1000E_1) 0.835 + 1200(1 - E_2) &\\leq 660  \\\\[0.5em]\n2119 - 835E_1 - 1200E_2 &\\leq 660\n\\end{aligned}\\]\n\n\\[\\Rightarrow \\boxed{835E_1 + 1200E_2 \\geq 1459}\\]"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#additional-constraints",
-    "href": "slides/lecture08-1-linear-programming.html#additional-constraints",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#additional-constraints",
+    "href": "slides/lecture08-2-optimization.html#additional-constraints",
+    "title": "Decision Models and Optimization",
     "section": "Additional Constraints?",
     "text": "Additional Constraints?\nWe have two concentration compliance constraints:\n\\[\\begin{align*}\n1000 E_1  &\\geq 500\\\\[0.5em]\n835E_1 + 1200E_2  &\\geq 1459\n\\end{align*}\\]\nAre these a complete set?"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#boundary-constraints",
-    "href": "slides/lecture08-1-linear-programming.html#boundary-constraints",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#boundary-constraints",
+    "href": "slides/lecture08-2-optimization.html#boundary-constraints",
+    "title": "Decision Models and Optimization",
     "section": "Boundary Constraints",
     "text": "Boundary Constraints\nWe need to add boundary constraints for \\(E_1\\), \\(E_2\\) to avoid implausible treatment levels.\n\\[\\begin{align*}\n1000 E_1  &\\geq 500\\\\[0.5em]\n835E_1 + 1200E_2  &\\geq 1459\\\\[0.5em]\n\\color{purple}E_1, E_2 &\\;\\color{purple}\\geq 0 \\\\[0.5em]\n\\color{purple}E_1, E_2 &\\;\\color{purple}\\leq 1\n\\end{align*}\\]"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#final-problem",
-    "href": "slides/lecture08-1-linear-programming.html#final-problem",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#final-problem",
+    "href": "slides/lecture08-2-optimization.html#final-problem",
+    "title": "Decision Models and Optimization",
     "section": "Final Problem",
     "text": "Final Problem\n\\[\\begin{alignat}{3}\n& \\min_{E_1, E_2} &\\quad  5000E_1^2 + 3000E_2^2 &  \\\\\\\\\n& \\text{subject to:} & 1000 E_1 &\\geq 500 \\\\\n& & 835E_1 + 1200E_2 &\\geq 1459 \\\\\n& & E_1, E_2 &\\;\\geq 0 \\\\\n& & E_1, E_2 &\\;\\leq 1\n\\end{alignat}\\]"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#plotting-the-decision-space",
-    "href": "slides/lecture08-1-linear-programming.html#plotting-the-decision-space",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#plotting-the-decision-space",
+    "href": "slides/lecture08-2-optimization.html#plotting-the-decision-space",
+    "title": "Decision Models and Optimization",
     "section": "Plotting the Decision Space",
     "text": "Plotting the Decision Space"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#plotting-the-feasible-region",
-    "href": "slides/lecture08-1-linear-programming.html#plotting-the-feasible-region",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#plotting-the-feasible-region",
+    "href": "slides/lecture08-2-optimization.html#plotting-the-feasible-region",
+    "title": "Decision Models and Optimization",
     "section": "Plotting the Feasible Region",
     "text": "Plotting the Feasible Region"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#the-solution",
-    "href": "slides/lecture08-1-linear-programming.html#the-solution",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#the-solution",
+    "href": "slides/lecture08-2-optimization.html#the-solution",
+    "title": "Decision Models and Optimization",
     "section": "The Solution!",
     "text": "The Solution!\nSo the solution occurs at the intersection of the two constraints, where:\n\\[E_1 = 0.5, E_2 = 0.85\\]\nand the cost of this treatment plan is\n\\[C(0.5, 0.85) = \\$ 3417.\\]\nDoes this solution make sense?"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#waste-load-allocation-problem",
-    "href": "slides/lecture08-1-linear-programming.html#waste-load-allocation-problem",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#waste-load-allocation-problem",
+    "href": "slides/lecture08-2-optimization.html#waste-load-allocation-problem",
+    "title": "Decision Models and Optimization",
     "section": "Waste Load Allocation Problem",
     "text": "Waste Load Allocation Problem\nThis is an example of a waste load allocation problem.\nEach source is allocated a “load” they can discharge based on waste fate and transport."
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#waste-load-allocation-problem-1",
-    "href": "slides/lecture08-1-linear-programming.html#waste-load-allocation-problem-1",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#waste-load-allocation-problem-1",
+    "href": "slides/lecture08-2-optimization.html#waste-load-allocation-problem-1",
+    "title": "Decision Models and Optimization",
     "section": "Waste Load Allocation Problem",
     "text": "Waste Load Allocation Problem\nWaste loads affect quality \\(Q\\) based on F&T model:\n\\[Q=f(W_1, W_2, \\ldots, W_n)\\]\nSo the general form for a prescriptive waste load allocation model:\n\\[\\begin{aligned}\n\\text{determine} & \\quad  W_1, W_2, \\ldots, W_n \\notag \\\\\\\\\n\\text{subject to:} & \\quad f(W_1, W_2, \\ldots, W_n) \\geq Q^* \\notag\n\\end{aligned}\\]"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#what-is-linear-programming",
-    "href": "slides/lecture08-1-linear-programming.html#what-is-linear-programming",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#what-is-linear-programming",
+    "href": "slides/lecture08-2-optimization.html#what-is-linear-programming",
+    "title": "Decision Models and Optimization",
     "section": "What is Linear Programming?",
     "text": "What is Linear Programming?\nLinear programming refers to optimization for linear models.\nAs we will see over the next few weeks, linear models are:\n\nrelatively simple (which lets us solve and analyze them “easily”);\nsurprisingly applicable to many contexts!"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#sidebar-why-programming",
-    "href": "slides/lecture08-1-linear-programming.html#sidebar-why-programming",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#sidebar-why-programming",
+    "href": "slides/lecture08-2-optimization.html#sidebar-why-programming",
+    "title": "Decision Models and Optimization",
     "section": "Sidebar: Why “Programming”?",
     "text": "Sidebar: Why “Programming”?\n“Program” used to refer to military logistics, which is the origin of this field of research. For this historical reason, “mathematical programming” is often used instead of “mathematical optimization.”\n\nWe typically restrict “program” for optimization problems which are formulated completely mathematically, versus we use a computer model to simulate the relationship between decision variables and outputs."
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#linear-functions",
-    "href": "slides/lecture08-1-linear-programming.html#linear-functions",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#linear-functions",
+    "href": "slides/lecture08-2-optimization.html#linear-functions",
+    "title": "Decision Models and Optimization",
     "section": "Linear Functions",
     "text": "Linear Functions\nRecall that a function \\(f(x_1, \\ldots, x_n)\\) is linear if \\[f(x_1, \\ldots, x_n) = a_1x_1 + a_2x_2 + \\ldots + a_n x_n.\\]\n\nThe key is that linear models are very simple geometrically:\n\nDefine hyperplanes;\nConstant derivatives/gradients."
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#linear-programs",
-    "href": "slides/lecture08-1-linear-programming.html#linear-programs",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#linear-programs",
+    "href": "slides/lecture08-2-optimization.html#linear-programs",
+    "title": "Decision Models and Optimization",
     "section": "Linear Programs",
     "text": "Linear Programs\nA linear program (LP), or a linear optimization model, has the following characteristics:\n\nLinearity: The objective function and constraints are all linear;\nDivisibility: The decision variables are continuous (they can be fractional levels);\nCertainty: The problem is deterministic."
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#why-is-solving-lps-straightforward",
-    "href": "slides/lecture08-1-linear-programming.html#why-is-solving-lps-straightforward",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#why-is-solving-lps-straightforward",
+    "href": "slides/lecture08-2-optimization.html#why-is-solving-lps-straightforward",
+    "title": "Decision Models and Optimization",
     "section": "Why Is Solving LPs Straightforward?",
     "text": "Why Is Solving LPs Straightforward?\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAll solutions must exist on the boundary of the feasible region (which must be a polytope)."
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#why-is-solving-lps-straightforward-1",
-    "href": "slides/lecture08-1-linear-programming.html#why-is-solving-lps-straightforward-1",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#why-is-solving-lps-straightforward-1",
+    "href": "slides/lecture08-2-optimization.html#why-is-solving-lps-straightforward-1",
+    "title": "Decision Models and Optimization",
     "section": "Why Is Solving LPs Straightforward?",
     "text": "Why Is Solving LPs Straightforward?\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMore specifically:\n\nan optimum solution must occur at the intersection of constraints;\ncan focus on finding and analyzing the corners."
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#why-is-solving-lps-straightforward-2",
-    "href": "slides/lecture08-1-linear-programming.html#why-is-solving-lps-straightforward-2",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#why-is-solving-lps-straightforward-2",
+    "href": "slides/lecture08-2-optimization.html#why-is-solving-lps-straightforward-2",
+    "title": "Decision Models and Optimization",
     "section": "Why Is Solving LPs Straightforward?",
     "text": "Why Is Solving LPs Straightforward?\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis is the basis of all simplex methods for solving LPs.\nThese methods go back to George Dantzig in the 1940s and are still widely used today."
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#why-do-lps-have-a-corner-solution",
-    "href": "slides/lecture08-1-linear-programming.html#why-do-lps-have-a-corner-solution",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#why-do-lps-have-a-corner-solution",
+    "href": "slides/lecture08-2-optimization.html#why-do-lps-have-a-corner-solution",
+    "title": "Decision Models and Optimization",
     "section": "Why Do LPs Have A Corner Solution?",
     "text": "Why Do LPs Have A Corner Solution?\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCan a solution be in the interior?"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#why-do-lps-have-a-corner-solution-1",
-    "href": "slides/lecture08-1-linear-programming.html#why-do-lps-have-a-corner-solution-1",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#why-do-lps-have-a-corner-solution-1",
+    "href": "slides/lecture08-2-optimization.html#why-do-lps-have-a-corner-solution-1",
+    "title": "Decision Models and Optimization",
     "section": "Why Do LPs Have A Corner Solution?",
     "text": "Why Do LPs Have A Corner Solution?\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhat about along an edge but not a corner?"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#example-solving-an-lp",
-    "href": "slides/lecture08-1-linear-programming.html#example-solving-an-lp",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#example-solving-an-lp",
+    "href": "slides/lecture08-2-optimization.html#example-solving-an-lp",
+    "title": "Decision Models and Optimization",
     "section": "Example: Solving an LP",
     "text": "Example: Solving an LP\n\n\n\\[\\begin{alignedat}{3}\n& \\max_{x_1, x_2} &  230x_1 + 120x_2 &  \\\\\\\\\n& \\text{subject to:} & &\\\\\n& & 0.9x_1 + 0.5x_2 &\\leq 600 \\\\\n& & x_1 + x_2 &\\leq 1000 \\\\\n& & x_1, x_2 &\\geq 0\n\\end{alignedat}\\]\n\n\n\nCode\nx1 = 0:1200\nx2 = 0:1400\nf1(x) = (600 .- 0.9 .* x) ./ 0.5\nf2(x) = 1000 .- x\n\np = plot(0:667, min.(f1(0:667), f2(0:667)), fillrange=0, color=:lightblue, grid=true, label=\"Feasible Region\", xlabel=L\"x_1\", ylabel=L\"x_2\", xlims=(-50, 1200), ylims=(-50, 1400), framestyle=:origin, minorticks=4, right_margin=4mm, left_margin=4mm)\nplot!(0:667, f1.(0:667), color=:brown, linewidth=3, label=false)\nplot!(0:1000, f2.(0:1000), color=:red, linewidth=3, label=false)\nannotate!(400, 1100, text(L\"0.9x_1 + 0.5x_2 = 600\", color=:purple, pointsize=18))\nannotate!(1000, 300, text(L\"x_1 + x_2 = 1000\", color=:red, pointsize=18))\nplot!(size=(600, 500))"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#example-solving-an-lp-1",
-    "href": "slides/lecture08-1-linear-programming.html#example-solving-an-lp-1",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#example-solving-an-lp-1",
+    "href": "slides/lecture08-2-optimization.html#example-solving-an-lp-1",
+    "title": "Decision Models and Optimization",
     "section": "Example: Solving an LP",
     "text": "Example: Solving an LP\n\n\n\\[\\begin{alignedat}{3}\n& \\max_{x_1, x_2} &  230x_1 + 120x_2 &  \\\\\\\\\n& \\text{subject to:} & &\\\\\n& & 0.9x_1 + 0.5x_2 &\\leq 600 \\\\\n& & x_1 + x_2 &\\leq 1000 \\\\\n& & x_1, x_2 &\\geq 0\n\\end{alignedat}\\]\n\n\n\nCode\nZ(x1,x2) = 230 * x1 + 120 * x2\ncontour!(0:660,0:1000,(x1,x2)-&gt;Z(x1,x2), levels=5, c=:devon, linewidth=2, colorbar = false, clabels = true)"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#examining-corner-points",
-    "href": "slides/lecture08-1-linear-programming.html#examining-corner-points",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#examining-corner-points",
+    "href": "slides/lecture08-2-optimization.html#examining-corner-points",
+    "title": "Decision Models and Optimization",
     "section": "Examining Corner Points",
     "text": "Examining Corner Points\n\n\n\n\n\nCorner \\((x_1, x_2)\\)\nObjective\n\n\n\n\n\\((0,0)\\)\n\\(0\\)\n\n\n\\((0, 1000)\\)\n\\(12000\\)\n\n\n\\((667, 0)\\)\n\\(153410\\)\n\n\n\\((250, 750)\\)\n\\(147500\\)\n\n\n\n\n\n\nCode\nscatter!(p, [0, 0, 667, 250], [0, 1000, 0, 750], markersize=10, z=2, label=\"Corner Point\", markercolor=:orange)"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#solving-an-lp",
-    "href": "slides/lecture08-1-linear-programming.html#solving-an-lp",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#solving-an-lp",
+    "href": "slides/lecture08-2-optimization.html#solving-an-lp",
+    "title": "Decision Models and Optimization",
     "section": "Solving an LP",
     "text": "Solving an LP\nManually checking the corner points is all well and good for this simple example, but does it scale well?\n\nLP solvers (often based off the simplex method) automate this process."
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#linearization",
-    "href": "slides/lecture08-1-linear-programming.html#linearization",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#linearization",
+    "href": "slides/lecture08-2-optimization.html#linearization",
+    "title": "Decision Models and Optimization",
     "section": "Linearization",
     "text": "Linearization\n\n\nLinear models come up frequently because we can linearize nonlinear functions.\nWhen we linearize components of an mathematical program, this is called the linear relaxation of the original problem.\n\n\n\nCode\nE = 0:0.01:1\nplot(E, E.^2, legend=false, grid=false, xlabel=\"Efficiency\", ylabel=\"Cost\", color=:black, yticks=false, xlims=(0, 1), ylims=(0, 1), left_margin=8mm, linewidth=3)\nxticks!([0.65, 0.95])\nxlims!((0, 1.05))\nscatter!([0.65, 0.95], [0.65, 0.95].^2, markersize=10, color=:blue)\nplot!(E, 1.6 .* E  .- 0.6175, color=:blue, linestyle=:dash, linewidth=3)\nplot!(size=(600, 500))"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#sensitivity-of-linearization",
-    "href": "slides/lecture08-1-linear-programming.html#sensitivity-of-linearization",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#sensitivity-of-linearization",
+    "href": "slides/lecture08-2-optimization.html#sensitivity-of-linearization",
+    "title": "Decision Models and Optimization",
     "section": "Sensitivity of Linearization",
     "text": "Sensitivity of Linearization\n\n\nThe quality of linear approximations can depend on the range of values used and the curvature of the original objective/constraint.\n\n\n\nCode\nscatter!([0.32, 0.98], [0.32, 0.98].^2, markersize=10, color=:red)\nplot!(E, 1.3 .* E  .- 0.31, color=:red, linestyle=:dot, linewidth=3)"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#binding-constraints",
-    "href": "slides/lecture08-1-linear-programming.html#binding-constraints",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#binding-constraints",
+    "href": "slides/lecture08-2-optimization.html#binding-constraints",
+    "title": "Decision Models and Optimization",
     "section": "Binding Constraints",
     "text": "Binding Constraints\nA solution will be found at one of the corner points of the feasible polytope.\nThis means that at this solution, one or more constraints are binding: if we relaxed the constraint by weakening it, we could improve the solution."
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#binding-constraints-1",
-    "href": "slides/lecture08-1-linear-programming.html#binding-constraints-1",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#binding-constraints-1",
+    "href": "slides/lecture08-2-optimization.html#binding-constraints-1",
+    "title": "Decision Models and Optimization",
     "section": "Binding Constraints",
     "text": "Binding Constraints\n\n\n\n\nCode\np\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe binding constraints are\n\n\\(x_1 \\geq 0\\)\n\\(0.9 x_1 + 0.5 x_2 \\leq 600\\),\n\nbut not\n\n\\(x_1 + x_2 \\leq 1000\\)."
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#shadow-prices-1",
-    "href": "slides/lecture08-1-linear-programming.html#shadow-prices-1",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#shadow-prices-1",
+    "href": "slides/lecture08-2-optimization.html#shadow-prices-1",
+    "title": "Decision Models and Optimization",
     "section": "Shadow Prices",
     "text": "Shadow Prices\nThe marginal cost of a constraint is the amount by which the solution would improve if the constraint capacity was relaxed by one unit.\nThis is also referred to as the shadow price (these are also called the dual variables of the constraint).\nNon-zero shadow prices tell us that the constraint is binding, and their values rank which constraints are most influential."
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#reminder-constrained-optimization-and-lagrange-multipliers",
-    "href": "slides/lecture08-1-linear-programming.html#reminder-constrained-optimization-and-lagrange-multipliers",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#reminder-constrained-optimization-and-lagrange-multipliers",
+    "href": "slides/lecture08-2-optimization.html#reminder-constrained-optimization-and-lagrange-multipliers",
+    "title": "Decision Models and Optimization",
     "section": "Reminder: Constrained Optimization and Lagrange Multipliers",
     "text": "Reminder: Constrained Optimization and Lagrange Multipliers\nLagrange Multipliers are a way to incorporate equality constraints into an “unconstrained” form for an optimization problem."
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#reminder-constrained-optimization-and-lagrange-multipliers-1",
-    "href": "slides/lecture08-1-linear-programming.html#reminder-constrained-optimization-and-lagrange-multipliers-1",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#reminder-constrained-optimization-and-lagrange-multipliers-1",
+    "href": "slides/lecture08-2-optimization.html#reminder-constrained-optimization-and-lagrange-multipliers-1",
+    "title": "Decision Models and Optimization",
     "section": "Reminder: Constrained Optimization and Lagrange Multipliers",
     "text": "Reminder: Constrained Optimization and Lagrange Multipliers\n\\[\\begin{align*}\n\\max_{x,y}\\qquad &f(x,y) \\\\\n\\text{subject to:}\\qquad &g(x,y) = 0\n\\end{align*}\\]\n\nThen: \\[\\mathcal{L}(x, y, \\lambda) = f(x,y) - \\lambda g(x,y)\\]"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#converting-inequality-constraints",
-    "href": "slides/lecture08-1-linear-programming.html#converting-inequality-constraints",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#converting-inequality-constraints",
+    "href": "slides/lecture08-2-optimization.html#converting-inequality-constraints",
+    "title": "Decision Models and Optimization",
     "section": "Converting Inequality Constraints",
     "text": "Converting Inequality Constraints\n\n\nOriginal Problem\n\\[\n\\begin{aligned}\n& \\min &&f(x_1, x_2) \\notag \\\\\\\\\n& \\text{subject to:} && x_1 \\geq A \\notag \\\\\n& && x_2 \\leq B \\notag\n\\end{aligned}\n\\]\n\nWith Dummy Variables\n\\[\n\\begin{aligned}\n& \\min &&f(x_1, x_2) \\notag \\\\\\\\\n& \\text{subject to:} && x_1 - S_1^2 = A \\notag \\\\\n& && x_2 + S_2^2 = B \\notag\n\\end{aligned}\n\\]"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#using-lagrange-multipliers",
-    "href": "slides/lecture08-1-linear-programming.html#using-lagrange-multipliers",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#using-lagrange-multipliers",
+    "href": "slides/lecture08-2-optimization.html#using-lagrange-multipliers",
+    "title": "Decision Models and Optimization",
     "section": "Using Lagrange Multipliers",
     "text": "Using Lagrange Multipliers\nThen the Lagrangian function becomes:\n\\[\n\\mathcal{L}(\\mathbf{x}, S_1, S_2, \\lambda_1, \\lambda_2) = f(\\mathbf{x}) - \\lambda_1(x_1 - S_1^2 - A) - \\lambda_2(x_2 + S_2^2 - B)\n\\]\nwhere \\(\\lambda_1\\), \\(\\lambda_2\\) are penalties for violating the constraints.\nThe \\(\\lambda_i\\) are the eponymous Lagrange multipliers."
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#using-lagrange-multipliers-1",
-    "href": "slides/lecture08-1-linear-programming.html#using-lagrange-multipliers-1",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#using-lagrange-multipliers-1",
+    "href": "slides/lecture08-2-optimization.html#using-lagrange-multipliers-1",
+    "title": "Decision Models and Optimization",
     "section": "Using Lagrange Multipliers",
     "text": "Using Lagrange Multipliers\nNext step: locate possible optima where the partial derivatives of the Lagrangian are zero.\n\\[\\frac{\\partial \\mathcal{L}(\\cdot)}{\\partial \\cdot} = 0\\]\nThis is actually many equations, even though our original problem was low-dimensional, and can be slow to solve."
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#shadow-prices-are-lagrange-multipliers",
-    "href": "slides/lecture08-1-linear-programming.html#shadow-prices-are-lagrange-multipliers",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#shadow-prices-are-lagrange-multipliers",
+    "href": "slides/lecture08-2-optimization.html#shadow-prices-are-lagrange-multipliers",
+    "title": "Decision Models and Optimization",
     "section": "Shadow Prices are Lagrange Multipliers",
     "text": "Shadow Prices are Lagrange Multipliers\nThe shadow prices are the Lagrange Multipliers of the optimization problem.\nIf our inequality constraints \\(X \\geq A\\) and \\(X \\leq B\\) are written as \\(X - S_1^2 = A\\) and \\(X + S_2^2 = B\\):\n\\[\\mathcal{L}(X, S_1 S_2, \\lambda_1, \\lambda_2) = Z(X) - \\lambda_1(X - S_1^2 - A) - \\lambda_2(X + S_2^2 - B),\\]\n\\[\\Rightarrow \\qquad \\frac{\\partial \\mathcal{L}}{\\partial A} = \\lambda_1, \\qquad \\frac{\\partial \\mathcal{L}}{\\partial B} = \\lambda_2.\\]"
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#key-takeaways-1",
-    "href": "slides/lecture08-1-linear-programming.html#key-takeaways-1",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#key-takeaways-1",
+    "href": "slides/lecture08-2-optimization.html#key-takeaways-1",
+    "title": "Decision Models and Optimization",
     "section": "Key Takeaways",
     "text": "Key Takeaways\n\nLinear Programs: straightforward to solve!\nFor an LP, an optimum must occur at a corner of the feasible polytope.\nShadow prices (dual variables) of the constraints are the rate by which the solution would improve if the constraints were relaxed."
   },
   {
-    "objectID": "slides/lecture08-1-linear-programming.html#next-classes",
-    "href": "slides/lecture08-1-linear-programming.html#next-classes",
-    "title": "Linear Programming",
+    "objectID": "slides/lecture08-2-optimization.html#next-classes",
+    "href": "slides/lecture08-2-optimization.html#next-classes",
+    "title": "Decision Models and Optimization",
     "section": "Next Classes",
-    "text": "Next Classes\nWednesday: Prelim 1!\nNext Monday: Fall Break, no class\nNext Wednesday: Optimization Lab (come prepared, link will be posted on Ed)"
+    "text": "Next Classes\nMonday: More Linear Programming and Electric Power Systems"
   },
   {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#simulation",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#simulation",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Simulation",
-    "text": "Simulation\n\n“Mimic” data generation given a certain model for the relevant processes;\nOften requires some type of discretization (not always!)"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#simulation-workflow",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#simulation-workflow",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Simulation Workflow",
-    "text": "Simulation Workflow\n\n\n\nSimulation Workflow"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#simulation-1",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#simulation-1",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Simulation",
-    "text": "Simulation\n\n“Mimic” data generation given a certain model for the relevant processes;\nOften requires some type of discretization (not always!)\nMore complex approaches (e.g. discrete-event simulation) for specific use cases."
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#calibration-and-validation",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#calibration-and-validation",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Calibration and Validation",
-    "text": "Calibration and Validation\n\nCalibration: How do we select parameter values?\nValidation: Does the model adequately reproduce the system dynamics?"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#questions",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#questions",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Questions?",
-    "text": "Questions?\n\n\n\n\n\n\n\n\nText: VSRIKRISH to 22333\nURL: https://pollev.com/vsrikrish  See Results"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#systems-and-uncertainty",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#systems-and-uncertainty",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Systems and Uncertainty",
-    "text": "Systems and Uncertainty\n\n\n\nDeterministic models: uncertainty due to the separation between the “internals” of the system and the “external” environment.\nStochastic models: additional uncertainty from internal stochasticity\n\n\n\n\n\nConceptual Schematic of a Systems Model"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#uncertainty-and-models",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#uncertainty-and-models",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Uncertainty and Models",
-    "text": "Uncertainty and Models\n\n\nUncertainty can come from:\n\nStochastic models;\nUncertain external conditions (forcings);\nUncertain parameters;\nUncertain model dynamics.\n\n\n\n\n\nConceptual Schematic of a Systems Model"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#types-of-uncertainty",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#types-of-uncertainty",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Types of Uncertainty",
-    "text": "Types of Uncertainty\n\n\nTwo (broad) types of uncertainties:\n\nAleatory uncertainty, or uncertainties resulting from randomness;\nEpistemic uncertainty, or uncertainties resulting from lack of knowledge.\n\n\n\n\n\nDissolved Oxygen by temperature\n\n\n\nSource: XKCD 2440"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#axioms-of-probability",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#axioms-of-probability",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Axioms of Probability",
-    "text": "Axioms of Probability\nProbability is a language for expressing uncertainty.\nThe axioms of probability are straightforward:\n\n\\(E\\) is some “event”: \\(\\mathcal{P}(E) \\geq 0\\);\n\\(\\Omega\\) is the total event space: \\(\\mathcal{P}(\\Omega) = 1\\);\n\\(\\mathcal{P}(\\cup_{i=1}^\\infty E_i) = \\sum_{i=1}^\\infty \\mathcal{P}(E_i)\\) for disjoint (or “independent”) \\(E_i\\)"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-distributions",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-distributions",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Probability Distributions",
-    "text": "Probability Distributions\nProbability distributions associate a probability to every event under consideration (the event space) and have to follow these axioms."
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#key-features-of-probability-distributions",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#key-features-of-probability-distributions",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Key Features of Probability Distributions",
-    "text": "Key Features of Probability Distributions\n\nMean/Mode (what events are “typical”)\nSkew (are larger or smaller events more or equally probable)\nVariance (how spread out is the distribution around the mode)\nTail Probabilities (how probable are extreme events)"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#common-distributions",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#common-distributions",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Common Distributions",
-    "text": "Common Distributions\n\nGaussian / Normal\nLognormal\nBinomial\nUniform / Discrete Uniform"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-density-function",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-density-function",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Probability Density Function",
-    "text": "Probability Density Function\nA continuous distribution \\(\\mathcal{D}\\) has a probability density function (PDF) \\(f_\\mathcal{D}(x) = p(x | \\theta)\\).\nThe probability of \\(x\\) occurring in an interval \\((a, b)\\) is \\[\\mathbb{P}[a \\leq x \\leq b] = \\int_a^b f_\\mathcal{D}(x)dx.\\]\nImportant: \\(\\mathbb{P}(x = x^*)\\) is zero!"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-mass-functions",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-mass-functions",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Probability Mass Functions",
-    "text": "Probability Mass Functions\nDiscrete distributions have probability mass functions (PMFs) which are defined at point values, e.g. \\(p(x = x^*) \\neq 0\\).\n\nUnlike continuous distributions, we can talk about the probability of individual values for discrete distributions, which a PMF provides versus a PDF. But in general these are the same things."
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#cumulative-density-functions",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#cumulative-density-functions",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Cumulative Density Functions",
-    "text": "Cumulative Density Functions\n\n\nIf \\(\\mathcal{D}\\) is a distribution with PDF \\(f_\\mathcal{D}(x)\\), the cumulative density function (CDF) of \\(\\mathcal{D}\\) is \\(F_\\mathcal{D}(x)\\):\n\\[F_\\mathcal{D}(x) = \\int_{-\\infty}^x f_\\mathcal{D}(u)du.\\]\n\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(a) Relationship of CDF and PDF\n\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(b)\n\n\n\n\n\n\n\nFigure 1"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#relationship-between-pdfs-and-cdfs",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#relationship-between-pdfs-and-cdfs",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Relationship Between PDFs and CDFs",
-    "text": "Relationship Between PDFs and CDFs\nSince \\[F_\\mathcal{D}(x) = \\int_{-\\infty}^x f_\\mathcal{D}(u)du,\\]\nif \\(f_\\mathcal{D}\\) is continuous at \\(x\\), the Fundamental Theorem of Calculus gives: \\[f_\\mathcal{D}(x) = \\frac{d}{dx}F_\\mathcal{D}(x).\\]\n\nThe value of the CDF is the amount of probability “below” the value. So e.g. for a one-sided statistical test, the p-value is the complement of the CDF at the value of the test statistic."
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#quantiles",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#quantiles",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Quantiles",
-    "text": "Quantiles\n\n\nThe quantile function is the inverse of the CDF:\n\\[q(\\alpha) = F^{-1}_\\mathcal{D}(\\alpha)\\]\nSo \\[x_0 = q(\\alpha) \\iff \\mathbb{P}_\\mathcal{D}(X &lt; x_0) = \\alpha.\\]\n\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(a) Relationship of CDF and PDF\n\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(b)\n\n\n\n\n\n\n\nFigure 2"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#distributions-are-assumptions",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#distributions-are-assumptions",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Distributions Are Assumptions",
-    "text": "Distributions Are Assumptions\nSpecifying a distribution is making an assumption about observations and any applicable constraints.\nExamples: If your observations are…\n\nContinuous and fat-tailed? Cauchy distribution\nContinuous and bounded? Beta distribution\nSums of positive random variables? Gamma or Normal distribution."
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#selecting-a-distribution",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#selecting-a-distribution",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Selecting a Distribution",
-    "text": "Selecting a Distribution\nA distribution implicitly answers questions like:\n\nWhat is the most probable event? How much more likely is it than the others?\nAre larger or smaller events more, less, or equally probable?\nHow probable are extreme events?\nAre different events correlated, or are they independent?"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-distribution-tails",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#probability-distribution-tails",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Probability Distribution Tails",
-    "text": "Probability Distribution Tails\n\n\nThe tails of distributions represent the probability of high-impact outcomes.\nKey consideration: Small changes to these (low) probabilities can greatly influence risk.\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 3: Comparison of Cauchy and Normal tails"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#what-distribution-should-i-use",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#what-distribution-should-i-use",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "“What Distribution Should I Use?”",
-    "text": "“What Distribution Should I Use?”\nThere is no right answer to this, no matter what a statistical test tells you.\n\nWhat assumptions are justifiable?\n\nParticularly: think about tails, symmetry/skew\n\nWhat information do you have?"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#what-distribution-should-i-use-1",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#what-distribution-should-i-use-1",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "“What Distribution Should I Use?”",
-    "text": "“What Distribution Should I Use?”\nFor example, suppose our data are counts of events:\n\nIf you know something about rates, you can use a Poisson distribution\nIf you know something about probabilities, you can use a Binomial distribution."
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#conditional-probabilities",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#conditional-probabilities",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Conditional Probabilities",
-    "text": "Conditional Probabilities\nWe often don’t want to just know if a particular event \\(A\\) has a certain probability, but also how other events (call them \\(B\\)) might depend on that outcome.\nIn other words:\nWe want the conditional probability of \\(B\\) given \\(A\\), denoted \\(\\mathbb{P}(B|A)\\)."
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#conditional-probabilities-1",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#conditional-probabilities-1",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Conditional Probabilities",
-    "text": "Conditional Probabilities\nWe can write conditional probabilities in terms of unconditional probabilities:\n\\[\\mathbb{P}(B|A) = \\frac{\\mathbb{P}(BA)}{\\mathbb{P}(A)}.\\]"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#stochastic-simulation",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#stochastic-simulation",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Stochastic Simulation",
-    "text": "Stochastic Simulation\nMonte Carlo simulation: Propagating random samples through a model to estimate a value (usually an expectation or a quantile).\n\n\n\n\n\n\n\nG\n\n\n\na\n\nProbability\n Distribution\n\n\n\nb\n\nRandom\n Samples\n\n\n\na-&gt;b\n\n\nSample\n\n\n\nc\n\nModel\n\n\n\nb-&gt;c\n\n\nInput\n\n\n\nd\n\nOutputs\n\n\n\nc-&gt;d\n\n\nSimulate"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#goals-of-monte-carlo",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#goals-of-monte-carlo",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Goals of Monte Carlo",
-    "text": "Goals of Monte Carlo\nMonte Carlo is a broad method, which can be used to:\n\nObtain probability distributions of outputs;\nEstimate deterministic quantities."
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-simulation",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-simulation",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Monte Carlo Simulation",
-    "text": "Monte Carlo Simulation\nGoal: Estimate \\(\\mathbb{E}_f\\left[h(x)\\right]\\), \\(x \\sim f(x)\\)\nMonte Carlo principle:\n\nSample \\(x^1, x^2, \\ldots, x^N \\sim f(x)\\)\nEstimate \\[\\mathbb{E}_f\\left[h(x)\\right] = \\int_{x \\in X} h(x)f(x)dx  \\approx \\frac{1}{N} \\sum_{n=1}^N h(x^n)\\]"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-finding-pi",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-finding-pi",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "MC Example: Finding \\(\\pi\\)",
-    "text": "MC Example: Finding \\(\\pi\\)\nHow can we use MC to estimate \\(\\pi\\)?\nHint: Think of \\(\\pi\\) as an expected value…"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-finding-pi-1",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-finding-pi-1",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "MC Example: Finding \\(\\pi\\)",
-    "text": "MC Example: Finding \\(\\pi\\)\n\n\nFinding \\(\\pi\\) by sampling random values from the unit square and computing the fraction in the unit circle. This is an example of Monte Carlo integration.\n\n\\[\\frac{\\text{Area of Circle}}{\\text{Area of Square}} = \\frac{\\pi}{4}\\]\n\n\n\n\n\n\n\n\n\n\nFigure 4: Monte Carlo simualtion for Estimating pi"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-dice",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-example-dice",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "MC Example: Dice",
-    "text": "MC Example: Dice\n\n\nWhat is the probability of rolling 4 dice for a total of 19?\n\nCan simulate dice rolls and find the frequency of 19s among the samples.\n\n\n\n\n\n\n\n\n\n\nFigure 5: Monte Carlo simualtion for Dice Rolls"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-estimate-of-quantiles",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#mc-estimate-of-quantiles",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "MC Estimate of Quantiles",
-    "text": "MC Estimate of Quantiles\nWould like to estimate the CDF \\(F\\) with some approximation \\(\\hat{F}_n\\), then compute \\(\\hat{z}^\\alpha_n = \\hat{F}_n^{-1}(\\alpha)\\) as an estimator of the \\(\\alpha\\)-quantile \\(z^\\alpha\\).\nGiven samples \\(\\hat{\\mathbf{y}} = y_1, \\ldots, y_n \\sim F\\), define \\[\\hat{F}_n(y) = \\frac{1}{n} \\sum_{i=1}^n \\mathbb{I}(y_i \\leq y)\\] and \\(\\hat{z}^\\alpha_n = \\hat{F}_n^{-1}(\\alpha)\\)."
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-estimation",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-estimation",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Monte Carlo Estimation",
-    "text": "Monte Carlo Estimation\nThis type of estimation can be repeated with any simulation model that has a stochastic component.\nFor example, consider our dissolved oxygen model. Suppose that we have a probability distribution for the inflow DO.\nHow could we compute the probability of DO falling below the regulatory standard somewhere downstream?"
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-and-uncertainty-propagation",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#monte-carlo-and-uncertainty-propagation",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Monte Carlo and Uncertainty Propagation",
-    "text": "Monte Carlo and Uncertainty Propagation\n\nDraw samples from some distribution;\nRun them through one or more models;\nCompute the (conditional) probability of outcomes of interest (for good or bad)."
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#key-takeaways-1",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#key-takeaways-1",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Key Takeaways",
-    "text": "Key Takeaways\n\nSystems analysis features many uncertainties, which may be neglected with certain methods/model setups.\nRisk: Combination of hazard, exposure, vulnerability, and response.\nChoice of probability distribution can have large impacts on uncertainty and risk estimates: try not to use distributions just because they’re convenient.\nMonte Carlo: Estimate expected values of outcomes using simulation."
-  },
-  {
-    "objectID": "slides/lecture05-2-uncertainty-monte-carlo.html#next-classes",
-    "href": "slides/lecture05-2-uncertainty-monte-carlo.html#next-classes",
-    "title": "Uncertainty and Monte Carlo",
-    "section": "Next Classes",
-    "text": "Next Classes\nMonday: Monte Carlo Lab (clone before class, maybe instantiate environment too)\nWednesday: Why Does Monte Carlo Work?"
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#example-solid-waste-management",
-    "href": "slides/lecture13-1-stochastic-optimization.html#example-solid-waste-management",
-    "title": "Stochastic Optimization",
-    "section": "Example: Solid Waste Management",
-    "text": "Example: Solid Waste Management\n\nHierarchy of solid waste management (reduce -&gt; recycle -&gt; WTE -&gt; landfill)\nExample of a network model: need to represent flows between sources and sinks.\nResidual material flows can result in need to operate additional facilities."
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#questions",
-    "href": "slides/lecture13-1-stochastic-optimization.html#questions",
-    "title": "Stochastic Optimization",
-    "section": "Questions",
-    "text": "Questions\n\n\n\n\n\n\n\n\nText: VSRIKRISH to 22333\nURL: https://pollev.com/vsrikrish  See Results"
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#certainty-and-lp",
-    "href": "slides/lecture13-1-stochastic-optimization.html#certainty-and-lp",
-    "title": "Stochastic Optimization",
-    "section": "Certainty and LP",
-    "text": "Certainty and LP\nCertainty (e.g. all parameters and relationships between decision variables and outcomes are known) is a key assumption of linear programming.\nBut most systems problems aren’t actually deterministic."
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#approaches-to-decision-making-under-uncertainty",
-    "href": "slides/lecture13-1-stochastic-optimization.html#approaches-to-decision-making-under-uncertainty",
-    "title": "Stochastic Optimization",
-    "section": "Approaches to Decision-Making Under Uncertainty",
-    "text": "Approaches to Decision-Making Under Uncertainty\n\nA Common Approach:\n\nSolve deterministic problem using best estimates.\nStress-test solution with Monte Carlo or include additional safety margins (more on this later)."
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#representing-uncertainty-in-mathematical-programs",
-    "href": "slides/lecture13-1-stochastic-optimization.html#representing-uncertainty-in-mathematical-programs",
-    "title": "Stochastic Optimization",
-    "section": "Representing Uncertainty in Mathematical Programs",
-    "text": "Representing Uncertainty in Mathematical Programs\nAlternative:\n\nSolve a stochastic problem for best expected performance (or similar summary statistic).\n\n\nWe can represent uncertainty through scenarios and (conditional) sequential events, then rewrite the decision problem."
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#general-objective-for-stochastic-lp",
-    "href": "slides/lecture13-1-stochastic-optimization.html#general-objective-for-stochastic-lp",
-    "title": "Stochastic Optimization",
-    "section": "General Objective for Stochastic LP",
-    "text": "General Objective for Stochastic LP\n\\[\\min_x \\mathbb{E}_\\xi\\left\\[f(x; \\xi)\\right]\\]\n\nTwo Stage:\n\\[\\min_x f(x) + \\mathbb{E}_\\xi\\left[Q(x; \\xi)]\\right\\]\nwhere \\(Q(x; \\xi)\\) is the recourse decision made after realizing the uncertainty \\(\\xi\\)."
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#representation-of-uncertainties",
-    "href": "slides/lecture13-1-stochastic-optimization.html#representation-of-uncertainties",
-    "title": "Stochastic Optimization",
-    "section": "Representation of Uncertainties",
-    "text": "Representation of Uncertainties\nThis framework can work for:\n\ndiscrete scenarios (scenario trees)\ncontinuous uncertainties"
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#land-allocationfarmer-problem",
-    "href": "slides/lecture13-1-stochastic-optimization.html#land-allocationfarmer-problem",
-    "title": "Stochastic Optimization",
-    "section": "Land Allocation/Farmer Problem",
-    "text": "Land Allocation/Farmer Problem\nA farmer can grow wheat, corn, and sugar beets on 500 ha of land. How much land should they allocate to each crop?"
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#key-information-for-problem",
-    "href": "slides/lecture13-1-stochastic-optimization.html#key-information-for-problem",
-    "title": "Stochastic Optimization",
-    "section": "Key information For Problem",
-    "text": "Key information For Problem\n\nPlanting costs are $150, $230, and $260 per acre for wheat, corn, and sugar beets, respectively.\nThe farmer requires 200T of wheat and 240T kg of corn for feed, and excess can be sold for $170 and $150 per T, respectively.\nPurchasing crops costs $40 more than the selling prices.\nSugar beets are sold at $36/T up to 6000T, at which point the price drops to $10 per T."
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#farm-yields",
-    "href": "slides/lecture13-1-stochastic-optimization.html#farm-yields",
-    "title": "Stochastic Optimization",
-    "section": "Farm Yields",
-    "text": "Farm Yields\nFrom prior experience, the farmer knows that in an average year, yields are:\n\n2.5 T/acre for wheat;\n3 T/acre per corn;\n\n20T/acre for beets."
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#decision-variables",
-    "href": "slides/lecture13-1-stochastic-optimization.html#decision-variables",
-    "title": "Stochastic Optimization",
-    "section": "Decision Variables",
-    "text": "Decision Variables\nWhat are the decision variables?\n\n\n\n\nVariable\nDefinition\n\n\n\n\n\\(x_i\\)\nacres of crop \\(i\\) planted\n\n\n\\(y_i\\)\nT of crop \\(i\\) purchased\n\n\n\\(z_i\\)\nT of crop \\(i\\) sold\n\n\n\n\nOne twist: sold beets will be represented by two different \\(z\\)-variables (\\(z_3\\) and \\(z_4\\)), based on whether we exceed 6000T."
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#deterministic-problem-formulation",
-    "href": "slides/lecture13-1-stochastic-optimization.html#deterministic-problem-formulation",
-    "title": "Stochastic Optimization",
-    "section": "Deterministic Problem Formulation",
-    "text": "Deterministic Problem Formulation\n\\[\n\\begin{align}\n\\min_{x, y, z} & \\quad 150x_1 + 230 x_2 + 260 x_3 + 238 y_1 + 210 y_2 - 170 z_1 \\\\\n& \\qquad -150z_2 - 36z_3 - 10z_4 \\\\[1ex]\n\\text{subject to:} \\quad & x_1 + x_2 + x_3 \\leq 500 \\\\[0.5ex]\n& 2.5 x_1 + y_1 - z_1 \\geq 200 \\\\[0.5ex]\n& 3 x_2 + y_2 - z_2 \\geq 240 \\\\[0.5ex]\n& z_3 + z_4 \\leq 20 x_3 \\\\[0.5ex]\n& z_3 \\leq 6000 \\\\[0.5ex]\n& x_i, y_i, z_i \\geq 0\n\\end{align}\n\\]"
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#deterministic-solution",
-    "href": "slides/lecture13-1-stochastic-optimization.html#deterministic-solution",
-    "title": "Stochastic Optimization",
-    "section": "Deterministic Solution",
-    "text": "Deterministic Solution\n\n\n\nVariable\nWheat\nCorn\nBeets\n\n\n\n\nArea (acres)\n120\n80\n300\n\n\nYield (T)\n300\n240\n6000\n\n\nSales (T)\n100\n–\n6000\n\n\nPurchased (T)\n–\n–\n–\n\n\n\nThis solution yields a profit of $118,600."
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#what-about-uncertainty",
-    "href": "slides/lecture13-1-stochastic-optimization.html#what-about-uncertainty",
-    "title": "Stochastic Optimization",
-    "section": "What About Uncertainty?",
-    "text": "What About Uncertainty?\nBut yields tend to vary from year to year. From prior experience, the historical variability is:\n\nin a good year, yields can be 20% above average;\nin a bad year, yields can be 20% below average.\n\n\nTo simplify things, let’s assume these yields vary consistently across crops and that each scenario (average, good, bad) has an equal probability of occurrence."
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#stochastic-decision-variables",
-    "href": "slides/lecture13-1-stochastic-optimization.html#stochastic-decision-variables",
-    "title": "Stochastic Optimization",
-    "section": "Stochastic Decision Variables",
-    "text": "Stochastic Decision Variables\nWhat should change about our decision variables?\n\n\n\n\nVariable\nDefinition\n\n\n\n\n\\(x_i\\)\nacres of crop \\(i\\) planted\n\n\n\\(y_{ij}\\)\nT of crop \\(i\\) purchased in scenario \\(j\\)\n\n\n\\(z_{ij}\\)\nT of crop \\(i\\) sold in scenario \\(j\\)"
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#two-stage-problems",
-    "href": "slides/lecture13-1-stochastic-optimization.html#two-stage-problems",
-    "title": "Stochastic Optimization",
-    "section": "Two-Stage Problems",
-    "text": "Two-Stage Problems\nThis is typical of a two-stage decision problem:\n\nMake an initial decision (e.g. how much to plant) which must be committed to ahead of knowing the stochastic realization;\nMake a subsequent recourse decision based on the realization (e.g. do we have to purchase additional crops?)"
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#stochastic-objective",
-    "href": "slides/lecture13-1-stochastic-optimization.html#stochastic-objective",
-    "title": "Stochastic Optimization",
-    "section": "Stochastic Objective",
-    "text": "Stochastic Objective\nHow can we formulate an objective?\n\nFirst choice: what statistic are we trying to optimize?\n\nLet’s choose the expected value \\(\\mathbb{E}\\left[\\text{Profit}\\right]\\).\nOther possible choices: quantiles (robust optimization) to hedge against worst-case outcomes, variance (to minimize year-on-year fluctuations)."
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#probabilities-and-scenario-trees",
-    "href": "slides/lecture13-1-stochastic-optimization.html#probabilities-and-scenario-trees",
-    "title": "Stochastic Optimization",
-    "section": "Probabilities and Scenario Trees",
-    "text": "Probabilities and Scenario Trees\n\n\nSince we have a discrete (and small) set of possible outcomes, we can use a scenario tree to write out the possible outcomes.\n\n\n\n\nScenario Tree for Farmer Problem"
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#stochastic-objective-1",
-    "href": "slides/lecture13-1-stochastic-optimization.html#stochastic-objective-1",
-    "title": "Stochastic Optimization",
-    "section": "Stochastic Objective",
-    "text": "Stochastic Objective\nOur new objective becomes:\n\\[\\begin{alignedat}{2}\n&\\min_{x, y, z} & & \\quad 150x_1 + 230x_2 + 260x_3 \\\\[0.5ex]\n& &&\\qquad -\\frac{1}{3} \\left(170z_{11} + 150z_{21} + 36z_{31} + 10z_{41} - 238y_{11} - 210 y_{21}\\right) \\\\[0.5ex]\n& &&\\qquad -\\frac{1}{3} \\left(170z_{12} + 150z_{22} + 36z_{32} + 10z_{42} - 238y_{12} - 210 y_{22}\\right) \\\\[0.5ex]\n& &&\\qquad -\\frac{1}{3} \\left(170z_{13} + 150z_{23} + 36z_{33} + 10z_{43} - 238y_{13} - 210 y_{23}\\right)\n\\end{alignedat}\\]"
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#stochastic-contraints",
-    "href": "slides/lecture13-1-stochastic-optimization.html#stochastic-contraints",
-    "title": "Stochastic Optimization",
-    "section": "Stochastic Contraints",
-    "text": "Stochastic Contraints\n\\[\\begin{alignedat}{2}\n&x_1 + x_2 + x_3 \\leq 500 \\\\[0.5ex]\n&\\color{blue}3x_1 + y_{11} - z_{11} \\geq 200, && \\qquad  \\color{blue}3.6x_2 + y_{21} - z_{21} \\geq 240 \\\\[0.5ex]\n&\\color{blue}z_{31} + z_{41} \\leq 24x_3, && \\qquad \\color{blue}z_{31} \\leq 6000 \\\\[0.5ex]\n&\\color{purple}2.5x_1 + y_{12} - z_{12} \\geq 200, && \\qquad \\color{purple}3x_2 + y_{22} - z_{22} \\geq 240 \\\\[0.5ex]\n&\\color{purple}z_{32} + z_{42} \\leq 20x_3, && \\qquad \\color{purple}z_{32} \\leq 6000 \\\\[0.5ex]\n&\\color{red}2x_1 + y_{13} - z_{13} \\geq 200, && \\qquad \\color{red}2.4x_2 + y_{23} - z_{23} \\geq 240 \\\\[0.5ex]\n&\\color{red}z_{33} + z_{43} \\leq 16x_3, && \\qquad \\color{red}z_{33} \\leq 6000 \\\\[0.5ex]\n&x_i, y_i, z_i \\geq 0\n\\end{alignedat}\\]"
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#stochastic-solution",
-    "href": "slides/lecture13-1-stochastic-optimization.html#stochastic-solution",
-    "title": "Stochastic Optimization",
-    "section": "Stochastic Solution",
-    "text": "Stochastic Solution\n\n\n\nVariable\nWheat\nCorn\nBeets\n\n\n\n\nDeterministic Area (acres)\n120\n80\n300\n\n\nStochastic Area (acres)\n170\n80\n250\n\n\n\nHow do we interpret the differences?\n\n\nGood year: Won’t waste acreage on extra beets (6000T yield in stochastic solution, 7200T for deterministic)\nBad year: Will make less off beets, profits from wheat should help cover extra corn purchase."
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#comparing-deterministic-and-stochastic-solution",
-    "href": "slides/lecture13-1-stochastic-optimization.html#comparing-deterministic-and-stochastic-solution",
-    "title": "Stochastic Optimization",
-    "section": "Comparing Deterministic and Stochastic Solution",
-    "text": "Comparing Deterministic and Stochastic Solution\n\nDeterministic Solution: “Expected” Profit (no uncertainty) = $118,600\nStochastic Solution: \\(\\mathbb{E}[\\text{Profit}]\\) = $108,390.\n\n\nCan we directly compare the deterministic and stochastic solution values that we have obtained so far?"
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#expected-performance-of-deterministic-solution",
-    "href": "slides/lecture13-1-stochastic-optimization.html#expected-performance-of-deterministic-solution",
-    "title": "Stochastic Optimization",
-    "section": "Expected Performance of Deterministic Solution",
-    "text": "Expected Performance of Deterministic Solution\n\n\n\nYear\nDeterministic Profit\nStochastic Profit\n\n\n\n\nGood\n$148,000\n$167,000\n\n\nAverage\n$118,600\n$109,350\n\n\nBad\n$56,800\n$48,820\n\n\n\nExpected Profit from Deterministic Solution under uncertainty: $107,240"
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#value-of-the-stochastic-solution-1",
-    "href": "slides/lecture13-1-stochastic-optimization.html#value-of-the-stochastic-solution-1",
-    "title": "Stochastic Optimization",
-    "section": "Value of the Stochastic Solution",
-    "text": "Value of the Stochastic Solution\nWe can now compare the difference in expected profits under uncertainty, which is the fair comparison.\nThis is called the value of the stochastic solution (VSS), or sometimes the expected value of including uncertainty (EVIU).\n\\[\\begin{aligned}\nVSS &= \\mathbb{E}[\\text{Stochastic Profit}] - \\mathbb{E}[\\text{Deterministic Profit}] \\\\[0.5ex]\n&= \\$108,390 - \\$107,240 \\\\[0.5ex]\n&= \\$1,150.\n\\end{aligned}\\]"
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#expected-value-of-perfect-information",
-    "href": "slides/lecture13-1-stochastic-optimization.html#expected-value-of-perfect-information",
-    "title": "Stochastic Optimization",
-    "section": "Expected Value of Perfect Information",
-    "text": "Expected Value of Perfect Information\nAnother relevant quantity, the expected value of perfect information (EVPI), concerns the value associated with better forecasts."
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#expected-value-of-perfect-information-1",
-    "href": "slides/lecture13-1-stochastic-optimization.html#expected-value-of-perfect-information-1",
-    "title": "Stochastic Optimization",
-    "section": "Expected Value of Perfect Information",
-    "text": "Expected Value of Perfect Information\nIf the farmer had perfect foresight and could allocate acreage \\(x\\) accordingly and sell/purchase \\(z\\) and \\(y\\) optimally (versus taking the 1/3-probability stochastic solution),\n\\[\\mathbb{E}[\\text{Profits} | \\text{perfect information}] = \\sum_j p_j \\times \\text{Profits}_j = \\$115,405.\\]\n\n\\[\\text{EVPI} = \\$115,405 - \\$108,390 = \\$7,015\\]\nThe EVPI can be interpreted as the amount the farmer might be willing to pay for an improved forecast."
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#decision-making-and-uncertainty",
-    "href": "slides/lecture13-1-stochastic-optimization.html#decision-making-and-uncertainty",
-    "title": "Stochastic Optimization",
-    "section": "Decision-Making and Uncertainty",
-    "text": "Decision-Making and Uncertainty\n\nA solution obtained assuming deterministic outcomes might “on paper” yield better anticipated outcomes.\nCommon approach is a two-stage optimization framework:\n\nMake an initial decision;\nRecourse based on which scenario is realized.\n\nScenario trees help build out the representation of outcomes and probabilities."
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#value-of-the-stochastic-solution-2",
-    "href": "slides/lecture13-1-stochastic-optimization.html#value-of-the-stochastic-solution-2",
-    "title": "Stochastic Optimization",
-    "section": "Value of the Stochastic Solution",
-    "text": "Value of the Stochastic Solution\n\nSolutions to stochastic problems can produce a better expected outcome than the deterministic solution, but will perform better/worse in any given scenario.\nValue of the stochastic solution quantifies expected improvement in performance.\nExpected value of perfect information: amount you might be willing to pay for improved forecasts."
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#next-classes",
-    "href": "slides/lecture13-1-stochastic-optimization.html#next-classes",
-    "title": "Stochastic Optimization",
-    "section": "Next Classes",
-    "text": "Next Classes\nWednesday: Limits of Mathematical Programming\nMonday: Prelim 2 Review, Wrap-Up"
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#no-class-after-thanksgiving",
-    "href": "slides/lecture13-1-stochastic-optimization.html#no-class-after-thanksgiving",
-    "title": "Stochastic Optimization",
-    "section": "No Class after Thanksgiving!",
-    "text": "No Class after Thanksgiving!\n\nWork on project!\nWill have open office hours for project check-ins (remotely on 12/4)"
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#assessments",
-    "href": "slides/lecture13-1-stochastic-optimization.html#assessments",
-    "title": "Stochastic Optimization",
+    "objectID": "slides/lecture08-2-optimization.html#assessments",
+    "href": "slides/lecture08-2-optimization.html#assessments",
+    "title": "Decision Models and Optimization",
     "section": "Assessments",
-    "text": "Assessments\nHW5: Will be due last week of class (12/5)."
+    "text": "Assessments\nHW3: Due Thursday (10/16) at 9pm.\nHW4: Will Be Released On 10/27.\nProject Proposal: Due 10/24."
   },
   {
     "objectID": "slides/lecture14-1-simulation-optimization.html#mathematical-programming-and-systems-analysis",

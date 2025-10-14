@@ -1,10 +1,10 @@
 ---
-title: "Linear Programming"
-subtitle: "Lecture 12"
+title: "Decision Models and Optimization"
+subtitle: "Lecture 11"
 author: "Vivek Srikrishnan"
 course: "BEE 4750"
 institution: "Cornell University"
-date: "October 15, 2024"
+date: "October 15, 2025"
 format:
     revealjs:
         slide-number: c/t
@@ -91,7 +91,7 @@ default(
 ![Wastewater Release Model](figures/crud-baseline.svg)
 :::
 ::: {.column width=40%}
-**Goal**: Identify treatment levels for each factory which ensure compliance with regulatory standard of $1 \ \text{mg}/\text{L}$.
+**Goal**: Identify treatment levels for each release which ensure compliance with regulatory standard of $1 \ \text{mg}/\text{L}$.
 :::
 ::::
 
@@ -729,8 +729,14 @@ $$\Rightarrow \qquad \frac{\partial \mathcal{L}}{\partial A} = \lambda_1, \qquad
 
 ## Next Classes
 
-**Wednesday**: **Prelim 1**!
+**Monday**: More Linear Programming and Electric Power Systems
 
-**Next Monday**: Fall Break, no class
+## Assessments
 
-**Next Wednesday**: Optimization Lab (come prepared, link will be posted on Ed)
+**HW3**: Due Thursday (10/16) at 9pm.
+
+**HW4**: Will Be Released On 10/27.
+
+**Project Proposal**: Due 10/24.
+
+# References
