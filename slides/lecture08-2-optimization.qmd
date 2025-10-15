@@ -73,15 +73,14 @@ default(
 
 ## Last Class
 
-- Optimization for solving decision problems.
-- Decision problems involve:
-  - Decision Variables;
-  - Objective(s);
-  - Constraints.
+- Prescriptive Modeling: For Decision-Making
+- Many approaches to optimization, including gradient descent and "random" search.
 
 ## Questions?
 
 {{< include _poll-prompt.qmd >}}
+
+# Optimization Example
 
 ## Decision Modeling for Wastewater Treatment
 

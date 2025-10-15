@@ -5015,7 +5015,7 @@
     "href": "slides/lecture08-2-optimization.html#last-class",
     "title": "Decision Models and Optimization",
     "section": "Last Class",
-    "text": "Last Class\n\nOptimization for solving decision problems.\nDecision problems involve:\n\nDecision Variables;\nObjective(s);\nConstraints."
+    "text": "Last Class\n\nPrescriptive Modeling: For Decision-Making\nMany approaches to optimization, including gradient descent and “random” search."
   },
   {
     "objectID": "slides/lecture08-2-optimization.html#questions",
