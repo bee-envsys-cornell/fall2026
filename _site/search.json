@@ -2492,200 +2492,291 @@
     "text": "Next Lectures\n\nWednesday: Prelim 2\nNext Week: Stochastic Optimization and Scenario Trees"
   },
   {
+    "objectID": "slides/lecture09-1-capacity-expansion.html#last-class",
+    "href": "slides/lecture09-1-capacity-expansion.html#last-class",
+    "title": "Shadow Prices and Power Systems Examples",
+    "section": "Last Class",
+    "text": "Last Class\n\nDecision Models include:\n\nDecision Variables\nObjectives\nConstraints\n\nObjectives vs. Metrics: “Minimize cost” versus the cost function."
+  },
+  {
+    "objectID": "slides/lecture09-1-capacity-expansion.html#linear-programming",
+    "href": "slides/lecture09-1-capacity-expansion.html#linear-programming",
+    "title": "Shadow Prices and Power Systems Examples",
+    "section": "Linear Programming",
+    "text": "Linear Programming\nLinear Programs (LPs) are:\n\nLinear\nDivisible\nCertain\n\nLPs must have optimal solutions at intersections of constraints: simplex method."
+  },
+  {
     "objectID": "slides/lecture09-1-capacity-expansion.html#questions",
     "href": "slides/lecture09-1-capacity-expansion.html#questions",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Questions?",
     "text": "Questions?\n\n\n\n\n\n\n\n\nText: VSRIKRISH to 22333\nURL: https://pollev.com/vsrikrish  See Results"
   },
   {
+    "objectID": "slides/lecture09-1-capacity-expansion.html#linearization",
+    "href": "slides/lecture09-1-capacity-expansion.html#linearization",
+    "title": "Shadow Prices and Power Systems Examples",
+    "section": "Linearization",
+    "text": "Linearization\n\n\nLinear models come up frequently because we can linearize nonlinear functions.\nWhen we linearize components of an mathematical program, this is called the linear relaxation of the original problem.\n\n\n\nCode\nE = 0:0.01:1\nplot(E, E.^2, legend=false, grid=false, xlabel=\"Efficiency\", ylabel=\"Cost\", color=:black, yticks=false, xlims=(0, 1), ylims=(0, 1), left_margin=8mm, linewidth=3)\nxticks!([0.65, 0.95])\nxlims!((0, 1.05))\nscatter!([0.65, 0.95], [0.65, 0.95].^2, markersize=10, color=:blue)\nplot!(E, 1.6 .* E  .- 0.6175, color=:blue, linestyle=:dash, linewidth=3)\nplot!(size=(600, 500))"
+  },
+  {
+    "objectID": "slides/lecture09-1-capacity-expansion.html#sensitivity-of-linearization",
+    "href": "slides/lecture09-1-capacity-expansion.html#sensitivity-of-linearization",
+    "title": "Shadow Prices and Power Systems Examples",
+    "section": "Sensitivity of Linearization",
+    "text": "Sensitivity of Linearization\n\n\nThe quality of linear approximations can depend on the range of values used and the curvature of the original objective/constraint.\n\n\n\nCode\nscatter!([0.32, 0.98], [0.32, 0.98].^2, markersize=10, color=:red)\nplot!(E, 1.3 .* E  .- 0.31, color=:red, linestyle=:dot, linewidth=3)"
+  },
+  {
+    "objectID": "slides/lecture09-1-capacity-expansion.html#binding-constraints",
+    "href": "slides/lecture09-1-capacity-expansion.html#binding-constraints",
+    "title": "Shadow Prices and Power Systems Examples",
+    "section": "Binding Constraints",
+    "text": "Binding Constraints\nA solution will be found at one of the corner points of the feasible polytope.\nThis means that at this solution, one or more constraints are binding: if we relaxed the constraint by weakening it, we could improve the solution."
+  },
+  {
+    "objectID": "slides/lecture09-1-capacity-expansion.html#binding-constraints-1",
+    "href": "slides/lecture09-1-capacity-expansion.html#binding-constraints-1",
+    "title": "Shadow Prices and Power Systems Examples",
+    "section": "Binding Constraints",
+    "text": "Binding Constraints\n\n\n\n\nCode\nx1 = 0:1200\nx2 = 0:1400\nf1(x) = (600 .- 0.9 .* x) ./ 0.5\nf2(x) = 1000 .- x\n\np = plot(0:667, min.(f1(0:667), f2(0:667)), fillrange=0, color=:lightblue, grid=true, label=\"Feasible Region\", xlabel=L\"x_1\", ylabel=L\"x_2\", xlims=(-50, 1200), ylims=(-50, 1400), framestyle=:origin, minorticks=4, right_margin=4mm, left_margin=4mm)\nplot!(0:667, f1.(0:667), color=:brown, linewidth=3, label=false)\nplot!(0:1000, f2.(0:1000), color=:red, linewidth=3, label=false)\nannotate!(400, 1100, text(L\"0.9x_1 + 0.5x_2 = 600\", color=:purple, pointsize=18))\nannotate!(1000, 300, text(L\"x_1 + x_2 = 1000\", color=:red, pointsize=18))\nplot!(size=(600, 500))\n\nZ(x1,x2) = 230 * x1 + 120 * x2\ncontour!(0:660,0:1000,(x1,x2)-&gt;Z(x1,x2), levels=5, c=:devon, linewidth=2, colorbar = false, clabels = true) \n\nscatter!(p, [667], [0], markersize=10, z=2, label=\"Optimal Solution\", markercolor=:orange)\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe binding constraints are\n\n\\(x_1 \\geq 0\\)\n\\(0.9 x_1 + 0.5 x_2 \\leq 600\\),\n\nbut not\n\n\\(x_1 + x_2 \\leq 1000\\)."
+  },
+  {
+    "objectID": "slides/lecture09-1-capacity-expansion.html#shadow-prices-1",
+    "href": "slides/lecture09-1-capacity-expansion.html#shadow-prices-1",
+    "title": "Shadow Prices and Power Systems Examples",
+    "section": "Shadow Prices",
+    "text": "Shadow Prices\nThe marginal cost of a constraint is the amount by which the solution would improve if the constraint capacity was relaxed by one unit.\nThis is also referred to as the shadow price (these are also called the dual variables of the constraint).\nNon-zero shadow prices tell us that the constraint is binding, and their values rank which constraints are most influential."
+  },
+  {
+    "objectID": "slides/lecture09-1-capacity-expansion.html#reminder-constrained-optimization-and-lagrange-multipliers",
+    "href": "slides/lecture09-1-capacity-expansion.html#reminder-constrained-optimization-and-lagrange-multipliers",
+    "title": "Shadow Prices and Power Systems Examples",
+    "section": "Reminder: Constrained Optimization and Lagrange Multipliers",
+    "text": "Reminder: Constrained Optimization and Lagrange Multipliers\nLagrange Multipliers are a way to incorporate equality constraints into an “unconstrained” form for an optimization problem."
+  },
+  {
+    "objectID": "slides/lecture09-1-capacity-expansion.html#reminder-constrained-optimization-and-lagrange-multipliers-1",
+    "href": "slides/lecture09-1-capacity-expansion.html#reminder-constrained-optimization-and-lagrange-multipliers-1",
+    "title": "Shadow Prices and Power Systems Examples",
+    "section": "Reminder: Constrained Optimization and Lagrange Multipliers",
+    "text": "Reminder: Constrained Optimization and Lagrange Multipliers\n\\[\\begin{align*}\n\\max_{x,y}\\qquad &f(x,y) \\\\\n\\text{subject to:}\\qquad &g(x,y) = 0\n\\end{align*}\\]\n\nThen: \\[\\mathcal{L}(x, y, \\lambda) = f(x,y) - \\lambda g(x,y)\\]"
+  },
+  {
+    "objectID": "slides/lecture09-1-capacity-expansion.html#converting-inequality-constraints",
+    "href": "slides/lecture09-1-capacity-expansion.html#converting-inequality-constraints",
+    "title": "Shadow Prices and Power Systems Examples",
+    "section": "Converting Inequality Constraints",
+    "text": "Converting Inequality Constraints\n\n\nOriginal Problem\n\\[\n\\begin{aligned}\n& \\min &&f(x_1, x_2) \\notag \\\\\\\\\n& \\text{subject to:} && x_1 \\geq A \\notag \\\\\n& && x_2 \\leq B \\notag\n\\end{aligned}\n\\]\n\nWith Dummy Variables\n\\[\n\\begin{aligned}\n& \\min &&f(x_1, x_2) \\notag \\\\\\\\\n& \\text{subject to:} && x_1 - S_1^2 = A \\notag \\\\\n& && x_2 + S_2^2 = B \\notag\n\\end{aligned}\n\\]"
+  },
+  {
+    "objectID": "slides/lecture09-1-capacity-expansion.html#using-lagrange-multipliers",
+    "href": "slides/lecture09-1-capacity-expansion.html#using-lagrange-multipliers",
+    "title": "Shadow Prices and Power Systems Examples",
+    "section": "Using Lagrange Multipliers",
+    "text": "Using Lagrange Multipliers\nThen the Lagrangian function becomes:\n\\[\n\\mathcal{L}(\\mathbf{x}, S_1, S_2, \\lambda_1, \\lambda_2) = f(\\mathbf{x}) - \\lambda_1(x_1 - S_1^2 - A) - \\lambda_2(x_2 + S_2^2 - B)\n\\]\nwhere \\(\\lambda_1\\), \\(\\lambda_2\\) are penalties for violating the constraints.\nThe \\(\\lambda_i\\) are the eponymous Lagrange multipliers."
+  },
+  {
+    "objectID": "slides/lecture09-1-capacity-expansion.html#using-lagrange-multipliers-1",
+    "href": "slides/lecture09-1-capacity-expansion.html#using-lagrange-multipliers-1",
+    "title": "Shadow Prices and Power Systems Examples",
+    "section": "Using Lagrange Multipliers",
+    "text": "Using Lagrange Multipliers\nNext step: locate possible optima where the partial derivatives of the Lagrangian are zero.\n\\[\\frac{\\partial \\mathcal{L}(\\cdot)}{\\partial \\cdot} = 0\\]\nThis is actually many equations, even though our original problem was low-dimensional, and can be slow to solve."
+  },
+  {
+    "objectID": "slides/lecture09-1-capacity-expansion.html#shadow-prices-are-lagrange-multipliers",
+    "href": "slides/lecture09-1-capacity-expansion.html#shadow-prices-are-lagrange-multipliers",
+    "title": "Shadow Prices and Power Systems Examples",
+    "section": "Shadow Prices are Lagrange Multipliers",
+    "text": "Shadow Prices are Lagrange Multipliers\nThe shadow prices are the Lagrange Multipliers of the optimization problem.\nIf our inequality constraints \\(X \\geq A\\) and \\(X \\leq B\\) are written as \\(X - S_1^2 = A\\) and \\(X + S_2^2 = B\\):\n\\[\\mathcal{L}(X, S_1 S_2, \\lambda_1, \\lambda_2) = Z(X) - \\lambda_1(X - S_1^2 - A) - \\lambda_2(X + S_2^2 - B),\\]\n\\[\\Rightarrow \\qquad \\frac{\\partial \\mathcal{L}}{\\partial A} = \\lambda_1, \\qquad \\frac{\\partial \\mathcal{L}}{\\partial B} = \\lambda_2.\\]"
+  },
+  {
     "objectID": "slides/lecture09-1-capacity-expansion.html#overview-of-electric-power-systems",
     "href": "slides/lecture09-1-capacity-expansion.html#overview-of-electric-power-systems",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Overview of Electric Power Systems",
     "text": "Overview of Electric Power Systems\n\n\n\nPower Systems Schematic\n\n\n\nSource: Wikipedia"
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#decisions-problems-for-power-systems",
     "href": "slides/lecture09-1-capacity-expansion.html#decisions-problems-for-power-systems",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Decisions Problems for Power Systems",
     "text": "Decisions Problems for Power Systems\n\n\n\nDecision Problems for Power Systems by Time Scale\n\n\n\nAdapted from Perez-Arriaga, Ignacio J., Hugh Rudnick, and Michel Rivier (2009)"
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#electricity-generation-by-source",
     "href": "slides/lecture09-1-capacity-expansion.html#electricity-generation-by-source",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Electricity Generation by Source",
     "text": "Electricity Generation by Source\n\n\n\nElectricity Generation in 2022 by Source\n\n\n\nSource: U.S. Energy Information Administration"
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#capacity-expansion",
     "href": "slides/lecture09-1-capacity-expansion.html#capacity-expansion",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Capacity Expansion",
     "text": "Capacity Expansion\nCapacity expansion involves adding resources to generate or transmit electricity to meet anticipated demand (load) in the future.\nTypical objective: Minimize cost\nBut other constraints may apply, e.g. reducing CO2 emissions or increasing fuel diversity."
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#plant-types",
     "href": "slides/lecture09-1-capacity-expansion.html#plant-types",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Plant Types",
     "text": "Plant Types\nIn general, we have many fuel options:\n\nGas (combined cycle or simple cycle);\nCoal;\nNuclear;\nRenewables (wind, solar, hydro, geothermal)"
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#simplified-example-generators",
     "href": "slides/lecture09-1-capacity-expansion.html#simplified-example-generators",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Simplified Example: Generators",
     "text": "Simplified Example: Generators\n\n\nCode\ngens = DataFrame(CSV.File(\"data/capacity_expansion/generators.csv\"))\ngens_display = rename(gens, Symbol.([:Generator, :\"Fixed Cost (\\\\\\$)\", :\"Variable Cost (\\\\\\$/MW)\"]))\nmarkdown_table(gens_display[1:end-2, :])\n\n\n\n\n\nGenerator\nFixed Cost ($)\nVariable Cost ($/MW)\n\n\n\n\nGeothermal\n450000\n0\n\n\nCoal\n220000\n21\n\n\nNG CCGT\n82000\n25\n\n\nNG CT\n65000\n35"
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#simplified-example-demand",
     "href": "slides/lecture09-1-capacity-expansion.html#simplified-example-demand",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Simplified Example: Demand",
     "text": "Simplified Example: Demand\n\n\nCode\nNY_demand = DataFrame(CSV.File(\"data/capacity_expansion/2020_hourly_load_NY.csv\"))\nrename!(NY_demand, :\"Time Stamp\" =&gt; :Date)\ndemand = NY_demand[:, [:Date, :C]]\nrename!(demand, :C =&gt; :Demand)\n@df demand plot(:Date, :Demand, xlabel=\"Date\", ylabel=\"Demand (MWh)\", label=:false, xrot=45, bottom_margin=15mm)\nplot!(size=(1200, 500))\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 1: Demand for 2020 in NYISO Zone C"
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#load-duration-curves",
     "href": "slides/lecture09-1-capacity-expansion.html#load-duration-curves",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Load Duration Curves",
     "text": "Load Duration Curves\nThe chronological demand curve makes it hard to understand what levels of load occur with lower or greater frequency.\nInstead, we can sort demand from high to low, which creates a load duration curve."
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#simplified-example-load-duration-curve",
     "href": "slides/lecture09-1-capacity-expansion.html#simplified-example-load-duration-curve",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Simplified Example: Load Duration Curve",
     "text": "Simplified Example: Load Duration Curve\n\n\nCode\nplot(sort(demand.Demand, rev=true), linewidth=3, label=:false)\nxaxis!(\"Hours\")\nyaxis!(\"Demand (MWh)\")\nplot!(size=(1200, 450))\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 2: Load Duration Curve for 2020 in NYISO Zone C"
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#simplified-example-load-duration-curve-1",
     "href": "slides/lecture09-1-capacity-expansion.html#simplified-example-load-duration-curve-1",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Simplified Example: Load Duration Curve",
     "text": "Simplified Example: Load Duration Curve\n\n\nCode\nhline!([2400], color=:red, linewidth=3, label=false)\nannotate!(2000, 2500, text(\"Peak Load\", :red, :right, 20))\nhline!([1500], color=:brown, linewidth=3, label=false)\nannotate!(4000, 2000, text(\"Shoulder Load\", :brown, :left, 20))\nannotate!(2000, 1400, text(\"Base Load\", :blue, :right, 20))\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 3: Load Duration Curve for 2020 in NYISO Zone C"
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#capacity-expansion-goal",
     "href": "slides/lecture09-1-capacity-expansion.html#capacity-expansion-goal",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Capacity Expansion: Goal",
     "text": "Capacity Expansion: Goal\nWe want to find the installed capacity of each technology that meets demand at all hours at minimal total cost.\n\nAlthough…\n\nFor some hours with extreme load, is it necessarily worth it to build new generation to meet those peaks?\nInstead, assign a high cost \\(NSECost\\) to non-served energy (NSE). In this case, let’s set \\(NSECost = \\$9000\\)/MWh"
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#decision-variables",
     "href": "slides/lecture09-1-capacity-expansion.html#decision-variables",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Decision Variables",
     "text": "Decision Variables\nWhat are our variables?\n\n\n\n\n\n\n\n\nVariable\nMeaning\n\n\n\n\n\\(x_g\\)\ninstalled capacity (MW) from each generator type \\(g \\in \\mathcal{G}\\)\n\n\n\\(y_{g,t}\\)\nproduction (MWh) from each generator type \\(g\\) in hour \\(t \\in \\mathcal{T}\\)\n\n\n\\(NSE_t\\)\nnon-served energy (MWh) in hour \\(t \\in \\mathcal{T}\\)"
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#capacity-expansion-objective",
     "href": "slides/lecture09-1-capacity-expansion.html#capacity-expansion-objective",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Capacity Expansion Objective",
     "text": "Capacity Expansion Objective\n\\[\n\\begin{align}\n\\min_{x, y, NSE} Z &= {\\color{red}\\text{investment cost} } + {\\color{blue}\\text{operating cost} } \\\\\n&= {\\color{red} \\sum_{g \\in \\mathcal{G}} \\times \\text{FixedCost}_g x_g} + \\\\\n& \\qquad{\\color{blue} \\sum_{t \\in \\mathcal{T}}  \\sum_{g \\in \\mathcal{G}}  \\text{VarCost}_g \\times y_{g,t} + \\sum_{t \\in \\mathcal{T}} \\text{NSECost} \\times NSE_t}\n\\end{align}\n\\]"
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#what-are-our-constraints",
     "href": "slides/lecture09-1-capacity-expansion.html#what-are-our-constraints",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "What Are Our Constraints?",
     "text": "What Are Our Constraints?"
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#capacity-expansion-constraints",
     "href": "slides/lecture09-1-capacity-expansion.html#capacity-expansion-constraints",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Capacity Expansion Constraints",
     "text": "Capacity Expansion Constraints\n\nDemand: Sum of generated energy and non-served energy must equal demand \\(d_t\\).\nCapacity: Generator types cannot produce more electricity than their installed capacity.\nNon-negativity: All decision variables must be non-negative."
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#problem-formulation",
     "href": "slides/lecture09-1-capacity-expansion.html#problem-formulation",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Problem Formulation",
     "text": "Problem Formulation\n\\[\n\\begin{align}\n\\min_{x, y, NSE} \\quad & \\sum_{g \\in \\mathcal{G}} \\text{FixedCost}_g \\times x_g + \\sum_{t \\in \\mathcal{T}} \\sum_{g \\in \\mathcal{G}} \\text{VarCost}_g \\times y_{g,t} & \\\\\n& \\quad + \\sum_{t \\in \\mathcal{T}} \\text{NSECost} \\times NSE_t & \\\\[0.5em]\n\\text {subject to:} \\quad & \\sum_{g \\in \\mathcal{G}} y_{g,t} + NSE_t \\geq d_t \\qquad \\forall t \\in \\mathcal{T} \\\\[0.5em]\n& y_{g,t} \\leq x_g \\qquad \\qquad \\qquad\\qquad  \\forall g \\in {G},  \\forall t \\in \\mathcal{T} \\\\[0.5em]\n& x_g, y_{g,t}, NSE_t \\geq 0 \\qquad \\qquad \\forall g \\in {G},  \\forall t \\in \\mathcal{T}\n\\end{align}\n\\]"
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#capacity-expansion-is-an-lp",
     "href": "slides/lecture09-1-capacity-expansion.html#capacity-expansion-is-an-lp",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Capacity Expansion is an LP",
     "text": "Capacity Expansion is an LP\n\nLinearity: costs assumed to scale linearly;\nDivisible: we model total installed capacity, not number of individual generator units\nCertainty: no uncertainty about renewables.\n\nReal problems can get much more complex, particularly if we try to model making decisions under renewable or load uncertainty."
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#capacity-expansion-example-solution",
     "href": "slides/lecture09-1-capacity-expansion.html#capacity-expansion-example-solution",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Capacity Expansion Example Solution",
     "text": "Capacity Expansion Example Solution\n\n\nCode\n# define sets\nG = 1:nrow(gens[1:end-2, :])\nT = 1:nrow(demand)\nNSECost = 9000\n\ngencap = Model(HiGHS.Optimizer)\n# define variables\n@variables(gencap, begin\n    x[g in G] &gt;= 0\n    y[g in G, t in T] &gt;= 0\n    NSE[t in T] &gt;= 0\nend)\n@objective(gencap, Min, \n    sum(gens[G, :FixedCost] .* x) + sum(gens[G, :VarCost] .* sum(y[:, t] for t in T)) + NSECost * sum(NSE)\n)\n@constraint(gencap, load[t in T], sum(y[:, t]) + NSE[t] &gt;= demand.Demand[t])\n@constraint(gencap, availability[g in G, t in T], y[g, t] &lt;= x[g])\noptimize!(gencap)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nResource\nInstalled (MW)\nPercent (%)\nGeneration (GWh)\nPercent (%)\n\n\n\n\nGeothermal\n-0.0\n-0.0\n0.0\n0.0\n\n\nCoal\n0.0\n0.0\n-0.0\n-0.0\n\n\nNG CCGT\n2016.9\n72.5\n15157.7\n98.1\n\n\nNG CT\n733.0\n26.4\n292.2\n1.9\n\n\nNSE\n31.2\n1.1\n0.1\n0.0"
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#when-might-generators-operate",
     "href": "slides/lecture09-1-capacity-expansion.html#when-might-generators-operate",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "When Might Generators Operate?",
-    "text": "When Might Generators Operate?\n\n\nCode\np = areaplot(value.(y).data', \n    label=permutedims(gens.Plant), \n    xlabel = \"Hour\", \n    ylabel =\"Generated Electricity (MWh)\", \n    color_palette=:seaborn_colorblind,\n    grid=:false,\n    legend = :bottomleft)\nylims!(p, (0, 3200))\nplot!(p, size=(1200, 500))\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 4: Results of Generating Capacity Expansion Example"
+    "text": "When Might Generators Operate?\n\n\nCode\np2 = areaplot(value.(y).data', \n    label=permutedims(gens.Plant), \n    xlabel = \"Hour\", \n    ylabel =\"Generated Electricity (MWh)\", \n    color_palette=:seaborn_colorblind,\n    grid=:false,\n    legend = :bottomleft)\nylims!(p2, (0, 3200))\nplot!(p2, size=(1200, 500))\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 4: Results of Generating Capacity Expansion Example"
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#how-often-is-there-non-served-energy",
     "href": "slides/lecture09-1-capacity-expansion.html#how-often-is-there-non-served-energy",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "How Often Is There Non-Served Energy?",
     "text": "How Often Is There Non-Served Energy?\n\\(\\text{NSE}\\) is non-zero for 7 hours and a total of 94 MWh.\nWhy do we think there is any NSE given the high NSE Cost?"
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#what-does-this-problem-neglect",
     "href": "slides/lecture09-1-capacity-expansion.html#what-does-this-problem-neglect",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "What Does This Problem Neglect?",
     "text": "What Does This Problem Neglect?\n\nDiscrete decisions: is a plant on or off (this is called unit commitment)?\nIntertemporal constraints: Power plants can’t just “ramp” from producing low levels of power to high levels of power; there are real engineering limits.\nTransmission: We can generate all the power we want, but what if we can’t get it to where the demand is\nRetirements: We might have existing generators that we want to retire (“brownfield” scenarios)."
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#what-about-renewables",
     "href": "slides/lecture09-1-capacity-expansion.html#what-about-renewables",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "What About Renewables?",
     "text": "What About Renewables?\nRenewables make this problem more complicated because their capacity is variable:\n\nresource availability not constant across time;\nneed to consider a capacity factor.\n\n\nHow would this change our existing capacity expansion formulation?"
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#renewable-variability-impact",
     "href": "slides/lecture09-1-capacity-expansion.html#renewable-variability-impact",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Renewable Variability Impact",
     "text": "Renewable Variability Impact\nThis will change the capacity constraint from \\[y_{g,t} \\leq x_g \\qquad \\forall g \\in {G},  \\forall t \\in \\mathcal{T}\\] to \\[y_{g,t} \\leq x_g \\times c_{g,t} \\qquad \\forall g \\in {G},  \\forall t \\in \\mathcal{T}\\] where \\(c_{g,t}\\) is the capacity factor in time period \\(t\\) for generator type \\(g\\)."
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#implementing-constraints-in-jump",
     "href": "slides/lecture09-1-capacity-expansion.html#implementing-constraints-in-jump",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Implementing Constraints in JuMP",
     "text": "Implementing Constraints in JuMP\nI recommend using vector notation in JuMP to specify these constraints, e.g. for capacity:\n# define sets\nG = 1:num_gen # num_gen is the number of generators\nT = 1:num_times # number of time periods\n\nc = ... # G x T matrix of capacity factors  \n@variable(..., x[g in G] &gt;= 0) # installed capacity\n@variable(..., y[g in G, t in T] &gt;= 0) # generated power\n@constraint(..., capacity[g in G, t in T], \n    y[g,t] &lt;= x[g] * c[g,t]) # capacity constraint"
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#key-takeaways-1",
     "href": "slides/lecture09-1-capacity-expansion.html#key-takeaways-1",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Key Takeaways",
-    "text": "Key Takeaways\n\nCapacity Expansion is a foundational power systems decision problem.\nIs an LP with some basic assumptions.\nWe looked at a “greenfield” example: no existing plants.\nDecision problem becomes more complex with renewables (HW4) or “brownfield” (expanding existing fleet, possibly with retirements)."
+    "text": "Key Takeaways\n\nShadow prices (dual variables) of the constraints are the rate by which the solution would improve if the constraints were relaxed.\nCapacity Expansion is a foundational power systems decision problem.\nWe looked at a “greenfield” example: no existing plants.\nDecision problem becomes more complex with renewables (HW4) or “brownfield” (expanding existing fleet, possibly with retirements)."
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#next-classes",
     "href": "slides/lecture09-1-capacity-expansion.html#next-classes",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Next Classes",
     "text": "Next Classes\nWednesday: Economic Dispatch\nNext Week: Managing Air Pollution"
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#assessments",
     "href": "slides/lecture09-1-capacity-expansion.html#assessments",
-    "title": "Power Systems and Capacity Expansion",
+    "title": "Shadow Prices and Power Systems Examples",
     "section": "Assessments",
-    "text": "Assessments\n\nHW4 assigned today (on LP/power systems), due on 10/31 at 9pm."
+    "text": "Assessments\n\nHW3 due Thursday (10/23)\nProject Proposal due Friday (10/24)"
   },
   {
     "objectID": "slides/lecture04-2-dissolved-oxygen.html#last-class",
@@ -3311,7 +3402,7 @@
     "href": "hw/index.html#schedule",
     "title": "Homework",
     "section": "Schedule",
-    "text": "Schedule\n\n\n\n\n\n\n\n\n\nAssignment\nInstructions\nSolutions\nDue Date\n\n\n\n\nHomework 1\n\n\nSep. 11, 2025\n\n\nHomework 2\n\n\nSep. 25, 2025\n\n\nHomework 3\n\n\nOct. 16, 2025\n\n\nHomework 4\n\n\nNov. 06, 2025\n\n\nHomework 5\n\n\nNov. 20, 2025\n\n\nHomework 6\n\n\nDec. 04, 2025",
+    "text": "Schedule\n\n\n\n\n\n\n\n\n\nAssignment\nInstructions\nSolutions\nDue Date\n\n\n\n\nHomework 1\n\n\nSep. 11, 2025\n\n\nHomework 2\n\n\nSep. 25, 2025\n\n\nHomework 3\n\n\nOct. 23, 2025\n\n\nHomework 4\n\n\nNov. 06, 2025\n\n\nHomework 5\n\n\nNov. 20, 2025\n\n\nHomework 6\n\n\nDec. 04, 2025",
     "crumbs": [
       "Homework Overview"
     ]
@@ -3511,7 +3602,7 @@
     "href": "hw/hw03/hw03.html",
     "title": "BEE 4750 Homework 3: Dissolved Oxygen and Monte Carlo",
     "section": "",
-    "text": "Due Date\n\n\n\nThursday, 10/16/25, 9:00pm",
+    "text": "Due Date\n\n\n\nThursday, 10/23/25, 9:00pm",
     "crumbs": [
       "Homework 3"
     ]
@@ -5256,88 +5347,11 @@
     "text": "Solving an LP\nManually checking the corner points is all well and good for this simple example, but does it scale well?\n\nLP solvers (often based off the simplex method) automate this process."
   },
   {
-    "objectID": "slides/lecture08-2-optimization.html#linearization",
-    "href": "slides/lecture08-2-optimization.html#linearization",
-    "title": "Decision Models and Optimization",
-    "section": "Linearization",
-    "text": "Linearization\n\n\nLinear models come up frequently because we can linearize nonlinear functions.\nWhen we linearize components of an mathematical program, this is called the linear relaxation of the original problem.\n\n\n\nCode\nE = 0:0.01:1\nplot(E, E.^2, legend=false, grid=false, xlabel=\"Efficiency\", ylabel=\"Cost\", color=:black, yticks=false, xlims=(0, 1), ylims=(0, 1), left_margin=8mm, linewidth=3)\nxticks!([0.65, 0.95])\nxlims!((0, 1.05))\nscatter!([0.65, 0.95], [0.65, 0.95].^2, markersize=10, color=:blue)\nplot!(E, 1.6 .* E  .- 0.6175, color=:blue, linestyle=:dash, linewidth=3)\nplot!(size=(600, 500))"
-  },
-  {
-    "objectID": "slides/lecture08-2-optimization.html#sensitivity-of-linearization",
-    "href": "slides/lecture08-2-optimization.html#sensitivity-of-linearization",
-    "title": "Decision Models and Optimization",
-    "section": "Sensitivity of Linearization",
-    "text": "Sensitivity of Linearization\n\n\nThe quality of linear approximations can depend on the range of values used and the curvature of the original objective/constraint.\n\n\n\nCode\nscatter!([0.32, 0.98], [0.32, 0.98].^2, markersize=10, color=:red)\nplot!(E, 1.3 .* E  .- 0.31, color=:red, linestyle=:dot, linewidth=3)"
-  },
-  {
-    "objectID": "slides/lecture08-2-optimization.html#binding-constraints",
-    "href": "slides/lecture08-2-optimization.html#binding-constraints",
-    "title": "Decision Models and Optimization",
-    "section": "Binding Constraints",
-    "text": "Binding Constraints\nA solution will be found at one of the corner points of the feasible polytope.\nThis means that at this solution, one or more constraints are binding: if we relaxed the constraint by weakening it, we could improve the solution."
-  },
-  {
-    "objectID": "slides/lecture08-2-optimization.html#binding-constraints-1",
-    "href": "slides/lecture08-2-optimization.html#binding-constraints-1",
-    "title": "Decision Models and Optimization",
-    "section": "Binding Constraints",
-    "text": "Binding Constraints\n\n\n\n\nCode\np\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe binding constraints are\n\n\\(x_1 \\geq 0\\)\n\\(0.9 x_1 + 0.5 x_2 \\leq 600\\),\n\nbut not\n\n\\(x_1 + x_2 \\leq 1000\\)."
-  },
-  {
-    "objectID": "slides/lecture08-2-optimization.html#shadow-prices-1",
-    "href": "slides/lecture08-2-optimization.html#shadow-prices-1",
-    "title": "Decision Models and Optimization",
-    "section": "Shadow Prices",
-    "text": "Shadow Prices\nThe marginal cost of a constraint is the amount by which the solution would improve if the constraint capacity was relaxed by one unit.\nThis is also referred to as the shadow price (these are also called the dual variables of the constraint).\nNon-zero shadow prices tell us that the constraint is binding, and their values rank which constraints are most influential."
-  },
-  {
-    "objectID": "slides/lecture08-2-optimization.html#reminder-constrained-optimization-and-lagrange-multipliers",
-    "href": "slides/lecture08-2-optimization.html#reminder-constrained-optimization-and-lagrange-multipliers",
-    "title": "Decision Models and Optimization",
-    "section": "Reminder: Constrained Optimization and Lagrange Multipliers",
-    "text": "Reminder: Constrained Optimization and Lagrange Multipliers\nLagrange Multipliers are a way to incorporate equality constraints into an “unconstrained” form for an optimization problem."
-  },
-  {
-    "objectID": "slides/lecture08-2-optimization.html#reminder-constrained-optimization-and-lagrange-multipliers-1",
-    "href": "slides/lecture08-2-optimization.html#reminder-constrained-optimization-and-lagrange-multipliers-1",
-    "title": "Decision Models and Optimization",
-    "section": "Reminder: Constrained Optimization and Lagrange Multipliers",
-    "text": "Reminder: Constrained Optimization and Lagrange Multipliers\n\\[\\begin{align*}\n\\max_{x,y}\\qquad &f(x,y) \\\\\n\\text{subject to:}\\qquad &g(x,y) = 0\n\\end{align*}\\]\n\nThen: \\[\\mathcal{L}(x, y, \\lambda) = f(x,y) - \\lambda g(x,y)\\]"
-  },
-  {
-    "objectID": "slides/lecture08-2-optimization.html#converting-inequality-constraints",
-    "href": "slides/lecture08-2-optimization.html#converting-inequality-constraints",
-    "title": "Decision Models and Optimization",
-    "section": "Converting Inequality Constraints",
-    "text": "Converting Inequality Constraints\n\n\nOriginal Problem\n\\[\n\\begin{aligned}\n& \\min &&f(x_1, x_2) \\notag \\\\\\\\\n& \\text{subject to:} && x_1 \\geq A \\notag \\\\\n& && x_2 \\leq B \\notag\n\\end{aligned}\n\\]\n\nWith Dummy Variables\n\\[\n\\begin{aligned}\n& \\min &&f(x_1, x_2) \\notag \\\\\\\\\n& \\text{subject to:} && x_1 - S_1^2 = A \\notag \\\\\n& && x_2 + S_2^2 = B \\notag\n\\end{aligned}\n\\]"
-  },
-  {
-    "objectID": "slides/lecture08-2-optimization.html#using-lagrange-multipliers",
-    "href": "slides/lecture08-2-optimization.html#using-lagrange-multipliers",
-    "title": "Decision Models and Optimization",
-    "section": "Using Lagrange Multipliers",
-    "text": "Using Lagrange Multipliers\nThen the Lagrangian function becomes:\n\\[\n\\mathcal{L}(\\mathbf{x}, S_1, S_2, \\lambda_1, \\lambda_2) = f(\\mathbf{x}) - \\lambda_1(x_1 - S_1^2 - A) - \\lambda_2(x_2 + S_2^2 - B)\n\\]\nwhere \\(\\lambda_1\\), \\(\\lambda_2\\) are penalties for violating the constraints.\nThe \\(\\lambda_i\\) are the eponymous Lagrange multipliers."
-  },
-  {
-    "objectID": "slides/lecture08-2-optimization.html#using-lagrange-multipliers-1",
-    "href": "slides/lecture08-2-optimization.html#using-lagrange-multipliers-1",
-    "title": "Decision Models and Optimization",
-    "section": "Using Lagrange Multipliers",
-    "text": "Using Lagrange Multipliers\nNext step: locate possible optima where the partial derivatives of the Lagrangian are zero.\n\\[\\frac{\\partial \\mathcal{L}(\\cdot)}{\\partial \\cdot} = 0\\]\nThis is actually many equations, even though our original problem was low-dimensional, and can be slow to solve."
-  },
-  {
-    "objectID": "slides/lecture08-2-optimization.html#shadow-prices-are-lagrange-multipliers",
-    "href": "slides/lecture08-2-optimization.html#shadow-prices-are-lagrange-multipliers",
-    "title": "Decision Models and Optimization",
-    "section": "Shadow Prices are Lagrange Multipliers",
-    "text": "Shadow Prices are Lagrange Multipliers\nThe shadow prices are the Lagrange Multipliers of the optimization problem.\nIf our inequality constraints \\(X \\geq A\\) and \\(X \\leq B\\) are written as \\(X - S_1^2 = A\\) and \\(X + S_2^2 = B\\):\n\\[\\mathcal{L}(X, S_1 S_2, \\lambda_1, \\lambda_2) = Z(X) - \\lambda_1(X - S_1^2 - A) - \\lambda_2(X + S_2^2 - B),\\]\n\\[\\Rightarrow \\qquad \\frac{\\partial \\mathcal{L}}{\\partial A} = \\lambda_1, \\qquad \\frac{\\partial \\mathcal{L}}{\\partial B} = \\lambda_2.\\]"
-  },
-  {
     "objectID": "slides/lecture08-2-optimization.html#key-takeaways-1",
     "href": "slides/lecture08-2-optimization.html#key-takeaways-1",
     "title": "Decision Models and Optimization",
     "section": "Key Takeaways",
-    "text": "Key Takeaways\n\nLinear Programs: straightforward to solve!\nFor an LP, an optimum must occur at a corner of the feasible polytope.\nShadow prices (dual variables) of the constraints are the rate by which the solution would improve if the constraints were relaxed."
+    "text": "Key Takeaways\n\nLinear Programs: straightforward to solve!\nFor an LP, an optimum must occur at a corner of the feasible polytope."
   },
   {
     "objectID": "slides/lecture08-2-optimization.html#next-classes",
@@ -5351,7 +5365,7 @@
     "href": "slides/lecture08-2-optimization.html#assessments",
     "title": "Decision Models and Optimization",
     "section": "Assessments",
-    "text": "Assessments\nHW3: Due Thursday (10/16) at 9pm.\nHW4: Will Be Released On 10/27.\nProject Proposal: Due 10/24."
+    "text": "Assessments\nHW3: Due next Thursday (10/23) at 9pm.\nHW4: Will Be Released On 10/27.\nProject Proposal: Due 10/24."
   },
   {
     "objectID": "slides/lecture14-1-simulation-optimization.html#mathematical-programming-and-systems-analysis",

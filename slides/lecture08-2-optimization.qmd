@@ -550,170 +550,6 @@ Manually checking the corner points is all well and good for this simple example
 LP solvers (often based off the simplex method) automate this process.
 :::
 
-## Linearization
-
-:::: {.columns}
-::: {.column width=50%}
-Linear models come up frequently because we can *linearize* nonlinear functions.
-
-When we linearize components of an mathematical program, this is called the *linear relaxation* of the original problem.
-:::
-::: {.column width=50%}
-```{julia}
-#| echo: true
-#| code-fold: true
-E = 0:0.01:1
-plot(E, E.^2, legend=false, grid=false, xlabel="Efficiency", ylabel="Cost", color=:black, yticks=false, xlims=(0, 1), ylims=(0, 1), left_margin=8mm, linewidth=3)
-xticks!([0.65, 0.95])
-xlims!((0, 1.05))
-scatter!([0.65, 0.95], [0.65, 0.95].^2, markersize=10, color=:blue)
-plot!(E, 1.6 .* E  .- 0.6175, color=:blue, linestyle=:dash, linewidth=3)
-plot!(size=(600, 500))
-```
-:::
-::::
-
-## Sensitivity of Linearization
-
-:::: {.columns}
-::: {.column width=50%}
-The quality of linear approximations can depend on the range of values used and the curvature of the original objective/constraint.
-:::
-::: {.column width=50%}
-```{julia}
-#| echo: true
-#| code-fold: true
-scatter!([0.32, 0.98], [0.32, 0.98].^2, markersize=10, color=:red)
-plot!(E, 1.3 .* E  .- 0.31, color=:red, linestyle=:dot, linewidth=3)
-```
-:::
-::::
-
-
-# Shadow Prices
-
-## Binding Constraints
-
-A solution will be found at one of the corner points of the feasible polytope.
-
-This means that at this solution, one or more constraints are **binding**: if we *relaxed* the constraint by weakening it, we could improve the solution.
-
-## Binding Constraints
-
-:::: {.columns}
-::: {.column width=50%}
-```{julia}
-#| echo: true
-#| code-fold: true
-
-p
-```
-:::
-
-::: {.column width=50%}
-The binding constraints are 
-
-- $x_1 \geq 0$ 
-- $0.9 x_1 + 0.5 x_2 \leq 600$, 
-
-but not 
-
-- $x_1 + x_2 \leq 1000$.
-:::
-::::
-
-## Shadow Prices
-
-The **marginal cost** of a constraint is the amount by which the solution would improve if the constraint capacity was relaxed by one unit.
-
-This is also referred to as the **shadow price** (these are also called the *dual variables* of the constraint).
-
-Non-zero shadow prices tell us that the constraint is binding, and their values rank which constraints are most influential.
-
-## Reminder: Constrained Optimization and Lagrange Multipliers
-
-**Lagrange Multipliers** are a way to incorporate equality constraints into an "unconstrained" form for an optimization problem.
-
-## Reminder: Constrained Optimization and Lagrange Multipliers
-
-\begin{align*}
-\max_{x,y}\qquad &f(x,y) \\
-\text{subject to:}\qquad &g(x,y) = 0
-\end{align*}  
-
-::: {.fragment .fade-in}
-Then:
-$$\mathcal{L}(x, y, \lambda) = f(x,y) - \lambda g(x,y)$$
-:::
-
-
-
-
-## Converting Inequality Constraints
-
-:::: {.columns}
-::: {.column width=50%}
-
-**Original Problem**
-
-
-$$
-\begin{aligned}
-& \min &&f(x_1, x_2) \notag \\\\
-& \text{subject to:} && x_1 \geq A \notag \\
-& && x_2 \leq B \notag
-\end{aligned}
-$$
-:::
-
-::: {.column width=50%}
-
-**With Dummy Variables**
-
-
-$$
-\begin{aligned}
-& \min &&f(x_1, x_2) \notag \\\\
-& \text{subject to:} && x_1 - S_1^2 = A \notag \\
-& && x_2 + S_2^2 = B \notag
-\end{aligned}
-$$
-:::
-::::
-
-## Using Lagrange Multipliers
-
-Then the Lagrangian function becomes:
-
-$$
-\mathcal{L}(\mathbf{x}, S_1, S_2, \lambda_1, \lambda_2) = f(\mathbf{x}) - \lambda_1(x_1 - S_1^2 - A) - \lambda_2(x_2 + S_2^2 - B)
-$$
-
-
-where $\lambda_1$, $\lambda_2$ are penalties for violating the constraints.
-
-
-The $\lambda_i$ are the eponymous *Lagrange multipliers*.
-
-## Using Lagrange Multipliers
-
-
-Next step: locate possible optima where the partial derivatives of the Lagrangian are zero.
-
-$$\frac{\partial \mathcal{L}(\cdot)}{\partial \cdot} = 0$$
-
-This is actually many equations, even though our original problem was low-dimensional, and can be slow to solve.
-
-
-## Shadow Prices are Lagrange Multipliers
-
-The shadow prices are the Lagrange Multipliers of the optimization problem.
-
-If our inequality constraints $X \geq A$ and $X \leq B$ are written as $X - S_1^2 = A$ and $X + S_2^2 = B$:
-
-$$\mathcal{L}(X, S_1 S_2, \lambda_1, \lambda_2) = Z(X) - \lambda_1(X - S_1^2 - A) - \lambda_2(X + S_2^2 - B),$$
-
-$$\Rightarrow \qquad \frac{\partial \mathcal{L}}{\partial A} = \lambda_1, \qquad \frac{\partial \mathcal{L}}{\partial B} = \lambda_2.$$
 
 
 # Key Takeaways
@@ -722,7 +558,7 @@ $$\Rightarrow \qquad \frac{\partial \mathcal{L}}{\partial A} = \lambda_1, \qquad
 
 - Linear Programs: straightforward to solve!
 - For an LP, an optimum must occur at a corner of the feasible polytope.
-- Shadow prices (dual variables) of the constraints are the rate by which the solution would improve if the constraints were relaxed.
+
 
 # Upcoming Schedule
 
@@ -732,7 +568,7 @@ $$\Rightarrow \qquad \frac{\partial \mathcal{L}}{\partial A} = \lambda_1, \qquad
 
 ## Assessments
 
-**HW3**: Due Thursday (10/16) at 9pm.
+**HW3**: Due **next** Thursday (10/23) at 9pm.
 
 **HW4**: Will Be Released On 10/27.
 
