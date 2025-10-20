@@ -304,11 +304,7 @@ Adapted from Perez-Arriaga, Ignacio J., Hugh Rudnick, and Michel Rivier (2009)
 
 ## Electricity Generation by Source
 
-![Electricity Generation in 2022 by Source](https://www.eia.gov/energyexplained/electricity/images/outlet-graph-large.jpg)
-
-::: {.caption}
-Source: U.S. Energy Information Administration
-:::
+![Electricity Generation in 2024 by Source](https://www.eia.gov/energyexplained/electricity/images/outlet-graph-large.jpg)
 
 # Generating Capacity Expansion
 
@@ -426,6 +422,9 @@ What are our variables?
 
 ## Capacity Expansion Objective
 
+What is our objective?
+
+::: {.fragment .fade-in}
 $$
 \begin{align}
 \min_{x, y, NSE} Z &= {\color{red}\text{investment cost} } + {\color{blue}\text{operating cost} } \\
@@ -433,6 +432,8 @@ $$
 & \qquad{\color{blue} \sum_{t \in \mathcal{T}}  \sum_{g \in \mathcal{G}}  \text{VarCost}_g \times y_{g,t} + \sum_{t \in \mathcal{T}} \text{NSECost} \times NSE_t}
 \end{align}
 $$
+
+:::
 
 ## What Are Our Constraints?
 
@@ -464,13 +465,12 @@ $$
 Real problems can get much more complex, particularly if we try to model making decisions under renewable or load uncertainty.
 
 
-
-## Capacity Expansion Example Solution
+## Implementation in `JUMP.jl`
 
 ```{julia}
 #| echo: true
-#| code-fold: true
 #| output: false
+#| code-line-numbers: "|1-4|6|7-12|13-15|16-17|18"
 
 # define sets
 G = 1:nrow(gens[1:end-2, :])
@@ -492,7 +492,13 @@ end)
 optimize!(gencap)
 ```
 
+
+## Capacity Expansion Example Solution
+
 ```{julia}
+#| echo: true
+#| code-fold: true
+
 generation = zeros(size(G,1))
 for i in 1:size(G,1) 
     generation[i] = sum(value.(y)[G[i],:].data) 
@@ -542,9 +548,10 @@ plot!(p2, size=(1200, 500))
 
 ## How Often Is There Non-Served Energy?
 
-$\text{NSE}$ is non-zero for `{julia} sum(.!(iszero.(value.(NSE))))` hours and a total of `{julia} Int64(round(sum(value.(NSE)); digits=0))` MWh.
+$\text{NSE}$ is non-zero for `{julia} sum(.!(iszero.(value.(NSE).data)))` hours and a total of `{julia} Int64(round(sum(value.(NSE).data); digits=0))` MWh.
 
 **Why do we think there is any NSE given the high NSE Cost?**
+
 
 ## What Does This Problem Neglect?
 
@@ -574,6 +581,13 @@ to
 $$y_{g,t} \leq x_g \times c_{g,t} \qquad \forall g \in {G},  \forall t \in \mathcal{T}$$
 where $c_{g,t}$ is the capacity factor in time period $t$ for generator type $g$.
 
+## Renewable Capacity Factors
+
+- Linked to resource availability: how much wind, solar, hydro, geothermal, etc can we rely on in a given hour?
+- Often derived from **Typical Meteorological Years (TMY)** or select **Actual Meteorological Years (AMY)** and may only use select periods.
+- These approaches **will** underrepresent renewable variability but may be used for computational tractability.
+- Always look for details on what meteorological dataset was used!
+
 ## Implementing Constraints in JuMP
 
 I recommend using vector notation in `JuMP` to specify these constraints, *e.g.* for capacity:
@@ -589,6 +603,7 @@ c = ... # G x T matrix of capacity factors
 @constraint(..., capacity[g in G, t in T], 
     y[g,t] <= x[g] * c[g,t]) # capacity constraint
 ```
+
 
 # Key Takeaways
 
