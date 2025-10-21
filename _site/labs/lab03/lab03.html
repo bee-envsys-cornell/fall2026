@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2025-10-20">
 
-<title>Labs – Environmental Systems Analysis</title>
+<title>BEE 4750 Lab 3: Linear Programming with JuMP – Environmental Systems Analysis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,29 +21,64 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../labs/lab01/lab01.html" rel="next">
-<link href="../_assets/logos/favicon.png" rel="icon" type="image/png">
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1d1e7f53b840ad8d06c4ae6c57b8588.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ba9c0723bac509a7d8c9561700ea21a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../labs/lab02/lab02.html" rel="prev">
+<link href="../../_assets/logos/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e1d1e7f53b840ad8d06c4ae6c57b8588.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ba9c0723bac509a7d8c9561700ea21a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -79,8 +115,37 @@ window.MathJax = {
   };
 </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<meta property="og:title" content="Labs – Environmental Systems Analysis">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="BEE 4750 Lab 3: Linear Programming with JuMP – Environmental Systems Analysis">
 <meta property="og:description" content="Homepage for the Fall 2025 version of BEE 4750/5750, Environmental Systems Analysis, at Cornell University.">
 <meta property="og:site_name" content="Environmental Systems Analysis">
 </head>
@@ -92,7 +157,7 @@ window.MathJax = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">BEE 4750/5750</span>
     </a>
   </div>
@@ -108,25 +173,25 @@ window.MathJax = {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-info">    
         <li>
-    <a class="dropdown-item" href="../syllabus.html">
+    <a class="dropdown-item" href="../../syllabus.html">
  <span class="dropdown-text">Syllabus</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../policies/index.html">
+    <a class="dropdown-item" href="../../policies/index.html">
  <span class="dropdown-text">Course Policies</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../faq/index.html">
+    <a class="dropdown-item" href="../../faq/index.html">
  <span class="dropdown-text">FAQ</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../setup/index.html">
+    <a class="dropdown-item" href="../../setup/index.html">
  <span class="dropdown-text">Setup</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="../schedule.html"> 
+    <a class="nav-link" href="../../schedule.html"> 
 <span class="menu-text">Course Schedule</span></a>
   </li>  
   <li class="nav-item dropdown ">
@@ -135,15 +200,15 @@ window.MathJax = {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-coursework">    
         <li>
-    <a class="dropdown-item" href="../labs/index.html">
+    <a class="dropdown-item" href="../../labs/index.html">
  <span class="dropdown-text">Labs</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../hw/index.html">
+    <a class="dropdown-item" href="../../hw/index.html">
  <span class="dropdown-text">Homework</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../project/index.html">
+    <a class="dropdown-item" href="../../project/index.html">
  <span class="dropdown-text">Final Project</span></a>
   </li>  
     </ul>
@@ -154,31 +219,31 @@ window.MathJax = {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-resources">    
         <li>
-    <a class="dropdown-item" href="../tutorials/index.html">
+    <a class="dropdown-item" href="../../tutorials/index.html">
  <span class="dropdown-text">Tutorials</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../resources/general.html">
+    <a class="dropdown-item" href="../../resources/general.html">
  <span class="dropdown-text">General Resources</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../resources/julia.html">
+    <a class="dropdown-item" href="../../resources/julia.html">
  <span class="dropdown-text">Julia Resources</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../resources/ai.html">
+    <a class="dropdown-item" href="../../resources/ai.html">
  <span class="dropdown-text">Generative AI and LLMs</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../resources/github.html">
+    <a class="dropdown-item" href="../../resources/github.html">
  <span class="dropdown-text">GitHub Resources</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../resources/markdown.html">
+    <a class="dropdown-item" href="../../resources/markdown.html">
  <span class="dropdown-text">Markdown Resources</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../resources/optimization.html">
+    <a class="dropdown-item" href="../../resources/optimization.html">
  <span class="dropdown-text">Optimization Resources</span></a>
   </li>  
     </ul>
@@ -212,7 +277,7 @@ window.MathJax = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../labs/index.html">Lab Overview</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../labs/lab03/lab03.html">Lab 3</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -226,25 +291,25 @@ window.MathJax = {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../labs/index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../labs/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lab Overview</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../labs/lab01/lab01.html" class="sidebar-item-text sidebar-link">
+  <a href="../../labs/lab01/lab01.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lab 1</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../labs/lab02/lab02.html" class="sidebar-item-text sidebar-link">
+  <a href="../../labs/lab02/lab02.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lab 2</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../labs/lab03/lab03.html" class="sidebar-item-text sidebar-link">
+  <a href="../../labs/lab03/lab03.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Lab 3</span></a>
   </div>
 </li>
@@ -258,18 +323,19 @@ window.MathJax = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#general-information" id="toc-general-information" class="nav-link active" data-scroll-target="#general-information">General Information</a></li>
-  <li><a href="#grading" id="toc-grading" class="nav-link" data-scroll-target="#grading">Grading</a></li>
-  <li><a href="#schedule" id="toc-schedule" class="nav-link" data-scroll-target="#schedule">Schedule</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#exercise-3-points" id="toc-exercise-3-points" class="nav-link" data-scroll-target="#exercise-3-points">Exercise (3 points)</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/labs/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/labs/lab03/lab03.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="lab03.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="lab03.ipynb" download="lab03.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Labs</h1>
+<h1 class="title">BEE 4750 Lab 3: Linear Programming with JuMP</h1>
 </div>
 
 
@@ -277,6 +343,12 @@ window.MathJax = {
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 20, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -286,64 +358,195 @@ window.MathJax = {
 </header>
 
 
-<p>This page contains information about and a schedule of the lab assignments for the semester.</p>
-<section id="general-information" class="level2">
-<h2 class="anchored" data-anchor-id="general-information">General Information</h2>
-<ul>
-<li>You can download each lab notebook through the link below..</li>
-<li>Submit assignments by 9:00pm Eastern Time on the due date on <a href="https://gradescope.com">Gradescope</a>.</li>
-<li>Submissions must be PDFs. Make sure that you tag the pages corresponding to each question; points will be deducted otherwise.</li>
-<li>To convert the assignment notebook to PDF, you can use VS Code to render the notebook to HTML, and then use your browser to print to PDF. If you have set up LaTeX with VS Code, you can convert directly to a PDF.</li>
-</ul>
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Due Date
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Thursday, 10/23/24, 9:00pm</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-caution">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>If you are enrolled in the course, make sure that you use the GitHub Classroom link provided in Ed Discussion, or you may not be able to get help if you run into problems.</p>
+<p>Otherwise, you can <a href="https://github.com/BEE4750/lab03">find the Github repository here</a>.</p>
+</div>
+</div>
+</div>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<p>The following code should go at the top of most Julia scripts; it will load the local package environment and install any needed packages. You will see this often and shouldn’t need to touch it.</p>
+<div id="2" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">Pkg</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">activate</span>(<span class="st">"."</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">instantiate</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="4" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">JuMP</span> <span class="co"># optimization modeling syntax</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">HiGHS</span> <span class="co"># optimization solver</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="grading" class="level2">
-<h2 class="anchored" data-anchor-id="grading">Grading</h2>
-<p>Labs will be graded on a scale of 0-3:</p>
-<ul>
-<li>Missing (0/3): Lab solution is missing or is not responsive to the lab prompt(s);</li>
-<li>Needs Improvement (1/3): Lab is largely incomplete or is missing key concepts;</li>
-<li>Developing (2/3): Lab is mostly complete but may contain major conceptual or implementation errors;</li>
-<li>Acceptable (3/3): Lab is mostly or fully complete without any major errors.</li>
-</ul>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>In this lab, you will write and solve a resource allocation example using <code>JuMP.jl</code>. <code>JuMP.jl</code> provides an intuitive syntax for writing, solving, and querying optimization problems.</p>
+<p><code>JuMP</code> requires the loading of a solver. [Each supported solver works for certain classes of problems, and some are open source while others require a commercial license]. We will use the <code>HiGHS</code> solver, which is open source and works for linear, mixed integer linear, and quadratic programs.</p>
+<p>In this lab we will walk through the steps involved in coding a linear program in HiGHS, solving it, and querying the solution.</p>
 </section>
-<section id="schedule" class="level2">
-<h2 class="anchored" data-anchor-id="schedule">Schedule</h2>
+<section id="exercise-3-points" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-3-points">Exercise (3 points)</h2>
+<p>Your task is to decide how much lumber to produce to maximize profit from wood sales. You can purchase wood from a managed forest, which consists of spruce (320,000 bf) and fir (720,000 bf). Spruce costs <span class="math inline">\(\$0.12\)</span> per bf to purchase and fir costs <span class="math inline">\(\$0.08\)</span> per bf.</p>
+<p>At the lumber mill, wood can be turned into plywood of various grades (see <a href="#tbl-inputs" class="quarto-xref">Table&nbsp;1</a> for how much wood of each type is required for and the revenue from each grade). Any excess wood is sent to be recycled into particle board, which yields no revenue for the mill.</p>
+<div id="tbl-inputs" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-inputs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Wood inputs and revenue by plywood grade. S refers to spruce inputs, F fir inputs.
+</figcaption>
+<div aria-describedby="tbl-inputs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 5%">
-<col style="width: 5%">
-<col style="width: 10%">
-</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: center;">Lab</th>
-<th style="text-align: center;">Instructions</th>
-<th style="text-align: center;">Solutions</th>
-<th style="text-align: left;">Due Date</th>
+<th style="text-align: center;">Plywood Grade</th>
+<th style="text-align: center;">Inputs (bf/bf plywood)</th>
+<th style="text-align: center;">Revenue ($/1000 bf)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">Lab 1</td>
-<td style="text-align: center;"><a href="../labs/lab01/lab01.html"><i class="fa-sharp fa-pen-field" aria-label="pen-field"></i></a></td>
-<td style="text-align: center;"><span style="color: grey;"><i class="fa-sharp fa-key-skeleton" aria-label="key-skeleton"></i></span></td>
-<td style="text-align: left;">Aug.&nbsp;28, 2025</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0.5 (S) + 1.5 (F)</td>
+<td style="text-align: center;">400</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">Lab 2</td>
-<td style="text-align: center;"><a href="../labs/lab02/lab02.html"><i class="fa-sharp fa-pen-field" aria-label="pen-field"></i></a></td>
-<td style="text-align: center;"></td>
-<td style="text-align: left;">Sep.&nbsp;30, 2025</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">1.0 (S) + 2.0 (F)</td>
+<td style="text-align: center;">520</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">Lab 3</td>
-<td style="text-align: center;"><a href="../labs/lab03/lab03.html"><i class="fa-sharp fa-pen-field" aria-label="pen-field"></i></a></td>
-<td style="text-align: center;"></td>
-<td style="text-align: left;">Oct.&nbsp;23, 2025</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">1.5 (S) + 2.0 (F)</td>
+<td style="text-align: center;">700</td>
 </tr>
 </tbody>
 </table>
+</div>
+</figure>
+</div>
+<p>First, we need to identify our decision variables. While there are several options, we will use <span class="math inline">\(G_i\)</span>, the amount of each grade the mill produces (in 1000 bf).</p>
+<p>Using these decision variables, formulate a linear program to maximize the profit of the mill subject to the supply constraints on spruce and fir.</p>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+JuMP Syntax
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The core pieces of setting up a <code>JuMP</code> model involve specifying the model and adding variables, the objective, and constraints. At the most simple level, this syntax looks like this:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> <span class="fu">Model</span>(HiGHS.Optimizer)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(m, lb <span class="op">&lt;=</span> x <span class="op">&lt;=</span> ub) <span class="co"># if you do not have upper or lower bounds, you can drop those accordingly</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(m, lb <span class="op">&lt;=</span> y <span class="op">&lt;=</span> ub)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@objective</span>(m, Max, <span class="fl">100</span>x <span class="op">+</span> <span class="fl">250</span>y) <span class="co"># replace Max with Min depending on the problem</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(m, label, <span class="fl">6</span>x <span class="op">+</span> <span class="fl">12</span>y <span class="op">&lt;=</span> <span class="fl">80</span>) <span class="co"># replace "label" with some meaningful string you would like to use later to query shadow prices, or drop it</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can add more constraints or more variables as needed.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Using Array Syntax
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You can set up multiple variables or constraints at once using array syntax. For example, the following are equivalent:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(m, G1 <span class="op">&gt;=</span> <span class="fl">0</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(m, G2 <span class="op">&gt;=</span> <span class="fl">0</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(m, G3 <span class="op">&gt;=</span> <span class="fl">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>and</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(m, G[<span class="fl">1</span><span class="op">:</span><span class="fl">3</span>] <span class="op">&gt;=</span> <span class="fl">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can also set up multiple constraints using arrays of coefficients and/or bounds. For example:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>I <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> [<span class="fl">0</span>; <span class="fl">3</span>; <span class="fl">5</span>]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(m, demand[i <span class="kw">in</span> I], G[i] <span class="op">&gt;=</span> d[i])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p><code>JuMP</code> is finicky about changing objects and constraints, so I recommend setting up all of the model syntax in one notebook cell, which is what we will do here.</p>
+<div id="6" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>forest_model <span class="op">=</span> <span class="fu">Model</span>(HiGHS.Optimizer) <span class="co"># initialize model object</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(forest_model, G[<span class="fl">1</span><span class="op">:</span><span class="fl">3</span>] <span class="op">&gt;=</span> <span class="fl">0</span>) <span class="co"># non-negativity constraints</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># uncomment the following lines and add the objective and constraints as needed for the model</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># @objective(forest_model, )</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># @constraint(forest_model, )</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(forest_model) <span class="co"># this outputs a nicely formatted summary of the model so you can check your specification</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Feasibility
+Subject to
+ G[1] ≥ 0
+ G[2] ≥ 0
+ G[3] ≥ 0</code></pre>
+</div>
+</div>
+<p>Next, to optimize, use the <code>optimize!()</code> function:</p>
+<div id="8" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">optimize!</span>(forest_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Running HiGHS 1.11.0 (git hash: 364c83a51e): Copyright (c) 2025 HiGHS under MIT licence terms
+LP   has 0 rows; 3 cols; 0 nonzeros
+Coefficient ranges:
+  Cost   [0e+00, 0e+00]
+  Bound  [0e+00, 0e+00]
+Solving LP without presolve, or with basis, or unconstrained
+Solving an unconstrained LP with 3 columns
+Model status        : Optimal
+Objective value     :  0.0000000000e+00
+P-D objective error :  0.0000000000e+00
+HiGHS run time      :          0.00</code></pre>
+</div>
+</div>
+<p>You should get confirmation that a solution was found; if one was not, there’s a chance something was wrong with your model formulation.</p>
+<p>To find the values of the decision variables, use <code>value()</code> (which can be broadcasted over variable arrays):</p>
+<div id="10" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> <span class="fu">value</span>.(G);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>value.(G) = [0.0, 0.0, 0.0]</code></pre>
+</div>
+</div>
+<p>Similarly, <code>objective_value()</code> finds the optimal value of the objective:</p>
+<div id="12" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> <span class="fu">objective_value</span>(forest_model);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>objective_value(forest_model) = 0.0</code></pre>
+</div>
+</div>
+<p>Finally, we can find the dual values of the constraints with <code>shadow_price()</code>. Do this for the constraints in your model using the block below.</p>
+<div id="14" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># @show shadow_price(name_of_constraint);</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>JuMP</code> also lets you evaluate other expressions that you might be interested in based on the solutions. For example, you can use the following block to calculate the total amount of plywood the mill would produce under the optimal solution:</p>
+<div id="16" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@expression</span>(forest_model, total_plywood, <span class="fu">sum</span>(G))</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> <span class="fu">value</span>.(total_plywood);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>value.(total_plywood) = 0.0</code></pre>
+</div>
+</div>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>Put any consulted sources here, including classmates you worked with/who helped you.</p>
 
 
 </section>
@@ -775,18 +978,18 @@ window.MathJax = {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="../../labs/lab02/lab02.html" class="pagination-link" aria-label="Lab 2">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Lab 2</span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../labs/lab01/lab01.html" class="pagination-link" aria-label="Lab 1">
-        <span class="nav-page-text">Lab 1</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p><span class="faux-block"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> 2025 Vivek Srikrishnan</span><br> See the <a href="../about.html">About Page</a> for credit information.</p>
+<p><span class="faux-block"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> 2025 Vivek Srikrishnan</span><br> See the <a href="../../about.html">About Page</a> for credit information.</p>
 </div>   
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">
@@ -794,7 +997,7 @@ window.MathJax = {
  <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">LICENSE: CC-BY-SA  <i class="fab fa-creative-commons"></i><i class="fab fa-creative-commons-by"></i><i class="fab fa-creative-commons-sa"></i></a>
   </li>  
 </ul>
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/labs/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/labs/lab03/lab03.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>Made with <a href="https://julialang.org">Julia</a> and <a href="https://quarto.org/">Quarto</a><br> <a href="https://www.github.com/BEE4750/bee4750.github.io">View the source at <i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
 </div>
