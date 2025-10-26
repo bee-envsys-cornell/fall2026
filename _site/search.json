@@ -4,7 +4,7 @@
     "href": "schedule.html",
     "title": "Course Schedule",
     "section": "",
-    "text": "This page contains a schedule of the topics, content, and assignments for the semester. Note that this schedule will be updated as necessary the semester progresses, with all changes documented here. Readings requiring institutional subscriptions can be accessed through the Cornell Library.\n\n\n\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nSlides\nLab\nHW\nReading\n\n\n\n\n\n\nModule 1: Introduction to Systems Analysis\n\n\n\n\n\n\n1\nMon, Aug 25\nWelcome to BEE 4750!\n\n\n\n\n\n\n\nWed, Aug 27\nLab: Setting up Julia and GitHub\n\n\n\n\n\n\n2\nMon, Sep 01\nNo Class: Labor Day\n\n\n\nLiu et al. (2007)\n\n\n\nWed, Sep 03\nIntroduction to Systems Models\n\n\n\n\n\n\n3\nMon, Sep 08\nSystem Dynamics: Feedbacks\n\n\n\nWoodard et al. (2019)\n\n\n\nWed, Sep 10\nEquilibria and Bifurcations\n\n\n\n\n\n\n4\nMon, Sep 15\nSimulation Models\n\n\n\nOreskes et al. (1994)\n\n\n\nWed, Sep 17\nDissolved Oxygen\n\n\n\n\n\n\n5\nMon, Sep 22\nMore Dissolved Oxygen and Simulation\n\n\n\nSimpson et al. (2021)\n\n\n\nWed, Sep 24\nUncertainty and Monte Carlo\n\n\n\n\n\n\n6\nMon, Sep 29\nMonte Carlo: Why It Works\n\n\n\n\n\n\n\nWed, Oct 01\nLab: Monte Carlo\n\n\n\n\n\n\n7\nMon, Oct 06\nPrescriptive Modeling\n\n\n\n\n\n\n\nWed, Oct 08\nPrelim 1\n\n\n\n\n\n\n8\nMon, Oct 13\nNo Class: Fall Break\n\n\n\n\n\n\n\nWed, Oct 15\nDecision Models and Optimization\n\n\n\n\n\n\n9\nMon, Oct 20\nShadow Prices and Capacity Expansion\n\n\n\n\n\n\n\nWed, Oct 22\nLab: Linear Programming\n\n\n\n\n\n\n10\nMon, Oct 27\nPrelim 1 Review and Gaussian Plumes\n\n\n\n\n\n\n\nWed, Oct 29\nMore Gaussian Plumes and Air Pollution Control\n\n\n\n\n\n\n11\nMon, Nov 03\nFixed Costs and Mixed Integer Programs\n\n\n\n\n\n\n\nWed, Nov 05\nUnit Commitment\n\n\n\n\n\n\n12\nMon, Nov 10\nNetwork Models and Solid Waste Management\n\n\n\n\n\n\n\nWed, Nov 12\nPrelim 2\n\n\n\n\n\n\n13\nMon, Nov 17\n\n\n\n\n\n\n\n\nWed, Nov 19\n\n\n\n\n\n\n\n14\nMon, Nov 24\n\n\n\n\n\n\n\n\nWed, Nov 26\nNo Class: Thanksgiving Break\n\n\n\n\n\n\n15\nMon, Dec 01\n\n\n\n\n\n\n\n\nWed, Dec 03\n\n\n\n\n\n\n\n16\nMon, Dec 08\n\n\n\n\n\n\n\n\n\n\n\n\n\nReferences\n\nLiu, J., Dietz, T., Carpenter, S. R., Alberti, M., Folke, C., Moran, E., et al. (2007). Complexity of coupled human and natural systems. Science, 317, 1513–1516. https://doi.org/10.1126/science.1144004\n\n\nOreskes, N., Shrader-Frechette, K., & Belitz, K. (1994). Verification, validation, and confirmation of numerical models in the Earth sciences. Science, 263, 641–646. https://doi.org/10.1126/science.263.5147.641\n\n\nSimpson, N. P., Mach, K. J., Constable, A., Hess, J., Hogarth, R., Howden, M., et al. (2021). A framework for complex climate change risk assessment. One Earth, 4, 489–501. https://doi.org/10.1016/j.oneear.2021.03.005\n\n\nWoodard, D. L., Davis, S. J., & Randerson, J. T. (2019). Economic carbon cycle feedbacks may offset additional warming from natural feedbacks. Proceedings of the National Academy of Sciences, 116, 759–764. https://doi.org/10.1073/pnas.1805187115"
+    "text": "This page contains a schedule of the topics, content, and assignments for the semester. Note that this schedule will be updated as necessary the semester progresses, with all changes documented here. Readings requiring institutional subscriptions can be accessed through the Cornell Library.\n\n\n\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nSlides\nLab\nHW\nReading\n\n\n\n\n\n\nModule 1: Introduction to Systems Analysis\n\n\n\n\n\n\n1\nMon, Aug 25\nWelcome to BEE 4750!\n\n\n\n\n\n\n\nWed, Aug 27\nLab: Setting up Julia and GitHub\n\n\n\n\n\n\n2\nMon, Sep 01\nNo Class: Labor Day\n\n\n\nLiu et al. (2007)\n\n\n\nWed, Sep 03\nIntroduction to Systems Models\n\n\n\n\n\n\n3\nMon, Sep 08\nSystem Dynamics: Feedbacks\n\n\n\nWoodard et al. (2019)\n\n\n\nWed, Sep 10\nEquilibria and Bifurcations\n\n\n\n\n\n\n4\nMon, Sep 15\nSimulation Models\n\n\n\nOreskes et al. (1994)\n\n\n\nWed, Sep 17\nDissolved Oxygen\n\n\n\n\n\n\n5\nMon, Sep 22\nMore Dissolved Oxygen and Simulation\n\n\n\nSimpson et al. (2021)\n\n\n\nWed, Sep 24\nUncertainty and Monte Carlo\n\n\n\n\n\n\n6\nMon, Sep 29\nMonte Carlo: Why It Works\n\n\n\n\n\n\n\nWed, Oct 01\nLab: Monte Carlo\n\n\n\n\n\n\n7\nMon, Oct 06\nPrescriptive Modeling\n\n\n\n\n\n\n\nWed, Oct 08\nPrelim 1\n\n\n\n\n\n\n8\nMon, Oct 13\nNo Class: Fall Break\n\n\n\n\n\n\n\nWed, Oct 15\nDecision Models and Optimization\n\n\n\n\n\n\n9\nMon, Oct 20\nShadow Prices and Capacity Expansion\n\n\n\n\n\n\n\nWed, Oct 22\nLab: Linear Programming\n\n\n\n\n\n\n10\nMon, Oct 27\nCapacity Expansion and Intro to Gaussian Plumes\n\n\n\n\n\n\n\nWed, Oct 29\nMore Gaussian Plumes and Air Pollution Control\n\n\n\n\n\n\n11\nMon, Nov 03\nFixed Costs and Mixed Integer Programs\n\n\n\n\n\n\n\nWed, Nov 05\nUnit Commitment\n\n\n\n\n\n\n12\nMon, Nov 10\nNetwork Models and Solid Waste Management\n\n\n\n\n\n\n\nWed, Nov 12\nPrelim 2\n\n\n\n\n\n\n13\nMon, Nov 17\n\n\n\n\n\n\n\n\nWed, Nov 19\n\n\n\n\n\n\n\n14\nMon, Nov 24\n\n\n\n\n\n\n\n\nWed, Nov 26\nNo Class: Thanksgiving Break\n\n\n\n\n\n\n15\nMon, Dec 01\n\n\n\n\n\n\n\n\nWed, Dec 03\n\n\n\n\n\n\n\n16\nMon, Dec 08\n\n\n\n\n\n\n\n\n\n\n\n\n\nReferences\n\nLiu, J., Dietz, T., Carpenter, S. R., Alberti, M., Folke, C., Moran, E., et al. (2007). Complexity of coupled human and natural systems. Science, 317, 1513–1516. https://doi.org/10.1126/science.1144004\n\n\nOreskes, N., Shrader-Frechette, K., & Belitz, K. (1994). Verification, validation, and confirmation of numerical models in the Earth sciences. Science, 263, 641–646. https://doi.org/10.1126/science.263.5147.641\n\n\nSimpson, N. P., Mach, K. J., Constable, A., Hess, J., Hogarth, R., Howden, M., et al. (2021). A framework for complex climate change risk assessment. One Earth, 4, 489–501. https://doi.org/10.1016/j.oneear.2021.03.005\n\n\nWoodard, D. L., Davis, S. J., & Randerson, J. T. (2019). Economic carbon cycle feedbacks may offset additional warming from natural feedbacks. Proceedings of the National Academy of Sciences, 116, 759–764. https://doi.org/10.1073/pnas.1805187115"
   },
   {
     "objectID": "tutorials/julia-plots.html",
@@ -800,245 +800,329 @@
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#prelim-1-statistics",
     "href": "slides/lecture10-1-gaussian-plumes.html#prelim-1-statistics",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Prelim 1 Statistics",
-    "text": "Prelim 1 Statistics\n\nMedian: 94%\nMean: 91%\nStandard Dev: 9%"
-  },
-  {
-    "objectID": "slides/lecture10-1-gaussian-plumes.html#economic-dispatch",
-    "href": "slides/lecture10-1-gaussian-plumes.html#economic-dispatch",
-    "title": "Plume Dispersion Models",
-    "section": "Economic Dispatch",
-    "text": "Economic Dispatch\n\nSecond power systems LP\nIncorporating ramping and minimum power constraints can lead to a deviation from simple “merit order” dispatch."
+    "text": "Prelim 1 Statistics\n\nMedian: 88% (44/50)\nMean: 85% (42.5/50)\nStandard Dev: 10% (4.8)"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#questions",
     "href": "slides/lecture10-1-gaussian-plumes.html#questions",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Questions",
     "text": "Questions\n\n\n\n\n\n\n\n\nText: VSRIKRISH to 22333\nURL: https://pollev.com/vsrikrish  See Results"
   },
   {
+    "objectID": "slides/lecture10-1-gaussian-plumes.html#problem-formulation",
+    "href": "slides/lecture10-1-gaussian-plumes.html#problem-formulation",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
+    "section": "Problem Formulation",
+    "text": "Problem Formulation\n\\[\n\\begin{align}\n\\min_{x, y, NSE} \\quad & \\sum_{g \\in \\mathcal{G}} \\text{FixedCost}_g \\times x_g + \\sum_{t \\in \\mathcal{T}} \\sum_{g \\in \\mathcal{G}} \\text{VarCost}_g \\times y_{g,t} & \\\\\n& \\quad + \\sum_{t \\in \\mathcal{T}} \\text{NSECost} \\times NSE_t & \\\\[0.5em]\n\\text {subject to:} \\quad & \\sum_{g \\in \\mathcal{G}} y_{g,t} + NSE_t \\geq d_t \\qquad \\forall t \\in \\mathcal{T} \\\\[0.5em]\n& y_{g,t} \\leq x_g \\qquad \\qquad \\qquad\\qquad  \\forall g \\in {G},  \\forall t \\in \\mathcal{T} \\\\[0.5em]\n& x_g, y_{g,t}, NSE_t \\geq 0 \\qquad \\qquad \\forall g \\in {G},  \\forall t \\in \\mathcal{T}\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "slides/lecture10-1-gaussian-plumes.html#problem-data-generators",
+    "href": "slides/lecture10-1-gaussian-plumes.html#problem-data-generators",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
+    "section": "Problem Data: Generators",
+    "text": "Problem Data: Generators\n\n\nCode\ngens = DataFrame(CSV.File(\"data/capacity_expansion/generators.csv\"))\ngens_display = rename(gens, Symbol.([:Generator, :\"Fixed Cost (\\\\\\$)\", :\"Variable Cost (\\\\\\$/MW)\"]))\nmarkdown_table(gens_display[1:end-2, :])\n\n\n\n\n\nGenerator\nFixed Cost ($)\nVariable Cost ($/MW)\n\n\n\n\nGeothermal\n450000\n0\n\n\nCoal\n220000\n21\n\n\nNG CCGT\n82000\n25\n\n\nNG CT\n65000\n35"
+  },
+  {
+    "objectID": "slides/lecture10-1-gaussian-plumes.html#problem-data-demand",
+    "href": "slides/lecture10-1-gaussian-plumes.html#problem-data-demand",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
+    "section": "Problem Data: Demand",
+    "text": "Problem Data: Demand\n\n\nCode\nNY_demand = DataFrame(CSV.File(\"data/capacity_expansion/2020_hourly_load_NY.csv\"))\nrename!(NY_demand, :\"Time Stamp\" =&gt; :Date)\ndemand = NY_demand[:, [:Date, :C]]\nrename!(demand, :C =&gt; :Demand)\n@df demand plot(:Date, :Demand, xlabel=\"Date\", ylabel=\"Demand (MWh)\", label=:false, xrot=45, bottom_margin=15mm)\nplot!(size=(1200, 500))\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 1: Demand for 2020 in NYISO Zone C"
+  },
+  {
+    "objectID": "slides/lecture10-1-gaussian-plumes.html#implementation-in-jump.jl",
+    "href": "slides/lecture10-1-gaussian-plumes.html#implementation-in-jump.jl",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
+    "section": "Implementation in JUMP.jl",
+    "text": "Implementation in JUMP.jl\n\n# define sets\nG = 1:nrow(gens[1:end-2, :])\nT = 1:nrow(demand)\nNSECost = 9000\n\ngencap = Model(HiGHS.Optimizer)\n# define variables\n@variables(gencap, begin\n    x[g in G] &gt;= 0\n    y[g in G, t in T] &gt;= 0\n    NSE[t in T] &gt;= 0\nend)\n@objective(gencap, Min, \n    sum(gens[G, :FixedCost] .* x) + sum(gens[G, :VarCost] .* sum(y[:, t] for t in T)) + NSECost * sum(NSE)\n)\n@constraint(gencap, load[t in T], sum(y[:, t]) + NSE[t] &gt;= demand.Demand[t])\n@constraint(gencap, availability[g in G, t in T], y[g, t] &lt;= x[g])\noptimize!(gencap)"
+  },
+  {
+    "objectID": "slides/lecture10-1-gaussian-plumes.html#capacity-expansion-example-solution",
+    "href": "slides/lecture10-1-gaussian-plumes.html#capacity-expansion-example-solution",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
+    "section": "Capacity Expansion Example Solution",
+    "text": "Capacity Expansion Example Solution\n\n\nCode\ngeneration = zeros(size(G,1))\nfor i in 1:size(G,1) \n    generation[i] = sum(value.(y)[G[i],:].data) \nend\nMWh_share = generation./sum(demand.Demand).*100\ncap_share = value.(x).data ./ maximum(demand.Demand) .* 100\nresults = DataFrame(\n    Resource = gens.Plant[G], \n    Capacity = value.(x).data,\n    Percent_Cap = cap_share,\n    Generated = generation/1000,\n    Percent_Gen = MWh_share\n)\nrename!(results, \n    [:Capacity =&gt; :\"Installed (MW)\", \n    :Percent_Cap =&gt; :\"Percent  (%)\", \n    :Generated =&gt; \"Generation (GWh)\",\n    :Percent_Gen =&gt; \"Percent (%)\"])\nresults[:, 2:end] = round.(results[:, 2:end], digits=1)\n\nNSE_MW = maximum(value.(NSE).data) \nNSE_MWh = sum(value.(NSE).data)\npush!(results, [\"NSE\" NSE_MW NSE_MW/maximum(demand.Demand)*100 NSE_MWh/1000 NSE_MWh/sum(demand.Demand)*100])\n\nresults[:, 2:end] = round.(results[:, 2:end], digits=1)\nmarkdown_table(results)\n\n\n\n\n\n\n\n\n\n\n\n\nResource\nInstalled (MW)\nPercent (%)\nGeneration (GWh)\nPercent (%)\n\n\n\n\nGeothermal\n-0.0\n-0.0\n0.0\n0.0\n\n\nCoal\n0.0\n0.0\n-0.0\n-0.0\n\n\nNG CCGT\n2016.9\n72.5\n15157.7\n98.1\n\n\nNG CT\n733.0\n26.4\n292.2\n1.9\n\n\nNSE\n31.2\n1.1\n0.1\n0.0"
+  },
+  {
+    "objectID": "slides/lecture10-1-gaussian-plumes.html#when-might-generators-operate",
+    "href": "slides/lecture10-1-gaussian-plumes.html#when-might-generators-operate",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
+    "section": "When Might Generators Operate?",
+    "text": "When Might Generators Operate?\n\n\nCode\np2 = areaplot(value.(y).data', \n    label=permutedims(gens.Plant), \n    xlabel = \"Hour\", \n    ylabel =\"Generated Electricity (MWh)\", \n    color_palette=:seaborn_colorblind,\n    grid=:false,\n    legend = :bottomleft)\nylims!(p2, (0, 3200))\nplot!(p2, size=(1200, 500))\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 2: Results of Generating Capacity Expansion Example"
+  },
+  {
+    "objectID": "slides/lecture10-1-gaussian-plumes.html#how-often-is-there-non-served-energy",
+    "href": "slides/lecture10-1-gaussian-plumes.html#how-often-is-there-non-served-energy",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
+    "section": "How Often Is There Non-Served Energy?",
+    "text": "How Often Is There Non-Served Energy?\n\\(\\text{NSE}\\) is non-zero for 7 hours and a total of 94 MWh.\nWhy do we think there is any NSE given the high NSE Cost?"
+  },
+  {
+    "objectID": "slides/lecture10-1-gaussian-plumes.html#what-does-this-problem-neglect",
+    "href": "slides/lecture10-1-gaussian-plumes.html#what-does-this-problem-neglect",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
+    "section": "What Does This Problem Neglect?",
+    "text": "What Does This Problem Neglect?\n\nDiscrete decisions: is a plant on or off (this is called unit commitment)?\nIntertemporal constraints: Power plants can’t just “ramp” from producing low levels of power to high levels of power; there are real engineering limits.\nTransmission: We can generate all the power we want, but what if we can’t get it to where the demand is\nRetirements: We might have existing generators that we want to retire (“brownfield” scenarios)."
+  },
+  {
+    "objectID": "slides/lecture10-1-gaussian-plumes.html#what-about-renewables",
+    "href": "slides/lecture10-1-gaussian-plumes.html#what-about-renewables",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
+    "section": "What About Renewables?",
+    "text": "What About Renewables?\nRenewables make this problem more complicated because their capacity is variable:\n\nresource availability not constant across time;\nneed to consider a capacity factor.\n\n\nHow would this change our existing capacity expansion formulation?"
+  },
+  {
+    "objectID": "slides/lecture10-1-gaussian-plumes.html#renewable-variability-impact",
+    "href": "slides/lecture10-1-gaussian-plumes.html#renewable-variability-impact",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
+    "section": "Renewable Variability Impact",
+    "text": "Renewable Variability Impact\nThis will change the capacity constraint from \\[y_{g,t} \\leq x_g \\qquad \\forall g \\in {G},  \\forall t \\in \\mathcal{T}\\] to \\[y_{g,t} \\leq x_g \\times c_{g,t} \\qquad \\forall g \\in {G},  \\forall t \\in \\mathcal{T}\\] where \\(c_{g,t}\\) is the capacity factor in time period \\(t\\) for generator type \\(g\\)."
+  },
+  {
+    "objectID": "slides/lecture10-1-gaussian-plumes.html#renewable-capacity-factors",
+    "href": "slides/lecture10-1-gaussian-plumes.html#renewable-capacity-factors",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
+    "section": "Renewable Capacity Factors",
+    "text": "Renewable Capacity Factors\n\nLinked to resource availability: how much wind, solar, hydro, geothermal, etc can we rely on in a given hour?\nOften derived from Typical Meteorological Years (TMY) or select Actual Meteorological Years (AMY) and may only use select periods.\nThese approaches will underrepresent renewable variability but may be used for computational tractability.\nAlways look for details on what meteorological dataset was used!"
+  },
+  {
+    "objectID": "slides/lecture10-1-gaussian-plumes.html#implementing-constraints-in-jump",
+    "href": "slides/lecture10-1-gaussian-plumes.html#implementing-constraints-in-jump",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
+    "section": "Implementing Constraints in JuMP",
+    "text": "Implementing Constraints in JuMP\nI recommend using vector notation in JuMP to specify these constraints, e.g. for capacity:\n# define sets\nG = 1:num_gen # num_gen is the number of generators\nT = 1:num_times # number of time periods\n\nc = ... # G x T matrix of capacity factors  \n@variable(..., x[g in G] &gt;= 0) # installed capacity\n@variable(..., y[g in G, t in T] &gt;= 0) # generated power\n@constraint(..., capacity[g in G, t in T], \n    y[g,t] &lt;= x[g] * c[g,t]) # capacity constraint"
+  },
+  {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#criteria-air-pollutants",
     "href": "slides/lecture10-1-gaussian-plumes.html#criteria-air-pollutants",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Criteria Air Pollutants",
     "text": "Criteria Air Pollutants\n\nPollutants which have an ambient air quality standard.\nMost common examples:\n\nPM2.5, PM10\nO3\nCO\nSO2\nNO2"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#impact-of-the-clean-air-act",
     "href": "slides/lecture10-1-gaussian-plumes.html#impact-of-the-clean-air-act",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Impact of the Clean Air Act",
     "text": "Impact of the Clean Air Act\n\n\n\nDecoupling of GDP and Air Pollution\n\n\n\nSource: Resources for the Future"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#some-approaches-for-modeling-air-pollution",
     "href": "slides/lecture10-1-gaussian-plumes.html#some-approaches-for-modeling-air-pollution",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Some Approaches For Modeling Air Pollution",
     "text": "Some Approaches For Modeling Air Pollution\nLast Class: Box (or “airshed”) model of air pollution\n\nLooks at overall mass-balance.\nTotal inputs/outputs in a particular boundary.\n\nToday: Point sources and receptors (plume/puff models)"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#point-sourcesreceptors",
     "href": "slides/lecture10-1-gaussian-plumes.html#point-sourcesreceptors",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Point Sources/Receptors",
     "text": "Point Sources/Receptors\n\n\n\nPoint Source/Receptor Schematic"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#emissions-follow-instantaneous-paths",
     "href": "slides/lecture10-1-gaussian-plumes.html#emissions-follow-instantaneous-paths",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Emissions Follow Instantaneous Paths",
     "text": "Emissions Follow Instantaneous Paths\n\n\n\nPoint Source Flow Traces"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#plume-time-averaged-positions",
     "href": "slides/lecture10-1-gaussian-plumes.html#plume-time-averaged-positions",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Plume: Time-Averaged Positions",
     "text": "Plume: Time-Averaged Positions\n\n\n\nPoint Source Average Plume"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume",
     "href": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "“Gaussian Plume”",
     "text": "“Gaussian Plume”\n\n\n\nGaussian Plume"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-1",
     "href": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-1",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "“Gaussian Plume”",
     "text": "“Gaussian Plume”\n\n\n\nGaussian Plume Distribution"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-model",
     "href": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-model",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Gaussian Plume Model",
     "text": "Gaussian Plume Model\n\\[\\begin{equation}\nC(x,y,z) = \\frac{Q}{2\\pi u \\sigma_y \\sigma_z} \\exp\\left[-\\frac{1}{2} \\left(\\frac{y^2}{\\sigma_y^2} + \\frac{(z - H)^2}{\\sigma_z^2}\\right)\\right]\n\\end{equation}\\]\n\n\n\nVariable\nMeaning\n\n\n\n\n\\(C\\)\nConcentration (g/m\\(^3\\))\n\n\n\\(Q\\)\nEmissions Rate (g/s)\n\n\n\\(H\\)\nEffective Source Height (m)\n\n\n\\(u\\)\nWind Speed (m/s)"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-derivation",
     "href": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-derivation",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Gaussian Plume Derivation",
     "text": "Gaussian Plume Derivation\nUse the advective-diffusion equation to describe the mass-balance of a small air parcel :\n\\[ \\frac{\\partial C}{\\partial t} + \\color{blue}\\overbrace{[D + K] \\nabla^2 C}^\\text{diffusion} \\color{black} - \\color{red}\\overbrace{\\overrightarrow{u} \\cdot \\overrightarrow{\\nabla} C}^\\text{advection} = 0\\]\n\n\\(D\\) is the diffusion coefficient\n\\(K\\) is the dispersion coefficient (turbulent mixing)"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#diffusive-flux",
     "href": "slides/lecture10-1-gaussian-plumes.html#diffusive-flux",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Diffusive Flux",
     "text": "Diffusive Flux\n\n\n\n\n\nDiffusive Flux\n\n\n\nConcentration gradient + Diffusion ⇒ Flux\nFick’s law: mass transfer by diffusion\n\\[F_x = D \\frac{dC}{dx}\\]"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#turbulent-flux",
     "href": "slides/lecture10-1-gaussian-plumes.html#turbulent-flux",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Turbulent Flux",
     "text": "Turbulent Flux\n\n\n\n\n\nTurbulent Flux\n\n\n\nConcentration gradient + Turbulent mixing ⇒ Flux\n\\[F_x = K_{xx}\\frac{dC}{dx}\\]\nThe dispersion coefficient \\(K_{xx}\\) depends on flow/eddy characteristics."
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-model-derivation",
     "href": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-model-derivation",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Gaussian Plume Model Derivation",
     "text": "Gaussian Plume Model Derivation\n\\[\\frac{\\partial C}{\\partial t} + \\vec{u} \\cdot \\vec{\\nabla} C  - [D + K] \\nabla^2 C  = 0\\]\nAssumptions:\n\nSteady-state:\n\n\\[ \\frac{\\partial C}{\\partial t} = 0\\]"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-model-derivation-1",
     "href": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-model-derivation-1",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Gaussian Plume Model Derivation",
     "text": "Gaussian Plume Model Derivation\n\\[\\frac{\\partial C}{\\partial t} + \\vec{u} \\cdot \\vec{\\nabla} C  - [D + K] \\nabla^2 C  = 0\\]\nAssumptions:\n\nWind only in \\(x\\)-direction:\n\n\\[\\vec{u} \\cdot \\vec{\\nabla} C = u_x \\frac{\\partial C}{\\partial x} + \\cancel{u_y \\frac{\\partial C}{\\partial y}} + \\cancel{u_z \\frac{\\partial C}{\\partial z}}\\]"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-model-derivation-2",
     "href": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-model-derivation-2",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Gaussian Plume Model Derivation",
     "text": "Gaussian Plume Model Derivation\n\\[\\frac{\\partial C}{\\partial t} + \\vec{u} \\cdot \\vec{\\nabla} C  - [D + K] \\nabla^2 C  = 0\\]\nAssumptions:\n\nTurbulence \\(\\gg\\) diffusion, e.g. \\(K \\gg D\\), and \\(K\\) is unimportant along \\(x\\)-direction:\n\n\\[-[\\cancel{D} + K] \\nabla^2 C = \\cancel{K_{xx}} \\frac{\\partial^2 C}{\\partial x^2} + K_{yy} \\frac{\\partial^2 C}{\\partial y^2} + K_{zz} \\frac{\\partial^2 C}{\\partial z^2}\\]"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-model-derivation-3",
     "href": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-model-derivation-3",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Gaussian Plume Model Derivation",
     "text": "Gaussian Plume Model Derivation\nWith these assumptions, the equation simplifies to:\n\\[u \\frac{\\partial C}{\\partial x} = K_{yy} \\frac{\\partial^2 C}{\\partial y^2} + K_{zz}\\frac{\\partial^2 C}{\\partial z^2}\\]\n\n\n\nAssume mass flow through vertical plane downwind must equal emissions rate \\(Q\\):\n\\[Q = \\iint u C dy dz\\]\n\n\n\n\nBoundary Condition for A-D Equation"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-model-derivation-4",
     "href": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-model-derivation-4",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Gaussian Plume Model Derivation",
     "text": "Gaussian Plume Model Derivation\nSolving this PDE:\n\\[C(x,y,z) = \\frac{Q}{4\\pi x \\sqrt{K_{yy} + K_{zz}}} \\exp\\left[-\\frac{u}{4x}\\left(\\frac{y^2}{K_{yy}} + \\frac{(z-H)^2}{K_{zz}}\\right)\\right]\\]\n\nNow substitute\n\\[\\begin{aligned}\n\\sigma_y^2 &= 2 K_{yy} t = 2 K_{yy} \\frac{x}{u} \\\\\n\\sigma_z^2 &= 2 K_{zz} \\frac{x}{u}\n\\end{aligned}\\]"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-model-derivation-5",
     "href": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-model-derivation-5",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Gaussian Plume Model Derivation",
     "text": "Gaussian Plume Model Derivation\nThis results in:\n\\[\nC(x,y,z) = \\frac{Q}{2\\pi u \\sigma_y \\sigma_z} \\exp\\left[-\\frac{1}{2}\\left(\\frac{y^2}{\\sigma_y^2} + \\frac{(z-H)^2}{\\sigma_z^2}\\right) \\right]\\]\nwhich looks like a Gaussian distribution probability distribution if we restrict to \\(y\\) or \\(z\\)."
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-model-with-reflection",
     "href": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-model-with-reflection",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Gaussian Plume Model with Reflection",
     "text": "Gaussian Plume Model with Reflection\n\n\n\nReflected Mass Off Ground"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-model-with-reflection-1",
     "href": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-model-with-reflection-1",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Gaussian Plume Model with Reflection",
     "text": "Gaussian Plume Model with Reflection\n\n\nWe can account for this extra term using a flipped “image” of the source.\n\n\n\n\nReflected Mass Off Ground"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#final-model-elevated-source-with-reflection",
     "href": "slides/lecture10-1-gaussian-plumes.html#final-model-elevated-source-with-reflection",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Final Model: Elevated Source with Reflection",
     "text": "Final Model: Elevated Source with Reflection\n\\[\\begin{aligned}\nC(x,y,z) = &\\frac{Q}{2\\pi u \\sigma_y \\sigma_z} \\exp\\left(\\frac{-y^2}{2\\sigma_y^2} \\right) \\times \\\\\\\\\n& \\quad \\left[\\exp\\left(\\frac{-(z-H)^2}{2\\sigma_z^2}\\right) + \\exp\\left(\\frac{-(z+H)^2}{2\\sigma_z^2}\\right) \\right]\n\\end{aligned}\\]"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#final-model-assumptions",
     "href": "slides/lecture10-1-gaussian-plumes.html#final-model-assumptions",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Final Model Assumptions",
     "text": "Final Model Assumptions\nAssumptions:\n\nSteady-State\nConstant wind velocity and direction\nWind &gt;&gt; dispersion in \\(x\\)-direction\nNo reactions\nSmooth ground (avoids turbulent eddies and other reflections)"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#estimating-dispersion-spread",
     "href": "slides/lecture10-1-gaussian-plumes.html#estimating-dispersion-spread",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Estimating Dispersion “Spread”",
     "text": "Estimating Dispersion “Spread”\nValues of \\(\\sigma_y\\) and \\(\\sigma_z\\) matter substantially for modeling plume spread downwind. What influences them?"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#estimating-dispersion-spread-1",
     "href": "slides/lecture10-1-gaussian-plumes.html#estimating-dispersion-spread-1",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Estimating Dispersion “Spread”",
     "text": "Estimating Dispersion “Spread”\nMain contribution: atmospheric stability\n\nGreater stability ⇒ less vertical/cross-wind dispersion.\nPasquill (1961): Six stability classes."
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#estimating-dispersion-spread-2",
     "href": "slides/lecture10-1-gaussian-plumes.html#estimating-dispersion-spread-2",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Estimating Dispersion “Spread”",
     "text": "Estimating Dispersion “Spread”\nContributors to atmospheric stability:\n\nTemperature gradient\nWind speed\nSolar radiation\nCloud cover\nRichardson number (buoyancy / flow shear)"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#atmospheric-stability-classes",
     "href": "slides/lecture10-1-gaussian-plumes.html#atmospheric-stability-classes",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Atmospheric Stability Classes",
     "text": "Atmospheric Stability Classes\n\n\n\nClass\nStability\nDescription\n\n\n\n\nA\nExtremely unstable\nSunny summer day\n\n\nB\nModerately unstable\nSunny & warm\n\n\nC\nSlightly unstable\nPartly cloudy day\n\n\nD\nNeutral\nCloudy day or night\n\n\nE\nSlightly stable\nPartly cloudy night\n\n\nF\nModerately stable\nClear night\n\n\n\n\nSource: https://courses.ecampus.oregonstate.edu/ne581/eleven/"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#estimating-dispersion-spread-3",
     "href": "slides/lecture10-1-gaussian-plumes.html#estimating-dispersion-spread-3",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Estimating Dispersion “Spread”",
     "text": "Estimating Dispersion “Spread”\n\\[\\begin{aligned}\n\\sigma_y &= ax^{0.894} \\\\\n\\sigma_z &= cx^d + f\n\\end{aligned}\\]\n\n\n\nDispersion Coefficients\n\n\n\nSource: https://courses.washington.edu/cee490/DISPCOEF4WP.htm\n\nNote: here \\(x\\) is in km, while in the plume equation \\(y\\), \\(z\\) are in m!"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#estimating-dispersion-spread-4",
     "href": "slides/lecture10-1-gaussian-plumes.html#estimating-dispersion-spread-4",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Estimating Dispersion “Spread”",
     "text": "Estimating Dispersion “Spread”\nThen take estimates for \\(\\sigma_y\\) and \\(\\sigma_z\\) and plug into plume dispersion equation\n\\[\\begin{aligned}\nC(x,y,z) = &\\frac{Q}{2\\pi u {\\color{red}\\sigma_y \\sigma_z}} \\exp\\left(\\frac{-y^2}{2{\\color{red}\\sigma_y^2}} \\right) \\times \\\\\\\\\n& \\quad \\left[\\exp\\left(\\frac{-(z-H)^2}{2{\\color{red}\\sigma_z^2}}\\right) + \\exp\\left(\\frac{-(z+H)^2}{2{\\color{red}\\sigma_z^2}}\\right) \\right]\n\\end{aligned}\\]"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#example",
     "href": "slides/lecture10-1-gaussian-plumes.html#example",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Example",
     "text": "Example\nThe emission rate of SO2 from a smokestack is 100 g/s. At 3km downwind on a clear fall evening (class F), what is the centerline ground-level concentration of SO2? The effective plume height is 41m and the wind speed at this height is 2.5 m/s. Under these conditions,\n\\[\n\\sigma_y = 34x^{0.894}\n\\]\n\\[\n\\sigma_z = \\begin{cases}14.35x^{0.740} - 0.35 & x &lt; 1 \\text{km} \\\\ 62.6x^{0.180} - 48.6 & x &gt; 1 \\text{km} \\end{cases}\n\\]"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#worked-example",
     "href": "slides/lecture10-1-gaussian-plumes.html#worked-example",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Worked Example",
     "text": "Worked Example\n\nCenterline, ground level concentration: \\(y, z=0\\)\n3km downwind:\n\n\\(\\sigma_y \\approx 91 \\text{m}\\)\n\\(\\sigma_z \\approx 28 \\text{m}\\)"
   },
   {
-    "objectID": "slides/lecture10-1-gaussian-plumes.html#key-takeaways-1",
-    "href": "slides/lecture10-1-gaussian-plumes.html#key-takeaways-1",
-    "title": "Plume Dispersion Models",
-    "section": "Key Takeaways",
-    "text": "Key Takeaways\n\nPlume models are commonly used for point sources and point receptors.\nGaussian plumes: continuous emissions from an elevated source.\nF&T determined by advection and diffusion/turbulence.\nHowever, number of critical assumptions."
+    "objectID": "slides/lecture10-1-gaussian-plumes.html#key-takeaways-capacity-expansion",
+    "href": "slides/lecture10-1-gaussian-plumes.html#key-takeaways-capacity-expansion",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
+    "section": "Key Takeaways (Capacity Expansion)",
+    "text": "Key Takeaways (Capacity Expansion)\n\nWe looked at a “greenfield” example: no existing plants.\nDecision problem becomes more complex with renewables (HW4) or “brownfield” (expanding existing fleet, possibly with retirements)."
+  },
+  {
+    "objectID": "slides/lecture10-1-gaussian-plumes.html#key-takeaways-gaussian-plumes",
+    "href": "slides/lecture10-1-gaussian-plumes.html#key-takeaways-gaussian-plumes",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
+    "section": "Key Takeaways (Gaussian Plumes)",
+    "text": "Key Takeaways (Gaussian Plumes)\n\nPlume models are commonly used for point sources and point receptors.\nGaussian plumes: continuous emissions from an elevated source.\nF&T determined by advection and diffusion/turbulence.\nHowever, number of critical assumptions."
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#next-classes",
     "href": "slides/lecture10-1-gaussian-plumes.html#next-classes",
-    "title": "Plume Dispersion Models",
+    "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Next Classes",
     "text": "Next Classes\nWednesday: Managing multiple point sources of air pollution\nNext Week: Mixed-Integer Linear Programming and Applications"
   },
@@ -2714,62 +2798,6 @@
     "title": "Shadow Prices and Power Systems Examples",
     "section": "Implementation in JUMP.jl",
     "text": "Implementation in JUMP.jl\n\n# define sets\nG = 1:nrow(gens[1:end-2, :])\nT = 1:nrow(demand)\nNSECost = 9000\n\ngencap = Model(HiGHS.Optimizer)\n# define variables\n@variables(gencap, begin\n    x[g in G] &gt;= 0\n    y[g in G, t in T] &gt;= 0\n    NSE[t in T] &gt;= 0\nend)\n@objective(gencap, Min, \n    sum(gens[G, :FixedCost] .* x) + sum(gens[G, :VarCost] .* sum(y[:, t] for t in T)) + NSECost * sum(NSE)\n)\n@constraint(gencap, load[t in T], sum(y[:, t]) + NSE[t] &gt;= demand.Demand[t])\n@constraint(gencap, availability[g in G, t in T], y[g, t] &lt;= x[g])\noptimize!(gencap)"
-  },
-  {
-    "objectID": "slides/lecture09-1-capacity-expansion.html#capacity-expansion-example-solution",
-    "href": "slides/lecture09-1-capacity-expansion.html#capacity-expansion-example-solution",
-    "title": "Shadow Prices and Power Systems Examples",
-    "section": "Capacity Expansion Example Solution",
-    "text": "Capacity Expansion Example Solution\n\n\nCode\ngeneration = zeros(size(G,1))\nfor i in 1:size(G,1) \n    generation[i] = sum(value.(y)[G[i],:].data) \nend\nMWh_share = generation./sum(demand.Demand).*100\ncap_share = value.(x).data ./ maximum(demand.Demand) .* 100\nresults = DataFrame(\n    Resource = gens.Plant[G], \n    Capacity = value.(x).data,\n    Percent_Cap = cap_share,\n    Generated = generation/1000,\n    Percent_Gen = MWh_share\n)\nrename!(results, \n    [:Capacity =&gt; :\"Installed (MW)\", \n    :Percent_Cap =&gt; :\"Percent  (%)\", \n    :Generated =&gt; \"Generation (GWh)\",\n    :Percent_Gen =&gt; \"Percent (%)\"])\nresults[:, 2:end] = round.(results[:, 2:end], digits=1)\n\nNSE_MW = maximum(value.(NSE).data) \nNSE_MWh = sum(value.(NSE).data)\npush!(results, [\"NSE\" NSE_MW NSE_MW/maximum(demand.Demand)*100 NSE_MWh/1000 NSE_MWh/sum(demand.Demand)*100])\n\nresults[:, 2:end] = round.(results[:, 2:end], digits=1)\nmarkdown_table(results)\n\n\n\n\n\n\n\n\n\n\n\n\nResource\nInstalled (MW)\nPercent (%)\nGeneration (GWh)\nPercent (%)\n\n\n\n\nGeothermal\n-0.0\n-0.0\n0.0\n0.0\n\n\nCoal\n0.0\n0.0\n-0.0\n-0.0\n\n\nNG CCGT\n2016.9\n72.5\n15157.7\n98.1\n\n\nNG CT\n733.0\n26.4\n292.2\n1.9\n\n\nNSE\n31.2\n1.1\n0.1\n0.0"
-  },
-  {
-    "objectID": "slides/lecture09-1-capacity-expansion.html#when-might-generators-operate",
-    "href": "slides/lecture09-1-capacity-expansion.html#when-might-generators-operate",
-    "title": "Shadow Prices and Power Systems Examples",
-    "section": "When Might Generators Operate?",
-    "text": "When Might Generators Operate?\n\n\nCode\np2 = areaplot(value.(y).data', \n    label=permutedims(gens.Plant), \n    xlabel = \"Hour\", \n    ylabel =\"Generated Electricity (MWh)\", \n    color_palette=:seaborn_colorblind,\n    grid=:false,\n    legend = :bottomleft)\nylims!(p2, (0, 3200))\nplot!(p2, size=(1200, 500))\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 4: Results of Generating Capacity Expansion Example"
-  },
-  {
-    "objectID": "slides/lecture09-1-capacity-expansion.html#how-often-is-there-non-served-energy",
-    "href": "slides/lecture09-1-capacity-expansion.html#how-often-is-there-non-served-energy",
-    "title": "Shadow Prices and Power Systems Examples",
-    "section": "How Often Is There Non-Served Energy?",
-    "text": "How Often Is There Non-Served Energy?\n\\(\\text{NSE}\\) is non-zero for 7 hours and a total of 94 MWh.\nWhy do we think there is any NSE given the high NSE Cost?"
-  },
-  {
-    "objectID": "slides/lecture09-1-capacity-expansion.html#what-does-this-problem-neglect",
-    "href": "slides/lecture09-1-capacity-expansion.html#what-does-this-problem-neglect",
-    "title": "Shadow Prices and Power Systems Examples",
-    "section": "What Does This Problem Neglect?",
-    "text": "What Does This Problem Neglect?\n\nDiscrete decisions: is a plant on or off (this is called unit commitment)?\nIntertemporal constraints: Power plants can’t just “ramp” from producing low levels of power to high levels of power; there are real engineering limits.\nTransmission: We can generate all the power we want, but what if we can’t get it to where the demand is\nRetirements: We might have existing generators that we want to retire (“brownfield” scenarios)."
-  },
-  {
-    "objectID": "slides/lecture09-1-capacity-expansion.html#what-about-renewables",
-    "href": "slides/lecture09-1-capacity-expansion.html#what-about-renewables",
-    "title": "Shadow Prices and Power Systems Examples",
-    "section": "What About Renewables?",
-    "text": "What About Renewables?\nRenewables make this problem more complicated because their capacity is variable:\n\nresource availability not constant across time;\nneed to consider a capacity factor.\n\n\nHow would this change our existing capacity expansion formulation?"
-  },
-  {
-    "objectID": "slides/lecture09-1-capacity-expansion.html#renewable-variability-impact",
-    "href": "slides/lecture09-1-capacity-expansion.html#renewable-variability-impact",
-    "title": "Shadow Prices and Power Systems Examples",
-    "section": "Renewable Variability Impact",
-    "text": "Renewable Variability Impact\nThis will change the capacity constraint from \\[y_{g,t} \\leq x_g \\qquad \\forall g \\in {G},  \\forall t \\in \\mathcal{T}\\] to \\[y_{g,t} \\leq x_g \\times c_{g,t} \\qquad \\forall g \\in {G},  \\forall t \\in \\mathcal{T}\\] where \\(c_{g,t}\\) is the capacity factor in time period \\(t\\) for generator type \\(g\\)."
-  },
-  {
-    "objectID": "slides/lecture09-1-capacity-expansion.html#renewable-capacity-factors",
-    "href": "slides/lecture09-1-capacity-expansion.html#renewable-capacity-factors",
-    "title": "Shadow Prices and Power Systems Examples",
-    "section": "Renewable Capacity Factors",
-    "text": "Renewable Capacity Factors\n\nLinked to resource availability: how much wind, solar, hydro, geothermal, etc can we rely on in a given hour?\nOften derived from Typical Meteorological Years (TMY) or select Actual Meteorological Years (AMY) and may only use select periods.\nThese approaches will underrepresent renewable variability but may be used for computational tractability.\nAlways look for details on what meteorological dataset was used!"
-  },
-  {
-    "objectID": "slides/lecture09-1-capacity-expansion.html#implementing-constraints-in-jump",
-    "href": "slides/lecture09-1-capacity-expansion.html#implementing-constraints-in-jump",
-    "title": "Shadow Prices and Power Systems Examples",
-    "section": "Implementing Constraints in JuMP",
-    "text": "Implementing Constraints in JuMP\nI recommend using vector notation in JuMP to specify these constraints, e.g. for capacity:\n# define sets\nG = 1:num_gen # num_gen is the number of generators\nT = 1:num_times # number of time periods\n\nc = ... # G x T matrix of capacity factors  \n@variable(..., x[g in G] &gt;= 0) # installed capacity\n@variable(..., y[g in G, t in T] &gt;= 0) # generated power\n@constraint(..., capacity[g in G, t in T], \n    y[g,t] &lt;= x[g] * c[g,t]) # capacity constraint"
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#key-takeaways-1",

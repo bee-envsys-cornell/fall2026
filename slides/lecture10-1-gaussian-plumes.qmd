@@ -1,10 +1,10 @@
 ---
-title: "Plume Dispersion Models"
+title: "Wrapping up Capacity Expansion and Plume Dispersion Models"
 subtitle: "Lecture 16"
 author: "Vivek Srikrishnan"
 course: "BEE 4750"
 institution: "Cornell University"
-date: "October 28, 2024"
+date: "October 27, 2025"
 format:
     revealjs:
         slide-number: c/t
@@ -38,25 +38,237 @@ execute:
     daemon: 600
 ---
 
+```{julia}
+#| output: false
+import Pkg
+Pkg.activate(@__DIR__)
+Pkg.instantiate()
+```
+
+```{julia}
+#| output: false
+using Random    
+using JuMP
+using HiGHS
+using Plots
+using StatsPlots
+using Measures
+using LaTeXStrings
+using DataFrames
+using CSV
+using MarkdownTables
+
+
+Random.seed!(1)
+plot_font = "Computer Modern"
+default(
+    fontfamily=plot_font,
+    linewidth=2, 
+    framestyle=:box, 
+    label=nothing, 
+    grid=false,
+    tickfontsize=18,
+    guidefontsize=18,
+    legendfontsize=18,
+    left_margin=10mm,
+    bottom_margin=10mm
+)
+```
+
+
 # Prelim 1 Review
 
 ## Prelim 1 Statistics
 
-- Median: 94%
-- Mean: 91%
-- Standard Dev: 9%
-
-# Review and Questions
-
-## Economic Dispatch
-
-- Second power systems LP
-- Incorporating ramping and minimum power constraints can lead to a deviation from simple "merit order" dispatch.
-
+- Median: 88% (44/50)
+- Mean: 85% (42.5/50)
+- Standard Dev: 10% (4.8) 
 
 ## Questions
 
 {{< include _poll-prompt.qmd >}}
+
+# Wrapping up Capacity Expansion
+
+## Problem Formulation
+
+$$
+\begin{align}
+\min_{x, y, NSE} \quad & \sum_{g \in \mathcal{G}} \text{FixedCost}_g \times x_g + \sum_{t \in \mathcal{T}} \sum_{g \in \mathcal{G}} \text{VarCost}_g \times y_{g,t} & \\
+& \quad + \sum_{t \in \mathcal{T}} \text{NSECost} \times NSE_t & \\[0.5em]
+\text {subject to:} \quad & \sum_{g \in \mathcal{G}} y_{g,t} + NSE_t \geq d_t \qquad \forall t \in \mathcal{T} \\[0.5em]
+& y_{g,t} \leq x_g \qquad \qquad \qquad\qquad  \forall g \in {G},  \forall t \in \mathcal{T} \\[0.5em]
+& x_g, y_{g,t}, NSE_t \geq 0 \qquad \qquad \forall g \in {G},  \forall t \in \mathcal{T}
+\end{align}
+$$
+
+## Problem Data: Generators
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+gens = DataFrame(CSV.File("data/capacity_expansion/generators.csv"))
+gens_display = rename(gens, Symbol.([:Generator, :"Fixed Cost (\\\$)", :"Variable Cost (\\\$/MW)"]))
+markdown_table(gens_display[1:end-2, :])
+```
+
+## Problem Data: Demand
+
+```{julia}
+#| label: fig-demand
+#| fig-cap: Demand for 2020 in NYISO Zone C
+#| fig-align: center
+#| echo: true
+#| code-fold: true
+
+
+NY_demand = DataFrame(CSV.File("data/capacity_expansion/2020_hourly_load_NY.csv"))
+rename!(NY_demand, :"Time Stamp" => :Date)
+demand = NY_demand[:, [:Date, :C]]
+rename!(demand, :C => :Demand)
+@df demand plot(:Date, :Demand, xlabel="Date", ylabel="Demand (MWh)", label=:false, xrot=45, bottom_margin=15mm)
+plot!(size=(1200, 500))
+```
+
+## Implementation in `JUMP.jl`
+
+```{julia}
+#| echo: true
+#| output: false
+#| code-line-numbers: "|1-4|6|7-12|13-15|16-17|18"
+
+# define sets
+G = 1:nrow(gens[1:end-2, :])
+T = 1:nrow(demand)
+NSECost = 9000
+
+gencap = Model(HiGHS.Optimizer)
+# define variables
+@variables(gencap, begin
+    x[g in G] >= 0
+    y[g in G, t in T] >= 0
+    NSE[t in T] >= 0
+end)
+@objective(gencap, Min, 
+    sum(gens[G, :FixedCost] .* x) + sum(gens[G, :VarCost] .* sum(y[:, t] for t in T)) + NSECost * sum(NSE)
+)
+@constraint(gencap, load[t in T], sum(y[:, t]) + NSE[t] >= demand.Demand[t])
+@constraint(gencap, availability[g in G, t in T], y[g, t] <= x[g])
+optimize!(gencap)
+```
+
+## Capacity Expansion Example Solution
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+generation = zeros(size(G,1))
+for i in 1:size(G,1) 
+    generation[i] = sum(value.(y)[G[i],:].data) 
+end
+MWh_share = generation./sum(demand.Demand).*100
+cap_share = value.(x).data ./ maximum(demand.Demand) .* 100
+results = DataFrame(
+    Resource = gens.Plant[G], 
+    Capacity = value.(x).data,
+    Percent_Cap = cap_share,
+    Generated = generation/1000,
+    Percent_Gen = MWh_share
+)
+rename!(results, 
+    [:Capacity => :"Installed (MW)", 
+    :Percent_Cap => :"Percent  (%)", 
+    :Generated => "Generation (GWh)",
+    :Percent_Gen => "Percent (%)"])
+results[:, 2:end] = round.(results[:, 2:end], digits=1)
+
+NSE_MW = maximum(value.(NSE).data) 
+NSE_MWh = sum(value.(NSE).data)
+push!(results, ["NSE" NSE_MW NSE_MW/maximum(demand.Demand)*100 NSE_MWh/1000 NSE_MWh/sum(demand.Demand)*100])
+
+results[:, 2:end] = round.(results[:, 2:end], digits=1)
+markdown_table(results)
+```
+
+## When Might Generators Operate?
+
+```{julia}
+#| label: fig-results
+#| fig-cap: Results of Generating Capacity Expansion Example
+#| echo: true
+#| code-fold: true
+
+p2 = areaplot(value.(y).data', 
+    label=permutedims(gens.Plant), 
+    xlabel = "Hour", 
+    ylabel ="Generated Electricity (MWh)", 
+    color_palette=:seaborn_colorblind,
+    grid=:false,
+    legend = :bottomleft)
+ylims!(p2, (0, 3200))
+plot!(p2, size=(1200, 500))
+```
+
+## How Often Is There Non-Served Energy?
+
+$\text{NSE}$ is non-zero for `{julia} sum(.!(iszero.(value.(NSE).data)))` hours and a total of `{julia} Int64(round(sum(value.(NSE).data); digits=0))` MWh.
+
+**Why do we think there is any NSE given the high NSE Cost?**
+
+
+## What Does This Problem Neglect?
+
+::: {.incremental}
+1. **Discrete decisions**: is a plant on or off (this is called *unit commitment*)?
+2. **Intertemporal constraints**: Power plants can't just "ramp" from producing low levels of power to high levels of power; there are real engineering limits.
+3. **Transmission**: We can generate all the power we want, but what if we can't get it to where the demand is
+4. **Retirements**: We might have existing generators that we want to retire ("brownfield" scenarios).
+:::
+
+## What About Renewables?
+
+Renewables make this problem more complicated because their capacity is variable:
+
+- resource availability not constant across time;
+- need to consider a **capacity factor**.
+
+::: {.fragment .fade-in}
+How would this change our existing capacity expansion formulation?
+:::
+
+## Renewable Variability Impact
+
+This will change the **capacity** constraint from
+$$y_{g,t} \leq x_g \qquad \forall g \in {G},  \forall t \in \mathcal{T}$$
+to
+$$y_{g,t} \leq x_g \times c_{g,t} \qquad \forall g \in {G},  \forall t \in \mathcal{T}$$
+where $c_{g,t}$ is the capacity factor in time period $t$ for generator type $g$.
+
+## Renewable Capacity Factors
+
+- Linked to resource availability: how much wind, solar, hydro, geothermal, etc can we rely on in a given hour?
+- Often derived from **Typical Meteorological Years (TMY)** or select **Actual Meteorological Years (AMY)** and may only use select periods.
+- These approaches **will** underrepresent renewable variability but may be used for computational tractability.
+- Always look for details on what meteorological dataset was used!
+
+## Implementing Constraints in JuMP
+
+I recommend using vector notation in `JuMP` to specify these constraints, *e.g.* for capacity:
+
+```julia
+# define sets
+G = 1:num_gen # num_gen is the number of generators
+T = 1:num_times # number of time periods
+
+c = ... # G x T matrix of capacity factors  
+@variable(..., x[g in G] >= 0) # installed capacity
+@variable(..., y[g in G, t in T] >= 0) # generated power
+@constraint(..., capacity[g in G, t in T], 
+    y[g,t] <= x[g] * c[g,t]) # capacity constraint
+```
+
 
 # Plume Dispersion
 
@@ -355,7 +567,12 @@ $$
 
 # Key Takeaways
 
-## Key Takeaways
+## Key Takeaways (Capacity Expansion)
+
+- We looked at a "greenfield" example: no existing plants.
+- Decision problem becomes more complex with renewables (HW4) or "brownfield" (expanding existing fleet, possibly with retirements).
+
+## Key Takeaways (Gaussian Plumes)
 
 - Plume models are commonly used for point sources and point receptors.
 - **Gaussian plumes**: continuous emissions from an elevated source.
