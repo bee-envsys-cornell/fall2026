@@ -963,7 +963,7 @@
     "href": "slides/lecture10-1-gaussian-plumes.html#gaussian-plume-derivation",
     "title": "Wrapping up Capacity Expansion and Plume Dispersion Models",
     "section": "Gaussian Plume Derivation",
-    "text": "Gaussian Plume Derivation\nUse the advective-diffusion equation to describe the mass-balance of a small air parcel :\n\\[ \\frac{\\partial C}{\\partial t} + \\color{blue}\\overbrace{[D + K] \\nabla^2 C}^\\text{diffusion} \\color{black} - \\color{red}\\overbrace{\\overrightarrow{u} \\cdot \\overrightarrow{\\nabla} C}^\\text{advection} = 0\\]\n\n\\(D\\) is the diffusion coefficient\n\\(K\\) is the dispersion coefficient (turbulent mixing)"
+    "text": "Gaussian Plume Derivation\nUse the advective-diffusion equation to describe the mass-balance of a small air parcel :\n\\[ \\frac{\\partial C}{\\partial t} - \\color{blue}\\overbrace{[D + K] \\nabla^2 C}^\\text{diffusion} \\color{black} + \\color{red}\\overbrace{\\overrightarrow{u} \\cdot \\overrightarrow{\\nabla} C}^\\text{advection} \\color{black} = 0\\]\n\n\\(D\\) is the diffusion coefficient\n\\(K\\) is the dispersion coefficient (turbulent mixing)"
   },
   {
     "objectID": "slides/lecture10-1-gaussian-plumes.html#diffusive-flux",

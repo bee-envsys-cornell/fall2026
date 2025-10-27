@@ -336,7 +336,7 @@ C(x,y,z) = \frac{Q}{2\pi u \sigma_y \sigma_z} \exp\left[-\frac{1}{2} \left(\frac
 
 Use the **advective-diffusion equation** to describe the mass-balance of a small air parcel :
 
-$$ \frac{\partial C}{\partial t} + \color{blue}\overbrace{[D + K] \nabla^2 C}^\text{diffusion} \color{black} - \color{red}\overbrace{\overrightarrow{u} \cdot \overrightarrow{\nabla} C}^\text{advection} = 0$$
+$$ \frac{\partial C}{\partial t} - \color{blue}\overbrace{[D + K] \nabla^2 C}^\text{diffusion} \color{black} + \color{red}\overbrace{\overrightarrow{u} \cdot \overrightarrow{\nabla} C}^\text{advection} \color{black} = 0$$
 
 - $D$ is the diffusion coefficient
 - $K$ is the dispersion coefficient (turbulent mixing)
