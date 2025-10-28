@@ -1,10 +1,10 @@
 ---
 title: "Economic Dispatch"
-subtitle: "Lecture 15"
+subtitle: "Lecture 14"
 author: "Vivek Srikrishnan"
 course: "BEE 4750"
 institution: "Cornell University"
-date: "October 23, 2024"
+date: "October 29, 2025"
 format:
     revealjs:
         slide-number: c/t
@@ -77,7 +77,7 @@ default(
 
 # Review and Questions
 
-## Last Class
+## Last Classes
 
 - Overview of power systems decision problems
 - Many are LPs (at least classically...)
@@ -179,6 +179,7 @@ $$
 
 ```{julia}
 #| output: false
+
 gens = DataFrame(CSV.File("data/economic_dispatch/generators.csv"))
 ```
 
@@ -271,9 +272,9 @@ quiver!([300], [22], quiver=([0], [15]), color=:red)
 
 ## Shadow Prices Signs
 
-Note that increasing demand by one MWh decreases cost (minimization problem).
+Note that relaxing the demand constraint (increasing demand by one MWh) **worsens** the objective (increasing cost).
 
-The convention in `JuMP` is that the shadow price is therefore negative, but this is not universal.
+The convention in `JuMP` is that the shadow price $$\lambda_\text{demand}$$ is therefore negative, but this is not universal.
 
 So we can find the price with $$\text{Cost} = |\lambda_\text{demand}|.$$
 
@@ -521,9 +522,13 @@ Source: [Power Magazine](https://www.powermag.com/duck-hunting-california-indepe
 
 ## Next Classes
 
-**Next Week**: Air Pollution
+**Next Week**: 
+
+- Prof. Srikrishnan out of town
+- Guest lectures on Mixed Integer Linear Programming (Prof. Anderson) and Unit Commitment (Prof. Mays).
 
 ## Assessments
 
-- Will start Monday by reviewing Prelim 1.
-- HW4 due 10/31.
+- Exercises assigned.
+- HW4 due 11/06.
+- Prelim 2 on 11/12.
