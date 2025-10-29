@@ -33,6 +33,8 @@ format:
         auto-stretch: false
         controls: true
 engine: julia
+julia: 
+  exeflags: ["+1.11.5"]
 execute:
     freeze: auto
     daemon: 600
@@ -501,10 +503,10 @@ Ramping and minimum generation play a major role in systems with high levels of 
 For example, a prominent feature of grids with large solar generation is the "duck curve" (right).
 :::
 ::: {.column width=50%}
-![CAISO Duck Curve](figures/duck_curve.jpeg)
+![CAISO Duck Curve](https://www.eia.gov/todayinenergy/images/2023.06.21/main.svg)
 
 ::: {.caption}
-Source: [Power Magazine](https://www.powermag.com/duck-hunting-california-independent-system-operator/)
+Source: [EIA](https://www.eia.gov/todayinenergy/detail.php?id=56880)
 :::
 :::
 ::::
