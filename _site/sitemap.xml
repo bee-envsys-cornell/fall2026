@@ -2,7 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://envsys.viveks.me/fall2025/schedule.html</loc>
+<<<<<<< HEAD
     <lastmod>2025-10-29T17:03:39.705Z</lastmod>
+=======
+    <lastmod>2025-10-31T12:22:33.038Z</lastmod>
+>>>>>>> 5fbdaaff (add week 11 content)
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/tutorials/julia-plots.html</loc>
@@ -230,7 +234,11 @@
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecture11-1-mixed-integer.html</loc>
+<<<<<<< HEAD
     <lastmod>2025-08-05T16:53:47.642Z</lastmod>
+=======
+    <lastmod>2025-10-31T12:14:11.695Z</lastmod>
+>>>>>>> 5fbdaaff (add week 11 content)
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecture01-1-intro.html</loc>

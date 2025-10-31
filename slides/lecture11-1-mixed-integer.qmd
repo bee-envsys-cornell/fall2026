@@ -1,10 +1,10 @@
 ---
 title: "Discrete Variables and Mixed Integer Programming"
-subtitle: "Lecture 18"
+subtitle: "Lecture 15"
 author: "Vivek Srikrishnan"
 course: "BEE 4750"
 institution: "Cornell University"
-date: "November 04, 2024"
+date: "November 03, 2025"
 format:
     revealjs:
         slide-number: c/t
@@ -82,11 +82,8 @@ default(
     - linearity
 - Solutions must be at intersections of constraints.
 - Shadow prices: value of relaxing constraints.
-- Saw examples from power systems and air quality
+- Saw several examples from power systems 
 
-## Questions
-
-{{< include _poll-prompt.qmd >}}
 
 # Mixed Integer Linear Programming
 
@@ -510,8 +507,10 @@ display(p9)
 
 ## Upcoming Schedule
 
-**Wednesday/Monday**: Applications of MILP to solid waste management and power systems.
+**Wednesday**: No class, work on project/homework.
+
+**Monday**: More applications of (MI)LP.
 
 ## Assessments
 
-**Prelim 2**: Next Wednesday (11/13), on material through LP.
+**Prelim 2**: Next Wednesday (11/12), on material through today.
