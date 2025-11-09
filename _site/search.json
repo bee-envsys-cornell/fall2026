@@ -2233,11 +2233,11 @@
     "text": "Mixed Integer Linear Programming\n\nProblems involving integer variables break assumptions of LP.\nCan solve using branch and bound or related algorithms.\nIteratively solve a sequence of restricted LPs until integer solution is found."
   },
   {
-    "objectID": "slides/lecture12-1-waste-management.html#example-unit-commitment",
-    "href": "slides/lecture12-1-waste-management.html#example-unit-commitment",
+    "objectID": "slides/lecture12-1-waste-management.html#exam-review",
+    "href": "slides/lecture12-1-waste-management.html#exam-review",
     "title": "Waste Management and Network Models",
-    "section": "Example: Unit Commitment",
-    "text": "Example: Unit Commitment\n\nPower systems problem involving which generators to operate.\nBinary variables reflect operational status.\nMuch more complicated than economic dispatch!"
+    "section": "Exam Review",
+    "text": "Exam Review\nQuestions?"
   },
   {
     "objectID": "slides/lecture12-1-waste-management.html#questions",
@@ -2279,7 +2279,7 @@
     "href": "slides/lecture12-1-waste-management.html#system-specific-information-needs",
     "title": "Waste Management and Network Models",
     "section": "System-Specific Information Needs",
-    "text": "System-Specific Information Needs\nTo complete the model, need:\n\nSystem dynamics (fate & transport);\nObjectives\nCosts\nManagement goals and/or regulatory constraints"
+    "text": "System-Specific Information Needs\nTo complete the model, need:\n\nSystem dynamics (fate & transport)\nObjectives\nCosts\nManagement goals and/or regulatory constraints"
   },
   {
     "objectID": "slides/lecture12-1-waste-management.html#example-system",
@@ -2335,7 +2335,21 @@
     "href": "slides/lecture12-1-waste-management.html#objective-disposal-costs-1",
     "title": "Waste Management and Network Models",
     "section": "Objective: Disposal Costs",
-    "text": "Objective: Disposal Costs\nThe prior expression is only correct if all disposal facilities are operating.\nThe option to not operate disposal facility \\(j\\) means we need new indicator variables.\n\n\\[Y_j = \\begin{cases}0 & \\text{if} \\sum_{i \\in I} W_{ij} = 0 \\\\[0.5em] 1 & \\text{if} \\sum_{i \\in I} W_{ij} &gt; 0\\end{cases}\\]"
+    "text": "Objective: Disposal Costs\nThe prior expression is only correct if all disposal facilities are operating.\nThe option to not operate disposal facility \\(j\\) means we need new indicator variables\n\\[Y_j = \\begin{cases}0 & \\text{if facility not operated} \\\\ 1 & \\text{if facility operated} \\end{cases}\\]"
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#objective-with-indicator-variables",
+    "href": "slides/lecture12-1-waste-management.html#objective-with-indicator-variables",
+    "title": "Waste Management and Network Models",
+    "section": "Objective With Indicator Variables",
+    "text": "Objective With Indicator Variables\n“Original” (incorrect) objective:\n\\[\\min_{W_{ij}} \\sum_i \\sum_j a_{ij}\\,l_{ij}\\,W_{ij} + \\sum_j \\left[c_j + b_j \\sum_i W_{ij}\\right]\\]\nNew objectives with indicator variables:\n\n\\[\n\\min_{W_{ij}, {Y_j}} \\sum_i \\sum_j a_{ij}\\,l_{ij}\\,W_{ij} + \\sum_j \\left[\\mathbf{c_jY_j} + \\sum_i b_jW_{ij}\\right]\\]"
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#indicator-variable-constraints",
+    "href": "slides/lecture12-1-waste-management.html#indicator-variable-constraints",
+    "title": "Waste Management and Network Models",
+    "section": "Indicator Variable Constraints",
+    "text": "Indicator Variable Constraints\nWhat criteria can we use to determine whether a facility should operate (\\(Y_j = 1\\))?\n\n\\[Y_j = \\begin{cases}0 & \\text{if} \\sum_{i \\in I} W_{ij} = 0 \\\\[0.5em] 1 & \\text{if} \\sum_{i \\in I} W_{ij} + \\sum_{k \\neq j} R_{kj} &gt; 0  &gt; 0\\end{cases}\\]"
   },
   {
     "objectID": "slides/lecture12-1-waste-management.html#waste-mass-balance-constraints",
@@ -2349,7 +2363,7 @@
     "href": "slides/lecture12-1-waste-management.html#problem-formulation",
     "title": "Waste Management and Network Models",
     "section": "Problem Formulation",
-    "text": "Problem Formulation\n\\[\n\\begin{align}\n\\min_{W_{i,j}, {Y_j}} & \\sum_i \\sum_j a_{ij}\\,l_{ij}\\,W_{ij} + \\sum_j \\left[c_jY_j + \\sum_i b_jW_{ij}\\right] \\\\\n\\text{subject to:} \\quad & Y_j = \\begin{cases}0 & \\text{if } \\sum_{i \\in I} W_{ij} + \\sum_{k \\noteq j} R_{kj} = 0 \\\\ 1 & \\text{if } \\sum_{i \\in I} W_{ij} + \\sum_{k \\noteq j} R_{kj} &gt; 0 \\end{cases}  \\\\\n& \\sum_i W_{ij} + \\sum_k R_{kj} \\leq K_j  \\\\\n& \\sum_j W_{ij} = S_i  \\\\\n&  W_{ij} \\geq 0\n\\end{align}\n\\]"
+    "text": "Problem Formulation\n\\[\n\\begin{align}\n\\min_{W_{ij}, {Y_j}} & \\sum_i \\sum_j a_{ij}\\,l_{ij}\\,W_{ij} + \\sum_j \\left[c_jY_j + \\sum_i b_jW_{ij}\\right] \\\\\n\\text{subject to:} \\quad & Y_j = \\begin{cases}0 & \\text{if } \\sum_{i \\in I} W_{ij} + \\sum_{k \\neq j} R_{kj} = 0 \\\\ 1 & \\text{if } \\sum_{i \\in I} W_{ij} + \\sum_{k \\neq j} R_{kj} &gt; 0 \\end{cases}  \\\\\n& \\sum_i W_{ij} + \\sum_k R_{kj} \\leq K_j  \\\\\n& \\sum_j W_{ij} = S_i  \\\\\n&  W_{ij} \\geq 0\n\\end{align}\n\\]"
   },
   {
     "objectID": "slides/lecture12-1-waste-management.html#facility-costs",
@@ -2426,7 +2440,7 @@
     "href": "slides/lecture12-1-waste-management.html#how-to-incorporate-indicator-constraints-in-jump",
     "title": "Waste Management and Network Models",
     "section": "How To Incorporate Indicator Constraints in JuMP",
-    "text": "How To Incorporate Indicator Constraints in JuMP\nSome solvers allow you to directly translate indicator constraints into JuMP. For example,\n@constraint(waste, commit2, !Y[2] =&gt; {W[1,2] + W[2,2] == 0})\nimplements \\[Y_2 = \\begin{cases}0 &\\quad \\text{if } W_{21} + W_{22} = 0 \\\\ 1 & \\quad \\text{else} \\end{cases}\n\\]"
+    "text": "How To Incorporate Indicator Constraints in JuMP\nSome solvers allow you to directly translate indicator constraints into JuMP. For example,\n@variable(waste, Y[1:3], Bin)\n@constraint(waste, commit2, !Y[2] =&gt; {W[1,2] + W[2,2] == 0})\ndefines \\(Y_j\\) as a binary indicator variable and implements \\[Y_2 = \\begin{cases}0 &\\quad \\text{if } W_{21} + W_{22} = 0 \\\\ 1 & \\quad \\text{else} \\end{cases}\n\\]"
   },
   {
     "objectID": "slides/lecture12-1-waste-management.html#how-to-incorporate-indicator-constraints-in-other-solvers",
@@ -2475,7 +2489,7 @@
     "href": "slides/lecture12-1-waste-management.html#next-lectures",
     "title": "Waste Management and Network Models",
     "section": "Next Lectures",
-    "text": "Next Lectures\n\nWednesday: Prelim 2\nNext Week: Stochastic Optimization and Scenario Trees"
+    "text": "Next Lectures\n\nWednesday: Prelim 2\nNext Week: Gaussian Plumes and Air Quality"
   },
   {
     "objectID": "slides/lecture09-1-capacity-expansion.html#last-class",

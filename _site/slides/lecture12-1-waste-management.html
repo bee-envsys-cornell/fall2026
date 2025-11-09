@@ -7,11 +7,11 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.33">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.31">
 
   <meta name="author" content="Vivek Srikrishnan">
-  <meta name="dcterms.date" content="2024-11-11">
+  <meta name="dcterms.date" content="2024-11-10">
   <title>Environmental Systems Analysis – Waste Management and Network Models</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -213,7 +213,7 @@
   };
   </script>
 <meta property="og:title" content="Waste Management and Network Models – Environmental Systems Analysis">
-<meta property="og:description" content="Lecture 20">
+<meta property="og:description" content="Lecture 16">
 <meta property="og:site_name" content="Environmental Systems Analysis">
 </head>
 <body class="quarto-light">
@@ -223,8 +223,8 @@
 <section id="title-slide" class="center">
     <h1 class="title">Waste Management and Network Models</h1>
   <hr>
-<p class="subtitle">Lecture 20</p>
-<p class="date">November 11, 2024</p>
+<p class="subtitle">Lecture 16</p>
+<p class="date">November 10, 2024</p>
 </section><section id="TOC">
 <nav role="doc-toc"> 
 <h2 id="toc-title">Overview</h2>
@@ -250,13 +250,9 @@
 <li>Iteratively solve a sequence of restricted LPs until integer solution is found.</li>
 </ul>
 </section>
-<section id="example-unit-commitment" class="slide level2">
-<h2>Example: Unit Commitment</h2>
-<ul>
-<li>Power systems problem involving which generators to operate.</li>
-<li>Binary variables reflect operational status.</li>
-<li>Much more complicated than economic dispatch!</li>
-</ul>
+<section id="exam-review" class="slide level2">
+<h2>Exam Review</h2>
+<p>Questions?</p>
 </section>
 <section id="questions" class="slide level2">
 <h2>Questions</h2>
@@ -356,7 +352,7 @@
 <h2>System-Specific Information Needs</h2>
 <p>To complete the model, need:</p>
 <ul>
-<li>System dynamics (fate &amp; transport);</li>
+<li>System dynamics (fate &amp; transport)</li>
 <li>Objectives</li>
 <li>Costs</li>
 <li>Management goals and/or regulatory constraints</li>
@@ -516,9 +512,24 @@
 <section id="objective-disposal-costs-1" class="slide level2">
 <h2>Objective: Disposal Costs</h2>
 <p>The prior expression is only correct if all disposal facilities are operating.</p>
-<p>The option to not operate disposal facility <span class="math inline">\(j\)</span> means we need new <strong>indicator</strong> variables.</p>
+<p>The option to not operate disposal facility <span class="math inline">\(j\)</span> means we need new <strong>indicator</strong> variables</p>
+<p><span class="math display">\[Y_j = \begin{cases}0 &amp; \text{if facility not operated} \\ 1 &amp; \text{if facility operated} \end{cases}\]</span></p>
+</section>
+<section id="objective-with-indicator-variables" class="slide level2">
+<h2>Objective With Indicator Variables</h2>
+<p>“Original” (incorrect) objective:</p>
+<p><span class="math display">\[\min_{W_{ij}} \sum_i \sum_j a_{ij}\,l_{ij}\,W_{ij} + \sum_j \left[c_j + b_j \sum_i W_{ij}\right]\]</span></p>
+<p>New objectives with indicator variables:</p>
 <div class="fragment fade-in">
-<p><span class="math display">\[Y_j = \begin{cases}0 &amp; \text{if} \sum_{i \in I} W_{ij} = 0 \\[0.5em] 1 &amp; \text{if} \sum_{i \in I} W_{ij} &gt; 0\end{cases}\]</span></p>
+<p><span class="math display">\[
+\min_{W_{ij}, {Y_j}} \sum_i \sum_j a_{ij}\,l_{ij}\,W_{ij} + \sum_j \left[\mathbf{c_jY_j} + \sum_i b_jW_{ij}\right]\]</span></p>
+</div>
+</section>
+<section id="indicator-variable-constraints" class="slide level2">
+<h2>Indicator Variable Constraints</h2>
+<p>What criteria can we use to determine whether a facility should operate (<span class="math inline">\(Y_j = 1\)</span>)?</p>
+<div class="fragment fade-in">
+<p><span class="math display">\[Y_j = \begin{cases}0 &amp; \text{if} \sum_{i \in I} W_{ij} = 0 \\[0.5em] 1 &amp; \text{if} \sum_{i \in I} W_{ij} + \sum_{k \neq j} R_{kj} &gt; 0  &gt; 0\end{cases}\]</span></p>
 </div>
 </section>
 <section id="waste-mass-balance-constraints" class="slide level2">
@@ -532,8 +543,8 @@
 <h2>Problem Formulation</h2>
 <p><span class="math display">\[
 \begin{align}
-\min_{W_{i,j}, {Y_j}} &amp; \sum_i \sum_j a_{ij}\,l_{ij}\,W_{ij} + \sum_j \left[c_jY_j + \sum_i b_jW_{ij}\right] \\
-\text{subject to:} \quad &amp; Y_j = \begin{cases}0 &amp; \text{if } \sum_{i \in I} W_{ij} + \sum_{k \noteq j} R_{kj} = 0 \\ 1 &amp; \text{if } \sum_{i \in I} W_{ij} + \sum_{k \noteq j} R_{kj} &gt; 0 \end{cases}  \\
+\min_{W_{ij}, {Y_j}} &amp; \sum_i \sum_j a_{ij}\,l_{ij}\,W_{ij} + \sum_j \left[c_jY_j + \sum_i b_jW_{ij}\right] \\
+\text{subject to:} \quad &amp; Y_j = \begin{cases}0 &amp; \text{if } \sum_{i \in I} W_{ij} + \sum_{k \neq j} R_{kj} = 0 \\ 1 &amp; \text{if } \sum_{i \in I} W_{ij} + \sum_{k \neq j} R_{kj} &gt; 0 \end{cases}  \\
 &amp; \sum_i W_{ij} + \sum_k R_{kj} \leq K_j  \\
 &amp; \sum_j W_{ij} = S_i  \\
 &amp;  W_{ij} \geq 0
@@ -748,8 +759,9 @@ W_{ij}, R_{ij} &amp;\geq 0
 <section id="how-to-incorporate-indicator-constraints-in-jump" class="slide level2">
 <h2>How To Incorporate Indicator Constraints in JuMP</h2>
 <p>Some solvers allow you to directly translate indicator constraints into JuMP. For example,</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a><span class="pp">@constraint</span>(waste, commit2, !Y[<span class="fl">2</span>] <span class="op">=&gt;</span> {W[<span class="fl">1</span>,<span class="fl">2</span>] <span class="op">+</span> W[<span class="fl">2</span>,<span class="fl">2</span>] <span class="op">==</span> <span class="fl">0</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>implements <span class="math display">\[Y_2 = \begin{cases}0 &amp;\quad \text{if } W_{21} + W_{22} = 0 \\ 1 &amp; \quad \text{else} \end{cases}
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a><span class="pp">@variable</span>(waste, Y[<span class="fl">1</span><span class="op">:</span><span class="fl">3</span>], Bin)</span>
+<span id="cb1-2"><a></a><span class="pp">@constraint</span>(waste, commit2, !Y[<span class="fl">2</span>] <span class="op">=&gt;</span> {W[<span class="fl">1</span>,<span class="fl">2</span>] <span class="op">+</span> W[<span class="fl">2</span>,<span class="fl">2</span>] <span class="op">==</span> <span class="fl">0</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>defines <span class="math inline">\(Y_j\)</span> as a binary indicator variable and implements <span class="math display">\[Y_2 = \begin{cases}0 &amp;\quad \text{if } W_{21} + W_{22} = 0 \\ 1 &amp; \quad \text{else} \end{cases}
 \]</span></p>
 </section>
 <section id="how-to-incorporate-indicator-constraints-in-other-solvers" class="slide level2">
@@ -832,7 +844,7 @@ W_{ij}, R_{ij} &amp;\geq 0
 <h2>Next Lectures</h2>
 <ul>
 <li><strong>Wednesday</strong>: Prelim 2</li>
-<li><strong>Next Week</strong>: Stochastic Optimization and Scenario Trees</li>
+<li><strong>Next Week</strong>: Gaussian Plumes and Air Quality</li>
 </ul>
 
 
