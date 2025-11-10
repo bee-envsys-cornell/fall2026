@@ -2342,7 +2342,7 @@
     "href": "slides/lecture12-1-waste-management.html#objective-with-indicator-variables",
     "title": "Waste Management and Network Models",
     "section": "Objective With Indicator Variables",
-    "text": "Objective With Indicator Variables\n“Original” (incorrect) objective:\n\\[\\min_{W_{ij}} \\sum_i \\sum_j a_{ij}\\,l_{ij}\\,W_{ij} + \\sum_j \\left[c_j + b_j \\sum_i W_{ij}\\right]\\]\nNew objectives with indicator variables:\n\n\\[\n\\min_{W_{ij}, {Y_j}} \\sum_i \\sum_j a_{ij}\\,l_{ij}\\,W_{ij} + \\sum_j \\left[\\mathbf{c_jY_j} + \\sum_i b_jW_{ij}\\right]\\]"
+    "text": "Objective With Indicator Variables\n“Original” (incorrect) objective:\n\\[\\min_{W_{ij}} \\sum_i \\sum_j a_{ij}\\,l_{ij}\\,W_{ij} + \\sum_j \\left[c_j + b_j \\sum_i W_{ij}\\right]\\]\nNew objectives with indicator variables:\n\n\\[\\min_{W_{ij}, {Y_j}} \\sum_i \\sum_j a_{ij}\\,l_{ij}\\,W_{ij} + \\sum_j \\left[c_jY_j + b_j\\sum_i W_{ij}\\right]\\]"
   },
   {
     "objectID": "slides/lecture12-1-waste-management.html#indicator-variable-constraints",

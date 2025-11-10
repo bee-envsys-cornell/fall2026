@@ -262,8 +262,7 @@ $$\min_{W_{ij}} \sum_i \sum_j a_{ij}\,l_{ij}\,W_{ij} + \sum_j \left[c_j + b_j \s
 New objectives with indicator variables:
 
 ::: {.fragment .fade-in}
-$$
-\min_{W_{ij}, {Y_j}} \sum_i \sum_j a_{ij}\,l_{ij}\,W_{ij} + \sum_j \left[\mathbf{c_jY_j} + \sum_i b_jW_{ij}\right]$$
+$$\min_{W_{ij}, {Y_j}} \sum_i \sum_j a_{ij}\,l_{ij}\,W_{ij} + \sum_j \left[c_jY_j + b_j\sum_i W_{ij}\right]$$
 
 :::
 
