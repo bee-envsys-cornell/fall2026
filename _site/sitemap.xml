@@ -105,71 +105,23 @@
     <lastmod>2025-10-13T13:23:47.777Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/solutions/hw01/hw01.html</loc>
-    <lastmod>2025-09-14T19:38:50.241Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/solutions/hw04/hw04.html</loc>
+    <lastmod>2025-11-12T20:36:01.644Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/setup/git.html</loc>
-    <lastmod>2025-06-15T23:42:41.302Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/setup/julia.html</loc>
+    <lastmod>2025-06-15T23:41:21.736Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/setup/homework.html</loc>
-    <lastmod>2025-06-16T01:57:34.555Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/setup/index.html</loc>
+    <lastmod>2025-06-15T23:43:40.143Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/resources/ai.html</loc>
-    <lastmod>2025-08-12T14:49:48.568Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/setup/vscode.html</loc>
+    <lastmod>2025-06-16T00:05:38.743Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/resources/general.html</loc>
-    <lastmod>2025-06-13T15:25:52.442Z</lastmod>
-  </url>
-  <url>
-    <loc>https://envsys.viveks.me/fall2025/resources/markdown.html</loc>
-    <lastmod>2025-06-04T20:58:07.046Z</lastmod>
-  </url>
-  <url>
-    <loc>https://envsys.viveks.me/fall2025/faq/index.html</loc>
-    <lastmod>2025-07-23T23:12:56.849Z</lastmod>
-  </url>
-  <url>
-    <loc>https://envsys.viveks.me/fall2025/hw/hw02/hw02.html</loc>
-    <lastmod>2025-09-14T19:19:43.391Z</lastmod>
-  </url>
-  <url>
-    <loc>https://envsys.viveks.me/fall2025/hw/hw04/hw04.html</loc>
-    <lastmod>2025-10-27T17:09:35.233Z</lastmod>
-  </url>
-  <url>
-    <loc>https://envsys.viveks.me/fall2025/hw/hw01/hw01.html</loc>
-    <lastmod>2025-08-22T19:31:48.940Z</lastmod>
-  </url>
-  <url>
-    <loc>https://envsys.viveks.me/fall2025/labs/index.html</loc>
-    <lastmod>2025-10-20T23:55:59.262Z</lastmod>
-  </url>
-  <url>
-    <loc>https://envsys.viveks.me/fall2025/labs/lab03/lab03.html</loc>
-    <lastmod>2025-10-20T23:54:47.117Z</lastmod>
-  </url>
-  <url>
-    <loc>https://envsys.viveks.me/fall2025/labs/lab02/lab02.html</loc>
-    <lastmod>2025-10-01T00:04:04.601Z</lastmod>
-  </url>
-  <url>
-    <loc>https://envsys.viveks.me/fall2025/labs/lab01/lab01.html</loc>
-    <lastmod>2025-09-14T18:55:54.928Z</lastmod>
-  </url>
-  <url>
-    <loc>https://envsys.viveks.me/fall2025/hw/index.html</loc>
-    <lastmod>2025-10-26T14:00:17.657Z</lastmod>
-  </url>
-  <url>
-    <loc>https://envsys.viveks.me/fall2025/hw/hw03/hw03.html</loc>
-    <lastmod>2025-10-26T14:10:11.548Z</lastmod>
-  </url>
-  <url>
-    <loc>https://envsys.viveks.me/fall2025/resources/github.html</loc>
+    <loc>https://envsys.viveks.me/fall2025/resources/julia.html</loc>
     <lastmod>2025-06-04T20:58:07.046Z</lastmod>
   </url>
   <url>
@@ -177,20 +129,72 @@
     <lastmod>2025-06-04T20:58:07.047Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/resources/julia.html</loc>
+    <loc>https://envsys.viveks.me/fall2025/resources/github.html</loc>
     <lastmod>2025-06-04T20:58:07.046Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/setup/vscode.html</loc>
-    <lastmod>2025-06-16T00:05:38.743Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/hw/hw03/hw03.html</loc>
+    <lastmod>2025-10-26T14:10:11.548Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/setup/index.html</loc>
-    <lastmod>2025-06-15T23:43:40.143Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/hw/index.html</loc>
+    <lastmod>2025-11-12T20:36:33.105Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/setup/julia.html</loc>
-    <lastmod>2025-06-15T23:41:21.736Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/labs/lab01/lab01.html</loc>
+    <lastmod>2025-09-14T18:55:54.928Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/labs/lab02/lab02.html</loc>
+    <lastmod>2025-10-01T00:04:04.601Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/labs/lab03/lab03.html</loc>
+    <lastmod>2025-10-20T23:54:47.117Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/labs/index.html</loc>
+    <lastmod>2025-10-20T23:55:59.262Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/hw/hw01/hw01.html</loc>
+    <lastmod>2025-08-22T19:31:48.940Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/hw/hw04/hw04.html</loc>
+    <lastmod>2025-10-27T17:09:35.233Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/hw/hw02/hw02.html</loc>
+    <lastmod>2025-09-14T19:19:43.391Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/faq/index.html</loc>
+    <lastmod>2025-07-23T23:12:56.849Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/resources/markdown.html</loc>
+    <lastmod>2025-06-04T20:58:07.046Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/resources/general.html</loc>
+    <lastmod>2025-06-13T15:25:52.442Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/resources/ai.html</loc>
+    <lastmod>2025-08-12T14:49:48.568Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/setup/homework.html</loc>
+    <lastmod>2025-06-16T01:57:34.555Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/setup/git.html</loc>
+    <lastmod>2025-06-15T23:42:41.302Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/solutions/hw01/hw01.html</loc>
+    <lastmod>2025-09-14T19:38:50.241Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/solutions/hw03/hw03.html</loc>
