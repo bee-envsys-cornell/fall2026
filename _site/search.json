@@ -4,7 +4,7 @@
     "href": "schedule.html",
     "title": "Course Schedule",
     "section": "",
-    "text": "This page contains a schedule of the topics, content, and assignments for the semester. Note that this schedule will be updated as necessary the semester progresses, with all changes documented here. Readings requiring institutional subscriptions can be accessed through the Cornell Library.\n\n\n\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nSlides\nLab\nHW\nReading\n\n\n\n\n\n\nModule 1: Introduction to Systems Analysis\n\n\n\n\n\n\n1\nMon, Aug 25\nWelcome to BEE 4750!\n\n\n\n\n\n\n\nWed, Aug 27\nLab: Setting up Julia and GitHub\n\n\n\n\n\n\n2\nMon, Sep 01\nNo Class: Labor Day\n\n\n\nLiu et al. (2007)\n\n\n\nWed, Sep 03\nIntroduction to Systems Models\n\n\n\n\n\n\n3\nMon, Sep 08\nSystem Dynamics: Feedbacks\n\n\n\nWoodard et al. (2019)\n\n\n\nWed, Sep 10\nEquilibria and Bifurcations\n\n\n\n\n\n\n4\nMon, Sep 15\nSimulation Models\n\n\n\nOreskes et al. (1994)\n\n\n\nWed, Sep 17\nDissolved Oxygen\n\n\n\n\n\n\n5\nMon, Sep 22\nMore Dissolved Oxygen and Simulation\n\n\n\nSimpson et al. (2021)\n\n\n\nWed, Sep 24\nUncertainty and Monte Carlo\n\n\n\n\n\n\n6\nMon, Sep 29\nMonte Carlo: Why It Works\n\n\n\n\n\n\n\nWed, Oct 01\nLab: Monte Carlo\n\n\n\n\n\n\n7\nMon, Oct 06\nPrescriptive Modeling\n\n\n\n\n\n\n\nWed, Oct 08\nPrelim 1\n\n\n\n\n\n\n8\nMon, Oct 13\nNo Class: Fall Break\n\n\n\n\n\n\n\nWed, Oct 15\nDecision Models and Optimization\n\n\n\n\n\n\n9\nMon, Oct 20\nShadow Prices and Capacity Expansion\n\n\n\n\n\n\n\nWed, Oct 22\nLab: Linear Programming\n\n\n\n\n\n\n10\nMon, Oct 27\nPrelim Review and Capacity Expansion II\n\n\n\n\n\n\n\nWed, Oct 29\nEconomic Dispatch\n\n\n\n\n\n\n11\nMon, Nov 03\nFixed Costs and Mixed Integer Programs\n\n\n\n\n\n\n\nWed, Nov 05\nNo Class\n\n\n\n\n\n\n12\nMon, Nov 10\nNetwork Models and Solid Waste Management\n\n\n\n\n\n\n\nWed, Nov 12\nPrelim 2\n\n\n\n\n\n\n13\nMon, Nov 17\nPlume Dispersion Models\n\n\n\n\n\n\n\nWed, Nov 19\nManaging Sources of Air Pollution\n\n\n\n\n\n\n14\nMon, Nov 24\nStochastic Optimization\n\n\n\n\n\n\n\nWed, Nov 26\nNo Class: Thanksgiving Break\n\n\n\n\n\n\n15\nMon, Dec 01\nPrelim II Review and Sensitivity Analysis\n\n\n\n\n\n\n\nWed, Dec 03\nLimits of Optimization\n\n\n\n\n\n\n16\nMon, Dec 08\nNo Class: Project Work\n\n\n\n\n\n\n\n\n\n\n\n\nReferences\n\nLiu, J., Dietz, T., Carpenter, S. R., Alberti, M., Folke, C., Moran, E., et al. (2007). Complexity of coupled human and natural systems. Science, 317, 1513–1516. https://doi.org/10.1126/science.1144004\n\n\nOreskes, N., Shrader-Frechette, K., & Belitz, K. (1994). Verification, validation, and confirmation of numerical models in the Earth sciences. Science, 263, 641–646. https://doi.org/10.1126/science.263.5147.641\n\n\nSimpson, N. P., Mach, K. J., Constable, A., Hess, J., Hogarth, R., Howden, M., et al. (2021). A framework for complex climate change risk assessment. One Earth, 4, 489–501. https://doi.org/10.1016/j.oneear.2021.03.005\n\n\nWoodard, D. L., Davis, S. J., & Randerson, J. T. (2019). Economic carbon cycle feedbacks may offset additional warming from natural feedbacks. Proceedings of the National Academy of Sciences, 116, 759–764. https://doi.org/10.1073/pnas.1805187115"
+    "text": "This page contains a schedule of the topics, content, and assignments for the semester. Note that this schedule will be updated as necessary the semester progresses, with all changes documented here. Readings requiring institutional subscriptions can be accessed through the Cornell Library.\n\n\n\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nSlides\nLab\nHW\nReading\n\n\n\n\n\n\nModule 1: Introduction to Systems Analysis\n\n\n\n\n\n\n1\nMon, Aug 25\nWelcome to BEE 4750!\n\n\n\n\n\n\n\nWed, Aug 27\nLab: Setting up Julia and GitHub\n\n\n\n\n\n\n2\nMon, Sep 01\nNo Class: Labor Day\n\n\n\nLiu et al. (2007)\n\n\n\nWed, Sep 03\nIntroduction to Systems Models\n\n\n\n\n\n\n3\nMon, Sep 08\nSystem Dynamics: Feedbacks\n\n\n\nWoodard et al. (2019)\n\n\n\nWed, Sep 10\nEquilibria and Bifurcations\n\n\n\n\n\n\n4\nMon, Sep 15\nSimulation Models\n\n\n\nOreskes et al. (1994)\n\n\n\nWed, Sep 17\nDissolved Oxygen\n\n\n\n\n\n\n5\nMon, Sep 22\nMore Dissolved Oxygen and Simulation\n\n\n\nSimpson et al. (2021)\n\n\n\nWed, Sep 24\nUncertainty and Monte Carlo\n\n\n\n\n\n\n6\nMon, Sep 29\nMonte Carlo: Why It Works\n\n\n\n\n\n\n\nWed, Oct 01\nLab: Monte Carlo\n\n\n\n\n\n\n7\nMon, Oct 06\nPrescriptive Modeling\n\n\n\n\n\n\n\nWed, Oct 08\nPrelim 1\n\n\n\n\n\n\n8\nMon, Oct 13\nNo Class: Fall Break\n\n\n\n\n\n\n\nWed, Oct 15\nDecision Models and Optimization\n\n\n\n\n\n\n9\nMon, Oct 20\nShadow Prices and Capacity Expansion\n\n\n\n\n\n\n\nWed, Oct 22\nLab: Linear Programming\n\n\n\n\n\n\n10\nMon, Oct 27\nPrelim Review and Capacity Expansion II\n\n\n\n\n\n\n\nWed, Oct 29\nEconomic Dispatch\n\n\n\n\n\n\n11\nMon, Nov 03\nFixed Costs and Mixed Integer Programs\n\n\n\n\n\n\n\nWed, Nov 05\nNo Class\n\n\n\n\n\n\n12\nMon, Nov 10\nNetwork Models and Solid Waste Management\n\n\n\n\n\n\n\nWed, Nov 12\nPrelim 2\n\n\n\n\n\n\n13\nMon, Nov 17\nStochastic Optimization\n\n\n\nAckoff (1979)\n\n\n\nWed, Nov 19\nMultiple Objectives\n\n\n\n\n\n\n14\nMon, Nov 24\nRobustness and Sensitivity Analysis\n\n\n\n\n\n\n\nWed, Nov 26\nNo Class: Thanksgiving Break\n\n\n\n\n\n\n15\nMon, Dec 01\nPrelim 2 Review and Simulation-Optimization\n\n\n\n\n\n\n\nWed, Dec 03\nSimulation-Optimization Lab\n\n\n\n\n\n\n16\nMon, Dec 08\nNo Class: Project Work\n\n\n\n\n\n\n\n\n\n\n\n\nReferences\n\nAckoff, R. L. (1979). The Future of Operational Research is Past. J. Oper. Res. Soc., 30, 93–104. https://doi.org/10.1057/jors.1979.22\n\n\nLiu, J., Dietz, T., Carpenter, S. R., Alberti, M., Folke, C., Moran, E., et al. (2007). Complexity of coupled human and natural systems. Science, 317, 1513–1516. https://doi.org/10.1126/science.1144004\n\n\nOreskes, N., Shrader-Frechette, K., & Belitz, K. (1994). Verification, validation, and confirmation of numerical models in the Earth sciences. Science, 263, 641–646. https://doi.org/10.1126/science.263.5147.641\n\n\nSimpson, N. P., Mach, K. J., Constable, A., Hess, J., Hogarth, R., Howden, M., et al. (2021). A framework for complex climate change risk assessment. One Earth, 4, 489–501. https://doi.org/10.1016/j.oneear.2021.03.005\n\n\nWoodard, D. L., Davis, S. J., & Randerson, J. T. (2019). Economic carbon cycle feedbacks may offset additional warming from natural feedbacks. Proceedings of the National Academy of Sciences, 116, 759–764. https://doi.org/10.1073/pnas.1805187115"
   },
   {
     "objectID": "tutorials/julia-plots.html",
@@ -1948,280 +1948,280 @@
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#mathematical-programming",
     "href": "slides/lecture13-2-limits-optimization.html#mathematical-programming",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Mathematical Programming",
     "text": "Mathematical Programming\n\nWrite decision problem in closed-form:\n\nObjectives, constraints as explicit functions of decision variables.\n\nLinear Programming:\n\nLinearity\nCertainty\nDivisibility"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#relaxing-lp-assumptions",
     "href": "slides/lecture13-2-limits-optimization.html#relaxing-lp-assumptions",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Relaxing LP Assumptions",
-    "text": "Relaxing LP Assumptions\n\nRelaxing Divisibility: Mixed Integer Linear Programming\nRelaxing Certainty: Two-Stage Linear Programs\nRelaxing Linearity: not going there"
+    "text": "Relaxing LP Assumptions\n\nRelaxing Divisibility: Mixed Integer Linear Programming\nRelaxing Certainty: Two-Stage Stochastic Linear Programs\nRelaxing Linearity: not going there"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#treatment-of-uncertainty-in-lps",
     "href": "slides/lecture13-2-limits-optimization.html#treatment-of-uncertainty-in-lps",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Treatment of Uncertainty in LPs",
     "text": "Treatment of Uncertainty in LPs\n\nTwo-Stage Problems (Initial Decision -&gt; Recourse)\nScenarios"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#pros-and-cons-of-mathematical-programming",
     "href": "slides/lecture13-2-limits-optimization.html#pros-and-cons-of-mathematical-programming",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Pros and Cons of Mathematical Programming",
     "text": "Pros and Cons of Mathematical Programming\n\n\n\nPros:\n\nCan guarantee analytic solutions (or close)\nOften computationally scalable (especially for LPs)\nTransparent\n\n\nCons:\n\nOften quite stylized\nLimited ability to treat uncertainty"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#challenge-1-writing-down-a-mathematical-program",
     "href": "slides/lecture13-2-limits-optimization.html#challenge-1-writing-down-a-mathematical-program",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Challenge 1: Writing Down A Mathematical Program",
     "text": "Challenge 1: Writing Down A Mathematical Program\nSystems models often have:\n\nHard to write objectives and constraints in closed form;\nNonlinear dynamics with “unpleasant” geometry."
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#recall-bifurcations",
     "href": "slides/lecture13-2-limits-optimization.html#recall-bifurcations",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Recall: Bifurcations",
     "text": "Recall: Bifurcations\n\n\nBifurcations are when the qualitative behavior of a system changes across a parameter boundary.\n\n\n\n\nBifurcations Diagram"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#recall-feedback-loops",
     "href": "slides/lecture13-2-limits-optimization.html#recall-feedback-loops",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Recall: Feedback Loops",
     "text": "Recall: Feedback Loops\n\n\nFeedback loops can be reinforcing or dampening.\nDampening feedback loops are associated with stable equilibria, while reinforcing feedback loops are associated with instability.\n\n\n\n\nReinforcing Feedback Example"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#what-are-the-implications-of-these-dynamics",
     "href": "slides/lecture13-2-limits-optimization.html#what-are-the-implications-of-these-dynamics",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "What Are The Implications of These Dynamics?",
     "text": "What Are The Implications of These Dynamics?\n\n\nMay violate strong geometric constraints from mathematical programming.\nNeglecting can lead to overconfidence about outcomes."
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#emergence",
     "href": "slides/lecture13-2-limits-optimization.html#emergence",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Emergence",
     "text": "Emergence\n\n\n\nSimple “micro”-scale rules can yield more complex and unexpected “macro”-scale outcomes\nCan complicate writing down system dynamics and constraints in MP form.\n\n\n\n\n\nSchelling Model Animation\n\n\n\nSource: Blaqdolphin - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=91228415"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#challenge-2-multiple-objectives",
     "href": "slides/lecture13-2-limits-optimization.html#challenge-2-multiple-objectives",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Challenge 2: Multiple Objectives",
     "text": "Challenge 2: Multiple Objectives\nWe often have multiple objectives that we want to analyze.\n\n\nCosts\nEnvironmental impacts\nReliability"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#mathematical-programming-and-multiple-objectives",
     "href": "slides/lecture13-2-limits-optimization.html#mathematical-programming-and-multiple-objectives",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Mathematical Programming and Multiple Objectives",
     "text": "Mathematical Programming and Multiple Objectives\nWe could formulate constraints based on a priori assessments of acceptability:\n\nBudget constraints;\nReliability constraints"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#combining-multiple-objectives-together",
     "href": "slides/lecture13-2-limits-optimization.html#combining-multiple-objectives-together",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Combining Multiple Objectives Together",
     "text": "Combining Multiple Objectives Together\nAnother common approach is to combine multiple objectives \\(Z_i\\) together into a weighted sum:\n\\[\\sum_i w_i Z_i,\\]\nwhere \\(\\sum_i w_i = 1\\).\nThis requires normalizing the \\(Z_i\\)."
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#limits-of-these-approaches",
     "href": "slides/lecture13-2-limits-optimization.html#limits-of-these-approaches",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Limits of These Approaches",
     "text": "Limits of These Approaches\nCan you think of problems or limits with these approaches to handling multiple objectives?\n\n\nRequire a priori assessments of acceptable limits and/or weights.\nLimits ability to understand “macro”-scale tradeoffs (beyond shadow prices)."
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#shallow-lake-problem",
     "href": "slides/lecture13-2-limits-optimization.html#shallow-lake-problem",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Shallow Lake Problem",
     "text": "Shallow Lake Problem\n\n\nRecall the shallow lake problem from earlier in the semester.\n\n\n\n\nShallow Lake Problem Diagram"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#lake-model",
     "href": "slides/lecture13-2-limits-optimization.html#lake-model",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Lake Model",
     "text": "Lake Model\n\n\n\\[\\begin{align*}\nX_{t+1} &= X_t + a_t + y_t \\\\\n&\\quad + \\frac{X_t^q}{1 + X_t^q} - bX_t,\\\\[0.5em]\ny_t &\\sim \\text{LogNormal}(\\mu, \\sigma^2)\n\n\\end{align*}\\]\n\n\n\n\nParameter\nDefinition\n\n\n\n\n\\(X_t\\)\nP concentration in lake\n\n\n\\(a_t\\)\npoint source P input\n\n\n\\(y_t\\)\nnon-point source P input\n\n\n\\(q\\)\nP recycling rate\n\n\n\\(b\\)\nrate at which P is lost"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#lake-model-dynamics",
     "href": "slides/lecture13-2-limits-optimization.html#lake-model-dynamics",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Lake Model Dynamics",
-    "text": "Lake Model Dynamics\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\nNo Exogenous P Inputs\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\nExogenous P Inputs: 0.10/time"
+    "text": "Lake Model Dynamics\n\n\n\nGKS: could not find font bold.ttf\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\nNo Exogenous P Inputs\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\nExogenous P Inputs: 0.10/time"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#the-lake-problem-as-a-mathematical-program",
     "href": "slides/lecture13-2-limits-optimization.html#the-lake-problem-as-a-mathematical-program",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "The Lake Problem As a Mathematical Program?",
     "text": "The Lake Problem As a Mathematical Program?\nWhat complicates formulating a mathematical program for the lake problem?"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#the-lake-problem-as-a-mathematical-program-1",
     "href": "slides/lecture13-2-limits-optimization.html#the-lake-problem-as-a-mathematical-program-1",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "The Lake Problem As a Mathematical Program?",
     "text": "The Lake Problem As a Mathematical Program?\nOur objective might be to maximize \\(\\sum_{t=1}^T a_t\\) (as a proxy for economic activity), while keeping a low probability of eutrophication."
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#uncertain-inputs-and-mp",
     "href": "slides/lecture13-2-limits-optimization.html#uncertain-inputs-and-mp",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Uncertain Inputs and MP",
     "text": "Uncertain Inputs and MP\nHow can we represent uncertainty in inputs \\(y_t\\) in an MP?\n\n\nVery challenging to formulate scenarios;\nNon-trivial (if possible) to write expected value in analytic form;\nBut Monte Carlo simulation is straightforward…"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#multiple-objectives-and-the-lake-problem",
     "href": "slides/lecture13-2-limits-optimization.html#multiple-objectives-and-the-lake-problem",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Multiple Objectives and the Lake Problem",
     "text": "Multiple Objectives and the Lake Problem\nWhat are some relevant objectives for the lake problem?\n\n\nMaximize phosphorous output (proxy for economic output)\nMaximize probability of avoiding eutrophification\nCan add other objectives breaking out lake response (stability, worst case P concentration, etc.)"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#upshot-of-these-challenges",
     "href": "slides/lecture13-2-limits-optimization.html#upshot-of-these-challenges",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Upshot Of These Challenges",
     "text": "Upshot Of These Challenges\nMany systems problems with\n\ncomplex, non-linear dynamics;\ncontinuous uncertainties;\nmultiple objectives.\n\ndon’t lend themselves well to mathematical programming.\nSo how can we make decisions?"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#multiple-objectives-and-environmental-systems",
     "href": "slides/lecture13-2-limits-optimization.html#multiple-objectives-and-environmental-systems",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Multiple Objectives and Environmental Systems",
     "text": "Multiple Objectives and Environmental Systems\nOften have multiple objectives at play when designing or managing environmental systems:\n\nSome examples:\n\nCost\nEnvironmental quality\nReliability/Variability"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#example-power-systems",
     "href": "slides/lecture13-2-limits-optimization.html#example-power-systems",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Example: Power Systems",
     "text": "Example: Power Systems\n\nTotal generation cost (including reserves);\nCO2 emissions;\nResource adequacy (do we have enough resources available);\nReliability;\nOther environmental impacts"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#example-reservoir-operations",
     "href": "slides/lecture13-2-limits-optimization.html#example-reservoir-operations",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Example: Reservoir Operations",
     "text": "Example: Reservoir Operations\n\nMunicipal demand;\nIrrigation;\nRecreation;\nHydropower potential;\nFlood management;\nStreamflow (ecosystem management)"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#how-can-we-incorporate-multiple-objectives-into-models",
     "href": "slides/lecture13-2-limits-optimization.html#how-can-we-incorporate-multiple-objectives-into-models",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "How Can We Incorporate Multiple Objectives Into Models?",
     "text": "How Can We Incorporate Multiple Objectives Into Models?\nApproaches are method specific!\nKey Question: what does it mean to “optimize” multiple objectives?"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#how-can-we-incorporate-multiple-objectives-into-models-1",
     "href": "slides/lecture13-2-limits-optimization.html#how-can-we-incorporate-multiple-objectives-into-models-1",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "How Can We Incorporate Multiple Objectives Into Models?",
     "text": "How Can We Incorporate Multiple Objectives Into Models?\nLinear Programming:\n\n\nIdentify thresholds and establish constraints for non-objective “objectives”;\nWeight objectives based on preferences, e.g. \\[\\min_\\mathbf{x} Z(\\mathbf{x}) = \\sum_i w_i \\hat{Z_i}(\\mathbf{x}), \\qquad \\sum_i w_i =1\\]"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#how-can-we-incorporate-multiple-objectives-into-models-2",
     "href": "slides/lecture13-2-limits-optimization.html#how-can-we-incorporate-multiple-objectives-into-models-2",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "How Can We Incorporate Multiple Objectives Into Models?",
     "text": "How Can We Incorporate Multiple Objectives Into Models?\nSimulation-Optimization:\n\nCould use the LP approaches\nCan also have the simulation model (or wrapper) return multiple metrics"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#back-to-the-key-question",
     "href": "slides/lecture13-2-limits-optimization.html#back-to-the-key-question",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Back To The Key Question…",
     "text": "Back To The Key Question…\nWhat does it mean to “optimize” multiple objectives?\n\nStraightforward with weighting, requires but a priori elicitation of weights.\nWhat about if we leave the objectives unaggregated?"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#example-lake-problem",
     "href": "slides/lecture13-2-limits-optimization.html#example-lake-problem",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Example: Lake Problem",
     "text": "Example: Lake Problem\n\n\nSimulated 100 random decisions with two objectives:\n\nMaximize mean P releases\nMinimize probability of exceeding critical P concentration"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#tradeoffs",
     "href": "slides/lecture13-2-limits-optimization.html#tradeoffs",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Tradeoffs",
     "text": "Tradeoffs\n\n\nThere is a tradeoff between these two objectives:\nGreater releases typically means lower reliability.\nWhat does it mean to find an “optimum” across these two objectives?"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#non-dominated-decisions",
     "href": "slides/lecture13-2-limits-optimization.html#non-dominated-decisions",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Non-Dominated Decisions",
     "text": "Non-Dominated Decisions\n\n\nWe say that a decision \\(\\mathbf{x}\\) is dominated if there exists another solution \\(\\mathbf{y}\\) such that for every objective metric \\(Z_i(\\cdot)\\), \\[Z_i(\\mathbf{x}) &gt; Z_i(\\mathbf{y}).\\]"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#non-dominated-decisions-1",
     "href": "slides/lecture13-2-limits-optimization.html#non-dominated-decisions-1",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Non-Dominated Decisions",
     "text": "Non-Dominated Decisions\n\n\n\\(\\mathbf{x}\\) is non-dominated if it is not dominated by any \\(\\mathbf{y} \\neq \\mathbf{x}\\)."
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#pareto-fronts",
     "href": "slides/lecture13-2-limits-optimization.html#pareto-fronts",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Pareto Fronts",
     "text": "Pareto Fronts\n\n\nThe set of non-dominated solutions is called the Pareto front (solutions are Pareto-optimal).\nEvery member of a Pareto front represents a different tradeoff between objectives."
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#a-priori-vs-a-posteriori-decision-making",
     "href": "slides/lecture13-2-limits-optimization.html#a-priori-vs-a-posteriori-decision-making",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "A Priori vs A Posteriori Decision-Making",
     "text": "A Priori vs A Posteriori Decision-Making\nThis gives us two frameworks for evaluating tradeoffs:\n\nA Priori: Establish weights ahead of time and combine objectives;\nA Posteriori: Identify Pareto-optimal solutions and then discuss what tradeoffs are tolerable."
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#identifying-pareto-fronts",
     "href": "slides/lecture13-2-limits-optimization.html#identifying-pareto-fronts",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Identifying Pareto Fronts",
     "text": "Identifying Pareto Fronts\nIn higher dimensions, manually screening of a Pareto front is difficult.\nCan use multi-objective optimization with (certain) evolutionary algorithms."
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#takeaways",
     "href": "slides/lecture13-2-limits-optimization.html#takeaways",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Takeaways",
     "text": "Takeaways\n\nGeneral challenges to mathematical programming for general systems analysis.\nThese challenges include:\n\nComplex and non-linear systems dynamics;\nUncertainties;\nMultiple objectives."
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#multiple-objectives-1",
     "href": "slides/lecture13-2-limits-optimization.html#multiple-objectives-1",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Multiple Objectives",
     "text": "Multiple Objectives\n\nManagement of environmental systems often involves multiple objectives.\nMultiple objectives often have tradeoffs.\nCan combine multiple objectives with weights (a priori decision-making) or identifying non-dominated solutions (a posteriori decision-making)\nSet of non-dominated solutions (Pareto front) represent different choices about tradeoffs."
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#next-classes",
     "href": "slides/lecture13-2-limits-optimization.html#next-classes",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Next Classes",
     "text": "Next Classes\nWednesday: Limits of Mathematical Programming\nMonday: Prelim 2 Review, Wrap-Up"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#no-class-after-thanksgiving",
     "href": "slides/lecture13-2-limits-optimization.html#no-class-after-thanksgiving",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "No Class after Thanksgiving!",
     "text": "No Class after Thanksgiving!\n\nWork on project!\nWill have open office hours for project check-ins (remotely on 12/4)"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#assessments",
     "href": "slides/lecture13-2-limits-optimization.html#assessments",
-    "title": "Limits of Mathematical Programming for Systems Analysis",
+    "title": "Multiple Objectives",
     "section": "Assessments",
     "text": "Assessments\nHW5: Will be due last week of class (12/5)."
   },
@@ -2349,7 +2349,7 @@
     "href": "slides/lecture12-1-waste-management.html#indicator-variable-constraints",
     "title": "Waste Management and Network Models",
     "section": "Indicator Variable Constraints",
-    "text": "Indicator Variable Constraints\nWhat criteria can we use to determine whether a facility should operate (\\(Y_j = 1\\))?\n\n\\[Y_j = \\begin{cases}0 & \\text{if} \\sum_{i \\in I} W_{ij} = 0 \\\\[0.5em] 1 & \\text{if} \\sum_{i \\in I} W_{ij} + \\sum_{k \\neq j} R_{kj} &gt; 0  &gt; 0\\end{cases}\\]"
+    "text": "Indicator Variable Constraints\nWhat criteria can we use to determine whether a facility should operate (\\(Y_j = 1\\))?\n\n\\[Y_j = \\begin{cases}0 & \\text{if} \\sum_{i \\in I} W_{ij} = 0 \\\\[0.5em] 1 & \\text{if} \\sum_{i \\in I} W_{ij} + \\sum_{k \\neq j} R_{kj} &gt; 0  \\end{cases}\\]"
   },
   {
     "objectID": "slides/lecture12-1-waste-management.html#waste-mass-balance-constraints",
@@ -3480,83 +3480,263 @@
     "text": "Git Basics from The Odin Project.\nLearn Git Branching: An interactive, visual tutorial to how git works.\nVersion Control from MIT’s “CS: Your Missing Semester” course.\nGit and GitHub for Poets: YouTube playlist covering the basics of git and GitHub."
   },
   {
-    "objectID": "hw/hw03/hw03.html",
-    "href": "hw/hw03/hw03.html",
-    "title": "BEE 4750 Homework 3: Dissolved Oxygen and Monte Carlo",
+    "objectID": "hw/hw02/hw02.html",
+    "href": "hw/hw02/hw02.html",
+    "title": "BEE 4750 Homework 2: Systems Modeling and Simulation",
     "section": "",
-    "text": "Due Date\n\n\n\nThursday, 10/16/25, 9:00pm",
+    "text": "Due Date\n\n\n\nThursday, 09/25/25, 9:00pm",
     "crumbs": [
-      "Homework 3"
+      "Homework 2"
     ]
   },
   {
-    "objectID": "hw/hw03/hw03.html#overview",
-    "href": "hw/hw03/hw03.html#overview",
-    "title": "BEE 4750 Homework 3: Dissolved Oxygen and Monte Carlo",
+    "objectID": "hw/hw02/hw02.html#overview",
+    "href": "hw/hw02/hw02.html#overview",
+    "title": "BEE 4750 Homework 2: Systems Modeling and Simulation",
     "section": "Overview",
-    "text": "Overview\n\nInstructions\n\nProblem 1 asks you to implement a model for dissolved oxygen in a river with multiple waste releases and use this to develop a strategy to ensure regulatory compliance.\n\n\n\nLoad Environment\nThe following code loads the environment and makes sure all needed packages are installed. This should be at the start of most Julia scripts.\n\nimport Pkg\nPkg.activate(@__DIR__)\nPkg.instantiate()\n\n\nusing Random\nusing Plots\nusing LaTeXStrings\nusing Distributions",
+    "text": "Overview\n\nInstructions\n\nProblem 1 asks you to draw a systems diagram and identify the type of a feedback.\nProblem 2 asks you to model contaminant concentrations in a river and use simulation to compare the concentrations to a regulatory standard.\nProblem 3 asks you to explore the implications of an ice-albedo feedback in the Earth’s climate system by understanding the equilibria of the modeled system and their stabilities.\n\n\n\nLoad Environment\nThe following code loads the environment and makes sure all needed packages are installed. This should be at the start of most Julia scripts.\n\nimport Pkg\nPkg.activate(@__DIR__)\nPkg.instantiate()\n\n\nusing Plots\nusing LaTeXStrings\nusing CSV\nusing DataFrames\nusing Roots",
     "crumbs": [
-      "Homework 3"
+      "Homework 2"
     ]
   },
   {
-    "objectID": "hw/hw03/hw03.html#problems-total-30-points",
-    "href": "hw/hw03/hw03.html#problems-total-30-points",
-    "title": "BEE 4750 Homework 3: Dissolved Oxygen and Monte Carlo",
+    "objectID": "hw/hw02/hw02.html#problems-total-30-points",
+    "href": "hw/hw02/hw02.html#problems-total-30-points",
+    "title": "BEE 4750 Homework 2: Systems Modeling and Simulation",
     "section": "Problems (Total: 30 Points)",
-    "text": "Problems (Total: 30 Points)\n\nProblem 1 (30 points)\nA river which flows at 6 km/d is receiving waste discharges from two sources which are 15 km apart. The oxygen reaeration rate is 0.55 day-1, and the decay rates of CBOD and NBOD are are 0.35 and 0.25 day-1, respectively. The river’s saturated dissolved oxygen concentration is 10m g/L.\nIf the characteristics of the river inflow and waste discharges are given in Table 1, write a Julia model to compute the dissolved oxygen concentration from the first wastewater discharge to an arbitrary distance d km downstream. Use your model to compute the minimum dissolved oxygen concentration up to 50 km downstream and how far downriver this maximum occurs.\n\n\n\nTable 1: River inflow and waste stream characteristics for Problem 1.\n\n\n\n\n\nParameter\nRiver Inflow\nWaste Stream 1\nWaste Stream 2\n\n\n\n\nInflow\n100,000 m3/d\n10,000 m3/d\n15,000 m3/d\n\n\nDO Concentration\n7.5 mg/L\n5 mg/L\n5 mg/L\n\n\nCBOD\n5 mg/L\n50 mg/L\n45 mg/L\n\n\nNBOD\n5 mg/L\n35 mg/L\n35 mg/L\n\n\n\n\n\n\n\n\nProblem 1.1\nImplement the Streeter-Phelps (analytic) solution for the dissolved oxygen concentration. Plot the dissolved oxygen concentration from the first waste stream to 50 km downriver. What is the minimum value in mg/L?\n\n\nProblem 1.2\nImplement a numerically-integrated (discretized) solution for the dissolved oxygen concentration. Using a resolution of 0.5km, conduct a simulation and plot the results on the same axis as the plot from Problem 1.1. How has the minimum value changed? What do you attribute this difference to (be specific about the source of the difference(s) in terms of the simulation dynamics, not just that one is a numerical approximation).\n\n\nProblem 1.3\nUsing the analytic model, what is the minimum level of treatment (% removal of organic waste; assume this is equivalent to the same level of reduction of the CBOD and NBOD) for waste stream 1 that will ensure that the dissolved oxygen concentration is in compliance with the 4 mg/L standard along with a 5% margin of safety, assuming that waste stream 2 remains untreated? How about if only waste stream 2 is treated?\n\n\nProblem 1.4\nSuppose you are responsible for designing a waste treatment plan for discharges into the river, with a regulatory mandate to keep the dissolved oxygen concentration above 4 mg/L. Discuss whether you’d opt to treat waste stream 2 alone or both waste streams equally. What other information might you need to make a conclusion, if any?\n\n\nProblem 1.5\nSuppose that it is known that the DO concentrations at the river inflow can vary according to a \\(\\text{LogNormal}(2.0, 0.15)\\) distribution. Conduct a Monte Carlo simulation of the DO concentration in the river. If you treat only waste stream 1 (based on your analysis from Problem 1.3), what is the expected probability and 95% confidence interval that the river fails to comply with the regulatory standard of 4 mg/L? How did you decide that your Monte Carlo sample size was sufficiently large?",
+    "text": "Problems (Total: 30 Points)\n\nProblem 1 (5 points)\nDraw a systems diagram for the relationship between global mean temperature, atmospheric CO2 concentrations, and ocean CO2 concentrations. What are the signs of the interactions between these components and why? What does this suggest about the overall feedback between temperature and the ocean carbon cycle?\n\n\n\n\n\n\n\nThink about Henry’s law for CO2.\n\n\n\n\nProblem 2 (15 points)\nA river which flows at 10 km/d is receiving discharges of wastewater contaminated with CRUD from two sources which are 15 km apart, as shown in the Figure below. CRUD decays exponentially in the river at a rate of 0.36 \\(\\mathrm{d}^{-1}\\) and is deposited by the atmosphere along the river at a rate of 54 kg/km/d. \n\n\n\nSchematic of the river system in Problem 2\n\n\n\nProblem 2.1\nDraw a systems diagram with the relevant control volume(s) denoted and any relevant in/out-flows between these boxes. How did you decide how many boxes were needed?\n\n\nProblem 2.2\nDevelop a model for the concentration of CRUD downriver by formulating and solving the appropriate differential equation(s) analytically.\n\n\n\n\n\n\n\nFormulate your model in terms of distance downriver, rather than leaving it in terms of time from discharge.\n\n\n\n\nProblem 2.3\nDetermine if the system in compliance with a regulatory limit of \\(2.3\\ \\text{kg}/(1000 \\text{m}^3)\\). You can do this analytically or computationally.\n\n\n\nProblem 3 (10 points)\nIn class, we discussed the ice-albedo feedback and its possible influence on melting the hypothesized “Snowball Earth”. In this problem, we’ll introduce a simple model of the Earth’s energy balance with includes this feedback and examine the stability of the climate.\nThis simple model of the energy balance (averaged over the entire planet) is:\n\\[\n\\underbrace{C\\frac{dT}{dt}}_{\\text{change in heat}} = \\underbrace{\\frac{(1-\\alpha)S}{4}}_{\\text{incoming radiation}} - \\underbrace{(A - BT)}_{\\text{outgoing radiation}} + \\underbrace{a\\ln \\left(\\frac{[CO_2]}{[CO_2]_{PI}}\\right)}_{\\text{greenhouse effect}},\n\\tag{1}\\]\nwhere:\n\n\\(T\\) is the Earth’s global mean temperature (in \\(^\\circ\\text{C}\\));\n\\(C\\) is the heat capacity of the atmosphere and shallow ocean, taken to be \\(51\\ \\text{J}/\\text{m}^2/^\\circ\\text{C}\\);\n\\(\\alpha\\) is the planetary albedo, or the fraction of incoming radiation reflected by the Earth, which has a present-day value of approximately 0.3;\n\\(S\\) is the solar constant, or the amount of solar radiation received by the Earth averaged over area, which has a present-day value of \\(1368\\ \\text{W}/\\text{m}^2\\) but during the Neoproteorozoic Era had a value of \\(1272\\ \\text{W}/\\text{m}^2\\) (this is divided by four because the Earth is a sphere but \\(S\\) is the radiation captured by a disc with radius equal to that of the Earth);\n\\(A\\) and \\(B\\) are coefficients from the linearization of outgoing radiation physics, and have corresponding values \\(B=-1.3\\ \\text{W}/\\text{m}^2/^\\circ\\text{C}\\) (estimated from a number of lines of evidence about the sensitivity of outgoing radiation to temperature; this is negative due to a sign convention about the direction of incoming vs. outgoing radiation) and \\(A=221.2\\ \\text{W}/\\text{m}^2\\) (estimated by assuming the pre-industrial temperature of \\(14^\\circ\\text{C}\\) was stable without anthropogenic greenhouse gas emissions).\n\nWe will ignore the greenhouse effect term as we are considering the Earth system well before humans were around.\n\nProblem 3.1\nDiscretize the climate model (Equation 1) using forward Euler integration and a time step of \\(\\Delta t = 1\\) yr.\n\n\nProblem 3.2\nRather than assuming a constant value for the albedo \\(\\alpha\\), we will represent the ice-albedo feedback by letting \\(\\alpha\\) depend on \\(T\\):\n\\[\\alpha(T) =\n    \\begin{cases}\n        \\alpha_i & \\quad \\text{if } T \\leq -10^\\circ \\text{C} \\\\\n        \\alpha_i + (\\alpha_0 - \\alpha_i)((T+10) / 20) & \\quad \\text{if } -10^\\circ \\text{C} \\leq T \\leq 10^\\circ \\text{C} \\\\\n        \\alpha_0 & \\quad \\text{if } T \\geq 10^\\circ \\text{C}.\n    \\end{cases}\\]\nLet \\(\\alpha_i = 0.5\\) and \\(\\alpha_0 = 0.3\\). Simulate the simple climate model using the Neoprotereozoic value of \\(S\\) with temperature-varying albedo for initial values of \\(T\\) spanning \\(-60^\\circ\\text{C} \\leq T_0 \\leq 30^\\circ\\text{C}\\) over a period of 200 years. Plot the temperature trajectories. How many equilibria are there and what are their stabilities?\n\n\nProblem 3.3\nOne might hypothesize that one cause for the transition from Snowball Earth (the stable frozen equilibrium from Problem 3.2) was an increasing amount of incoming solar radiation (as expressed by an increase in \\(S\\)). Examine this hypothesis using our simple model. Is this factor enough to cause the planet to warm to the pre-industrial temperature of \\(14^\\circ\\text{C}\\)?",
     "crumbs": [
-      "Homework 3"
+      "Homework 2"
     ]
   },
   {
-    "objectID": "hw/hw03/hw03.html#references",
-    "href": "hw/hw03/hw03.html#references",
-    "title": "BEE 4750 Homework 3: Dissolved Oxygen and Monte Carlo",
+    "objectID": "hw/hw02/hw02.html#references",
+    "href": "hw/hw02/hw02.html#references",
+    "title": "BEE 4750 Homework 2: Systems Modeling and Simulation",
     "section": "References",
     "text": "References\nList any external references consulted, including classmates.",
     "crumbs": [
-      "Homework 3"
+      "Homework 2"
     ]
   },
   {
-    "objectID": "hw/index.html",
-    "href": "hw/index.html",
-    "title": "Homework",
+    "objectID": "hw/hw04/hw04.html",
+    "href": "hw/hw04/hw04.html",
+    "title": "BEE 4750 Homework 4: Linear Programming and Capacity Expansion",
     "section": "",
-    "text": "This page contains information about and a schedule of the homework assignments for the semester.",
+    "text": "Due Date\n\n\n\nThursday, 11/06/25, 9:00pm",
     "crumbs": [
-      "Homework Overview"
+      "Homework 4"
     ]
   },
   {
-    "objectID": "hw/index.html#general-information",
-    "href": "hw/index.html#general-information",
-    "title": "Homework",
+    "objectID": "hw/hw04/hw04.html#overview",
+    "href": "hw/hw04/hw04.html#overview",
+    "title": "BEE 4750 Homework 4: Linear Programming and Capacity Expansion",
+    "section": "Overview",
+    "text": "Overview\n\nInstructions\n\nProblem 1 asks you to analytically (or graphically) solve a linear program.\nProblem 2 asks you to formulate and solve a resource allocation problem using linear programming.\nProblem 3 asks you to formulate, solve, and analyze a standard generating capacity expansion problem.\n\n\n\nLoad Environment\nThe following code loads the environment and makes sure all needed packages are installed. This should be at the start of most Julia scripts.\n\nimport Pkg\nPkg.activate(@__DIR__)\nPkg.instantiate()\n\n\nusing JuMP\nusing HiGHS\nusing DataFrames\nusing Plots\nusing Measures\nusing CSV\nusing MarkdownTables",
+    "crumbs": [
+      "Homework 4"
+    ]
+  },
+  {
+    "objectID": "hw/hw04/hw04.html#problems-total-30-points",
+    "href": "hw/hw04/hw04.html#problems-total-30-points",
+    "title": "BEE 4750 Homework 4: Linear Programming and Capacity Expansion",
+    "section": "Problems (Total: 30 Points)",
+    "text": "Problems (Total: 30 Points)\n\nProblem 1 (Total: 3 Points)\nSolve the following linear program analytically. Show your work and justify any reasoning.\n\\[\n\\begin{alignedat}{2}\n&& \\max_{x, y} \\quad & 3x + 2y\\\\\n&&\\text{subject to:} \\quad & x + 4y \\leq 16\\\\\n& && x - 2y \\leq -1\\\\\n& && 0 \\leq x \\leq 4\\\\\n& && 1 \\leq y \\leq 4.\n\\end{alignedat}\n\\]\n\n\nProblem 2 (12 points)\nA farmer has access to a pesticide which can be used on corn, soybeans, and wheat fields, and costs $70/kg-yr to apply. The crop yields the farmer can obtain following crop yields by applying varying rates of pesticides to the field are shown in Table 1.\n\n\n\nTable 1: Crop yields from applying varying pesticide rates for Problem 1.\n\n\n\n\n\n\n\n\n\n\n\nApplication Rate (kg/ha)\nSoybean (kg/ha)\nWheat (kg/ha)\nCorn (kg/ha)\n\n\n\n\n0\n2900\n3500\n5900\n\n\n1\n3800\n4100\n6700\n\n\n2\n4400\n4200\n7900\n\n\n\n\n\n\nThe costs of production, excluding pesticides, for each crop, and selling prices, are shown in Table 2.\n\n\n\nTable 2: Costs of crop production, excluding pesticides, and selling prices for each crop.\n\n\n\n\n\nCrop\nProduction Cost ($/ha-yr)\nSelling Price ($/kg)\n\n\n\n\nSoybeans\n350\n0.36\n\n\nWheat\n280\n0.27\n\n\nCorn\n390\n0.22\n\n\n\n\n\n\nRecently, environmental authorities have declared that farms cannot have an average application rate on soybeans, wheat, and corn which exceeds 0.8, 0.7, and 0.6 kg/ha, respectively. The farmer has asked you for advice on how they should plant crops and apply pesticides to maximize profits over 130 total ha while remaining in regulatory compliance if demand for each crop (which is the maximum the market would buy) this year is 250,000 kg?\n\nProblem 2.1\nFormulate a linear program for this resource allocation problem, including clear definitions of decision variable(s) (including units), objective function(s), and constraint(s) (make sure to explain functions and constraints with any needed derivations and explanations). Tip: Make sure that all of your constraints are linear.\n\n\nProblem 2.2\nHow many ha should the farmer dedicate to each crop and with what pesticide application rate(s)? How much profit will the farmer expect to make?\n\n\nProblem 2.3\nThe farmer has an opportunity to buy an extra 10 ha of land. How much extra profit would this land be worth to the farmer? Discuss why this value makes sense and under what conditions you would recommend the farmer should make the purchase.\n\n\n\nProblem 2 (15 points)\nFor this problem, we will use hourly load (demand) data from 2013 in New York’s Zone C (which includes Ithaca). The load data is loaded and plotted below in Figure 1.\n\n# load the data, pull Zone C, and reformat the DataFrame\nNY_demand = DataFrame(CSV.File(\"data/2013_hourly_load_NY.csv\"))\nrename!(NY_demand, :\"Time Stamp\" =&gt; :Date)\ndemand = NY_demand[:, [:Date, :C]]\nrename!(demand, :C =&gt; :Demand)\ndemand[:, :Hour] = 1:nrow(demand)\n\n# plot demand\nplot(demand.Hour, demand.Demand, xlabel=\"Hour of Year\", ylabel=\"Demand (MWh)\", label=:false)\n\n\n\n\n\n\nFigure 1: Hourly load data for New York’s Zone C in 2013.\n\n\n\n\nNext, we load the generator data, shown in Table 3. This data includes fixed costs ($/MW installed), variable costs ($/MWh generated), and CO2 emissions intensity (tCO2/MWh generated).\n\ngens = DataFrame(CSV.File(\"data/generators.csv\"))\n\n\n\nTable 3: Generator type data, including fixed costs (\\(/MW installed), variable costs (\\)/MWh generated), and CO2 emissions intensity (tCO2/MWh generated).\n\n\n\n6×4 DataFrame\n\n\n\nRow\nPlant\nFixedCost\nVarCost\nEmissions\n\n\n\nString15\nInt64\nInt64\nFloat64\n\n\n\n\n1\nGeothermal\n450000\n0\n0.0\n\n\n2\nCoal\n220000\n24\n1.0\n\n\n3\nNG CCGT\n82000\n30\n0.43\n\n\n4\nNG CT\n65000\n40\n0.55\n\n\n5\nWind\n91000\n0\n0.0\n\n\n6\nSolar\n70000\n0\n0.0\n\n\n\n\n\n\n\n\n\nFinally, we load the hourly solar and wind capacity factors, which are plotted in Figure 2. These tell us the fraction of installed capacity which is expected to be available in a given hour for generation (typically based on the average meteorology).\n\n# load capacify factors into a DataFrame\ncap_factor = DataFrame(CSV.File(\"data/wind_solar_capacity_factors.csv\"))\n\n# plot January capacity factors\np1 = plot(cap_factor.Wind[1:(24*31)], label=\"Wind\")\nplot!(cap_factor.Solar[1:(24*31)], label=\"Solar\")\nxaxis!(\"Hour of the Month\")\nyaxis!(\"Capacity Factor\")\n\np2 = plot(cap_factor.Wind[4344:4344+(24*31)], label=\"Wind\")\nplot!(cap_factor.Solar[4344:4344+(24*31)], label=\"Solar\")\nxaxis!(\"Hour of the Month\")\nyaxis!(\"Capacity Factor\")\n\ndisplay(p1)\ndisplay(p2)\n\n\n\n\n\n\n\n\n\n\n\n(a) January\n\n\n\n\n\n\n\n\n\n\n\n\n\n(b) July\n\n\n\n\n\n\n\nFigure 2: Hourly solar and wind capacity factors.\n\n\n\n\nYou have been asked to develop a generating capacity expansion plan for the utility in Riley County, NY, which currently has no existing electrical generation infrastructure. The utility can build any of the following plant types: geothermal, coal, natural gas combined cycle gas turbine (CCGT), natural gas combustion turbine (CT), solar, and wind. The NY state legislature is planning to enact an annual CO2 limit, which for the utility would limit the emissions in its footprint to 1.5 MtCO2/yr.\nWhile coal, CCGT, and CT plants can generate at their full installed capacity, geothermal plants operate at maximum 85% capacity, and solar and wind available capacities vary by the hour depend on the expected meteorology. The utility will also penalize any non-served demand at a rate of $10,000/MWh.\n\nProblem 3.1\nFormulate a linear program for this capacity expansion problem, including clear definitions of decision variable(s) (including units), objective function(s), and constraint(s) (make sure to explain functions and constraints with any needed derivations and explanations).\n\n\nProblem 3.2\nHow much should the utility build of each type of generating plant? What will the total cost be? How much energy will be non-served?\n\n\nProblem 3.3\nWhat fraction of annual generation does each plant type produce? How does this compare to the breakdown of built capacity that you found in Problem 3.2? Do these results make sense given the demand and generator data?\n\n\nProblem 3.5\nWhat is the shadow price of CO2? What is the value to the utility be of allowing it to emit an additional 1000 tCO2/yr?\n\n\n\n\n\n\nSignificant Digits\n\n\n\nUse round(x; digits=n) to report values to the appropriate precision! If your number is on a different order of magnitude and you want to round to a certain number of significant digits, you can use round(x; sigdigits=n).\n\n\n\n\n\n\n\n\nGetting Variable Output Values\n\n\n\nvalue.(x) will report the values of a JuMP variable x, but it will return a special container which holds other information about x that is useful for JuMP. This means that you can’t use this output directly for further calculations. To just extract the values, use value.(x).data.\n\n\n\n\n\n\n\n\nSuppressing Model Command Output\n\n\n\nThe output of specifying model components (variable or constraints) can be quite large for this problem because of the number of time periods. If you end a cell with an @variable or @constraint command, I highly recommend suppressing output by adding a semi-colon after the last command, or you might find that your notebook crashes.",
+    "crumbs": [
+      "Homework 4"
+    ]
+  },
+  {
+    "objectID": "hw/hw04/hw04.html#references",
+    "href": "hw/hw04/hw04.html#references",
+    "title": "BEE 4750 Homework 4: Linear Programming and Capacity Expansion",
+    "section": "References",
+    "text": "References\nList any external references consulted, including classmates.",
+    "crumbs": [
+      "Homework 4"
+    ]
+  },
+  {
+    "objectID": "hw/hw01/hw01.html",
+    "href": "hw/hw01/hw01.html",
+    "title": "BEE 4750 Homework 1: Introduction to Using Julia",
+    "section": "",
+    "text": "Due Date\n\n\n\nThursday, 9/11/25, 9:00pm",
+    "crumbs": [
+      "Homework 1"
+    ]
+  },
+  {
+    "objectID": "hw/hw01/hw01.html#overview",
+    "href": "hw/hw01/hw01.html#overview",
+    "title": "BEE 4750 Homework 1: Introduction to Using Julia",
+    "section": "Overview",
+    "text": "Overview\n\nInstructions\n\nProblem 1 consist of a series of code snippets for you to interpret and debug. You will be asked to identify relevant error(s) and fix the code.\nProblem 2 asks you to write code to implement several simple functions using more general programming and some which are unique to Julia (which might mean that you need to look at the documentation or use Julia’s help function, which is accessed with ?, e.g. ?sum for help with the sum() function) or to analyze Julia syntax.\nProblem 3 asks you to convert a verbal description of a wastewater treatment system into a Julia function, and then to use that function to explore the impact of different wastewater allocation strategies.\n\n\n\nLoad Environment\nThe following code loads the environment and makes sure all needed packages are installed. This should be at the start of most Julia scripts.\n\nimport Pkg\nPkg.activate(@__DIR__)\nPkg.instantiate()\n\nStandard Julia practice is to load all needed packages at the top of a file. If you need to load any additional packages in any assignments beyond those which are loaded by default, feel free to add a using statement, though you may need to install the package.\n\nusing Random\nusing Plots\nusing GraphRecipes\nusing LaTeXStrings\nusing Distributions\n\n\n# this sets a random seed, which ensures reproducibility of random number generation. You should always set a seed when working with random numbers.\nRandom.seed!(1)\n\nTaskLocalRNG()",
+    "crumbs": [
+      "Homework 1"
+    ]
+  },
+  {
+    "objectID": "hw/hw01/hw01.html#problems-total-30-points",
+    "href": "hw/hw01/hw01.html#problems-total-30-points",
+    "title": "BEE 4750 Homework 1: Introduction to Using Julia",
+    "section": "Problems (Total: 30 Points)",
+    "text": "Problems (Total: 30 Points)\n\nProblem 1 (12 points)\nThe following subproblems all involve code snippets that require debugging. You are encouraged to use online resources (e.g. Julia documentation and forums, Stack Overflow, Reddit, etc) to help find diagnose error messages and find solutions, but make sure that you clearly document which resources you used and how you used them.\n\nProblem 1.1\nYou’ve been tasked with writing code to identify the minimum value in an array. You cannot use a predefined function. Your colleague suggested the function below, but it does not return the minimum value.\n\nfunction minimum(array)\n    # initialize the minimum value counter\n    min_value = 0\n    # update minimum values\n    for i in 1:length(array)\n        if array[i] &lt; min_value\n            min_value = array[i]\n        end\n    end\n    # return found minimum\n    return min_value\nend\n\narray_values = [89, 90, 95, 100, 100, 78, 99, 98, 100, 95]\n@show minimum(array_values);\n\nminimum(array_values) = 0\n\n\nWhat is the logical flaw in the code? Fix it and show that your fixed code solves the problem.\n\n\nProblem 1.2\nYour team is trying to compute the average grade for your class, but the following code produces an UndefVarError.\n\n# enter student grade vector\nstudent_grades = [89, 90, 95, 100, 100, 78, 99, 98, 100, 95]\n# compute class average\nfunction class_average(grades)\n  average_grade = mean(student_grades)\n  return average_grade\nend\n\n@show average_grade;\n\n\nUndefVarError: `average_grade` not defined in `Main.Notebook`\nSuggestion: check for spelling errors or missing imports.\nStacktrace:\n [1] macro expansion\n   @ show.jl:1232 [inlined]\n [2] top-level scope\n   @ ~/Teaching/BEE4750/website/hw/hw01/hw01.qmd:131\n\n\n\nWhat does this UndefVarError mean? Why does this code produce one? Fix the error and solve the problem.\n\n\nProblem 1.3\nYour team wants to know the expected payout of an old Italian dice game called passadieci (which was analyzed by Galileo as one of the first examples of a rigorous study of probability). The goal of passadieci is to get at least an 11 from rolling three fair, six-sided dice. Your strategy is to compute the average wins from 1,000 trials, but the code you’ve written below produces a MethodError.\n\n# function to simulate a passadieci roll: 3 6-sided dice\nfunction passadieci()\n    # this rand() call samples 3 values from the vector [1, 6]\n    roll = rand(1:6, 3) \n    return roll\nend\n# set number of trials and initialize outcome vector\nn_trials = 1_000\noutcomes = zero(n_trials)\n# simulate number of passadieci rolls and count wins\nfor i = 1:n_trials\n    outcomes[i] = (sum(passadieci()) &gt; 11)\nend\nwin_prob = sum(outcomes) / n_trials # compute average number of wins\n@show win_prob;\n\n\nMethodError: no method matching setindex!(::Int64, ::Bool, ::Int64)\nThe function `setindex!` exists, but no method is defined for this combination of argument types.\nStacktrace:\n [1] top-level scope\n   @ ~/Teaching/BEE4750/website/hw/hw01/hw01.qmd:153\n\n\n\nWhat does this MethodError mean? Why does this code produce one? Fix the error and solve the problem.\n\n\nProblem 1.4\nYou’re interested in writing some code to remove the mean of a vector from all of its components. You’ve written the following code and tried to test it on a random vector, but your code returns a MethodError.\n\n# function to remove mean from a vector\nfunction remove_mean(vect)\n    # fucntion to compute the mean\n    function compute_mean(vect)\n        element_sum = 0 # initialize sum\n        # compute mean and return\n        for v in vect\n            element_sum += v\n        end\n        return element_sum / length(vect)\n    end\n\n    m = compute_mean(vect) # compute mean\n    # return demeaned vector\n    return vect - m\nend\n\nrandom_vect = rand(1_000)\n@show remove_mean(random_vect)\n\n\nMethodError: no method matching -(::Vector{Float64}, ::Float64)\nFor element-wise subtraction, use broadcasting with dot syntax: array .- scalar\nThe function `-` exists, but no method is defined for this combination of argument types.\n\nClosest candidates are:\n  -(::ChainRulesCore.NotImplemented, ::Any)\n   @ ChainRulesCore ~/.julia/packages/ChainRulesCore/XAgYn/src/tangent_arithmetic.jl:49\n  -(::Any, ::ChainRulesCore.NotImplemented)\n   @ ChainRulesCore ~/.julia/packages/ChainRulesCore/XAgYn/src/tangent_arithmetic.jl:50\n  -(::ChainRulesCore.NoTangent, ::Any)\n   @ ChainRulesCore ~/.julia/packages/ChainRulesCore/XAgYn/src/tangent_arithmetic.jl:61\n  ...\n\nStacktrace:\n [1] remove_mean(vect::Vector{Float64})\n   @ Main.Notebook ~/Teaching/BEE4750/website/hw/hw01/hw01.qmd:180\n [2] macro expansion\n   @ show.jl:1232 [inlined]\n [3] top-level scope\n   @ ~/Teaching/BEE4750/website/hw/hw01/hw01.qmd:184\n\n\n\nWhat does this MethodError mean? Why does this code produce one? Fix the error and solve the problem.\n\n\n\nProblem 2 (18 points)\nCheap Plastic Products, Inc. is operating a plant that produces \\(100 \\text{m}^3\\text{/day}\\) of wastewater that is discharged into Pristine Brook. The wastewater contains \\(1 \\text{kg/m}^3\\) of YUK, a toxic substance. The US Environmental Protection Agency has imposed an effluent standard on the plant prohibiting discharge of more than \\(20 \\text{kg/day}\\) of YUK into Pristine Brook.\nCheap Plastic Products has analyzed two methods for reducing its discharges of YUK. Method 1 is land disposal, which costs \\(X_1^2/20\\) dollars per day, where \\(X_1\\) is the amount of wastewater disposed of on the land (\\(\\text{m}^3\\text{/day}\\)). With this method, 20% of the YUK applied to the land will eventually drain into the stream (i.e., 80% of the YUK is removed by the soil).\nMethod 2 is a chemical treatment procedure which costs $1.50 per \\(\\text{m}^3\\) of wastewater treated. The chemical treatment has an efficiency of \\(e= 1 - 0.005X_2\\), where \\(X_2\\) is the quantity of wastewater (\\(\\text{m}^3\\text{/day}\\)) treated. For example, if \\(X_2 = 50 \\text{m}^3\\text{/day}\\), then \\(e = 1 - 0.005(50) = 0.75\\), so that 75% of the YUK is removed.\nCheap Plastic Products is wondering how to allocate their wastewater between these three disposal and treatment methods (land disposal, chemical treatment, and direct disposal) to meet the effluent standard while keeping costs manageable.\nThe flow of wastewater through this treatment system is shown in Figure 1. Modify the edge labels (by editing the edge_labels dictionary in the code producing Figure 1) to show how the wastewater allocations result in the final YUK discharge into Pristine Brook. For the edge_label dictionary, the tuple \\((i, j)\\) corresponds to the arrow going from node \\(i\\) to node \\(j\\). The syntax for any entry is (i, j) =&gt; \"label text\", and the label text can include mathematical notation if the string is prefaced with an L, as in L\"x_1\" will produce \\(x_1\\).\n\nA = [0 1 1 1;\n    0 0 0 1;\n    0 0 0 1;\n    0 0 0 0]\n\nnames = [\"Plant\", \"Land Treatment\", \"Chem Treatment\", \"Pristine Brook\"]\n# modify this dictionary to add labels\nedge_labels = Dict((1, 2) =&gt; \"\", (1,3) =&gt; \"\", (1, 4) =&gt; \"\",(2, 4) =&gt; \"\",(3, 4) =&gt; \"\")\nshapes=[:hexagon, :rect, :rect, :hexagon]\nxpos = [0, -1.5, -0.25, 1]\nypos = [1, 0, 0, -1]\n\np = graphplot(A, names=names,edgelabel=edge_labels, markersize=0.15, markershapes=shapes, markercolor=:white, x=xpos, y=ypos)\ndisplay(p)\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 1: System diagram of the wastewater treatment options in Problem 4.\n\n\n\n\n\nProblem 2.1\nFormulate a mathematical model for the treatment cost and the amount of YUK that will be discharged into Pristine Brook based on the wastewater allocations. This is best done with some equations and supporting text explaining the derivation. Make sure you include, as additional equations in the model, any needed constraints on relevant values. You can find some basics on writing mathematical equations using the LaTeX typesetting syntax here, and a cheatsheet with LaTeX commands can be found on the course website’s Resources page.\n\n\nProblem 2.2\nImplement your systems model as a Julia function which computes the resulting YUK discharge and cost for a particular treatment plan. You can return multiple values from a function with a tuple, as in:\n\nfunction multiple_return_values(x, y)\n    return (x+y, x*y)\nend\n\na, b = multiple_return_values(2, 5)\n@show a;\n@show b;\n\na = 7\nb = 10\n\n\nTo evalute the function over vectors of inputs, you can broadcast the function by adding a decimal . before the function arguments and accessing the resulting values by writing a comprehension to loop over the individual outputs in the vector:\n\nx = [1, 2, 3, 4, 5]\ny = [6, 7, 8, 9, 10]\n\noutput = multiple_return_values.(x, y)\na = [out[1] for out in output]\nb = [out[2] for out in output]\n@show a;\n@show b;\n\na = [7, 9, 11, 13, 15]\nb = [6, 14, 24, 36, 50]\n\n\nMake sure you comment your code appropriately to make it clear what is going on and why.\n\n\nProblem 2.3\nUse your function to experiment with 1,000 different combinations of wastewater discharge and treatment. You can do this with either a grid search or by sampling from a Dirichlet distribution (a \\(\\text{Dirichlet}(1, n)\\) distribution will generate uniformly-weighted \\(n\\)-dimensional vectors whose components add up to 1; see the Distributions.jl documentation for how to sample from probability distributions in Julia). Plot the results of these experiments. Do any satisfy the YUK effluent standard (plot this as well as a dashed red line). What was the cost of solutions satisfying the standard? What can you say about the tradeoff between treatment cost and YUK discharge? You don’t have to find an “optimal” solution to this problem, but what do you think would be needed to find a better solution?\n\n\nProblem 2.4\nFind the strategies which minimize cost and YUK discharge (these will be different strategies) analytically and find the values of the objective metrics. Plot these values in the plot that you created for Problem 2.3. How do their values compare to the spread of values that you found in that problem? Would you select either of them (explain why or why not)?",
+    "crumbs": [
+      "Homework 1"
+    ]
+  },
+  {
+    "objectID": "hw/hw01/hw01.html#references",
+    "href": "hw/hw01/hw01.html#references",
+    "title": "BEE 4750 Homework 1: Introduction to Using Julia",
+    "section": "References",
+    "text": "References\nList any external references consulted, including classmates.",
+    "crumbs": [
+      "Homework 1"
+    ]
+  },
+  {
+    "objectID": "labs/index.html",
+    "href": "labs/index.html",
+    "title": "Labs",
+    "section": "",
+    "text": "This page contains information about and a schedule of the lab assignments for the semester.",
+    "crumbs": [
+      "Lab Overview"
+    ]
+  },
+  {
+    "objectID": "labs/index.html#general-information",
+    "href": "labs/index.html#general-information",
+    "title": "Labs",
     "section": "General Information",
-    "text": "General Information\n\nWhile the instructions for each assignment are available through the linked pages for quick and public access, if you are in the class you must use the link provided in Ed Discussion to accept the assignment. This will ensure that:\n\nYou have compatible versions of all relevant packages provided in the environment;\nYou have a GitHub repository that you can use to share your code.\n\nSubmit assignments by 9:00pm Eastern Time on the due date on Gradescope.\nStarting with HW2, groups of at most two students can submit group solutions. Groups do not have the be the same for all assignments. Exactly one member of each group should submit the solution. If you submit as a group, it is the responsibility of the submitter to tell Gradescope the names of the other group members. If this information is not entered, the other group members’ grades can be delayed or even lost. Also include the names and NetIDs of all group members on the first page.\nIf a student in BEE 5750 works in a group with a student from BEE 4750, they should submit separate PDFs to Gradescope (these can be different versions of the same PDF) due to the additional 5750 problem; this will just not be graded for the 4750 student(s). A single submission can be used for multiple students within the same course number who share a group.\nMore detailed homework instructions and logistics are available.\nSubmissions must be PDFs. Make sure that you tag the pages corresponding to each question; points will be deducted otherwise.\nTo convert the assignment notebook to PDF, you can use VS Code to render the notebook to HTML, and then use your browser to print to PDF. If you have set up LaTeX with VS Code, you can convert directly to a PDF.\nAs an alternative, when you commit and push a .ipynb file (a Jupyter Notebook) to your repository, we have set up a GitHub Action to automatically render your notebook to a PDF, which you can then download and submit to Gradescope. However, sometimes GitHub actions can take a while or can stall out, so you’ll need to monitor this and give yourself some time. If you’ve waited a while and your notebook isn’t rendering, reach out on Ed and we can figure out what’s going on. In the worst case (you push your changes close to the deadline), the timestamp of your commit will be evidence that you completed the assignment on time, even if we can’t render the PDF until the next day.",
+    "text": "General Information\n\nYou can download each lab notebook through the link below..\nSubmit assignments by 9:00pm Eastern Time on the due date on Gradescope.\nSubmissions must be PDFs. Make sure that you tag the pages corresponding to each question; points will be deducted otherwise.\nTo convert the assignment notebook to PDF, you can use VS Code to render the notebook to HTML, and then use your browser to print to PDF. If you have set up LaTeX with VS Code, you can convert directly to a PDF.",
     "crumbs": [
-      "Homework Overview"
+      "Lab Overview"
     ]
   },
   {
-    "objectID": "hw/index.html#grading",
-    "href": "hw/index.html#grading",
-    "title": "Homework",
+    "objectID": "labs/index.html#grading",
+    "href": "labs/index.html#grading",
+    "title": "Labs",
     "section": "Grading",
-    "text": "Grading\nMake sure to look over the standard homework rubric and familiarize yourself with the homework and grading policies.",
+    "text": "Grading\nLabs will be graded on a scale of 0-3:\n\nMissing (0/3): Lab solution is missing or is not responsive to the lab prompt(s);\nNeeds Improvement (1/3): Lab is largely incomplete or is missing key concepts;\nDeveloping (2/3): Lab is mostly complete but may contain major conceptual or implementation errors;\nAcceptable (3/3): Lab is mostly or fully complete without any major errors.",
     "crumbs": [
-      "Homework Overview"
+      "Lab Overview"
     ]
   },
   {
-    "objectID": "hw/index.html#schedule",
-    "href": "hw/index.html#schedule",
-    "title": "Homework",
+    "objectID": "labs/index.html#schedule",
+    "href": "labs/index.html#schedule",
+    "title": "Labs",
     "section": "Schedule",
-    "text": "Schedule\n\n\n\n\n\n\n\n\n\nAssignment\nInstructions\nSolutions\nDue Date\n\n\n\n\nHomework 1\n\n\nSep. 11, 2025\n\n\nHomework 2\n\n\nSep. 25, 2025\n\n\nHomework 3\n\n\nOct. 23, 2025\n\n\nHomework 4\n\n\nNov. 06, 2025\n\n\nHomework 5\n\n\nDec. 04, 2025",
+    "text": "Schedule\n\n\n\n\n\n\n\n\n\nLab\nInstructions\nSolutions\nDue Date\n\n\n\n\nLab 1\n\n\nAug. 28, 2025\n\n\nLab 2\n\n\nSep. 30, 2025\n\n\nLab 3\n\n\nOct. 23, 2025",
     "crumbs": [
-      "Homework Overview"
+      "Lab Overview"
+    ]
+  },
+  {
+    "objectID": "labs/lab03/lab03.html",
+    "href": "labs/lab03/lab03.html",
+    "title": "BEE 4750 Lab 3: Linear Programming with JuMP",
+    "section": "",
+    "text": "Due Date\n\n\n\nThursday, 10/23/24, 9:00pm",
+    "crumbs": [
+      "Lab 3"
+    ]
+  },
+  {
+    "objectID": "labs/lab03/lab03.html#setup",
+    "href": "labs/lab03/lab03.html#setup",
+    "title": "BEE 4750 Lab 3: Linear Programming with JuMP",
+    "section": "Setup",
+    "text": "Setup\nThe following code should go at the top of most Julia scripts; it will load the local package environment and install any needed packages. You will see this often and shouldn’t need to touch it.\n\nimport Pkg\nPkg.activate(\".\")\nPkg.instantiate()\n\n\nusing JuMP # optimization modeling syntax\nusing HiGHS # optimization solver",
+    "crumbs": [
+      "Lab 3"
+    ]
+  },
+  {
+    "objectID": "labs/lab03/lab03.html#overview",
+    "href": "labs/lab03/lab03.html#overview",
+    "title": "BEE 4750 Lab 3: Linear Programming with JuMP",
+    "section": "Overview",
+    "text": "Overview\nIn this lab, you will write and solve a resource allocation example using JuMP.jl. JuMP.jl provides an intuitive syntax for writing, solving, and querying optimization problems.\nJuMP requires the loading of a solver. [Each supported solver works for certain classes of problems, and some are open source while others require a commercial license]. We will use the HiGHS solver, which is open source and works for linear, mixed integer linear, and quadratic programs.\nIn this lab we will walk through the steps involved in coding a linear program in HiGHS, solving it, and querying the solution.",
+    "crumbs": [
+      "Lab 3"
+    ]
+  },
+  {
+    "objectID": "labs/lab03/lab03.html#exercise-3-points",
+    "href": "labs/lab03/lab03.html#exercise-3-points",
+    "title": "BEE 4750 Lab 3: Linear Programming with JuMP",
+    "section": "Exercise (3 points)",
+    "text": "Exercise (3 points)\nYour task is to decide how much lumber to produce to maximize profit from wood sales. You can purchase wood from a managed forest, which consists of spruce (320,000 bf) and fir (720,000 bf). Spruce costs \\(\\$0.12\\) per bf to purchase and fir costs \\(\\$0.08\\) per bf.\nAt the lumber mill, wood can be turned into plywood of various grades (see Table 1 for how much wood of each type is required for and the revenue from each grade). Any excess wood is sent to be recycled into particle board, which yields no revenue for the mill.\n\n\n\nTable 1: Wood inputs and revenue by plywood grade. S refers to spruce inputs, F fir inputs.\n\n\n\n\n\nPlywood Grade\nInputs (bf/bf plywood)\nRevenue ($/1000 bf)\n\n\n\n\n1\n0.5 (S) + 1.5 (F)\n400\n\n\n2\n1.0 (S) + 2.0 (F)\n520\n\n\n3\n1.5 (S) + 2.0 (F)\n700\n\n\n\n\n\n\nFirst, we need to identify our decision variables. While there are several options, we will use \\(G_i\\), the amount of each grade the mill produces (in 1000 bf).\nUsing these decision variables, formulate a linear program to maximize the profit of the mill subject to the supply constraints on spruce and fir.\n\n\n\n\n\n\nJuMP Syntax\n\n\n\nThe core pieces of setting up a JuMP model involve specifying the model and adding variables, the objective, and constraints. At the most simple level, this syntax looks like this:\nm = Model(HiGHS.Optimizer)\n@variable(m, lb &lt;= x &lt;= ub) # if you do not have upper or lower bounds, you can drop those accordingly\n@variable(m, lb &lt;= y &lt;= ub)\n@objective(m, Max, 100x + 250y) # replace Max with Min depending on the problem\n@constraint(m, label, 6x + 12y &lt;= 80) # replace \"label\" with some meaningful string you would like to use later to query shadow prices, or drop it\nYou can add more constraints or more variables as needed.\n\n\n\n\n\n\n\n\nUsing Array Syntax\n\n\n\nYou can set up multiple variables or constraints at once using array syntax. For example, the following are equivalent:\n@variable(m, G1 &gt;= 0)\n@variable(m, G2 &gt;= 0)\n@variable(m, G3 &gt;= 0)\nand\n@variable(m, G[1:3] &gt;= 0)\nYou can also set up multiple constraints using arrays of coefficients and/or bounds. For example:\nI = 1:3\nd = [0; 3; 5]\n@constraint(m, demand[i in I], G[i] &gt;= d[i])\n\n\nJuMP is finicky about changing objects and constraints, so I recommend setting up all of the model syntax in one notebook cell, which is what we will do here.\n\nforest_model = Model(HiGHS.Optimizer) # initialize model object\n@variable(forest_model, G[1:3] &gt;= 0) # non-negativity constraints\n# uncomment the following lines and add the objective and constraints as needed for the model\n# @objective(forest_model, )\n# @constraint(forest_model, )\nprint(forest_model) # this outputs a nicely formatted summary of the model so you can check your specification\n\nFeasibility\nSubject to\n G[1] ≥ 0\n G[2] ≥ 0\n G[3] ≥ 0\n\n\nNext, to optimize, use the optimize!() function:\n\noptimize!(forest_model)\n\nRunning HiGHS 1.11.0 (git hash: 364c83a51e): Copyright (c) 2025 HiGHS under MIT licence terms\nLP   has 0 rows; 3 cols; 0 nonzeros\nCoefficient ranges:\n  Cost   [0e+00, 0e+00]\n  Bound  [0e+00, 0e+00]\nSolving LP without presolve, or with basis, or unconstrained\nSolving an unconstrained LP with 3 columns\nModel status        : Optimal\nObjective value     :  0.0000000000e+00\nP-D objective error :  0.0000000000e+00\nHiGHS run time      :          0.00\n\n\nYou should get confirmation that a solution was found; if one was not, there’s a chance something was wrong with your model formulation.\nTo find the values of the decision variables, use value() (which can be broadcasted over variable arrays):\n\n@show value.(G);\n\nvalue.(G) = [0.0, 0.0, 0.0]\n\n\nSimilarly, objective_value() finds the optimal value of the objective:\n\n@show objective_value(forest_model);\n\nobjective_value(forest_model) = 0.0\n\n\nFinally, we can find the dual values of the constraints with shadow_price(). Do this for the constraints in your model using the block below.\n\n# @show shadow_price(name_of_constraint);\n\nJuMP also lets you evaluate other expressions that you might be interested in based on the solutions. For example, you can use the following block to calculate the total amount of plywood the mill would produce under the optimal solution:\n\n@expression(forest_model, total_plywood, sum(G))\n@show value.(total_plywood);\n\nvalue.(total_plywood) = 0.0",
+    "crumbs": [
+      "Lab 3"
+    ]
+  },
+  {
+    "objectID": "labs/lab03/lab03.html#references",
+    "href": "labs/lab03/lab03.html#references",
+    "title": "BEE 4750 Lab 3: Linear Programming with JuMP",
+    "section": "References",
+    "text": "References\nPut any consulted sources here, including classmates you worked with/who helped you.",
+    "crumbs": [
+      "Lab 3"
+    ]
+  },
+  {
+    "objectID": "labs/lab02/lab02.html",
+    "href": "labs/lab02/lab02.html",
+    "title": "BEE 4750 Lab 2: Monte Carlo",
+    "section": "",
+    "text": "Due Date\n\n\n\nThursday, 10/02/25, 9:00pm",
+    "crumbs": [
+      "Lab 2"
+    ]
+  },
+  {
+    "objectID": "labs/lab02/lab02.html#setup",
+    "href": "labs/lab02/lab02.html#setup",
+    "title": "BEE 4750 Lab 2: Monte Carlo",
+    "section": "Setup",
+    "text": "Setup\nThe following code should go at the top of most Julia scripts; it will load the local package environment and install any needed packages. You will see this often and shouldn’t need to touch it.\n\nimport Pkg\nPkg.activate(\".\")\nPkg.instantiate()\n\n\nusing Random # random number generation\nusing Distributions # probability distributions and interface\nusing Statistics # basic statistical functions, including mean\nusing Plots # plotting",
+    "crumbs": [
+      "Lab 2"
+    ]
+  },
+  {
+    "objectID": "labs/lab02/lab02.html#overview",
+    "href": "labs/lab02/lab02.html#overview",
+    "title": "BEE 4750 Lab 2: Monte Carlo",
+    "section": "Overview",
+    "text": "Overview\nIn this lab, we will conduct a Monte Carlo experiment and explore how sensitive Monte Carlo estimates are to the underlying probability distribution(s).\nYou should always start any computing with random numbers by setting a “seed,” which controls the sequence of numbers which are generated (since these are not really random, just “pseudorandom”). In Julia, we do this with the Random.seed!() function.\n\nRandom.seed!(1)\n\nTaskLocalRNG()\n\n\nIt doesn’t matter what seed you set, though different seeds might result in slightly different values. But setting a seed means every time your notebook is run, the answer will be the same.\n\n\n\n\n\n\nSeeds and Reproducing Solutions\n\n\n\nIf you don’t re-run your code in the same order or if you re-run the same cell repeatedly, you will not get the same solution. If you’re working on a specific problem, you might want to re-use Random.seed() near any block of code you want to re-evaluate repeatedly.\n\n\n\nProbability Distributions and Julia\nJulia provides a common interface for probability distributions with the Distributions.jl package. The basic workflow for sampling from a distribution is:\n\nSet up the distribution. The specific syntax depends on the distribution and what parameters are required, but the general call is the similar. For a normal distribution or a uniform distribution, the syntax is\n# you don't have to name this \"normal_distribution\"\n# μ is the mean and σ is the standard deviation\nnormal_distribution = Normal(μ, σ)\n# a is the upper bound and b is the lower bound; these can be set to +Inf or -Inf for an unbounded distribution in one or both directions.\nuniform_distribution = Uniform(a, b)\nThere are lots of both univariate and multivariate distributions, as well as the ability to create your own, but we won’t do anything too exotic here.\nDraw samples. This uses the rand() command (which, when used without a distribution, just samples uniformly from the interval \\([0, 1]\\).) For example, to sample from our normal distribution above:\n# draw n samples\nrand(normal_distribution, n)\n\nPutting this together, let’s say that we wanted to simulate 100 six-sided dice rolls. We could use a Discrete Uniform distribution.\n\ndice_dist = DiscreteUniform(1, 6) # can generate any integer between 1 and 6\ndice_rolls = rand(dice_dist, 100) # simulate rolls\n\n100-element Vector{Int64}:\n 1\n 3\n 5\n 4\n 6\n 2\n 5\n 5\n 5\n 2\n ⋮\n 3\n 6\n 5\n 5\n 6\n 3\n 6\n 6\n 6\n\n\nAnd then we can plot a histogram of these rolls:\n\nhistogram(dice_rolls, legend=:false, bins=6)\nylabel!(\"Count\")\nxlabel!(\"Dice Value\")\n\n\n\n\n\n\nInstructions\nRemember to:\n\nEvaluate all of your code cells, in order (using a Run All command). This will make sure all output is visible and that the code cells were evaluated in the correct order.\nTag each of the problems when you submit to Gradescope; a 10% penalty will be deducted if this is not done.",
+    "crumbs": [
+      "Lab 2"
+    ]
+  },
+  {
+    "objectID": "labs/lab02/lab02.html#problem",
+    "href": "labs/lab02/lab02.html#problem",
+    "title": "BEE 4750 Lab 2: Monte Carlo",
+    "section": "Problem",
+    "text": "Problem\nA common engineering problem is to quantify flood risk, which is typically computed by propagating a flood hazard distribution through a depth-damage function relating flood depths to economic damages. A reasonable depth-damage function for a house without a basement is a bounded logistic function, \\[d(h) = \\mathbb{1}_{h &gt; 0} \\frac{L}{1 + \\exp(-k (h - h_0))},\\]\nwhere \\(d\\) is the damage as a percent of total structure value, \\(h\\) is the water depth (relative to the house’s ground floor elevation) in m, \\(\\mathbb{1}_{x &gt; 0}\\) is the indicator function, \\(L\\) is the maximum loss in USD, \\(k\\) is the slope of the depth-damage relationship, and \\(h_0\\) is the inflection point. We’ll assume \\(L=\\$200,000\\), \\(k=0.8\\), and \\(h_0=3\\).\nFor this problem, suppose that we have two different probability distributions characterizing annual maxima flood depths:\n\n\\(h \\sim LogNormal(1.2, 0.3)\\);\n\\(h \\sim GeneralizedExtremeValue(3, 0.9, -0.15)\\).\n\nPlot histograms of samples from these distributions and conduct a Monte Carlo experiment for annual maximum flood damages using each. Answer the following questions:\n\nWhat are the Monte Carlo estimates of the expected value and the 99% quantile for the annual maximum damage the structure would suffer for each of these flood hazard distributions?\nHow did you decide on your sample size?\nWhy do you think the estimates differed or did not differ (you can also plot the depth-damage function to compare with the samples)?\nHow might you decide (based on getting additional information, if needed) which distribution is “better”?\nTry redoing the analysis for one of the distributions with a different seed. How much of a difference does that make?",
+    "crumbs": [
+      "Lab 2"
+    ]
+  },
+  {
+    "objectID": "labs/lab02/lab02.html#references",
+    "href": "labs/lab02/lab02.html#references",
+    "title": "BEE 4750 Lab 2: Monte Carlo",
+    "section": "References",
+    "text": "References\nPut any consulted sources here, including classmates you worked with/who helped you.",
+    "crumbs": [
+      "Lab 2"
     ]
   },
   {
@@ -3620,263 +3800,123 @@
     ]
   },
   {
-    "objectID": "labs/lab02/lab02.html",
-    "href": "labs/lab02/lab02.html",
-    "title": "BEE 4750 Lab 2: Monte Carlo",
+    "objectID": "hw/index.html",
+    "href": "hw/index.html",
+    "title": "Homework",
     "section": "",
-    "text": "Due Date\n\n\n\nThursday, 10/02/25, 9:00pm",
+    "text": "This page contains information about and a schedule of the homework assignments for the semester.",
     "crumbs": [
-      "Lab 2"
+      "Homework Overview"
     ]
   },
   {
-    "objectID": "labs/lab02/lab02.html#setup",
-    "href": "labs/lab02/lab02.html#setup",
-    "title": "BEE 4750 Lab 2: Monte Carlo",
-    "section": "Setup",
-    "text": "Setup\nThe following code should go at the top of most Julia scripts; it will load the local package environment and install any needed packages. You will see this often and shouldn’t need to touch it.\n\nimport Pkg\nPkg.activate(\".\")\nPkg.instantiate()\n\n\nusing Random # random number generation\nusing Distributions # probability distributions and interface\nusing Statistics # basic statistical functions, including mean\nusing Plots # plotting",
-    "crumbs": [
-      "Lab 2"
-    ]
-  },
-  {
-    "objectID": "labs/lab02/lab02.html#overview",
-    "href": "labs/lab02/lab02.html#overview",
-    "title": "BEE 4750 Lab 2: Monte Carlo",
-    "section": "Overview",
-    "text": "Overview\nIn this lab, we will conduct a Monte Carlo experiment and explore how sensitive Monte Carlo estimates are to the underlying probability distribution(s).\nYou should always start any computing with random numbers by setting a “seed,” which controls the sequence of numbers which are generated (since these are not really random, just “pseudorandom”). In Julia, we do this with the Random.seed!() function.\n\nRandom.seed!(1)\n\nTaskLocalRNG()\n\n\nIt doesn’t matter what seed you set, though different seeds might result in slightly different values. But setting a seed means every time your notebook is run, the answer will be the same.\n\n\n\n\n\n\nSeeds and Reproducing Solutions\n\n\n\nIf you don’t re-run your code in the same order or if you re-run the same cell repeatedly, you will not get the same solution. If you’re working on a specific problem, you might want to re-use Random.seed() near any block of code you want to re-evaluate repeatedly.\n\n\n\nProbability Distributions and Julia\nJulia provides a common interface for probability distributions with the Distributions.jl package. The basic workflow for sampling from a distribution is:\n\nSet up the distribution. The specific syntax depends on the distribution and what parameters are required, but the general call is the similar. For a normal distribution or a uniform distribution, the syntax is\n# you don't have to name this \"normal_distribution\"\n# μ is the mean and σ is the standard deviation\nnormal_distribution = Normal(μ, σ)\n# a is the upper bound and b is the lower bound; these can be set to +Inf or -Inf for an unbounded distribution in one or both directions.\nuniform_distribution = Uniform(a, b)\nThere are lots of both univariate and multivariate distributions, as well as the ability to create your own, but we won’t do anything too exotic here.\nDraw samples. This uses the rand() command (which, when used without a distribution, just samples uniformly from the interval \\([0, 1]\\).) For example, to sample from our normal distribution above:\n# draw n samples\nrand(normal_distribution, n)\n\nPutting this together, let’s say that we wanted to simulate 100 six-sided dice rolls. We could use a Discrete Uniform distribution.\n\ndice_dist = DiscreteUniform(1, 6) # can generate any integer between 1 and 6\ndice_rolls = rand(dice_dist, 100) # simulate rolls\n\n100-element Vector{Int64}:\n 1\n 3\n 5\n 4\n 6\n 2\n 5\n 5\n 5\n 2\n ⋮\n 3\n 6\n 5\n 5\n 6\n 3\n 6\n 6\n 6\n\n\nAnd then we can plot a histogram of these rolls:\n\nhistogram(dice_rolls, legend=:false, bins=6)\nylabel!(\"Count\")\nxlabel!(\"Dice Value\")\n\n\n\n\n\n\nInstructions\nRemember to:\n\nEvaluate all of your code cells, in order (using a Run All command). This will make sure all output is visible and that the code cells were evaluated in the correct order.\nTag each of the problems when you submit to Gradescope; a 10% penalty will be deducted if this is not done.",
-    "crumbs": [
-      "Lab 2"
-    ]
-  },
-  {
-    "objectID": "labs/lab02/lab02.html#problem",
-    "href": "labs/lab02/lab02.html#problem",
-    "title": "BEE 4750 Lab 2: Monte Carlo",
-    "section": "Problem",
-    "text": "Problem\nA common engineering problem is to quantify flood risk, which is typically computed by propagating a flood hazard distribution through a depth-damage function relating flood depths to economic damages. A reasonable depth-damage function for a house without a basement is a bounded logistic function, \\[d(h) = \\mathbb{1}_{h &gt; 0} \\frac{L}{1 + \\exp(-k (h - h_0))},\\]\nwhere \\(d\\) is the damage as a percent of total structure value, \\(h\\) is the water depth (relative to the house’s ground floor elevation) in m, \\(\\mathbb{1}_{x &gt; 0}\\) is the indicator function, \\(L\\) is the maximum loss in USD, \\(k\\) is the slope of the depth-damage relationship, and \\(h_0\\) is the inflection point. We’ll assume \\(L=\\$200,000\\), \\(k=0.8\\), and \\(h_0=3\\).\nFor this problem, suppose that we have two different probability distributions characterizing annual maxima flood depths:\n\n\\(h \\sim LogNormal(1.2, 0.3)\\);\n\\(h \\sim GeneralizedExtremeValue(3, 0.9, -0.15)\\).\n\nPlot histograms of samples from these distributions and conduct a Monte Carlo experiment for annual maximum flood damages using each. Answer the following questions:\n\nWhat are the Monte Carlo estimates of the expected value and the 99% quantile for the annual maximum damage the structure would suffer for each of these flood hazard distributions?\nHow did you decide on your sample size?\nWhy do you think the estimates differed or did not differ (you can also plot the depth-damage function to compare with the samples)?\nHow might you decide (based on getting additional information, if needed) which distribution is “better”?\nTry redoing the analysis for one of the distributions with a different seed. How much of a difference does that make?",
-    "crumbs": [
-      "Lab 2"
-    ]
-  },
-  {
-    "objectID": "labs/lab02/lab02.html#references",
-    "href": "labs/lab02/lab02.html#references",
-    "title": "BEE 4750 Lab 2: Monte Carlo",
-    "section": "References",
-    "text": "References\nPut any consulted sources here, including classmates you worked with/who helped you.",
-    "crumbs": [
-      "Lab 2"
-    ]
-  },
-  {
-    "objectID": "labs/lab03/lab03.html",
-    "href": "labs/lab03/lab03.html",
-    "title": "BEE 4750 Lab 3: Linear Programming with JuMP",
-    "section": "",
-    "text": "Due Date\n\n\n\nThursday, 10/23/24, 9:00pm",
-    "crumbs": [
-      "Lab 3"
-    ]
-  },
-  {
-    "objectID": "labs/lab03/lab03.html#setup",
-    "href": "labs/lab03/lab03.html#setup",
-    "title": "BEE 4750 Lab 3: Linear Programming with JuMP",
-    "section": "Setup",
-    "text": "Setup\nThe following code should go at the top of most Julia scripts; it will load the local package environment and install any needed packages. You will see this often and shouldn’t need to touch it.\n\nimport Pkg\nPkg.activate(\".\")\nPkg.instantiate()\n\n\nusing JuMP # optimization modeling syntax\nusing HiGHS # optimization solver",
-    "crumbs": [
-      "Lab 3"
-    ]
-  },
-  {
-    "objectID": "labs/lab03/lab03.html#overview",
-    "href": "labs/lab03/lab03.html#overview",
-    "title": "BEE 4750 Lab 3: Linear Programming with JuMP",
-    "section": "Overview",
-    "text": "Overview\nIn this lab, you will write and solve a resource allocation example using JuMP.jl. JuMP.jl provides an intuitive syntax for writing, solving, and querying optimization problems.\nJuMP requires the loading of a solver. [Each supported solver works for certain classes of problems, and some are open source while others require a commercial license]. We will use the HiGHS solver, which is open source and works for linear, mixed integer linear, and quadratic programs.\nIn this lab we will walk through the steps involved in coding a linear program in HiGHS, solving it, and querying the solution.",
-    "crumbs": [
-      "Lab 3"
-    ]
-  },
-  {
-    "objectID": "labs/lab03/lab03.html#exercise-3-points",
-    "href": "labs/lab03/lab03.html#exercise-3-points",
-    "title": "BEE 4750 Lab 3: Linear Programming with JuMP",
-    "section": "Exercise (3 points)",
-    "text": "Exercise (3 points)\nYour task is to decide how much lumber to produce to maximize profit from wood sales. You can purchase wood from a managed forest, which consists of spruce (320,000 bf) and fir (720,000 bf). Spruce costs \\(\\$0.12\\) per bf to purchase and fir costs \\(\\$0.08\\) per bf.\nAt the lumber mill, wood can be turned into plywood of various grades (see Table 1 for how much wood of each type is required for and the revenue from each grade). Any excess wood is sent to be recycled into particle board, which yields no revenue for the mill.\n\n\n\nTable 1: Wood inputs and revenue by plywood grade. S refers to spruce inputs, F fir inputs.\n\n\n\n\n\nPlywood Grade\nInputs (bf/bf plywood)\nRevenue ($/1000 bf)\n\n\n\n\n1\n0.5 (S) + 1.5 (F)\n400\n\n\n2\n1.0 (S) + 2.0 (F)\n520\n\n\n3\n1.5 (S) + 2.0 (F)\n700\n\n\n\n\n\n\nFirst, we need to identify our decision variables. While there are several options, we will use \\(G_i\\), the amount of each grade the mill produces (in 1000 bf).\nUsing these decision variables, formulate a linear program to maximize the profit of the mill subject to the supply constraints on spruce and fir.\n\n\n\n\n\n\nJuMP Syntax\n\n\n\nThe core pieces of setting up a JuMP model involve specifying the model and adding variables, the objective, and constraints. At the most simple level, this syntax looks like this:\nm = Model(HiGHS.Optimizer)\n@variable(m, lb &lt;= x &lt;= ub) # if you do not have upper or lower bounds, you can drop those accordingly\n@variable(m, lb &lt;= y &lt;= ub)\n@objective(m, Max, 100x + 250y) # replace Max with Min depending on the problem\n@constraint(m, label, 6x + 12y &lt;= 80) # replace \"label\" with some meaningful string you would like to use later to query shadow prices, or drop it\nYou can add more constraints or more variables as needed.\n\n\n\n\n\n\n\n\nUsing Array Syntax\n\n\n\nYou can set up multiple variables or constraints at once using array syntax. For example, the following are equivalent:\n@variable(m, G1 &gt;= 0)\n@variable(m, G2 &gt;= 0)\n@variable(m, G3 &gt;= 0)\nand\n@variable(m, G[1:3] &gt;= 0)\nYou can also set up multiple constraints using arrays of coefficients and/or bounds. For example:\nI = 1:3\nd = [0; 3; 5]\n@constraint(m, demand[i in I], G[i] &gt;= d[i])\n\n\nJuMP is finicky about changing objects and constraints, so I recommend setting up all of the model syntax in one notebook cell, which is what we will do here.\n\nforest_model = Model(HiGHS.Optimizer) # initialize model object\n@variable(forest_model, G[1:3] &gt;= 0) # non-negativity constraints\n# uncomment the following lines and add the objective and constraints as needed for the model\n# @objective(forest_model, )\n# @constraint(forest_model, )\nprint(forest_model) # this outputs a nicely formatted summary of the model so you can check your specification\n\nFeasibility\nSubject to\n G[1] ≥ 0\n G[2] ≥ 0\n G[3] ≥ 0\n\n\nNext, to optimize, use the optimize!() function:\n\noptimize!(forest_model)\n\nRunning HiGHS 1.11.0 (git hash: 364c83a51e): Copyright (c) 2025 HiGHS under MIT licence terms\nLP   has 0 rows; 3 cols; 0 nonzeros\nCoefficient ranges:\n  Cost   [0e+00, 0e+00]\n  Bound  [0e+00, 0e+00]\nSolving LP without presolve, or with basis, or unconstrained\nSolving an unconstrained LP with 3 columns\nModel status        : Optimal\nObjective value     :  0.0000000000e+00\nP-D objective error :  0.0000000000e+00\nHiGHS run time      :          0.00\n\n\nYou should get confirmation that a solution was found; if one was not, there’s a chance something was wrong with your model formulation.\nTo find the values of the decision variables, use value() (which can be broadcasted over variable arrays):\n\n@show value.(G);\n\nvalue.(G) = [0.0, 0.0, 0.0]\n\n\nSimilarly, objective_value() finds the optimal value of the objective:\n\n@show objective_value(forest_model);\n\nobjective_value(forest_model) = 0.0\n\n\nFinally, we can find the dual values of the constraints with shadow_price(). Do this for the constraints in your model using the block below.\n\n# @show shadow_price(name_of_constraint);\n\nJuMP also lets you evaluate other expressions that you might be interested in based on the solutions. For example, you can use the following block to calculate the total amount of plywood the mill would produce under the optimal solution:\n\n@expression(forest_model, total_plywood, sum(G))\n@show value.(total_plywood);\n\nvalue.(total_plywood) = 0.0",
-    "crumbs": [
-      "Lab 3"
-    ]
-  },
-  {
-    "objectID": "labs/lab03/lab03.html#references",
-    "href": "labs/lab03/lab03.html#references",
-    "title": "BEE 4750 Lab 3: Linear Programming with JuMP",
-    "section": "References",
-    "text": "References\nPut any consulted sources here, including classmates you worked with/who helped you.",
-    "crumbs": [
-      "Lab 3"
-    ]
-  },
-  {
-    "objectID": "labs/index.html",
-    "href": "labs/index.html",
-    "title": "Labs",
-    "section": "",
-    "text": "This page contains information about and a schedule of the lab assignments for the semester.",
-    "crumbs": [
-      "Lab Overview"
-    ]
-  },
-  {
-    "objectID": "labs/index.html#general-information",
-    "href": "labs/index.html#general-information",
-    "title": "Labs",
+    "objectID": "hw/index.html#general-information",
+    "href": "hw/index.html#general-information",
+    "title": "Homework",
     "section": "General Information",
-    "text": "General Information\n\nYou can download each lab notebook through the link below..\nSubmit assignments by 9:00pm Eastern Time on the due date on Gradescope.\nSubmissions must be PDFs. Make sure that you tag the pages corresponding to each question; points will be deducted otherwise.\nTo convert the assignment notebook to PDF, you can use VS Code to render the notebook to HTML, and then use your browser to print to PDF. If you have set up LaTeX with VS Code, you can convert directly to a PDF.",
+    "text": "General Information\n\nWhile the instructions for each assignment are available through the linked pages for quick and public access, if you are in the class you must use the link provided in Ed Discussion to accept the assignment. This will ensure that:\n\nYou have compatible versions of all relevant packages provided in the environment;\nYou have a GitHub repository that you can use to share your code.\n\nSubmit assignments by 9:00pm Eastern Time on the due date on Gradescope.\nStarting with HW2, groups of at most two students can submit group solutions. Groups do not have the be the same for all assignments. Exactly one member of each group should submit the solution. If you submit as a group, it is the responsibility of the submitter to tell Gradescope the names of the other group members. If this information is not entered, the other group members’ grades can be delayed or even lost. Also include the names and NetIDs of all group members on the first page.\nIf a student in BEE 5750 works in a group with a student from BEE 4750, they should submit separate PDFs to Gradescope (these can be different versions of the same PDF) due to the additional 5750 problem; this will just not be graded for the 4750 student(s). A single submission can be used for multiple students within the same course number who share a group.\nMore detailed homework instructions and logistics are available.\nSubmissions must be PDFs. Make sure that you tag the pages corresponding to each question; points will be deducted otherwise.\nTo convert the assignment notebook to PDF, you can use VS Code to render the notebook to HTML, and then use your browser to print to PDF. If you have set up LaTeX with VS Code, you can convert directly to a PDF.\nAs an alternative, when you commit and push a .ipynb file (a Jupyter Notebook) to your repository, we have set up a GitHub Action to automatically render your notebook to a PDF, which you can then download and submit to Gradescope. However, sometimes GitHub actions can take a while or can stall out, so you’ll need to monitor this and give yourself some time. If you’ve waited a while and your notebook isn’t rendering, reach out on Ed and we can figure out what’s going on. In the worst case (you push your changes close to the deadline), the timestamp of your commit will be evidence that you completed the assignment on time, even if we can’t render the PDF until the next day.",
     "crumbs": [
-      "Lab Overview"
+      "Homework Overview"
     ]
   },
   {
-    "objectID": "labs/index.html#grading",
-    "href": "labs/index.html#grading",
-    "title": "Labs",
+    "objectID": "hw/index.html#grading",
+    "href": "hw/index.html#grading",
+    "title": "Homework",
     "section": "Grading",
-    "text": "Grading\nLabs will be graded on a scale of 0-3:\n\nMissing (0/3): Lab solution is missing or is not responsive to the lab prompt(s);\nNeeds Improvement (1/3): Lab is largely incomplete or is missing key concepts;\nDeveloping (2/3): Lab is mostly complete but may contain major conceptual or implementation errors;\nAcceptable (3/3): Lab is mostly or fully complete without any major errors.",
+    "text": "Grading\nMake sure to look over the standard homework rubric and familiarize yourself with the homework and grading policies.",
     "crumbs": [
-      "Lab Overview"
+      "Homework Overview"
     ]
   },
   {
-    "objectID": "labs/index.html#schedule",
-    "href": "labs/index.html#schedule",
-    "title": "Labs",
+    "objectID": "hw/index.html#schedule",
+    "href": "hw/index.html#schedule",
+    "title": "Homework",
     "section": "Schedule",
-    "text": "Schedule\n\n\n\n\n\n\n\n\n\nLab\nInstructions\nSolutions\nDue Date\n\n\n\n\nLab 1\n\n\nAug. 28, 2025\n\n\nLab 2\n\n\nSep. 30, 2025\n\n\nLab 3\n\n\nOct. 23, 2025",
+    "text": "Schedule\n\n\n\n\n\n\n\n\n\nAssignment\nInstructions\nSolutions\nDue Date\n\n\n\n\nHomework 1\n\n\nSep. 11, 2025\n\n\nHomework 2\n\n\nSep. 25, 2025\n\n\nHomework 3\n\n\nOct. 23, 2025\n\n\nHomework 4\n\n\nNov. 06, 2025\n\n\nHomework 5\n\n\nDec. 04, 2025",
     "crumbs": [
-      "Lab Overview"
+      "Homework Overview"
     ]
   },
   {
-    "objectID": "hw/hw01/hw01.html",
-    "href": "hw/hw01/hw01.html",
-    "title": "BEE 4750 Homework 1: Introduction to Using Julia",
+    "objectID": "hw/hw03/hw03.html",
+    "href": "hw/hw03/hw03.html",
+    "title": "BEE 4750 Homework 3: Dissolved Oxygen and Monte Carlo",
     "section": "",
-    "text": "Due Date\n\n\n\nThursday, 9/11/25, 9:00pm",
+    "text": "Due Date\n\n\n\nThursday, 10/16/25, 9:00pm",
     "crumbs": [
-      "Homework 1"
+      "Homework 3"
     ]
   },
   {
-    "objectID": "hw/hw01/hw01.html#overview",
-    "href": "hw/hw01/hw01.html#overview",
-    "title": "BEE 4750 Homework 1: Introduction to Using Julia",
+    "objectID": "hw/hw03/hw03.html#overview",
+    "href": "hw/hw03/hw03.html#overview",
+    "title": "BEE 4750 Homework 3: Dissolved Oxygen and Monte Carlo",
     "section": "Overview",
-    "text": "Overview\n\nInstructions\n\nProblem 1 consist of a series of code snippets for you to interpret and debug. You will be asked to identify relevant error(s) and fix the code.\nProblem 2 asks you to write code to implement several simple functions using more general programming and some which are unique to Julia (which might mean that you need to look at the documentation or use Julia’s help function, which is accessed with ?, e.g. ?sum for help with the sum() function) or to analyze Julia syntax.\nProblem 3 asks you to convert a verbal description of a wastewater treatment system into a Julia function, and then to use that function to explore the impact of different wastewater allocation strategies.\n\n\n\nLoad Environment\nThe following code loads the environment and makes sure all needed packages are installed. This should be at the start of most Julia scripts.\n\nimport Pkg\nPkg.activate(@__DIR__)\nPkg.instantiate()\n\nStandard Julia practice is to load all needed packages at the top of a file. If you need to load any additional packages in any assignments beyond those which are loaded by default, feel free to add a using statement, though you may need to install the package.\n\nusing Random\nusing Plots\nusing GraphRecipes\nusing LaTeXStrings\nusing Distributions\n\n\n# this sets a random seed, which ensures reproducibility of random number generation. You should always set a seed when working with random numbers.\nRandom.seed!(1)\n\nTaskLocalRNG()",
+    "text": "Overview\n\nInstructions\n\nProblem 1 asks you to implement a model for dissolved oxygen in a river with multiple waste releases and use this to develop a strategy to ensure regulatory compliance.\n\n\n\nLoad Environment\nThe following code loads the environment and makes sure all needed packages are installed. This should be at the start of most Julia scripts.\n\nimport Pkg\nPkg.activate(@__DIR__)\nPkg.instantiate()\n\n\nusing Random\nusing Plots\nusing LaTeXStrings\nusing Distributions",
     "crumbs": [
-      "Homework 1"
+      "Homework 3"
     ]
   },
   {
-    "objectID": "hw/hw01/hw01.html#problems-total-30-points",
-    "href": "hw/hw01/hw01.html#problems-total-30-points",
-    "title": "BEE 4750 Homework 1: Introduction to Using Julia",
+    "objectID": "hw/hw03/hw03.html#problems-total-30-points",
+    "href": "hw/hw03/hw03.html#problems-total-30-points",
+    "title": "BEE 4750 Homework 3: Dissolved Oxygen and Monte Carlo",
     "section": "Problems (Total: 30 Points)",
-    "text": "Problems (Total: 30 Points)\n\nProblem 1 (12 points)\nThe following subproblems all involve code snippets that require debugging. You are encouraged to use online resources (e.g. Julia documentation and forums, Stack Overflow, Reddit, etc) to help find diagnose error messages and find solutions, but make sure that you clearly document which resources you used and how you used them.\n\nProblem 1.1\nYou’ve been tasked with writing code to identify the minimum value in an array. You cannot use a predefined function. Your colleague suggested the function below, but it does not return the minimum value.\n\nfunction minimum(array)\n    # initialize the minimum value counter\n    min_value = 0\n    # update minimum values\n    for i in 1:length(array)\n        if array[i] &lt; min_value\n            min_value = array[i]\n        end\n    end\n    # return found minimum\n    return min_value\nend\n\narray_values = [89, 90, 95, 100, 100, 78, 99, 98, 100, 95]\n@show minimum(array_values);\n\nminimum(array_values) = 0\n\n\nWhat is the logical flaw in the code? Fix it and show that your fixed code solves the problem.\n\n\nProblem 1.2\nYour team is trying to compute the average grade for your class, but the following code produces an UndefVarError.\n\n# enter student grade vector\nstudent_grades = [89, 90, 95, 100, 100, 78, 99, 98, 100, 95]\n# compute class average\nfunction class_average(grades)\n  average_grade = mean(student_grades)\n  return average_grade\nend\n\n@show average_grade;\n\n\nUndefVarError: `average_grade` not defined in `Main.Notebook`\nSuggestion: check for spelling errors or missing imports.\nStacktrace:\n [1] macro expansion\n   @ show.jl:1232 [inlined]\n [2] top-level scope\n   @ ~/Teaching/BEE4750/website/hw/hw01/hw01.qmd:131\n\n\n\nWhat does this UndefVarError mean? Why does this code produce one? Fix the error and solve the problem.\n\n\nProblem 1.3\nYour team wants to know the expected payout of an old Italian dice game called passadieci (which was analyzed by Galileo as one of the first examples of a rigorous study of probability). The goal of passadieci is to get at least an 11 from rolling three fair, six-sided dice. Your strategy is to compute the average wins from 1,000 trials, but the code you’ve written below produces a MethodError.\n\n# function to simulate a passadieci roll: 3 6-sided dice\nfunction passadieci()\n    # this rand() call samples 3 values from the vector [1, 6]\n    roll = rand(1:6, 3) \n    return roll\nend\n# set number of trials and initialize outcome vector\nn_trials = 1_000\noutcomes = zero(n_trials)\n# simulate number of passadieci rolls and count wins\nfor i = 1:n_trials\n    outcomes[i] = (sum(passadieci()) &gt; 11)\nend\nwin_prob = sum(outcomes) / n_trials # compute average number of wins\n@show win_prob;\n\n\nMethodError: no method matching setindex!(::Int64, ::Bool, ::Int64)\nThe function `setindex!` exists, but no method is defined for this combination of argument types.\nStacktrace:\n [1] top-level scope\n   @ ~/Teaching/BEE4750/website/hw/hw01/hw01.qmd:153\n\n\n\nWhat does this MethodError mean? Why does this code produce one? Fix the error and solve the problem.\n\n\nProblem 1.4\nYou’re interested in writing some code to remove the mean of a vector from all of its components. You’ve written the following code and tried to test it on a random vector, but your code returns a MethodError.\n\n# function to remove mean from a vector\nfunction remove_mean(vect)\n    # fucntion to compute the mean\n    function compute_mean(vect)\n        element_sum = 0 # initialize sum\n        # compute mean and return\n        for v in vect\n            element_sum += v\n        end\n        return element_sum / length(vect)\n    end\n\n    m = compute_mean(vect) # compute mean\n    # return demeaned vector\n    return vect - m\nend\n\nrandom_vect = rand(1_000)\n@show remove_mean(random_vect)\n\n\nMethodError: no method matching -(::Vector{Float64}, ::Float64)\nFor element-wise subtraction, use broadcasting with dot syntax: array .- scalar\nThe function `-` exists, but no method is defined for this combination of argument types.\n\nClosest candidates are:\n  -(::ChainRulesCore.NotImplemented, ::Any)\n   @ ChainRulesCore ~/.julia/packages/ChainRulesCore/XAgYn/src/tangent_arithmetic.jl:49\n  -(::Any, ::ChainRulesCore.NotImplemented)\n   @ ChainRulesCore ~/.julia/packages/ChainRulesCore/XAgYn/src/tangent_arithmetic.jl:50\n  -(::ChainRulesCore.NoTangent, ::Any)\n   @ ChainRulesCore ~/.julia/packages/ChainRulesCore/XAgYn/src/tangent_arithmetic.jl:61\n  ...\n\nStacktrace:\n [1] remove_mean(vect::Vector{Float64})\n   @ Main.Notebook ~/Teaching/BEE4750/website/hw/hw01/hw01.qmd:180\n [2] macro expansion\n   @ show.jl:1232 [inlined]\n [3] top-level scope\n   @ ~/Teaching/BEE4750/website/hw/hw01/hw01.qmd:184\n\n\n\nWhat does this MethodError mean? Why does this code produce one? Fix the error and solve the problem.\n\n\n\nProblem 2 (18 points)\nCheap Plastic Products, Inc. is operating a plant that produces \\(100 \\text{m}^3\\text{/day}\\) of wastewater that is discharged into Pristine Brook. The wastewater contains \\(1 \\text{kg/m}^3\\) of YUK, a toxic substance. The US Environmental Protection Agency has imposed an effluent standard on the plant prohibiting discharge of more than \\(20 \\text{kg/day}\\) of YUK into Pristine Brook.\nCheap Plastic Products has analyzed two methods for reducing its discharges of YUK. Method 1 is land disposal, which costs \\(X_1^2/20\\) dollars per day, where \\(X_1\\) is the amount of wastewater disposed of on the land (\\(\\text{m}^3\\text{/day}\\)). With this method, 20% of the YUK applied to the land will eventually drain into the stream (i.e., 80% of the YUK is removed by the soil).\nMethod 2 is a chemical treatment procedure which costs $1.50 per \\(\\text{m}^3\\) of wastewater treated. The chemical treatment has an efficiency of \\(e= 1 - 0.005X_2\\), where \\(X_2\\) is the quantity of wastewater (\\(\\text{m}^3\\text{/day}\\)) treated. For example, if \\(X_2 = 50 \\text{m}^3\\text{/day}\\), then \\(e = 1 - 0.005(50) = 0.75\\), so that 75% of the YUK is removed.\nCheap Plastic Products is wondering how to allocate their wastewater between these three disposal and treatment methods (land disposal, chemical treatment, and direct disposal) to meet the effluent standard while keeping costs manageable.\nThe flow of wastewater through this treatment system is shown in Figure 1. Modify the edge labels (by editing the edge_labels dictionary in the code producing Figure 1) to show how the wastewater allocations result in the final YUK discharge into Pristine Brook. For the edge_label dictionary, the tuple \\((i, j)\\) corresponds to the arrow going from node \\(i\\) to node \\(j\\). The syntax for any entry is (i, j) =&gt; \"label text\", and the label text can include mathematical notation if the string is prefaced with an L, as in L\"x_1\" will produce \\(x_1\\).\n\nA = [0 1 1 1;\n    0 0 0 1;\n    0 0 0 1;\n    0 0 0 0]\n\nnames = [\"Plant\", \"Land Treatment\", \"Chem Treatment\", \"Pristine Brook\"]\n# modify this dictionary to add labels\nedge_labels = Dict((1, 2) =&gt; \"\", (1,3) =&gt; \"\", (1, 4) =&gt; \"\",(2, 4) =&gt; \"\",(3, 4) =&gt; \"\")\nshapes=[:hexagon, :rect, :rect, :hexagon]\nxpos = [0, -1.5, -0.25, 1]\nypos = [1, 0, 0, -1]\n\np = graphplot(A, names=names,edgelabel=edge_labels, markersize=0.15, markershapes=shapes, markercolor=:white, x=xpos, y=ypos)\ndisplay(p)\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 1: System diagram of the wastewater treatment options in Problem 4.\n\n\n\n\n\nProblem 2.1\nFormulate a mathematical model for the treatment cost and the amount of YUK that will be discharged into Pristine Brook based on the wastewater allocations. This is best done with some equations and supporting text explaining the derivation. Make sure you include, as additional equations in the model, any needed constraints on relevant values. You can find some basics on writing mathematical equations using the LaTeX typesetting syntax here, and a cheatsheet with LaTeX commands can be found on the course website’s Resources page.\n\n\nProblem 2.2\nImplement your systems model as a Julia function which computes the resulting YUK discharge and cost for a particular treatment plan. You can return multiple values from a function with a tuple, as in:\n\nfunction multiple_return_values(x, y)\n    return (x+y, x*y)\nend\n\na, b = multiple_return_values(2, 5)\n@show a;\n@show b;\n\na = 7\nb = 10\n\n\nTo evalute the function over vectors of inputs, you can broadcast the function by adding a decimal . before the function arguments and accessing the resulting values by writing a comprehension to loop over the individual outputs in the vector:\n\nx = [1, 2, 3, 4, 5]\ny = [6, 7, 8, 9, 10]\n\noutput = multiple_return_values.(x, y)\na = [out[1] for out in output]\nb = [out[2] for out in output]\n@show a;\n@show b;\n\na = [7, 9, 11, 13, 15]\nb = [6, 14, 24, 36, 50]\n\n\nMake sure you comment your code appropriately to make it clear what is going on and why.\n\n\nProblem 2.3\nUse your function to experiment with 1,000 different combinations of wastewater discharge and treatment. You can do this with either a grid search or by sampling from a Dirichlet distribution (a \\(\\text{Dirichlet}(1, n)\\) distribution will generate uniformly-weighted \\(n\\)-dimensional vectors whose components add up to 1; see the Distributions.jl documentation for how to sample from probability distributions in Julia). Plot the results of these experiments. Do any satisfy the YUK effluent standard (plot this as well as a dashed red line). What was the cost of solutions satisfying the standard? What can you say about the tradeoff between treatment cost and YUK discharge? You don’t have to find an “optimal” solution to this problem, but what do you think would be needed to find a better solution?\n\n\nProblem 2.4\nFind the strategies which minimize cost and YUK discharge (these will be different strategies) analytically and find the values of the objective metrics. Plot these values in the plot that you created for Problem 2.3. How do their values compare to the spread of values that you found in that problem? Would you select either of them (explain why or why not)?",
+    "text": "Problems (Total: 30 Points)\n\nProblem 1 (30 points)\nA river which flows at 6 km/d is receiving waste discharges from two sources which are 15 km apart. The oxygen reaeration rate is 0.55 day-1, and the decay rates of CBOD and NBOD are are 0.35 and 0.25 day-1, respectively. The river’s saturated dissolved oxygen concentration is 10m g/L.\nIf the characteristics of the river inflow and waste discharges are given in Table 1, write a Julia model to compute the dissolved oxygen concentration from the first wastewater discharge to an arbitrary distance d km downstream. Use your model to compute the minimum dissolved oxygen concentration up to 50 km downstream and how far downriver this maximum occurs.\n\n\n\nTable 1: River inflow and waste stream characteristics for Problem 1.\n\n\n\n\n\nParameter\nRiver Inflow\nWaste Stream 1\nWaste Stream 2\n\n\n\n\nInflow\n100,000 m3/d\n10,000 m3/d\n15,000 m3/d\n\n\nDO Concentration\n7.5 mg/L\n5 mg/L\n5 mg/L\n\n\nCBOD\n5 mg/L\n50 mg/L\n45 mg/L\n\n\nNBOD\n5 mg/L\n35 mg/L\n35 mg/L\n\n\n\n\n\n\n\n\nProblem 1.1\nImplement the Streeter-Phelps (analytic) solution for the dissolved oxygen concentration. Plot the dissolved oxygen concentration from the first waste stream to 50 km downriver. What is the minimum value in mg/L?\n\n\nProblem 1.2\nImplement a numerically-integrated (discretized) solution for the dissolved oxygen concentration. Using a resolution of 0.5km, conduct a simulation and plot the results on the same axis as the plot from Problem 1.1. How has the minimum value changed? What do you attribute this difference to (be specific about the source of the difference(s) in terms of the simulation dynamics, not just that one is a numerical approximation).\n\n\nProblem 1.3\nUsing the analytic model, what is the minimum level of treatment (% removal of organic waste; assume this is equivalent to the same level of reduction of the CBOD and NBOD) for waste stream 1 that will ensure that the dissolved oxygen concentration is in compliance with the 4 mg/L standard along with a 5% margin of safety, assuming that waste stream 2 remains untreated? How about if only waste stream 2 is treated?\n\n\nProblem 1.4\nSuppose you are responsible for designing a waste treatment plan for discharges into the river, with a regulatory mandate to keep the dissolved oxygen concentration above 4 mg/L. Discuss whether you’d opt to treat waste stream 2 alone or both waste streams equally. What other information might you need to make a conclusion, if any?\n\n\nProblem 1.5\nSuppose that it is known that the DO concentrations at the river inflow can vary according to a \\(\\text{LogNormal}(2.0, 0.15)\\) distribution. Conduct a Monte Carlo simulation of the DO concentration in the river. If you treat only waste stream 1 (based on your analysis from Problem 1.3), what is the expected probability and 95% confidence interval that the river fails to comply with the regulatory standard of 4 mg/L? How did you decide that your Monte Carlo sample size was sufficiently large?",
     "crumbs": [
-      "Homework 1"
+      "Homework 3"
     ]
   },
   {
-    "objectID": "hw/hw01/hw01.html#references",
-    "href": "hw/hw01/hw01.html#references",
-    "title": "BEE 4750 Homework 1: Introduction to Using Julia",
+    "objectID": "hw/hw03/hw03.html#references",
+    "href": "hw/hw03/hw03.html#references",
+    "title": "BEE 4750 Homework 3: Dissolved Oxygen and Monte Carlo",
     "section": "References",
     "text": "References\nList any external references consulted, including classmates.",
     "crumbs": [
-      "Homework 1"
+      "Homework 3"
     ]
   },
   {
-    "objectID": "hw/hw04/hw04.html",
-    "href": "hw/hw04/hw04.html",
-    "title": "BEE 4750 Homework 4: Linear Programming and Capacity Expansion",
+    "objectID": "hw/hw05/hw05.html",
+    "href": "hw/hw05/hw05.html",
+    "title": "BEE 4750 Homework 5: Mixed Integer and Stochastic Programming",
     "section": "",
-    "text": "Due Date\n\n\n\nThursday, 11/06/25, 9:00pm",
+    "text": "Due Date\n\n\n\nThursday, 12/04/24, 9:00pm",
     "crumbs": [
-      "Homework 4"
+      "Homework 5"
     ]
   },
   {
-    "objectID": "hw/hw04/hw04.html#overview",
-    "href": "hw/hw04/hw04.html#overview",
-    "title": "BEE 4750 Homework 4: Linear Programming and Capacity Expansion",
+    "objectID": "hw/hw05/hw05.html#overview",
+    "href": "hw/hw05/hw05.html#overview",
+    "title": "BEE 4750 Homework 5: Mixed Integer and Stochastic Programming",
     "section": "Overview",
-    "text": "Overview\n\nInstructions\n\nProblem 1 asks you to analytically (or graphically) solve a linear program.\nProblem 2 asks you to formulate and solve a resource allocation problem using linear programming.\nProblem 3 asks you to formulate, solve, and analyze a standard generating capacity expansion problem.\n\n\n\nLoad Environment\nThe following code loads the environment and makes sure all needed packages are installed. This should be at the start of most Julia scripts.\n\nimport Pkg\nPkg.activate(@__DIR__)\nPkg.instantiate()\n\n\nusing JuMP\nusing HiGHS\nusing DataFrames\nusing Plots\nusing Measures\nusing CSV\nusing MarkdownTables",
+    "text": "Overview\n\nInstructions\n\nIn Problem 1, you will use mixed integer programming to solve a waste load allocation problem.\nIn Problem 2, you will formulate a stochastic optimization problem.\n\n\n\nLoad Environment\nThe following code loads the environment and makes sure all needed packages are installed. This should be at the start of most Julia scripts.\n\n\nimport Pkg\nPkg.activate(@__DIR__)\nPkg.instantiate()\n\n\nusing JuMP\nusing HiGHS\nusing DataFrames\nusing GraphRecipes\nusing Plots\nusing Measures\nusing MarkdownTables",
     "crumbs": [
-      "Homework 4"
+      "Homework 5"
     ]
   },
   {
-    "objectID": "hw/hw04/hw04.html#problems-total-30-points",
-    "href": "hw/hw04/hw04.html#problems-total-30-points",
-    "title": "BEE 4750 Homework 4: Linear Programming and Capacity Expansion",
+    "objectID": "hw/hw05/hw05.html#problems-total-30-points",
+    "href": "hw/hw05/hw05.html#problems-total-30-points",
+    "title": "BEE 4750 Homework 5: Mixed Integer and Stochastic Programming",
     "section": "Problems (Total: 30 Points)",
-    "text": "Problems (Total: 30 Points)\n\nProblem 1 (Total: 3 Points)\nSolve the following linear program analytically. Show your work and justify any reasoning.\n\\[\n\\begin{alignedat}{2}\n&& \\max_{x, y} \\quad & 3x + 2y\\\\\n&&\\text{subject to:} \\quad & x + 4y \\leq 16\\\\\n& && x - 2y \\leq -1\\\\\n& && 0 \\leq x \\leq 4\\\\\n& && 1 \\leq y \\leq 4.\n\\end{alignedat}\n\\]\n\n\nProblem 2 (12 points)\nA farmer has access to a pesticide which can be used on corn, soybeans, and wheat fields, and costs $70/kg-yr to apply. The crop yields the farmer can obtain following crop yields by applying varying rates of pesticides to the field are shown in Table 1.\n\n\n\nTable 1: Crop yields from applying varying pesticide rates for Problem 1.\n\n\n\n\n\n\n\n\n\n\n\nApplication Rate (kg/ha)\nSoybean (kg/ha)\nWheat (kg/ha)\nCorn (kg/ha)\n\n\n\n\n0\n2900\n3500\n5900\n\n\n1\n3800\n4100\n6700\n\n\n2\n4400\n4200\n7900\n\n\n\n\n\n\nThe costs of production, excluding pesticides, for each crop, and selling prices, are shown in Table 2.\n\n\n\nTable 2: Costs of crop production, excluding pesticides, and selling prices for each crop.\n\n\n\n\n\nCrop\nProduction Cost ($/ha-yr)\nSelling Price ($/kg)\n\n\n\n\nSoybeans\n350\n0.36\n\n\nWheat\n280\n0.27\n\n\nCorn\n390\n0.22\n\n\n\n\n\n\nRecently, environmental authorities have declared that farms cannot have an average application rate on soybeans, wheat, and corn which exceeds 0.8, 0.7, and 0.6 kg/ha, respectively. The farmer has asked you for advice on how they should plant crops and apply pesticides to maximize profits over 130 total ha while remaining in regulatory compliance if demand for each crop (which is the maximum the market would buy) this year is 250,000 kg?\n\nProblem 2.1\nFormulate a linear program for this resource allocation problem, including clear definitions of decision variable(s) (including units), objective function(s), and constraint(s) (make sure to explain functions and constraints with any needed derivations and explanations). Tip: Make sure that all of your constraints are linear.\n\n\nProblem 2.2\nHow many ha should the farmer dedicate to each crop and with what pesticide application rate(s)? How much profit will the farmer expect to make?\n\n\nProblem 2.3\nThe farmer has an opportunity to buy an extra 10 ha of land. How much extra profit would this land be worth to the farmer? Discuss why this value makes sense and under what conditions you would recommend the farmer should make the purchase.\n\n\n\nProblem 2 (15 points)\nFor this problem, we will use hourly load (demand) data from 2013 in New York’s Zone C (which includes Ithaca). The load data is loaded and plotted below in Figure 1.\n\n# load the data, pull Zone C, and reformat the DataFrame\nNY_demand = DataFrame(CSV.File(\"data/2013_hourly_load_NY.csv\"))\nrename!(NY_demand, :\"Time Stamp\" =&gt; :Date)\ndemand = NY_demand[:, [:Date, :C]]\nrename!(demand, :C =&gt; :Demand)\ndemand[:, :Hour] = 1:nrow(demand)\n\n# plot demand\nplot(demand.Hour, demand.Demand, xlabel=\"Hour of Year\", ylabel=\"Demand (MWh)\", label=:false)\n\n\n\n\n\n\nFigure 1: Hourly load data for New York’s Zone C in 2013.\n\n\n\n\nNext, we load the generator data, shown in Table 3. This data includes fixed costs ($/MW installed), variable costs ($/MWh generated), and CO2 emissions intensity (tCO2/MWh generated).\n\ngens = DataFrame(CSV.File(\"data/generators.csv\"))\n\n\n\nTable 3: Generator type data, including fixed costs (\\(/MW installed), variable costs (\\)/MWh generated), and CO2 emissions intensity (tCO2/MWh generated).\n\n\n\n6×4 DataFrame\n\n\n\nRow\nPlant\nFixedCost\nVarCost\nEmissions\n\n\n\nString15\nInt64\nInt64\nFloat64\n\n\n\n\n1\nGeothermal\n450000\n0\n0.0\n\n\n2\nCoal\n220000\n24\n1.0\n\n\n3\nNG CCGT\n82000\n30\n0.43\n\n\n4\nNG CT\n65000\n40\n0.55\n\n\n5\nWind\n91000\n0\n0.0\n\n\n6\nSolar\n70000\n0\n0.0\n\n\n\n\n\n\n\n\n\nFinally, we load the hourly solar and wind capacity factors, which are plotted in Figure 2. These tell us the fraction of installed capacity which is expected to be available in a given hour for generation (typically based on the average meteorology).\n\n# load capacify factors into a DataFrame\ncap_factor = DataFrame(CSV.File(\"data/wind_solar_capacity_factors.csv\"))\n\n# plot January capacity factors\np1 = plot(cap_factor.Wind[1:(24*31)], label=\"Wind\")\nplot!(cap_factor.Solar[1:(24*31)], label=\"Solar\")\nxaxis!(\"Hour of the Month\")\nyaxis!(\"Capacity Factor\")\n\np2 = plot(cap_factor.Wind[4344:4344+(24*31)], label=\"Wind\")\nplot!(cap_factor.Solar[4344:4344+(24*31)], label=\"Solar\")\nxaxis!(\"Hour of the Month\")\nyaxis!(\"Capacity Factor\")\n\ndisplay(p1)\ndisplay(p2)\n\n\n\n\n\n\n\n\n\n\n\n(a) January\n\n\n\n\n\n\n\n\n\n\n\n\n\n(b) July\n\n\n\n\n\n\n\nFigure 2: Hourly solar and wind capacity factors.\n\n\n\n\nYou have been asked to develop a generating capacity expansion plan for the utility in Riley County, NY, which currently has no existing electrical generation infrastructure. The utility can build any of the following plant types: geothermal, coal, natural gas combined cycle gas turbine (CCGT), natural gas combustion turbine (CT), solar, and wind. The NY state legislature is planning to enact an annual CO2 limit, which for the utility would limit the emissions in its footprint to 1.5 MtCO2/yr.\nWhile coal, CCGT, and CT plants can generate at their full installed capacity, geothermal plants operate at maximum 85% capacity, and solar and wind available capacities vary by the hour depend on the expected meteorology. The utility will also penalize any non-served demand at a rate of $10,000/MWh.\n\nProblem 3.1\nFormulate a linear program for this capacity expansion problem, including clear definitions of decision variable(s) (including units), objective function(s), and constraint(s) (make sure to explain functions and constraints with any needed derivations and explanations).\n\n\nProblem 3.2\nHow much should the utility build of each type of generating plant? What will the total cost be? How much energy will be non-served?\n\n\nProblem 3.3\nWhat fraction of annual generation does each plant type produce? How does this compare to the breakdown of built capacity that you found in Problem 3.2? Do these results make sense given the demand and generator data?\n\n\nProblem 3.5\nWhat is the shadow price of CO2? What is the value to the utility be of allowing it to emit an additional 1000 tCO2/yr?\n\n\n\n\n\n\nSignificant Digits\n\n\n\nUse round(x; digits=n) to report values to the appropriate precision! If your number is on a different order of magnitude and you want to round to a certain number of significant digits, you can use round(x; sigdigits=n).\n\n\n\n\n\n\n\n\nGetting Variable Output Values\n\n\n\nvalue.(x) will report the values of a JuMP variable x, but it will return a special container which holds other information about x that is useful for JuMP. This means that you can’t use this output directly for further calculations. To just extract the values, use value.(x).data.\n\n\n\n\n\n\n\n\nSuppressing Model Command Output\n\n\n\nThe output of specifying model components (variable or constraints) can be quite large for this problem because of the number of time periods. If you end a cell with an @variable or @constraint command, I highly recommend suppressing output by adding a semi-colon after the last command, or you might find that your notebook crashes.",
+    "text": "Problems (Total: 30 Points)\n\nProblem 1 (24 points)\nThree cities are developing a coordinated municipal solid waste (MSW) disposal plan. Three disposal alternatives are being considered: a landfill (LF), a materials recycling facility (MRF), and a waste-to-energy facility (WTE). The capacities of these facilities and the fees for operation and disposal are provided below.\n\nLF: Capacity 200 Mg, fixed cost $2000/day, tipping cost $50/Mg;\nMRF: Capacity 350 Mg, fixed cost $1500/day, tipping cost $7/Mg, recycling cost $40/Mg recycled;\nWTE: Capacity 210 Mg, fixed cost $2500/day, tipping cost $60/Mg;\n\nThe MRF recycling rate is 40%, and the ash fraction of non-recycled waste is 16% and of recycled waste is 14%. Transportation costs are $1.5/Mg-km, and the relative distances between the cities and facilities are provided in the table below.\n\n\n\n\n\n\n\n\n\nCity/Facility\nLandfill (km)\nMRF (km)\nWTE (km)\n\n\n\n\n1\n5\n30\n15\n\n\n2\n15\n25\n10\n\n\n3\n13\n45\n20\n\n\nLF\n-\n32\n18\n\n\nMRF\n32\n-\n15\n\n\nWTE\n18\n15\n-\n\n\n\nThe fixed costs associated with the disposal options are incurred only if the particular disposal option is implemented. The three cities produce 100, 90, and 120 Mg/day of solid waste, respectively, with the composition provided in the table below.\n\n\n\n\n\n\n\n\n\nComponent\n% of total mass\nCombustion ash (%)\nMRF Recycling rate (%)\n\n\n\n\nFood Wastes\n15\n8\n0\n\n\nPaper & Cardboard\n40\n7\n55\n\n\nPlastics\n5\n5\n15\n\n\nTextiles\n3\n10\n10\n\n\nRubber, Leather\n2\n15\n0\n\n\nWood\n5\n2\n30\n\n\nYard Wastes\n18\n2\n40\n\n\nGlass\n4\n100\n60\n\n\nFerrous\n2\n100\n75\n\n\nAluminum\n2\n100\n80\n\n\nOther Metal\n1\n100\n50\n\n\nMiscellaneous\n3\n70\n0\n\n\n\nThe information in the above table will help you determine the overall recycling and ash fractions. Note that the recycling residuals, which may be sent to either landfill or the WTE, have different ash content than the ash content of the original MSW. You will need to determine these fractions to construct your mass balance constraints.\nReminder: Use round(x; digits=n) to report values to the appropriate precision!\n\nProblem 1.1\nBased on the information above, calculate the overall recycling and ash fractions for the waste produced by each city.\n\n\nProblem 1.2\nWhat are the decision variables for your optimization problem? Provide notation and variable meaning.\n\n\nProblem 1.3\nFormulate the objective function. Make sure to include any needed derivations or justifications for your equation(s).\n\n\nProblem 1.4\nDerive all relevant constraints. Make sure to include any needed justifications or derivations.\n\n\nProblem 1.5\nFind the optimal solution (using JuMP to solve the problem). Report the optimal objective value.\n\n\nProblem 1.6\nDraw a diagram showing the flows of waste between the cities and the facilities. Which facilities (if any) will not be used? Does this solution make sense?\n\n\n\nProblem 2 (6 points)\nConsider a two-period economic dispatch problem, based on the multi-period example from Lecture 14 (on 10/29). The generator data, including ramping constraints for each generator, is provided in `data/generators.csv.’ In period 1, the demand is \\(d_1 = 1100 \\text{MW}\\). In period 2, the demand is projected to be \\(d_2 = 1200 \\text{MW}\\), but there is a 25% probability that it is $1500 . In the first period, the solar capacity factor is \\(0.9\\) and the wind capacity factor is \\(0.45\\), but in the second period, there is some uncertainty: the forecasted solar and wind capacity factors are \\(0.95\\) and \\(0.4\\), respectively, but there is a 30% probability that they are \\(0.75\\) and \\(0.5\\). Your goal is to identify how to dispatch your generators to minimize the cost of meeting demand.\n\nProblem 2.1\nDraw a scenario tree for this problem.\n\n\nProblem 2.2\nFormulate a stochastic linear program for this problem based on your scenario tree from Problem 2.1 and the data in data/generators.csv.",
     "crumbs": [
-      "Homework 4"
+      "Homework 5"
     ]
   },
   {
-    "objectID": "hw/hw04/hw04.html#references",
-    "href": "hw/hw04/hw04.html#references",
-    "title": "BEE 4750 Homework 4: Linear Programming and Capacity Expansion",
+    "objectID": "hw/hw05/hw05.html#references",
+    "href": "hw/hw05/hw05.html#references",
+    "title": "BEE 4750 Homework 5: Mixed Integer and Stochastic Programming",
     "section": "References",
     "text": "References\nList any external references consulted, including classmates.",
     "crumbs": [
-      "Homework 4"
-    ]
-  },
-  {
-    "objectID": "hw/hw02/hw02.html",
-    "href": "hw/hw02/hw02.html",
-    "title": "BEE 4750 Homework 2: Systems Modeling and Simulation",
-    "section": "",
-    "text": "Due Date\n\n\n\nThursday, 09/25/25, 9:00pm",
-    "crumbs": [
-      "Homework 2"
-    ]
-  },
-  {
-    "objectID": "hw/hw02/hw02.html#overview",
-    "href": "hw/hw02/hw02.html#overview",
-    "title": "BEE 4750 Homework 2: Systems Modeling and Simulation",
-    "section": "Overview",
-    "text": "Overview\n\nInstructions\n\nProblem 1 asks you to draw a systems diagram and identify the type of a feedback.\nProblem 2 asks you to model contaminant concentrations in a river and use simulation to compare the concentrations to a regulatory standard.\nProblem 3 asks you to explore the implications of an ice-albedo feedback in the Earth’s climate system by understanding the equilibria of the modeled system and their stabilities.\n\n\n\nLoad Environment\nThe following code loads the environment and makes sure all needed packages are installed. This should be at the start of most Julia scripts.\n\nimport Pkg\nPkg.activate(@__DIR__)\nPkg.instantiate()\n\n\nusing Plots\nusing LaTeXStrings\nusing CSV\nusing DataFrames\nusing Roots",
-    "crumbs": [
-      "Homework 2"
-    ]
-  },
-  {
-    "objectID": "hw/hw02/hw02.html#problems-total-30-points",
-    "href": "hw/hw02/hw02.html#problems-total-30-points",
-    "title": "BEE 4750 Homework 2: Systems Modeling and Simulation",
-    "section": "Problems (Total: 30 Points)",
-    "text": "Problems (Total: 30 Points)\n\nProblem 1 (5 points)\nDraw a systems diagram for the relationship between global mean temperature, atmospheric CO2 concentrations, and ocean CO2 concentrations. What are the signs of the interactions between these components and why? What does this suggest about the overall feedback between temperature and the ocean carbon cycle?\n\n\n\n\n\n\n\nThink about Henry’s law for CO2.\n\n\n\n\nProblem 2 (15 points)\nA river which flows at 10 km/d is receiving discharges of wastewater contaminated with CRUD from two sources which are 15 km apart, as shown in the Figure below. CRUD decays exponentially in the river at a rate of 0.36 \\(\\mathrm{d}^{-1}\\) and is deposited by the atmosphere along the river at a rate of 54 kg/km/d. \n\n\n\nSchematic of the river system in Problem 2\n\n\n\nProblem 2.1\nDraw a systems diagram with the relevant control volume(s) denoted and any relevant in/out-flows between these boxes. How did you decide how many boxes were needed?\n\n\nProblem 2.2\nDevelop a model for the concentration of CRUD downriver by formulating and solving the appropriate differential equation(s) analytically.\n\n\n\n\n\n\n\nFormulate your model in terms of distance downriver, rather than leaving it in terms of time from discharge.\n\n\n\n\nProblem 2.3\nDetermine if the system in compliance with a regulatory limit of \\(2.3\\ \\text{kg}/(1000 \\text{m}^3)\\). You can do this analytically or computationally.\n\n\n\nProblem 3 (10 points)\nIn class, we discussed the ice-albedo feedback and its possible influence on melting the hypothesized “Snowball Earth”. In this problem, we’ll introduce a simple model of the Earth’s energy balance with includes this feedback and examine the stability of the climate.\nThis simple model of the energy balance (averaged over the entire planet) is:\n\\[\n\\underbrace{C\\frac{dT}{dt}}_{\\text{change in heat}} = \\underbrace{\\frac{(1-\\alpha)S}{4}}_{\\text{incoming radiation}} - \\underbrace{(A - BT)}_{\\text{outgoing radiation}} + \\underbrace{a\\ln \\left(\\frac{[CO_2]}{[CO_2]_{PI}}\\right)}_{\\text{greenhouse effect}},\n\\tag{1}\\]\nwhere:\n\n\\(T\\) is the Earth’s global mean temperature (in \\(^\\circ\\text{C}\\));\n\\(C\\) is the heat capacity of the atmosphere and shallow ocean, taken to be \\(51\\ \\text{J}/\\text{m}^2/^\\circ\\text{C}\\);\n\\(\\alpha\\) is the planetary albedo, or the fraction of incoming radiation reflected by the Earth, which has a present-day value of approximately 0.3;\n\\(S\\) is the solar constant, or the amount of solar radiation received by the Earth averaged over area, which has a present-day value of \\(1368\\ \\text{W}/\\text{m}^2\\) but during the Neoproteorozoic Era had a value of \\(1272\\ \\text{W}/\\text{m}^2\\) (this is divided by four because the Earth is a sphere but \\(S\\) is the radiation captured by a disc with radius equal to that of the Earth);\n\\(A\\) and \\(B\\) are coefficients from the linearization of outgoing radiation physics, and have corresponding values \\(B=-1.3\\ \\text{W}/\\text{m}^2/^\\circ\\text{C}\\) (estimated from a number of lines of evidence about the sensitivity of outgoing radiation to temperature; this is negative due to a sign convention about the direction of incoming vs. outgoing radiation) and \\(A=221.2\\ \\text{W}/\\text{m}^2\\) (estimated by assuming the pre-industrial temperature of \\(14^\\circ\\text{C}\\) was stable without anthropogenic greenhouse gas emissions).\n\nWe will ignore the greenhouse effect term as we are considering the Earth system well before humans were around.\n\nProblem 3.1\nDiscretize the climate model (Equation 1) using forward Euler integration and a time step of \\(\\Delta t = 1\\) yr.\n\n\nProblem 3.2\nRather than assuming a constant value for the albedo \\(\\alpha\\), we will represent the ice-albedo feedback by letting \\(\\alpha\\) depend on \\(T\\):\n\\[\\alpha(T) =\n    \\begin{cases}\n        \\alpha_i & \\quad \\text{if } T \\leq -10^\\circ \\text{C} \\\\\n        \\alpha_i + (\\alpha_0 - \\alpha_i)((T+10) / 20) & \\quad \\text{if } -10^\\circ \\text{C} \\leq T \\leq 10^\\circ \\text{C} \\\\\n        \\alpha_0 & \\quad \\text{if } T \\geq 10^\\circ \\text{C}.\n    \\end{cases}\\]\nLet \\(\\alpha_i = 0.5\\) and \\(\\alpha_0 = 0.3\\). Simulate the simple climate model using the Neoprotereozoic value of \\(S\\) with temperature-varying albedo for initial values of \\(T\\) spanning \\(-60^\\circ\\text{C} \\leq T_0 \\leq 30^\\circ\\text{C}\\) over a period of 200 years. Plot the temperature trajectories. How many equilibria are there and what are their stabilities?\n\n\nProblem 3.3\nOne might hypothesize that one cause for the transition from Snowball Earth (the stable frozen equilibrium from Problem 3.2) was an increasing amount of incoming solar radiation (as expressed by an increase in \\(S\\)). Examine this hypothesis using our simple model. Is this factor enough to cause the planet to warm to the pre-industrial temperature of \\(14^\\circ\\text{C}\\)?",
-    "crumbs": [
-      "Homework 2"
-    ]
-  },
-  {
-    "objectID": "hw/hw02/hw02.html#references",
-    "href": "hw/hw02/hw02.html#references",
-    "title": "BEE 4750 Homework 2: Systems Modeling and Simulation",
-    "section": "References",
-    "text": "References\nList any external references consulted, including classmates.",
-    "crumbs": [
-      "Homework 2"
+      "Homework 5"
     ]
   },
   {
@@ -5630,7 +5670,7 @@
     "href": "slides/lecture13-1-stochastic-optimization.html#example-solid-waste-management",
     "title": "Stochastic Optimization",
     "section": "Example: Solid Waste Management",
-    "text": "Example: Solid Waste Management\n\nHierarchy of solid waste management (reduce -&gt; recycle -&gt; WTE -&gt; landfill)\nExample of a network model: need to represent flows between sources and sinks.\nResidual material flows can result in need to operate additional facilities."
+    "text": "Example: Solid Waste Management\n\nHierarchy of solid waste management (reduce -&gt; recycle -&gt; WTE -&gt; landfill)\nExample of a network model: need to represent flows between sources and sinks, constrained by existence of network connections.\nResidual material flows can result in need to operate additional facilities."
   },
   {
     "objectID": "slides/lecture13-1-stochastic-optimization.html#questions",
@@ -5640,18 +5680,25 @@
     "text": "Questions\n\n\n\n\n\n\n\n\nText: VSRIKRISH to 22333\nURL: https://pollev.com/vsrikrish  See Results"
   },
   {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#conditions-for-lp",
+    "href": "slides/lecture13-1-stochastic-optimization.html#conditions-for-lp",
+    "title": "Stochastic Optimization",
+    "section": "Conditions for LP",
+    "text": "Conditions for LP\n\nLinearity\nDivisibility (when not present: mixed integer LP)\nCertainty"
+  },
+  {
     "objectID": "slides/lecture13-1-stochastic-optimization.html#certainty-and-lp",
     "href": "slides/lecture13-1-stochastic-optimization.html#certainty-and-lp",
     "title": "Stochastic Optimization",
     "section": "Certainty and LP",
-    "text": "Certainty and LP\nCertainty (e.g. all parameters and relationships between decision variables and outcomes are known) is a key assumption of linear programming.\nBut most systems problems aren’t actually deterministic."
+    "text": "Certainty and LP\nCertainty (e.g. all parameters and relationships between decision variables and outcomes are known) is a key assumption of linear programming.\nBut most systems problems aren’t truly deterministic."
   },
   {
     "objectID": "slides/lecture13-1-stochastic-optimization.html#approaches-to-decision-making-under-uncertainty",
     "href": "slides/lecture13-1-stochastic-optimization.html#approaches-to-decision-making-under-uncertainty",
     "title": "Stochastic Optimization",
     "section": "Approaches to Decision-Making Under Uncertainty",
-    "text": "Approaches to Decision-Making Under Uncertainty\n\nA Common Approach:\n\nSolve deterministic problem using best estimates.\nStress-test solution with Monte Carlo or include additional safety margins (more on this later)."
+    "text": "Approaches to Decision-Making Under Uncertainty\n\nA Common Approach:\n\nSolve deterministic problem using best estimates.\nStress-test solution with Monte Carlo or include additional safety margins."
   },
   {
     "objectID": "slides/lecture13-1-stochastic-optimization.html#representing-uncertainty-in-mathematical-programs",
@@ -5826,21 +5873,14 @@
     "href": "slides/lecture13-1-stochastic-optimization.html#next-classes",
     "title": "Stochastic Optimization",
     "section": "Next Classes",
-    "text": "Next Classes\nWednesday: Limits of Mathematical Programming\nMonday: Prelim 2 Review, Wrap-Up"
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#no-class-after-thanksgiving",
-    "href": "slides/lecture13-1-stochastic-optimization.html#no-class-after-thanksgiving",
-    "title": "Stochastic Optimization",
-    "section": "No Class after Thanksgiving!",
-    "text": "No Class after Thanksgiving!\n\nWork on project!\nWill have open office hours for project check-ins (remotely on 12/4)"
+    "text": "Next Classes\nWednesday: Handling Multiple Objectives\nMonday: Sensitivity Analysis and Robustness"
   },
   {
     "objectID": "slides/lecture13-1-stochastic-optimization.html#assessments",
     "href": "slides/lecture13-1-stochastic-optimization.html#assessments",
     "title": "Stochastic Optimization",
     "section": "Assessments",
-    "text": "Assessments\nHW5: Will be due last week of class (12/5)."
+    "text": "Assessments\nHW5: Assigned; Will be due last week of class (12/4).\nReading: Ackoff (1979)\n\n\n\n\nAckoff, R. L. (1979). The Future of Operational Research is Past. J. Oper. Res. Soc., 30, 93–104. https://doi.org/10.1057/jors.1979.22"
   },
   {
     "objectID": "slides/lecture11-2-unit-commitment.html#questions",

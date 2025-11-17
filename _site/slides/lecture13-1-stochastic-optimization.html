@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.7.31">
 
   <meta name="author" content="Vivek Srikrishnan">
-  <meta name="dcterms.date" content="2024-11-18">
+  <meta name="dcterms.date" content="2025-11-17">
   <title>Environmental Systems Analysis – Stochastic Optimization</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -30,7 +30,27 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-  </style>
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7b87de61f0bc8c7187b97021a1ec54e0.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
@@ -147,7 +167,7 @@
   };
   </script>
 <meta property="og:title" content="Stochastic Optimization – Environmental Systems Analysis">
-<meta property="og:description" content="Lecture 21">
+<meta property="og:description" content="Lecture 17">
 <meta property="og:site_name" content="Environmental Systems Analysis">
 </head>
 <body class="quarto-light">
@@ -157,8 +177,8 @@
 <section id="title-slide" class="center">
     <h1 class="title">Stochastic Optimization</h1>
   <hr>
-<p class="subtitle">Lecture 21</p>
-<p class="date">November 18, 2024</p>
+<p class="subtitle">Lecture 17</p>
+<p class="date">November 17, 2025</p>
 </section><section id="TOC">
 <nav role="doc-toc"> 
 <h2 id="toc-title">Overview</h2>
@@ -181,7 +201,7 @@
 <h2>Example: Solid Waste Management</h2>
 <ul>
 <li>Hierarchy of solid waste management (reduce -&gt; recycle -&gt; WTE -&gt; landfill)</li>
-<li>Example of a network model: need to represent flows between sources and sinks.</li>
+<li>Example of a network model: need to represent flows between sources and sinks, constrained by existence of network connections.</li>
 <li>Residual material flows can result in need to operate additional facilities.</li>
 </ul>
 </section>
@@ -204,10 +224,18 @@
 <h1>Stochastic Optimization</h1>
 
 </section>
+<section id="conditions-for-lp" class="slide level2">
+<h2>Conditions for LP</h2>
+<ul>
+<li><strong>Linearity</strong></li>
+<li><strong>Divisibility</strong> (when not present: mixed integer LP)</li>
+<li><strong>Certainty</strong></li>
+</ul>
+</section>
 <section id="certainty-and-lp" class="slide level2">
 <h2>Certainty and LP</h2>
 <p><strong>Certainty</strong> (<em>e.g.</em> all parameters and relationships between decision variables and outcomes are known) is a key assumption of linear programming.</p>
-<p>But most systems problems aren’t actually deterministic.</p>
+<p>But most systems problems aren’t <strong><em>truly</em></strong> deterministic.</p>
 </section>
 <section id="approaches-to-decision-making-under-uncertainty" class="slide level2">
 <h2>Approaches to Decision-Making Under Uncertainty</h2>
@@ -215,7 +243,7 @@
 <p><strong>A Common Approach</strong>:</p>
 <ol type="1">
 <li>Solve deterministic problem using best estimates.</li>
-<li>Stress-test solution with Monte Carlo or include additional safety margins (more on this later).</li>
+<li>Stress-test solution with Monte Carlo or include additional safety margins.</li>
 </ol>
 </div>
 </section>
@@ -235,7 +263,7 @@
 <div class="fragment fade-in">
 <p><strong>Two Stage</strong>:</p>
 <p><span class="math display">\[\min_x f(x) + \mathbb{E}_\xi\left[Q(x; \xi)]\right\]</span></p>
-<p>where <span class="math inline">\(Q(x; \xi)\)</span> is the <em>recourse</em> decision made after realizing the uncertainty <span class="math inline">\(\xi\)</span>.</p>
+<p>where <span class="math inline">\(Q(x; \xi)\)</span> is the <strong><em>recourse</em></strong> decision made after realizing the uncertainty <span class="math inline">\(\xi\)</span>.</p>
 </div>
 </section>
 <section id="representation-of-uncertainties" class="slide level2">
@@ -587,21 +615,20 @@ VSS &amp;= \mathbb{E}[\text{Stochastic Profit}] - \mathbb{E}[\text{Deterministic
 </section>
 <section id="next-classes" class="slide level2">
 <h2>Next Classes</h2>
-<p><strong>Wednesday</strong>: Limits of Mathematical Programming</p>
-<p><strong>Monday</strong>: Prelim 2 Review, Wrap-Up</p>
+<p><strong>Wednesday</strong>: Handling Multiple Objectives</p>
+<p><strong>Monday</strong>: Sensitivity Analysis and Robustness</p>
 </section>
-<section id="no-class-after-thanksgiving" class="slide level2">
-<h2>No Class after Thanksgiving!</h2>
-<ul>
-<li>Work on project!</li>
-<li>Will have open office hours for project check-ins (remotely on 12/4)</li>
-</ul>
-</section>
-<section id="assessments" class="slide level2">
+<section id="assessments" class="slide level2 smaller scrollable">
 <h2>Assessments</h2>
-<p><strong>HW5</strong>: Will be due last week of class (12/5).</p>
+<p><strong>HW5</strong>: Assigned; Will be due last week of class (12/4).</p>
+<p><strong>Reading</strong>: <span class="citation" data-cites="Ackoff1979-ix">Ackoff (<a href="#/assessments" role="doc-biblioref" onclick="">1979</a>)</span></p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-Ackoff1979-ix" class="csl-entry" role="listitem">
+Ackoff, R. L. (1979). <span class="nocase">The Future of Operational Research is Past</span>. <em>J. Oper. Res. Soc.</em>, <em>30</em>, 93–104. <a href="https://doi.org/10.1057/jors.1979.22">https://doi.org/10.1057/jors.1979.22</a>
+</div>
+</div>
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">

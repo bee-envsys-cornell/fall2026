@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-09-14">
 
-<title>BEE 4750 Homework 2: Systems Modeling and Simulation – Environmental Systems Analysis</title>
+<title>BEE 4750 Homework 5: Mixed Integer and Stochastic Programming – Environmental Systems Analysis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,8 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../hw/hw03/hw03.html" rel="next">
-<link href="../../hw/hw01/hw01.html" rel="prev">
+<link href="../../hw/hw04/hw04.html" rel="prev">
 <link href="../../_assets/logos/favicon.png" rel="icon" type="image/png">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -146,12 +144,9 @@ window.Quarto = {
 };
 </script>
 
-<meta property="og:title" content="BEE 4750 Homework 2: Systems Modeling and Simulation – Environmental Systems Analysis">
+<meta property="og:title" content="BEE 4750 Homework 5: Mixed Integer and Stochastic Programming – Environmental Systems Analysis">
 <meta property="og:description" content="Homepage for the Fall 2025 version of BEE 4750/5750, Environmental Systems Analysis, at Cornell University.">
-<meta property="og:image" content="https://envsys.viveks.me/fall2025/hw/hw02/figures/river_diagram.png">
 <meta property="og:site_name" content="Environmental Systems Analysis">
-<meta property="og:image:height" content="371">
-<meta property="og:image:width" content="922">
 </head>
 
 <body class="nav-sidebar docked nav-fixed quarto-light">
@@ -281,7 +276,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../hw/hw02/hw02.html">Homework 2</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../hw/hw05/hw05.html">Homework 5</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -307,7 +302,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../hw/hw02/hw02.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../hw/hw02/hw02.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Homework 2</span></a>
   </div>
 </li>
@@ -325,7 +320,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../hw/hw05/hw05.html" class="sidebar-item-text sidebar-link">
+  <a href="../../hw/hw05/hw05.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Homework 5</span></a>
   </div>
 </li>
@@ -346,20 +341,19 @@ window.Quarto = {
   </ul></li>
   <li><a href="#problems-total-30-points" id="toc-problems-total-30-points" class="nav-link" data-scroll-target="#problems-total-30-points">Problems (Total: 30 Points)</a>
   <ul class="collapse">
-  <li><a href="#problem-1-5-points" id="toc-problem-1-5-points" class="nav-link" data-scroll-target="#problem-1-5-points">Problem 1 (5 points)</a></li>
-  <li><a href="#problem-2-15-points" id="toc-problem-2-15-points" class="nav-link" data-scroll-target="#problem-2-15-points">Problem 2 (15 points)</a></li>
-  <li><a href="#problem-3-10-points" id="toc-problem-3-10-points" class="nav-link" data-scroll-target="#problem-3-10-points">Problem 3 (10 points)</a></li>
+  <li><a href="#problem-1-24-points" id="toc-problem-1-24-points" class="nav-link" data-scroll-target="#problem-1-24-points">Problem 1 (24 points)</a></li>
+  <li><a href="#problem-2-6-points" id="toc-problem-2-6-points" class="nav-link" data-scroll-target="#problem-2-6-points">Problem 2 (6 points)</a></li>
   </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/hw/hw02/hw02.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="hw02.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="hw02.ipynb" download="hw02.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/hw/hw05/hw05.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="hw05.ipynb" download="hw05.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">BEE 4750 Homework 2: Systems Modeling and Simulation</h1>
+<h1 class="title">BEE 4750 Homework 5: Mixed Integer and Stochastic Programming</h1>
 </div>
 
 
@@ -367,12 +361,6 @@ window.Quarto = {
 <div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">September 14, 2025</p>
-    </div>
-  </div>
   
     
   </div>
@@ -392,7 +380,7 @@ Due Date
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Thursday, 09/25/25, 9:00pm</p>
+<p>Thursday, 12/04/24, 9:00pm</p>
 </div>
 </div>
 <div class="callout callout-style-simple callout-caution">
@@ -402,119 +390,231 @@ Due Date
 </div>
 <div class="callout-body-container">
 <p>If you are enrolled in the course, make sure that you use the GitHub Classroom link provided in Ed Discussion, or you may not be able to get help if you run into problems.</p>
-<p>Otherwise, you can <a href="https://github.com/BEE4750/hw02">find the Github repository here</a>.</p>
+<p>Otherwise, you can <a href="https://github.com/BEE4750/hw05">find the Github repository here</a>.</p>
 </div>
 </div>
 </div>
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<section id="instructions" class="level3">
+<section id="instructions" class="level3 cell markdown">
 <h3 class="anchored" data-anchor-id="instructions">Instructions</h3>
 <ul>
-<li>Problem 1 asks you to draw a systems diagram and identify the type of a feedback.</li>
-<li>Problem 2 asks you to model contaminant concentrations in a river and use simulation to compare the concentrations to a regulatory standard.</li>
-<li>Problem 3 asks you to explore the implications of an ice-albedo feedback in the Earth’s climate system by understanding the equilibria of the modeled system and their stabilities.</li>
+<li>In Problem 1, you will use mixed integer programming to solve a waste load allocation problem.</li>
+<li>In Problem 2, you will formulate a stochastic optimization problem.</li>
 </ul>
 </section>
-<section id="load-environment" class="level3">
+<section id="load-environment" class="level3 cell markdown">
 <h3 class="anchored" data-anchor-id="load-environment">Load Environment</h3>
 <p>The following code loads the environment and makes sure all needed packages are installed. This should be at the start of most Julia scripts.</p>
+</section>
 <div id="2" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">Pkg</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">activate</span>(<span class="pp">@__DIR__</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">instantiate</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="4" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Plots</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">LaTeXStrings</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Roots</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">JuMP</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">HiGHS</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">GraphRecipes</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Plots</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Measures</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MarkdownTables</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
 </section>
 <section id="problems-total-30-points" class="level2">
 <h2 class="anchored" data-anchor-id="problems-total-30-points">Problems (Total: 30 Points)</h2>
-<section id="problem-1-5-points" class="level3 markdown cell">
-<h3 class="anchored" data-anchor-id="problem-1-5-points">Problem 1 (5 points)</h3>
-<p>Draw a systems diagram for the relationship between global mean temperature, atmospheric CO<sub>2</sub> concentrations, and ocean CO<sub>2</sub> concentrations. What are the signs of the interactions between these components and why? What does this suggest about the overall feedback between temperature and the ocean carbon cycle?</p>
-</section>
-<div class="callout callout-style-simple callout-tip">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>Think about Henry’s law for CO<sub>2</sub>.</p>
-</div>
-</div>
-</div>
-<section id="problem-2-15-points" class="level3">
-<h3 class="anchored" data-anchor-id="problem-2-15-points">Problem 2 (15 points)</h3>
-<p>A river which flows at 10 km/d is receiving discharges of wastewater contaminated with CRUD from two sources which are 15 km apart, as shown in the Figure below. CRUD decays exponentially in the river at a rate of 0.36 <span class="math inline">\(\mathrm{d}^{-1}\)</span> and is deposited by the atmosphere along the river at a rate of 54 kg/km/d.&nbsp;</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figures/river_diagram.png" class="img-fluid figure-img"></p>
-<figcaption>Schematic of the river system in Problem 2</figcaption>
-</figure>
-</div>
-<section id="problem-2.1" class="level4 markdown cell">
-<h4 class="anchored" data-anchor-id="problem-2.1">Problem 2.1</h4>
-<p>Draw a systems diagram with the relevant control volume(s) denoted and any relevant in/out-flows between these boxes. How did you decide how many boxes were needed?</p>
-</section>
-<section id="problem-2.2" class="level4 markdown cell">
-<h4 class="anchored" data-anchor-id="problem-2.2">Problem 2.2</h4>
-<p>Develop a model for the concentration of CRUD downriver by formulating and solving the appropriate differential equation(s) analytically.</p>
-</section>
-<div class="callout callout-style-simple callout-tip">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>Formulate your model in terms of distance downriver, rather than leaving it in terms of time from discharge.</p>
-</div>
-</div>
-</div>
-<section id="problem-2.3" class="level4 markdown cell">
-<h4 class="anchored" data-anchor-id="problem-2.3">Problem 2.3</h4>
-<p>Determine if the system in compliance with a regulatory limit of <span class="math inline">\(2.3\ \text{kg}/(1000 \text{m}^3)\)</span>. You can do this analytically or computationally.</p>
-</section>
-</section>
-<section id="problem-3-10-points" class="level3">
-<h3 class="anchored" data-anchor-id="problem-3-10-points">Problem 3 (10 points)</h3>
-<p>In class, we discussed the ice-albedo feedback and its possible influence on melting the hypothesized <a href="https://en.wikipedia.org/wiki/Snowball_Earth">“Snowball Earth”</a>. In this problem, we’ll introduce a simple model of the Earth’s energy balance with includes this feedback and examine the stability of the climate.</p>
-<p>This simple model of the energy balance (averaged over the entire planet) is:</p>
-<p><span id="eq-climate"><span class="math display">\[
-\underbrace{C\frac{dT}{dt}}_{\text{change in heat}} = \underbrace{\frac{(1-\alpha)S}{4}}_{\text{incoming radiation}} - \underbrace{(A - BT)}_{\text{outgoing radiation}} + \underbrace{a\ln \left(\frac{[CO_2]}{[CO_2]_{PI}}\right)}_{\text{greenhouse effect}},
-\tag{1}\]</span></span></p>
-<p>where:</p>
+<section id="problem-1-24-points" class="level3">
+<h3 class="anchored" data-anchor-id="problem-1-24-points">Problem 1 (24 points)</h3>
+<p>Three cities are developing a coordinated municipal solid waste (MSW) disposal plan. Three disposal alternatives are being considered: a landfill (LF), a materials recycling facility (MRF), and a waste-to-energy facility (WTE). The capacities of these facilities and the fees for operation and disposal are provided below.</p>
 <ul>
-<li><span class="math inline">\(T\)</span> is the Earth’s global mean temperature (in <span class="math inline">\(^\circ\text{C}\)</span>);</li>
-<li><span class="math inline">\(C\)</span> is the heat capacity of the atmosphere and shallow ocean, taken to be <span class="math inline">\(51\ \text{J}/\text{m}^2/^\circ\text{C}\)</span>;</li>
-<li><span class="math inline">\(\alpha\)</span> is the planetary albedo, or the fraction of incoming radiation reflected by the Earth, which has a present-day value of approximately 0.3;</li>
-<li><span class="math inline">\(S\)</span> is the solar constant, or the amount of solar radiation received by the Earth averaged over area, which has a present-day value of <span class="math inline">\(1368\ \text{W}/\text{m}^2\)</span> but during the Neoproteorozoic Era had a value of <span class="math inline">\(1272\ \text{W}/\text{m}^2\)</span> (this is divided by four because the Earth is a sphere but <span class="math inline">\(S\)</span> is the radiation captured by a disc with radius equal to that of the Earth);</li>
-<li><span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are coefficients from the linearization of outgoing radiation physics, and have corresponding values <span class="math inline">\(B=-1.3\ \text{W}/\text{m}^2/^\circ\text{C}\)</span> (estimated from a number of lines of evidence about the sensitivity of outgoing radiation to temperature; this is negative due to a sign convention about the direction of incoming vs.&nbsp;outgoing radiation) and <span class="math inline">\(A=221.2\ \text{W}/\text{m}^2\)</span> (estimated by assuming the pre-industrial temperature of <span class="math inline">\(14^\circ\text{C}\)</span> was stable without anthropogenic greenhouse gas emissions).</li>
+<li><strong>LF</strong>: Capacity 200 Mg, fixed cost $2000/day, tipping cost $50/Mg;</li>
+<li><strong>MRF</strong>: Capacity 350 Mg, fixed cost $1500/day, tipping cost $7/Mg, recycling cost $40/Mg recycled;</li>
+<li><strong>WTE</strong>: Capacity 210 Mg, fixed cost $2500/day, tipping cost $60/Mg;</li>
 </ul>
-<p>We will ignore the greenhouse effect term as we are considering the Earth system well before humans were around.</p>
-<section id="problem-3.1" class="level4 markdown cell">
-<h4 class="anchored" data-anchor-id="problem-3.1">Problem 3.1</h4>
-<p>Discretize the climate model (<a href="#eq-climate" class="quarto-xref">Equation&nbsp;1</a>) using forward Euler integration and a time step of <span class="math inline">\(\Delta t = 1\)</span> yr.</p>
+<p>The MRF recycling rate is 40%, and the ash fraction of non-recycled waste is 16% and of recycled waste is 14%. Transportation costs are $1.5/Mg-km, and the relative distances between the cities and facilities are provided in the table below.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 23%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><strong>City/Facility</strong></th>
+<th style="text-align: center;"><strong>Landfill (km)</strong></th>
+<th style="text-align: center;"><strong>MRF (km)</strong></th>
+<th style="text-align: center;"><strong>WTE (km)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">30</td>
+<td style="text-align: center;">15</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">25</td>
+<td style="text-align: center;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">13</td>
+<td style="text-align: center;">45</td>
+<td style="text-align: center;">20</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">LF</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">18</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">MRF</td>
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">15</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">WTE</td>
+<td style="text-align: center;">18</td>
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">-</td>
+</tr>
+</tbody>
+</table>
+<p>The fixed costs associated with the disposal options are incurred only if the particular disposal option is implemented. The three cities produce 100, 90, and 120 Mg/day of solid waste, respectively, with the composition provided in the table below.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 32%">
+<col style="width: 21%">
+<col style="width: 23%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><strong>Component</strong></th>
+<th style="text-align: center;"><strong>% of total mass</strong></th>
+<th style="text-align: center;"><strong>Combustion ash</strong> (%)</th>
+<th style="text-align: center;"><strong>MRF Recycling rate</strong> (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Food Wastes</td>
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Paper &amp; Cardboard</td>
+<td style="text-align: center;">40</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">55</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Plastics</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">15</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Textiles</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Rubber, Leather</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Wood</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">30</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Yard Wastes</td>
+<td style="text-align: center;">18</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">40</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Glass</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">100</td>
+<td style="text-align: center;">60</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Ferrous</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">100</td>
+<td style="text-align: center;">75</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Aluminum</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">100</td>
+<td style="text-align: center;">80</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Other Metal</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">100</td>
+<td style="text-align: center;">50</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Miscellaneous</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">70</td>
+<td style="text-align: center;">0</td>
+</tr>
+</tbody>
+</table>
+<p>The information in the above table will help you determine the overall recycling and ash fractions. Note that the recycling residuals, which may be sent to either landfill or the WTE, have different ash content than the ash content of the original MSW. You will need to determine these fractions to construct your mass balance constraints.</p>
+<p><strong>Reminder</strong>: Use <code>round(x; digits=n)</code> to report values to the appropriate precision!</p>
+<section id="problem-1.1" class="level4 cell markdown">
+<h4 class="anchored" data-anchor-id="problem-1.1">Problem 1.1</h4>
+<p>Based on the information above, calculate the overall recycling and ash fractions for the waste produced by each city.</p>
 </section>
-<section id="problem-3.2" class="level4 markdown cell">
-<h4 class="anchored" data-anchor-id="problem-3.2">Problem 3.2</h4>
-<p>Rather than assuming a constant value for the albedo <span class="math inline">\(\alpha\)</span>, we will represent the ice-albedo feedback by letting <span class="math inline">\(\alpha\)</span> depend on <span class="math inline">\(T\)</span>:</p>
-<p><span class="math display">\[\alpha(T) =
-    \begin{cases}
-        \alpha_i &amp; \quad \text{if } T \leq -10^\circ \text{C} \\
-        \alpha_i + (\alpha_0 - \alpha_i)((T+10) / 20) &amp; \quad \text{if } -10^\circ \text{C} \leq T \leq 10^\circ \text{C} \\
-        \alpha_0 &amp; \quad \text{if } T \geq 10^\circ \text{C}.
-    \end{cases}\]</span></p>
-<p>Let <span class="math inline">\(\alpha_i = 0.5\)</span> and <span class="math inline">\(\alpha_0 = 0.3\)</span>. Simulate the simple climate model using the Neoprotereozoic value of <span class="math inline">\(S\)</span> with temperature-varying albedo for initial values of <span class="math inline">\(T\)</span> spanning <span class="math inline">\(-60^\circ\text{C} \leq T_0 \leq 30^\circ\text{C}\)</span> over a period of 200 years. Plot the temperature trajectories. How many equilibria are there and what are their stabilities?</p>
+<section id="problem-1.2" class="level4 cell markdown">
+<h4 class="anchored" data-anchor-id="problem-1.2">Problem 1.2</h4>
+<p>What are the decision variables for your optimization problem? Provide notation and variable meaning.</p>
 </section>
-<section id="problem-3.3" class="level4 markdown cell">
-<h4 class="anchored" data-anchor-id="problem-3.3">Problem 3.3</h4>
-<p>One might hypothesize that one cause for the transition from Snowball Earth (the stable frozen equilibrium from Problem 3.2) was an increasing amount of incoming solar radiation (as expressed by an increase in <span class="math inline">\(S\)</span>). Examine this hypothesis using our simple model. Is this factor enough to cause the planet to warm to the pre-industrial temperature of <span class="math inline">\(14^\circ\text{C}\)</span>?</p>
+<section id="problem-1.3" class="level4 cell markdown">
+<h4 class="anchored" data-anchor-id="problem-1.3">Problem 1.3</h4>
+<p>Formulate the objective function. Make sure to include any needed derivations or justifications for your equation(s).</p>
+</section>
+<section id="problem-1.4" class="level4 cell markdown">
+<h4 class="anchored" data-anchor-id="problem-1.4">Problem 1.4</h4>
+<p>Derive all relevant constraints. Make sure to include any needed justifications or derivations.</p>
+</section>
+<section id="problem-1.5" class="level4 cell markdown">
+<h4 class="anchored" data-anchor-id="problem-1.5">Problem 1.5</h4>
+<p>Find the optimal solution (using <code>JuMP</code> to solve the problem). Report the optimal objective value.</p>
+</section>
+<section id="problem-1.6" class="level4 cell markdown">
+<h4 class="anchored" data-anchor-id="problem-1.6">Problem 1.6</h4>
+<p>Draw a diagram showing the flows of waste between the cities and the facilities. Which facilities (if any) will not be used? Does this solution make sense?</p>
+</section>
+</section>
+<section id="problem-2-6-points" class="level3">
+<h3 class="anchored" data-anchor-id="problem-2-6-points">Problem 2 (6 points)</h3>
+<p>Consider a two-period economic dispatch problem, based on the multi-period example from Lecture 14 (on 10/29). The generator data, including ramping constraints for each generator, is provided in `data/generators.csv.’ In period 1, the demand is <span class="math inline">\(d_1 = 1100 \text{MW}\)</span>. In period 2, the demand is projected to be <span class="math inline">\(d_2 = 1200 \text{MW}\)</span>, but there is a 25% probability that it is $1500 . In the first period, the solar capacity factor is <span class="math inline">\(0.9\)</span> and the wind capacity factor is <span class="math inline">\(0.45\)</span>, but in the second period, there is some uncertainty: the forecasted solar and wind capacity factors are <span class="math inline">\(0.95\)</span> and <span class="math inline">\(0.4\)</span>, respectively, but there is a 30% probability that they are <span class="math inline">\(0.75\)</span> and <span class="math inline">\(0.5\)</span>. Your goal is to identify how to dispatch your generators to minimize the cost of meeting demand.</p>
+<section id="problem-2.1" class="level4 cell markdown">
+<h4 class="anchored" data-anchor-id="problem-2.1">Problem 2.1</h4>
+<p>Draw a scenario tree for this problem.</p>
+</section>
+<section id="problem-2.2" class="level4 cell markdown">
+<h4 class="anchored" data-anchor-id="problem-2.2">Problem 2.2</h4>
+<p>Formulate a stochastic linear program for this problem based on your scenario tree from Problem 2.1 and the data in <code>data/generators.csv</code>.</p>
 </section>
 </section>
 </section>
@@ -952,14 +1052,11 @@ Due Date
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../hw/hw01/hw01.html" class="pagination-link" aria-label="Homework 1">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Homework 1</span>
+      <a href="../../hw/hw04/hw04.html" class="pagination-link" aria-label="Homework 4">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Homework 4</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../hw/hw03/hw03.html" class="pagination-link" aria-label="Homework 3">
-        <span class="nav-page-text">Homework 3</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
@@ -974,7 +1071,7 @@ Due Date
  <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">LICENSE: CC-BY-SA  <i class="fab fa-creative-commons"></i><i class="fab fa-creative-commons-by"></i><i class="fab fa-creative-commons-sa"></i></a>
   </li>  
 </ul>
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/hw/hw02/hw02.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/hw/hw05/hw05.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>Made with <a href="https://julialang.org">Julia</a> and <a href="https://quarto.org/">Quarto</a><br> <a href="https://www.github.com/BEE4750/bee4750.github.io">View the source at <i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
 </div>

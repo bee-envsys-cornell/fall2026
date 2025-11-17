@@ -1,10 +1,10 @@
 ---
-title: "Limits of Mathematical Programming for Systems Analysis"
-subtitle: "Lecture 22"
+title: "Multiple Objectives"
+subtitle: "Lecture 18"
 author: "Vivek Srikrishnan"
 course: "BEE 4750"
 institution: "Cornell University"
-date: "November 20, 2024"
+date: "November 19, 2025"
 format:
     revealjs:
         slide-number: c/t
@@ -85,7 +85,7 @@ default(
 ## Relaxing LP Assumptions
 
 - Relaxing Divisibility: **Mixed Integer Linear Programming**
-- Relaxing Certainty: **Two-Stage Linear Programs**
+- Relaxing Certainty: **Two-Stage Stochastic Linear Programs**
 - Relaxing Linearity: not going there
 
 ## Treatment of Uncertainty in LPs

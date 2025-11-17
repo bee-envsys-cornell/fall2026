@@ -32,17 +32,17 @@ Note that this schedule will be updated as necessary the semester progresses, wi
 |   | Wed, Oct 15 | Decision Models and Optimization | [{{< fa sharp presentation-screen >}}](slides/lecture08-2-optimization.qmd) | | | |
 |  9 | Mon, Oct 20 | Shadow Prices and Capacity Expansion | [{{< fa sharp presentation-screen >}}](slides/lecture09-1-capacity-expansion.qmd) | |  | | 
 |    | Wed, Oct 22 | Lab: Linear Programming | [{{< fa sharp presentation-screen >}}](slides/lecture09-2-jump-lp.qmd) | [{{< fa sharp laptop >}}](labs/lab03/lab03.qmd) | | |
-|  10  | Mon, Oct 27 | Prelim Review and Capacity Expansion II | [{{< fa sharp presentation-screen >}}](slides/lecture10-1-capacity-expansion-2.qmd) | | | | 
+|  10  | Mon, Oct 27 | Prelim Review and Capacity Expansion II | [{{< fa sharp presentation-screen >}}](slides/lecture10-1-capacity-expansion-2.qmd) | | [{{< fa sharp file-pen >}}](hw/hw04/hw04.qmd)  | | 
 |     | Wed, Oct 29 | Economic Dispatch | [{{< fa sharp presentation-screen >}}](slides/lecture10-2-economic-dispatch.qmd) | | | |
 |  11  | Mon, Nov 03 | Fixed Costs and Mixed Integer Programs | [{{< fa sharp presentation-screen >}}](slides/lecture11-1-mixed-integer.qmd) | |  | | 
 |    | Wed, Nov 05 | **No Class** | | | | |
 | 12    | Mon, Nov 10 | Network Models and Solid Waste Management  | [{{< fa sharp presentation-screen >}}](slides/lecture12-1-waste-management.qmd) | |  | |
 |    | Wed, Nov 12 | *Prelim 2* | | | | |
-| 13   | Mon, Nov 17 | Plume Dispersion Models | | | | |
-|    | Wed, Nov 19 | Managing Sources of Air Pollution  | |  | | ||
-|  14  | Mon, Nov 24 | Stochastic Optimization |  |  |    |  | |
+| 13   | Mon, Nov 17 | Stochastic Optimization | [{{< fa sharp presentation-screen >}}](slides/lecture13-1-stochastic-optimization.qmd) | | [{{< fa sharp file-pen >}}](hw/hw05/hw05.qmd)  | @Ackoff1979-ix |
+|    | Wed, Nov 19 | Multiple Objectives | [{{< fa sharp presentation-screen >}}](slides/lecture13-2-limits-optimization.qmd) |  | | | |
+|  14  | Mon, Nov 24 | Robustness and Sensitivity Analysis |  |  |    |  | |
 |     | Wed, Nov 26 | **No Class: Thanksgiving Break** | | | | |
-| 15 | Mon, Dec 01 | Prelim II Review and Sensitivity Analysis | | | | |
-|    | Wed, Dec 03 | Limits of Optimization | |  | | |
+| 15 | Mon, Dec 01 | Prelim 2 Review and Simulation-Optimization | | | | |
+|    | Wed, Dec 03 | Simulation-Optimization Lab | |  | | |
 |  16 | Mon, Dec 08 | **No Class: Project Work** | | | |  |
 :::
