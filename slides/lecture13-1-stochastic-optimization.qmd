@@ -100,6 +100,10 @@ default(
 
 But most systems problems aren't ***truly*** deterministic.
 
+## Motivating Example
+
+- 
+
 ## Approaches to Decision-Making Under Uncertainty
 
 ::: {.fragment .fade-in}
@@ -119,16 +123,31 @@ But most systems problems aren't ***truly*** deterministic.
 We can represent uncertainty through scenarios and (conditional) sequential events, then rewrite the decision problem.
 :::
 
+## Act-Learn-Act (Two-Stage)
+
+1. Make a decision $x$ under uncertainty;
+2. Observe uncertainty $\xi \in \Xi$;
+3. Make a **recourse** decision $q(x; \xi)$ which compensates for suboptimality of $x$ under realization $\xi$.
+
+## Example (Economic Dispatch)
+
+Consider a two-stage economic dispatch with uncertainty about demand and renewables.
+
+Need to ensure we can meet the second-stage demand but put ourselves in a position to obey ramping constraints while minimizing cost.
+
+1. Dispatch generation in hour 1;
+2. Get better forecasts of demand and renewables;
+3. Re-dispatch (possibly using expensive peaking generators to compensate if lower-cost generation is not possible).
+
 ## General Objective for Stochastic LP
 
-$$\min_x \mathbb{E}_\xi\left\[f(x; \xi)\right]$$
+$$\min_x \mathbb{E}_\xi \left[f(x; \xi)\right]$$
 
 ::: {.fragment .fade-in}
-**Two Stage**:
+**Two-Stage**:
 
-$$\min_x f(x) + \mathbb{E}_\xi\left[Q(x; \xi)]\right$$
+$$\min_x \underbrace{f(x)}_{\text{first-stage objective}} + \mathbb{E}_\xi[\underbrace{Q(x; \xi)}_{\substack{\text{recourse objective} \\ \text{after realization} \\ \text{of } \xi}}]$$
 
-where $Q(x; \xi)$ is the ***recourse*** decision made after realizing the uncertainty $\xi$.
 :::
 
 ## Representation of Uncertainties
@@ -136,7 +155,7 @@ where $Q(x; \xi)$ is the ***recourse*** decision made after realizing the uncert
 This framework can work for:
 
 - discrete scenarios (*scenario trees*)
-- continuous uncertainties
+- continuous uncertainties (Monte Carlo)
 
 
 # Example: Land Allocation 
@@ -170,9 +189,10 @@ Variable | Definition
 $x_i$ | acres of crop $i$ planted
 $y_i$ | T of crop $i$ purchased
 $z_i$ | T of crop $i$ sold
-:::
 
 One twist: sold beets will be represented by two different $z$-variables ($z_3$ and $z_4$), based on whether we exceed 6000T.
+
+:::
 
 ## Deterministic Problem Formulation
 
@@ -189,7 +209,7 @@ $$
 \end{align}
 $$
 
-## Deterministic Solution
+## Deterministic Solution With Average Yields
 
 
 Variable | Wheat | Corn | Beets
@@ -212,6 +232,34 @@ But yields tend to vary from year to year. From prior experience, the historical
 To simplify things, let's assume these yields vary consistently across crops and that each scenario (average, good, bad) has an equal probability of occurrence.
 :::
 
+## Optimal Solution With High Yields
+
+Variable | Wheat | Corn | Beets
+:----- | :-----: | :----: | :-----:
+Area (acres) | 183.33 | 66.67 | 250
+Yield (T) | 550 | 240 | 6000 
+Sales (T) | 350 | -- | 6000 
+Purchased (T) | -- | -- | --
+
+This solution yields a profit of \$167,667.
+
+## Optimal Solution With Low Yields
+
+Variable | Wheat | Corn | Beets
+:----- | :-----: | :----: | :-----:
+Area (acres) | 100 | 25 | 375
+Yield (T) | 200 | 60 | 6000 
+Sales (T) | -- | -- | 6000 
+Purchased (T) | -- | 180 | --
+
+This solution yields a profit of \$59,950.
+
+## Framing This As A Two-Stage Problem
+
+- Make some initial planting decision;
+- See what the yields look like;
+- Purchase as needed to offset any shortfall.
+
 ## Stochastic Decision Variables
 
 ***What should change about our decision variables?***
@@ -224,13 +272,6 @@ $y_{ij}$ | T of crop $i$ purchased in scenario $j$
 $z_{ij}$ | T of crop $i$ sold in scenario $j$
 
 :::
-
-## Two-Stage Problems
-
-This is typical of a **two-stage** decision problem:
-
-1. Make an **initial** decision (*e.g.* how much to plant) which must be committed to ahead of knowing the stochastic realization;
-2. Make a subsequent **recourse** decision based on the realization (*e.g.* do we have to purchase additional crops?)
 
 ## Stochastic Objective
 
@@ -252,6 +293,8 @@ Other possible choices: quantiles (*robust optimization*) to hedge against worst
 :::: {.columns}
 ::: {.column width=55%}
 Since we have a discrete (and small) set of possible outcomes, we can use a **scenario tree** to write out the possible outcomes.
+
+This is a simple (one-layer) tree, but if we had additional uncertainties (e.g. demand) we could compute the joint probabilities of each realization.
 :::
 ::: {.column width=45%}
 ![Scenario Tree for Farmer Problem](figures/farm-scen-tree.svg)

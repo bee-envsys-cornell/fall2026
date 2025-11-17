@@ -237,6 +237,12 @@
 <p><strong>Certainty</strong> (<em>e.g.</em> all parameters and relationships between decision variables and outcomes are known) is a key assumption of linear programming.</p>
 <p>But most systems problems aren’t <strong><em>truly</em></strong> deterministic.</p>
 </section>
+<section id="motivating-example" class="slide level2">
+<h2>Motivating Example</h2>
+<ul>
+<li></li>
+</ul>
+</section>
 <section id="approaches-to-decision-making-under-uncertainty" class="slide level2">
 <h2>Approaches to Decision-Making Under Uncertainty</h2>
 <div class="fragment fade-in">
@@ -257,13 +263,30 @@
 <p>We can represent uncertainty through scenarios and (conditional) sequential events, then rewrite the decision problem.</p>
 </div>
 </section>
+<section id="act-learn-act-two-stage" class="slide level2">
+<h2>Act-Learn-Act (Two-Stage)</h2>
+<ol type="1">
+<li>Make a decision <span class="math inline">\(x\)</span> under uncertainty;</li>
+<li>Observe uncertainty <span class="math inline">\(\xi \in \Xi\)</span>;</li>
+<li>Make a <strong>recourse</strong> decision <span class="math inline">\(q(x; \xi)\)</span> which compensates for suboptimality of <span class="math inline">\(x\)</span> under realization <span class="math inline">\(\xi\)</span>.</li>
+</ol>
+</section>
+<section id="example-economic-dispatch" class="slide level2">
+<h2>Example (Economic Dispatch)</h2>
+<p>Consider a two-stage economic dispatch with uncertainty about demand and renewables.</p>
+<p>Need to ensure we can meet the second-stage demand but put ourselves in a position to obey ramping constraints while minimizing cost.</p>
+<ol type="1">
+<li>Dispatch generation in hour 1;</li>
+<li>Get better forecasts of demand and renewables;</li>
+<li>Re-dispatch (possibly using expensive peaking generators to compensate if lower-cost generation is not possible).</li>
+</ol>
+</section>
 <section id="general-objective-for-stochastic-lp" class="slide level2">
 <h2>General Objective for Stochastic LP</h2>
-<p><span class="math display">\[\min_x \mathbb{E}_\xi\left\[f(x; \xi)\right]\]</span></p>
+<p><span class="math display">\[\min_x \mathbb{E}_\xi \left[f(x; \xi)\right]\]</span></p>
 <div class="fragment fade-in">
-<p><strong>Two Stage</strong>:</p>
-<p><span class="math display">\[\min_x f(x) + \mathbb{E}_\xi\left[Q(x; \xi)]\right\]</span></p>
-<p>where <span class="math inline">\(Q(x; \xi)\)</span> is the <strong><em>recourse</em></strong> decision made after realizing the uncertainty <span class="math inline">\(\xi\)</span>.</p>
+<p><strong>Two-Stage</strong>:</p>
+<p><span class="math display">\[\min_x \underbrace{f(x)}_{\text{first-stage objective}} + \mathbb{E}_\xi[\underbrace{Q(x; \xi)}_{\substack{\text{recourse objective} \\ \text{after realization} \\ \text{of } \xi}}]\]</span></p>
 </div>
 </section>
 <section id="representation-of-uncertainties" class="slide level2">
@@ -271,7 +294,7 @@
 <p>This framework can work for:</p>
 <ul>
 <li>discrete scenarios (<em>scenario trees</em>)</li>
-<li>continuous uncertainties</li>
+<li>continuous uncertainties (Monte Carlo)</li>
 </ul>
 </section></section>
 <section>
@@ -328,8 +351,8 @@
 </tr>
 </tbody>
 </table>
-</div>
 <p>One twist: sold beets will be represented by two different <span class="math inline">\(z\)</span>-variables (<span class="math inline">\(z_3\)</span> and <span class="math inline">\(z_4\)</span>), based on whether we exceed 6000T.</p>
+</div>
 </section>
 <section id="deterministic-problem-formulation" class="slide level2">
 <h2>Deterministic Problem Formulation</h2>
@@ -346,8 +369,8 @@
 \end{align}
 \]</span></p>
 </section>
-<section id="deterministic-solution" class="slide level2">
-<h2>Deterministic Solution</h2>
+<section id="deterministic-solution-with-average-yields" class="slide level2">
+<h2>Deterministic Solution With Average Yields</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -397,6 +420,94 @@
 <p>To simplify things, let’s assume these yields vary consistently across crops and that each scenario (average, good, bad) has an equal probability of occurrence.</p>
 </div>
 </section>
+<section id="optimal-solution-with-high-yields" class="slide level2">
+<h2>Optimal Solution With High Yields</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: center;">Wheat</th>
+<th style="text-align: center;">Corn</th>
+<th style="text-align: center;">Beets</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Area (acres)</td>
+<td style="text-align: center;">183.33</td>
+<td style="text-align: center;">66.67</td>
+<td style="text-align: center;">250</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Yield (T)</td>
+<td style="text-align: center;">550</td>
+<td style="text-align: center;">240</td>
+<td style="text-align: center;">6000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sales (T)</td>
+<td style="text-align: center;">350</td>
+<td style="text-align: center;">–</td>
+<td style="text-align: center;">6000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Purchased (T)</td>
+<td style="text-align: center;">–</td>
+<td style="text-align: center;">–</td>
+<td style="text-align: center;">–</td>
+</tr>
+</tbody>
+</table>
+<p>This solution yields a profit of $167,667.</p>
+</section>
+<section id="optimal-solution-with-low-yields" class="slide level2">
+<h2>Optimal Solution With Low Yields</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: center;">Wheat</th>
+<th style="text-align: center;">Corn</th>
+<th style="text-align: center;">Beets</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Area (acres)</td>
+<td style="text-align: center;">100</td>
+<td style="text-align: center;">25</td>
+<td style="text-align: center;">375</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Yield (T)</td>
+<td style="text-align: center;">200</td>
+<td style="text-align: center;">60</td>
+<td style="text-align: center;">6000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sales (T)</td>
+<td style="text-align: center;">–</td>
+<td style="text-align: center;">–</td>
+<td style="text-align: center;">6000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Purchased (T)</td>
+<td style="text-align: center;">–</td>
+<td style="text-align: center;">180</td>
+<td style="text-align: center;">–</td>
+</tr>
+</tbody>
+</table>
+<p>This solution yields a profit of $59,950.</p>
+</section>
+<section id="framing-this-as-a-two-stage-problem" class="slide level2">
+<h2>Framing This As A Two-Stage Problem</h2>
+<ul>
+<li>Make some initial planting decision;</li>
+<li>See what the yields look like;</li>
+<li>Purchase as needed to offset any shortfall.</li>
+</ul>
+</section>
 <section id="stochastic-decision-variables" class="slide level2">
 <h2>Stochastic Decision Variables</h2>
 <p><strong><em>What should change about our decision variables?</em></strong></p>
@@ -425,14 +536,6 @@
 </table>
 </div>
 </section>
-<section id="two-stage-problems" class="slide level2">
-<h2>Two-Stage Problems</h2>
-<p>This is typical of a <strong>two-stage</strong> decision problem:</p>
-<ol type="1">
-<li>Make an <strong>initial</strong> decision (<em>e.g.</em> how much to plant) which must be committed to ahead of knowing the stochastic realization;</li>
-<li>Make a subsequent <strong>recourse</strong> decision based on the realization (<em>e.g.</em> do we have to purchase additional crops?)</li>
-</ol>
-</section>
 <section id="stochastic-objective" class="slide level2">
 <h2>Stochastic Objective</h2>
 <p><strong><em>How can we formulate an objective?</em></strong></p>
@@ -449,6 +552,7 @@
 <div class="columns">
 <div class="column" style="width:55%;">
 <p>Since we have a discrete (and small) set of possible outcomes, we can use a <strong>scenario tree</strong> to write out the possible outcomes.</p>
+<p>This is a simple (one-layer) tree, but if we had additional uncertainties (e.g.&nbsp;demand) we could compute the joint probabilities of each realization.</p>
 </div><div class="column" style="width:45%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>

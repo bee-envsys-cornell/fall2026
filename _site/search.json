@@ -5694,6 +5694,13 @@
     "text": "Certainty and LP\nCertainty (e.g. all parameters and relationships between decision variables and outcomes are known) is a key assumption of linear programming.\nBut most systems problems aren’t truly deterministic."
   },
   {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#motivating-example",
+    "href": "slides/lecture13-1-stochastic-optimization.html#motivating-example",
+    "title": "Stochastic Optimization",
+    "section": "Motivating Example",
+    "text": "Motivating Example"
+  },
+  {
     "objectID": "slides/lecture13-1-stochastic-optimization.html#approaches-to-decision-making-under-uncertainty",
     "href": "slides/lecture13-1-stochastic-optimization.html#approaches-to-decision-making-under-uncertainty",
     "title": "Stochastic Optimization",
@@ -5708,18 +5715,32 @@
     "text": "Representing Uncertainty in Mathematical Programs\nAlternative:\n\nSolve a stochastic problem for best expected performance (or similar summary statistic).\n\n\nWe can represent uncertainty through scenarios and (conditional) sequential events, then rewrite the decision problem."
   },
   {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#act-learn-act-two-stage",
+    "href": "slides/lecture13-1-stochastic-optimization.html#act-learn-act-two-stage",
+    "title": "Stochastic Optimization",
+    "section": "Act-Learn-Act (Two-Stage)",
+    "text": "Act-Learn-Act (Two-Stage)\n\nMake a decision \\(x\\) under uncertainty;\nObserve uncertainty \\(\\xi \\in \\Xi\\);\nMake a recourse decision \\(q(x; \\xi)\\) which compensates for suboptimality of \\(x\\) under realization \\(\\xi\\)."
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#example-economic-dispatch",
+    "href": "slides/lecture13-1-stochastic-optimization.html#example-economic-dispatch",
+    "title": "Stochastic Optimization",
+    "section": "Example (Economic Dispatch)",
+    "text": "Example (Economic Dispatch)\nConsider a two-stage economic dispatch with uncertainty about demand and renewables.\nNeed to ensure we can meet the second-stage demand but put ourselves in a position to obey ramping constraints while minimizing cost.\n\nDispatch generation in hour 1;\nGet better forecasts of demand and renewables;\nRe-dispatch (possibly using expensive peaking generators to compensate if lower-cost generation is not possible)."
+  },
+  {
     "objectID": "slides/lecture13-1-stochastic-optimization.html#general-objective-for-stochastic-lp",
     "href": "slides/lecture13-1-stochastic-optimization.html#general-objective-for-stochastic-lp",
     "title": "Stochastic Optimization",
     "section": "General Objective for Stochastic LP",
-    "text": "General Objective for Stochastic LP\n\\[\\min_x \\mathbb{E}_\\xi\\left\\[f(x; \\xi)\\right]\\]\n\nTwo Stage:\n\\[\\min_x f(x) + \\mathbb{E}_\\xi\\left[Q(x; \\xi)]\\right\\]\nwhere \\(Q(x; \\xi)\\) is the recourse decision made after realizing the uncertainty \\(\\xi\\)."
+    "text": "General Objective for Stochastic LP\n\\[\\min_x \\mathbb{E}_\\xi \\left[f(x; \\xi)\\right]\\]\n\nTwo-Stage:\n\\[\\min_x \\underbrace{f(x)}_{\\text{first-stage objective}} + \\mathbb{E}_\\xi[\\underbrace{Q(x; \\xi)}_{\\substack{\\text{recourse objective} \\\\ \\text{after realization} \\\\ \\text{of } \\xi}}]\\]"
   },
   {
     "objectID": "slides/lecture13-1-stochastic-optimization.html#representation-of-uncertainties",
     "href": "slides/lecture13-1-stochastic-optimization.html#representation-of-uncertainties",
     "title": "Stochastic Optimization",
     "section": "Representation of Uncertainties",
-    "text": "Representation of Uncertainties\nThis framework can work for:\n\ndiscrete scenarios (scenario trees)\ncontinuous uncertainties"
+    "text": "Representation of Uncertainties\nThis framework can work for:\n\ndiscrete scenarios (scenario trees)\ncontinuous uncertainties (Monte Carlo)"
   },
   {
     "objectID": "slides/lecture13-1-stochastic-optimization.html#land-allocationfarmer-problem",
@@ -5747,7 +5768,7 @@
     "href": "slides/lecture13-1-stochastic-optimization.html#decision-variables",
     "title": "Stochastic Optimization",
     "section": "Decision Variables",
-    "text": "Decision Variables\nWhat are the decision variables?\n\n\n\n\nVariable\nDefinition\n\n\n\n\n\\(x_i\\)\nacres of crop \\(i\\) planted\n\n\n\\(y_i\\)\nT of crop \\(i\\) purchased\n\n\n\\(z_i\\)\nT of crop \\(i\\) sold\n\n\n\n\nOne twist: sold beets will be represented by two different \\(z\\)-variables (\\(z_3\\) and \\(z_4\\)), based on whether we exceed 6000T."
+    "text": "Decision Variables\nWhat are the decision variables?\n\n\n\n\nVariable\nDefinition\n\n\n\n\n\\(x_i\\)\nacres of crop \\(i\\) planted\n\n\n\\(y_i\\)\nT of crop \\(i\\) purchased\n\n\n\\(z_i\\)\nT of crop \\(i\\) sold\n\n\n\nOne twist: sold beets will be represented by two different \\(z\\)-variables (\\(z_3\\) and \\(z_4\\)), based on whether we exceed 6000T."
   },
   {
     "objectID": "slides/lecture13-1-stochastic-optimization.html#deterministic-problem-formulation",
@@ -5757,11 +5778,11 @@
     "text": "Deterministic Problem Formulation\n\\[\n\\begin{align}\n\\min_{x, y, z} & \\quad 150x_1 + 230 x_2 + 260 x_3 + 238 y_1 + 210 y_2 - 170 z_1 \\\\\n& \\qquad -150z_2 - 36z_3 - 10z_4 \\\\[1ex]\n\\text{subject to:} \\quad & x_1 + x_2 + x_3 \\leq 500 \\\\[0.5ex]\n& 2.5 x_1 + y_1 - z_1 \\geq 200 \\\\[0.5ex]\n& 3 x_2 + y_2 - z_2 \\geq 240 \\\\[0.5ex]\n& z_3 + z_4 \\leq 20 x_3 \\\\[0.5ex]\n& z_3 \\leq 6000 \\\\[0.5ex]\n& x_i, y_i, z_i \\geq 0\n\\end{align}\n\\]"
   },
   {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#deterministic-solution",
-    "href": "slides/lecture13-1-stochastic-optimization.html#deterministic-solution",
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#deterministic-solution-with-average-yields",
+    "href": "slides/lecture13-1-stochastic-optimization.html#deterministic-solution-with-average-yields",
     "title": "Stochastic Optimization",
-    "section": "Deterministic Solution",
-    "text": "Deterministic Solution\n\n\n\nVariable\nWheat\nCorn\nBeets\n\n\n\n\nArea (acres)\n120\n80\n300\n\n\nYield (T)\n300\n240\n6000\n\n\nSales (T)\n100\n–\n6000\n\n\nPurchased (T)\n–\n–\n–\n\n\n\nThis solution yields a profit of $118,600."
+    "section": "Deterministic Solution With Average Yields",
+    "text": "Deterministic Solution With Average Yields\n\n\n\nVariable\nWheat\nCorn\nBeets\n\n\n\n\nArea (acres)\n120\n80\n300\n\n\nYield (T)\n300\n240\n6000\n\n\nSales (T)\n100\n–\n6000\n\n\nPurchased (T)\n–\n–\n–\n\n\n\nThis solution yields a profit of $118,600."
   },
   {
     "objectID": "slides/lecture13-1-stochastic-optimization.html#what-about-uncertainty",
@@ -5771,18 +5792,32 @@
     "text": "What About Uncertainty?\nBut yields tend to vary from year to year. From prior experience, the historical variability is:\n\nin a good year, yields can be 20% above average;\nin a bad year, yields can be 20% below average.\n\n\nTo simplify things, let’s assume these yields vary consistently across crops and that each scenario (average, good, bad) has an equal probability of occurrence."
   },
   {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#optimal-solution-with-high-yields",
+    "href": "slides/lecture13-1-stochastic-optimization.html#optimal-solution-with-high-yields",
+    "title": "Stochastic Optimization",
+    "section": "Optimal Solution With High Yields",
+    "text": "Optimal Solution With High Yields\n\n\n\nVariable\nWheat\nCorn\nBeets\n\n\n\n\nArea (acres)\n183.33\n66.67\n250\n\n\nYield (T)\n550\n240\n6000\n\n\nSales (T)\n350\n–\n6000\n\n\nPurchased (T)\n–\n–\n–\n\n\n\nThis solution yields a profit of $167,667."
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#optimal-solution-with-low-yields",
+    "href": "slides/lecture13-1-stochastic-optimization.html#optimal-solution-with-low-yields",
+    "title": "Stochastic Optimization",
+    "section": "Optimal Solution With Low Yields",
+    "text": "Optimal Solution With Low Yields\n\n\n\nVariable\nWheat\nCorn\nBeets\n\n\n\n\nArea (acres)\n100\n25\n375\n\n\nYield (T)\n200\n60\n6000\n\n\nSales (T)\n–\n–\n6000\n\n\nPurchased (T)\n–\n180\n–\n\n\n\nThis solution yields a profit of $59,950."
+  },
+  {
+    "objectID": "slides/lecture13-1-stochastic-optimization.html#framing-this-as-a-two-stage-problem",
+    "href": "slides/lecture13-1-stochastic-optimization.html#framing-this-as-a-two-stage-problem",
+    "title": "Stochastic Optimization",
+    "section": "Framing This As A Two-Stage Problem",
+    "text": "Framing This As A Two-Stage Problem\n\nMake some initial planting decision;\nSee what the yields look like;\nPurchase as needed to offset any shortfall."
+  },
+  {
     "objectID": "slides/lecture13-1-stochastic-optimization.html#stochastic-decision-variables",
     "href": "slides/lecture13-1-stochastic-optimization.html#stochastic-decision-variables",
     "title": "Stochastic Optimization",
     "section": "Stochastic Decision Variables",
     "text": "Stochastic Decision Variables\nWhat should change about our decision variables?\n\n\n\n\nVariable\nDefinition\n\n\n\n\n\\(x_i\\)\nacres of crop \\(i\\) planted\n\n\n\\(y_{ij}\\)\nT of crop \\(i\\) purchased in scenario \\(j\\)\n\n\n\\(z_{ij}\\)\nT of crop \\(i\\) sold in scenario \\(j\\)"
-  },
-  {
-    "objectID": "slides/lecture13-1-stochastic-optimization.html#two-stage-problems",
-    "href": "slides/lecture13-1-stochastic-optimization.html#two-stage-problems",
-    "title": "Stochastic Optimization",
-    "section": "Two-Stage Problems",
-    "text": "Two-Stage Problems\nThis is typical of a two-stage decision problem:\n\nMake an initial decision (e.g. how much to plant) which must be committed to ahead of knowing the stochastic realization;\nMake a subsequent recourse decision based on the realization (e.g. do we have to purchase additional crops?)"
   },
   {
     "objectID": "slides/lecture13-1-stochastic-optimization.html#stochastic-objective",
@@ -5796,7 +5831,7 @@
     "href": "slides/lecture13-1-stochastic-optimization.html#probabilities-and-scenario-trees",
     "title": "Stochastic Optimization",
     "section": "Probabilities and Scenario Trees",
-    "text": "Probabilities and Scenario Trees\n\n\nSince we have a discrete (and small) set of possible outcomes, we can use a scenario tree to write out the possible outcomes.\n\n\n\n\nScenario Tree for Farmer Problem"
+    "text": "Probabilities and Scenario Trees\n\n\nSince we have a discrete (and small) set of possible outcomes, we can use a scenario tree to write out the possible outcomes.\nThis is a simple (one-layer) tree, but if we had additional uncertainties (e.g. demand) we could compute the joint probabilities of each realization.\n\n\n\n\nScenario Tree for Farmer Problem"
   },
   {
     "objectID": "slides/lecture13-1-stochastic-optimization.html#stochastic-objective-1",
