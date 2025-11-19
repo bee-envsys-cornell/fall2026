@@ -1964,14 +1964,14 @@
     "href": "slides/lecture13-2-limits-optimization.html#treatment-of-uncertainty-in-lps",
     "title": "Multiple Objectives",
     "section": "Treatment of Uncertainty in LPs",
-    "text": "Treatment of Uncertainty in LPs\n\nTwo-Stage Problems (Initial Decision -&gt; Recourse)\nScenarios"
+    "text": "Treatment of Uncertainty in LPs\n\nTwo-Stage Problems (Initial Decision -&gt; Recourse)\nUses samples (scenario trees) to compute expectations of objectives or other summary statistics (e.g. “robust optimization”: higher quantile) and consistency of constraints.\nCan explode in complexity very quickly!\nLots of algorithms out there for generation of scenario trees."
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#pros-and-cons-of-mathematical-programming",
     "href": "slides/lecture13-2-limits-optimization.html#pros-and-cons-of-mathematical-programming",
     "title": "Multiple Objectives",
     "section": "Pros and Cons of Mathematical Programming",
-    "text": "Pros and Cons of Mathematical Programming\n\n\n\nPros:\n\nCan guarantee analytic solutions (or close)\nOften computationally scalable (especially for LPs)\nTransparent\n\n\nCons:\n\nOften quite stylized\nLimited ability to treat uncertainty"
+    "text": "Pros and Cons of Mathematical Programming\n\n\n\nPros:\n\nCan guarantee solutions (or estimates of closeness) when they exist\nOften computationally scalable (especially for LPs)\nTransparency\n\n\nCons:\n\nOften quite stylized to make geometry work\nLimited ability to treat uncertainty"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#challenge-1-writing-down-a-mathematical-program",
@@ -2034,7 +2034,7 @@
     "href": "slides/lecture13-2-limits-optimization.html#limits-of-these-approaches",
     "title": "Multiple Objectives",
     "section": "Limits of These Approaches",
-    "text": "Limits of These Approaches\nCan you think of problems or limits with these approaches to handling multiple objectives?\n\n\nRequire a priori assessments of acceptable limits and/or weights.\nLimits ability to understand “macro”-scale tradeoffs (beyond shadow prices)."
+    "text": "Limits of These Approaches\nCan you think of problems or limits with these approaches to handling multiple objectives?\n\n\nRequire a priori assessments of acceptable limits and/or weights.\nLimits ability to understand “macro”-scale tradeoffs (beyond shadow prices).\nCan conduct sensitivity analysis on weights to explore tradeoffs but this requires a large number of runs.\nInterpretability: what do weights mean?"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#shallow-lake-problem",
@@ -2069,7 +2069,7 @@
     "href": "slides/lecture13-2-limits-optimization.html#the-lake-problem-as-a-mathematical-program-1",
     "title": "Multiple Objectives",
     "section": "The Lake Problem As a Mathematical Program?",
-    "text": "The Lake Problem As a Mathematical Program?\nOur objective might be to maximize \\(\\sum_{t=1}^T a_t\\) (as a proxy for economic activity), while keeping a low probability of eutrophication."
+    "text": "The Lake Problem As a Mathematical Program?\nOur objective might be to maximize \\(\\sum_{t=1}^T a_t\\) (as a proxy for economic activity), while keeping a low probability of eutrophication.\nMeans we need to write the probability of eutrophication in closed form."
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#uncertain-inputs-and-mp",
@@ -2125,14 +2125,14 @@
     "href": "slides/lecture13-2-limits-optimization.html#how-can-we-incorporate-multiple-objectives-into-models-1",
     "title": "Multiple Objectives",
     "section": "How Can We Incorporate Multiple Objectives Into Models?",
-    "text": "How Can We Incorporate Multiple Objectives Into Models?\nLinear Programming:\n\n\nIdentify thresholds and establish constraints for non-objective “objectives”;\nWeight objectives based on preferences, e.g. \\[\\min_\\mathbf{x} Z(\\mathbf{x}) = \\sum_i w_i \\hat{Z_i}(\\mathbf{x}), \\qquad \\sum_i w_i =1\\]"
+    "text": "How Can We Incorporate Multiple Objectives Into Models?\nLinear Programming:\n\n\nIdentify thresholds and establish constraints for non-objective “objectives”;\nWeight objectives based on preferences, e.g. \\[\\min_\\mathbf{x} Z(\\mathbf{x}) = \\sum_i w_i \\hat{Z_i}(\\mathbf{x}), \\qquad \\sum_i w_i =1\\]\nIf we don’t have a clear estimate of weights that reflect preferences, can explore implications of many different combinations."
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#how-can-we-incorporate-multiple-objectives-into-models-2",
     "href": "slides/lecture13-2-limits-optimization.html#how-can-we-incorporate-multiple-objectives-into-models-2",
     "title": "Multiple Objectives",
     "section": "How Can We Incorporate Multiple Objectives Into Models?",
-    "text": "How Can We Incorporate Multiple Objectives Into Models?\nSimulation-Optimization:\n\nCould use the LP approaches\nCan also have the simulation model (or wrapper) return multiple metrics"
+    "text": "How Can We Incorporate Multiple Objectives Into Models?\nSimulation-Optimization:\n\nCould use the LP approaches\nCan also have the simulation model return multiple metrics\nThen use a method (e.g. a search algorithm, like evolutionary algorithms) to explore objective space"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#back-to-the-key-question",
@@ -2209,21 +2209,14 @@
     "href": "slides/lecture13-2-limits-optimization.html#next-classes",
     "title": "Multiple Objectives",
     "section": "Next Classes",
-    "text": "Next Classes\nWednesday: Limits of Mathematical Programming\nMonday: Prelim 2 Review, Wrap-Up"
-  },
-  {
-    "objectID": "slides/lecture13-2-limits-optimization.html#no-class-after-thanksgiving",
-    "href": "slides/lecture13-2-limits-optimization.html#no-class-after-thanksgiving",
-    "title": "Multiple Objectives",
-    "section": "No Class after Thanksgiving!",
-    "text": "No Class after Thanksgiving!\n\nWork on project!\nWill have open office hours for project check-ins (remotely on 12/4)"
+    "text": "Next Classes\nMonday: Robustness and Sensitivity Analysis"
   },
   {
     "objectID": "slides/lecture13-2-limits-optimization.html#assessments",
     "href": "slides/lecture13-2-limits-optimization.html#assessments",
     "title": "Multiple Objectives",
     "section": "Assessments",
-    "text": "Assessments\nHW5: Will be due last week of class (12/5)."
+    "text": "Assessments\nHW5: Will be due last week of class (12/4)."
   },
   {
     "objectID": "slides/lecture12-1-waste-management.html#mixed-integer-linear-programming",

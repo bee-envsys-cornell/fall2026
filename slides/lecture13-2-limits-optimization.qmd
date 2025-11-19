@@ -91,7 +91,9 @@ default(
 ## Treatment of Uncertainty in LPs
 
 - Two-Stage Problems (**Initial Decision -> Recourse**)
-- Scenarios
+- Uses samples (scenario trees) to compute expectations of objectives or other summary statistics (*e.g.* "robust optimization": higher quantile) and consistency of constraints.
+- Can explode in complexity very quickly!
+- Lots of algorithms out there for generation of scenario trees.
 
 
 # Thinking More About Mathematical Programming
@@ -104,16 +106,16 @@ default(
 ::: {.column width=50%}
 **Pros**:
 
-- Can guarantee analytic solutions (or close)
+- Can guarantee solutions (or estimates of closeness) when they exist
 - Often computationally scalable (especially for LPs)
-- Transparent
+- Transparency
 
 :::
 
 ::: {.column width=50%}
 **Cons**:
 
-- Often quite stylized
+- Often quite stylized to make geometry work
 - Limited ability to treat uncertainty
 
 :::
@@ -211,6 +213,8 @@ This requires **normalizing** the $Z_i$.
 ::: {.fragment .fade-in}
 - Require *a priori* assessments of acceptable limits and/or weights.
 - Limits ability to understand "macro"-scale tradeoffs (beyond shadow prices).
+- Can conduct sensitivity analysis on weights to explore tradeoffs but this requires a large number of runs.
+- Interpretability: what do weights mean?
 :::
 
 # Example: Shallow Lake Problem
@@ -295,6 +299,8 @@ display(p2)
 
 Our objective might be to maximize $\sum_{t=1}^T a_t$ (as a proxy for economic activity), while keeping a low probability of eutrophication. 
 
+Means we need to write the probability of eutrophication in closed form.
+
 ## Uncertain Inputs and MP
 
 ***How can we represent uncertainty in inputs $y_t$ in an MP?***
@@ -376,6 +382,7 @@ Key Question: ***what does it mean to "optimize" multiple objectives?***
 1. Identify thresholds and establish constraints for non-objective "objectives";
 2. Weight objectives based on preferences, *e.g.*
     $$\min_\mathbf{x} Z(\mathbf{x}) = \sum_i w_i \hat{Z_i}(\mathbf{x}), \qquad \sum_i w_i =1$$
+3. If we don't have a clear estimate of weights that reflect preferences, can explore implications of many different combinations.
 
 :::
 :::
@@ -385,7 +392,8 @@ Key Question: ***what does it mean to "optimize" multiple objectives?***
 **Simulation-Optimization**:
 
 - Could use the LP approaches
-- Can also have the simulation model (or wrapper) return multiple metrics
+- Can also have the simulation model return multiple metrics
+- Then use a method (*e.g.* a search algorithm, like evolutionary algorithms) to explore objective space
 
 ## Back To The Key Question...
 
@@ -564,15 +572,8 @@ Can use **multi-objective optimization** with (certain) evolutionary algorithms.
 
 ## Next Classes
 
-**Wednesday**: Limits of Mathematical Programming
-
-**Monday**: Prelim 2 Review, Wrap-Up
-
-## No Class after Thanksgiving!
-
-- Work on project!
-- Will have open office hours for project check-ins (remotely on 12/4)
+**Monday**: Robustness and Sensitivity Analysis
 
 ## Assessments
 
-**HW5**: Will be due last week of class (12/5).
+**HW5**: Will be due last week of class (12/4).
