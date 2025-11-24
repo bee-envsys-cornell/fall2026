@@ -1,0 +1,1793 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.31">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-11-12">
+
+<title>Homework 4 Solutions – Environmental Systems Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../_assets/logos/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e1d1e7f53b840ad8d06c4ae6c57b8588.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ba9c0723bac509a7d8c9561700ea21a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<!-- MathJax 3 -->
+<script>
+window.MathJax = {
+    tex: {
+      tags: 'ams'
+    }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Homework 4 Solutions – Environmental Systems Analysis">
+<meta property="og:description" content="Homepage for the Fall 2025 version of BEE 4750/5750, Environmental Systems Analysis, at Cornell University.">
+<meta property="og:site_name" content="Environmental Systems Analysis">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">BEE 4750/5750</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-info" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Info</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-info">    
+        <li>
+    <a class="dropdown-item" href="../../syllabus.html">
+ <span class="dropdown-text">Syllabus</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../policies/index.html">
+ <span class="dropdown-text">Course Policies</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../faq/index.html">
+ <span class="dropdown-text">FAQ</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../setup/index.html">
+ <span class="dropdown-text">Setup</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../schedule.html"> 
+<span class="menu-text">Course Schedule</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-coursework" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Coursework</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-coursework">    
+        <li>
+    <a class="dropdown-item" href="../../labs/index.html">
+ <span class="dropdown-text">Labs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../hw/index.html">
+ <span class="dropdown-text">Homework</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../project/index.html">
+ <span class="dropdown-text">Final Project</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-resources" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Resources</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-resources">    
+        <li>
+    <a class="dropdown-item" href="../../tutorials/index.html">
+ <span class="dropdown-text">Tutorials</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/general.html">
+ <span class="dropdown-text">General Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/julia.html">
+ <span class="dropdown-text">Julia Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/ai.html">
+ <span class="dropdown-text">Generative AI and LLMs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/github.html">
+ <span class="dropdown-text">GitHub Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/markdown.html">
+ <span class="dropdown-text">Markdown Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/optimization.html">
+ <span class="dropdown-text">Optimization Resources</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/bee-envsys-cornell/fall2025"> 
+<span class="menu-text"><i class="fa-brands fa-github" aria-label="github"></i> GitHub</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://canvas.cornell.edu"> 
+<span class="menu-text"><i class="fa-regular fa-notebook" aria-label="notebook"></i> Canvas</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://edstem.org"> 
+<span class="menu-text"><i class="fa-regular fa-comments" aria-label="comments"></i> Ed</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://gradescope.com"> 
+<span class="menu-text"><i class="fa-regular fa-chart-simple" aria-label="chart-simple"></i> Gradescope</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
+  <ul class="collapse">
+  <li><a href="#load-environment" id="toc-load-environment" class="nav-link" data-scroll-target="#load-environment">Load Environment</a></li>
+  </ul></li>
+  <li><a href="#problems-total-30-points" id="toc-problems-total-30-points" class="nav-link" data-scroll-target="#problems-total-30-points">Problems (Total: 30 Points)</a>
+  <ul class="collapse">
+  <li><a href="#problem-1-total-3-points" id="toc-problem-1-total-3-points" class="nav-link" data-scroll-target="#problem-1-total-3-points">Problem 1 (Total: 3 Points)</a></li>
+  <li><a href="#problem-2-12-points" id="toc-problem-2-12-points" class="nav-link" data-scroll-target="#problem-2-12-points">Problem 2 (12 points)</a></li>
+  <li><a href="#problem-3-15-points" id="toc-problem-3-15-points" class="nav-link" data-scroll-target="#problem-3-15-points">Problem 3 (15 points)</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/solutions/hw04/hw04.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="hw04.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="hw04.ipynb" download="hw04.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Homework 4 Solutions</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 12, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Due Date
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Thursday, 11/06/25, 9:00pm</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-caution">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>If you are enrolled in the course, make sure that you use the GitHub Classroom link provided in Ed Discussion, or you may not be able to get help if you run into problems.</p>
+<p>Otherwise, you can <a href="https://github.com/BEE4750/hw04">find the Github repository here</a>.</p>
+</div>
+</div>
+</div>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<section id="load-environment" class="level3">
+<h3 class="anchored" data-anchor-id="load-environment">Load Environment</h3>
+<p>The following code loads the environment and makes sure all needed packages are installed. This should be at the start of most Julia scripts.</p>
+<div id="2" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">Pkg</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">activate</span>(<span class="pp">@__DIR__</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">instantiate</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="4" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">JuMP</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">HiGHS</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Plots</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Measures</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MarkdownTables</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">LaTeXStrings</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="problems-total-30-points" class="level2">
+<h2 class="anchored" data-anchor-id="problems-total-30-points">Problems (Total: 30 Points)</h2>
+<section id="problem-1-total-3-points" class="level3">
+<h3 class="anchored" data-anchor-id="problem-1-total-3-points">Problem 1 (Total: 3 Points)</h3>
+<p>We know that an optimal solution has to occur at the intersection of constraints. It’s helpful (though not necessary) to plot the feasible domain to find the locations of these points, which we do in <a href="#fig-p1-domain" class="quarto-xref">Figure&nbsp;1</a>.</p>
+<div id="cell-fig-p1-domain" class="cell" data-execution_count="1">
+<div id="fig-p1-domain" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="1">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-p1-domain-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<!--?xml version="1.0" encoding="utf-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="672" height="480" viewbox="0 0 2688 1920">
+<defs>
+  <clippath id="clip620">
+    <rect x="0" y="0" width="2688" height="1920"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip620)" d="M0 1920 L2688 1920 L2688 -4.26326e-14 L0 -4.26326e-14  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip621">
+    <rect x="537" y="0" width="1883" height="1883"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip620)" d="M115.057 1734.12 L2640.76 1734.12 L2640.76 47.2441 L115.057 47.2441  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip622">
+    <rect x="115" y="47" width="2527" height="1688"></rect>
+  </clippath>
+</defs>
+<polyline clip-path="url(#clip622)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; stroke-opacity:0.1; fill:none" points="437.353,1734.12 437.353,47.2441 "></polyline>
+<polyline clip-path="url(#clip622)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; stroke-opacity:0.1; fill:none" points="938.982,1734.12 938.982,47.2441 "></polyline>
+<polyline clip-path="url(#clip622)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; stroke-opacity:0.1; fill:none" points="1440.61,1734.12 1440.61,47.2441 "></polyline>
+<polyline clip-path="url(#clip622)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; stroke-opacity:0.1; fill:none" points="1942.24,1734.12 1942.24,47.2441 "></polyline>
+<polyline clip-path="url(#clip622)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; stroke-opacity:0.1; fill:none" points="2443.87,1734.12 2443.87,47.2441 "></polyline>
+<polyline clip-path="url(#clip622)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; stroke-opacity:0.1; fill:none" points="115.057,1378.36 2640.76,1378.36 "></polyline>
+<polyline clip-path="url(#clip622)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; stroke-opacity:0.1; fill:none" points="115.057,967.683 2640.76,967.683 "></polyline>
+<polyline clip-path="url(#clip622)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; stroke-opacity:0.1; fill:none" points="115.057,557.002 2640.76,557.002 "></polyline>
+<polyline clip-path="url(#clip622)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; stroke-opacity:0.1; fill:none" points="115.057,146.321 2640.76,146.321 "></polyline>
+<polyline clip-path="url(#clip620)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="115.057,1734.12 2640.76,1734.12 "></polyline>
+<polyline clip-path="url(#clip620)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="437.353,1734.12 437.353,1715.22 "></polyline>
+<polyline clip-path="url(#clip620)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="938.982,1734.12 938.982,1715.22 "></polyline>
+<polyline clip-path="url(#clip620)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1440.61,1734.12 1440.61,1715.22 "></polyline>
+<polyline clip-path="url(#clip620)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1942.24,1734.12 1942.24,1715.22 "></polyline>
+<polyline clip-path="url(#clip620)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2443.87,1734.12 2443.87,1715.22 "></polyline>
+<path clip-path="url(#clip620)" d="M437.353 1767.34 Q433.742 1767.34 431.914 1770.9 Q430.108 1774.45 430.108 1781.58 Q430.108 1788.68 431.914 1792.25 Q433.742 1795.79 437.353 1795.79 Q440.988 1795.79 442.793 1792.25 Q444.622 1788.68 444.622 1781.58 Q444.622 1774.45 442.793 1770.9 Q440.988 1767.34 437.353 1767.34 M437.353 1763.64 Q443.164 1763.64 446.219 1768.24 Q449.298 1772.83 449.298 1781.58 Q449.298 1790.3 446.219 1794.91 Q443.164 1799.49 437.353 1799.49 Q431.543 1799.49 428.465 1794.91 Q425.409 1790.3 425.409 1781.58 Q425.409 1772.83 428.465 1768.24 Q431.543 1763.64 437.353 1763.64 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip620)" d="M929.364 1794.89 L937.003 1794.89 L937.003 1768.52 L928.692 1770.19 L928.692 1765.93 L936.956 1764.26 L941.632 1764.26 L941.632 1794.89 L949.271 1794.89 L949.271 1798.82 L929.364 1798.82 L929.364 1794.89 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip620)" d="M1435.26 1794.89 L1451.58 1794.89 L1451.58 1798.82 L1429.64 1798.82 L1429.64 1794.89 Q1432.3 1792.13 1436.88 1787.5 Q1441.49 1782.85 1442.67 1781.51 Q1444.92 1778.98 1445.8 1777.25 Q1446.7 1775.49 1446.7 1773.8 Q1446.7 1771.04 1444.75 1769.31 Q1442.83 1767.57 1439.73 1767.57 Q1437.53 1767.57 1435.08 1768.34 Q1432.65 1769.1 1429.87 1770.65 L1429.87 1765.93 Q1432.69 1764.79 1435.15 1764.21 Q1437.6 1763.64 1439.64 1763.64 Q1445.01 1763.64 1448.2 1766.32 Q1451.4 1769.01 1451.4 1773.5 Q1451.4 1775.63 1450.59 1777.55 Q1449.8 1779.45 1447.69 1782.04 Q1447.11 1782.71 1444.01 1785.93 Q1440.91 1789.12 1435.26 1794.89 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip620)" d="M1946.49 1780.19 Q1949.84 1780.9 1951.72 1783.17 Q1953.62 1785.44 1953.62 1788.77 Q1953.62 1793.89 1950.1 1796.69 Q1946.58 1799.49 1940.1 1799.49 Q1937.92 1799.49 1935.61 1799.05 Q1933.31 1798.64 1930.86 1797.78 L1930.86 1793.27 Q1932.81 1794.4 1935.12 1794.98 Q1937.44 1795.56 1939.96 1795.56 Q1944.36 1795.56 1946.65 1793.82 Q1948.96 1792.08 1948.96 1788.77 Q1948.96 1785.72 1946.81 1784.01 Q1944.68 1782.27 1940.86 1782.27 L1936.83 1782.27 L1936.83 1778.43 L1941.05 1778.43 Q1944.5 1778.43 1946.32 1777.06 Q1948.15 1775.67 1948.15 1773.08 Q1948.15 1770.42 1946.25 1769.01 Q1944.38 1767.57 1940.86 1767.57 Q1938.94 1767.57 1936.74 1767.99 Q1934.54 1768.4 1931.9 1769.28 L1931.9 1765.12 Q1934.56 1764.38 1936.88 1764.01 Q1939.22 1763.64 1941.28 1763.64 Q1946.6 1763.64 1949.7 1766.07 Q1952.81 1768.47 1952.81 1772.59 Q1952.81 1775.46 1951.16 1777.46 Q1949.52 1779.42 1946.49 1780.19 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip620)" d="M2446.88 1768.34 L2435.07 1786.78 L2446.88 1786.78 L2446.88 1768.34 M2445.65 1764.26 L2451.53 1764.26 L2451.53 1786.78 L2456.46 1786.78 L2456.46 1790.67 L2451.53 1790.67 L2451.53 1798.82 L2446.88 1798.82 L2446.88 1790.67 L2431.27 1790.67 L2431.27 1786.16 L2445.65 1764.26 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip620)" d="M1392.08 1844.06 Q1392.08 1845.86 1390.95 1846.89 Q1389.83 1847.89 1388.54 1847.89 Q1387.31 1847.89 1386.67 1847.18 Q1386.03 1846.48 1386.03 1845.57 Q1386.03 1844.35 1386.93 1843.29 Q1387.83 1842.22 1389.18 1842 Q1387.86 1841.16 1385.9 1841.16 Q1384.61 1841.16 1383.48 1841.84 Q1382.39 1842.51 1381.71 1843.38 Q1381.07 1844.25 1380.49 1845.51 Q1379.94 1846.73 1379.71 1847.47 Q1379.52 1848.18 1379.36 1848.96 L1377.1 1857.97 Q1376.01 1862.26 1376.01 1863.77 Q1376.01 1865.64 1376.91 1866.89 Q1377.81 1868.12 1379.62 1868.12 Q1380.32 1868.12 1381.13 1867.93 Q1381.94 1867.7 1382.97 1867.12 Q1384.03 1866.51 1384.96 1865.61 Q1385.93 1864.67 1386.86 1863.09 Q1387.8 1861.52 1388.41 1859.49 Q1388.6 1858.78 1389.25 1858.78 Q1390.05 1858.78 1390.05 1859.42 Q1390.05 1859.97 1389.6 1861.13 Q1389.18 1862.26 1388.25 1863.74 Q1387.35 1865.19 1386.15 1866.51 Q1384.96 1867.8 1383.19 1868.7 Q1381.42 1869.6 1379.49 1869.6 Q1376.72 1869.6 1374.88 1868.12 Q1373.05 1866.64 1372.37 1864.58 Q1372.21 1864.87 1371.98 1865.25 Q1371.76 1865.64 1371.08 1866.51 Q1370.44 1867.35 1369.7 1867.99 Q1368.96 1868.6 1367.8 1869.08 Q1366.67 1869.6 1365.45 1869.6 Q1363.9 1869.6 1362.52 1869.15 Q1361.16 1868.7 1360.2 1867.67 Q1359.23 1866.64 1359.23 1865.22 Q1359.23 1863.64 1360.29 1862.55 Q1361.39 1861.42 1362.87 1861.42 Q1363.8 1861.42 1364.54 1861.97 Q1365.32 1862.51 1365.32 1863.71 Q1365.32 1865.03 1364.42 1866.02 Q1363.51 1867.02 1362.23 1867.28 Q1363.55 1868.12 1365.51 1868.12 Q1367.64 1868.12 1369.31 1866.25 Q1370.99 1864.38 1371.79 1861.26 Q1373.79 1853.75 1374.56 1850.41 Q1375.33 1847.02 1375.33 1845.57 Q1375.33 1844.22 1374.98 1843.29 Q1374.62 1842.35 1374.01 1841.93 Q1373.43 1841.48 1372.89 1841.32 Q1372.37 1841.16 1371.79 1841.16 Q1370.82 1841.16 1369.73 1841.55 Q1368.67 1841.93 1367.38 1842.84 Q1366.12 1843.71 1364.93 1845.51 Q1363.74 1847.31 1362.93 1849.79 Q1362.77 1850.53 1362.06 1850.53 Q1361.29 1850.5 1361.29 1849.86 Q1361.29 1849.31 1361.71 1848.18 Q1362.16 1847.02 1363.06 1845.57 Q1364 1844.12 1365.19 1842.84 Q1366.41 1841.52 1368.18 1840.61 Q1369.99 1839.71 1371.92 1839.71 Q1372.79 1839.71 1373.63 1839.91 Q1374.5 1840.07 1375.53 1840.55 Q1376.59 1841.03 1377.52 1842.1 Q1378.46 1843.16 1379.04 1844.7 Q1379.42 1843.96 1379.94 1843.26 Q1380.49 1842.55 1381.32 1841.68 Q1382.19 1840.78 1383.38 1840.26 Q1384.61 1839.71 1385.96 1839.71 Q1387.28 1839.71 1388.57 1840.07 Q1389.86 1840.39 1390.95 1841.45 Q1392.08 1842.48 1392.08 1844.06 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><polyline clip-path="url(#clip620)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="115.057,1734.12 115.057,47.2441 "></polyline>
+<polyline clip-path="url(#clip620)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="115.057,1378.36 133.955,1378.36 "></polyline>
+<polyline clip-path="url(#clip620)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="115.057,967.683 133.955,967.683 "></polyline>
+<polyline clip-path="url(#clip620)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="115.057,557.002 133.955,557.002 "></polyline>
+<polyline clip-path="url(#clip620)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="115.057,146.321 133.955,146.321 "></polyline>
+<path clip-path="url(#clip620)" d="M54.8299 1391.71 L62.4687 1391.71 L62.4687 1365.34 L54.1586 1367.01 L54.1586 1362.75 L62.4224 1361.08 L67.0983 1361.08 L67.0983 1391.71 L74.7372 1391.71 L74.7372 1395.64 L54.8299 1395.64 L54.8299 1391.71 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip620)" d="M58.4178 981.028 L74.7372 981.028 L74.7372 984.963 L52.7928 984.963 L52.7928 981.028 Q55.4549 978.273 60.0382 973.644 Q64.6446 968.991 65.8252 967.649 Q68.0705 965.125 68.9502 963.389 Q69.8529 961.63 69.8529 959.94 Q69.8529 957.186 67.9085 955.45 Q65.9872 953.713 62.8854 953.713 Q60.6863 953.713 58.2326 954.477 Q55.8021 955.241 53.0243 956.792 L53.0243 952.07 Q55.8484 950.936 58.3021 950.357 Q60.7558 949.778 62.7928 949.778 Q68.1631 949.778 71.3576 952.463 Q74.552 955.149 74.552 959.639 Q74.552 961.769 73.7418 963.69 Q72.9548 965.588 70.8483 968.181 Q70.2696 968.852 67.1678 972.07 Q64.0659 975.264 58.4178 981.028 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip620)" d="M67.6076 555.648 Q70.964 556.366 72.839 558.634 Q74.7372 560.903 74.7372 564.236 Q74.7372 569.352 71.2187 572.152 Q67.7002 574.953 61.2187 574.953 Q59.0428 574.953 56.728 574.514 Q54.4364 574.097 51.9827 573.24 L51.9827 568.727 Q53.9271 569.861 56.2419 570.44 Q58.5567 571.018 61.0798 571.018 Q65.478 571.018 67.7696 569.282 Q70.0844 567.546 70.0844 564.236 Q70.0844 561.18 67.9317 559.467 Q65.802 557.731 61.9826 557.731 L57.9549 557.731 L57.9549 553.889 L62.1678 553.889 Q65.6169 553.889 67.4455 552.523 Q69.2742 551.134 69.2742 548.541 Q69.2742 545.879 67.3761 544.467 Q65.5011 543.032 61.9826 543.032 Q60.0613 543.032 57.8623 543.449 Q55.6632 543.866 53.0243 544.745 L53.0243 540.579 Q55.6864 539.838 58.0012 539.467 Q60.3391 539.097 62.3993 539.097 Q67.7233 539.097 70.8252 541.528 Q73.927 543.935 73.927 548.055 Q73.927 550.926 72.2835 552.916 Q70.64 554.884 67.6076 555.648 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip620)" d="M65.1539 133.115 L53.3484 151.564 L65.1539 151.564 L65.1539 133.115 M63.927 129.041 L69.8066 129.041 L69.8066 151.564 L74.7372 151.564 L74.7372 155.453 L69.8066 155.453 L69.8066 163.601 L65.1539 163.601 L65.1539 155.453 L49.5521 155.453 L49.5521 150.939 L63.927 129.041 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><polyline clip-path="url(#clip622)" style="stroke:#009af9; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="186.539,94.9858 311.946,120.653 437.353,146.321 562.76,171.988 688.168,197.656 813.575,223.324 938.982,248.991 1064.39,274.659 1189.8,300.326 1315.2,325.994 1440.61,351.662 1566.02,377.329 1691.42,402.997 1816.83,428.664 1942.24,454.332 2067.65,479.999 2193.05,505.667 2318.46,531.335 2443.87,557.002 2569.27,582.67 "></polyline>
+<polyline clip-path="url(#clip622)" style="stroke:#e26f46; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="186.539,1686.38 311.946,1635.04 437.353,1583.71 562.76,1532.37 688.168,1481.03 813.575,1429.7 938.982,1378.36 1064.39,1327.03 1189.8,1275.69 1315.2,1224.36 1440.61,1173.02 1566.02,1121.69 1691.42,1070.35 1816.83,1019.02 1942.24,967.683 2067.65,916.348 2193.05,865.013 2318.46,813.678 2443.87,762.343 2569.27,711.008 "></polyline>
+<polyline clip-path="url(#clip622)" style="stroke:#3da44d; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="437.353,3420.99 437.353,-1639.63 "></polyline>
+<polyline clip-path="url(#clip622)" style="stroke:#3da44d; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2443.87,3420.99 2443.87,-1639.63 "></polyline>
+<polyline clip-path="url(#clip622)" style="stroke:#c271d2; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="-2410.64,1378.36 5166.45,1378.36 "></polyline>
+<polyline clip-path="url(#clip622)" style="stroke:#c271d2; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="-2410.64,146.321 5166.45,146.321 "></polyline>
+<path clip-path="url(#clip622)" d="M437.353 1378.36 L562.76 1378.36 L688.168 1378.36 L813.575 1378.36 L938.982 1378.36 L1064.39 1327.03 L1189.8 1275.69 L1315.2 1224.36 L1440.61 1173.02 L1566.02 1121.69 L1691.42 1070.35 L1816.83 1019.02 L1942.24 967.683 L2067.65 916.348 L2193.05 865.013 L2318.46 813.678 L2443.87 762.343 L2443.87 557.002 L2318.46 531.335 L2193.05 505.667 L2067.65 479.999 L1942.24 454.332 L1816.83 428.664 L1691.42 402.997 L1566.02 377.329 L1440.61 351.662 L1315.2 325.994 L1189.8 300.326 L1064.39 274.659 L938.982 248.991 L813.575 223.324 L688.168 197.656 L562.76 171.988 L437.353 146.321  Z" fill="#0000ff" fill-rule="evenodd" fill-opacity="0.2"></path>
+<polyline clip-path="url(#clip622)" style="stroke:#0000ff; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:0.2; fill:none" points="437.353,1378.36 562.76,1378.36 688.168,1378.36 813.575,1378.36 938.982,1378.36 1064.39,1327.03 1189.8,1275.69 1315.2,1224.36 1440.61,1173.02 1566.02,1121.69 1691.42,1070.35 1816.83,1019.02 1942.24,967.683 2067.65,916.348 2193.05,865.013 2318.46,813.678 2443.87,762.343 "></polyline>
+</svg>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-p1-domain-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Feasible domain for LP in Problem 1. The blue region is the feasible domain and the lines the constraints.
+</figcaption>
+</figure>
+</div>
+</div>
+<p>The intersections of the constraints are <span class="math inline">\((0, 1), (1, 1), (4, 5/2), (4, 3), (0, 4)\)</span>. Evaluating the objective over these candidates gives us an optimal point of <span class="math inline">\((4, 3)\)</span>, with an optimal value of <span class="math inline">\(18\)</span>.</p>
+</section>
+<section id="problem-2-12-points" class="level3">
+<h3 class="anchored" data-anchor-id="problem-2-12-points">Problem 2 (12 points)</h3>
+<p>A farmer has access to a pesticide which can be used on corn, soybeans, and wheat fields, and costs $70/kg-yr to apply. The crop yields the farmer can obtain following crop yields by applying varying rates of pesticides to the field are shown in <a href="#tbl-yields" class="quarto-xref">Table&nbsp;1</a>.</p>
+<div id="tbl-yields" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-yields-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Crop yields from applying varying pesticide rates for Problem 1.
+</figcaption>
+<div aria-describedby="tbl-yields-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 43%">
+<col style="width: 20%">
+<col style="width: 18%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Application Rate (kg/ha)</th>
+<th style="text-align: center;">Soybean (kg/ha)</th>
+<th style="text-align: center;">Wheat (kg/ha)</th>
+<th style="text-align: center;">Corn (kg/ha)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">2900</td>
+<td style="text-align: center;">3500</td>
+<td style="text-align: center;">5900</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">3800</td>
+<td style="text-align: center;">4100</td>
+<td style="text-align: center;">6700</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">4400</td>
+<td style="text-align: center;">4200</td>
+<td style="text-align: center;">7900</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The costs of production, <em>excluding pesticides</em>, for each crop, and selling prices, are shown in <a href="#tbl-costs" class="quarto-xref">Table&nbsp;2</a>.</p>
+<div id="tbl-costs" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-costs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Costs of crop production, excluding pesticides, and selling prices for each crop.
+</figcaption>
+<div aria-describedby="tbl-costs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Crop</th>
+<th style="text-align: center;">Production Cost ($/ha-yr)</th>
+<th style="text-align: center;">Selling Price ($/kg)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Soybeans</td>
+<td style="text-align: center;">350</td>
+<td style="text-align: center;">0.36</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Wheat</td>
+<td style="text-align: center;">280</td>
+<td style="text-align: center;">0.27</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Corn</td>
+<td style="text-align: center;">390</td>
+<td style="text-align: center;">0.22</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Recently, environmental authorities have declared that farms cannot have an <em>average</em> application rate on soybeans, wheat, and corn which exceeds 0.8, 0.7, and 0.6 kg/ha, respectively. The farmer has asked you for advice on how they should plant crops and apply pesticides to maximize profits over 130 total ha while remaining in regulatory compliance if demand for each crop (which is the maximum the market would buy) this year is 250,000 kg?</p>
+<section id="problem-2.1" class="level4">
+<h4 class="anchored" data-anchor-id="problem-2.1">Problem 2.1</h4>
+<p>The first step in formulating the optimization problem is to identify the decision variables. A straightforward set of variables are <span class="math inline">\(S_i\)</span>, <span class="math inline">\(C_i\)</span>, and <span class="math inline">\(W_i\)</span>, where these are the hectares of soybeans, corn, and wheat treated with pesticide rate <span class="math inline">\(i=0, 1, 2\)</span> kg/ha.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Alternative Variable Specifications
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We could also combine these crop variables into a single matrix variable <span class="math inline">\(A_{ji}\)</span>, where <span class="math inline">\(j\)</span> is an index for the crop. This would let us specify all of the objectives and constraints using matrix notation, but may make the problem harder to read and debug. The final problem will be equivalent but the writeup may look slightly different.</p>
+</div>
+</div>
+<p>Next, let’s formulate the optimization problem. The goal is to maximize profit, so we want to calculate the profit associated with any given planting and pesticide strategy.</p>
+<p>The profit from producing soybeans is</p>
+<p><span class="math display">\[\begin{align*}
+  &amp;\overbrace{0.36\left(2900S_0 + 3800 S_1 + 4400S_2\right)}^{revenue} - \overbrace{350\left(S_0 + S_1 + S_2\right)}^{production cost} - \overbrace{70\left(S_1 + 2S_2\right)}^{pesticide cost} \\
+  &amp;= (1044-350)S_0 + (1368-350-70)S_1 + (1584-350-140)S_2 \\
+  &amp;= 694S_0 + 948 S_1 + 1094 S_2.
+  \end{align*}\]</span></p>
+<p>Similarly, the profit from producing wheat is <span class="math display">\[665W_0 + 757W_1 + 714W_2\]</span> and from corn <span class="math display">\[908C_0 + 1014C_1 + 1208C_2.\]</span> So the overall objective is <span class="math display">\[\max_{S_i, W_i, C_i} 694S_0 + 948 S_1 + 1094 S_2 + 665W_0 + 757W_1 + 714W_2 + 908C_0 + 1014C_1 + 1208C_2.\]</span></p>
+<p>For constraints, we have the non-negativity constraints <span class="math display">\[S_i, W_i, C_i \geq 0.\]</span> The total planted area cannot exceed 130 ha, so <span class="math display">\[S_0+S_1+S_2+C_0+C_1+C_2+W_0+W_1+W_2 \leq 130.\]</span> We would also get no revenue from producing more than 250,000 kg of any crop, so we will add that in as a set of constraints:</p>
+<p><span class="math display">\[\begin{align*}
+2900S_0 + 3800S_1 + 4400S_2 &amp;\leq 250000 \\
+3500W_0 + 4100W_1 + 4200W_2 &amp;\leq 250000 \\
+5900C_0 + 6700C_1 + 7900C_2 &amp;\leq 250000.
+\end{align*}\]</span></p>
+<p>Finally, we have the pesticide application constraints. These are a little tricky because the most direct way of writing them down does not result in a linear constraint, so we will need to do some algebra. Let’s illustrate this with the soybean constraint. The average application rate cannot exceed 0.8 kg/ha, which means <span class="math display">\[\frac{S_1 + 2S_2}{S_0 + S_1 + S_2} \leq 0.8.\]</span> As noted, this is not linear, but we can turn it into a linear constraint by multiplying through by <span class="math inline">\(S_0+S_1+S_2\)</span> and moving everything over to the left-hand side. This yields <span class="math display">\[-0.8S_0 + 0.2S_1 + 1.2S_2 \leq 0.\]</span> Similarly, the wheat and corn constraints are, respectively,</p>
+<p><span class="math display">\[\begin{align*}
+-0.7W_0 + 0.3 W_1 + 1.3 W_2 &amp;\leq 0 \\
+-0.6C_0 + 0.4C_1 + 1.4C_2 &amp; \leq 0.
+\end{align*}\]</span></p>
+<p>Thus our final linear program is:</p>
+<p><span class="math display">\[
+\begin{alignedat}{2}
+&amp; \max_{S_i, W_i, C_i} \quad &amp;&amp;694S_0 + 948 S_1 + 1094 S_2 + 665W_0 + 757W_1 + 714W_2 + 908C_0 + 1014C_1 + 1208C_2\\
+&amp;\text{subject to:} \quad &amp;&amp; 2900S_0 + 3800S_1 + 4400S_2 \leq 250000\\
+&amp; &amp;&amp; 3500W_0 + 4100W_1 + 4200W_2 \leq 250000\\
+&amp; &amp;&amp; 5900C_0 + 6700C_1 + 7900C_2 \leq 250000\\
+&amp; &amp;&amp; -0.8S_0 + 0.2S_1 + 1.2S_2 \leq 0\\
+&amp; &amp;&amp; -0.7W_0 + 0.3 W_1 + 1.3 W_2 \leq 0\\
+&amp; &amp;&amp; -0.6C_0 + 0.4C_1 + 1.4C_2 \leq 0\\
+&amp; &amp;&amp; S_i, W_i, C_i \geq 0.
+\end{alignedat}
+\]</span></p>
+</section>
+<section id="problem-2.2" class="level4">
+<h4 class="anchored" data-anchor-id="problem-2.2">Problem 2.2</h4>
+<p>Let’s implement this program in <code>JuMP</code>. We will use matrix-vector notation for our implementation, but you could also write out the constraints one variable at a time as well; the disadvantage of this is that it does not scale well as the number of variables increases.</p>
+<div id="8" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="annotated-cell-3"><pre class="sourceCode julia code-annotation-code code-with-copy code-annotated"><code class="sourceCode julia"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-hidden="true" tabindex="-1"></a>crop_model <span class="op">=</span> <span class="fu">Model</span>(HiGHS.Optimizer)</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1">1</button><span id="annotated-cell-3-2" class="code-annotation-target"><a href="#annotated-cell-3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(crop_model, S[<span class="fl">1</span><span class="op">:</span><span class="fl">3</span>] <span class="op">&gt;=</span> <span class="fl">0</span>)</span>
+<span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(crop_model, W[<span class="fl">1</span><span class="op">:</span><span class="fl">3</span>] <span class="op">&gt;=</span> <span class="fl">0</span>)</span>
+<span id="annotated-cell-3-4"><a href="#annotated-cell-3-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(crop_model, C[<span class="fl">1</span><span class="op">:</span><span class="fl">3</span>] <span class="op">&gt;=</span> <span class="fl">0</span>)</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2">2</button><span id="annotated-cell-3-5" class="code-annotation-target"><a href="#annotated-cell-3-5" aria-hidden="true" tabindex="-1"></a><span class="pp">@objective</span>(crop_model, Max, [<span class="fl">694</span>; <span class="fl">948</span>; <span class="fl">1094</span>]<span class="ch">' * S + [665; 757; 714]'</span> <span class="op">*</span> W <span class="op">+</span> [<span class="fl">908</span>; <span class="fl">1014</span>; <span class="fl">1208</span>]<span class="ch">' * C)</span></span>
+<span id="annotated-cell-3-6"><a href="#annotated-cell-3-6" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(crop_model, land, <span class="fu">sum</span>(S) <span class="op">+</span> <span class="fu">sum</span>(W) <span class="op">+</span> <span class="fu">sum</span>(C) <span class="op">&lt;=</span> <span class="fl">130</span>)</span>
+<span id="annotated-cell-3-7"><a href="#annotated-cell-3-7" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(crop_model, soy_demand, [<span class="fl">2900</span>; <span class="fl">3800</span>; <span class="fl">4400</span>]<span class="ch">' * S &lt;= 250_000)</span></span>
+<span id="annotated-cell-3-8"><a href="#annotated-cell-3-8" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(crop_model, wheat_demand, [<span class="fl">3500</span>; <span class="fl">4100</span>; <span class="fl">4200</span>]<span class="ch">' * W &lt;= 250_000)</span></span>
+<span id="annotated-cell-3-9"><a href="#annotated-cell-3-9" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(crop_model, corn_demand, [<span class="fl">5900</span>; <span class="fl">6700</span>; <span class="fl">7900</span>]<span class="ch">' * C &lt;= 250_000)</span></span>
+<span id="annotated-cell-3-10"><a href="#annotated-cell-3-10" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(crop_model, soy_pesticide, [<span class="op">-</span><span class="fl">0.8</span>; <span class="fl">0.2</span>; <span class="fl">1.2</span>]<span class="ch">' * S &lt;= 0)</span></span>
+<span id="annotated-cell-3-11"><a href="#annotated-cell-3-11" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(crop_model, wheat_pesticide, [<span class="op">-</span><span class="fl">0.7</span>; <span class="fl">0.3</span>; <span class="fl">1.3</span>]<span class="ch">' * W &lt;= 0)</span></span>
+<span id="annotated-cell-3-12"><a href="#annotated-cell-3-12" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(crop_model, corn_pesticide, [<span class="op">-</span><span class="fl">0.6</span>; <span class="fl">0.4</span>; <span class="fl">1.4</span>]<span class="ch">' * C &lt;= 0)</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="3">3</button><span id="annotated-cell-3-13" class="code-annotation-target"><a href="#annotated-cell-3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(crop_model)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="2,3,4" data-code-annotation="1">Even though we defined the indices <span class="math inline">\(i\)</span> to start at 0, Julia’s indexing starts at 1, so we will need to bear that in mind when we formulate the problem and interpret the solution.</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="5" data-code-annotation="2">When using matrix-vector syntax, be careful about the dimensions and making sure they match; any mistakes should come out as you formulate the model and print it out, but may be hard to tell if the problem is sufficiently large. You could also directly compute the dot product with syntax like <code>sum([694; 948; 1094] .* S)</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="13" data-code-annotation="3">I would always <code>print</code> your model just to make sure there are no obvious typos. I made one while writing up the solution and printing the model let me see it!</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Max 694 S[1] + 948 S[2] + 1094 S[3] + 665 W[1] + 757 W[2] + 714 W[3] + 908 C[1] + 1014 C[2] + 1208 C[3]
+Subject to
+ land : S[1] + S[2] + S[3] + W[1] + W[2] + W[3] + C[1] + C[2] + C[3] ≤ 130
+ soy_demand : 2900 S[1] + 3800 S[2] + 4400 S[3] ≤ 250000
+ wheat_demand : 3500 W[1] + 4100 W[2] + 4200 W[3] ≤ 250000
+ corn_demand : 5900 C[1] + 6700 C[2] + 7900 C[3] ≤ 250000
+ soy_pesticide : -0.8 S[1] + 0.2 S[2] + 1.2 S[3] ≤ 0
+ wheat_pesticide : -0.7 W[1] + 0.3 W[2] + 1.3 W[3] ≤ 0
+ corn_pesticide : -0.6 C[1] + 0.4 C[2] + 1.4 C[3] ≤ 0
+ S[1] ≥ 0
+ S[2] ≥ 0
+ S[3] ≥ 0
+ W[1] ≥ 0
+ W[2] ≥ 0
+ W[3] ≥ 0
+ C[1] ≥ 0
+ C[2] ≥ 0
+ C[3] ≥ 0</code></pre>
+</div>
+</div>
+<p>Now, let’s find the solution.</p>
+<div id="10" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">optimize!</span>(crop_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Running HiGHS 1.7.2 (git hash: 5ce7a2753): Copyright (c) 2024 HiGHS under MIT licence terms
+Coefficient ranges:
+  Matrix [2e-01, 8e+03]
+  Cost   [7e+02, 1e+03]
+  Bound  [0e+00, 0e+00]
+  RHS    [1e+02, 2e+05]
+Presolving model
+7 rows, 9 cols, 27 nonzeros  0s
+7 rows, 9 cols, 27 nonzeros  0s
+Presolve : Reductions: rows 7(-0); columns 9(-0); elements 27(-0) - Not reduced
+Problem not reduced by presolve: solving the LP
+Using EKK dual simplex solver - serial
+  Iteration        Objective     Infeasibilities num(sum)
+          0    -1.8170297740e+02 Ph1: 7(28.3601); Du: 9(181.703) 0s
+          7     1.1674116702e+05 Pr: 0(0) 0s
+Model   status      : Optimal
+Simplex   iterations: 7
+Objective value     :  1.1674116702e+05
+HiGHS run time      :          0.00</code></pre>
+</div>
+</div>
+<p>We found a solution, which is a good sign that we didn’t mis-specify our constraints (which can result in an unbounded problem, which would throw an error). The optimal planting and pesticide strategy is then:</p>
+<div id="12" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> <span class="fu">value</span>.(S);</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> <span class="fu">value</span>.(W);</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> <span class="fu">value</span>.(C);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>value.(S) = [13.812154696132604, 55.24861878453038, 0.0]
+value.(W) = [6.7433064173395625, 15.734381640458977, 0.0]
+value.(C) = [26.92307692307692, 0.0, 11.538461538461547]</code></pre>
+</div>
+</div>
+<p>Summarizing in a table:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 26%">
+<col style="width: 26%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Pesticide Rate (kg/ha)</th>
+<th style="text-align: right;">Soy Area (ha)</th>
+<th style="text-align: right;">Corn Area (ha)</th>
+<th style="text-align: right;">Wheat Area (ha)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0</td>
+<td style="text-align: right;">13.8</td>
+<td style="text-align: right;">6.7</td>
+<td style="text-align: right;">26.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">55.2</td>
+<td style="text-align: right;">15.7</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">11.5</td>
+</tr>
+</tbody>
+</table>
+<p>The resulting profit is:</p>
+<div id="14" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> <span class="fu">round</span>(<span class="fu">objective_value</span>(crop_model); digits<span class="op">=</span><span class="fl">0</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>round(objective_value(crop_model); digits = 0) = 116741.0</code></pre>
+</div>
+</div>
+</section>
+<section id="problem-2.3" class="level4">
+<h4 class="anchored" data-anchor-id="problem-2.3">Problem 2.3</h4>
+<p>To evaluate whether the farmer should buy the land, we can look at the shadow price.</p>
+<div id="16" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> <span class="fu">shadow_price</span>(land);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>shadow_price(land) = 729.4</code></pre>
+</div>
+</div>
+<p>The shadow price is non-zero, so the land constraint is binding and the farmer could make more money by buying land. Since the amount of land is relatively small, we can take the shadow price and multiply it by 10 to get an estimate of the value to the farmer of buying the land, which is approximately $7294.</p>
+<p>Does this result make sense? Looking at the other constraints, wheat is the only crop for which the demand constraint isn’t binding, so any additional land would have to be used to grow wheat. From the solution, it seems clear that there is no point in increasing <span class="math inline">\(W_2\)</span>, as wheat treated with two kg/ha of pesticide is less profitable than wheat treated with one, and the additional pesticide would limit the amount we could grow. As the wheat pesticide constraint is already binding, to stay in compliance we would need to allocate no more than 7 ha to <span class="math inline">\(W_1\)</span> and 3 ha to <span class="math inline">\(W_2\)</span> based on the constraint. And then if we plug those values into the wheat profit equation that went into our objective, <span class="math inline">\(\$757 \times 7 + \$665 \times 3 = \$7294\)</span>, which is the same as the additional profit we estimated using the shadow price.</p>
+</section>
+</section>
+<section id="problem-3-15-points" class="level3">
+<h3 class="anchored" data-anchor-id="problem-3-15-points">Problem 3 (15 points)</h3>
+<section id="problem-3.1" class="level4">
+<h4 class="anchored" data-anchor-id="problem-3.1">Problem 3.1</h4>
+<p>From lecture, the decision variables for a “greenfield” capacity expansion are:</p>
+<ul>
+<li><span class="math inline">\(x_g\)</span>: capacity installed (MW) for generator type <span class="math inline">\(g\)</span>;</li>
+<li><span class="math inline">\(y_{g,t}\)</span>: generated power (MWh) by generator type <span class="math inline">\(g\)</span> in hour <span class="math inline">\(t\)</span>;</li>
+<li><span class="math inline">\(NSE_t\)</span>: non-served demand (MWh) in hour <span class="math inline">\(t\)</span>.</li>
+</ul>
+<p>We have one new constraint: the CO<sub>2</sub> limit. Let <span class="math inline">\(emis_g\)</span> be the CO<sub>2</sub> emissions factor (tCO<sub>2</sub>/MWh generated) for plant <span class="math inline">\(g\)</span>. Then this constraint is: <span class="math display">\[\sum_{g \in G} emis_g \times \sum_{t \in T} y_{g,t} \leq 1,500,000.\]</span></p>
+<p>The optimization problem is:</p>
+<p><span class="math display">\[\begin{align*}
+\min_{x, y, NSE} \quad &amp; \sum_{g \in \mathcal{G}} \text{FixedCost}_g \times x_g + \sum_{t \in \mathcal{T}} \sum_{g \in \mathcal{G}} \text{VarCost}_g \times y_{g,t} &amp; \\
+&amp; \quad + \sum_{t \in \mathcal{T}} \text{NSECost} \times NSE_t &amp; \\
+\text {subject to:} \quad &amp; \sum_{g \in \mathcal{G}} y_{g,t} + NSE_t = d_t \qquad \qquad \forall t \in \mathcal{T} \\
+&amp; y_{g,t} \leq x_g \times c_{g,t} \qquad \qquad \qquad\qquad  \forall g \in {G},  \forall t \in \mathcal{T} \\
+&amp; \sum_{g \in G} emis_g \times \sum_{t \in T} y_{g,t} \leq 1,500,000 \\
+&amp; x_g, y_{g,t}, NSE_t \geq 0 \qquad \qquad \qquad \forall g \in {G},  \forall t \in \mathcal{T},
+\end{align*}\]</span></p>
+<p>where <span class="math inline">\(d_t\)</span> is the demand in hour <span class="math inline">\(t\)</span>, and <span class="math inline">\(c_{g,t}\)</span> is the capacity factor in hour <span class="math inline">\(t\)</span> for generator class <span class="math inline">\(g\)</span>.</p>
+</section>
+<section id="problem-3.2" class="level4">
+<h4 class="anchored" data-anchor-id="problem-3.2">Problem 3.2</h4>
+<p>First, let’s load the data for demand, the generators, and renewable variability.</p>
+<div id="18" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="annotated-cell-8"><pre class="sourceCode julia code-annotation-code code-with-copy code-annotated"><code class="sourceCode julia"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the data, pull Zone C, and reformat the DataFrame</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1">1</button><span id="annotated-cell-8-2" class="code-annotation-target"><a href="#annotated-cell-8-2" aria-hidden="true" tabindex="-1"></a>NY_demand <span class="op">=</span> <span class="fu">DataFrame</span>(CSV.<span class="fu">File</span>(<span class="st">"data/2013_hourly_load_NY.csv"</span>))</span>
+<span id="annotated-cell-8-3"><a href="#annotated-cell-8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rename!</span>(NY_demand, <span class="op">:</span><span class="st">"Time Stamp"</span> <span class="op">=&gt;</span> <span class="op">:</span><span class="dt">Date</span>)</span>
+<span id="annotated-cell-8-4"><a href="#annotated-cell-8-4" aria-hidden="true" tabindex="-1"></a>demand <span class="op">=</span> NY_demand[<span class="op">:</span>, [<span class="op">:</span><span class="dt">Date</span>, <span class="op">:</span>C]]</span>
+<span id="annotated-cell-8-5"><a href="#annotated-cell-8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rename!</span>(demand, <span class="op">:</span>C <span class="op">=&gt;</span> <span class="op">:</span>Demand)</span>
+<span id="annotated-cell-8-6"><a href="#annotated-cell-8-6" aria-hidden="true" tabindex="-1"></a>demand[<span class="op">:</span>, <span class="op">:</span>Hour] <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu">nrow</span>(demand)</span>
+<span id="annotated-cell-8-7"><a href="#annotated-cell-8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-8-8"><a href="#annotated-cell-8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># generator data</span></span>
+<span id="annotated-cell-8-9"><a href="#annotated-cell-8-9" aria-hidden="true" tabindex="-1"></a>gens <span class="op">=</span> <span class="fu">DataFrame</span>(CSV.<span class="fu">File</span>(<span class="st">"data/generators.csv"</span>))</span>
+<span id="annotated-cell-8-10"><a href="#annotated-cell-8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-8-11"><a href="#annotated-cell-8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># load capacify factors into a DataFrame</span></span>
+<span id="annotated-cell-8-12"><a href="#annotated-cell-8-12" aria-hidden="true" tabindex="-1"></a>cap_factor <span class="op">=</span> <span class="fu">DataFrame</span>(CSV.<span class="fu">File</span>(<span class="st">"data/wind_solar_capacity_factors.csv"</span>))</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-8" data-code-lines="2,9,12" data-code-annotation="1">We load these tabular files into a <code>DataFrame</code> to improve our ability to manipulate them.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div><div style="float: left;"><span>8760×3 DataFrame</span></div><div style="float: right;"><span style="font-style: italic;">8735 rows omitted</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;">
+<table class="data-frame caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;">Row</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Hour</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Wind</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Solar</th>
+</tr>
+<tr class="subheader headerLastRow even">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0456225</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.0908019</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.177524</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.196106</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">5</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.163481</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">6</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.129312</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">7</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0.131448</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">8</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0.162792</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">9</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0.341911</td>
+<td style="text-align: right;">0.115556</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">10</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.222848</td>
+<td style="text-align: right;">0.530593</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">11</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">0.030222</td>
+<td style="text-align: right;">0.747114</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">12</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0.0143295</td>
+<td style="text-align: right;">0.874793</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">13</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0.0377381</td>
+<td style="text-align: right;">0.94319</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+<td style="text-align: right;">⋮</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">8749</td>
+<td style="text-align: right;">8749</td>
+<td style="text-align: right;">0.284942</td>
+<td style="text-align: right;">0.734762</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">8750</td>
+<td style="text-align: right;">8750</td>
+<td style="text-align: right;">0.462101</td>
+<td style="text-align: right;">0.643106</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">8751</td>
+<td style="text-align: right;">8751</td>
+<td style="text-align: right;">0.327947</td>
+<td style="text-align: right;">0.632685</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">8752</td>
+<td style="text-align: right;">8752</td>
+<td style="text-align: right;">0.249119</td>
+<td style="text-align: right;">0.560314</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">8753</td>
+<td style="text-align: right;">8753</td>
+<td style="text-align: right;">0.171991</td>
+<td style="text-align: right;">0.445911</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">8754</td>
+<td style="text-align: right;">8754</td>
+<td style="text-align: right;">0.234215</td>
+<td style="text-align: right;">0.232936</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">8755</td>
+<td style="text-align: right;">8755</td>
+<td style="text-align: right;">0.32073</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">8756</td>
+<td style="text-align: right;">8756</td>
+<td style="text-align: right;">0.166379</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">8757</td>
+<td style="text-align: right;">8757</td>
+<td style="text-align: right;">0.252252</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">8758</td>
+<td style="text-align: right;">8758</td>
+<td style="text-align: right;">0.276054</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">8759</td>
+<td style="text-align: right;">8759</td>
+<td style="text-align: right;">0.111131</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">8760</td>
+<td style="text-align: right;">8760</td>
+<td style="text-align: right;">0.208158</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>To put this into <code>JuMP</code>, the our first task is to decide how we want to handle the difference between the renewable generating technologies (which have time-varying capacity factors) and the thermal technologies (which have constant capacity factors). We can either create a joint capacity factor <code>DataFrame</code> which we can then use to construct all of our capacity constraints, or we can create two different capacity constraints, one for renewables and one for non-renewables. The eventual problem will be the same, but the code would look slightly different. In this solution, we will take the former approach to show what it looks like.</p>
+<p>To construct a single capacity factor <code>DataFrame</code>:</p>
+<div id="20" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="annotated-cell-9"><pre class="sourceCode julia code-annotation-code code-with-copy code-annotated"><code class="sourceCode julia"><span id="annotated-cell-9-1"><a href="#annotated-cell-9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define sets</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="1">1</button><span id="annotated-cell-9-2" class="code-annotation-target"><a href="#annotated-cell-9-2" aria-hidden="true" tabindex="-1"></a>G <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu">nrow</span>(gens)</span>
+<span id="annotated-cell-9-3"><a href="#annotated-cell-9-3" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu">nrow</span>(demand)</span>
+<span id="annotated-cell-9-4"><a href="#annotated-cell-9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-9-5"><a href="#annotated-cell-9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># capacity factor matrix</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="2">2</button><span id="annotated-cell-9-6" class="code-annotation-target"><a href="#annotated-cell-9-6" aria-hidden="true" tabindex="-1"></a>cf_constant <span class="op">=</span> <span class="fu">ones</span>(T[<span class="kw">end</span>], G[<span class="kw">end</span><span class="op">-</span><span class="fl">2</span>])</span>
+<span id="annotated-cell-9-7"><a href="#annotated-cell-9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># set geothermal capacity</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="3">3</button><span id="annotated-cell-9-8" class="code-annotation-target"><a href="#annotated-cell-9-8" aria-hidden="true" tabindex="-1"></a>cf_constant[<span class="op">:</span>, <span class="fl">1</span>] <span class="op">.=</span> <span class="fl">0.85</span></span>
+<span id="annotated-cell-9-9"><a href="#annotated-cell-9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># append wind and solar capacity factors</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="4">4</button><span id="annotated-cell-9-10" class="code-annotation-target"><a href="#annotated-cell-9-10" aria-hidden="true" tabindex="-1"></a>cf <span class="op">=</span> <span class="fu">hcat</span>(cf_constant, cap_factor[!, <span class="op">:</span>Wind], cap_factor[!, <span class="op">:</span>Solar])</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-9" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-9" data-code-lines="2,3" data-code-annotation="1">We need to define these index sets in any case to help set up arrays of constraints (we don’t, for example, want to define all of the individual demand constraints for every hour individually).</span>
+</dd>
+<dt data-target-cell="annotated-cell-9" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-9" data-code-lines="6" data-code-annotation="2">The last two generators in the <code>gens</code> DataFrame are solar and wind, so we want to drop those as we will replace them with the varying capacity factor data that we loaded. The <code>end</code> keyword is just syntax to automate looking up the last index, so we can just subtract values from it.</span>
+</dd>
+<dt data-target-cell="annotated-cell-9" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-9" data-code-lines="8" data-code-annotation="3">We broadcast the <code>=</code> operator to assign element-wise; Julia will throw an error if we try to assign a scalar to a vector because it doesn’t know if we want to do element-wise assigning or if this is an error. Requiring broadcasting forces us to be explicit about our intent.</span>
+</dd>
+<dt data-target-cell="annotated-cell-9" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-9" data-code-lines="10" data-code-annotation="4">You can use either <code>cap_factor[!, :Wind]</code> or <code>cap_factor[:, :Wind]</code> to refer to a “slice” of the DataFrame with column name <code>Wind</code>. The difference is that <code>!</code> does not allocate a temporary DataFrame, which makes it more memory efficient but also means it can’t be manipulated. You could also use a column index number instead of the name if you didn’t have meaningful names or didn’t know what they were.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>8760×6 Matrix{Float64}:
+ 0.85  1.0  1.0  1.0  0.0456225  0.0
+ 0.85  1.0  1.0  1.0  0.0908019  0.0
+ 0.85  1.0  1.0  1.0  0.177524   0.0
+ 0.85  1.0  1.0  1.0  0.196106   0.0
+ 0.85  1.0  1.0  1.0  0.163481   0.0
+ 0.85  1.0  1.0  1.0  0.129312   0.0
+ 0.85  1.0  1.0  1.0  0.131448   0.0
+ 0.85  1.0  1.0  1.0  0.162792   0.0
+ 0.85  1.0  1.0  1.0  0.341911   0.115556
+ 0.85  1.0  1.0  1.0  0.222848   0.530593
+ ⋮                               ⋮
+ 0.85  1.0  1.0  1.0  0.249119   0.560314
+ 0.85  1.0  1.0  1.0  0.171991   0.445911
+ 0.85  1.0  1.0  1.0  0.234215   0.232936
+ 0.85  1.0  1.0  1.0  0.32073    0.0
+ 0.85  1.0  1.0  1.0  0.166379   0.0
+ 0.85  1.0  1.0  1.0  0.252252   0.0
+ 0.85  1.0  1.0  1.0  0.276054   0.0
+ 0.85  1.0  1.0  1.0  0.111131   0.0
+ 0.85  1.0  1.0  1.0  0.208158   0.0</code></pre>
+</div>
+</div>
+<p>Now we can implement our model.</p>
+<div id="22" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="annotated-cell-10"><pre class="sourceCode julia code-annotation-code code-with-copy code-annotated"><code class="sourceCode julia"><span id="annotated-cell-10-1"><a href="#annotated-cell-10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define NSECost</span></span>
+<span id="annotated-cell-10-2"><a href="#annotated-cell-10-2" aria-hidden="true" tabindex="-1"></a>NSECost <span class="op">=</span> <span class="fl">10_000</span></span>
+<span id="annotated-cell-10-3"><a href="#annotated-cell-10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-4"><a href="#annotated-cell-10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># set up model object</span></span>
+<span id="annotated-cell-10-5"><a href="#annotated-cell-10-5" aria-hidden="true" tabindex="-1"></a>gencap <span class="op">=</span> <span class="fu">Model</span>(HiGHS.Optimizer) <span class="co"># use the HiGHS LP solver</span></span>
+<span id="annotated-cell-10-6"><a href="#annotated-cell-10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-7"><a href="#annotated-cell-10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># define variables</span></span>
+<span id="annotated-cell-10-8"><a href="#annotated-cell-10-8" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(gencap, x[g <span class="kw">in</span> G] <span class="op">&gt;=</span> <span class="fl">0</span>) <span class="co"># installed capacity</span></span>
+<span id="annotated-cell-10-9"><a href="#annotated-cell-10-9" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(gencap, y[g <span class="kw">in</span> G, t <span class="kw">in</span> T] <span class="op">&gt;=</span> <span class="fl">0</span>) <span class="co"># generated power</span></span>
+<span id="annotated-cell-10-10"><a href="#annotated-cell-10-10" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(gencap, nse[t <span class="kw">in</span> T] <span class="op">&gt;=</span> <span class="fl">0</span>) <span class="co"># unserved energy</span></span>
+<span id="annotated-cell-10-11"><a href="#annotated-cell-10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-12"><a href="#annotated-cell-10-12" aria-hidden="true" tabindex="-1"></a><span class="co"># define objective: minimize sum of fixed costs, variable costs of generation, </span></span>
+<span id="annotated-cell-10-13"><a href="#annotated-cell-10-13" aria-hidden="true" tabindex="-1"></a><span class="co"># and non-served energy penalty</span></span>
+<span id="annotated-cell-10-14"><a href="#annotated-cell-10-14" aria-hidden="true" tabindex="-1"></a><span class="pp">@objective</span>(gencap, Min, <span class="fu">sum</span>(gens[!, <span class="op">:</span>FixedCost] <span class="op">.*</span> x) <span class="op">+</span> </span>
+<span id="annotated-cell-10-15"><a href="#annotated-cell-10-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(gens[!, <span class="op">:</span>VarCost] <span class="op">.*</span> [<span class="fu">sum</span>(y[g, <span class="op">:</span>]) for g <span class="kw">in</span> G]) <span class="op">+</span> </span>
+<span id="annotated-cell-10-16"><a href="#annotated-cell-10-16" aria-hidden="true" tabindex="-1"></a>    NSECost <span class="op">*</span> <span class="fu">sum</span>(nse))</span>
+<span id="annotated-cell-10-17"><a href="#annotated-cell-10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-18"><a href="#annotated-cell-10-18" aria-hidden="true" tabindex="-1"></a><span class="co"># define constraints</span></span>
+<span id="annotated-cell-10-19"><a href="#annotated-cell-10-19" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(gencap, capacity[g <span class="kw">in</span> G, t <span class="kw">in</span> T], y[g, t] <span class="op">&lt;=</span> x[g] <span class="op">*</span> cf[t, g]) <span class="co"># capacity constraint</span></span>
+<span id="annotated-cell-10-20"><a href="#annotated-cell-10-20" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(gencap, demand_met[t <span class="kw">in</span> T], <span class="fu">sum</span>(y[<span class="op">:</span>, t]) <span class="op">+</span> nse[t] <span class="op">&gt;=</span> demand.Demand[t]) <span class="co"># demand constraint</span></span>
+<span id="annotated-cell-10-21"><a href="#annotated-cell-10-21" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(gencap, co2, <span class="fu">sum</span>(gens[<span class="op">:</span>, <span class="op">:</span>Emissions] <span class="op">.*</span> [<span class="fu">sum</span>(y[g, <span class="op">:</span>]) for g <span class="kw">in</span> G]) <span class="op">&lt;=</span> <span class="fl">1500000</span>) <span class="co"># co2 constraint</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="1">1</button><span id="annotated-cell-10-22" class="code-annotation-target"><a href="#annotated-cell-10-22" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(gencap)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-10" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-10" data-code-lines="22" data-code-annotation="1">Notice that here we’ve hit the limit of what we can read directly from the model printing, but hopefully it gives us an idea of how everything looks.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Min 450000 x[1] + 220000 x[2] + 82000 x[3] + 65000 x[4] + 91000 x[5] + 70000 x[6] + 24 y[2,1] + 24 y[2,2] + 24 y[2,3] + 24 y[2,4] + 24 y[2,5] + 24 y[2,6] + 24 y[2,7] + 24 y[2,8] + 24 y[2,9] + 24 y[2,10] + 24 y[2,11] + 24 y[2,12] + 24 y[2,13] + 24 y[2,14] + 24 y[2,15] + 24 y[2,16] + 24 y[2,17] + 24 y[2,18] + 24 y[2,19] + 24 y[2,20] + 24 y[2,21] + 24 y[2,22] + 24 y[2,23] + 24 y[2,24] + [[...34986 terms omitted...]] + 10000 nse[8731] + 10000 nse[8732] + 10000 nse[8733] + 10000 nse[8734] + 10000 nse[8735] + 10000 nse[8736] + 10000 nse[8737] + 10000 nse[8738] + 10000 nse[8739] + 10000 nse[8740] + 10000 nse[8741] + 10000 nse[8742] + 10000 nse[8743] + 10000 nse[8744] + 10000 nse[8745] + 10000 nse[8746] + 10000 nse[8747] + 10000 nse[8748] + 10000 nse[8749] + 10000 nse[8750] + 10000 nse[8751] + 10000 nse[8752] + 10000 nse[8753] + 10000 nse[8754] + 10000 nse[8755] + 10000 nse[8756] + 10000 nse[8757] + 10000 nse[8758] + 10000 nse[8759] + 10000 nse[8760]
+Subject to
+ demand_met[1] : y[1,1] + y[2,1] + y[3,1] + y[4,1] + y[5,1] + y[6,1] + nse[1] ≥ 1678.3
+ demand_met[2] : y[1,2] + y[2,2] + y[3,2] + y[4,2] + y[5,2] + y[6,2] + nse[2] ≥ 1596.7
+ demand_met[3] : y[1,3] + y[2,3] + y[3,3] + y[4,3] + y[5,3] + y[6,3] + nse[3] ≥ 1522.8
+ demand_met[4] : y[1,4] + y[2,4] + y[3,4] + y[4,4] + y[5,4] + y[6,4] + nse[4] ≥ 1497.7
+ demand_met[5] : y[1,5] + y[2,5] + y[3,5] + y[4,5] + y[5,5] + y[6,5] + nse[5] ≥ 1507.8
+ demand_met[6] : y[1,6] + y[2,6] + y[3,6] + y[4,6] + y[5,6] + y[6,6] + nse[6] ≥ 1540.2
+ demand_met[7] : y[1,7] + y[2,7] + y[3,7] + y[4,7] + y[5,7] + y[6,7] + nse[7] ≥ 1591.2
+ demand_met[8] : y[1,8] + y[2,8] + y[3,8] + y[4,8] + y[5,8] + y[6,8] + nse[8] ≥ 1657.3
+ demand_met[9] : y[1,9] + y[2,9] + y[3,9] + y[4,9] + y[5,9] + y[6,9] + nse[9] ≥ 1677.1
+ demand_met[10] : y[1,10] + y[2,10] + y[3,10] + y[4,10] + y[5,10] + y[6,10] + nse[10] ≥ 1809.6
+ demand_met[11] : y[1,11] + y[2,11] + y[3,11] + y[4,11] + y[5,11] + y[6,11] + nse[11] ≥ 1895.5
+ demand_met[12] : y[1,12] + y[2,12] + y[3,12] + y[4,12] + y[5,12] + y[6,12] + nse[12] ≥ 1944.6
+ demand_met[13] : y[1,13] + y[2,13] + y[3,13] + y[4,13] + y[5,13] + y[6,13] + nse[13] ≥ 1959.4
+ demand_met[14] : y[1,14] + y[2,14] + y[3,14] + y[4,14] + y[5,14] + y[6,14] + nse[14] ≥ 1949.8
+ demand_met[15] : y[1,15] + y[2,15] + y[3,15] + y[4,15] + y[5,15] + y[6,15] + nse[15] ≥ 1937.2
+ demand_met[16] : y[1,16] + y[2,16] + y[3,16] + y[4,16] + y[5,16] + y[6,16] + nse[16] ≥ 1952
+ demand_met[17] : y[1,17] + y[2,17] + y[3,17] + y[4,17] + y[5,17] + y[6,17] + nse[17] ≥ 2061.4
+ demand_met[18] : y[1,18] + y[2,18] + y[3,18] + y[4,18] + y[5,18] + y[6,18] + nse[18] ≥ 2256.4
+ demand_met[19] : y[1,19] + y[2,19] + y[3,19] + y[4,19] + y[5,19] + y[6,19] + nse[19] ≥ 2273.7
+ demand_met[20] : y[1,20] + y[2,20] + y[3,20] + y[4,20] + y[5,20] + y[6,20] + nse[20] ≥ 2251.9
+ demand_met[21] : y[1,21] + y[2,21] + y[3,21] + y[4,21] + y[5,21] + y[6,21] + nse[21] ≥ 2176.5
+ demand_met[22] : y[1,22] + y[2,22] + y[3,22] + y[4,22] + y[5,22] + y[6,22] + nse[22] ≥ 2038.5
+ demand_met[23] : y[1,23] + y[2,23] + y[3,23] + y[4,23] + y[5,23] + y[6,23] + nse[23] ≥ 1908.9
+ demand_met[24] : y[1,24] + y[2,24] + y[3,24] + y[4,24] + y[5,24] + y[6,24] + nse[24] ≥ 1800.1
+ demand_met[25] : y[1,25] + y[2,25] + y[3,25] + y[4,25] + y[5,25] + y[6,25] + nse[25] ≥ 1742.2
+ demand_met[26] : y[1,26] + y[2,26] + y[3,26] + y[4,26] + y[5,26] + y[6,26] + nse[26] ≥ 1711.9
+ demand_met[27] : y[1,27] + y[2,27] + y[3,27] + y[4,27] + y[5,27] + y[6,27] + nse[27] ≥ 1665.7
+ demand_met[28] : y[1,28] + y[2,28] + y[3,28] + y[4,28] + y[5,28] + y[6,28] + nse[28] ≥ 1690.1
+ demand_met[29] : y[1,29] + y[2,29] + y[3,29] + y[4,29] + y[5,29] + y[6,29] + nse[29] ≥ 1741.1
+ demand_met[30] : y[1,30] + y[2,30] + y[3,30] + y[4,30] + y[5,30] + y[6,30] + nse[30] ≥ 1864
+ demand_met[31] : y[1,31] + y[2,31] + y[3,31] + y[4,31] + y[5,31] + y[6,31] + nse[31] ≥ 2115.1
+ demand_met[32] : y[1,32] + y[2,32] + y[3,32] + y[4,32] + y[5,32] + y[6,32] + nse[32] ≥ 2253.2
+ demand_met[33] : y[1,33] + y[2,33] + y[3,33] + y[4,33] + y[5,33] + y[6,33] + nse[33] ≥ 2279
+ demand_met[34] : y[1,34] + y[2,34] + y[3,34] + y[4,34] + y[5,34] + y[6,34] + nse[34] ≥ 2287.7
+ demand_met[35] : y[1,35] + y[2,35] + y[3,35] + y[4,35] + y[5,35] + y[6,35] + nse[35] ≥ 2294.8
+ demand_met[36] : y[1,36] + y[2,36] + y[3,36] + y[4,36] + y[5,36] + y[6,36] + nse[36] ≥ 2298.5
+ demand_met[37] : y[1,37] + y[2,37] + y[3,37] + y[4,37] + y[5,37] + y[6,37] + nse[37] ≥ 2256.7
+ demand_met[38] : y[1,38] + y[2,38] + y[3,38] + y[4,38] + y[5,38] + y[6,38] + nse[38] ≥ 2243.1
+ demand_met[39] : y[1,39] + y[2,39] + y[3,39] + y[4,39] + y[5,39] + y[6,39] + nse[39] ≥ 2225.4
+ demand_met[40] : y[1,40] + y[2,40] + y[3,40] + y[4,40] + y[5,40] + y[6,40] + nse[40] ≥ 2231.1
+ demand_met[41] : y[1,41] + y[2,41] + y[3,41] + y[4,41] + y[5,41] + y[6,41] + nse[41] ≥ 2314.8
+ demand_met[42] : y[1,42] + y[2,42] + y[3,42] + y[4,42] + y[5,42] + y[6,42] + nse[42] ≥ 2485.7
+ demand_met[43] : y[1,43] + y[2,43] + y[3,43] + y[4,43] + y[5,43] + y[6,43] + nse[43] ≥ 2496.4
+ demand_met[44] : y[1,44] + y[2,44] + y[3,44] + y[4,44] + y[5,44] + y[6,44] + nse[44] ≥ 2464.4
+ demand_met[45] : y[1,45] + y[2,45] + y[3,45] + y[4,45] + y[5,45] + y[6,45] + nse[45] ≥ 2404.2
+ demand_met[46] : y[1,46] + y[2,46] + y[3,46] + y[4,46] + y[5,46] + y[6,46] + nse[46] ≥ 2273.9
+ demand_met[47] : y[1,47] + y[2,47] + y[3,47] + y[4,47] + y[5,47] + y[6,47] + nse[47] ≥ 2111.4
+ demand_met[48] : y[1,48] + y[2,48] + y[3,48] + y[4,48] + y[5,48] + y[6,48] + nse[48] ≥ 1974.8
+ demand_met[49] : y[1,49] + y[2,49] + y[3,49] + y[4,49] + y[5,49] + y[6,49] + nse[49] ≥ 1882.9
+ demand_met[50] : y[1,50] + y[2,50] + y[3,50] + y[4,50] + y[5,50] + y[6,50] + nse[50] ≥ 1835.7
+[[...122547 constraints skipped...]]
+ nse[8711] ≥ 0
+ nse[8712] ≥ 0
+ nse[8713] ≥ 0
+ nse[8714] ≥ 0
+ nse[8715] ≥ 0
+ nse[8716] ≥ 0
+ nse[8717] ≥ 0
+ nse[8718] ≥ 0
+ nse[8719] ≥ 0
+ nse[8720] ≥ 0
+ nse[8721] ≥ 0
+ nse[8722] ≥ 0
+ nse[8723] ≥ 0
+ nse[8724] ≥ 0
+ nse[8725] ≥ 0
+ nse[8726] ≥ 0
+ nse[8727] ≥ 0
+ nse[8728] ≥ 0
+ nse[8729] ≥ 0
+ nse[8730] ≥ 0
+ nse[8731] ≥ 0
+ nse[8732] ≥ 0
+ nse[8733] ≥ 0
+ nse[8734] ≥ 0
+ nse[8735] ≥ 0
+ nse[8736] ≥ 0
+ nse[8737] ≥ 0
+ nse[8738] ≥ 0
+ nse[8739] ≥ 0
+ nse[8740] ≥ 0
+ nse[8741] ≥ 0
+ nse[8742] ≥ 0
+ nse[8743] ≥ 0
+ nse[8744] ≥ 0
+ nse[8745] ≥ 0
+ nse[8746] ≥ 0
+ nse[8747] ≥ 0
+ nse[8748] ≥ 0
+ nse[8749] ≥ 0
+ nse[8750] ≥ 0
+ nse[8751] ≥ 0
+ nse[8752] ≥ 0
+ nse[8753] ≥ 0
+ nse[8754] ≥ 0
+ nse[8755] ≥ 0
+ nse[8756] ≥ 0
+ nse[8757] ≥ 0
+ nse[8758] ≥ 0
+ nse[8759] ≥ 0
+ nse[8760] ≥ 0</code></pre>
+</div>
+</div>
+<p>Now we optimize.</p>
+<div id="24" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">optimize!</span>(gencap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Running HiGHS 1.7.2 (git hash: 5ce7a2753): Copyright (c) 2024 HiGHS under MIT licence terms
+Coefficient ranges:
+  Matrix [5e-05, 1e+00]
+  Cost   [2e+01, 4e+05]
+  Bound  [0e+00, 0e+00]
+  RHS    [1e+03, 2e+06]
+Presolving model
+56857 rows, 56862 cols, 179328 nonzeros  0s
+56854 rows, 56859 cols, 179322 nonzeros  0s
+Presolve : Reductions: rows 56854(-4467); columns 56859(-4467); elements 179322(-8934)
+Solving the presolved LP
+Using EKK dual simplex solver - serial
+  Iteration        Objective     Infeasibilities num(sum)
+          0     0.0000000000e+00 Pr: 8760(4.11193e+06) 0s
+      27739     7.3475471138e+08 Pr: 20210(1.04615e+07); Du: 0(3.47475e-06) 5s
+      36116     7.8535120736e+08 Pr: 123(252.985); Du: 0(8.18449e-06) 10s
+      36200     7.8535295894e+08 Pr: 0(0); Du: 0(2.3938e-13) 11s
+Solving the original LP from the solution after postsolve
+Model   status      : Optimal
+Simplex   iterations: 36200
+Objective value     :  7.8535295894e+08
+HiGHS run time      :         10.63</code></pre>
+</div>
+</div>
+<p>We can find how much generating capacity we want to build for each plant type by querying the relevant decision variable <code>x</code>. We will turn this into a DataFrame to make the presentation easier.</p>
+<div id="26" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>built_cap <span class="op">=</span> <span class="fu">value</span>.(x).data</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">DataFrame</span>(Plant<span class="op">=</span>gens.Plant, Capacity<span class="op">=</span><span class="fu">round</span>.(built_cap; digits<span class="op">=</span><span class="fl">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div><div style="float: left;"><span>6×2 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;">
+<table class="data-frame caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;">Row</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Plant</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Capacity</th>
+</tr>
+<tr class="subheader headerLastRow even">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="InlineStrings.String15">String15</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1</td>
+<td style="text-align: left;">Geothermal</td>
+<td style="text-align: right;">286.0</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">2</td>
+<td style="text-align: left;">Coal</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">3</td>
+<td style="text-align: left;">NG CCGT</td>
+<td style="text-align: right;">1509.0</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">4</td>
+<td style="text-align: left;">NG CT</td>
+<td style="text-align: right;">703.0</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">5</td>
+<td style="text-align: left;">Wind</td>
+<td style="text-align: right;">2549.0</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">6</td>
+<td style="text-align: left;">Solar</td>
+<td style="text-align: right;">2104.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Similarly, we can find the total amount of non-served energy by adding up <code>nse[t]</code>.</p>
+<div id="28" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> <span class="fu">sum</span>(<span class="fu">value</span>.(nse).data);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sum(value.(nse).data) = 332.2907137925944</code></pre>
+</div>
+</div>
+<p>So this plan results in 332 MWh of non-served energy throughout the year.</p>
+<p>Finally, to get the total cost of the system we use <code>objective_value</code>:</p>
+<div id="30" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> <span class="fu">objective_value</span>(gencap);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>objective_value(gencap) = 7.853529589434922e8</code></pre>
+</div>
+</div>
+<p>So the cost of building and operating this system (fixed and variable costs) for a year is $7.9e8.</p>
+</section>
+<section id="problem-3.3" class="level4">
+<h4 class="anchored" data-anchor-id="problem-3.3">Problem 3.3</h4>
+<p>To find the total annual generation from each plant, we want to sum up the values of the variable <code>y</code> along the time dimension.</p>
+<div id="32" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>annual_gen <span class="op">=</span> [<span class="fu">sum</span>(<span class="fu">value</span>.(y[g, <span class="op">:</span>]).data) for g <span class="kw">in</span> G]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>6-element Vector{Float64}:
+      1.1094868959605992e6
+      0.0
+      3.3227665594545454e6
+ 129473.41715377253
+      6.6147067325310875e6
+      5.191140004186203e6</code></pre>
+</div>
+</div>
+<p>Notice that this means that the cost of the system per MWh generated is $48/MWh.</p>
+<p>We can then convert this into fractions of total generation, which we can compare to fractions of built capacity.</p>
+<div id="34" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>annual_gen_frac <span class="op">=</span> annual_gen <span class="op">./</span> <span class="fu">sum</span>(annual_gen)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>built_frac <span class="op">=</span> built_cap <span class="op">./</span> <span class="fu">sum</span>(built_cap)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">DataFrame</span>(Plant<span class="op">=</span>gens[!, <span class="op">:</span>Plant], Built_Perc<span class="op">=</span><span class="fl">100</span> <span class="op">*</span> <span class="fu">round</span>.(built_frac; digits<span class="op">=</span><span class="fl">2</span>), Generated_Perc<span class="op">=</span><span class="fl">100</span> <span class="op">*</span> <span class="fu">round</span>.(annual_gen_frac; digits<span class="op">=</span><span class="fl">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div><div style="float: left;"><span>6×3 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;">
+<table class="data-frame caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;">Row</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Plant</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Built_Perc</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Generated_Perc</th>
+</tr>
+<tr class="subheader headerLastRow even">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="InlineStrings.String15">String15</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1</td>
+<td style="text-align: left;">Geothermal</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">7.0</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">2</td>
+<td style="text-align: left;">Coal</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">3</td>
+<td style="text-align: left;">NG CCGT</td>
+<td style="text-align: right;">21.0</td>
+<td style="text-align: right;">20.0</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">4</td>
+<td style="text-align: left;">NG CT</td>
+<td style="text-align: right;">10.0</td>
+<td style="text-align: right;">1.0</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">5</td>
+<td style="text-align: left;">Wind</td>
+<td style="text-align: right;">36.0</td>
+<td style="text-align: right;">40.0</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">6</td>
+<td style="text-align: left;">Solar</td>
+<td style="text-align: right;">29.0</td>
+<td style="text-align: right;">32.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>One observation is that that we have to overbuild the fraction of combustion turbine gas plants (NG CT) relative to the fraction of times in which they are used, as these are needed when wind and solar is low, but otherwise are less commonly used. We also have to slightly underbuild wind and solar relative to the power generated by these technologies, as they are free to generate and so will be operated whenever their resources allow.</p>
+</section>
+<section id="problem-3.5" class="level4">
+<h4 class="anchored" data-anchor-id="problem-3.5">Problem 3.5</h4>
+<p>To find the value to the utility of relaxing the CO<sub>2</sub> constraint, we can use the shadow price:</p>
+<div id="36" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> <span class="fu">shadow_price</span>(co2);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>shadow_price(co2) = -182.77193609185863</code></pre>
+</div>
+</div>
+<p>Why does it make sense that this shadow price is negative? Remember that a shadow price is the change in the objective relative to “relaxing” the constraint: in other words, what is the change in the objective value if we allow 1 extra tCO<sub>2</sub>? Since the goal of this problem is to minimize cost, an improvement involves a reduction in the objective function, so the shadow price is negative, even though the “value” of relaxing the constraint is positive.</p>
+<p>Thus, every tCO<sub>2</sub> we allow will be worth $183, so allowing an extra 1,000 tCO<sub>2</sub> will be worth $183000.</p>
+</section>
+</section>
+</section>
+<section id="references" class="level2 cell markdown">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>List any external references consulted, including classmates.</p>
+</section>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/envsys\.viveks\.me\/fall2025");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+        for (let i=0; i<annoteTargets.length; i++) {
+          const annoteTarget = annoteTargets[i];
+          const targetCell = annoteTarget.getAttribute("data-target-cell");
+          const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+          const contentFn = () => {
+            const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+            if (content) {
+              const tipContent = content.cloneNode(true);
+              tipContent.classList.add("code-annotation-tip-content");
+              return tipContent.outerHTML;
+            }
+          }
+          const config = {
+            allowHTML: true,
+            content: contentFn,
+            onShow: (instance) => {
+              selectCodeLines(instance.reference);
+              instance.reference.classList.add('code-annotation-active');
+              window.tippy.hideAll();
+            },
+            onHide: (instance) => {
+              unselectCodeLines();
+              instance.reference.classList.remove('code-annotation-active');
+            },
+            maxWidth: 300,
+            delay: [50, 0],
+            duration: [200, 0],
+            offset: [5, 10],
+            arrow: true,
+            trigger: 'click',
+            appendTo: function(el) {
+              return el.parentElement.parentElement.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'quarto',
+            placement: 'right',
+            positionFixed: true,
+            popperOptions: {
+              modifiers: [
+              {
+                name: 'flip',
+                options: {
+                  flipVariations: false, // true by default
+                  allowedAutoPlacements: ['right'],
+                  fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+                },
+              },
+              {
+                name: 'preventOverflow',
+                options: {
+                  mainAxis: false,
+                  altAxis: false
+                }
+              }
+              ]        
+            }      
+          };
+          window.tippy(annoteTarget, config); 
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><span class="faux-block"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> 2025 Vivek Srikrishnan</span><br> See the <a href="../../about.html">About Page</a> for credit information.</p>
+</div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">LICENSE: CC-BY-SA  <i class="fab fa-creative-commons"></i><i class="fab fa-creative-commons-by"></i><i class="fab fa-creative-commons-sa"></i></a>
+  </li>  
+</ul>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/solutions/hw04/hw04.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Made with <a href="https://julialang.org">Julia</a> and <a href="https://quarto.org/">Quarto</a><br> <a href="https://www.github.com/BEE4750/bee4750.github.io">View the source at <i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
