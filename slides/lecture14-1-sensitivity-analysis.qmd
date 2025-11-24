@@ -1,5 +1,5 @@
 ---
-title: "Robustness and Sensitivity Analysis"
+title: "Sensitivity Analysis"
 subtitle: "Lecture 19"
 author: "Vivek Srikrishnan"
 course: "BEE 4750"
@@ -150,7 +150,7 @@ Challenges include:
 ::: {.column width=50%}
 
 ```{julia}
-emissions = DataFrame(XLSX.readtable(joinpath("data", "climate", "Global_Carbon_Budget_2022v1.0.xlsx"), "Global Carbon Budget", first_row=21)) # read in data
+emissions = DataFrame(XLSX.readtable(joinpath("data", "climate", "Global_Carbon_Budget_2025_v0.6-2.xlsx"), "Global Carbon Budget", first_row=22)) # read in data
 plot(emissions.Year, (emissions[:,2] .+ emissions[:,3]) .* 3.67, linewidth=3, label=:false, left_margin=5mm, bottom_margin=5mm)
 xlabel!("Year")
 ylabel!("Global CO2 Emissions (Gt CO2/yr)")
@@ -203,6 +203,13 @@ When there is no consensus probability for an uncertainty, we refer to it as a *
 :::
 ::::
 
+## Impacts of Deep Uncertainty
+
+- Are you sure about the parameter values you've chosen?
+- Are you sure about the probabilities you've assigned to Monte Carlo inputs or scenarios?
+
+We can test the extent to which these different assumptions matter using **sensitivity analyses**.
+
 # Sensitivity Analysis
 
 ## Factor Prioritization
@@ -239,7 +246,7 @@ Source: [Saltelli et al (2019)](https://doi.org/10.1016/j.envsoft.2019.01.012)
 Sensitivity analysis is...
 
 ::: {.quote}
-> the study of how uncertainty in the output of a model (numerical or otherwise) can be apportioned to different sources of uncertainty in the model input
+> the study of **how uncertainty in the output of a model** (numerical or otherwise) can be **apportioned to different sources of uncertainty in the model input**
 
 ::: {.cite}
 --- Saltelli et al (2004), *Sensitivity Analysis in Practice*
@@ -402,6 +409,14 @@ Advantage: *Can estimate interactions between parameters*
 ![Global Sensitivity Analysis](figures/globalsa.png){width=80%}
 :::
 ::::
+
+## Parameter Interactions
+
+![Sobol Indices](figures/sobol_scipy.png){width=80%}
+
+::: {.caption}
+Source: [SciPy Documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.sobol_indices.html)
+:::
 
 ## How To Calculate Sensitivities?
 
