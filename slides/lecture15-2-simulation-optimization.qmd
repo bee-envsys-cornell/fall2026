@@ -1,10 +1,10 @@
 ---
 title: "Prelim 2 Review and Simulation-Optimization"
-subtitle: "Lecture 23"
+subtitle: "Lecture 20"
 author: "Vivek Srikrishnan"
 course: "BEE 4750"
 institution: "Cornell University"
-date: "November 25, 2024"
+date: "December 03, 2025"
 format:
     revealjs:
         slide-number: c/t
@@ -33,6 +33,8 @@ format:
         auto-stretch: false
         controls: true
 engine: julia
+julia:
+    exeflags: ["+1.11.5"]
 execute:
     freeze: auto
     daemon: 600
@@ -71,52 +73,23 @@ default(
 )
 ```
 
-# Review and Questions
-
-## Mathematical Programming and Systems Analysis
-
-:::: {.columns}
-::: {.column width=50%}
-**Pros**:
-
-- Can guarantee analytic solutions (or close)
-- Often computationally scalable (especially for LPs)
-- Transparent
-
-:::
-
-::: {.column width=50%}
-**Cons**:
-
-- Often quite stylized
-- Limited ability to treat uncertainty
-
-:::
-::::
-
-## Mathematical Programming and Systems Analysis
-
-Challenges include:
-
-- Complex and non-linear systems dynamics;
-- Uncertainties;
-- Multiple objectives.
-  
-## Multiple Objectives
-
-- *A priori* vs *a posteriori* treatment.
-- We say that a decision $\mathbf{x}$ is **dominated** if there exists another solution $\mathbf{y}$ such that for every objective metric $Z_i(\cdot)$, $$Z_i(\mathbf{x}) > Z_i(\mathbf{y}).$$
-- $\mathbf{x}$ is **non-dominated** if it is not dominated by any $\mathbf{y} \neq \mathbf{x}$.
-- **Pareto front**: set of non-dominated solutions, each of which involves a *tradeoff* relative to the others.
-
 # Prelim 2 Review
 
 ## Overall Statistics
 
-- **Mean**: 42/50 (84%)
-- **Median**: 44/50 (88%)
-- **Standard Deviation**: 6.5/50 (13%)
+- **Mean**: 43.6/50 (87%)
+- **Median**: 45/50 (90%)
+- **Standard Deviation**: 6.2/50 (12%)
 
+# Alternatives to Mathematical Programming
+
+## Why Might We Want Alternatives?
+
+Mathematical programming requires a particular geometry to ensure solutions or error guaranteed (***e.g.* linearity**).
+
+Many problems can be formulated in these frameworks, but not all...
+
+What are some alternatives?
 
 ## Generalized Search Algorithms
 
@@ -449,7 +422,7 @@ nsamples = 1000
 Random.seed!(1)
 lnorm = LogNormal(log(0.03), 0.25)
 y = rand(lnorm, (T, nsamples))
-phist = histogram(rand(lnorm, 10000), legend=:false, grid=:false, tickfontsize=16, guidefontsize=16, left_margin=5mm, bottom_margin=10mm) 
+phist = histogram(rand(lnorm, 10_000), legend=:false, grid=:false, tickfontsize=16, guidefontsize=16, left_margin=5mm, bottom_margin=10mm) 
 plot!(size=(1000, 400))
 ylabel!("Count")
 xlabel!("Non-Point Source P Input")
@@ -461,7 +434,7 @@ xlabel!("Non-Point Source P Input")
 2. Define model function and bounds (we'll assume $0 \leq a_t \leq 0.1$);
 3. Simulate objective and whether constraint is violated;
 4. Return objective and constraint status.
-5. Call optimizer (we'll use `DE()` with a maximum of 5,000 function evaluations).
+5. Call optimizer (we'll use `DE()` with a maximum of 10,000 function evaluations).
 
 ## Lake Problem: Optimization Result
 
@@ -496,7 +469,7 @@ end
 bounds = [0.0ones(T) 0.1ones(T)]'
 # optimize
 obj(a) = lake_opt(a, y, q, b, T, Xcrit)
-options = Options(f_calls_limit=5000)
+options = Options(f_calls_limit=10_000)
 results = Metaheuristics.optimize(obj, bounds, DE(options=options))
 
 a = results.best_sol.x
@@ -560,6 +533,14 @@ Many choices were made in this optimization problem:
 
 All of these affect the tradeoff between solution quality and computational expense.
 
+## Dimension Reduction via Decision Rules
+
+Optimization converges faster with fewer variables.
+
+Instead of optimizing the entire sequence of decisions, formulate those decisions as a **decision rule** $a_t = f(X_{t}).$
+
+**Example**: @Quinn2017-vn uses $$a_t = \min\left(\max\left(\sum_j w_j \left| \frac{X_t - c_j}{r_j}\right|^3, 0.01\right), 0.1\right).$$
+
 # Key Takeaways
 
 ## General Takeaways
@@ -576,14 +557,32 @@ All of these affect the tradeoff between solution quality and computational expe
 - **Local vs. Global Optima**: Depending on type of search algorithm, may not be able to guarantee more than a local optimum.
 - **Transparency**: LP models are written down relatively clearly. Simulation models may have many important but hidden assumptions.
 
+# Class Wrap-Up
+
+## Content
+
+- What is a system? Why are they challenging to understand?
+- Simulation to understand system dynamics.
+- Optimization to make decisions about managing systems.
+- Sensitivity Analysis: What matters?
+
+## Themes
+
+- Systems can be complex: often require models to make sense of how they behave and respond to different inputs.
+- Models necessarily are approximations to reality: be mindful of when these are appropriate and when they are too strong.
+- Modeled results *from a sound model* are good starting points for further interrogation. Please do not treat them as the end point!
+
+# Upcoming Schedule
+
 ## Upcoming Schedule
 
-**Happy Thanksgiving!**
+**No Class Monday**: 
 
-**After Break**: No class, class time will be office hours for check-ins.
+**HW5**: Due **tomorrow** (12/4)
 
-## Assessments
+## Project Deadlines
 
-**HW5**: Due 12/5
-
-**Project**: Presentation due 12/9 (**cannot be late**)
+- Submit presentation videos to Canvas by **midnight Monday** (cannot be late or you will not be assigned peer reviews).
+- Peer reviews will be assigned Tuesday, due by Thursday evening. 
+- Final reports due end of finals week (12/20).
+- Team and self Evaluations due end of finals week (12/20).
