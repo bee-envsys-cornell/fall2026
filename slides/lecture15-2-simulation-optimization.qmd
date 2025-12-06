@@ -441,6 +441,8 @@ xlabel!("Non-Point Source P Input")
 ***What do you observe?***
 
 ```{julia}
+#| echo: true
+#| code-fold: true
 
 # find critical value
 
@@ -482,6 +484,8 @@ Now we can simulate to learn about how the solution performs.
 
 ```{julia}
 #| cache: false
+#| echo: true
+#| code-fold: true
 
 X = lake(a, y, q, b, T)
 
@@ -500,6 +504,8 @@ vline!([Xcrit], color=:red, linestyle=:dot,
 
 ```{julia}
 #| cache: false
+#| echo: true
+#| code-fold: true
 
 pconc = plot(X, alpha=0.2,  linewidth=3,
     guidefontsize=16, tickfontsize=16, 
