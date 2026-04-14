@@ -1,25 +1,37 @@
 ---
+title: "Syllabus"
+pdf-title: "Environmental Systems Analysis"
+pdf-subtitle: "BEE 4750/5750 • Fall 2026"
+pdf-note: |
+  The full versions of the course syllabus, schedule, and all course materials are available online at <https://envsys.viveks.me/fall2026/>. This is only a partially complete, static version.
+pdf-header-left: BEE 4750/5750
+pdf-header-right: Fall 2026
+pdf-footer-left: Environmental Systems Analysis
 format:
-  html:
-    toc-depth: 3
-    title: Syllabus
-    page-layout: full
-  pdf:
-    documentclass: article
-    geometry:
-      - margin=1in  
-    include-in-header:
-      text: |
-        \renewcommand\toprule[2]\relax
-        \renewcommand\bottomrule[2]\relax
-    filters:
-      - _assets/filters/columns-to-tables.lua
-    title: "{{< var course.number >}} ({{< var course.title >}}) Syllabus"
-    subtitle: "{{< var course.semester >}}"
+  html: default
+  typst:
+    output-file: "syllabus-BEE4750-FA26.pdf"
+    include-in-header: 
+      - "_assets/typst-pdf/include-in-header.typ"
+    include-before-body:
+      - "_assets/typst-pdf/note.typ"
   docx:
+    output-file: "syllabus-BEE4750-FA26.docx"
     toc: true
     toc-depth: 2
     number-sections: false
+    title: "Environmental Systems Analysis"
+    subtitle: "BEE 4750/5750 • Fall 2026"
+engine: julia
+format-links:      
+  - format: typst
+    text: PDF
+    icon: file-earmark-pdf
+  - format: docx
+    text: Word
+    icon: file-earmark-word
+julia:
+    exeflags: ["+1.12.5"]
 ---
 
 
@@ -37,16 +49,16 @@ This is a 3 credit course which is required for the Environmental Engineering ma
 - {{< fa sharp user title="Name" >}} [[{{< var instructor.name_no_title >}}]({{< var instructor.url >}})]{.ms-1}
 - {{< fa sharp envelope title="Email" >}} [[{{< var instructor.email >}}](mailto:{{< var instructor.email >}})]{.ms-1}
 - {{< fa sharp building title="Office" >}} [{{< var instructor.office >}}]{.ms-2}
-- {{< fa sharp door-open title="Office Hours" >}}[M 1-2, T 4-5]{.ms-1}
+- {{< fa sharp door-open title="Office Hours" >}}[TBD]{.ms-1}
 :::
 
 ::: {.column width="30%"}
 ### TA
 
-- {{< fa sharp user title="Name" >}} [Samantha Davies]{.ms-1}
-- {{< fa sharp envelope title="Email" >}} [[sld238@cornell.edu](mailto:sld238@cornell.edu)]{.ms-1}
-- {{< fa sharp building title="Office" >}} [217 Riley-Robb Hall]{.ms-2}
-- {{< fa sharp door-open title="Office Hours" >}}[MW 4:15-5:15]{.ms-1}
+- {{< fa sharp user title="Name" >}} [TBD]{.ms-1}
+- {{< fa sharp envelope title="Email" >}} [TBD]{.ms-1}
+- {{< fa sharp building title="Office" >}} [TBD]{.ms-2}
+- {{< fa sharp door-open title="Office Hours" >}}[TBD]{.ms-1}
 ::::
 
 ::: {.column width="30%"}
@@ -66,6 +78,7 @@ This is a 3 credit course which is required for the Environmental Engineering ma
 Environmental systems involve multiple interacting processes, uncertainties, and potentially conflicting objectives. These dynamics can complicate analyses which focus on a single component of the system, such as an individual pollution source, or a single outcome of interest. In this course, we will adopt a systems approach to environmental quality modeling and management, including applications in air and water pollution control and solid waste management. In particular, we will:
 
 * define systems and their boundaries;
+* identify feedbacks and quantify the stability of systems;
 * simulate system dynamics using computer models;
 * formulate and solve decision problems for systems management;
 * analyze and assess risk;
@@ -309,12 +322,10 @@ Your grade will be computed as the weighted average of the following assessment 
 
 | Category | Weight |
 |:--------|:------:|
-| Participation (4750) | 10% |
-| Reading Assignments (5750) | 10% |
-| Exercises | 10% |
 | Labs | 10% |
 | Homework | 15% |
-| Prelims | 30% |
+| Mini-Projects | 20% |
+| Quizzes | 30% |
 | Term Project | 25% |
 
 ::: {.callout-note}
@@ -323,41 +334,14 @@ Your grade will be computed as the weighted average of the following assessment 
 Grades on individual assessments will not be curved. It is unlikely that the final grades will be adjusted, but we may apply a curve **if and only if** circumstances arise which would make this appropriate, such as if the exams turn out to be longer or more difficult than intended. Grades will not be curved to meet any pre-defined distribution; it is entirely possible that everyone earns an A or everyone earns an F. Asking about a curve will not make one more likely.
 :::
 
-### Participation
-
-Participating fully in the class allows you to gain more from the class and contribute more to the learning of your classmates. Some ways to participate include:
-
-* Asking questions in class or on Ed;
-* Answering questions in class or on Ed;
-* Actively engaging in in-class activities;
-* Coming to office hours.
-
-Note that just passively attending class will not yield full participation points. Participation points are not free: you are likely to lose points if you consistently skip class or do not ask or answer questions online or in person. At the end of the term, you will be asked to evaluate your own participation over the course of the semester, in addition to my documentation of your participation.
-
-### Reading Assignments
-
-We will provide topical readings throughout the semester; these will typically be drawn from textbooks or journal articles. These readings are optional (but may be interesting) for students enrolled in BEE 4750. Students enrolled in BEE 5750 will be required to submit 1-2 page discussions of these readings, including:
-
-* Summaries of the key questions, hypotheses, methods, and insights of the paper;
-* Discussion of the connection(s) between the reading and our in-class content (lectures, discussions, etc.); these can be substantive or methodological.
-
-Discussions are due before class the Monday after the week they're assigned. Each discussion will be graded on a scale of 0-3. Your discussion should make specific references to the paper and your personal takeaways and insights from the reading. Submissions which lack these specifics will not receive much credit. 
-
-While discussions are not required for students enrolled in 4750, doing the readings and posting your thoughts on Ed Discussion is a good way to improve your participation grade.
-
-### Exercises
-
-Most weeks will involve a short problem set aimed at assessing key concepts. We will use Gradescope for these exercises. These will be released Monday at the end of class and are due before class (2:55PM) the following Monday. The exercises will be multiple choice or similar (categorization, multiple answer, etc), automatically graded, and you can submit them as often as you like. It is highly recommended that you do these promptly and take them seriously, as concepts and simple code practice will be useful for the homeworks and midterm exams. We will automatically drop one exercise set, but no late exercises will be accepted.
 
 ### Labs
 
 Approximately 4 class periods will be dedicated to working through simple examples to guide you through applying concepts and methods from class. Students should bring their laptops to class, and will be given a worksheet to complete (as much as they can) during these lab classes. Labs will be designed to be completed in class, though you may occasionally require additional time; however, lab worksheets must be submitted by 9:00pm on the day after the lab day. As a result, I encourage you to make sure that you download and set up the lab materials ahead of time; these will be provided for you on Ed Discussion. Labs will be graded on a scale of 0-3 on the basis of effort towards demonstrated work, rather than absolute correctness or completion. No labs will be dropped by default. If you cannot bring a laptop to class, you can work with other students, though you must turn in your own worksheet for grading.
 
-### Homework Assignments
+### Homework 
 
-Approximately 5-6 homework assignments will be assigned throughout the semester, one per course module (plus an initial homework to build or refresh programming and debugging skills). The homework assignments are more in-depth problem sets involving the modeling (derivation and implementation) and analysis of one or more environmental systems problems.
-
-You will generally have two class weeks to work on an assignment. This is intended to provide you enough time to work on the problem and debug and evaluate your code (including troubleshooting any technical problems); these are not reasons for late submission. Each homework assignment will build on material from the prior classes and possibly from the day the homework is assigned.
+Approximately 8-10 homework assignments will be assigned throughout the semester. The homework assignments are problem sets combining mathematical derivations and analysis and small computational exercises building on the examples and methods from class. You will generally have one class week to work on an assignment. 
 
 Students are encouraged to collaborate and learn from each other on homework assignments, and groups of up to three students can submit a single group homework solution. Students are responsible for forming their own homework groups, which can differ for each assignment. Only one student from a group should submit a solution, and it is the responsibility of the student submitting the assignment to tell Gradescope the names of the other group members. Otherwise, if multiple solutions from the same group are submitted, only one will be graded (whichever first comes up in Gradescope) and the rest ignored.
 
@@ -371,13 +355,15 @@ Some notes on assignment and grading logistics:
   * No homework assignments will be dropped, but you can turn in assignments within 24 hours of the due date with a 50% penalty. If you need a further accomodation for a particular assignment, talk to Prof. Srikrishnan ***before the due date.*** Requests for extensions made after the due date will only be considered under extraordinary and unexpected circumstances. Technical challenges submitting assignments are not acceptable reasons for extensions to be granted, and late penalties will apply.
   * **Your submitted homework must stand on its own***! We cannot grade you on the basis of information which was not included in the submitted assignment. While regrade requests should include a justification for why your grade is incorrect, we will not consider explanations or additional reasoning outside of the submission.
 
-### Prelims
+### Mini Projects
 
-Two in-class prelims will be given as an opportunity to review relevant material. The dates for the exams are **October 08** and **November 12**. The exams are closed-book and closed-note. As a result, the exams will emphasize conceptual material such as model derivations and interpretation of results; any calculations can be done with a pen(cil) and paper. Conflict and extended-time exams will be handled through SDS. Exams will be scanned into Gradescope for grading and feedback.
+There will be 2-3 more in-depth computational projects assigned throughout the semester which will require students to apply multiple methods from the course to a particular systems problem. These projects will typically involve the formulation and analysis of a mathematical model for the system of question and will involve the preparation of a mini report justifying the model formulation, outlining the methods, and presenting and interpreting results. Students in BEE 4750 will be able to work in groups of 2-3 and should submit a group report following the homework guidelines, while students in BEE 5750 must work independently.
 
-Solutions will not be posted for the midterms, but Prof. Srikrishnan will review and discuss midterm problems in class. The review will occur approximately two weeks after the exam to provide time for conflict exams and grading.
+### Quizzes
 
-### Final Term Project
+Approximately 5-6 quizzes will be given in-class. These will be in the first part of the relevant class, approximately 25 minutes long. No materials (books, notes, computers, or calculators) are allowed. Quizzes will be scanned into Gradescope for grading. The material which will be covered on the quiz will be specified ahead of time in class or on Ed Discussion. No quizzes will be dropped for students in BEE 5850, but one quiz will be dropped for students in 4850.
+
+### Term Project
 
 This course will culminate with a term project. The goal of this project is to apply and extend the tools and approaches we will learn in class to an application of your choosing. While we encourage drawing on other classes or interests when developing and working on your project, **submitting work from another course or work which was completed prior to the course is not permitted**.
 
