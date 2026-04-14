@@ -3,7 +3,7 @@ title: "Syllabus"
 pdf-title: "Environmental Systems Analysis"
 pdf-subtitle: "BEE 4750/5750 • Fall 2026"
 pdf-note: |
-  The full versions of the course syllabus, schedule, and all course materials are available online at <https://envsys.viveks.me/fall2026/>. This is only a partially complete, static version.
+  The full versions of the course syllabus, schedule, and all course materials are available online at #link("https://envsys.viveks.me/fall2026/"). This is only a partially complete, static version.
 pdf-header-left: BEE 4750/5750
 pdf-header-right: Fall 2026
 pdf-footer-left: Environmental Systems Analysis
@@ -31,7 +31,7 @@ format-links:
     text: Word
     icon: file-earmark-word
 julia:
-    exeflags: ["+1.12.5"]
+    exeflags: ["+1.12"]
 ---
 
 
