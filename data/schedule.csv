@@ -1,0 +1,32 @@
+week,group,subgroup,date,day,title,deadline
+1,Introduction,Introduction,2026-08-24,Wed,Class Overview,
+1,Introduction,Introduction,2026-08-26,Fri,Lab: Setting Up GitHub and Julia,
+2,Introduction,Systems,2026-08-31,Mon,Systems Models,
+2,Introduction,Systems,2026-09-02,Wed,Feedbacks,
+3,Regression,Linear Regression,2026-02-02,Mon,(Multiple) Linear Regression,
+3,Regression,Linear Regression,2026-02-04,Wed,Maximum Likelihood Estimation,
+4,Regression,Model Evaluation,2026-02-09,Mon,Graphical Checks,
+4,Regression,Model Evaluation,2026-02-11,Wed,Cross-Validation,
+5,Regression,February Break,2026-02-16,Mon,February Break,
+5,Regression,Model Comparison,2026-02-18,Wed,Null Hypothesis Testing,
+6,Regression,Time Series,2026-02-23,Mon,Autocorrelations,
+6,Regression,Time Series,2026-02-25,Wed,Time Series Models,
+7,Regression,Model Calibration,2026-03-02,Mon,Model-Data Discrepancy,
+7,Regression,Model Calibration,2026-03-04,Wed,Model Calibration,
+8,Simulation Methods,Monte Carlo,2026-03-09,Mon,Random Variate Generation,Lab 4 Due
+8,Simulation Methods,Monte Carlo,2026-03-11,Wed,Monte Carlo: Examples and Theory,
+9,Simulation Methods,The Bootstrap,2026-03-16,Mon,The Bootstrap Principle,Lab 4 Due
+9,Simulation Methods,The Bootstrap,2026-03-18,Wed,Types of Bootstraps,
+10,Simulation Methods,The Bootstrap,2026-03-23,Mon,Mechanisms of Missingness,Lab 5 Due
+10,Simulation Methods,Missing Data,2026-03-25,Wed,Multiple Imputation,
+11,Simulation Methods,Spring Break,2026-03-30,Mon,Spring Break,
+11,Simulation Methods,Spring Break,2026-04-01,Wed,Spring Break,
+12,Generalized Linear Models,Logistic Regression,2026-04-06,Mon,Logistic Regression,
+12,Generalized Linear Models,Logistic Regression,2026-04-08,Wed,Scoring Rules and Calibration,
+13,Generalized Linear Models,Generalized Linear Models,2026-04-13,Mon,Modeling Counts,
+13,Extreme Values,Introduction,2026-04-17,Fri,Extreme Values,HW 5 Due and Quiz 4
+14,Extreme Values,Block Maxima,2026-04-20,Mon,Block Maxima and GEVs,Lab 6 Due
+14,Extreme Values,Block Maxima,2026-04-24,Fri,Nonstationary Extremes,
+15,Extreme Values,Peaks Over Thresholds,2026-04-27,Mon,Peaks Over Thresholds and GPDs,Lab 6 Due
+15,Extreme Values,Peaks Over Thresholds,2026-04-29,Wed,Clustering Exceedances,
+16,Class Wrap-Up,Class Wrap-Up,2026-05-04,Mon,Class Wrap-Up,HW 6 Due
