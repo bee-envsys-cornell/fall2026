@@ -1,10 +1,10 @@
 week,group,subgroup,date,day,title,deadline
 1,Introduction,Introduction,2026-08-24,Wed,Class Overview,
 1,Introduction,Introduction,2026-08-26,Fri,Lab: Setting Up GitHub and Julia,
-2,Introduction,Systems,2026-08-31,Mon,Systems Models,
-2,Introduction,Systems,2026-09-02,Wed,Feedbacks,
-3,Regression,Linear Regression,2026-02-02,Mon,(Multiple) Linear Regression,
-3,Regression,Linear Regression,2026-02-04,Wed,Maximum Likelihood Estimation,
+2,Introduction,Systems Dynamics,2026-08-31,Mon,Systems Models,
+2,Introduction,Systems Dynamics,2026-09-02,Wed,Feedbacks,HW1 Due
+3,Introduction,Systems Dynamics,2026-09-07,Mon,Labor Day,
+3,Introduction,Linear Regression,2026-02-04,Wed,Maximum Likelihood Estimation,HW2 Due
 4,Regression,Model Evaluation,2026-02-09,Mon,Graphical Checks,
 4,Regression,Model Evaluation,2026-02-11,Wed,Cross-Validation,
 5,Regression,February Break,2026-02-16,Mon,February Break,

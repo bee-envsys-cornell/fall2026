@@ -424,3 +424,465 @@ We reserve the right to give any student meeting at least one of the following c
 3. Extremely low levels of participation and effort.
 
 This should not generally be a concern; students putting in a good faith effort by attending class, participating in online discussions, doing most of the work, and taking the exams will not be at risk of this policy.
+
+::: {.content-visible unless-format="html"}
+## Tentative Schedule
+
+```{julia}
+#| echo: false
+#| output: false
+
+import Pkg
+Pkg.activate(@__DIR__)
+Pkg.instantiate()
+
+using Dates
+using CSV
+using DataFrames
+using DataFramesMeta
+using PrettyTables
+
+sched = CSV.read("data/schedule.csv", delim=",", header=true, DataFrame)   
+
+group_names = unique(sched[:, :group])
+group_idx = groupindices(groupby(sched, :group)) 
+uniqueidx(v) = unique(i -> v[i], eachindex(v))
+label_idx = uniqueidx(group_idx)
+holiday_idx = findall(occursin.("Break", sched[:, :title]))
+shade_idx = iseven.(sched[!, :week])
+
+# figure out alternating weeks for highlighting
+sched = @chain sched begin
+ @groupby :week
+ @transform! :is_first = :date .== first(:date)
+ @transform 
+end
+
+sched[holiday_idx, :subgroup] .= ""
+
+@transform! sched :date = Dates.format.(:date, "U d")
+
+
+```
+
+::: {.content-visible when-format="docx"}
+
+```{julia}
+#| label: schedule-table
+#| echo: false
+#| output: asis
+#| tbl-colwidths: [20, 20, 10, 30, 20]
+
+sty = MarkdownTableStyle(
+  row_group_label = MarkdownStyle(bold = true)
+)
+rmv_missing(data, i, j) = (j == 5 && ismissing(data)) ? "" : data
+fmt = MarkdownTableFormat(
+  compact_table=true  
+)
+
+pretty_table(Matrix(sched[:, [:subgroup, :date, :day, :title, :deadline]]), 
+  backend=:markdown, 
+  style=sty, table_format=fmt,
+  formatters=[rmv_missing],
+  column_labels=["Topic", "Date", "Day", "Title", "Deadline(s)"],
+  row_group_labels=Pair.(label_idx, String.(group_names)),
+  row_group_label_alignment=:l,
+  alignment = [:l, :c, :c, :l, :l])
+
+```
+
+:::
+
+<!--
+```{julia}
+#| label: schedule-table
+#| echo: false
+#| output: false
+#| tbl-colwidths: [25, 10, 10, 40, 10]
+
+# highlight holidays
+hl_odd = HtmlHighlighter((data, i, j) -> shade_idx[i], ["background-color" => "lightgrey"])
+
+sty = HtmlTableStyle(
+  row_group_label = ["font-weight" => "bold", "border-bottom" => "thick double black"]
+)
+
+#fmt = MarkdownTableFormat(
+#  compact_table=true  
+#)
+
+rmv_missing(data, i, j) = (j == 5 && ismissing(data)) ? "" : data
+
+
+pretty_table(Matrix(sched[:, [:subgroup, :date, :day, :title, :deadline]]), highlighters=[hl_odd], 
+  backend=:html, 
+  style=sty, 
+  formatters=[rmv_missing],
+  column_labels=["Topic", "Date", "Day", "Title", "Deadline(s)"],
+  row_group_labels=Pair.(label_idx, String.(group_names)),
+  row_group_label_alignment=:l,
+  alignment = [:l, :c, :c, :l, :l])
+
+
+```
+-->
+
+::: {.content-visible when-format="typst"}
+
+::: {.schedule-table}
+
+```{=html}
+<table>
+  <thead>
+    <tr class = "columnLabelRow">
+      <th style = "font-weight: bold; text-align: left;">Topic</th>
+      <th style = "font-weight: bold; text-align: center;">Date</th>
+      <th style = "font-weight: bold; text-align: center;">Day</th>
+      <th style = "font-weight: bold; text-align: left;">Title</th>
+      <th style = "font-weight: bold; text-align: left;">Deadline(s)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class = "rowGroupLabel">
+      <td colspan = "5" style = "border-bottom: thick double black; font-weight: bold; text-align: left;">Introduction</td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;">Introduction</td>
+      <td style = "text-align: center;">January 21</td>
+      <td style = "text-align: center;">Wed</td>
+      <td style = "text-align: left;">Class Overview</td>
+      <td style = "text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;">Introduction</td>
+      <td style = "text-align: center;">January 23</td>
+      <td style = "text-align: center;">Fri</td>
+      <td style = "text-align: left;">Probability Review</td>
+      <td style = "text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">Probability Models</td>
+      <td style = "background-color: lightgrey; text-align: center;">January 26</td>
+      <td style = "background-color: lightgrey; text-align: center;">Mon</td>
+      <td style = "background-color: lightgrey; text-align: left;">Exploratory Data Analysis</td>
+      <td style = "background-color: lightgrey; text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">Probability Models</td>
+      <td style = "background-color: lightgrey; text-align: center;">January 28</td>
+      <td style = "background-color: lightgrey; text-align: center;">Wed</td>
+      <td style = "background-color: lightgrey; text-align: left;">Principles of Data Visualization</td>
+      <td style = "background-color: lightgrey; text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">Probability Models</td>
+      <td style = "background-color: lightgrey; text-align: center;">January 30</td>
+      <td style = "background-color: lightgrey; text-align: center;">Fri</td>
+      <td style = "background-color: lightgrey; text-align: left;">Data Visualization Discussion</td>
+      <td style = "background-color: lightgrey; text-align: left;"></td>
+    </tr>
+    <tr class = "rowGroupLabel">
+      <td colspan = "5" style = "border-bottom: thick double black; font-weight: bold; text-align: left;">Regression</td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;">Linear Regression</td>
+      <td style = "text-align: center;">February 2</td>
+      <td style = "text-align: center;">Mon</td>
+      <td style = "text-align: left;">(Multiple) Linear Regression</td>
+      <td style = "text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;">Linear Regression</td>
+      <td style = "text-align: center;">February 4</td>
+      <td style = "text-align: center;">Wed</td>
+      <td style = "text-align: left;">Maximum Likelihood Estimation</td>
+      <td style = "text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;">Linear Regression</td>
+      <td style = "text-align: center;">February 6</td>
+      <td style = "text-align: center;">Fri</td>
+      <td style = "text-align: left;">MLE Uncertainty and Fisher Information</td>
+      <td style = "text-align: left;">HW 1 Due</td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">Model Evaluation</td>
+      <td style = "background-color: lightgrey; text-align: center;">February 9</td>
+      <td style = "background-color: lightgrey; text-align: center;">Mon</td>
+      <td style = "background-color: lightgrey; text-align: left;">Graphical Checks</td>
+      <td style = "background-color: lightgrey; text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">Model Evaluation</td>
+      <td style = "background-color: lightgrey; text-align: center;">February 11</td>
+      <td style = "background-color: lightgrey; text-align: center;">Wed</td>
+      <td style = "background-color: lightgrey; text-align: left;">Cross-Validation</td>
+      <td style = "background-color: lightgrey; text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">Model Comparison</td>
+      <td style = "background-color: lightgrey; text-align: center;">February 13</td>
+      <td style = "background-color: lightgrey; text-align: center;">Fri</td>
+      <td style = "background-color: lightgrey; text-align: left;">Hypothesis Testing Introduction</td>
+      <td style = "background-color: lightgrey; text-align: left;">Quiz 1</td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;"></td>
+      <td style = "text-align: center;">February 16</td>
+      <td style = "text-align: center;">Mon</td>
+      <td style = "text-align: left;">February Break</td>
+      <td style = "text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;">Model Comparison</td>
+      <td style = "text-align: center;">February 18</td>
+      <td style = "text-align: center;">Wed</td>
+      <td style = "text-align: left;">Null Hypothesis Testing</td>
+      <td style = "text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;">Model Comparison</td>
+      <td style = "text-align: center;">February 20</td>
+      <td style = "text-align: center;">Fri</td>
+      <td style = "text-align: left;">Information Criteria</td>
+      <td style = "text-align: left;">HW 2 Due</td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">Time Series</td>
+      <td style = "background-color: lightgrey; text-align: center;">February 23</td>
+      <td style = "background-color: lightgrey; text-align: center;">Mon</td>
+      <td style = "background-color: lightgrey; text-align: left;">Autocorrelations</td>
+      <td style = "background-color: lightgrey; text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">Time Series</td>
+      <td style = "background-color: lightgrey; text-align: center;">February 25</td>
+      <td style = "background-color: lightgrey; text-align: center;">Wed</td>
+      <td style = "background-color: lightgrey; text-align: left;">Time Series Models</td>
+      <td style = "background-color: lightgrey; text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">Time Series</td>
+      <td style = "background-color: lightgrey; text-align: center;">February 27</td>
+      <td style = "background-color: lightgrey; text-align: center;">Fri</td>
+      <td style = "background-color: lightgrey; text-align: left;">Time Series Examples</td>
+      <td style = "background-color: lightgrey; text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;">Model Calibration</td>
+      <td style = "text-align: center;">March 2</td>
+      <td style = "text-align: center;">Mon</td>
+      <td style = "text-align: left;">Model-Data Discrepancy</td>
+      <td style = "text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;">Model Calibration</td>
+      <td style = "text-align: center;">March 4</td>
+      <td style = "text-align: center;">Wed</td>
+      <td style = "text-align: left;">Model Calibration</td>
+      <td style = "text-align: left;"></td>
+    </tr>
+    <tr class = "rowGroupLabel">
+      <td colspan = "5" style = "border-bottom: thick double black; font-weight: bold; text-align: left;">Simulation Methods</td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;">Introduction</td>
+      <td style = "text-align: center;">March 6</td>
+      <td style = "text-align: center;">Fri</td>
+      <td style = "text-align: left;">Simulation Introduction</td>
+      <td style = "text-align: left;">Quiz 2</td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">Monte Carlo</td>
+      <td style = "background-color: lightgrey; text-align: center;">March 9</td>
+      <td style = "background-color: lightgrey; text-align: center;">Mon</td>
+      <td style = "background-color: lightgrey; text-align: left;">Random Variate Generation</td>
+      <td style = "background-color: lightgrey; text-align: left;">Lab 4 Due</td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">Monte Carlo</td>
+      <td style = "background-color: lightgrey; text-align: center;">March 11</td>
+      <td style = "background-color: lightgrey; text-align: center;">Wed</td>
+      <td style = "background-color: lightgrey; text-align: left;">Monte Carlo: Examples and Theory</td>
+      <td style = "background-color: lightgrey; text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">Monte Carlo</td>
+      <td style = "background-color: lightgrey; text-align: center;">March 13</td>
+      <td style = "background-color: lightgrey; text-align: center;">Fri</td>
+      <td style = "background-color: lightgrey; text-align: left;">Monte Carlo: Convergence and Advanced Methods</td>
+      <td style = "background-color: lightgrey; text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;">The Bootstrap</td>
+      <td style = "text-align: center;">March 16</td>
+      <td style = "text-align: center;">Mon</td>
+      <td style = "text-align: left;">The Bootstrap Principle</td>
+      <td style = "text-align: left;">Lab 4 Due</td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;">The Bootstrap</td>
+      <td style = "text-align: center;">March 18</td>
+      <td style = "text-align: center;">Wed</td>
+      <td style = "text-align: left;">Types of Bootstraps</td>
+      <td style = "text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;">The Bootstrap</td>
+      <td style = "text-align: center;">March 20</td>
+      <td style = "text-align: center;">Fri</td>
+      <td style = "text-align: left;">Bootstraping Structured Data</td>
+      <td style = "text-align: left;">Project Proposal Due</td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">The Bootstrap</td>
+      <td style = "background-color: lightgrey; text-align: center;">March 23</td>
+      <td style = "background-color: lightgrey; text-align: center;">Mon</td>
+      <td style = "background-color: lightgrey; text-align: left;">Mechanisms of Missingness</td>
+      <td style = "background-color: lightgrey; text-align: left;">Lab 5 Due</td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">Missing Data</td>
+      <td style = "background-color: lightgrey; text-align: center;">March 25</td>
+      <td style = "background-color: lightgrey; text-align: center;">Wed</td>
+      <td style = "background-color: lightgrey; text-align: left;">Multiple Imputation</td>
+      <td style = "background-color: lightgrey; text-align: left;"></td>
+    </tr>
+    <tr class = "rowGroupLabel">
+      <td colspan = "5" style = "border-bottom: thick double black; font-weight: bold; text-align: left;">Generalized Linear Models</td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">Introduction</td>
+      <td style = "background-color: lightgrey; text-align: center;">March 27</td>
+      <td style = "background-color: lightgrey; text-align: center;">Fri</td>
+      <td style = "background-color: lightgrey; text-align: left;">Imputation Examples</td>
+      <td style = "background-color: lightgrey; text-align: left;">Quiz 3</td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;"></td>
+      <td style = "text-align: center;">March 30</td>
+      <td style = "text-align: center;">Mon</td>
+      <td style = "text-align: left;">Spring Break</td>
+      <td style = "text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;"></td>
+      <td style = "text-align: center;">April 1</td>
+      <td style = "text-align: center;">Wed</td>
+      <td style = "text-align: left;">Spring Break</td>
+      <td style = "text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;"></td>
+      <td style = "text-align: center;">April 3</td>
+      <td style = "text-align: center;">Fri</td>
+      <td style = "text-align: left;">Spring Break</td>
+      <td style = "text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">Logistic Regression</td>
+      <td style = "background-color: lightgrey; text-align: center;">April 6</td>
+      <td style = "background-color: lightgrey; text-align: center;">Mon</td>
+      <td style = "background-color: lightgrey; text-align: left;">Logistic Regression</td>
+      <td style = "background-color: lightgrey; text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">Logistic Regression</td>
+      <td style = "background-color: lightgrey; text-align: center;">April 8</td>
+      <td style = "background-color: lightgrey; text-align: center;">Wed</td>
+      <td style = "background-color: lightgrey; text-align: left;">Scoring Rules and Calibration</td>
+      <td style = "background-color: lightgrey; text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">Logistic Regression</td>
+      <td style = "background-color: lightgrey; text-align: center;">April 10</td>
+      <td style = "background-color: lightgrey; text-align: center;">Fri</td>
+      <td style = "background-color: lightgrey; text-align: left;">Logistic Regression As GLM</td>
+      <td style = "background-color: lightgrey; text-align: left;">Interim Report Due</td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;">Generalized Linear Models</td>
+      <td style = "text-align: center;">April 13</td>
+      <td style = "text-align: center;">Mon</td>
+      <td style = "text-align: left;">Modeling Counts</td>
+      <td style = "text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;">Generalized Linear Models</td>
+      <td style = "text-align: center;">April 15</td>
+      <td style = "text-align: center;">Wed</td>
+      <td style = "text-align: left;">Overdispersed and Zero-Inflated Models</td>
+      <td style = "text-align: left;"></td>
+    </tr>
+    <tr class = "rowGroupLabel">
+      <td colspan = "5" style = "border-bottom: thick double black; font-weight: bold; text-align: left;">Extreme Values</td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;">Introduction</td>
+      <td style = "text-align: center;">April 17</td>
+      <td style = "text-align: center;">Fri</td>
+      <td style = "text-align: left;">Extreme Values</td>
+      <td style = "text-align: left;">HW 5 Due and Quiz 4</td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">Block Maxima</td>
+      <td style = "background-color: lightgrey; text-align: center;">April 20</td>
+      <td style = "background-color: lightgrey; text-align: center;">Mon</td>
+      <td style = "background-color: lightgrey; text-align: left;">Block Maxima and GEVs</td>
+      <td style = "background-color: lightgrey; text-align: left;">Lab 6 Due</td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">Block Maxima</td>
+      <td style = "background-color: lightgrey; text-align: center;">April 22</td>
+      <td style = "background-color: lightgrey; text-align: center;">Wed</td>
+      <td style = "background-color: lightgrey; text-align: left;">Return Periods</td>
+      <td style = "background-color: lightgrey; text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">Block Maxima</td>
+      <td style = "background-color: lightgrey; text-align: center;">April 24</td>
+      <td style = "background-color: lightgrey; text-align: center;">Fri</td>
+      <td style = "background-color: lightgrey; text-align: left;">Nonstationary Extremes</td>
+      <td style = "background-color: lightgrey; text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;">Peaks Over Thresholds</td>
+      <td style = "text-align: center;">April 27</td>
+      <td style = "text-align: center;">Mon</td>
+      <td style = "text-align: left;">Peaks Over Thresholds and GPDs</td>
+      <td style = "text-align: left;">Lab 6 Due</td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;">Peaks Over Thresholds</td>
+      <td style = "text-align: center;">April 29</td>
+      <td style = "text-align: center;">Wed</td>
+      <td style = "text-align: left;">Clustering Exceedances</td>
+      <td style = "text-align: left;"></td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "text-align: left;">Peaks OVer Thresholds</td>
+      <td style = "text-align: center;">May 1</td>
+      <td style = "text-align: center;">Fri</td>
+      <td style = "text-align: left;">Nonstationary GPDs</td>
+      <td style = "text-align: left;">Quiz 5</td>
+    </tr>
+    <tr class = "rowGroupLabel">
+      <td colspan = "5" style = "border-bottom: thick double black; font-weight: bold; text-align: left;">Class Wrap-Up</td>
+    </tr>
+    <tr class = "dataRow">
+      <td style = "background-color: lightgrey; text-align: left;">Class Wrap-Up</td>
+      <td style = "background-color: lightgrey; text-align: center;">May 4</td>
+      <td style = "background-color: lightgrey; text-align: center;">Mon</td>
+      <td style = "background-color: lightgrey; text-align: left;">Class Wrap-Up</td>
+      <td style = "background-color: lightgrey; text-align: left;">HW 6 Due</td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+```
+:::
+:::
+:::
