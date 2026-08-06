@@ -7,8 +7,8 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.31">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e44360b8a8db1e130c7792fece1c8032.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.3">
 
   <meta name="author" content="Vivek Srikrishnan">
   <meta name="dcterms.date" content="2024-10-30">
@@ -19,6 +19,9 @@
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
   <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -97,7 +100,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7b87de61f0bc8c7187b97021a1ec54e0.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-d52ba59528acaf0ac8c09f3308d87e37.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -191,6 +194,14 @@
       margin-right: 0; 
     }
   </style>
+  <!-- MathJax 3 -->
+  <script>
+  window.MathJax = {
+      tex: {
+        tags: 'ams'
+      }
+    };
+  </script>
   <!-- Mathjax 3 config -->
   <script>
   window.MathJax = {
@@ -411,7 +422,7 @@ C(x,y,z) = &amp;\frac{Q}{2\pi u \sigma_y \sigma_z} \exp\left(\frac{-y^2}{2\sigma
 <div id="cell-fig-setup" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a>sources <span class="op">=</span> [(<span class="fl">0</span>, <span class="fl">7</span>), (<span class="fl">2</span>, <span class="fl">5</span>), (<span class="fl">3</span>, <span class="fl">5</span>)]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a>sources <span class="op">=</span> [(<span class="fl">0</span>, <span class="fl">7</span>), (<span class="fl">2</span>, <span class="fl">5</span>), (<span class="fl">3</span>, <span class="fl">5</span>)]</span>
 <span id="cb1-2"><a></a>receptors <span class="op">=</span> [(<span class="fl">1</span>, <span class="fl">1.5</span>), (<span class="fl">3</span>, <span class="fl">7</span>), (<span class="fl">5</span>, <span class="fl">3</span>), (<span class="fl">7.5</span>, <span class="fl">6</span>), (<span class="fl">10</span>, <span class="fl">5</span>)]</span>
 <span id="cb1-3"><a></a></span>
 <span id="cb1-4"><a></a>p <span class="op">=</span> <span class="fu">scatter</span>(sources, label<span class="op">=</span><span class="st">"Source"</span>, markersize<span class="op">=</span><span class="fl">6</span>, color<span class="op">=:</span>red, xlabel<span class="op">=</span>L<span class="st">"</span><span class="sc">$</span>x<span class="st">$ (km)"</span>, ylabel<span class="op">=</span>L<span class="st">"</span><span class="sc">$</span>y<span class="st">$ (km)"</span>, legend<span class="op">=:</span>bottomright, ylims<span class="op">=</span>(<span class="fl">0</span>, <span class="fl">8</span>), xlims<span class="op">=</span>(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">10.5</span>))</span>
@@ -426,7 +437,7 @@ C(x,y,z) = &amp;\frac{Q}{2\pi u \sigma_y \sigma_z} \exp\left(\frac{-y^2}{2\sigma
 <span id="cb1-13"><a></a><span class="cf">end</span></span>
 <span id="cb1-14"><a></a><span class="fu">plot!</span>(size<span class="op">=</span>(<span class="fl">700</span>, <span class="fl">550</span>))</span>
 <span id="cb1-15"><a></a><span class="fu">plot!</span>([(<span class="fl">0</span>, <span class="fl">7.75</span>), (<span class="fl">10</span>, <span class="fl">7.75</span>)], arrow<span class="op">=</span><span class="cn">true</span>, color<span class="op">=:</span>blue, linewidth<span class="op">=</span><span class="fl">2</span>, label<span class="op">=</span><span class="st">""</span>)</span>
-<span id="cb1-16"><a></a><span class="fu">annotate!</span>(<span class="fl">4.5</span>, <span class="fl">8</span>, <span class="fu">text</span>(<span class="st">"Wind"</span>, <span class="op">:</span>left, <span class="fl">18</span>, <span class="op">:</span>blue))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-16"><a></a><span class="fu">annotate!</span>(<span class="fl">4.5</span>, <span class="fl">8</span>, <span class="fu">text</span>(<span class="st">"Wind"</span>, <span class="op">:</span>left, <span class="fl">18</span>, <span class="op">:</span>blue))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="fig-setup" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center" data-execution_count="1">
 <figure class="quarto-float quarto-float-fig">
@@ -574,7 +585,9 @@ C_\text{total} = \frac{M_1 + M_2 + M_3}{V} = \frac{M_1}{V} + \frac{M_2}{V} + \fr
 <section id="calculating-transmission-factors" class="slide level2">
 <h2>Calculating Transmission Factors</h2>
 <div id="8" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a></a><span class="co"># Δx, Δy should be in m</span></span>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a></a><span class="co"># Δx, Δy should be in m</span></span>
 <span id="cb2-2"><a></a><span class="kw">function</span> <span class="fu">transmission_factor</span>(Δx, Δy, u, H)</span>
 <span id="cb2-3"><a></a>    <span class="cf">if</span> Δx <span class="op">&lt;=</span> <span class="fl">0</span> <span class="co"># check if source is upwind of receptor</span></span>
 <span id="cb2-4"><a></a>        tf <span class="op">=</span> <span class="fl">0.0</span> <span class="co"># ensure this is a Float</span></span>
@@ -585,21 +598,28 @@ C_\text{total} = \frac{M_1 + M_2 + M_3}{V} = \frac{M_1}{V} + \frac{M_2}{V} + \fr
 <span id="cb2-9"><a></a>        tf <span class="op">=</span> tf_coef <span class="op">*</span> <span class="fu">exp</span>(<span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> (Δy <span class="op">/</span> σy)<span class="op">^</span><span class="fl">2</span>) <span class="op">*</span> <span class="fu">exp</span>(<span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> (H <span class="op">/</span> σz)<span class="op">^</span><span class="fl">2</span>)</span>
 <span id="cb2-10"><a></a>    <span class="cf">end</span></span>
 <span id="cb2-11"><a></a>    <span class="cf">return</span> tf</span>
-<span id="cb2-12"><a></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-12"><a></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
 </section>
 <section id="calculating-transmission-factors-1" class="slide level2">
 <h2>Calculating Transmission Factors</h2>
 <p>For example, from Source 1 to Receptor 1:</p>
 <div id="10" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a></a><span class="fu">transmission_factor</span>(<span class="fl">1000</span>, <span class="fl">5500</span>, <span class="fl">1.5</span>, <span class="fl">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a></a><span class="fu">transmission_factor</span>(<span class="fl">1000</span>, <span class="fl">5500</span>, <span class="fl">1.5</span>, <span class="fl">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>0.0</code></pre>
 </div>
 </div>
 <p>Or from Source 1 to Receptor 2:</p>
 <div id="12" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a></a><span class="fu">transmission_factor</span>(<span class="fl">3000</span>, <span class="fl">0</span>, <span class="fl">1.5</span>, <span class="fl">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a></a><span class="fu">transmission_factor</span>(<span class="fl">3000</span>, <span class="fl">0</span>, <span class="fl">1.5</span>, <span class="fl">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>4.4002801438721065e-6</code></pre>
 </div>
@@ -1055,13 +1075,14 @@ C_\text{total} = \frac{M_1 + M_2 + M_3}{V} = \frac{M_1}{V} + \frac{M_2}{V} + \fr
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy

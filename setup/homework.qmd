@@ -1,5 +1,7 @@
 ---
 title: Assignment Workflow
+format: 
+    html: default
 ---
 
 Your assignments (labs and homeworks) will be distributed as Jupyter Notebooks (`.ipynb` files) using GitHub Classroom, and will be submitted to Gradescope as PDF files. This means that the following steps are required for each assignment^[Note that you do not actually have to solve your assignments using the provided notebook: we aren't going to grade your code, so if you want to solve the problems separately and write up your solutions in something like Microsoft Word (with figures), that's fine. But, in this case, I would make sure your code is synced with GitHub in case there are any questions about how you got your solutions].
@@ -50,15 +52,9 @@ Once you start working with GitHub, you'll want to ensure that your repositories
 
 ## Exporting To PDF
 
-Eventually, you will need to convert your solution to a PDF. This can be a little tricky with Jupyter Notebooks. Before you do anything, **make sure you run all of your notebook cells *in order***.
+Eventually, you will need to convert your solution to a PDF. This can be a little tricky with Jupyter Notebooks. Before you do anything, **make sure you run all of your notebook cells *in order***. An overview of the choices you have to do this conversion are available [in this tutorial](../tutorials/notebook-to-pdf.qmd).
 
-The most direct option uses a Python package called `nbconvert`, which requires both [Python](https://www.python.org/downloads/) and [`nbconvert` to be installed](https://nbconvert.readthedocs.io/en/latest/install.html#installing-nbconvert). Using this route, you can convert to an HTML website and then save that website to a PDF, or (if you have LaTeX installed; I wouldn't encourage this if you don't have any other need for it) you can convert directly to a PDF.
-
-Some other options include:
-
-* [nbviewer](https://nbviewer.org/): share the GitHub URL of your notebook and it will render it. There are sometimes weird issues with images.
-* [binder](https://mybinder.org/)
-* [fastpages](https://fastpages.fast.ai/): this will use some code to automatically render your might require a little bit of setup with your GitHub repository, but I'm happy to help if you decide to go this route.
+If you choose a different approach to writing your solution, such as Word or LaTeX, just make sure you compile/save as a PDF. If you are using Word, make sure to check the PDF to ensure that all of your figures and equations are rendered correctly.
 
 In the absolute worst case, if you are unable to get any of these solutions to work, send us (on Ed) a link to your GitHub repository. We will take the last commited version of your notebook which was before the due date and can render it as a PDF for you.
 

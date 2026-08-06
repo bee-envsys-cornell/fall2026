@@ -1,6 +1,8 @@
 ---
 title: "Labs"
 tbl-colwidths: [20, 5, 5, 10]
+format: 
+    html: default
 ---
 
 This page contains information about and a schedule of the lab assignments for the semester.

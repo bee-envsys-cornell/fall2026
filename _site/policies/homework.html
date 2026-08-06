@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.10.3">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Homework Policies – Environmental Systems Analysis</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -29,7 +32,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../policies/exam.html" rel="next">
+<link href="../policies/quiz.html" rel="next">
 <link href="../policies/rubric.html" rel="prev">
 <link href="../_assets/logos/favicon.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
@@ -38,10 +41,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1d1e7f53b840ad8d06c4ae6c57b8588.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-037772e4b0a8fb61e9a28208dd0e90cd.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ba9c0723bac509a7d8c9561700ea21a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-41afc7412041501ec6863dfe70bda895.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -80,6 +83,35 @@ window.MathJax = {
   };
 </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <meta property="og:title" content="Homework Policies – Environmental Systems Analysis">
 <meta property="og:description" content="Homepage for the Fall 2025 version of BEE 4750/5750, Environmental Systems Analysis, at Cornell University.">
@@ -281,8 +313,8 @@ window.MathJax = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../policies/exam.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Exam Policies</span></a>
+  <a href="../policies/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz Policies</span></a>
   </div>
 </li>
       </ul>
@@ -309,8 +341,13 @@ window.MathJax = {
   <ul class="collapse">
   <li><a href="#be-honest" id="toc-be-honest" class="nav-link" data-scroll-target="#be-honest">Be Honest</a></li>
   <li><a href="#be-clear" id="toc-be-clear" class="nav-link" data-scroll-target="#be-clear">Be Clear</a></li>
-  </ul></li>
   <li><a href="#be-concise" id="toc-be-concise" class="nav-link" data-scroll-target="#be-concise">Be Concise</a></li>
+  </ul></li>
+  <li><a href="#regrade-requests" id="toc-regrade-requests" class="nav-link" data-scroll-target="#regrade-requests">Regrade Requests</a>
+  <ul class="collapse">
+  <li><a href="#what-to-include-in-a-regrade-request" id="toc-what-to-include-in-a-regrade-request" class="nav-link" data-scroll-target="#what-to-include-in-a-regrade-request">What To Include in a Regrade Request</a></li>
+  <li><a href="#special-circumstances" id="toc-special-circumstances" class="nav-link" data-scroll-target="#special-circumstances">Special Circumstances</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/policies/homework.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -356,6 +393,7 @@ window.MathJax = {
 <h3 class="anchored" data-anchor-id="accepting-assignments">Accepting Assignments</h3>
 <ul>
 <li><p>Homework assignments will be distributed through GitHub Classroom. When an assignment is released, a link to accept the assignment will be posted on Ed Discussion. <strong>You must click this link to accept the assignment or subsequent steps will not work properly</strong>. Clicking this link will create your own repository with the files for the assignment. The first time you do this, you will be prompted to connect your GitHub username with your entry in the class roster.</p></li>
+<li><p>These repositories will include a Jupyter Notebook set up with a Julia kernel, and appropiate environment files for the packages we think you may want to use to complete the assignment. You do not have to use all of them, and you can feel free to install additional packages as would be helpful.</p></li>
 <li><p>Clone your repository to your computer.</p>
 <div class="callout callout-style-simple callout-warning">
 <div class="callout-body d-flex">
@@ -363,7 +401,7 @@ window.MathJax = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>It is important that you clone the repository created in the previous step, not the “original” repository. Make sure that the URL looks like <code>https://www.github.com/BEE4750-FA25/&lt;username&gt;-hwxx.git</code>, <strong>not</strong> <code>https://www.github.com/bee-envsys-cornell/hwxx.git</code>.</p>
+<p>It is important that you clone the repository created in the previous step, not the “original” repository. Make sure that the URL looks like <code>https://www.github.com/BEE4750-FA26/&lt;username&gt;-hwxx.git</code>, <strong>not</strong> <code>https://www.github.com/bee-envsys-cornell/hwxx.git</code>.</p>
 </div>
 </div>
 </div></li>
@@ -371,6 +409,9 @@ window.MathJax = {
 </section>
 <section id="working-on-assignments" class="level3">
 <h3 class="anchored" data-anchor-id="working-on-assignments">Working On Assignments</h3>
+<ul>
+<li>You do not have to use the provided Jupyter Notebook to write your solutions, but it is a convenient way to work on the assignment. You can also find the problems provided on the website to work on them by hand, with smaller scripts, etc.</li>
+<li><strong>If you do use the notebook</strong>:
 <ul>
 <li><p>Open the local repository <strong>folder</strong> you created when you cloned the remote repository.</p>
 <div class="callout callout-style-simple callout-tip">
@@ -385,44 +426,65 @@ window.MathJax = {
 </div></li>
 <li><p>After the notebook loads, if prompted to, select the <code>julia-1.11</code> kernel.</p></li>
 <li><p>Make sure that you run the initial notebook cell (starting with <code>Pkg.activate()</code>) to load the Julia environment and install any needed packages.</p></li>
-<li><p>You don’t need to work in the notebook, per se, but if you choose to write your own code files, make sure to add them to the repository with <code>git add</code>. Make sure that you copy the initial notebook cell into your new script(s) to use the appropriate environment.</p></li>
-<li><p>As you work on assignments, make sure to save and frequently push and commit back to GitHub.</p></li>
 <li><p>You can toggle line numbers in a notebook cell with the <code>L</code> key.</p></li>
+</ul></li>
+<li>If you choose to write your own code files, make sure to add them to the repository with <code>git add</code>. Make sure that you copy the initial notebook cell into your new script(s) to use the appropriate environment.</li>
+<li>As you work on assignments, make sure to save and frequently push and commit back to GitHub.</li>
 </ul>
 </section>
 <section id="asking-for-assistance" class="level3">
 <h3 class="anchored" data-anchor-id="asking-for-assistance">Asking for Assistance</h3>
+<section id="how-to-ask-for-help-effectively" class="level4">
+<h4 class="anchored" data-anchor-id="how-to-ask-for-help-effectively">How to Ask for Help Effectively</h4>
+<p>When you need help debugging or solving a problem, follow these steps to get the fastest, most helpful responses:</p>
+<ol type="1">
+<li><strong>Be specific about what’s broken</strong>:
 <ul>
-<li>If you need to share code to ask for help or to provide help, provide a link to the relevant file in your GitHub repository, along with an idea of the relevant cell and line number(s).</li>
-<li>Minimal code snippets can also be copied and pasted into Ed, but these should be self-contained, not chunks copied from your homework. These snippets should illustrate what you think the correct concept and/or syntax should be with a self-contained example; it’s unlikely you will receive useful help if the snippet can’t be evaluated.</li>
-<li>Make sure you document what you’ve tried (including any searches) so we can focus on new solutions, not repeating things that haven’t already worked. If you haven’t looked for help (<em>e.g.</em> searching for an error message), start there.</li>
-</ul>
+<li>Instead of: <em>“My code isn’t working, I’m getting <code>Error: UndefVarError: x not defined</code>”</em><br>
+</li>
+<li>Try: <em>“When I run <code>julia run.jl</code>, I get <code>Error: UndefVarError: x not defined</code> on line 3. Here’s my code: [code snippet] or a link to my GitHub repo: [link]”</em></li>
+</ul></li>
+<li><strong>Include what you’ve tried</strong>: Add 1-2 sentences about:
+<ul>
+<li>Any error messages (copy-paste them verbatim) or unexpected output</li>
+<li>What you expected to happen</li>
+<li>What you’ve tried to fix it (e.g., “I tried changing the variable name to <code>y</code>, but I still got the same error.” or “I searched on Google and tried the solution in on this linked page, but it didn’t work.”). Neglecting this information may cause us to replicate what you’ve already tried and waste time.</li>
+<li><strong>Do not use screenshots of code.</strong> Provide a link to GitHub or copy or write them into the post (if small).</li>
+</ul></li>
+</ol>
+</section>
+<section id="common-mistakes-to-avoid-on-ed-discussion" class="level4">
+<h4 class="anchored" data-anchor-id="common-mistakes-to-avoid-on-ed-discussion">Common Mistakes to Avoid on Ed Discussion</h4>
+<ol type="1">
+<li><strong>Avoid vague questions</strong>. “Why isn’t my code working?” <strong>Instead</strong>: “I get <code>Error: UndefVarError: x not defined</code> when running this script. I define the variable on line xx and the error is thrown at line yy. I’ve checked the variable scope but I’m not sure why it’s undefined.”</li>
+<li><strong>Do not use screenshots of code</strong>. Screenshots are hard to read, provide accessibility challenges, and cannot be copied for testing. Instead, provide a link to your GitHub repository or copy the relevant code into your post (if small), or post a small example that is self-contained and reproduces your code’s flow.</li>
+<li><strong>Do not leave posts dangling</strong>. When a solution is found, confirm and mark the post as completed.</li>
+</ol>
+</section>
 </section>
 <section id="submitting-assignments" class="level3">
 <h3 class="anchored" data-anchor-id="submitting-assignments">Submitting Assignments</h3>
 <ul>
-<li>Your final submission must be in a PDF. You can generate this in several ways:
-<ul>
-<li><p>If you have set up LaTeX on your system, you can convert a notebook directly to PDF in VS Code or Jupyter Lab (this will automatically work on BioHPC without any additional setup);</p>
+<li><p>Your final submission must be in a PDF.</p></li>
+<li><p>Make sure all mathematical notation is legible and, ideally, typeset appropriately, in the notebook or otherwise (<em>e.g.</em> using LaTeX or Word’s equation editor).</p></li>
+<li><p>If you use a Jupyter notebook, follow the <a href="../tutorials/notebook-to-pdf.html">Notebook to PDF tutorial</a> for step-by-step instructions on converting it to a PDF. That tutorial covers several methods: with and without LaTeX, from VS Code or the command line, and via Quarto.</p>
 <div class="callout callout-style-simple callout-important">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>If you are submitting a PDF from a notebook (versus a separate writeup in <em>e.g.</em> Word), make sure that you evaluate all cells in order with <code>Run Cells</code> before converting.</p>
+<p>Before converting, make sure you evaluate all cells in order with <code>Run All</code>. The converter will capture whatever outputs are currently saved in the notebook — if a cell hasn’t been re-run after a change, the PDF will show the old output.</p>
 </div>
 </div>
-</div></li>
-<li><p>If you have not set up LaTeX, you can export a notebook to HTML and save it from your browser as a PDF;</p></li>
-<li><p>As an alternative, when you commit and push a <code>.ipynb</code> file (a Jupyter Notebook) to your repository, we have set up a <a href="https://docs.github.com/en/actions">GitHub Action</a> to automatically render your notebook to a PDF, which you can then download and submit to Gradescope. However, sometimes GitHub actions can take a while or can stall out, so you’ll need to monitor this and give yourself some time. If you’ve waited a while and your notebook isn’t rendering, reach out on Ed and we can figure out what’s going on. In the worst case (you push your changes close to the deadline), the timestamp of your commit will be evidence that you completed the assignment on time, even if we can’t render the PDF until the next day.</p></li>
-<li><p>Don’t worry if the GitHub Action says its failed if your assignment (or any given problem) isn’t complete: you may have an error due to your incomplete code that causes the Action to fail. You can ignore this unless you think everything should work!</p></li>
-<li><p>If you have written a report outside of a notebook (<em>e.g.</em> in Word), save this to a PDF.</p></li>
+</div>
+<ul>
+<li>If you write your report outside of a notebook (<em>e.g.</em> in Word), save it directly to PDF.</li>
 </ul></li>
-<li>You <strong>do not need</strong> to include code in a written submission, but make sure your final notebook and/or scripts are on your GitHub repository in case there’s an issue.</li>
-<li>PDFs must be submitted by the due date and time to Gradescope <strong>with pages tagged</strong>. Failure to tag pages will receive a 10% deduction.</li>
-<li>If you did not receive credit for your group’s submission, please have someone in your group use a regrade request to bring this to our attention, and we will use the list of names at the top of the page to confirm that you contributed to the assignment.</li>
-<li>Late submissions are accepted within 24 hours with a 50% penalty unless an extension was arranged <strong>ahead of the original deadline</strong>.</li>
+<li><p>You <strong>do not need</strong> to include code in a written submission, but make sure your final notebook and/or scripts are pushed to your GitHub repository in case there’s an issue.</p></li>
+<li><p>PDFs must be submitted by the due date and time to Gradescope <strong>with pages tagged</strong>. Failure to tag pages will receive a 10% deduction.</p></li>
+<li><p>If you did not receive credit for your group’s submission, please have someone in your group use a regrade request to bring this to our attention, and we will use the list of names at the top of the page to confirm that you contributed to the assignment.</p></li>
+<li><p>Late submissions are accepted within 24 hours with a 50% penalty unless an extension was arranged <strong>ahead of the original deadline</strong>.</p></li>
 </ul>
 </section>
 </section>
@@ -433,32 +495,69 @@ window.MathJax = {
 <h3 class="anchored" data-anchor-id="be-honest">Be Honest</h3>
 <ul>
 <li><strong>Write everything in your own words.</strong> It’s perfectly ok to work with others; in fact, we encourage it! But you should write up and implement everything yourself; it’s very easy to convince yourself that you understand something when you’re mimicking someone else’s solution, and often we realize we don’t actually understand something when we try to write it ourselves.</li>
-<li><strong>Cite <em>every</em> outside source you use.</strong> You are allowed, in fact encouraged, to use <em>any</em> outside source<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Getting an idea from an outside source is not a problem, and will not lower your grade; if you’re critically evaluating the idea and implementing and writing your solution yourself (see above), then you’re demonstrating understanding even if the idea originated with someone else. But you <em>must</em> give appropriate credit to that source. Taking credit for someone else’s ideas and failing to properly cite an outside source, including your classmates, is plagiarism, and will be treated accordingly.</li>
-<li><strong>The only sources you do not have to cite are official class materials.</strong> If you use the lectures, lecture notes, website materials, homework solutions, etc, you do not have to cite these.</li>
+<li><strong>Cite <em>every</em> outside source you use.</strong> You are allowed, in fact encouraged, to use <em>any</em> outside source<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Getting an idea from an outside source is not a problem, and will not lower your grade; if you’re critically evaluating the idea and implementing and writing your solution yourself (see above), then you’re demonstrating understanding even if the idea originated with someone else. But you <em>must</em> give appropriate credit to that source. Taking credit for someone else’s ideas and failing to properly cite an outside source, including your classmates, is plagiarism, and will be treated accordingly.</li>
+<li><strong>The only sources you do not have to cite are official class materials.</strong> If you use the lecture notes, website materials, homework solutions from this semester, etc, you do not have to cite these.</li>
 <li><strong>List everyone that you worked with.</strong> Give your classmates proper credit for their assistance. If you get an idea from Ed Discussion, credit the poster. If you’re not sure if you should list someone as a collaborator, err on the side of including them. For discussions in class or in office hours, you don’t have to list everyone who participated in the discussion (though you should if you worked one on one with them), but mention that the class discussion or the office hour was useful.</li>
 </ul>
-<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Yes, including ChatGPT and other LLMs, though you should ask and describe how you used it, including queries and how you incorporated its output into your solution.</p></div></div></section>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Yes, including ChatGPT and other LLMs, though you should ask and describe how you used it, including prompts and how you incorporated its output into your solution.</p></div></div></section>
 <section id="be-clear" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="be-clear">Be Clear</h3>
 <ul>
-<li><strong>Write legibly</strong>. This doesn’t refer to handwriting (since you’ll be submitting PDFs of Jupyter notebooks), but the text itself should be clearly written and well organized, so that it’s easy for the grader to follow your reasoning or explanation. Structuring your solution, and not writing in a stream of consciousness, helps you think more clearly. To reiterate: <em>You will be given no points if the grader cannot easily follow your answer, and the graders have complete discretion to determine this.</em></li>
+<li><strong>Write legibly</strong>. This doesn’t refer to handwriting (since you’ll be submitting PDFs of typed solutions), but the text itself should be clearly written and well organized, so that it’s easy for the grader to follow your reasoning or explanation. Structuring your solution helps you think more clearly. To reiterate: <em>You will be given no points if the grader cannot easily follow your answer, and the grader has complete discretion to determine this.</em></li>
 <li><strong>Write clearly</strong>. Use proper spelling, grammar, logic, etc. We will try not to penalize people for not having complete mastery of English, but again, we need to be able to follow your reasoning.</li>
 <li><strong>Write carefully and completely</strong>. We can only grade what you write; nobody can read your mind, and we will not try. The solution that you submit must stand on its own. If your answer is ambiguous, the TA has been instructed to interpret it the wrong way. Regrade requests also cannot be used to add more information to a solution.</li>
 <li><strong>Don’t submit your first draft</strong>. For most people<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, first drafts are terrible. They are often poorly organized, unclear, and contain gaps or jumps in reasoning. You will likely need to revise, possibly several times, for your answer to be clear, careful, and complete. This is another reason to start the assignment early — if you start late, you may be stuck with your first draft, and your grade is likely to suffer for it.</li>
 <li><strong>State your assumptions</strong>. If you think a problem statement is ambiguous and your solution depends on a particular interpretation, or you need to make some assumptions to solve the problem, make it explicit (though do also ask for clarification in class or on Ed Discussion if time allows).</li>
-<li><strong>Don’t rely on your code</strong>. The TA will not scrutinize your code, which is a waste of time (again, the code is a means to an end — it works or it doesn’t). If you make it clear what your code is supposed to do with a description, then the TA can tell if this logic is correct and any mistake must be something minor in the code. If you just provide code (even if commented), the TA can’t do this without running your code and debugging, which is not a valuable use of time. We want to focus on your ideas.</li>
+<li><strong>Don’t rely on your code</strong>. The TA <strong>will not</strong> look at your code when grading, which is a waste of time<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. If you make it clear what your code is supposed to do with a description, then the TA can tell if this logic is correct and any mistake must be a bug in the code, but this is a lesser mistake than if your solution logic was wrong. If you just provide code (even if commented), the TA can’t do this without running your code and debugging, which is not a valuable use of time. We want to focus on your ideas.</li>
+<li>Do not write a line by line description in plain language of what your code is doing: write down the key equations and/or algorithms that you are trying to implement. For example, you might write:
+<ul>
+<li>“I implemented the linear program<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> in <code>JuMP.jl</code>”</li>
+<li>“I implemented a single-box model with the discretized equation derived above, boundary conditions described above, uncertain inputs chosen as described above, and a time step of <span class="math inline">\(\Delta t = 1 day\)</span>.”</li>
+<li>“I used a two-box model with the boundary between the two boxes at <span class="math inline">\(x=15m\)</span>. Each box has the following equations. The inflow for the second box takes in the outflow from the first box and modifies it according to this equation. The spatial step for the simulation is <span class="math inline">\(\Delta x = 1 m\)</span>.”</li>
+</ul></li>
 </ul>
-<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;Myself included!</p></div></div></section>
-</section>
-<section id="be-concise" class="level2">
-<h2 class="anchored" data-anchor-id="be-concise">Be Concise</h2>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;Myself included!</p></div><div id="fn3"><p><sup>3</sup>&nbsp;The code is a means to an end — it works or it doesn’t.</p></div><div id="fn4"><p><sup>4</sup>&nbsp;Which you should have formulated previously</p></div></div></section>
+<section id="be-concise" class="level3">
+<h3 class="anchored" data-anchor-id="be-concise">Be Concise</h3>
 <ul>
 <li><strong>Keep solutions short</strong>. Organized answers should not be long. There’s a fine balance between conciseness and completeness: find it!</li>
 <li><strong>Don’t regurgitate</strong>. You can reference concepts, models, etc from class without repeating them. Just make it clear what you’re modifying and how you’re using those concepts for that particular problem.</li>
 <li><strong>Don’t bullshit</strong>. You will get no points for word salad, even if you accidentally hit on the right answer.</li>
 </ul>
+</section>
+</section>
+<section id="regrade-requests" class="level2">
+<h2 class="anchored" data-anchor-id="regrade-requests">Regrade Requests</h2>
+<p>If you believe there was an error in the grading of your homework, you may request a regrade. Please submit your request through the course’s grading system and include a detailed explanation of why you believe the grade should be changed. Requests must be submitted within one week of the original grade being posted.</p>
+<ul>
+<li><strong>Do not use a regrade request to ask for more partial credit</strong> (<em>e.g.</em> I think this should only have been worth 1 point off, not 2). We may decide to give you more upon consideration of the regrade request if we find that your answer was not completely correct, but we missed a part of your solution or some other context that would have changed our initial grading.</li>
+<li><strong>Regrade requests can cut both ways</strong>: if we find that your answer was not actually correct or we find additional errors while reviewing your request, we may lower your grade. We will always provide a detailed explanation of our decision.</li>
+</ul>
+<p>If you are unsure about whether you should submit a regrade request, feel free to talk to Prof.&nbsp;Srikrishnan or the TA.</p>
+<section id="what-to-include-in-a-regrade-request" class="level3">
+<h3 class="anchored" data-anchor-id="what-to-include-in-a-regrade-request">What To Include in a Regrade Request</h3>
+<p>To maximize your chances of a successful regrade, please include the following in your request:</p>
+<ol type="1">
+<li><strong>Specificity</strong>: Clearly identify the part of the problem you thought was misgraded.</li>
+<li><strong>Rationale</strong>: Provide evidence to support your claim.
+<ul>
+<li>For example, if you believe your solution is actually correct and the grader missed part of your answer, point out the specific part of your solution that was missed.</li>
+<li>If you believe that your solution was marked incorrectly because the grader misread or misinterpreted the solution, point to the part of your solution that you believe was misinterpreted. <strong>Do not try to add additional information to your solution</strong> but you should explain why what you wrote in your original submission was actually correct.</li>
+</ul></li>
+</ol>
+</section>
+<section id="special-circumstances" class="level3">
+<h3 class="anchored" data-anchor-id="special-circumstances">Special Circumstances</h3>
+<ul>
+<li>If you submit a regrade request successfully arguing that your solution was <strong>marked correct in error</strong> and that you should actually have lost points (with an explanation), we will give you, as extra credit, the points you should have lost as a bonus for how carefully you re-evaluated your solution and for the honesty.
+<ul>
+<li>For example, if a solution was marked correct and you were given 10/10 but you should have lost 2 points, we will give you 12/10 for that problem.</li>
+</ul></li>
+<li>If you submit a regrade request successfully pointing out that there is a significant error in the posted solution, <strong>everyone in the class</strong> will receive a perfect score for that problem.</li>
+</ul>
 
 
+</section>
 </section>
 
 
@@ -514,13 +613,14 @@ window.MathJax = {
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -894,8 +994,8 @@ window.MathJax = {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../policies/exam.html" class="pagination-link" aria-label="Exam Policies">
-        <span class="nav-page-text">Exam Policies</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../policies/quiz.html" class="pagination-link" aria-label="Quiz Policies">
+        <span class="nav-page-text">Quiz Policies</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

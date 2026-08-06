@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.10.3">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>VS Code – Environmental Systems Analysis</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -37,10 +40,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1d1e7f53b840ad8d06c4ae6c57b8588.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-037772e4b0a8fb61e9a28208dd0e90cd.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ba9c0723bac509a7d8c9561700ea21a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-41afc7412041501ec6863dfe70bda895.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -82,9 +85,7 @@ window.MathJax = {
 
 <meta property="og:title" content="VS Code – Environmental Systems Analysis">
 <meta property="og:description" content="Homepage for the Fall 2025 version of BEE 4750/5750, Environmental Systems Analysis, at Cornell University.">
-<meta property="og:image" content="https://envsys.viveks.me/fall2025/slides/images/vs-code-extensions.png">
 <meta property="og:site_name" content="Environmental Systems Analysis">
-<meta property="og:image:alt" content="VS Code Extensions View Logo">
 </head>
 
 <body class="nav-sidebar docked nav-fixed slimcontent quarto-light">
@@ -284,9 +285,22 @@ window.MathJax = {
   <ul class="collapse">
   <li><a href="#installing-vs-code" id="toc-installing-vs-code" class="nav-link" data-scroll-target="#installing-vs-code">Installing VS Code</a></li>
   <li><a href="#install-the-julia-extension" id="toc-install-the-julia-extension" class="nav-link" data-scroll-target="#install-the-julia-extension">Install the Julia Extension</a></li>
-  <li><a href="#install-the-jupyter-notebook-extension" id="toc-install-the-jupyter-notebook-extension" class="nav-link" data-scroll-target="#install-the-jupyter-notebook-extension">Install the Jupyter Notebook Extension</a></li>
+  <li><a href="#install-the-jupyter-extension" id="toc-install-the-jupyter-extension" class="nav-link" data-scroll-target="#install-the-jupyter-extension">Install the Jupyter Extension</a></li>
   </ul></li>
-  <li><a href="#using-github-with-vs-code" id="toc-using-github-with-vs-code" class="nav-link" data-scroll-target="#using-github-with-vs-code">Using GitHub with VS Code</a></li>
+  <li><a href="#using-github-with-vs-code" id="toc-using-github-with-vs-code" class="nav-link" data-scroll-target="#using-github-with-vs-code">Using GitHub with VS Code</a>
+  <ul class="collapse">
+  <li><a href="#clone-a-repository" id="toc-clone-a-repository" class="nav-link" data-scroll-target="#clone-a-repository">Clone a repository</a></li>
+  <li><a href="#commit-and-push-changes" id="toc-commit-and-push-changes" class="nav-link" data-scroll-target="#commit-and-push-changes">Commit and push changes</a></li>
+  <li><a href="#pull-the-latest-changes" id="toc-pull-the-latest-changes" class="nav-link" data-scroll-target="#pull-the-latest-changes">Pull the latest changes</a></li>
+  </ul></li>
+  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a>
+  <ul class="collapse">
+  <li><a href="#julia-extension-cant-find-julia" id="toc-julia-extension-cant-find-julia" class="nav-link" data-scroll-target="#julia-extension-cant-find-julia">Julia extension can’t find Julia</a></li>
+  <li><a href="#jupyter-notebook-wont-run-or-cant-find-kernel" id="toc-jupyter-notebook-wont-run-or-cant-find-kernel" class="nav-link" data-scroll-target="#jupyter-notebook-wont-run-or-cant-find-kernel">Jupyter notebook won’t run or can’t find kernel</a></li>
+  <li><a href="#vs-code-cant-find-git" id="toc-vs-code-cant-find-git" class="nav-link" data-scroll-target="#vs-code-cant-find-git">VS Code can’t find git</a></li>
+  <li><a href="#git-push-asks-for-a-password-repeatedly" id="toc-git-push-asks-for-a-password-repeatedly" class="nav-link" data-scroll-target="#git-push-asks-for-a-password-repeatedly">Git push asks for a password repeatedly</a></li>
+  <li><a href="#how-to-open-vs-code-from-the-terminal" id="toc-how-to-open-vs-code-from-the-terminal" class="nav-link" data-scroll-target="#how-to-open-vs-code-from-the-terminal">How to open VS Code from the terminal</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/setup/vscode.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -314,46 +328,160 @@ window.MathJax = {
 
 <section id="sec-install-code" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="sec-install-code">Install and Set Up VS Code</h2>
-<p>You can skip this section if you already have a coding environment you like; just set it up to work with Julia<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Otherwise, VS Code is as close to an officially supported editor for Julia as you can get. We will follow <a href="https://www.julia-vscode.org/docs/dev/gettingstarted/">this guide for setting up VS Code with Julia</a>.</p>
+<p>You can skip this section if you already have a coding environment you like; just set it up to work with Julia<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Otherwise, VS Code is as close to an officially supported editor for Julia as you can get.</p>
 <div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;I assume that if this is the case, you know/can figure out how to configure your editor. If you aren’t sure, post on Ed and we can find the instructions.</p></div></div><section id="installing-vs-code" class="level3">
 <h3 class="anchored" data-anchor-id="installing-vs-code">Installing VS Code</h3>
-<p>You can download VS Code <a href="https://code.visualstudio.com/download">here</a>; open the downloaded file to install.</p>
+<p>Download VS Code from <a href="https://code.visualstudio.com/download">code.visualstudio.com</a>.</p>
+<ul>
+<li><strong>Windows</strong>: Run the downloaded <code>.exe</code> installer. Accept the defaults — the installer adds VS Code to your <code>PATH</code> and offers a “Open with Code” context menu entry. If you’re installing on a managed machine (e.g., a lab computer), choose the <strong>User Installer</strong>.</li>
+<li><strong>macOS</strong>: Open the downloaded <code>.dmg</code> file and drag the VS Code icon into the Applications folder. After installing, open VS Code, then open the Command Palette (<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>), type <code>shell command</code>, and select <strong>Shell Command: Install ‘code’ command in PATH</strong>. This lets you open VS Code from the terminal with <code>code .</code>.</li>
+</ul>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong>Verify</strong>: After installing, open VS Code. You should see the Welcome page with a “Get Started” section.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="install-the-julia-extension" class="level3">
 <h3 class="anchored" data-anchor-id="install-the-julia-extension">Install the Julia Extension</h3>
 <ol type="1">
 <li>Open VS Code.</li>
-<li>Select View and click Extensions to open the Extension View. This view can also be found on the sidebar with the following logo: <img src="../slides/images/vs-code-extensions.png" class="img-fluid" alt="VS Code Extensions View Logo"></li>
-<li>Search for <code>julia</code> in the search box. Click the green install button.</li>
-<li>Restart VS Code once the installation is complete. It should automatically find your Julia installation; talk to Vivek if not.</li>
+<li>Open the <strong>Extensions</strong> view by clicking the Extensions icon in the sidebar or pressing <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> (<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> on macOS).</li>
+<li>Search for <code>julia</code> in the search box. Install the extension named <strong>Julia</strong> (published by <code>julialang</code>).</li>
+<li>Restart VS Code once the installation is complete.</li>
 </ol>
-<p>The Julia VS Code extension offers you some nice features. You can start a REPL (an interactive Julia coding environment) by opening the “Command Palette” (View -&gt; Command Palette, or CTRL/CMD+SHIFT+P) and typing “REPL” to bring up “Julia: Start REPL”. You can also create <code>*.jl</code> files to write Julia code and execute line by line. However, we will primarily use Jupyter notebooks in this class, but this might be useful for testing code or for your project.</p>
-</section>
-<section id="install-the-jupyter-notebook-extension" class="level3">
-<h3 class="anchored" data-anchor-id="install-the-jupyter-notebook-extension">Install the Jupyter Notebook Extension</h3>
-<p>The Jupyter Notebook extension allows you to export a Jupyter notebook to PDF or to HTML and then to PDF.</p>
-<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout callout-style-simple callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-PDF Export for Gradescope
+<span class="screen-reader-only">Warning</span>Tell VS Code where Julia is installed
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>You will need to export every notebook to a PDF for submission to Gradescope. Direct export to PDF requires a LaTeX installation. If you would like to go this route, please look at <a href="https://www.latex-project.org/get/">the LaTeX installation instructions for your operating system</a>.</p>
-<p>Otherwise, <a href="../setup/homework.html">exporting to HTML and then using your browser to save the resulting page to a PDF</a> is a perfect solution.</p>
+<p>The Julia extension usually finds your Julia installation automatically. If it doesn’t, you’ll need to point it to the Julia executable managed by Juliaup:</p>
+<ol type="1">
+<li>Open VS Code Settings (<kbd>Ctrl</kbd> + <kbd>,</kbd> or <kbd>Cmd</kbd> + <kbd>,</kbd> on macOS).</li>
+<li>Search for <code>julia.executablePath</code>.</li>
+<li>Set it to the path of your Julia 1.11.5 binary. This is usually:
+<ul>
+<li><strong>Windows</strong>: <code>C:\Users\YourUsername\.julia\juliaup\julia-1.11.5+0.x64\bin\julia.exe</code></li>
+<li><strong>macOS</strong>: <code>/Users/YourUsername/.julia/juliaup/julia-1.11.5+0.aarch64/bin/julia</code> (Apple Silicon) or <code>.../x64/...</code> (Intel)</li>
+</ul>
+To find the exact path, run <code>juliaup status</code> in a terminal and look for the 1.11.5 entry.</li>
+<li>Restart VS Code.</li>
+</ol>
 </div>
 </div>
-<p>Follow the same instructions as above, but search for <code>jupyter</code> and install the Jupyter extension. Restart VS Code.</p>
+<p>Once configured, you can start a Julia REPL by opening the Command Palette (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>) and typing <code>Julia: Start REPL</code>. You can also create <code>*.jl</code> files and execute code line by line with <kbd>Shift</kbd> + <kbd>Enter</kbd>.</p>
+</section>
+<section id="install-the-jupyter-extension" class="level3">
+<h3 class="anchored" data-anchor-id="install-the-jupyter-extension">Install the Jupyter Extension</h3>
+<p>The Jupyter extension lets you open, edit, and run Jupyter notebooks (<code>.ipynb</code> files) directly in VS Code.</p>
+<ol type="1">
+<li>Open the <strong>Extensions</strong> view (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>).</li>
+<li>Search for <code>jupyter</code> and install the extension named <strong>Jupyter</strong> (published by Microsoft).</li>
+<li>Restart VS Code.</li>
+</ol>
+<p>When you open a <code>.ipynb</code> file, VS Code will display it as a notebook with code cells you can run. To select the Julia kernel, click the <strong>kernel picker</strong> button in the top-right corner of the notebook (it may say “Select Kernel”) and choose the Julia 1.11.5 kernel.</p>
 </section>
 </section>
 <section id="using-github-with-vs-code" class="level2">
 <h2 class="anchored" data-anchor-id="using-github-with-vs-code">Using GitHub with VS Code</h2>
-<p><a href="https://youtu.be/z5jZ9lrSpqk?t=115&amp;si=PcpNxjmF1ByTUdJq">This Youtube video</a> provides an overview of how to use GitHub within VS Code (with chapters for specific steps) and may be worth watching.</p>
+<p>VS Code has built-in Git and GitHub support through the <strong>Source Control</strong> panel. You don’t need to install any extra extensions — the basics work out of the box.</p>
+<section id="clone-a-repository" class="level3">
+<h3 class="anchored" data-anchor-id="clone-a-repository">Clone a repository</h3>
+<ol type="1">
+<li>Open the Command Palette (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>) and type <code>Git: Clone</code>.</li>
+<li>Paste the repository URL (from your GitHub Classroom assignment) and press <kbd>Enter</kbd>.</li>
+<li>Choose a folder on your computer to save the repository.</li>
+<li>VS Code will ask if you want to open the cloned repository — click <strong>Open</strong>.</li>
+</ol>
+</section>
+<section id="commit-and-push-changes" class="level3">
+<h3 class="anchored" data-anchor-id="commit-and-push-changes">Commit and push changes</h3>
+<ol type="1">
+<li>Open the <strong>Source Control</strong> panel by clicking the branch icon in the sidebar or pressing <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd>.</li>
+<li>You’ll see a list of changed files under <strong>Changes</strong>.</li>
+<li>Hover over the <strong>Changes</strong> heading and click the <strong>+</strong> (Stage All Changes) button.</li>
+<li>Type a commit message in the text box at the top and click the <strong>✓ (Commit)</strong> button.</li>
+<li>Click the <strong>⋯ (More Actions)</strong> menu and select <strong>Push</strong> to send your commits to GitHub.</li>
+</ol>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong>Using the terminal instead</strong>: You can also use the built-in terminal in VS Code (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>`</kbd>) to run <code>git</code> commands directly — see the <a href="../setup/git.html">git setup page</a> for the full workflow.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="pull-the-latest-changes" class="level3">
+<h3 class="anchored" data-anchor-id="pull-the-latest-changes">Pull the latest changes</h3>
+<p>Click the <strong>⋯ (More Actions)</strong> menu in the Source Control panel and select <strong>Pull</strong>, or use the <strong>Synchronize Changes</strong> button (circular arrows) in the status bar at the bottom of the window.</p>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong>Authentication</strong>: The first time you push or pull, GitHub will ask you to sign in. VS Code will open a browser window for GitHub authentication. Follow the prompts; once you authorize VS Code, you won’t need to log in again for that repository.</p>
+<p>For a more detailed walkthrough, <a href="https://youtu.be/z5jZ9lrSpqk?t=115&amp;si=PcpNxjmF1ByTUdJq">this YouTube video</a> covers using GitHub within VS Code.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="troubleshooting" class="level2">
+<h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
+<section id="julia-extension-cant-find-julia" class="level3">
+<h3 class="anchored" data-anchor-id="julia-extension-cant-find-julia">Julia extension can’t find Julia</h3>
+<ol type="1">
+<li>Open VS Code Settings and search for <code>julia.executablePath</code>.</li>
+<li>Set it as described in the <a href="#tell-vs-code-where-julia-is-installed">Tell VS Code where Julia is installed</a> callout above.</li>
+<li>Restart VS Code and try starting the REPL again.</li>
+</ol>
+</section>
+<section id="jupyter-notebook-wont-run-or-cant-find-kernel" class="level3">
+<h3 class="anchored" data-anchor-id="jupyter-notebook-wont-run-or-cant-find-kernel">Jupyter notebook won’t run or can’t find kernel</h3>
+<ul>
+<li>Make sure the <strong>Jupyter</strong> extension (Microsoft) is installed, not just the Julia extension.</li>
+<li>Click the kernel picker (top-right of the notebook) and select the Julia 1.11.5 kernel. If it doesn’t appear, restart VS Code.</li>
+<li>If the kernel still doesn’t appear, open a terminal and run <code>julia --version</code> to confirm Julia 1.11.5 is installed and on your <code>PATH</code>.</li>
+</ul>
+</section>
+<section id="vs-code-cant-find-git" class="level3">
+<h3 class="anchored" data-anchor-id="vs-code-cant-find-git">VS Code can’t find git</h3>
+<p>If the Source Control panel says “Git not found”:</p>
+<ul>
+<li><strong>Windows</strong>: Make sure Git for Windows is installed (see the <a href="../setup/git.html">git setup page</a>). If it is, restart VS Code — it should detect <code>git</code> on your <code>PATH</code>.</li>
+<li><strong>macOS</strong>: Run <code>git --version</code> in a terminal. If it returns an error, install git (see the <a href="../setup/git.html">git setup page</a>), then restart VS Code.</li>
+</ul>
+</section>
+<section id="git-push-asks-for-a-password-repeatedly" class="level3">
+<h3 class="anchored" data-anchor-id="git-push-asks-for-a-password-repeatedly">Git push asks for a password repeatedly</h3>
+<ul>
+<li>Make sure you’re using a personal access token, not your GitHub password. See the <a href="../setup/git.html#authentication">Authentication section of the git setup page</a>.</li>
+<li>If VS Code’s built-in Git authentication isn’t working, try pushing from the built-in terminal instead: open the terminal (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd><code>&lt;/kbd&gt;) and run</code>git push` there. This will use your system’s Git Credential Manager.</kbd></li>
+</ul>
+</section>
+<section id="how-to-open-vs-code-from-the-terminal" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-open-vs-code-from-the-terminal">How to open VS Code from the terminal</h3>
+<ul>
+<li><strong>Windows</strong>: The installer adds <code>code</code> to your <code>PATH</code> automatically. Open Git Bash or PowerShell and run <code>code .</code> to open the current folder in VS Code.</li>
+<li><strong>macOS</strong>: Open the Command Palette (<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>), type <code>shell command</code>, and select <strong>Shell Command: Install ‘code’ command in PATH</strong>. Then you can run <code>code .</code> from any terminal.</li>
+</ul>
 
 
+</section>
 </section>
 
 
@@ -409,13 +537,14 @@ PDF Export for Gradescope
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

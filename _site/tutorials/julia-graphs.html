@@ -1,0 +1,2197 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.3">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Create System Diagrams – Environmental Systems Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../tutorials/julia-jump.html" rel="next">
+<link href="../tutorials/julia-plots.html" rel="prev">
+<link href="../_assets/logos/favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-037772e4b0a8fb61e9a28208dd0e90cd.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-41afc7412041501ec6863dfe70bda895.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<!-- MathJax 3 -->
+<script>
+window.MathJax = {
+    tex: {
+      tags: 'ams'
+    }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<meta property="og:title" content="Create System Diagrams – Environmental Systems Analysis">
+<meta property="og:description" content="Homepage for the Fall 2025 version of BEE 4750/5750, Environmental Systems Analysis, at Cornell University.">
+<meta property="og:site_name" content="Environmental Systems Analysis">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">BEE 4750/5750</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-info" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Info</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-info">    
+        <li>
+    <a class="dropdown-item" href="../syllabus.html">
+ <span class="dropdown-text">Syllabus</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../policies/index.html">
+ <span class="dropdown-text">Course Policies</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../faq/index.html">
+ <span class="dropdown-text">FAQ</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../setup/index.html">
+ <span class="dropdown-text">Setup</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../schedule.html"> 
+<span class="menu-text">Course Schedule</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-coursework" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Coursework</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-coursework">    
+        <li>
+    <a class="dropdown-item" href="../labs/index.html">
+ <span class="dropdown-text">Labs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../hw/index.html">
+ <span class="dropdown-text">Homework</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../project/index.html">
+ <span class="dropdown-text">Final Project</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-resources" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Resources</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-resources">    
+        <li>
+    <a class="dropdown-item" href="../tutorials/index.html">
+ <span class="dropdown-text">Tutorials</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../resources/general.html">
+ <span class="dropdown-text">General Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../resources/julia.html">
+ <span class="dropdown-text">Julia Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../resources/ai.html">
+ <span class="dropdown-text">Generative AI and LLMs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../resources/github.html">
+ <span class="dropdown-text">GitHub Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../resources/markdown.html">
+ <span class="dropdown-text">Markdown Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../resources/optimization.html">
+ <span class="dropdown-text">Optimization Resources</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/bee-envsys-cornell/fall2025"> 
+<span class="menu-text"><i class="fa-brands fa-github" aria-label="github"></i> GitHub</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://canvas.cornell.edu"> 
+<span class="menu-text"><i class="fa-regular fa-notebook" aria-label="notebook"></i> Canvas</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://edstem.org"> 
+<span class="menu-text"><i class="fa-regular fa-comments" aria-label="comments"></i> Ed</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://gradescope.com"> 
+<span class="menu-text"><i class="fa-regular fa-chart-simple" aria-label="chart-simple"></i> Gradescope</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../tutorials/julia-graphs.html">Create System Diagrams</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorials</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/julia-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Julia Basics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/julia-plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Making Plots with Julia</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/julia-graphs.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Create System Diagrams</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/julia-jump.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linear Optimization in Julia</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/latex-notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Using LaTeX in Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/notebook-to-pdf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Converting Jupyter Notebooks to PDF</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#making-systems-diagrams-with-graphplot.jl" id="toc-making-systems-diagrams-with-graphplot.jl" class="nav-link active" data-scroll-target="#making-systems-diagrams-with-graphplot.jl">Making Systems Diagrams with GraphPlot.jl</a>
+  <ul class="collapse">
+  <li><a href="#your-first-graph-nodes-and-edges" id="toc-your-first-graph-nodes-and-edges" class="nav-link" data-scroll-target="#your-first-graph-nodes-and-edges">Your first graph: nodes and edges</a></li>
+  <li><a href="#adding-node-labels" id="toc-adding-node-labels" class="nav-link" data-scroll-target="#adding-node-labels">Adding node labels</a></li>
+  <li><a href="#colouring-nodes" id="toc-colouring-nodes" class="nav-link" data-scroll-target="#colouring-nodes">Colouring nodes</a></li>
+  <li><a href="#directed-graphs-for-stocks-flows" id="toc-directed-graphs-for-stocks-flows" class="nav-link" data-scroll-target="#directed-graphs-for-stocks-flows">Directed graphs for stocks &amp; flows</a></li>
+  <li><a href="#edge-labels-and-line-styling" id="toc-edge-labels-and-line-styling" class="nav-link" data-scroll-target="#edge-labels-and-line-styling">Edge labels and line styling</a></li>
+  <li><a href="#choosing-a-layout" id="toc-choosing-a-layout" class="nav-link" data-scroll-target="#choosing-a-layout">Choosing a layout</a></li>
+  <li><a href="#saving-your-diagram" id="toc-saving-your-diagram" class="nav-link" data-scroll-target="#saving-your-diagram">Saving your diagram</a></li>
+  <li><a href="#complete-example-carbon-cycle-diagram" id="toc-complete-example-carbon-cycle-diagram" class="nav-link" data-scroll-target="#complete-example-carbon-cycle-diagram">Complete example: carbon cycle diagram</a></li>
+  <li><a href="#node-shapes-and-other-customisation" id="toc-node-shapes-and-other-customisation" class="nav-link" data-scroll-target="#node-shapes-and-other-customisation">Node shapes and other customisation</a></li>
+  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next steps</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/tutorials/julia-graphs.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="julia-graphs.ipynb" download="julia-graphs.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Create System Diagrams</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="making-systems-diagrams-with-graphplot.jl" class="level2">
+<h2 class="anchored" data-anchor-id="making-systems-diagrams-with-graphplot.jl">Making Systems Diagrams with GraphPlot.jl</h2>
+<p>This tutorial shows you how to create <strong>node-link diagrams</strong> in Julia using <code>Graphs.jl</code> and <code>GraphPlot.jl</code>. These diagrams are perfect for system maps — think stocks connected by flows, or components linked by relationships. You’ll learn how to build a graph, label nodes and edges, apply colours, and export your diagram. We will also use <code>Compose.jl</code> to draw the graphs, and <code>Cairo.jl</code> and <code>Fontconfig.jl</code> to render the graphs as SVGs for display.</p>
+<section id="your-first-graph-nodes-and-edges" class="level3">
+<h3 class="anchored" data-anchor-id="your-first-graph-nodes-and-edges">Your first graph: nodes and edges</h3>
+<p>A graph is a collection of <strong>nodes</strong> (vertices) connected by <strong>edges</strong>. Let’s create a simple graph with four nodes connected in a chain:</p>
+<div id="2" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-1"><pre class="sourceCode julia code-annotation-code code-with-copy code-annotated"><code class="sourceCode julia"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">Pkg</span></span>
+<span id="annotated-cell-1-2"><a href="#annotated-cell-1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-1-3"><a href="#annotated-cell-1-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Graphs</span></span>
+<span id="annotated-cell-1-4"><a href="#annotated-cell-1-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">GraphPlot</span></span>
+<span id="annotated-cell-1-5"><a href="#annotated-cell-1-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Measures</span></span>
+<span id="annotated-cell-1-6"><a href="#annotated-cell-1-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Compose</span></span>
+<span id="annotated-cell-1-7"><a href="#annotated-cell-1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">Cairo</span></span>
+<span id="annotated-cell-1-8"><a href="#annotated-cell-1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">Fontconfig</span></span>
+<span id="annotated-cell-1-9"><a href="#annotated-cell-1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-1-10"><a href="#annotated-cell-1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a graph with 4 nodes and 3 edges</span></span>
+<span id="annotated-cell-1-11"><a href="#annotated-cell-1-11" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> Graphs.<span class="fu">path_graph</span>(<span class="fl">4</span>)</span>
+<span id="annotated-cell-1-12"><a href="#annotated-cell-1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-1-13"><a href="#annotated-cell-1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw it</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1">1</button><span id="annotated-cell-1-14" class="code-annotation-target"><a href="#annotated-cell-1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">gplot</span>(g) <span class="op">|&gt;</span> <span class="fu">SVG</span>()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="14" data-code-annotation="1">You can replace <code>SVG()</code> with <code>PDF()</code> or <code>PNG()</code> and pass a filename as the argument, <em>e.g.</em> <code>PDF("figure.pdf")</code>.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display">
+
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" version="1.2" width="100mm" height="100mm" viewbox="0 0 100 100" stroke="none" fill="#000000" stroke-width="0.3" font-size="3.88">
+<defs>
+  <marker id="arrow" markerwidth="15" markerheight="7" refx="5" refy="3.5" orient="auto" markerunits="strokeWidth">
+    <path d="M0,0 L15,3.5 L0,7 z" stroke="context-stroke" fill="context-stroke"></path>
+  </marker>
+</defs>
+<g fill="#000000" fill-opacity="0.000" id="img-46f63009-1">
+  <g transform="translate(50,50)">
+    <path d="M-50,-50 L50,-50 50,50 -50,50  z" class="primitive"></path>
+  </g>
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-46f63009-2">
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-46f63009-3">
+  <g transform="translate(78.27,21.73)">
+    <path fill="none" d="M9.71,-9.71 L-9.71,9.71 " class="primitive"></path>
+  </g>
+  <g transform="translate(50,50)">
+    <path fill="none" d="M11.2,-11.2 L-11.2,11.2 " class="primitive"></path>
+  </g>
+  <g transform="translate(21.73,78.27)">
+    <path fill="none" d="M9.71,-9.71 L-9.71,9.71 " class="primitive"></path>
+  </g>
+</g>
+<g fill="#D3D3D3" id="img-46f63009-4">
+</g>
+<g fill="#D3D3D3" id="img-46f63009-5">
+</g>
+<g font-size="4" fill="#000000" id="img-46f63009-6">
+</g>
+<g stroke-width="0" stroke="#000000" stroke-opacity="0.000" fill="#40E0D0" id="img-46f63009-7">
+  <g transform="translate(91.67,8.33)">
+    <circle cx="0" cy="0" r="5" class="primitive"></circle>
+  </g>
+  <g transform="translate(64.88,35.12)">
+    <circle cx="0" cy="0" r="5" class="primitive"></circle>
+  </g>
+  <g transform="translate(35.12,64.88)">
+    <circle cx="0" cy="0" r="5" class="primitive"></circle>
+  </g>
+  <g transform="translate(8.33,91.67)">
+    <circle cx="0" cy="0" r="5" class="primitive"></circle>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-46f63009-8">
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-46f63009-9">
+  <g transform="translate(50,0)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em"></text>
+    </g>
+  </g>
+</g>
+</svg>
+
+
+</div>
+</div>
+<p>You should see a diagram with four circles connected by lines. <code>path_graph(4)</code> creates nodes 1–2–3–4 linked in sequence.</p>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>How to view the plot
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>In VS Code:</strong> Install <code>Cairo.jl</code> (<code>Pkg.add("Cairo")</code>). The plot will appear in the Plot pane.</li>
+<li><strong>In the REPL (terminal):</strong> Use <code>gplothtml(g)</code> to open it in your browser.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="adding-node-labels" class="level3">
+<h3 class="anchored" data-anchor-id="adding-node-labels">Adding node labels</h3>
+<p>Without labels, you can’t tell the nodes apart. Add labels as a vector of strings (one per node):</p>
+<div id="4" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>nodelabel <span class="op">=</span> [<span class="st">"Solar"</span>, <span class="st">"Battery"</span>, <span class="st">"Grid"</span>, <span class="st">"Load"</span>]</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gplot</span>(g, nodelabel<span class="op">=</span>nodelabel) <span class="op">|&gt;</span> <span class="fu">SVG</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" version="1.2" width="100mm" height="100mm" viewbox="0 0 100 100" stroke="none" fill="#000000" stroke-width="0.3" font-size="3.88">
+<defs>
+  <marker id="arrow" markerwidth="15" markerheight="7" refx="5" refy="3.5" orient="auto" markerunits="strokeWidth">
+    <path d="M0,0 L15,3.5 L0,7 z" stroke="context-stroke" fill="context-stroke"></path>
+  </marker>
+</defs>
+<g fill="#000000" fill-opacity="0.000" id="img-76337ee1-1">
+  <g transform="translate(50,50)">
+    <path d="M-50,-50 L50,-50 50,50 -50,50  z" class="primitive"></path>
+  </g>
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-76337ee1-2">
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-76337ee1-3">
+  <g transform="translate(21.89,21.89)">
+    <path fill="none" d="M-9.88,-9.88 L9.88,9.88 " class="primitive"></path>
+  </g>
+  <g transform="translate(50,50)">
+    <path fill="none" d="M-10.86,-10.86 L10.86,10.86 " class="primitive"></path>
+  </g>
+  <g transform="translate(78.11,78.11)">
+    <path fill="none" d="M-9.88,-9.88 L9.88,9.88 " class="primitive"></path>
+  </g>
+</g>
+<g fill="#D3D3D3" id="img-76337ee1-4">
+</g>
+<g fill="#D3D3D3" id="img-76337ee1-5">
+</g>
+<g font-size="4" fill="#000000" id="img-76337ee1-6">
+</g>
+<g stroke-width="0" stroke="#000000" stroke-opacity="0.000" fill="#40E0D0" id="img-76337ee1-7">
+  <g transform="translate(8.33,8.33)">
+    <circle cx="0" cy="0" r="5" class="primitive"></circle>
+  </g>
+  <g transform="translate(35.45,35.45)">
+    <circle cx="0" cy="0" r="5" class="primitive"></circle>
+  </g>
+  <g transform="translate(64.55,64.55)">
+    <circle cx="0" cy="0" r="5" class="primitive"></circle>
+  </g>
+  <g transform="translate(91.67,91.67)">
+    <circle cx="0" cy="0" r="5" class="primitive"></circle>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-76337ee1-8">
+  <g transform="translate(8.33,8.33)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Solar</text>
+    </g>
+  </g>
+  <g transform="translate(35.45,35.45)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Battery</text>
+    </g>
+  </g>
+  <g transform="translate(64.55,64.55)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Grid</text>
+    </g>
+  </g>
+  <g transform="translate(91.67,91.67)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Load</text>
+    </g>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-76337ee1-9">
+  <g transform="translate(50,0)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em"></text>
+    </g>
+  </g>
+</g>
+</svg>
+
+
+</div>
+</div>
+<p>If labels overwrite the nodes, pull them farther out:</p>
+<div id="6" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gplot</span>(g, nodelabel<span class="op">=</span>nodelabel, nodelabeldist<span class="op">=</span><span class="fl">1</span>, nodelabelangleoffset<span class="op">=</span><span class="cn">π</span><span class="op">/</span><span class="fl">4</span>) <span class="op">|&gt;</span> <span class="fu">SVG</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" version="1.2" width="100mm" height="100mm" viewbox="0 0 100 100" stroke="none" fill="#000000" stroke-width="0.3" font-size="3.88">
+<defs>
+  <marker id="arrow" markerwidth="15" markerheight="7" refx="5" refy="3.5" orient="auto" markerunits="strokeWidth">
+    <path d="M0,0 L15,3.5 L0,7 z" stroke="context-stroke" fill="context-stroke"></path>
+  </marker>
+</defs>
+<g fill="#000000" fill-opacity="0.000" id="img-889d851f-1">
+  <g transform="translate(50,50)">
+    <path d="M-50,-50 L50,-50 50,50 -50,50  z" class="primitive"></path>
+  </g>
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-889d851f-2">
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-889d851f-3">
+  <g transform="translate(21.74,78.26)">
+    <path fill="none" d="M-9.72,9.72 L9.72,-9.72 " class="primitive"></path>
+  </g>
+  <g transform="translate(49.99,50.01)">
+    <path fill="none" d="M-11.17,11.17 L11.17,-11.17 " class="primitive"></path>
+  </g>
+  <g transform="translate(78.26,21.74)">
+    <path fill="none" d="M-9.73,9.73 L9.73,-9.73 " class="primitive"></path>
+  </g>
+</g>
+<g fill="#D3D3D3" id="img-889d851f-4">
+</g>
+<g fill="#D3D3D3" id="img-889d851f-5">
+</g>
+<g font-size="4" fill="#000000" id="img-889d851f-6">
+</g>
+<g stroke-width="0" stroke="#000000" stroke-opacity="0.000" fill="#40E0D0" id="img-889d851f-7">
+  <g transform="translate(8.33,91.67)">
+    <circle cx="0" cy="0" r="5" class="primitive"></circle>
+  </g>
+  <g transform="translate(35.14,64.86)">
+    <circle cx="0" cy="0" r="5" class="primitive"></circle>
+  </g>
+  <g transform="translate(64.85,35.15)">
+    <circle cx="0" cy="0" r="5" class="primitive"></circle>
+  </g>
+  <g transform="translate(91.67,8.33)">
+    <circle cx="0" cy="0" r="5" class="primitive"></circle>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-889d851f-8">
+  <g transform="translate(12.02,87.98)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Solar</text>
+    </g>
+  </g>
+  <g transform="translate(38.82,61.18)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Battery</text>
+    </g>
+  </g>
+  <g transform="translate(68.53,31.47)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Grid</text>
+    </g>
+  </g>
+  <g transform="translate(95.35,4.65)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Load</text>
+    </g>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-889d851f-9">
+  <g transform="translate(50,0)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em"></text>
+    </g>
+  </g>
+</g>
+</svg>
+
+
+</div>
+</div>
+<ul>
+<li><code>nodelabeldist</code> — distance from centre of node to label</li>
+<li><code>nodelabelangleoffset</code> — rotation angle; default <code>π/4</code> puts them top-right</li>
+</ul>
+</section>
+<section id="colouring-nodes" class="level3">
+<h3 class="anchored" data-anchor-id="colouring-nodes">Colouring nodes</h3>
+<p>Colour nodes to distinguish types (e.g., generation vs.&nbsp;consumption). Use the <code>nodefillc</code> keyword with a vector the same length as the number of nodes:</p>
+<div id="8" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Colors</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># One colour per node</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>nodefillc <span class="op">=</span> [colorant<span class="st">"gold"</span>, colorant<span class="st">"steelblue"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>             colorant<span class="st">"orange"</span>, colorant<span class="st">"tomato"</span>]</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">gplot</span>(g, nodelabel<span class="op">=</span>nodelabel, nodefillc<span class="op">=</span>nodefillc) <span class="op">|&gt;</span> <span class="fu">SVG</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" version="1.2" width="100mm" height="100mm" viewbox="0 0 100 100" stroke="none" fill="#000000" stroke-width="0.3" font-size="3.88">
+<defs>
+  <marker id="arrow" markerwidth="15" markerheight="7" refx="5" refy="3.5" orient="auto" markerunits="strokeWidth">
+    <path d="M0,0 L15,3.5 L0,7 z" stroke="context-stroke" fill="context-stroke"></path>
+  </marker>
+</defs>
+<g fill="#000000" fill-opacity="0.000" id="img-dd57b2b3-1">
+  <g transform="translate(50,50)">
+    <path d="M-50,-50 L50,-50 50,50 -50,50  z" class="primitive"></path>
+  </g>
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-dd57b2b3-2">
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-dd57b2b3-3">
+  <g transform="translate(78.36,78.36)">
+    <path fill="none" d="M9.62,9.62 L-9.62,-9.62 " class="primitive"></path>
+  </g>
+  <g transform="translate(50,50)">
+    <path fill="none" d="M11.37,11.37 L-11.37,-11.37 " class="primitive"></path>
+  </g>
+  <g transform="translate(21.64,21.64)">
+    <path fill="none" d="M9.62,9.62 L-9.62,-9.62 " class="primitive"></path>
+  </g>
+</g>
+<g fill="#D3D3D3" id="img-dd57b2b3-4">
+</g>
+<g fill="#D3D3D3" id="img-dd57b2b3-5">
+</g>
+<g font-size="4" fill="#000000" id="img-dd57b2b3-6">
+</g>
+<g stroke-width="0" stroke="#000000" stroke-opacity="0.000" id="img-dd57b2b3-7">
+  <g transform="translate(91.67,91.67)" fill="#FFD700">
+    <circle cx="0" cy="0" r="5" class="primitive"></circle>
+  </g>
+  <g transform="translate(65.05,65.05)" fill="#4682B4">
+    <circle cx="0" cy="0" r="5" class="primitive"></circle>
+  </g>
+  <g transform="translate(34.94,34.94)" fill="#FFA500">
+    <circle cx="0" cy="0" r="5" class="primitive"></circle>
+  </g>
+  <g transform="translate(8.33,8.33)" fill="#FF6347">
+    <circle cx="0" cy="0" r="5" class="primitive"></circle>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-dd57b2b3-8">
+  <g transform="translate(91.67,91.67)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Solar</text>
+    </g>
+  </g>
+  <g transform="translate(65.05,65.05)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Battery</text>
+    </g>
+  </g>
+  <g transform="translate(34.94,34.94)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Grid</text>
+    </g>
+  </g>
+  <g transform="translate(8.33,8.33)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Load</text>
+    </g>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-dd57b2b3-9">
+  <g transform="translate(50,0)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em"></text>
+    </g>
+  </g>
+</g>
+</svg>
+
+
+</div>
+</div>
+<p>Or generate a palette automatically:</p>
+<div id="10" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>nodefillc <span class="op">=</span> <span class="fu">distinguishable_colors</span>(<span class="fl">4</span>, colorant<span class="st">"blue"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gplot</span>(g, nodelabel<span class="op">=</span>nodelabel, nodefillc<span class="op">=</span>nodefillc) <span class="op">|&gt;</span> <span class="fu">SVG</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" version="1.2" width="100mm" height="100mm" viewbox="0 0 100 100" stroke="none" fill="#000000" stroke-width="0.3" font-size="3.88">
+<defs>
+  <marker id="arrow" markerwidth="15" markerheight="7" refx="5" refy="3.5" orient="auto" markerunits="strokeWidth">
+    <path d="M0,0 L15,3.5 L0,7 z" stroke="context-stroke" fill="context-stroke"></path>
+  </marker>
+</defs>
+<g fill="#000000" fill-opacity="0.000" id="img-1ae9f7df-1">
+  <g transform="translate(50,50)">
+    <path d="M-50,-50 L50,-50 50,50 -50,50  z" class="primitive"></path>
+  </g>
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-1ae9f7df-2">
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-1ae9f7df-3">
+  <g transform="translate(21.89,78.11)">
+    <path fill="none" d="M-9.88,9.88 L9.88,-9.88 " class="primitive"></path>
+  </g>
+  <g transform="translate(50,50)">
+    <path fill="none" d="M-10.86,10.86 L10.86,-10.86 " class="primitive"></path>
+  </g>
+  <g transform="translate(78.1,21.9)">
+    <path fill="none" d="M-9.88,9.88 L9.88,-9.88 " class="primitive"></path>
+  </g>
+</g>
+<g fill="#D3D3D3" id="img-1ae9f7df-4">
+</g>
+<g fill="#D3D3D3" id="img-1ae9f7df-5">
+</g>
+<g font-size="4" fill="#000000" id="img-1ae9f7df-6">
+</g>
+<g stroke-width="0" stroke="#000000" stroke-opacity="0.000" id="img-1ae9f7df-7">
+  <g transform="translate(8.33,91.67)" fill="#0000FF">
+    <circle cx="0" cy="0" r="5" class="primitive"></circle>
+  </g>
+  <g transform="translate(35.45,64.55)" fill="#A0FF35">
+    <circle cx="0" cy="0" r="5" class="primitive"></circle>
+  </g>
+  <g transform="translate(64.54,35.46)" fill="#24390F">
+    <circle cx="0" cy="0" r="5" class="primitive"></circle>
+  </g>
+  <g transform="translate(91.67,8.33)" fill="#FF987F">
+    <circle cx="0" cy="0" r="5" class="primitive"></circle>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-1ae9f7df-8">
+  <g transform="translate(8.33,91.67)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Solar</text>
+    </g>
+  </g>
+  <g transform="translate(35.45,64.55)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Battery</text>
+    </g>
+  </g>
+  <g transform="translate(64.54,35.46)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Grid</text>
+    </g>
+  </g>
+  <g transform="translate(91.67,8.33)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Load</text>
+    </g>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-1ae9f7df-9">
+  <g transform="translate(50,0)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em"></text>
+    </g>
+  </g>
+</g>
+</svg>
+
+
+</div>
+</div>
+</section>
+<section id="directed-graphs-for-stocks-flows" class="level3">
+<h3 class="anchored" data-anchor-id="directed-graphs-for-stocks-flows">Directed graphs for stocks &amp; flows</h3>
+<p>In a stock-and-flow diagram, flows have <strong>direction</strong>. A directed graph uses arrows to show which way material (money, energy, information) moves. <code>GraphPlot.jl</code> draws arrowheads automatically on directed edges.</p>
+<div id="12" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-6"><pre class="sourceCode julia code-annotation-code code-with-copy code-annotated"><code class="sourceCode julia"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a directed graph: 4 nodes, edges from 1→2, 2→3, 3→4</span></span>
+<span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> Graphs.<span class="fu">path_digraph</span>(<span class="fl">4</span>)</span>
+<span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-6-4"><a href="#annotated-cell-6-4" aria-hidden="true" tabindex="-1"></a>stock_labels <span class="op">=</span> [<span class="st">"Atmosphere"</span>, <span class="st">"Plants"</span>, <span class="st">"Soil"</span>, <span class="st">"Ocean"</span>]</span>
+<span id="annotated-cell-6-5"><a href="#annotated-cell-6-5" aria-hidden="true" tabindex="-1"></a>flow_labels  <span class="op">=</span> [<span class="st">"Photosynthesis"</span>, <span class="st">"Decomposition"</span>, <span class="st">"Runoff"</span>]</span>
+<span id="annotated-cell-6-6"><a href="#annotated-cell-6-6" aria-hidden="true" tabindex="-1"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1">1</button><span id="annotated-cell-6-7" class="code-annotation-target"><a href="#annotated-cell-6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">gplot</span>(g, nodelabel<span class="op">=</span>stock_labels, edgelabel<span class="op">=</span>flow_labels) <span class="op">|&gt;</span> <span class="fu">SVG</span>(<span class="fl">15</span>cm, <span class="fl">10</span>cm)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="7" data-code-annotation="1">You may need to change the size like this to prevent labels from being cut off.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-display">
+
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" version="1.2" width="150mm" height="100mm" viewbox="0 0 150 100" stroke="none" fill="#000000" stroke-width="0.3" font-size="3.88">
+<defs>
+  <marker id="arrow" markerwidth="15" markerheight="7" refx="5" refy="3.5" orient="auto" markerunits="strokeWidth">
+    <path d="M0,0 L15,3.5 L0,7 z" stroke="context-stroke" fill="context-stroke"></path>
+  </marker>
+</defs>
+<g fill="#000000" fill-opacity="0.000" id="img-977de9a0-1">
+  <g transform="translate(75,50)">
+    <path d="M-75,-50 L75,-50 75,50 -75,50  z" class="primitive"></path>
+  </g>
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-977de9a0-2">
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-977de9a0-3">
+  <g transform="translate(119.22,79.48)">
+    <path fill="none" d="M12.75,8.5 L-12.75,-8.5 " class="primitive"></path>
+  </g>
+  <g transform="translate(77.07,51.38)">
+    <path fill="none" d="M14.2,9.46 L-14.2,-9.46 " class="primitive"></path>
+  </g>
+  <g transform="translate(34.93,23.28)">
+    <path fill="none" d="M12.75,8.5 L-12.75,-8.5 " class="primitive"></path>
+  </g>
+</g>
+<g fill="#D3D3D3" id="img-977de9a0-4">
+</g>
+<g fill="#D3D3D3" id="img-977de9a0-5">
+  <g transform="translate(105.09,70.06)">
+    <path d="M-0.13,1.93 L-2.77,-1.85 2.9,-0.08  z" class="primitive"></path>
+  </g>
+  <g transform="translate(61.49,41)">
+    <path d="M-0.13,1.93 L-2.77,-1.85 2.9,-0.08  z" class="primitive"></path>
+  </g>
+  <g transform="translate(20.79,13.86)">
+    <path d="M-0.13,1.93 L-2.77,-1.85 2.9,-0.08  z" class="primitive"></path>
+  </g>
+</g>
+<g font-size="4" fill="#000000" id="img-977de9a0-6">
+  <g transform="translate(117.15,78.1)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Photosynthesis</text>
+    </g>
+  </g>
+  <g transform="translate(75,50)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Decomposition</text>
+    </g>
+  </g>
+  <g transform="translate(32.85,21.9)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Runoff</text>
+    </g>
+  </g>
+</g>
+<g stroke-width="0" stroke="#000000" stroke-opacity="0.000" fill="#40E0D0" id="img-977de9a0-7">
+  <g transform="translate(137.5,91.67)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+  <g transform="translate(96.8,64.53)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+  <g transform="translate(53.2,35.47)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+  <g transform="translate(12.5,8.33)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-977de9a0-8">
+  <g transform="translate(137.5,91.67)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Atmosphere</text>
+    </g>
+  </g>
+  <g transform="translate(96.8,64.53)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Plants</text>
+    </g>
+  </g>
+  <g transform="translate(53.2,35.47)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Soil</text>
+    </g>
+  </g>
+  <g transform="translate(12.5,8.33)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Ocean</text>
+    </g>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-977de9a0-9">
+  <g transform="translate(75,0)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em"></text>
+    </g>
+  </g>
+</g>
+</svg>
+
+
+</div>
+</div>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Use <code>SimpleDiGraph</code> (directed) for flows with arrows. Use <code>SimpleGraph</code> (undirected) for mutual relationships. See the <a href="https://juliagraphs.org/Graphs.jl/stable/">Graphs.jl docs</a> for the full API.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="edge-labels-and-line-styling" class="level3">
+<h3 class="anchored" data-anchor-id="edge-labels-and-line-styling">Edge labels and line styling</h3>
+<p>Label your edges to show what each flow represents:</p>
+<div id="14" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>edgelabel <span class="op">=</span> [<span class="st">"Photosynthesis"</span>, <span class="st">"Decomposition"</span>, <span class="st">"Runoff"</span>]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gplot</span>(g, nodelabel<span class="op">=</span>stock_labels, edgelabel<span class="op">=</span>edgelabel) <span class="op">|&gt;</span> <span class="fu">SVG</span>(<span class="fl">15</span>cm, <span class="fl">10</span>cm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" version="1.2" width="150mm" height="100mm" viewbox="0 0 150 100" stroke="none" fill="#000000" stroke-width="0.3" font-size="3.88">
+<defs>
+  <marker id="arrow" markerwidth="15" markerheight="7" refx="5" refy="3.5" orient="auto" markerunits="strokeWidth">
+    <path d="M0,0 L15,3.5 L0,7 z" stroke="context-stroke" fill="context-stroke"></path>
+  </marker>
+</defs>
+<g fill="#000000" fill-opacity="0.000" id="img-95896707-1">
+  <g transform="translate(75,50)">
+    <path d="M-75,-50 L75,-50 75,50 -75,50  z" class="primitive"></path>
+  </g>
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-95896707-2">
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-95896707-3">
+  <g transform="translate(119.39,79.59)">
+    <path fill="none" d="M12.58,8.39 L-12.58,-8.39 " class="primitive"></path>
+  </g>
+  <g transform="translate(76.88,51.25)">
+    <path fill="none" d="M14.73,9.82 L-14.73,-9.82 " class="primitive"></path>
+  </g>
+  <g transform="translate(34.57,23.04)">
+    <path fill="none" d="M12.39,8.26 L-12.39,-8.26 " class="primitive"></path>
+  </g>
+</g>
+<g fill="#D3D3D3" id="img-95896707-4">
+</g>
+<g fill="#D3D3D3" id="img-95896707-5">
+  <g transform="translate(105.42,70.28)">
+    <path d="M-0.13,1.93 L-2.77,-1.85 2.9,-0.08  z" class="primitive"></path>
+  </g>
+  <g transform="translate(60.77,40.51)">
+    <path d="M-0.13,1.93 L-2.77,-1.85 2.9,-0.08  z" class="primitive"></path>
+  </g>
+  <g transform="translate(20.79,13.86)">
+    <path d="M-0.13,1.93 L-2.77,-1.85 2.9,-0.08  z" class="primitive"></path>
+  </g>
+</g>
+<g font-size="4" fill="#000000" id="img-95896707-6">
+  <g transform="translate(117.32,78.21)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Photosynthesis</text>
+    </g>
+  </g>
+  <g transform="translate(74.81,49.87)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Decomposition</text>
+    </g>
+  </g>
+  <g transform="translate(32.49,21.66)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Runoff</text>
+    </g>
+  </g>
+</g>
+<g stroke-width="0" stroke="#000000" stroke-opacity="0.000" fill="#40E0D0" id="img-95896707-7">
+  <g transform="translate(137.5,91.67)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+  <g transform="translate(97.13,64.75)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+  <g transform="translate(52.48,34.99)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+  <g transform="translate(12.5,8.33)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-95896707-8">
+  <g transform="translate(137.5,91.67)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Atmosphere</text>
+    </g>
+  </g>
+  <g transform="translate(97.13,64.75)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Plants</text>
+    </g>
+  </g>
+  <g transform="translate(52.48,34.99)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Soil</text>
+    </g>
+  </g>
+  <g transform="translate(12.5,8.33)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Ocean</text>
+    </g>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-95896707-9">
+  <g transform="translate(75,0)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em"></text>
+    </g>
+  </g>
+</g>
+</svg>
+
+
+</div>
+</div>
+<p>Adjust edge label placement with <code>edgelabeldistx</code> and <code>edgelabeldisty</code>:</p>
+<div id="16" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gplot</span>(g, nodelabel<span class="op">=</span>stock_labels, edgelabel<span class="op">=</span>edgelabel,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>      edgelabeldistx<span class="op">=</span><span class="fl">0.5</span>, edgelabeldisty<span class="op">=</span><span class="fl">0.5</span>) <span class="op">|&gt;</span> <span class="fu">SVG</span>(<span class="fl">15</span>cm, <span class="fl">10</span>cm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" version="1.2" width="150mm" height="100mm" viewbox="0 0 150 100" stroke="none" fill="#000000" stroke-width="0.3" font-size="3.88">
+<defs>
+  <marker id="arrow" markerwidth="15" markerheight="7" refx="5" refy="3.5" orient="auto" markerunits="strokeWidth">
+    <path d="M0,0 L15,3.5 L0,7 z" stroke="context-stroke" fill="context-stroke"></path>
+  </marker>
+</defs>
+<g fill="#000000" fill-opacity="0.000" id="img-269b0163-1">
+  <g transform="translate(75,50)">
+    <path d="M-75,-50 L75,-50 75,50 -75,50  z" class="primitive"></path>
+  </g>
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-269b0163-2">
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-269b0163-3">
+  <g transform="translate(30.75,79.5)">
+    <path fill="none" d="M-12.72,8.48 L12.72,-8.48 " class="primitive"></path>
+  </g>
+  <g transform="translate(72.94,51.38)">
+    <path fill="none" d="M-14.27,9.51 L14.27,-9.51 " class="primitive"></path>
+  </g>
+  <g transform="translate(115.11,23.26)">
+    <path fill="none" d="M-12.71,8.47 L12.71,-8.47 " class="primitive"></path>
+  </g>
+</g>
+<g fill="#D3D3D3" id="img-269b0163-4">
+</g>
+<g fill="#D3D3D3" id="img-269b0163-5">
+  <g transform="translate(44.85,70.1)">
+    <path d="M-2.9,-0.08 L2.77,-1.85 0.13,1.93  z" class="primitive"></path>
+  </g>
+  <g transform="translate(88.59,40.94)">
+    <path d="M-2.9,-0.08 L2.77,-1.85 0.13,1.93  z" class="primitive"></path>
+  </g>
+  <g transform="translate(129.21,13.86)">
+    <path d="M-2.9,-0.08 L2.77,-1.85 0.13,1.93  z" class="primitive"></path>
+  </g>
+</g>
+<g font-size="4" fill="#000000" id="img-269b0163-6">
+  <g transform="translate(36.73,80.72)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Photosynthesis</text>
+    </g>
+  </g>
+  <g transform="translate(78.92,52.6)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Decomposition</text>
+    </g>
+  </g>
+  <g transform="translate(121.1,24.48)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Runoff</text>
+    </g>
+  </g>
+</g>
+<g stroke-width="0" stroke="#000000" stroke-opacity="0.000" fill="#40E0D0" id="img-269b0163-7">
+  <g transform="translate(12.5,91.67)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+  <g transform="translate(53.15,64.57)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+  <g transform="translate(96.88,35.41)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+  <g transform="translate(137.5,8.33)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-269b0163-8">
+  <g transform="translate(12.5,91.67)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Atmosphere</text>
+    </g>
+  </g>
+  <g transform="translate(53.15,64.57)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Plants</text>
+    </g>
+  </g>
+  <g transform="translate(96.88,35.41)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Soil</text>
+    </g>
+  </g>
+  <g transform="translate(137.5,8.33)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Ocean</text>
+    </g>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-269b0163-9">
+  <g transform="translate(75,0)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em"></text>
+    </g>
+  </g>
+</g>
+</svg>
+
+
+</div>
+</div>
+<p>To colour specific edges differently, use <code>edgestrokec</code>:</p>
+<div id="18" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>edge_colours <span class="op">=</span> [colorant<span class="st">"green"</span>, colorant<span class="st">"brown"</span>, colorant<span class="st">"blue"</span>]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gplot</span>(g, nodelabel<span class="op">=</span>stock_labels, edgelabel<span class="op">=</span>edgelabel,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>      edgestrokec<span class="op">=</span>edge_colours) <span class="op">|&gt;</span> <span class="fu">SVG</span>(<span class="fl">15</span>cm, <span class="fl">10</span>cm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" version="1.2" width="150mm" height="100mm" viewbox="0 0 150 100" stroke="none" fill="#000000" stroke-width="0.3" font-size="3.88">
+<defs>
+  <marker id="arrow" markerwidth="15" markerheight="7" refx="5" refy="3.5" orient="auto" markerunits="strokeWidth">
+    <path d="M0,0 L15,3.5 L0,7 z" stroke="context-stroke" fill="context-stroke"></path>
+  </marker>
+</defs>
+<g fill="#000000" fill-opacity="0.000" id="img-aedf662f-1">
+  <g transform="translate(75,50)">
+    <path d="M-75,-50 L75,-50 75,50 -75,50  z" class="primitive"></path>
+  </g>
+</g>
+<g stroke-width="1.5" id="img-aedf662f-2">
+</g>
+<g stroke-width="1.5" id="img-aedf662f-3">
+  <g transform="translate(30.55,79.63)" stroke="#008000">
+    <path fill="none" d="M-12.52,8.35 L12.52,-8.35 " class="primitive"></path>
+  </g>
+  <g transform="translate(72.93,51.38)" stroke="#A52A2A">
+    <path fill="none" d="M-14.66,9.77 L14.66,-9.77 " class="primitive"></path>
+  </g>
+  <g transform="translate(115.31,23.13)" stroke="#0000FF">
+    <path fill="none" d="M-12.52,8.34 L12.52,-8.34 " class="primitive"></path>
+  </g>
+</g>
+<g transform="translate(44.46,70.36)" fill="#008000">
+  <path d="M-2.9,-0.08 L2.77,-1.85 0.13,1.93  z" class="primitive"></path>
+</g>
+<g transform="translate(88.97,40.68)" fill="#A52A2A">
+  <path d="M-2.9,-0.08 L2.77,-1.85 0.13,1.93  z" class="primitive"></path>
+</g>
+<g transform="translate(129.21,13.86)" fill="#0000FF">
+  <path d="M-2.9,-0.08 L2.77,-1.85 0.13,1.93  z" class="primitive"></path>
+</g>
+<g font-size="4" fill="#000000" id="img-aedf662f-4">
+  <g transform="translate(32.63,78.25)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Photosynthesis</text>
+    </g>
+  </g>
+  <g transform="translate(75.01,49.99)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Decomposition</text>
+    </g>
+  </g>
+  <g transform="translate(117.38,21.74)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Runoff</text>
+    </g>
+  </g>
+</g>
+<g stroke-width="0" stroke="#000000" stroke-opacity="0.000" fill="#40E0D0" id="img-aedf662f-5">
+  <g transform="translate(12.5,91.67)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+  <g transform="translate(52.75,64.83)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+  <g transform="translate(97.27,35.16)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+  <g transform="translate(137.5,8.33)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-aedf662f-6">
+  <g transform="translate(12.5,91.67)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Atmosphere</text>
+    </g>
+  </g>
+  <g transform="translate(52.75,64.83)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Plants</text>
+    </g>
+  </g>
+  <g transform="translate(97.27,35.16)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Soil</text>
+    </g>
+  </g>
+  <g transform="translate(137.5,8.33)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Ocean</text>
+    </g>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-aedf662f-7">
+  <g transform="translate(75,0)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em"></text>
+    </g>
+  </g>
+</g>
+</svg>
+
+
+</div>
+</div>
+</section>
+<section id="choosing-a-layout" class="level3">
+<h3 class="anchored" data-anchor-id="choosing-a-layout">Choosing a layout</h3>
+<p>Different layouts reveal different structure. Try these on your graph:</p>
+<div id="20" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Force-directed (default, good for most cases)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gplot</span>(g, layout<span class="op">=</span>spring_layout, nodelabel<span class="op">=</span>stock_labels) <span class="op">|&gt;</span> <span class="fu">SVG</span>(<span class="fl">15</span>cm, <span class="fl">10</span>cm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" version="1.2" width="150mm" height="100mm" viewbox="0 0 150 100" stroke="none" fill="#000000" stroke-width="0.3" font-size="3.88">
+<defs>
+  <marker id="arrow" markerwidth="15" markerheight="7" refx="5" refy="3.5" orient="auto" markerunits="strokeWidth">
+    <path d="M0,0 L15,3.5 L0,7 z" stroke="context-stroke" fill="context-stroke"></path>
+  </marker>
+</defs>
+<g fill="#000000" fill-opacity="0.000" id="img-ef75e1f5-1">
+  <g transform="translate(75,50)">
+    <path d="M-75,-50 L75,-50 75,50 -75,50  z" class="primitive"></path>
+  </g>
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-ef75e1f5-2">
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-ef75e1f5-3">
+  <g transform="translate(119.23,79.48)">
+    <path fill="none" d="M12.75,8.5 L-12.75,-8.5 " class="primitive"></path>
+  </g>
+  <g transform="translate(77.08,51.38)">
+    <path fill="none" d="M14.2,9.47 L-14.2,-9.47 " class="primitive"></path>
+  </g>
+  <g transform="translate(34.93,23.28)">
+    <path fill="none" d="M12.75,8.5 L-12.75,-8.5 " class="primitive"></path>
+  </g>
+</g>
+<g fill="#D3D3D3" id="img-ef75e1f5-4">
+</g>
+<g fill="#D3D3D3" id="img-ef75e1f5-5">
+  <g transform="translate(105.09,70.06)">
+    <path d="M-0.13,1.93 L-2.77,-1.85 2.9,-0.08  z" class="primitive"></path>
+  </g>
+  <g transform="translate(61.49,41)">
+    <path d="M-0.13,1.93 L-2.77,-1.85 2.9,-0.08  z" class="primitive"></path>
+  </g>
+  <g transform="translate(20.79,13.86)">
+    <path d="M-0.13,1.93 L-2.77,-1.85 2.9,-0.08  z" class="primitive"></path>
+  </g>
+</g>
+<g font-size="4" fill="#000000" id="img-ef75e1f5-6">
+</g>
+<g stroke-width="0" stroke="#000000" stroke-opacity="0.000" fill="#40E0D0" id="img-ef75e1f5-7">
+  <g transform="translate(137.5,91.67)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+  <g transform="translate(96.8,64.53)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+  <g transform="translate(53.2,35.47)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+  <g transform="translate(12.5,8.33)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-ef75e1f5-8">
+  <g transform="translate(137.5,91.67)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Atmosphere</text>
+    </g>
+  </g>
+  <g transform="translate(96.8,64.53)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Plants</text>
+    </g>
+  </g>
+  <g transform="translate(53.2,35.47)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Soil</text>
+    </g>
+  </g>
+  <g transform="translate(12.5,8.33)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Ocean</text>
+    </g>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-ef75e1f5-9">
+  <g transform="translate(75,0)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em"></text>
+    </g>
+  </g>
+</g>
+</svg>
+
+
+</div>
+</div>
+<div id="22" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Circular --- good for closed loops like nutrient cycles</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gplot</span>(g, layout<span class="op">=</span>circular_layout, nodelabel<span class="op">=</span>stock_labels) <span class="op">|&gt;</span> <span class="fu">SVG</span>(<span class="fl">15</span>cm, <span class="fl">10</span>cm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" version="1.2" width="150mm" height="100mm" viewbox="0 0 150 100" stroke="none" fill="#000000" stroke-width="0.3" font-size="3.88">
+<defs>
+  <marker id="arrow" markerwidth="15" markerheight="7" refx="5" refy="3.5" orient="auto" markerunits="strokeWidth">
+    <path d="M0,0 L15,3.5 L0,7 z" stroke="context-stroke" fill="context-stroke"></path>
+  </marker>
+</defs>
+<g fill="#000000" fill-opacity="0.000" id="img-16caeefa-1">
+  <g transform="translate(75,50)">
+    <path d="M-75,-50 L75,-50 75,50 -75,50  z" class="primitive"></path>
+  </g>
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-16caeefa-2">
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-16caeefa-3">
+  <g transform="translate(108.33,69.45)">
+    <path fill="none" d="M23.65,-15.77 L-23.65,15.77 " class="primitive"></path>
+  </g>
+  <g transform="translate(45.83,72.22)">
+    <path fill="none" d="M23.65,15.77 L-23.65,-15.77 " class="primitive"></path>
+  </g>
+  <g transform="translate(41.67,30.55)">
+    <path fill="none" d="M-23.65,15.77 L23.65,-15.77 " class="primitive"></path>
+  </g>
+</g>
+<g fill="#D3D3D3" id="img-16caeefa-4">
+</g>
+<g fill="#D3D3D3" id="img-16caeefa-5">
+  <g transform="translate(83.29,86.14)">
+    <path d="M2.9,0.08 L-2.77,1.85 -0.13,-1.93  z" class="primitive"></path>
+  </g>
+  <g transform="translate(20.79,55.53)">
+    <path d="M-0.13,1.93 L-2.77,-1.85 2.9,-0.08  z" class="primitive"></path>
+  </g>
+  <g transform="translate(66.71,13.86)">
+    <path d="M-2.9,-0.08 L2.77,-1.85 0.13,1.93  z" class="primitive"></path>
+  </g>
+</g>
+<g font-size="4" fill="#000000" id="img-16caeefa-6">
+</g>
+<g stroke-width="0" stroke="#000000" stroke-opacity="0.000" fill="#40E0D0" id="img-16caeefa-7">
+  <g transform="translate(137.5,50)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+  <g transform="translate(75,91.67)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+  <g transform="translate(12.5,50)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+  <g transform="translate(75,8.33)">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-16caeefa-8">
+  <g transform="translate(137.5,50)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Atmosphere</text>
+    </g>
+  </g>
+  <g transform="translate(75,91.67)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Plants</text>
+    </g>
+  </g>
+  <g transform="translate(12.5,50)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Soil</text>
+    </g>
+  </g>
+  <g transform="translate(75,8.33)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Ocean</text>
+    </g>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-16caeefa-9">
+  <g transform="translate(75,0)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em"></text>
+    </g>
+  </g>
+</g>
+</svg>
+
+
+</div>
+</div>
+</section>
+<section id="saving-your-diagram" class="level3">
+<h3 class="anchored" data-anchor-id="saving-your-diagram">Saving your diagram</h3>
+<p>Use <code>Compose.jl</code> with <code>Cairo.jl</code> and <code>Fontconfig.jl</code> to export your diagram as PNG, PDF, or SVG:</p>
+<div id="24" class="cell" data-execute="false" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Compose</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">Cairo</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">Fontconfig</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the plot</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> <span class="fu">gplot</span>(g, nodelabel<span class="op">=</span>stock_labels, nodefillc<span class="op">=</span>nodefillc)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Save as PNG</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>p <span class="op">|&gt;</span> <span class="fu">PNG</span>(<span class="st">"stock-flow.png"</span>, <span class="fl">16</span>cm, <span class="fl">16</span>cm)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Save as PDF (vector format, scales to any size)</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>p <span class="op">|&gt;</span> <span class="fu">PDF</span>(<span class="st">"stock-flow.pdf"</span>, <span class="fl">16</span>cm, <span class="fl">16</span>cm)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Save as SVG</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>p <span class="op">|&gt;</span> <span class="fu">SVG</span>(<span class="st">"stock-flow.svg"</span>, <span class="fl">16</span>cm, <span class="fl">16</span>cm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="complete-example-carbon-cycle-diagram" class="level3">
+<h3 class="anchored" data-anchor-id="complete-example-carbon-cycle-diagram">Complete example: carbon cycle diagram</h3>
+<p>Here is a full script you can copy and run, using <code>SimpleDiGraph</code> instead of <code>path_digraph</code> as above. It builds a simple carbon-cycle model with four stocks (atmosphere, plants, soil, ocean) and five flows.</p>
+<div id="26" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Graphs</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">GraphPlot</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Colors</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Compose</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">Cairo</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">Fontconfig</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Build the directed graph ---</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Nodes: 1=Atmosphere, 2=Plants, 3=Soil, 4=Ocean</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Edges (flows):</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#   1→2  photosynthesis</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">#   2→3  litter fall</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">#   3→1  decomopsi</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">#   1→4  ocean uptake</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   4→1  ocean release</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> <span class="fu">SimpleDiGraph</span>(<span class="fl">4</span>) <span class="co"># argument is number of nodes</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="fu">add_edge!</span>(g, <span class="fl">1</span>, <span class="fl">2</span>)   <span class="co"># atmosphere → plants</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="fu">add_edge!</span>(g, <span class="fl">1</span>, <span class="fl">4</span>)   <span class="co"># atmosphere → ocean</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="fu">add_edge!</span>(g, <span class="fl">2</span>, <span class="fl">3</span>)   <span class="co"># plants → soil</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="fu">add_edge!</span>(g, <span class="fl">3</span>, <span class="fl">1</span>)   <span class="co"># soil → atmosphere</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="fu">add_edge!</span>(g, <span class="fl">4</span>, <span class="fl">1</span>)   <span class="co"># ocean → atmosphere</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Labels ---</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>nodelabel <span class="op">=</span> [<span class="st">"Atmosphere"</span>, <span class="st">"Plants"</span>, <span class="st">"Soil"</span>, <span class="st">"Ocean"</span>]</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>edgelabel <span class="op">=</span> [<span class="st">"Photosynthesis"</span>, <span class="st">"Ocean uptake"</span>, <span class="st">"Litter fall"</span>, </span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Respiration"</span>, <span class="st">"Ocean release"</span>]</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Colours ---</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>nodefillc <span class="op">=</span> [colorant<span class="st">"lightblue"</span>, colorant<span class="st">"green"</span>,</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>             colorant<span class="st">"tan2"</span>, colorant<span class="st">"deepskyblue"</span>]</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Draw ---</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> <span class="fu">gplot</span>(g,</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>    nodelabel      <span class="op">=</span> nodelabel,</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>    nodefillc      <span class="op">=</span> nodefillc,</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>    edgelabel      <span class="op">=</span> edgelabel,</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>    layout         <span class="op">=</span> circular_layout, </span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>    linetype       <span class="op">=</span> <span class="st">"curve"</span>,</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>    plot_size      <span class="op">=</span> (<span class="fl">15</span>cm, <span class="fl">10</span>cm)</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Save ---</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>p <span class="op">|&gt;</span> <span class="fu">SVG</span>(<span class="fl">15</span>cm, <span class="fl">10</span>cm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" version="1.2" width="150mm" height="100mm" viewbox="0 0 150 100" stroke="none" fill="#000000" stroke-width="0.3" font-size="3.88">
+<defs>
+  <marker id="arrow" markerwidth="15" markerheight="7" refx="5" refy="3.5" orient="auto" markerunits="strokeWidth">
+    <path d="M0,0 L15,3.5 L0,7 z" stroke="context-stroke" fill="context-stroke"></path>
+  </marker>
+</defs>
+<g fill="#000000" fill-opacity="0.000" id="img-65004779-1">
+  <g transform="translate(75,50)">
+    <path d="M-75,-50 L75,-50 75,50 -75,50  z" class="primitive"></path>
+  </g>
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-65004779-2">
+  <g transform="translate(95.59,61.49)">
+    <path fill="none" d="M34.19,-10.67 C-3.22,-6.72 -12.53,-3.77 -18.45,21.17" class="primitive"></path>
+  </g>
+  <g transform="translate(120.27,22.06)">
+    <path fill="none" d="M16.01,22.79 C10.08,-2.14 5.66,-8.35 -31.75,-12.3" class="primitive"></path>
+  </g>
+  <g transform="translate(57.77,63.73)">
+    <path fill="none" d="M16.01,22.79 C10.08,-2.14 5.66,-8.35 -31.75,-12.3" class="primitive"></path>
+  </g>
+  <g transform="translate(72.62,65.22)">
+    <path fill="none" d="M-53.8,-12.16 C-8.35,9.86 8.35,12.16 53.8,-9.86" class="primitive"></path>
+  </g>
+  <g transform="translate(92.23,36.27)">
+    <path fill="none" d="M-16.01,-22.79 C-10.08,2.14 -5.66,8.35 31.75,12.3" class="primitive"></path>
+  </g>
+</g>
+<g stroke-width="1.5" stroke="#D3D3D3" id="img-65004779-3">
+</g>
+<g fill="#D3D3D3" id="img-65004779-4">
+  <g transform="translate(76.83,83.94)">
+    <path d="M2.42,-1.07 L-0.61,2.58 -1.81,-1.51  z" class="primitive"></path>
+  </g>
+  <g transform="translate(86.58,9.56)">
+    <path d="M1.6,1.61 L-3.87,-0.41 2.27,-1.2  z" class="primitive"></path>
+  </g>
+  <g transform="translate(24.08,51.22)">
+    <path d="M1.6,1.61 L-3.87,-0.41 2.27,-1.2  z" class="primitive"></path>
+  </g>
+  <g transform="translate(128.01,54.6)">
+    <path d="M-2.84,-0.39 L3.17,-1.53 -0.33,1.92  z" class="primitive"></path>
+  </g>
+  <g transform="translate(125.92,48.78)">
+    <path d="M-1.6,-1.61 L3.87,0.41 -2.27,1.2  z" class="primitive"></path>
+  </g>
+</g>
+<g fill="#D3D3D3" id="img-65004779-5">
+</g>
+<g font-size="4" fill="#000000" id="img-65004779-6">
+  <g transform="translate(91.66,58.86)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Photosynthesis</text>
+    </g>
+  </g>
+  <g transform="translate(124.2,19.44)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Ocean uptake</text>
+    </g>
+  </g>
+  <g transform="translate(61.7,61.1)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Litter fall</text>
+    </g>
+  </g>
+  <g transform="translate(72.62,70.72)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Respiration</text>
+    </g>
+  </g>
+  <g transform="translate(88.3,38.9)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Ocean release</text>
+    </g>
+  </g>
+</g>
+<g stroke-width="0" stroke="#000000" stroke-opacity="0.000" id="img-65004779-7">
+  <g transform="translate(137.5,50)" fill="#ADD8E6">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+  <g transform="translate(75,91.67)" fill="#008000">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+  <g transform="translate(12.5,50)" fill="#EE9A49">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+  <g transform="translate(75,8.33)" fill="#00BFFF">
+    <circle cx="0" cy="0" r="7.5" class="primitive"></circle>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-65004779-8">
+  <g transform="translate(137.5,50)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Atmosphere</text>
+    </g>
+  </g>
+  <g transform="translate(75,91.67)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Plants</text>
+    </g>
+  </g>
+  <g transform="translate(12.5,50)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Soil</text>
+    </g>
+  </g>
+  <g transform="translate(75,8.33)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em">Ocean</text>
+    </g>
+  </g>
+</g>
+<g font-family="Helvetica" font-size="4" fill="#000000" id="img-65004779-9">
+  <g transform="translate(75,0)">
+    <g class="primitive">
+      <text text-anchor="middle" dy="0.35em"></text>
+    </g>
+  </g>
+</g>
+</svg>
+
+
+</div>
+</div>
+</section>
+<section id="node-shapes-and-other-customisation" class="level3">
+<h3 class="anchored" data-anchor-id="node-shapes-and-other-customisation">Node shapes and other customisation</h3>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>GraphPlot.jl only draws <strong>circular nodes</strong>. If you need rectangles, diamonds, or custom shapes for stock-and-flow diagrams (e.g., rectangles for stocks, valves for flows), you will need a different package:</p>
+<ul>
+<li><strong>GraphRecipes.jl</strong> (with Plots.jl) — supports <code>markershape</code> for different node shapes.</li>
+<li><strong>GraphMakie.jl</strong> — the most flexible; supports custom node markers, interactive plots, and 3D.</li>
+</ul>
+<p>You can install these packages the same way as the others (<code>Pkg.add("GraphRecipes")</code> or <code>Pkg.add("GraphMakie")</code>).</p>
+</div>
+</div>
+</div>
+</section>
+<section id="troubleshooting" class="level3">
+<h3 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 38%">
+<col style="width: 61%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Package GraphPlot not found</code></td>
+<td>Run <code>Pkg.add("GraphPlot")</code> in the REPL.</td>
+</tr>
+<tr class="even">
+<td>Plot doesn’t appear in VS Code</td>
+<td>Run <code>Pkg.add("Cairo")</code>, then restart Julia.</td>
+</tr>
+<tr class="odd">
+<td>Labels overlap nodes</td>
+<td>Increase <code>nodelabeldist</code> (e.g., <code>2.0</code>).</td>
+</tr>
+<tr class="even">
+<td>“No display backend” error</td>
+<td>Install Cairo (<code>Pkg.add("Cairo")</code>) and try <code>using Cairo</code> first.</td>
+</tr>
+<tr class="odd">
+<td>All nodes same colour</td>
+<td><code>nodefillc</code> must be a vector with length equal to the number of nodes.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="next-steps" class="level3">
+<h3 class="anchored" data-anchor-id="next-steps">Next steps</h3>
+<ul>
+<li>Experiment with <code>shell_layout</code> to group nodes in concentric rings.</li>
+<li>Use <code>nodesize</code> to make important stocks larger relative to others.</li>
+<li>Explore the <a href="https://github.com/JuliaGraphs/GraphPlot.jl">GraphPlot.jl README</a> for the full list of keyword arguments.</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/envsys\.viveks\.me\/fall2025");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+        for (let i=0; i<annoteTargets.length; i++) {
+          const annoteTarget = annoteTargets[i];
+          const targetCell = annoteTarget.getAttribute("data-target-cell");
+          const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+          const contentFn = () => {
+            const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+            if (content) {
+              const tipContent = content.cloneNode(true);
+              tipContent.classList.add("code-annotation-tip-content");
+              return tipContent.outerHTML;
+            }
+          }
+          const config = {
+            allowHTML: true,
+            content: contentFn,
+            onShow: (instance) => {
+              selectCodeLines(instance.reference);
+              instance.reference.classList.add('code-annotation-active');
+              window.tippy.hideAll();
+            },
+            onHide: (instance) => {
+              unselectCodeLines();
+              instance.reference.classList.remove('code-annotation-active');
+            },
+            maxWidth: 300,
+            delay: [50, 0],
+            duration: [200, 0],
+            offset: [5, 10],
+            arrow: true,
+            trigger: 'click',
+            appendTo: function(el) {
+              return el.parentElement.parentElement.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'quarto',
+            placement: 'right',
+            positionFixed: true,
+            popperOptions: {
+              modifiers: [
+              {
+                name: 'flip',
+                options: {
+                  flipVariations: false, // true by default
+                  allowedAutoPlacements: ['right'],
+                  fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+                },
+              },
+              {
+                name: 'preventOverflow',
+                options: {
+                  mainAxis: false,
+                  altAxis: false
+                }
+              }
+              ]        
+            }      
+          };
+          window.tippy(annoteTarget, config); 
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../tutorials/julia-plots.html" class="pagination-link" aria-label="Making Plots with Julia">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Making Plots with Julia</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../tutorials/julia-jump.html" class="pagination-link" aria-label="Linear Optimization in Julia">
+        <span class="nav-page-text">Linear Optimization in Julia</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><span class="faux-block"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> 2025 Vivek Srikrishnan</span><br> See the <a href="../about.html">About Page</a> for credit information.</p>
+</div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">LICENSE: CC-BY-SA  <i class="fab fa-creative-commons"></i><i class="fab fa-creative-commons-by"></i><i class="fab fa-creative-commons-sa"></i></a>
+  </li>  
+</ul>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/tutorials/julia-graphs.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Made with <a href="https://julialang.org">Julia</a> and <a href="https://quarto.org/">Quarto</a><br> <a href="https://www.github.com/BEE4750/bee4750.github.io">View the source at <i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

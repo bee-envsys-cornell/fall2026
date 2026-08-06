@@ -1,0 +1,263 @@
+---
+title: "Create System Diagrams"
+execute:
+    error: true
+    warning: true
+format:
+    html: default
+    ipynb: default
+engine: julia
+julia:
+    exeflags: ["+1.11.5"]
+---
+
+## Making Systems Diagrams with GraphPlot.jl
+
+This tutorial shows you how to create **node-link diagrams** in Julia using `Graphs.jl` and `GraphPlot.jl`. These diagrams are perfect for system maps --- think stocks
+connected by flows, or components linked by relationships. You'll learn how to
+build a graph, label nodes and edges, apply colours, and export your diagram. We will also use `Compose.jl` to draw the graphs, and `Cairo.jl` and `Fontconfig.jl` to render the graphs as SVGs for display.
+
+### Your first graph: nodes and edges
+
+A graph is a collection of **nodes** (vertices) connected by **edges**. Let's
+create a simple graph with four nodes connected in a chain:
+
+```{julia}
+import Pkg
+
+using Graphs
+using GraphPlot
+using Measures
+using Compose
+import Cairo
+import Fontconfig
+
+# Create a graph with 4 nodes and 3 edges
+g = Graphs.path_graph(4)
+
+# Draw it
+gplot(g) |> SVG() #<1>
+```
+1. You can replace `SVG()` with `PDF()` or `PNG()` and pass a filename as the argument, *e.g.* `PDF("figure.pdf")`.
+
+You should see a diagram with four circles connected by lines. `path_graph(4)`
+creates nodes 1--2--3--4 linked in sequence.
+
+::: {.callout-tip}
+## How to view the plot
+
+- **In VS Code:** Install `Cairo.jl` (`Pkg.add("Cairo")`). The plot will
+  appear in the Plot pane.
+- **In the REPL (terminal):** Use `gplothtml(g)` to open it in your browser.
+:::
+
+### Adding node labels
+
+Without labels, you can't tell the nodes apart. Add labels as a vector of
+strings (one per node):
+
+```{julia}
+nodelabel = ["Solar", "Battery", "Grid", "Load"]
+gplot(g, nodelabel=nodelabel) |> SVG()
+```
+
+If labels overwrite the nodes, pull them farther out:
+
+```{julia}
+gplot(g, nodelabel=nodelabel, nodelabeldist=1, nodelabelangleoffset=π/4) |> SVG()
+```
+
+- `nodelabeldist` --- distance from centre of node to label
+- `nodelabelangleoffset` --- rotation angle; default `π/4` puts them top-right
+
+### Colouring nodes
+
+Colour nodes to distinguish types (e.g., generation vs. consumption). Use the
+`nodefillc` keyword with a vector the same length as the number of nodes:
+
+```{julia}
+using Colors
+
+# One colour per node
+nodefillc = [colorant"gold", colorant"steelblue",
+             colorant"orange", colorant"tomato"]
+gplot(g, nodelabel=nodelabel, nodefillc=nodefillc) |> SVG()
+```
+
+Or generate a palette automatically:
+
+```{julia}
+nodefillc = distinguishable_colors(4, colorant"blue")
+gplot(g, nodelabel=nodelabel, nodefillc=nodefillc) |> SVG()
+```
+
+### Directed graphs for stocks & flows
+
+In a stock-and-flow diagram, flows have **direction**. A directed graph uses
+arrows to show which way material (money, energy, information) moves.
+`GraphPlot.jl` draws arrowheads automatically on directed edges.
+
+```{julia}
+# Create a directed graph: 4 nodes, edges from 1→2, 2→3, 3→4
+g = Graphs.path_digraph(4)
+
+stock_labels = ["Atmosphere", "Plants", "Soil", "Ocean"]
+flow_labels  = ["Photosynthesis", "Decomposition", "Runoff"]
+
+gplot(g, nodelabel=stock_labels, edgelabel=flow_labels) |> SVG(15cm, 10cm) #<1>
+```
+1. You may need to change the size like this to prevent labels from being cut off.
+
+::: {.callout-note}
+Use `SimpleDiGraph` (directed) for flows with arrows. Use `SimpleGraph`
+(undirected) for mutual relationships. See the
+[Graphs.jl docs](https://juliagraphs.org/Graphs.jl/stable/) for the full API.
+:::
+
+### Edge labels and line styling
+
+Label your edges to show what each flow represents:
+
+```{julia}
+edgelabel = ["Photosynthesis", "Decomposition", "Runoff"]
+gplot(g, nodelabel=stock_labels, edgelabel=edgelabel) |> SVG(15cm, 10cm)
+```
+
+Adjust edge label placement with `edgelabeldistx` and `edgelabeldisty`:
+
+```{julia}
+gplot(g, nodelabel=stock_labels, edgelabel=edgelabel,
+      edgelabeldistx=0.5, edgelabeldisty=0.5) |> SVG(15cm, 10cm)
+```
+
+To colour specific edges differently, use `edgestrokec`:
+
+```{julia}
+edge_colours = [colorant"green", colorant"brown", colorant"blue"]
+gplot(g, nodelabel=stock_labels, edgelabel=edgelabel,
+      edgestrokec=edge_colours) |> SVG(15cm, 10cm)
+```
+
+### Choosing a layout
+
+Different layouts reveal different structure. Try these on your graph:
+
+```{julia}
+# Force-directed (default, good for most cases)
+gplot(g, layout=spring_layout, nodelabel=stock_labels) |> SVG(15cm, 10cm)
+```
+
+```{julia}
+# Circular --- good for closed loops like nutrient cycles
+gplot(g, layout=circular_layout, nodelabel=stock_labels) |> SVG(15cm, 10cm)
+```
+
+### Saving your diagram
+
+Use `Compose.jl` with `Cairo.jl` and `Fontconfig.jl` to export your diagram as PNG, PDF, or SVG:
+
+```{julia}
+#| execute: false
+#| output: false
+
+using Compose
+import Cairo
+import Fontconfig
+
+# Create the plot
+p = gplot(g, nodelabel=stock_labels, nodefillc=nodefillc)
+
+# Save as PNG
+p |> PNG("stock-flow.png", 16cm, 16cm)
+
+# Save as PDF (vector format, scales to any size)
+p |> PDF("stock-flow.pdf", 16cm, 16cm)
+
+# Save as SVG
+p |> SVG("stock-flow.svg", 16cm, 16cm)
+```
+
+### Complete example: carbon cycle diagram
+
+Here is a full script you can copy and run, using `SimpleDiGraph` instead of `path_digraph` as above. It builds a simple carbon-cycle
+model with four stocks (atmosphere, plants, soil, ocean) and five flows.
+
+```{julia}
+using Graphs
+using GraphPlot
+using Colors
+using Compose
+import Cairo
+import Fontconfig
+
+# --- Build the directed graph ---
+# Nodes: 1=Atmosphere, 2=Plants, 3=Soil, 4=Ocean
+# Edges (flows):
+#   1→2  photosynthesis
+#   2→3  litter fall
+#   3→1  decomopsi
+#   1→4  ocean uptake
+#   4→1  ocean release
+
+g = SimpleDiGraph(4) # argument is number of nodes
+add_edge!(g, 1, 2)   # atmosphere → plants
+add_edge!(g, 1, 4)   # atmosphere → ocean
+add_edge!(g, 2, 3)   # plants → soil
+add_edge!(g, 3, 1)   # soil → atmosphere
+add_edge!(g, 4, 1)   # ocean → atmosphere
+
+# --- Labels ---
+nodelabel = ["Atmosphere", "Plants", "Soil", "Ocean"]
+edgelabel = ["Photosynthesis", "Ocean uptake", "Litter fall", 
+             "Respiration", "Ocean release"]
+
+# --- Colours ---
+nodefillc = [colorant"lightblue", colorant"green",
+             colorant"tan2", colorant"deepskyblue"]
+
+# --- Draw ---
+p = gplot(g,
+    nodelabel      = nodelabel,
+    nodefillc      = nodefillc,
+    edgelabel      = edgelabel,
+    layout         = circular_layout, 
+    linetype       = "curve",
+    plot_size      = (15cm, 10cm)
+)
+
+# --- Save ---
+p |> SVG(15cm, 10cm)
+```
+
+### Node shapes and other customisation
+
+::: {.callout-warning}
+GraphPlot.jl only draws **circular nodes**. If you need rectangles, diamonds,
+or custom shapes for stock-and-flow diagrams (e.g., rectangles for stocks,
+valves for flows), you will need a different package:
+
+- **GraphRecipes.jl** (with Plots.jl) --- supports `markershape` for different
+  node shapes.
+- **GraphMakie.jl** --- the most flexible; supports custom node markers,
+  interactive plots, and 3D.
+
+You can install these packages the same way as the others
+(`Pkg.add("GraphRecipes")` or `Pkg.add("GraphMakie")`).
+:::
+
+### Troubleshooting
+
+| Symptom                                    | Fix                                                                 |
+|--------------------------------------------|---------------------------------------------------------------------|
+| `Package GraphPlot not found`              | Run `Pkg.add("GraphPlot")` in the REPL.                             |
+| Plot doesn't appear in VS Code             | Run `Pkg.add("Cairo")`, then restart Julia.                         |
+| Labels overlap nodes                       | Increase `nodelabeldist` (e.g., `2.0`).                             |
+| "No display backend" error                 | Install Cairo (`Pkg.add("Cairo")`) and try `using Cairo` first.     |
+| All nodes same colour                      | `nodefillc` must be a vector with length equal to the number of nodes. |
+
+### Next steps
+
+- Experiment with `shell_layout` to group nodes in concentric rings.
+- Use `nodesize` to make important stocks larger relative to others.
+- Explore the [GraphPlot.jl README](https://github.com/JuliaGraphs/GraphPlot.jl)
+  for the full list of keyword arguments.

@@ -10,8 +10,13 @@ citation-location: document
 This page contains a schedule of the topics, content, and assignments for the semester.
 Note that this schedule will be updated as necessary the semester progresses, with all changes documented here. Readings requiring institutional subscriptions can be accessed through the [Cornell Library](https://www.library.cornell.edu/).
 
-::: column-screen-inset
-| Week | Date        | Topic | Slides | Lab | HW | Reading |
-:-----:|:------------|:------|:------:|:--:|:---:|:-------:|
-
-:::
+| Week | Date        | Topic | Slides | Lab | HW | Quiz |
+|:-----:|:------------|:------|:------:|:--:|:---:|:-------:|
+| 1 |   Aug 24  | Course Overview | [{{< fa sharp presentation-screen >}}](slides/lecture01-1-intro.qmd) |  | HW1  |  |
+|   |   Aug 26 | Intro to Systems |   |  |  |  |
+| 2 |   Aug 31 | Systems Examples | | | HW2 | |
+|   |   Sep 2  | Feedbacks & Equilibria | | | | |
+| 3 |   Sep 7  | **No Class: Labor Day** | | | | |
+|   |   Sep 9   | Bifurcations | | | | Quiz 1 |
+| 4 |   Sep 14  | Simulation Models | | | HW3 | |
+|   |   Sep 16  | 

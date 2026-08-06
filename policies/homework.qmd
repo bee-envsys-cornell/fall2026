@@ -1,6 +1,8 @@
 ---
 title: "Homework Policies"
 anchor-sections: true
+format: 
+    html: default
 ---
 
 This page includes some information on the homework assignments for BEE 4750/5750, including policies and logistics. The goal is to help you get as many points on your homework as possible and to return them as soon as possible.
@@ -28,49 +30,66 @@ But this emphasis on homework as practice also means that you should start the h
 ### Accepting Assignments
 
 - Homework assignments will be distributed through GitHub Classroom. When an assignment is released, a link to accept the assignment will be posted on Ed Discussion. **You must click this link to accept the assignment or subsequent steps will not work properly**. Clicking this link will create your own repository with the files for the assignment. The first time you do this, you will be prompted to connect your GitHub username with your entry in the class roster.
+- These repositories will include a Jupyter Notebook set up with a Julia kernel, and appropiate environment files for the packages we think you may want to use to complete the assignment. You do not have to use all of them, and you can feel free to install additional packages as would be helpful.
 - Clone your repository to your computer.
 
   ::: {.callout-warning}
-  It is important that you clone the repository created in the previous step, not the "original" repository. Make sure that the URL looks like `https://www.github.com/BEE4750-FA25/<username>-hwxx.git`, **not** `https://www.github.com/bee-envsys-cornell/hwxx.git`.
+  It is important that you clone the repository created in the previous step, not the "original" repository. Make sure that the URL looks like `https://www.github.com/BEE4750-FA26/<username>-hwxx.git`, **not** `https://www.github.com/bee-envsys-cornell/hwxx.git`.
   :::
 
 ### Working On Assignments
 
-- Open the local repository **folder** you created when you cloned the remote repository. 
+- You do not have to use the provided Jupyter Notebook to write your solutions, but it is a convenient way to work on the assignment. You can also find the problems provided on the website to work on them by hand, with smaller scripts, etc.
+- **If you do use the notebook**:
+  - Open the local repository **folder** you created when you cloned the remote repository. 
   
-  ::: {.callout-tip}
-  Use `File -> Open Folder` rather than `File -> Open` to open the folder; this will make sure that all paths point to the right location and you can use the "Explorer" to see the different files.
-  :::
+    ::: {.callout-tip}
+    Use `File -> Open Folder` rather than `File -> Open` to open the folder; this will make sure that all paths point to the right location and you can use the "Explorer" to see the different files.
+    :::
 
-- After the notebook loads, if prompted to, select the `julia-1.11` kernel.
-- Make sure that you run the initial notebook cell (starting with `Pkg.activate()`) to load the Julia environment and install any needed packages.
-- You don't need to work in the notebook, per se, but if you choose to write your own code files, make sure to add them to the repository with `git add`. Make sure that you copy the initial notebook cell into your new script(s) to use the appropriate environment.
+  - After the notebook loads, if prompted to, select the `julia-1.11` kernel.
+  - Make sure that you run the initial notebook cell (starting with `Pkg.activate()`) to load the Julia environment and install any needed packages.
+  - You can toggle line numbers in a notebook cell with the `L` key.
+- If you choose to write your own code files, make sure to add them to the repository with `git add`. Make sure that you copy the initial notebook cell into your new script(s) to use the appropriate environment.
 - As you work on assignments, make sure to save and frequently push and commit back to GitHub.
-- You can toggle line numbers in a notebook cell with the `L` key.
 
 ### Asking for Assistance
 
-- If you need to share code to ask for help or to provide help, provide a link to the relevant file in your GitHub repository, along with an idea of the relevant cell and line number(s).
-- Minimal code snippets can also be copied and pasted into Ed, but these should be self-contained, not chunks copied from your homework. These snippets should illustrate what you think the correct concept and/or syntax should be with a self-contained example; it's unlikely you will receive useful help if the snippet can't be evaluated.
-- Make sure you document what you've tried (including any searches) so we can focus on new solutions, not repeating things that haven't already worked. If you haven't looked for help (*e.g.* searching for an error message), start there.
+#### How to Ask for Help Effectively
+
+When you need help debugging or solving a problem, follow these steps to get the fastest, most helpful responses:
+
+1. **Be specific about what's broken**:
+   * Instead of: *"My code isn't working, I'm getting `Error: UndefVarError: x not defined`"*  
+   * Try: *"When I run `julia run.jl`, I get `Error: UndefVarError: x not defined` on line 3. Here's my code: [code snippet] or a link to my GitHub repo: [link]"*
+2. **Include what you've tried**: Add 1-2 sentences about: 
+   * Any error messages (copy-paste them verbatim) or unexpected output
+   * What you expected to happen
+   * What you've tried to fix it (e.g., "I tried changing the variable name to `y`, but I still got the same error." or "I searched on Google and tried the solution in on this linked page, but it didn't work."). Neglecting this information may cause us to replicate what you've already tried and waste time.
+   * **Do not use screenshots of code.** Provide a link to GitHub or copy or write them into the post (if small).
+
+#### Common Mistakes to Avoid on Ed Discussion
+
+1. **Avoid vague questions**. "Why isn't my code working?" **Instead**: "I get `Error: UndefVarError: x not defined` when running this script. I define the variable on line xx and the error is thrown at line yy. I've checked the variable scope but I'm not sure why it's undefined."
+2. **Do not use screenshots of code**. Screenshots are hard to read, provide accessibility challenges, and cannot be copied for testing. Instead, provide a link to your GitHub repository or copy the relevant code into your post (if small), or post a small example that is self-contained and reproduces your code's flow.
+3. **Do not leave posts dangling**. When a solution is found, confirm and mark the post as completed.
+
 
 ### Submitting Assignments
 
-- Your final submission must be in a PDF. You can generate this in several ways:
-  - If you have set up LaTeX on your system, you can convert a notebook directly to PDF in VS Code or Jupyter Lab (this will automatically work on BioHPC without any additional setup);
-    
-    ::: {.callout-important}
-    If you are submitting a PDF from a notebook (versus a separate writeup in *e.g.* Word), make sure that you evaluate all cells in order with `Run Cells` before converting.
-    :::
-  
-  - If you have not set up LaTeX, you can export a notebook to HTML and save it from your browser as a PDF;
-  - As an alternative, when you commit and push a `.ipynb` file (a Jupyter Notebook) to your repository, we have set up a [GitHub Action](https://docs.github.com/en/actions) to automatically render your notebook to a PDF, which you can then download and submit to Gradescope. However, sometimes GitHub actions can take a while or can stall out, so you'll need to monitor this and give yourself some time. If you've waited a while and your notebook isn't rendering, reach out on Ed and we can figure out what's going on. In the worst case (you push your changes close to the deadline), the timestamp of your commit will be evidence that you completed the assignment on time, even if we can't render the PDF until the next day.
-  - Don't worry if the GitHub Action says its failed if your assignment (or any given problem) isn't complete: you may have an error due to your incomplete code that causes the Action to fail. You can ignore this unless you think everything should work!
-  - If you have written a report outside of a notebook (*e.g.* in Word), save this to a PDF.
-- You **do not need** to include code in a written submission, but make sure your final notebook and/or scripts are on your GitHub repository in case there's an issue.
-- PDFs must be submitted by the due date and time to Gradescope **with pages tagged**. Failure to tag pages will receive a 10% deduction.
-- If you did not receive credit for your group's submission, please have someone in your group use a regrade request to bring this to our attention, and we will use the list of names at the top of the page to confirm that you contributed to the assignment.
-- Late submissions are accepted within 24 hours with a 50% penalty unless an extension was arranged **ahead of the original deadline**.
+* Your final submission must be in a PDF. 
+* Make sure all mathematical notation is legible and, ideally, typeset appropriately, in the notebook or otherwise (*e.g.* using LaTeX or Word's equation editor).
+* If you use a Jupyter notebook, follow the [Notebook to PDF tutorial](/tutorials/notebook-to-pdf.html) for step-by-step instructions on converting it to a PDF. That tutorial covers several methods: with and without LaTeX, from VS Code or the command line, and via Quarto.
+
+  ::: {.callout-important}
+  Before converting, make sure you evaluate all cells in order with `Run All`. The converter will capture whatever outputs are currently saved in the notebook — if a cell hasn't been re-run after a change, the PDF will show the old output.
+  :::
+
+  * If you write your report outside of a notebook (*e.g.* in Word), save it directly to PDF.
+* You **do not need** to include code in a written submission, but make sure your final notebook and/or scripts are pushed to your GitHub repository in case there's an issue.
+* PDFs must be submitted by the due date and time to Gradescope **with pages tagged**. Failure to tag pages will receive a 10% deduction.
+* If you did not receive credit for your group's submission, please have someone in your group use a regrade request to bring this to our attention, and we will use the list of names at the top of the page to confirm that you contributed to the assignment.
+* Late submissions are accepted within 24 hours with a 50% penalty unless an extension was arranged **ahead of the original deadline**.
 
 ## How To Write Assignments
 
@@ -79,22 +98,49 @@ Here are some tips for how to make the grader (the TA or Prof. Srikrishnan) unde
 ### Be Honest
 
 - **Write everything in your own words.** It's perfectly ok to work with others; in fact, we encourage it! But you should write up and implement everything yourself; it's very easy to convince yourself that you understand something when you're mimicking someone else's solution, and often we realize we don't actually understand something when we try to write it ourselves.
-- **Cite *every* outside source you use.** You are allowed, in fact encouraged, to use *any* outside source^[Yes, including ChatGPT and other LLMs, though you should ask and describe how you used it, including queries and how you incorporated its output into your solution.] Getting an idea from an outside source is not a problem, and will not lower your grade; if you're critically evaluating the idea and implementing and writing your solution yourself (see above), then you're demonstrating understanding even if the idea originated with someone else. But you *must* give appropriate credit to that source. Taking credit for someone else's ideas and failing to properly cite an outside source, including your classmates, is plagiarism, and will be treated accordingly.
-- **The only sources you do not have to cite are official class materials.** If you use the lectures, lecture notes, website materials, homework solutions, etc, you do not have to cite these.
+- **Cite *every* outside source you use.** You are allowed, in fact encouraged, to use *any* outside source^[Yes, including ChatGPT and other LLMs, though you should ask and describe how you used it, including prompts and how you incorporated its output into your solution.]. Getting an idea from an outside source is not a problem, and will not lower your grade; if you're critically evaluating the idea and implementing and writing your solution yourself (see above), then you're demonstrating understanding even if the idea originated with someone else. But you *must* give appropriate credit to that source. Taking credit for someone else's ideas and failing to properly cite an outside source, including your classmates, is plagiarism, and will be treated accordingly.
+- **The only sources you do not have to cite are official class materials.** If you use the lecture notes, website materials, homework solutions from this semester, etc, you do not have to cite these.
 - **List everyone that you worked with.** Give your classmates proper credit for their assistance. If you get an idea from Ed Discussion, credit the poster. If you're not sure if you should list someone as a collaborator, err on the side of including them. For discussions in class or in office hours, you don't have to list everyone who participated in the discussion (though you should if you worked one on one with them), but mention that the class discussion or the office hour was useful.
 
 ### Be Clear
 
-- **Write legibly**. This doesn't refer to handwriting (since you'll be submitting PDFs of Jupyter notebooks), but the text itself should be clearly written and well organized, so that it's easy for the grader to follow your reasoning or explanation. Structuring your solution, and not writing in a stream of consciousness, helps you think more clearly. To reiterate: *You will be given no points if the grader cannot easily follow your answer, and the graders have complete discretion to determine this.*
+- **Write legibly**. This doesn't refer to handwriting (since you'll be submitting PDFs of typed solutions), but the text itself should be clearly written and well organized, so that it's easy for the grader to follow your reasoning or explanation. Structuring your solution helps you think more clearly. To reiterate: *You will be given no points if the grader cannot easily follow your answer, and the grader has complete discretion to determine this.*
 - **Write clearly**. Use proper spelling, grammar, logic, etc. We will try not to penalize people for not having complete mastery of English, but again, we need to be able to follow your reasoning.
 - **Write carefully and completely**. We can only grade what you write; nobody can read your mind, and we will not try. The solution that you submit must stand on its own. If your answer is ambiguous, the TA has been instructed to interpret it the wrong way. Regrade requests also cannot be used to add more information to a solution.
 - **Don't submit your first draft**. For most people^[Myself included!], first drafts are terrible. They are often poorly organized, unclear, and contain gaps or jumps in reasoning. You will likely need to revise, possibly several times, for your answer to be clear, careful, and complete. This is another reason to start the assignment early --- if you start late, you may be stuck with your first draft, and your grade is likely to suffer for it.
 - **State your assumptions**. If you think a problem statement is ambiguous and your solution depends on a particular interpretation, or you need to make some assumptions to solve the problem, make it explicit (though do also ask for clarification in class or on Ed Discussion if time allows).
-- **Don't rely on your code**. The TA will not scrutinize your code, which is a waste of time (again, the code is a means to an end --- it works or it doesn't). If you make it clear what your code is supposed to do with a description, then the TA can tell if this logic is correct and any mistake must be something minor in the code. If you just provide code (even if commented), the TA can't do this without running your code and debugging, which is not a valuable use of time. We want to focus on your ideas.
-
-## Be Concise
+- **Don't rely on your code**. The TA **will not** look at your code when grading, which is a waste of time^[The code is a means to an end --- it works or it doesn't.]. If you make it clear what your code is supposed to do with a description, then the TA can tell if this logic is correct and any mistake must be a bug in the code, but this is a lesser mistake than if your solution logic was wrong. If you just provide code (even if commented), the TA can't do this without running your code and debugging, which is not a valuable use of time. We want to focus on your ideas.
+- Do not write a line by line description in plain language of what your code is doing: write down the key equations and/or algorithms that you are trying to implement. For example, you might write:
+  - "I implemented the linear program^[Which you should have formulated previously] in `JuMP.jl`" 
+  - "I implemented a single-box model with the discretized equation derived above, boundary conditions described above, uncertain inputs chosen as described above, and a time step of $\Delta t = 1 day$."
+  - "I used a two-box model with the boundary between the two boxes at $x=15m$. Each box has the following equations. The inflow for the second box takes in the outflow from the first box and modifies it according to this equation. The spatial step for the simulation is $\Delta x = 1 m$."
+  
+### Be Concise
 
 - **Keep solutions short**. Organized answers should not be long. There's a fine balance between conciseness and completeness: find it!
 - **Don't regurgitate**. You can reference concepts, models, etc from class without repeating them. Just make it clear what you're modifying and how you're using those concepts for that particular problem.
 - **Don't bullshit**. You will get no points for word salad, even if you accidentally hit on the right answer.
 
+## Regrade Requests
+
+If you believe there was an error in the grading of your homework, you may request a regrade. Please submit your request through the course's grading system and include a detailed explanation of why you believe the grade should be changed. Requests must be submitted within one week of the original grade being posted.
+
+* **Do not use a regrade request to ask for more partial credit** (*e.g.* I think this should only have been worth 1 point off, not 2). We may decide to give you more upon consideration of the regrade request if we find that your answer was not completely correct, but we missed a part of your solution or some other context that would have changed our initial grading.
+* **Regrade requests can cut both ways**: if we find that your answer was not actually correct or we find additional errors while reviewing your request, we may lower your grade. We will always provide a detailed explanation of our decision.
+
+If you are unsure about whether you should submit a regrade request, feel free to talk to Prof. Srikrishnan or the TA.
+
+### What To Include in a Regrade Request
+
+To maximize your chances of a successful regrade, please include the following in your request:
+
+1. **Specificity**: Clearly identify the part of the problem you thought was misgraded.
+2. **Rationale**: Provide evidence to support your claim. 
+   * For example, if you believe your solution is actually correct and the grader missed part of your answer, point out the specific part of your solution that was missed.
+   * If you believe that your solution was marked incorrectly because the grader misread or misinterpreted the solution, point to the part of your solution that you believe was misinterpreted. **Do not try to add additional information to your solution** but you should explain why what you wrote in your original submission was actually correct.
+
+### Special Circumstances
+
+* If you submit a regrade request successfully arguing that your solution was **marked correct in error** and that you should actually have lost points (with an explanation), we will give you, as extra credit, the points you should have lost as a bonus for how carefully you re-evaluated your solution and for the honesty. 
+  * For example, if a solution was marked correct and you were given 10/10 but you should have lost 2 points, we will give you 12/10 for that problem.
+* If you submit a regrade request successfully pointing out that there is a significant error in the posted solution, **everyone in the class** will receive a perfect score for that problem.

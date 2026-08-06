@@ -1,39 +1,118 @@
 ---
 title: VS Code
+format:
+    html: default
 ---
 
 ## Install and Set Up VS Code {#sec-install-code}
 
-You can skip this section if you already have a coding environment you like; just set it up to work with Julia^[I assume that if this is the case, you know/can figure out how to configure your editor. If you aren't sure, post on Ed and we can find the instructions.]. Otherwise, VS Code is as close to an officially supported editor for Julia as you can get. We will follow [this guide for setting up VS Code with Julia](https://www.julia-vscode.org/docs/dev/gettingstarted/).
+You can skip this section if you already have a coding environment you like; just set it up to work with Julia^[I assume that if this is the case, you know/can figure out how to configure your editor. If you aren't sure, post on Ed and we can find the instructions.]. Otherwise, VS Code is as close to an officially supported editor for Julia as you can get.
 
 ### Installing VS Code
 
-You can download VS Code [here](https://code.visualstudio.com/download); open the downloaded file to install.
+Download VS Code from [code.visualstudio.com](https://code.visualstudio.com/download).
+
+- **Windows**: Run the downloaded `.exe` installer. Accept the defaults — the installer adds VS Code to your `PATH` and offers a "Open with Code" context menu entry. If you're installing on a managed machine (e.g., a lab computer), choose the **User Installer**.
+- **macOS**: Open the downloaded `.dmg` file and drag the VS Code icon into the Applications folder. After installing, open VS Code, then open the Command Palette (<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>), type `shell command`, and select **Shell Command: Install 'code' command in PATH**. This lets you open VS Code from the terminal with `code .`.
+
+::: {.callout-tip}
+**Verify**: After installing, open VS Code. You should see the Welcome page with a "Get Started" section.
+:::
 
 ### Install the Julia Extension
 
-1. Open VS Code. 
-2. Select View and click Extensions to open the Extension View. This view can also be found on the sidebar with the following logo: 
-    ![VS Code Extensions View Logo](../slides/images/vs-code-extensions.png)
-3. Search for `julia` in the search box. Click the green install button.
-4. Restart VS Code once the installation is complete. It should automatically find your Julia installation; talk to Vivek if not.
+1. Open VS Code.
+2. Open the **Extensions** view by clicking the Extensions icon in the sidebar or pressing <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> (<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> on macOS).
+3. Search for `julia` in the search box. Install the extension named **Julia** (published by `julialang`).
+4. Restart VS Code once the installation is complete.
 
-The Julia VS Code extension offers you some nice features. You can start a REPL (an interactive Julia coding environment) by opening the "Command Palette" (View -> Command Palette, or CTRL/CMD+SHIFT+P) and typing "REPL" to bring up "Julia: Start REPL". You can also create `*.jl` files to write Julia code and execute line by line. However, we will primarily use Jupyter notebooks in this class, but this might be useful for testing code or for your project.
+::: {.callout-warning}
+### Tell VS Code where Julia is installed
 
-### Install the Jupyter Notebook Extension
+The Julia extension usually finds your Julia installation automatically. If it doesn't, you'll need to point it to the Julia executable managed by Juliaup:
 
-The Jupyter Notebook extension allows you to export a Jupyter notebook to PDF or to HTML and then to PDF.
-
-::: {.callout-tip}
-## PDF Export for Gradescope
-
-You will need to export every notebook to a PDF for submission to Gradescope. Direct export to PDF requires a LaTeX installation. If you would like to go this route, please look at [the LaTeX installation instructions for your operating system](https://www.latex-project.org/get/).
-
-Otherwise, [exporting to HTML and then using your browser to save the resulting page to a PDF](homework.qmd) is a perfect solution.
+1. Open VS Code Settings (<kbd>Ctrl</kbd> + <kbd>,</kbd> or <kbd>Cmd</kbd> + <kbd>,</kbd> on macOS).
+2. Search for `julia.executablePath`.
+3. Set it to the path of your Julia 1.11.5 binary. This is usually:
+   - **Windows**: `C:\Users\YourUsername\.julia\juliaup\julia-1.11.5+0.x64\bin\julia.exe`
+   - **macOS**: `/Users/YourUsername/.julia/juliaup/julia-1.11.5+0.aarch64/bin/julia` (Apple Silicon) or `.../x64/...` (Intel)
+   
+   To find the exact path, run `juliaup status` in a terminal and look for the 1.11.5 entry.
+4. Restart VS Code.
 :::
 
-Follow the same instructions as above, but search for `jupyter` and install the Jupyter extension. Restart VS Code.
+Once configured, you can start a Julia REPL by opening the Command Palette (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>) and typing `Julia: Start REPL`. You can also create `*.jl` files and execute code line by line with <kbd>Shift</kbd> + <kbd>Enter</kbd>.
+
+### Install the Jupyter Extension
+
+The Jupyter extension lets you open, edit, and run Jupyter notebooks (`.ipynb` files) directly in VS Code.
+
+1. Open the **Extensions** view (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>).
+2. Search for `jupyter` and install the extension named **Jupyter** (published by Microsoft).
+3. Restart VS Code.
+
+When you open a `.ipynb` file, VS Code will display it as a notebook with code cells you can run. To select the Julia kernel, click the **kernel picker** button in the top-right corner of the notebook (it may say "Select Kernel") and choose the Julia 1.11.5 kernel.
 
 ## Using GitHub with VS Code
 
-[This Youtube video](https://youtu.be/z5jZ9lrSpqk?t=115&si=PcpNxjmF1ByTUdJq) provides an overview of how to use GitHub within VS Code (with chapters for specific steps) and may be worth watching.
+VS Code has built-in Git and GitHub support through the **Source Control** panel. You don't need to install any extra extensions — the basics work out of the box.
+
+### Clone a repository
+
+1. Open the Command Palette (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>) and type `Git: Clone`.
+2. Paste the repository URL (from your GitHub Classroom assignment) and press <kbd>Enter</kbd>.
+3. Choose a folder on your computer to save the repository.
+4. VS Code will ask if you want to open the cloned repository — click **Open**.
+
+### Commit and push changes
+
+1. Open the **Source Control** panel by clicking the branch icon in the sidebar or pressing <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd>.
+2. You'll see a list of changed files under **Changes**.
+3. Hover over the **Changes** heading and click the **+** (Stage All Changes) button.
+4. Type a commit message in the text box at the top and click the **✓ (Commit)** button.
+5. Click the **⋯ (More Actions)** menu and select **Push** to send your commits to GitHub.
+
+::: {.callout-note appearance="simple"}
+**Using the terminal instead**: You can also use the built-in terminal in VS Code (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>\`</kbd>) to run `git` commands directly — see the [git setup page](git.qmd) for the full workflow.
+:::
+
+### Pull the latest changes
+
+Click the **⋯ (More Actions)** menu in the Source Control panel and select **Pull**, or use the **Synchronize Changes** button (circular arrows) in the status bar at the bottom of the window.
+
+::: {.callout-tip}
+**Authentication**: The first time you push or pull, GitHub will ask you to sign in. VS Code will open a browser window for GitHub authentication. Follow the prompts; once you authorize VS Code, you won't need to log in again for that repository.
+
+For a more detailed walkthrough, [this YouTube video](https://youtu.be/z5jZ9lrSpqk?t=115&si=PcpNxjmF1ByTUdJq) covers using GitHub within VS Code.
+:::
+
+## Troubleshooting
+
+### Julia extension can't find Julia
+
+1. Open VS Code Settings and search for `julia.executablePath`.
+2. Set it as described in the [Tell VS Code where Julia is installed](#tell-vs-code-where-julia-is-installed) callout above.
+3. Restart VS Code and try starting the REPL again.
+
+### Jupyter notebook won't run or can't find kernel
+
+- Make sure the **Jupyter** extension (Microsoft) is installed, not just the Julia extension.
+- Click the kernel picker (top-right of the notebook) and select the Julia 1.11.5 kernel. If it doesn't appear, restart VS Code.
+- If the kernel still doesn't appear, open a terminal and run `julia --version` to confirm Julia 1.11.5 is installed and on your `PATH`.
+
+### VS Code can't find git
+
+If the Source Control panel says "Git not found":
+
+- **Windows**: Make sure Git for Windows is installed (see the [git setup page](git.qmd)). If it is, restart VS Code — it should detect `git` on your `PATH`.
+- **macOS**: Run `git --version` in a terminal. If it returns an error, install git (see the [git setup page](git.qmd)), then restart VS Code.
+
+### Git push asks for a password repeatedly
+
+- Make sure you're using a personal access token, not your GitHub password. See the [Authentication section of the git setup page](git.qmd#authentication).
+- If VS Code's built-in Git authentication isn't working, try pushing from the built-in terminal instead: open the terminal (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>`</kbd>) and run `git push` there. This will use your system's Git Credential Manager.
+
+### How to open VS Code from the terminal
+
+- **Windows**: The installer adds `code` to your `PATH` automatically. Open Git Bash or PowerShell and run `code .` to open the current folder in VS Code.
+- **macOS**: Open the Command Palette (<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>), type `shell command`, and select **Shell Command: Install 'code' command in PATH**. Then you can run `code .` from any terminal.

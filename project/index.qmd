@@ -1,6 +1,8 @@
 ---
 title: Final Project
 tbl-colwidths: [20, 5, 5, 5, 10]
+format:
+    html: default
 ---
 
 ## Overview

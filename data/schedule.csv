@@ -2,17 +2,17 @@ week,group,subgroup,date,day,title,deadline
 1,Introduction,Introduction,2026-08-24,Wed,Class Overview,
 1,Introduction,Introduction,2026-08-26,Fri,Lab: Setting Up GitHub and Julia,
 2,Introduction,Systems Dynamics,2026-08-31,Mon,Systems Models,
-2,Introduction,Systems Dynamics,2026-09-02,Wed,Feedbacks,HW1 Due
+2,Introduction,Systems Dynamics,2026-09-02,Wed,Feedbacks and Stability,HW1 Due
 3,Introduction,Systems Dynamics,2026-09-07,Mon,Labor Day,
-3,Introduction,Linear Regression,2026-02-04,Wed,Maximum Likelihood Estimation,HW2 Due
-4,Regression,Model Evaluation,2026-02-09,Mon,Graphical Checks,
-4,Regression,Model Evaluation,2026-02-11,Wed,Cross-Validation,
-5,Regression,February Break,2026-02-16,Mon,February Break,
-5,Regression,Model Comparison,2026-02-18,Wed,Null Hypothesis Testing,
-6,Regression,Time Series,2026-02-23,Mon,Autocorrelations,
-6,Regression,Time Series,2026-02-25,Wed,Time Series Models,
-7,Regression,Model Calibration,2026-03-02,Mon,Model-Data Discrepancy,
-7,Regression,Model Calibration,2026-03-04,Wed,Model Calibration,
+3,Introduction,Systems Dynamics,2026-09-09,Wed,Fixed Points and Bifurcations,HW2 Due
+4,Simulation,Simulation Models,2026-09-14,Mon,Computational Models,
+4,Simulation,Simulation Models,2026-09-16,Wed,Discretization and Simulation,Quiz 1
+5,Simulation,Simulation Models,2026-09-21,Mon,Modeling Dissolved Oxygen,
+5,Simulation,Simulation Models,2026-09-23,Wed,Simulating Dissolved Oxygen Dynamics,HW3 Due
+6,Simulation,Risk,2026-09-28,Mon,Risk and Uncertainty,
+6,Simulation,Risk,2026-09-30,Wed,Probability Review,
+7,Simulation,Risk,2026-10-05,Mon,Monte Carlo Examples,HW4 Due
+7,Regression,Model Calibration,2026-03-04,Wed,Model Calibration,HW4 Due
 8,Simulation Methods,Monte Carlo,2026-03-09,Mon,Random Variate Generation,Lab 4 Due
 8,Simulation Methods,Monte Carlo,2026-03-11,Wed,Monte Carlo: Examples and Theory,
 9,Simulation Methods,The Bootstrap,2026-03-16,Mon,The Bootstrap Principle,Lab 4 Due

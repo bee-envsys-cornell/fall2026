@@ -7,8 +7,8 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.31">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e44360b8a8db1e130c7792fece1c8032.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.3">
 
   <meta name="author" content="Vivek Srikrishnan">
   <meta name="dcterms.date" content="2024-09-10">
@@ -19,6 +19,9 @@
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
   <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -117,7 +120,7 @@
     div.csl-indent {
       margin-left: 2em;
     }  </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7b87de61f0bc8c7187b97021a1ec54e0.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-d52ba59528acaf0ac8c09f3308d87e37.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -211,6 +214,14 @@
       margin-right: 0; 
     }
   </style>
+  <!-- MathJax 3 -->
+  <script>
+  window.MathJax = {
+      tex: {
+        tags: 'ams'
+      }
+    };
+  </script>
   <!-- Mathjax 3 config -->
   <script>
   window.MathJax = {
@@ -347,10 +358,10 @@
 <div id="cell-fig-lynxhare-data" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a>lh_obs <span class="op">=</span> <span class="fu">DataFrame</span>(CSV.<span class="fu">File</span>(<span class="st">"data/lynx_hare/Lynx_Hare.txt"</span>, header<span class="op">=</span>[<span class="op">:</span>Year, <span class="op">:</span>Hare, <span class="op">:</span>Lynx]))[<span class="op">:</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a>lh_obs <span class="op">=</span> <span class="fu">DataFrame</span>(CSV.<span class="fu">File</span>(<span class="st">"data/lynx_hare/Lynx_Hare.txt"</span>, header<span class="op">=</span>[<span class="op">:</span>Year, <span class="op">:</span>Hare, <span class="op">:</span>Lynx]))[<span class="op">:</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>]</span>
 <span id="cb1-2"><a></a><span class="fu">plot</span>(lh_obs[!, <span class="op">:</span>Year], lh_obs[!, <span class="op">:</span>Lynx], xlabel<span class="op">=</span><span class="st">"Year"</span>, ylabel<span class="op">=</span><span class="st">"Pelts (thousands)"</span>, markersize<span class="op">=</span><span class="fl">5</span>, markershape<span class="op">=:</span>circle, markercolor<span class="op">=:</span>red, color<span class="op">=:</span>red, linewidth<span class="op">=</span><span class="fl">3</span>, label<span class="op">=</span><span class="st">"Lynx"</span>)</span>
 <span id="cb1-3"><a></a><span class="fu">plot!</span>(lh_obs[!, <span class="op">:</span>Year], lh_obs[!, <span class="op">:</span>Hare], markersize<span class="op">=</span><span class="fl">5</span>, markershape<span class="op">=:</span>circle, markercolor<span class="op">=:</span>blue, color<span class="op">=:</span>blue, linewidth<span class="op">=</span><span class="fl">3</span>, label<span class="op">=</span><span class="st">"Hare"</span>)</span>
-<span id="cb1-4"><a></a><span class="fu">plot!</span>(size<span class="op">=</span>(<span class="fl">1100</span>, <span class="fl">500</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a></a><span class="fu">plot!</span>(size<span class="op">=</span>(<span class="fl">1100</span>, <span class="fl">500</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="fig-lynxhare-data" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center" data-execution_count="1">
 <figure class="quarto-float quarto-float-fig">
@@ -645,7 +656,7 @@ Figure&nbsp;1: Lynx and Hare pelt dataset
 <div id="cell-fig-lotka-volterra-phase" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a></a><span class="kw">function</span> <span class="fu">lotka_volterra!</span>(du, u, p, t)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a></a><span class="kw">function</span> <span class="fu">lotka_volterra!</span>(du, u, p, t)</span>
 <span id="cb2-2"><a></a>  <span class="co"># Unpack the values so that they have clearer meaning</span></span>
 <span id="cb2-3"><a></a>  prey, pred  <span class="op">=</span> u</span>
 <span id="cb2-4"><a></a>  birth_prey, mort_prey, birth_pred, mort_pred <span class="op">=</span> p</span>
@@ -679,7 +690,7 @@ Figure&nbsp;1: Lynx and Hare pelt dataset
 <span id="cb2-32"><a></a><span class="cf">end</span></span>
 <span id="cb2-33"><a></a></span>
 <span id="cb2-34"><a></a><span class="fu">scatter!</span>(p, [<span class="fl">0</span>, <span class="fl">2</span>], [<span class="fl">0</span>, <span class="fl">2.2</span>], color<span class="op">=:</span>black)</span>
-<span id="cb2-35"><a></a><span class="fu">plot!</span>(size<span class="op">=</span>(<span class="fl">650</span>, <span class="fl">550</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-35"><a></a><span class="fu">plot!</span>(size<span class="op">=</span>(<span class="fl">650</span>, <span class="fl">550</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="fig-lotka-volterra-phase" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center" data-execution_count="1">
 <figure class="quarto-float quarto-float-fig">
@@ -904,14 +915,14 @@ Figure&nbsp;2: Phase Diagram of the Lotka-Volterra Equations
 <div id="cell-fig-lognorm" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a></a><span class="co"># this uses StatsPlots.jl's recipe for plotting distributions directly; otherwise use something like plot(-5:0.01:5, pdf.(LogNormal(0.25, 1), -5:0.1:5))</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a></a><span class="co"># this uses StatsPlots.jl's recipe for plotting distributions directly; otherwise use something like plot(-5:0.01:5, pdf.(LogNormal(0.25, 1), -5:0.1:5))</span></span>
 <span id="cb3-2"><a></a><span class="fu">plot</span>(<span class="fu">LogNormal</span>(<span class="fl">0.25</span>, <span class="fl">1</span>), linewidth<span class="op">=</span><span class="fl">3</span>, label<span class="op">=</span><span class="st">"LogNormal(0.25, 1)"</span>)</span>
 <span id="cb3-3"><a></a><span class="fu">plot!</span>(<span class="fu">LogNormal</span>(<span class="fl">0.5</span>, <span class="fl">1</span>), linewidth<span class="op">=</span><span class="fl">3</span>, label<span class="op">=</span><span class="st">"LogNormal(0.5, 2)"</span>)</span>
 <span id="cb3-4"><a></a><span class="fu">plot!</span>(<span class="fu">LogNormal</span>(<span class="fl">0.25</span>, <span class="fl">2</span>), linewidth<span class="op">=</span><span class="fl">3</span>, label<span class="op">=</span><span class="st">"LogNormal(0.25, 2)"</span>)</span>
 <span id="cb3-5"><a></a><span class="fu">plot!</span>(size<span class="op">=</span>(<span class="fl">1000</span>, <span class="fl">400</span>), grid<span class="op">=:</span><span class="cn">false</span>, left_margin<span class="op">=</span><span class="fl">10</span>mm, right_margin<span class="op">=</span><span class="fl">10</span>mm, bottom_margin<span class="op">=</span><span class="fl">10</span>mm)</span>
 <span id="cb3-6"><a></a><span class="fu">xlims!</span>((<span class="fl">0</span>, <span class="fl">6</span>))</span>
 <span id="cb3-7"><a></a><span class="fu">ylabel!</span>(<span class="st">"Density"</span>)</span>
-<span id="cb3-8"><a></a><span class="fu">xlabel!</span>(L<span class="st">"y_t"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-8"><a></a><span class="fu">xlabel!</span>(L<span class="st">"y_t"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="fig-lognorm" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center" data-execution_count="1">
 <figure class="quarto-float quarto-float-fig">
@@ -1083,7 +1094,7 @@ y_t \underset{\underset{\Large\text{\color{red}sample}}{\color{red}\uparrow}}{\s
 <div id="cell-fig-lake-noinput-ic" class="cell" data-fig-width="100%" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a></a><span class="co"># define functions for lake recycling and outflows</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a></a><span class="co"># define functions for lake recycling and outflows</span></span>
 <span id="cb4-2"><a></a><span class="fu">lake_P_cycling</span>(x, q) <span class="op">=</span> x<span class="op">.^</span>q <span class="op">./</span> (<span class="fl">1</span> <span class="op">.+</span> x<span class="op">.^</span>q);</span>
 <span id="cb4-3"><a></a><span class="fu">lake_P_out</span>(x, b) <span class="op">=</span> b <span class="op">.*</span> x;</span>
 <span id="cb4-4"><a></a></span>
@@ -1098,7 +1109,7 @@ y_t \underset{\underset{\Large\text{\color{red}sample}}{\color{red}\uparrow}}{\s
 <span id="cb4-13"><a></a>    <span class="cf">return</span> X</span>
 <span id="cb4-14"><a></a><span class="kw">end</span></span>
 <span id="cb4-15"><a></a>X <span class="op">=</span> <span class="fu">map</span>(x <span class="op">-&gt;</span> <span class="fu">simulate_lake_P</span>(x, T, <span class="fl">0.4</span>, <span class="fl">2.5</span>, <span class="fu">zeros</span>(T), <span class="fu">zeros</span>(T)), X_vals)</span>
-<span id="cb4-16"><a></a>p_noinflow <span class="op">=</span> <span class="fu">plot</span>(X, label<span class="op">=</span><span class="cn">false</span>, ylabel<span class="op">=</span>L<span class="st">"X_t"</span>, xlabel<span class="op">=</span><span class="st">"Time"</span>, size<span class="op">=</span>(<span class="fl">600</span>, <span class="fl">500</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-16"><a></a>p_noinflow <span class="op">=</span> <span class="fu">plot</span>(X, label<span class="op">=</span><span class="cn">false</span>, ylabel<span class="op">=</span>L<span class="st">"X_t"</span>, xlabel<span class="op">=</span><span class="st">"Time"</span>, size<span class="op">=</span>(<span class="fl">600</span>, <span class="fl">500</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="fig-lake-noinput-ic" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center" data-execution_count="1">
 <figure class="quarto-float quarto-float-fig">
@@ -1273,7 +1284,7 @@ Figure&nbsp;4: Dynamics of lake model with different initial conditions
 <div id="cell-fig-lake-noinput" class="cell" data-fig-width="100%" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a></a><span class="co"># define range of lake states X</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a></a><span class="co"># define range of lake states X</span></span>
 <span id="cb5-2"><a></a>x <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.05</span><span class="op">:</span><span class="fl">2.5</span>;</span>
 <span id="cb5-3"><a></a></span>
 <span id="cb5-4"><a></a><span class="co"># plot recycling and outflows for selected values of b and q</span></span>
@@ -1283,7 +1294,7 @@ Figure&nbsp;4: Dynamics of lake model with different initial conditions
 <span id="cb5-8"><a></a><span class="fu">quiver!</span>([<span class="fl">0.4</span>], [<span class="fl">0.13</span>], quiver<span class="op">=</span>([<span class="op">-</span><span class="fl">0.125</span>], [<span class="op">-</span><span class="fl">0.05</span>]), color<span class="op">=:</span>red, linewidth<span class="op">=</span><span class="fl">2</span>)</span>
 <span id="cb5-9"><a></a><span class="fu">quiver!</span>([<span class="fl">2.5</span>], [<span class="fl">0.97</span>], quiver<span class="op">=</span>([<span class="op">-</span><span class="fl">0.125</span>], [<span class="op">-</span><span class="fl">0.05</span>]), color<span class="op">=:</span>red, linewidth<span class="op">=</span><span class="fl">2</span>)</span>
 <span id="cb5-10"><a></a><span class="fu">plot!</span>(ylims<span class="op">=</span>(<span class="op">-</span><span class="fl">0.02</span>, <span class="fl">1.1</span>))</span>
-<span id="cb5-11"><a></a><span class="fu">plot!</span>(size<span class="op">=</span>(<span class="fl">600</span>, <span class="fl">500</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-11"><a></a><span class="fu">plot!</span>(size<span class="op">=</span>(<span class="fl">600</span>, <span class="fl">500</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="fig-lake-noinput" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center" data-execution_count="1">
 <figure class="quarto-float quarto-float-fig">
@@ -1432,8 +1443,8 @@ Figure&nbsp;5: Lake eutrophication dynamics based on the shallow lake modelwitho
 <div id="cell-fig-lake-noinput-eq" class="cell" data-fig-width="100%" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a></a>eq1 <span class="op">=</span> [<span class="fl">0.0</span>, <span class="fl">0.67</span>, <span class="fl">2.2</span>]</span>
-<span id="cb6-2"><a></a><span class="fu">scatter!</span>(p1, eq1, (y <span class="op">-&gt;</span> <span class="fu">lake_P_cycling</span>(y, <span class="fl">2.5</span>)).(eq1), label<span class="op">=</span><span class="st">"Equilibria"</span>, markersize<span class="op">=</span><span class="fl">10</span>, markercolor<span class="op">=:</span>blue)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a></a>eq1 <span class="op">=</span> [<span class="fl">0.0</span>, <span class="fl">0.67</span>, <span class="fl">2.2</span>]</span>
+<span id="cb6-2"><a></a><span class="fu">scatter!</span>(p1, eq1, (y <span class="op">-&gt;</span> <span class="fu">lake_P_cycling</span>(y, <span class="fl">2.5</span>)).(eq1), label<span class="op">=</span><span class="st">"Equilibria"</span>, markersize<span class="op">=</span><span class="fl">10</span>, markercolor<span class="op">=:</span>blue)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="fig-lake-noinput-eq" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center" data-execution_count="1">
 <figure class="quarto-float quarto-float-fig">
@@ -1599,7 +1610,7 @@ Figure&nbsp;6: Lake eutrophication dynamics based on the shallow lake modelwitho
 <div id="cell-fig-lake-noinflow-dynamics" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a></a><span class="fu">plot!</span>(p_noinflow, title<span class="op">=</span><span class="st">"Lake P Without Inflows"</span>, titlefontsize<span class="op">=</span><span class="fl">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a></a><span class="fu">plot!</span>(p_noinflow, title<span class="op">=</span><span class="st">"Lake P Without Inflows"</span>, titlefontsize<span class="op">=</span><span class="fl">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="fig-lake-noinflow-dynamics" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center" data-execution_count="1">
 <figure class="quarto-float quarto-float-fig">
@@ -1766,10 +1777,10 @@ Figure&nbsp;7: Dynamics of Lake Model With No Inflows
 <div id="cell-fig-lake-inflow-dynamics" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a></a>a <span class="op">=</span> <span class="fu">zeros</span>(T)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a></a>a <span class="op">=</span> <span class="fu">zeros</span>(T)</span>
 <span id="cb8-2"><a></a>y <span class="op">=</span> <span class="fu">rand</span>(<span class="fu">LogNormal</span>(<span class="fu">log</span>(<span class="fl">0.08</span>), <span class="fl">0.01</span>), T)</span>
 <span id="cb8-3"><a></a>X <span class="op">=</span> <span class="fu">map</span>(x <span class="op">-&gt;</span> <span class="fu">simulate_lake_P</span>(x, T, <span class="fl">0.4</span>, <span class="fl">2.5</span>, a, y), X_vals) </span>
-<span id="cb8-4"><a></a><span class="fu">plot</span>(X, label<span class="op">=</span><span class="cn">false</span>, ylabel<span class="op">=</span>L<span class="st">"</span><span class="sc">$</span>X_t<span class="sc">$</span><span class="st">", </span>xlabel<span class="st">="</span>Time<span class="st">", title="</span>Lake P With Inflows<span class="st">", size=(600, 500))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-4"><a></a><span class="fu">plot</span>(X, label<span class="op">=</span><span class="cn">false</span>, ylabel<span class="op">=</span>L<span class="st">"</span><span class="sc">$</span>X_t<span class="sc">$</span><span class="st">", </span>xlabel<span class="st">="</span>Time<span class="st">", title="</span>Lake P With Inflows<span class="st">", size=(600, 500))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="fig-lake-inflow-dynamics" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center" data-execution_count="1">
 <figure class="quarto-float quarto-float-fig">
@@ -1943,13 +1954,13 @@ Figure&nbsp;8: Dynamics of Lake Model With No Inflows
 <div id="cell-fig-lake-noinput-eq-3" class="cell" data-fig-width="100%" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a></a>eq_45 <span class="op">=</span> [<span class="fl">0.8</span>, <span class="fl">1.8</span>]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a></a>eq_45 <span class="op">=</span> [<span class="fl">0.8</span>, <span class="fl">1.8</span>]</span>
 <span id="cb9-2"><a></a>eq_5 <span class="op">=</span> [<span class="fl">1.0</span>, <span class="fl">1.4</span>]</span>
 <span id="cb9-3"><a></a><span class="fu">plot!</span>(p1, x, <span class="fu">lake_P_out</span>(x, <span class="fl">0.45</span>), linewidth<span class="op">=</span><span class="fl">3</span>, linestyle<span class="op">=:</span>dash, label<span class="op">=</span><span class="st">"b=0.45"</span>, color<span class="op">=:</span>orange)</span>
 <span id="cb9-4"><a></a><span class="fu">plot!</span>(p1, x, <span class="fu">lake_P_out</span>(x, <span class="fl">0.5</span>), linewidth<span class="op">=</span><span class="fl">3</span>, linestyle<span class="op">=:</span>dash, label<span class="op">=</span><span class="st">"b=0.5"</span>, color<span class="op">=:</span>purple)</span>
 <span id="cb9-5"><a></a><span class="fu">plot!</span>(p1, x, <span class="fu">lake_P_out</span>(x, <span class="fl">0.6</span>), linewidth<span class="op">=</span><span class="fl">3</span>, linestyle<span class="op">=:</span>dash, label<span class="op">=</span><span class="st">"b=0.6"</span>, color<span class="op">=:</span>green)</span>
 <span id="cb9-6"><a></a><span class="fu">scatter!</span>(p1, eq_45, (y <span class="op">-&gt;</span> <span class="fu">lake_P_cycling</span>(y, <span class="fl">2.5</span>)).(eq_45), label<span class="op">=</span><span class="cn">false</span>, markersize<span class="op">=</span><span class="fl">10</span>, markercolor<span class="op">=:</span>orange)</span>
-<span id="cb9-7"><a></a><span class="fu">scatter!</span>(p1, eq_5, (y <span class="op">-&gt;</span> <span class="fu">lake_P_cycling</span>(y, <span class="fl">2.5</span>)).(eq_5), label<span class="op">=</span><span class="cn">false</span>, markersize<span class="op">=</span><span class="fl">10</span>, markercolor<span class="op">=:</span>purple)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-7"><a></a><span class="fu">scatter!</span>(p1, eq_5, (y <span class="op">-&gt;</span> <span class="fu">lake_P_cycling</span>(y, <span class="fl">2.5</span>)).(eq_5), label<span class="op">=</span><span class="cn">false</span>, markersize<span class="op">=</span><span class="fl">10</span>, markercolor<span class="op">=:</span>purple)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="fig-lake-noinput-eq-3" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center" data-execution_count="1">
 <figure class="quarto-float quarto-float-fig">
@@ -2119,7 +2130,7 @@ Figure&nbsp;9: Lake eutrophication dynamics based on the shallow lake modelwitho
 <div id="cell-fig-lake-noinput-bifurcation" class="cell" data-fig-width="100%" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a></a><span class="kw">function</span> <span class="fu">plot_P_flux</span>(b_vals)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a></a><span class="kw">function</span> <span class="fu">plot_P_flux</span>(b_vals)</span>
 <span id="cb10-2"><a></a>    p <span class="op">=</span> <span class="fu">plot</span>(; xlabel<span class="op">=</span><span class="st">"b"</span>, ylabel<span class="op">=</span><span class="st">"X"</span>, legend<span class="op">=:</span>outerright, size<span class="op">=</span>(<span class="fl">1200</span>, <span class="fl">500</span>), leftmargin<span class="op">=</span><span class="fl">10</span>mm)</span>
 <span id="cb10-3"><a></a></span>
 <span id="cb10-4"><a></a>    <span class="fu">flux_func</span>(x, b) <span class="op">=</span> <span class="fu">lake_P_cycling</span>(x, <span class="fl">2.5</span>) <span class="op">-</span> <span class="fu">lake_P_out</span>(x, b)</span>
@@ -2184,7 +2195,7 @@ Figure&nbsp;9: Lake eutrophication dynamics based on the shallow lake modelwitho
 <span id="cb10-63"><a></a>b_vals <span class="op">=</span> <span class="fl">0.01</span><span class="op">:</span><span class="fl">0.01</span><span class="op">:</span><span class="fl">0.6</span></span>
 <span id="cb10-64"><a></a></span>
 <span id="cb10-65"><a></a>p <span class="op">=</span> <span class="fu">plot_P_flux</span>(b_vals)</span>
-<span id="cb10-66"><a></a><span class="fu">display</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-66"><a></a><span class="fu">display</span>(p)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="fig-lake-noinput-bifurcation" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-fig">
@@ -2718,13 +2729,14 @@ Quinn, J. D., Reed, P. M., &amp; Keller, K. (2017). Direct policy search for rob
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy

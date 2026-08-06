@@ -1,31 +1,107 @@
 ---
 title: Julia
+format: 
+    html: default
 ---
 
 ## Install Julia {#sec-install-julia}
 
 I recommend installing Julia using the `juliaup` tool, which will let you easily manage versions in the future and works seamlessly with VS Code. The instructions can be found at the [JuliaUp GitHub repository](https://github.com/JuliaLang/juliaup), but we will summarize them here.
 
-### Installing Juliaup on Windows
+### Windows
 
-If your computer uses Windows, you can install Juliaup [from the Windows Store](https://www.microsoft.com/store/apps/9NJNWW8PVKMN).
+You have two options:
 
-### Installing Juliaup on MacOS
+1. **Windows Store (recommended)**: Install Juliaup [from the Windows Store](https://www.microsoft.com/store/apps/9NJNWW8PVKMN). This is the simplest method and handles `PATH` setup automatically.
+2. **Command line**: Open **PowerShell** (search for it in the Start menu) and run:
+   ```powershell
+   winget install julia -s msstore
+   ```
+   Alternatively, if you have Git Bash installed, you can use the same `curl` command as macOS below.
 
-If you have a Mac, open a terminal (such as the Terminal app) and enter:
+### macOS
+
+Open the **Terminal** app (found in Applications → Utilities) and run:
+
 ```shell
 curl -fsSL https://install.julialang.org | sh
 ```
 
+Follow the prompts; the installer will add Julia to your `PATH` automatically.
+
 ### Installing Julia 1.11.5
 
-Once you install Juliaup, install Julia version 1.11.5 by opening a terminal (in MacOS or Linux) or the command line (in Windows) and entering:
+Once Juliaup is installed, open a terminal and run:
+
 ```shell
 juliaup add 1.11.5
 juliaup default 1.11.5
 ```
 
-This will install Julia 1.11.5 and make it the default version, which should maximize package compatibility throughout this course. Going forward, if you want to add new versions or change the default, you can [follow the Juliaup instructions](https://github.com/JuliaLang/juliaup#using-juliaup). If your code returns an error when you try to load packages, it's possible you have a different version of Julia: in this case, delete `Manifest.toml`^[**Not** `Project.toml`!] and re-run a code block that contains
+This installs Julia 1.11.5 and makes it the default version, which maximizes package compatibility throughout this course. Going forward, if you want to add new versions or change the default, you can [follow the Juliaup instructions](https://github.com/JuliaLang/juliaup#using-juliaup).
+
+### Verify your installation
+
+Open a **new** terminal window (important — old windows won't see the updated `PATH`) and run:
+
+```shell
+julia --version
+```
+
+You should see something like `julia version 1.11.5`. You can also check your Juliaup configuration with:
+
+```shell
+juliaup status
+```
+
+This lists all installed Julia versions and shows which one is the default (marked with `*`).
+
+## Opening the Julia REPL
+
+The **REPL** (Read-Eval-Print-Loop) is Julia's interactive environment. To open it, open a terminal and type:
+
+```shell
+julia
+```
+
+You'll see a banner with the Julia version and a green `julia>` prompt where you can type Julia code. Type `exit()` or press <kbd>Ctrl</kbd> + <kbd>D</kbd> to quit.
+
+The REPL has several modes:
+
+| Mode | How to enter | Prompt | Purpose |
+|------|-------------|--------|---------|
+| Julia | `julia` (default) | `julia>` | Run Julia code |
+| Package | Type `]` | `pkg>` | Manage packages |
+| Help | Type `?` | `help?>` | Access documentation |
+| Shell | Type `;` | `shell>` | Run system commands |
+
+::: {.callout-note appearance="simple"}
+**VS Code**: If you install the [Julia extension](https://marketplace.visualstudio.com/items?itemName=julialang.language-julia) for VS Code, you can open a REPL directly inside the editor by pressing <kbd>Alt</kbd> + <kbd>J</kbd> then <kbd>Alt</kbd> + <kbd>O</kbd> (Windows/Linux) or <kbd>Option</kbd> + <kbd>J</kbd> then <kbd>Option</kbd> + <kbd>O</kbd> (macOS).
+:::
+
+## Running a Julia Script
+
+To run a `.jl` script from the terminal, use:
+
+```shell
+julia path/to/script.jl
+```
+
+For example, if you want to run a script named `hw.jl` in the current directory, you would type:
+
+```shell
+julia hw.jl
+```
+
+You can also run scripts from the REPL using `include`:
+
+```julia
+include("path/to/script.jl")
+```
+
+## Julia Environments and Packages
+
+If your code returns an error when you try to load packages, it's possible you have a different version of Julia than the one the environment was set up for. In this case, delete the `Manifest.toml` file^[**Not** `Project.toml`!] and re-run a code block that contains:
 
 ```julia
 import Pkg
@@ -34,3 +110,47 @@ Pkg.instantiate()
 ```
 
 The line `Pkg.instantiate()` will install the right package versions for your installation and create a new `Manifest.toml` file.
+
+## Troubleshooting
+
+### `julia: command not found`
+
+If your terminal says `command not found: julia` after installation:
+
+- **Windows**: Restart your terminal. If you installed via the Windows Store and it still doesn't work, try reinstalling via the PowerShell `winget` method above, which handles `PATH` configuration more reliably. You can also add `%USERPROFILE%\.julia\juliaup\julia-1.11.5+0.x64\bin` to your system `PATH` manually through **System Properties → Environment Variables**.
+- **macOS**: Juliaup adds itself to `~/.bash_profile` or `~/.zshrc`. Open a new terminal window to pick up the change. If that doesn't work, check that the following line exists in `~/.zshrc` (or `~/.bash_profile`):
+  ```bash
+  export PATH="$HOME/.juliaup/bin:$PATH"
+  ```
+  If it's missing, add it, then run `source ~/.zshrc` (or open a new terminal).
+
+### The wrong Julia version runs
+
+Run `juliaup status` to see your installed versions and which is marked as default (with `*`). If 1.11.5 is not the default:
+
+```shell
+juliaup default 1.11.5
+```
+
+If 1.11.5 isn't listed at all, install it first:
+
+```shell
+juliaup add 1.11.5
+```
+
+### Package installation errors
+
+If you see errors like `unsatisfiable requirements` or package conflicts:
+
+1. Delete the `Manifest.toml` file in the project folder.
+2. Run `import Pkg; Pkg.activate(@__DIR__); Pkg.instantiate()` again (or restart the notebook/code block that does this).
+
+If that doesn't work, make sure you're running Julia 1.11.5 (`julia --version`) and that the `Project.toml` file hasn't been modified.
+
+### Julia REPL hangs or freezes
+
+Press <kbd>Ctrl</kbd> + <kbd>C</kbd> (or <kbd>Cmd</kbd> + <kbd>C</kbd> on macOS) to interrupt a running computation. To force-quit the REPL, press <kbd>Ctrl</kbd> + <kbd>D</kbd> or type `exit()`.
+
+## Further Resources
+
+For more Julia help, see the [Julia Resources](/resources/julia.html) page and the [Julia Basics tutorial](/tutorials/julia-basics.html).

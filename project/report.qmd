@@ -2,16 +2,6 @@
 title: Project Report Instructions
 format:
     html: default
-    pdf:
-        documentclass: article
-        geometry:
-            - margin=1in  
-        include-in-header:
-            text: |
-                \renewcommand\toprule[2]\relax
-                \renewcommand\bottomrule[2]\relax
-        filters:
-            - ../_assets/filters/columns-to-tables.lua
 ---
 
 ## Overview

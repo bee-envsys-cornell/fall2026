@@ -7,8 +7,8 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.31">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e44360b8a8db1e130c7792fece1c8032.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.3">
 
   <meta name="author" content="Vivek Srikrishnan">
   <meta name="dcterms.date" content="2024-11-06">
@@ -19,6 +19,9 @@
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
   <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -97,7 +100,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7b87de61f0bc8c7187b97021a1ec54e0.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-d52ba59528acaf0ac8c09f3308d87e37.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -191,6 +194,14 @@
       margin-right: 0; 
     }
   </style>
+  <!-- MathJax 3 -->
+  <script>
+  window.MathJax = {
+      tex: {
+        tags: 'ams'
+      }
+    };
+  </script>
   <!-- Mathjax 3 config -->
   <script>
   window.MathJax = {
@@ -539,7 +550,7 @@ Figure&nbsp;2
 <h2>Demand and Capacity Factors</h2>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a>cf <span class="op">=</span> <span class="fu">DataFrame</span>(CSV.<span class="fu">File</span>(<span class="st">"data/unit_commitment/gen_variability.csv"</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a>cf <span class="op">=</span> <span class="fu">DataFrame</span>(CSV.<span class="fu">File</span>(<span class="st">"data/unit_commitment/gen_variability.csv"</span>))</span>
 <span id="cb1-2"><a></a></span>
 <span id="cb1-3"><a></a>NY_demand <span class="op">=</span> <span class="fu">DataFrame</span>(CSV.<span class="fu">File</span>(<span class="st">"data/economic_dispatch/2020_hourly_load_NY.csv"</span>))</span>
 <span id="cb1-4"><a></a><span class="fu">rename!</span>(NY_demand, <span class="op">:</span><span class="st">"Time Stamp"</span> <span class="op">=&gt;</span> <span class="op">:</span><span class="dt">Date</span>)</span>
@@ -556,7 +567,7 @@ Figure&nbsp;2
 <span id="cb1-15"><a></a><span class="fu">plot!</span>(p2, d[!, <span class="op">:</span><span class="dt">Date</span>], cf[!, <span class="op">:</span>Solar], label<span class="op">=</span><span class="st">"Solar"</span>, color<span class="op">=:</span>orange,  xrot<span class="op">=</span><span class="fl">45</span>, bottommargin<span class="op">=</span><span class="fl">24</span>mm, linewidth<span class="op">=</span><span class="fl">4</span>)</span>
 <span id="cb1-16"><a></a><span class="fu">ylims!</span>(p2, (<span class="fl">0</span>, <span class="fl">1</span>))</span>
 <span id="cb1-17"><a></a><span class="fu">plot!</span>(p2, size<span class="op">=</span>(<span class="fl">600</span>, <span class="fl">600</span>))</span>
-<span id="cb1-18"><a></a><span class="fu">display</span>(p2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-18"><a></a><span class="fu">display</span>(p2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="fig-demand" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig">
@@ -712,7 +723,9 @@ Figure&nbsp;3
 <section id="unit-commitment-formulation-jump" class="slide level2">
 <h2>Unit Commitment Formulation (JuMP)</h2>
 <div id="14" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a></a>h <span class="op">=</span> <span class="fu">nrow</span>(d)</span>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a></a>h <span class="op">=</span> <span class="fu">nrow</span>(d)</span>
 <span id="cb2-2"><a></a>T <span class="op">=</span> <span class="fl">1</span><span class="op">:</span>h</span>
 <span id="cb2-3"><a></a>G <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu">nrow</span>(gens)</span>
 <span id="cb2-4"><a></a>Gthermal <span class="op">=</span> [<span class="fl">1</span>; <span class="fu">collect</span>(<span class="fl">4</span><span class="op">:</span><span class="fl">11</span>)]</span>
@@ -724,24 +737,30 @@ Figure&nbsp;3
 <span id="cb2-10"><a></a><span class="pp">@variable</span>(uc, stop[g <span class="kw">in</span> Gthermal, t <span class="kw">in</span> T], Bin) <span class="co"># shutdown</span></span>
 <span id="cb2-11"><a></a><span class="pp">@variable</span>(uc, yaux[g <span class="kw">in</span> Gthermal, t <span class="kw">in</span> T] <span class="op">&gt;=</span> <span class="fl">0</span>) <span class="co"># aux generation</span></span>
 <span id="cb2-12"><a></a><span class="pp">@objective</span>(uc, Min, <span class="fu">sum</span>(gens.VarCost <span class="op">.*</span> [<span class="fu">sum</span>(y[g, <span class="op">:</span>]) for g <span class="kw">in</span> G]) <span class="op">+</span> </span>
-<span id="cb2-13"><a></a>    <span class="fu">sum</span>(gens.StartCost[Gthermal] <span class="op">.*</span> [<span class="fu">sum</span>(start[g, <span class="op">:</span>]) for g <span class="kw">in</span> Gthermal]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-13"><a></a>    <span class="fu">sum</span>(gens.StartCost[Gthermal] <span class="op">.*</span> [<span class="fu">sum</span>(start[g, <span class="op">:</span>]) for g <span class="kw">in</span> Gthermal]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
 </section>
 <section id="unit-commitment-formulation-jump-1" class="slide level2">
 <h2>Unit Commitment Formulation (JuMP)</h2>
 <div id="16" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a></a>Grenew <span class="op">=</span> G[G <span class="op">.∉</span> <span class="fu">Ref</span>(Gthermal)] <span class="co"># find elements not in Gthermal</span></span>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a></a>Grenew <span class="op">=</span> G[G <span class="op">.∉</span> <span class="fu">Ref</span>(Gthermal)] <span class="co"># find elements not in Gthermal</span></span>
 <span id="cb3-2"><a></a></span>
 <span id="cb3-3"><a></a><span class="pp">@constraint</span>(uc, load[t <span class="kw">in</span> T], <span class="fu">sum</span>(y[<span class="op">:</span>, t]) <span class="op">&gt;=</span> d.Demand[t])</span>
 <span id="cb3-4"><a></a><span class="pp">@constraint</span>(uc, maxgen[g <span class="kw">in</span> Gthermal, t <span class="kw">in</span> T], y[g, t] <span class="op">&lt;=</span> gens.Pmax[g] <span class="op">*</span> c[g, t] <span class="op">*</span> cf[t, g])</span>
 <span id="cb3-5"><a></a><span class="pp">@constraint</span>(uc, renewmax[g <span class="kw">in</span> Grenew, t <span class="kw">in</span> T], y[g, t] <span class="op">&lt;=</span> gens.Pmax[g] <span class="op">*</span> cf[t, g])</span>
-<span id="cb3-6"><a></a><span class="pp">@constraint</span>(uc, mingen[g <span class="kw">in</span> G, t <span class="kw">in</span> T], y[g, t] <span class="op">&gt;=</span> gens.Pmin[g] <span class="op">*</span> c[g, t])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-6"><a></a><span class="pp">@constraint</span>(uc, mingen[g <span class="kw">in</span> G, t <span class="kw">in</span> T], y[g, t] <span class="op">&gt;=</span> gens.Pmin[g] <span class="op">*</span> c[g, t])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
 </section>
 <section id="unit-commitment-formulation-jump-2" class="slide level2">
 <h2>Unit Commitment Formulation (JuMP)</h2>
 <div id="18" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a></a><span class="pp">@constraint</span>(uc, startup[g <span class="kw">in</span> Gthermal, t <span class="kw">in</span> T], </span>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a></a><span class="pp">@constraint</span>(uc, startup[g <span class="kw">in</span> Gthermal, t <span class="kw">in</span> T], </span>
 <span id="cb4-2"><a></a>    c[g, t] <span class="op">&gt;=</span> <span class="fu">sum</span>(start[g, s] <span class="cf">for</span> s <span class="kw">in</span> <span class="fu">intersect</span>(T, (t <span class="op">-</span> gens.MinUp[g])<span class="op">:</span>t)))</span>
 <span id="cb4-3"><a></a><span class="pp">@constraint</span>(uc, shutdown[g <span class="kw">in</span> Gthermal, t <span class="kw">in</span> T], </span>
 <span id="cb4-4"><a></a>    <span class="fl">1</span> <span class="op">-</span> c[g, t] <span class="op">&gt;=</span> <span class="fu">sum</span>(stop[g, s] <span class="cf">for</span> s <span class="kw">in</span> <span class="fu">intersect</span>(T, (t <span class="op">-</span> gens.MinDown[g])<span class="op">:</span>t)))</span>
@@ -752,7 +771,8 @@ Figure&nbsp;3
 <span id="cb4-9"><a></a><span class="pp">@constraint</span>(uc, rampup[g <span class="kw">in</span> Gthermal, t <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>(h<span class="op">-</span><span class="fl">1</span>)],</span>
 <span id="cb4-10"><a></a>    yaux[g, t <span class="op">+</span> <span class="fl">1</span>] <span class="op">-</span> yaux[g, t] <span class="op">&lt;=</span> gens.Ramp[g])</span>
 <span id="cb4-11"><a></a><span class="pp">@constraint</span>(uc, rampdown[g <span class="kw">in</span> Gthermal, t <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>(h<span class="op">-</span><span class="fl">1</span>)],</span>
-<span id="cb4-12"><a></a>    yaux[g, t] <span class="op">-</span> yaux[g, t <span class="op">+</span> <span class="fl">1</span>] <span class="op">&lt;=</span> gens.Ramp[g])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-12"><a></a>    yaux[g, t] <span class="op">-</span> yaux[g, t <span class="op">+</span> <span class="fl">1</span>] <span class="op">&lt;=</span> gens.Ramp[g])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
 </section>
 <section id="unit-commitment-solution" class="slide level2">
@@ -760,7 +780,7 @@ Figure&nbsp;3
 <div id="cell-fig-uc-opt" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a></a><span class="fu">set_silent</span>(uc)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a></a><span class="fu">set_silent</span>(uc)</span>
 <span id="cb5-2"><a></a><span class="fu">optimize!</span>(uc)</span>
 <span id="cb5-3"><a></a>gen <span class="op">=</span> <span class="fu">value</span>.(y).data </span>
 <span id="cb5-4"><a></a>p <span class="op">=</span> <span class="fu">areaplot</span>(gen<span class="op">'</span>, </span>
@@ -771,7 +791,7 @@ Figure&nbsp;3
 <span id="cb5-9"><a></a>    grid<span class="op">=:</span><span class="cn">false</span></span>
 <span id="cb5-10"><a></a>)</span>
 <span id="cb5-11"><a></a><span class="fu">plot!</span>(legend<span class="op">=:</span>outerright, legendcolumns<span class="op">=</span><span class="fl">1</span>)</span>
-<span id="cb5-12"><a></a><span class="fu">plot!</span>(p, size<span class="op">=</span>(<span class="fl">1200</span>, <span class="fl">500</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-12"><a></a><span class="fu">plot!</span>(p, size<span class="op">=</span>(<span class="fl">1200</span>, <span class="fl">500</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="fig-uc-opt" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center" data-execution_count="1">
 <figure class="quarto-float quarto-float-fig">
@@ -1253,13 +1273,14 @@ Figure&nbsp;4: Unit commitment example solution
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy

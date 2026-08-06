@@ -1,5 +1,7 @@
 ---
 title: "Optimization Resources"
+format: 
+    html: default
 ---
 
 * [Decision Modeling e-Book](https://linney.mun.ca/pages/view.php?ref=36808): this uses Excel Solver, but may have useful information on problem setup and optimization methods.

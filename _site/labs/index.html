@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.10.3">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Labs – Environmental Systems Analysis</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -29,7 +32,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../labs/lab01/lab01.html" rel="next">
 <link href="../_assets/logos/favicon.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -37,10 +39,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1d1e7f53b840ad8d06c4ae6c57b8588.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-037772e4b0a8fb61e9a28208dd0e90cd.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ba9c0723bac509a7d8c9561700ea21a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-41afc7412041501ec6863dfe70bda895.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -230,24 +232,6 @@ window.MathJax = {
  <span class="menu-text">Lab Overview</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../labs/lab01/lab01.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab 1</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../labs/lab02/lab02.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab 2</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../labs/lab03/lab03.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab 3</span></a>
-  </div>
-</li>
     </ul>
     </div>
 </nav>
@@ -326,19 +310,19 @@ window.MathJax = {
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">Lab 1</td>
-<td style="text-align: center;"><a href="../labs/lab01/lab01.html"><i class="fa-sharp fa-pen-field" aria-label="pen-field"></i></a></td>
+<td style="text-align: center;"><a href="lab01/lab01.qmd"><i class="fa-sharp fa-pen-field" aria-label="pen-field"></i></a></td>
 <td style="text-align: center;"><span style="color: grey;"><i class="fa-sharp fa-key-skeleton" aria-label="key-skeleton"></i></span></td>
 <td style="text-align: left;">Aug.&nbsp;28, 2025</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">Lab 2</td>
-<td style="text-align: center;"><a href="../labs/lab02/lab02.html"><i class="fa-sharp fa-pen-field" aria-label="pen-field"></i></a></td>
+<td style="text-align: center;"><a href="lab02/lab02.qmd"><i class="fa-sharp fa-pen-field" aria-label="pen-field"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: left;">Sep.&nbsp;30, 2025</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">Lab 3</td>
-<td style="text-align: center;"><a href="../labs/lab03/lab03.html"><i class="fa-sharp fa-pen-field" aria-label="pen-field"></i></a></td>
+<td style="text-align: center;"><a href="lab03/lab03.qmd"><i class="fa-sharp fa-pen-field" aria-label="pen-field"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: left;">Oct.&nbsp;23, 2025</td>
 </tr>
@@ -400,13 +384,14 @@ window.MathJax = {
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -773,15 +758,6 @@ window.MathJax = {
     }
   });
   </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-  </div>
-  <div class="nav-page nav-page-next">
-      <a href="../labs/lab01/lab01.html" class="pagination-link" aria-label="Lab 1">
-        <span class="nav-page-text">Lab 1</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
-  </div>
-</nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

@@ -7,8 +7,8 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.31">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e44360b8a8db1e130c7792fece1c8032.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.3">
 
   <meta name="author" content="Vivek Srikrishnan">
   <meta name="dcterms.date" content="2025-12-03">
@@ -19,6 +19,9 @@
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
   <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -117,7 +120,7 @@
     div.csl-indent {
       margin-left: 2em;
     }  </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7b87de61f0bc8c7187b97021a1ec54e0.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-d52ba59528acaf0ac8c09f3308d87e37.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -211,6 +214,14 @@
       margin-right: 0; 
     }
   </style>
+  <!-- MathJax 3 -->
+  <script>
+  window.MathJax = {
+      tex: {
+        tags: 'ams'
+      }
+    };
+  </script>
   <!-- Mathjax 3 config -->
   <script>
   window.MathJax = {
@@ -493,7 +504,9 @@
 <section id="quick-example" class="slide level2">
 <h2>Quick Example</h2>
 <div id="12" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a><span class="bu">Random</span>.<span class="fu">seed!</span>(<span class="fl">1</span>)</span>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a><span class="bu">Random</span>.<span class="fu">seed!</span>(<span class="fl">1</span>)</span>
 <span id="cb1-2"><a></a><span class="co"># define function to optimize</span></span>
 <span id="cb1-3"><a></a><span class="kw">function</span> <span class="fu">f</span>(x)</span>
 <span id="cb1-4"><a></a>    lnorm <span class="op">=</span> <span class="fu">LogNormal</span>(<span class="fl">0.25</span>, <span class="fl">1</span>) </span>
@@ -504,7 +517,8 @@
 <span id="cb1-9"><a></a>bounds <span class="op">=</span> [<span class="fl">0.0</span> <span class="fl">1000.0</span>]<span class="ch">'</span></span>
 <span id="cb1-10"><a></a><span class="co"># optimize</span></span>
 <span id="cb1-11"><a></a>results <span class="op">=</span> Metaheuristics.<span class="fu">optimize</span>(fobj, bounds, <span class="fu">DE</span>())</span>
-<span id="cb1-12"><a></a>results.best_sol</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-12"><a></a>results.best_sol</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>(f = 3.7745e+00, x = [1.74764])</code></pre>
 </div>
@@ -979,7 +993,7 @@ y_t &amp;\sim \text{LogNormal}(\mu, \sigma^2)
 <div id="16" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a></a><span class="co"># find critical value</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a></a><span class="co"># find critical value</span></span>
 <span id="cb3-2"><a></a></span>
 <span id="cb3-3"><a></a></span>
 <span id="cb3-4"><a></a><span class="fu">crit</span>(x) <span class="op">=</span> (x<span class="op">^</span>q<span class="op">/</span>(<span class="fl">1</span><span class="op">+</span>x<span class="op">^</span>q)) <span class="op">-</span> b<span class="op">*</span>x</span>
@@ -1010,7 +1024,7 @@ y_t &amp;\sim \text{LogNormal}(\mu, \sigma^2)
 <span id="cb3-29"><a></a>results <span class="op">=</span> Metaheuristics.<span class="fu">optimize</span>(obj, bounds, <span class="fu">DE</span>(options<span class="op">=</span>options))</span>
 <span id="cb3-30"><a></a></span>
 <span id="cb3-31"><a></a>a <span class="op">=</span> results.best_sol.x</span>
-<span id="cb3-32"><a></a>pa <span class="op">=</span> <span class="fu">plot</span>(a, tickfontsize<span class="op">=</span><span class="fl">16</span>, guidefontsize<span class="op">=</span><span class="fl">16</span>, ylabel<span class="op">=</span><span class="st">"Point Source P Release"</span>, xlabel<span class="op">=</span><span class="st">"Time"</span>, linewidth<span class="op">=</span><span class="fl">3</span>, legend<span class="op">=</span><span class="cn">false</span>, left_margin<span class="op">=</span><span class="fl">5</span>mm, bottom_margin<span class="op">=</span><span class="fl">10</span>mm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-32"><a></a>pa <span class="op">=</span> <span class="fu">plot</span>(a, tickfontsize<span class="op">=</span><span class="fl">16</span>, guidefontsize<span class="op">=</span><span class="fl">16</span>, ylabel<span class="op">=</span><span class="st">"Point Source P Release"</span>, xlabel<span class="op">=</span><span class="st">"Time"</span>, linewidth<span class="op">=</span><span class="fl">3</span>, legend<span class="op">=</span><span class="cn">false</span>, left_margin<span class="op">=</span><span class="fl">5</span>mm, bottom_margin<span class="op">=</span><span class="fl">10</span>mm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <!--?xml version="1.0" encoding="utf-8"?-->
@@ -1067,14 +1081,14 @@ y_t &amp;\sim \text{LogNormal}(\mu, \sigma^2)
 <div id="18" class="cell" data-cache="false" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a></a>X <span class="op">=</span> <span class="fu">lake</span>(a, y, q, b, T)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a></a>X <span class="op">=</span> <span class="fu">lake</span>(a, y, q, b, T)</span>
 <span id="cb4-2"><a></a></span>
 <span id="cb4-3"><a></a><span class="fu">histogram</span>(X[<span class="fl">101</span>, <span class="op">:</span>], xlabel<span class="op">=</span><span class="st">"End P Concentration"</span>, ylabel<span class="op">=</span><span class="st">"Count"</span>,</span>
 <span id="cb4-4"><a></a>    guidefontsize<span class="op">=</span><span class="fl">16</span>, tickfontsize<span class="op">=</span><span class="fl">16</span>, </span>
 <span id="cb4-5"><a></a>    legendfontsize<span class="op">=</span><span class="fl">16</span>, label<span class="op">=:</span><span class="cn">false</span>, bottom_margin<span class="op">=</span><span class="fl">5</span>mm, left_margin<span class="op">=</span><span class="fl">5</span>mm)</span>
 <span id="cb4-6"><a></a><span class="fu">vline!</span>([Xcrit], color<span class="op">=:</span>red, linestyle<span class="op">=:</span>dot, </span>
 <span id="cb4-7"><a></a>    label<span class="op">=</span><span class="st">"Critical Value"</span>)</span>
-<span id="cb4-8"><a></a>    <span class="fu">plot!</span>(size<span class="op">=</span>(<span class="fl">1000</span>, <span class="fl">450</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-8"><a></a>    <span class="fu">plot!</span>(size<span class="op">=</span>(<span class="fl">1000</span>, <span class="fl">450</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <!--?xml version="1.0" encoding="utf-8"?-->
@@ -1210,7 +1224,7 @@ y_t &amp;\sim \text{LogNormal}(\mu, \sigma^2)
 <div id="20" class="cell" data-cache="false" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a></a>pconc <span class="op">=</span> <span class="fu">plot</span>(X, alpha<span class="op">=</span><span class="fl">0.2</span>,  linewidth<span class="op">=</span><span class="fl">3</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a></a>pconc <span class="op">=</span> <span class="fu">plot</span>(X, alpha<span class="op">=</span><span class="fl">0.2</span>,  linewidth<span class="op">=</span><span class="fl">3</span>,</span>
 <span id="cb5-2"><a></a>    guidefontsize<span class="op">=</span><span class="fl">16</span>, tickfontsize<span class="op">=</span><span class="fl">16</span>, </span>
 <span id="cb5-3"><a></a>    legendfontsize<span class="op">=</span><span class="fl">16</span>, label<span class="op">=:</span><span class="cn">false</span>,</span>
 <span id="cb5-4"><a></a>    legend<span class="op">=:</span>topleft, bottom_margin<span class="op">=</span><span class="fl">10</span>mm, left_margin<span class="op">=</span><span class="fl">5</span>mm, grid<span class="op">=</span><span class="cn">false</span>)</span>
@@ -1218,7 +1232,7 @@ y_t &amp;\sim \text{LogNormal}(\mu, \sigma^2)
 <span id="cb5-6"><a></a>    label<span class="op">=</span><span class="st">"Critical Value"</span>)</span>
 <span id="cb5-7"><a></a><span class="fu">plot!</span>(size<span class="op">=</span>(<span class="fl">600</span>, <span class="fl">600</span>))</span>
 <span id="cb5-8"><a></a><span class="fu">ylabel!</span>(<span class="st">"Lake P Concentration"</span>)</span>
-<span id="cb5-9"><a></a><span class="fu">xlabel!</span>(<span class="st">"Time"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-9"><a></a><span class="fu">xlabel!</span>(<span class="st">"Time"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <!--?xml version="1.0" encoding="utf-8"?-->
@@ -2632,13 +2646,14 @@ Quinn, J. D., Reed, P. M., &amp; Keller, K. (2017). Direct policy search for rob
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy

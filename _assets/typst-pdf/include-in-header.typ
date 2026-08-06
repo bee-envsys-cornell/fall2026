@@ -3,6 +3,8 @@
 #let header-left = [{{< meta pdf-header-left >}}]
 #let header-right = [{{< meta pdf-header-right >}}]
 #let footer-left = [{{< meta pdf-footer-left >}}]
+#let logo-path-meta = "{{< meta pdf-logo-path >}}"
+#let logo-path = if logo-path-meta.starts-with("?meta:") { "_assets/logos/envsys_logo.png" } else { logo-path-meta }
 
 
 // H1
@@ -140,7 +142,7 @@
 
       // Right column: logo
       align(horizon)[
-        #image("_assets/logos/envsys_logo.png", width: 1in)
+        #image(logo-path, width: 1in)
       ]
     )
   }

@@ -6,6 +6,9 @@ execute:
 engine: julia
 julia:
     exeflags: ["+1.11.5"]
+format:
+    html: default
+    typst: default
 ---
 
 This tutorial was inspired and draws from [Justin Bois' tutorial](http://chebe163.caltech.edu/2018w/handouts/intro_to_latex.html).
@@ -21,7 +24,9 @@ Pkg.instantiate()
 
 ## Overview
 
-In this tutorial, you will learn how to typeset mathematics and equations in Jupyter notebooks using LaTeX. 
+LaTeX is a typesetting system for creating professional-quality mathematical notation. You don't need to install anything for this class — LaTeX math works inside Quarto, Jupyter notebooks, and most Markdown editors by enclosing expressions in `$` signs. However, if you want to use LaTeX outside of these environments, you will need to install a LaTeX distribution. For example, [MacTeX](https://tug.org/mactex/) for MacOS, [TeX Live](https://www.tug.org/texlive/) for Linux, or [MiKTeX](https://miktex.org/) for Windows. You can also use online editors like [Overleaf](https://www.overleaf.com/).
+
+In this tutorial, you will learn how to typeset mathematics and equations using LaTeX.
 
 ## Inline Mathematics
 
@@ -61,6 +66,59 @@ Fractions can be displayed using `\frac{}{}`, where the first bracket encloses t
 > $\frac{1}{2}$
 
 > `$\frac{1}{2}$`
+
+### Common Mathematical Functions
+
+Names of standard functions should be preceded by a backslash so they render in upright (roman) type, not italic. This is the #1 beginner mistake:
+
+| Incorrect | Correct | Renders as |
+|-----------|---------|------------|
+| `$sin(x)$` | `$\sin(x)$` | $\sin(x)$ |
+| `$cos(x)$` | `$\cos(x)$` | $\cos(x)$ |
+| `$log(x)$` | `$\log(x)$` | $\log(x)$ |
+| `$ln(x)$` | `$\ln(x)$` | $\ln(x)$ |
+| `$exp(x)$` | `$\exp(x)$` | $\exp(x)$ |
+| `$max(x,y)$` | `$\max(x,y)$` | $\max(x,y)$ |
+| `$min(x,y)$` | `$\min(x,y)$` | $\min(x,y)$ |
+
+### Square Roots
+
+Use `\sqrt{}`:
+
+> $\sqrt{x}$ and $\sqrt[3]{x}$
+
+> `$\sqrt{x}$` and `$\sqrt[3]{x}$`
+
+The optional `[3]` specifies the root degree.
+
+### Integrals and Sums
+
+Integrals use `\int` with optional bounds via `_` and `^`:
+
+> $\int_0^\infty e^{-x} \, dx$
+
+> `$\int_0^\infty e^{-x} \, dx$`
+
+The `\,` adds a thin space before `dx`, which is conventional.
+
+Sums use `\sum`:
+
+> $\sum_{i=1}^n x_i$
+
+> `$\sum_{i=1}^n x_i$`
+
+### Accents
+
+Common for denoting vectors, estimates, or time derivatives:
+
+| Code | Renders as | Use |
+|------|------------|-----|
+| `\hat{x}` | $\hat{x}$ | Unit vector or estimator |
+| `\bar{x}` | $\bar{x}$ | Sample mean |
+| `\tilde{x}` | $\tilde{x}$ | Tilde variable |
+| `\dot{x}` | $\dot{x}$ | Time derivative |
+| `\ddot{x}` | $\ddot{x}$ | Second time derivative |
+| `\vec{x}` | $\vec{x}$ | Vector (alternative to `\mathbf`) |
 
 ## Displaying Equations
 
@@ -139,6 +197,113 @@ $$
 ```
 
 This is totally optional, but helps!
+
+### Invisible Delimiters
+
+When splitting an expression across multiple lines, you sometimes need a bracket on one line without its partner. Use `\left.` and `\right.` (with a period) for invisible parentheses:
+
+$$
+\begin{align}
+x = \left( \frac{1}{2} \right. &+ \frac{1}{3} \\
+       &\left. + \frac{1}{4} \right)
+\end{align}
+$$
+
+```latex
+$$
+\begin{align}
+x = \left( \frac{1}{2} \right. &+ \frac{1}{3} \\
+       &\left. + \frac{1}{4} \right)
+\end{align}
+$$
+```
+
+## Cases and Matrices
+
+### Piecewise Functions
+
+Use `\begin{cases}` for piecewise definitions:
+
+$$
+f(x) = \begin{cases}
+x^2 & \text{if } x \geq 0 \\
+0   & \text{otherwise}
+\end{cases}
+$$
+
+```latex
+$$
+f(x) = \begin{cases}
+x^2 & \text{if } x \geq 0 \\
+0   & \text{otherwise}
+\end{cases}
+$$
+```
+
+The `&` separates the expression from the condition, and `\text{}` lets you write normal text inside math mode.
+
+### Matrices
+
+Use `\begin{bmatrix}` for bracketed matrices or `\begin{pmatrix}` for parentheses:
+
+$$
+A = \begin{bmatrix}
+a_{11} & a_{12} & a_{13} \\
+a_{21} & a_{22} & a_{23}
+\end{bmatrix}
+$$
+
+```latex
+$$
+A = \begin{bmatrix}
+a_{11} & a_{12} & a_{13} \\
+a_{21} & a_{22} & a_{23}
+\end{bmatrix}
+$$
+```
+
+Columns are separated by `&`, rows by `\\`.
+
+### Text Inside Math
+
+When you need words inside an equation, use `\text{}`:
+
+$$
+\underbrace{x_1 + x_2 + \cdots + x_n}_{\text{$n$ terms}}
+$$
+
+```latex
+$$
+\underbrace{x_1 + x_2 + \cdots + x_n}_{\text{$n$ terms}}
+$$
+```
+
+Without `\text`, "n terms" would render as $nterms$ (italic, no space).
+
+## Common Gotchas
+
+Here are mistakes that trip up nearly every beginner.
+
+### Curly braces are grouping characters
+
+To display an actual `{` or `}`, escape them by preceding them with a backslash:
+
+> $\{x \mid x > 0\}$
+
+> `$\{x \mid x > 0\}$`
+
+
+### Spaces in math mode
+
+LaTeX ignores standard spaces in math mode. To add space, use:
+
+| Command | Width |
+|---------|-------|
+| `\,` | Thin space |
+| `\:` | Medium space |
+| `\;` | Thick space |
+| `\quad` | One em (roughly the width of "M") |
+| `\qquad` | Two ems |
 
 ## Using LaTeX in Figures
 

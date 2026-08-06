@@ -7,8 +7,8 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.31">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e44360b8a8db1e130c7792fece1c8032.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.3">
 
   <meta name="author" content="Vivek Srikrishnan">
   <meta name="dcterms.date" content="2025-10-06">
@@ -19,6 +19,9 @@
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
   <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -97,7 +100,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7b87de61f0bc8c7187b97021a1ec54e0.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-d52ba59528acaf0ac8c09f3308d87e37.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -191,6 +194,14 @@
       margin-right: 0; 
     }
   </style>
+  <!-- MathJax 3 -->
+  <script>
+  window.MathJax = {
+      tex: {
+        tags: 'ams'
+      }
+    };
+  </script>
   <!-- Mathjax 3 config -->
   <script>
   window.MathJax = {
@@ -280,7 +291,7 @@
 <h2>CI Interpretation: Mean of <span class="math inline">\(N(0.4, 2)\)</span></h2>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia code-overflow-wrap number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a><span class="co"># set up distribution</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia code-overflow-wrap number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a><span class="co"># set up distribution</span></span>
 <span id="cb1-2"><a></a>mean_true <span class="op">=</span> <span class="fl">0.4</span></span>
 <span id="cb1-3"><a></a>n_cis <span class="op">=</span> <span class="fl">100</span> <span class="co"># number of CIs to compute</span></span>
 <span id="cb1-4"><a></a>dist <span class="op">=</span> <span class="fu">Normal</span>(mean_true, <span class="fl">2</span>)</span>
@@ -344,7 +355,7 @@
 <span id="cb1-62"><a></a><span class="fu">plot!</span>(p2, size<span class="op">=</span>(<span class="fl">500</span>, <span class="fl">500</span>)) <span class="co"># resize to fit slide</span></span>
 <span id="cb1-63"><a></a></span>
 <span id="cb1-64"><a></a><span class="fu">display</span>(p1)</span>
-<span id="cb1-65"><a></a><span class="fu">display</span>(p2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-65"><a></a><span class="fu">display</span>(p2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="fig-cis" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig">
@@ -1280,13 +1291,14 @@ Figure&nbsp;1: Display of 95% confidence intervals
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy

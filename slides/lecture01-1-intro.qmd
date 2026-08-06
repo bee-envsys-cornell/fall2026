@@ -4,7 +4,7 @@ subtitle: "Lecture 01"
 author: "Vivek Srikrishnan"
 course: "BEE 4750"
 institution: "Cornell University"
-date: "August 25, 2025"
+date: "August 24, 2026"
 format:
     revealjs:
         slide-number: c/t
@@ -101,7 +101,6 @@ Those interconnections can lead to very different dynamics and outcomes than if 
   * Simulate system dynamics
   * Analyze and assess risk
   * Make decisions with optimization
-  * Explore trade-offs across objectives
 
 :::
 :::
@@ -131,7 +130,7 @@ Those interconnections can lead to very different dynamics and outcomes than if 
 
 1. Introduction to Systems Analysis
 2. Simulating Systems and Risk
-3. Systems Management and Optimization
+3. Systems Design and Management with Optimization
 4. Decision-Making Under Uncertainty
 
 # Course Policies
@@ -162,7 +161,7 @@ If you have any access barriers in this class, *please* seek out any helpful acc
 
 ## Course Website
 
-<https://envsys.viveks.me/fall2025/>
+<https://envsys.viveks.me/fall2026/>
 
 - Central hub for information, schedule, and policies
 - Will add link and some information to Canvas (assignment due dates, etc)
@@ -183,17 +182,11 @@ In this course, we will use the [Julia programming language](https://julialang.o
 
 All assignments and labs will be provided as Jupyter Notebooks.
 
+You do not have to use the notebooks for your own work.
+
 ## What Is Your Programming Experience?
 
 {{< include _poll-prompt.qmd >}}
-
-## Jupyter Notebooks
-
-We will use Jupyter Notebooks for most computing tasks (including assignments).
-
-- Allow for interactive evaluation of code and integration with text (including nicely typeset mathematics)
-- Can export to PDF (or HTML -> PDF) for submission to Gradescope.
-- **Be careful before submitting**: Evaluate all cells *in order*.
 
 ## GitHub Classroom
 
@@ -218,12 +211,10 @@ Homework assignments and labs will be distributed using GitHub Classroom.
 
 | Category | Weight |
 |:--------|:------:|
-| Participation (4750) | 10% |
-| Reading Assignments (5750) | 10% |
-| Exercises | 10% |
 | Labs | 10% |
 | Homework | 15% |
-| Prelims | 30% |
+| Mini-Projects | 20% |
+| Quizzes | 30% |
 | Term Project | 25% |
 
 ## Overall Guidelines
@@ -239,17 +230,12 @@ Homework assignments and labs will be distributed using GitHub Classroom.
 - Most work can be submitted up to 24 hours late at a 50% penalty.
 - If you have an approved reason (illness, injury, etc), let me know **ahead of time** and we will make accomodations.
 
-## Regrade Requests
+## What Are We Grading?
 
-- Can be submitted on Gradescope up to 1 week after grades are released.
-- Must include a *brief* justification.
-- **Will be evaluated only on the basis of the work in the submission**.
-- Can lose points if me/TA notice we missed a mistake initially!
+- **Setup and Interpretation**: Can you set up a model, interpret outputs, and explain your reasoning?
+- The logic behind your model and approach should be written clearly and you should provide interpretations of the results and what they mean for the problem.
+- **Not code**: Will never look at your code while grading unless there is a concern, you don't have to include it but it should be accessible on GitHub.
 
-## Regrade Requests: Special Cases
-
-- If you (correctly) point out that your grade was graded too leniently, you will get bonus points back.
-- If a *significant* error (as defined by me) is found in the solutions, everyone in the class will receive full credit for that (sub)problem.
 
 ## Labs
 
@@ -257,7 +243,6 @@ Homework assignments and labs will be distributed using GitHub Classroom.
 - Focus on "how" to apply methods and concepts from class
 - **If you can't bring a laptop to these classes, you can work with someone else**
 - Can work in groups, but must submit your own work.
-- Due by **9:00pm** the day after the lab day, will drop one.
 - Graded on a scale of 0-3, largely based on effort.
 
 ## Exercises
@@ -270,42 +255,34 @@ Homework assignments and labs will be distributed using GitHub Classroom.
 
 ## Homework Assignments
 
-- 5-6 in total, due two weeks after assignment.
-- Focus on new or extended applications
-- Managed with GitHub Classroom
-- Due by **9:00pm** on the due date (usually Thursday)
-- No drops.
+- Mix of conceptual/analytical questions and light programming exercises.
+- Released after prior assignment is due (though some weeks may not have a homework assignment).
+- Due by **9:00pm** on the due date (usually Thursday).
+- Can work in groups of up to 3, only one submission required per group.
+- Late submissions within 24 hours accepted at a 50% penalty.
+- Will drop the lowest score by default.
+
+## Quizzes
+
+- 5-6 given in-class during the first 25 minutes.
+- Focus on concepts, problem formulations, interpretation.
+- **Completely closed book and closed note** (no calculators, phones, or other electronic devices).
+- Quizzes will be scanned and put on Gradescope for grades/feedback.
+- None dropped by default for students in 5750 but will drop lowest score for students in 4750.
+
+## Mini-Projects
+
+- 3 throughout the semester, each with a different focus (simulation, optimization, and decision-making).
+- Will involve a real world application with a problem posed and relevant data provided.
+- Can work in groups of 2 (4750), **5750 students must work alone**.
 
 ## Term Project 
 
 - Analyze a system of interest, including the regulatory environment, going beyond class examples/methods.
 - Work in groups of 3--4.
-- Submit proposal on 10/24/25.
+- Submit proposal on 10/23/26.
 - Record presentation by end of semester for peer review by classmates.
 - Submit report and group/self evaluations by end of finals week.
-
-## Participation
-
-- The class works best when everyone is engaged and collaborative
-  - Attending every class;
-  - Asking questions in class or on Ed;
-  - Answering questions in class or on Ed;
-  - Coming to office hours.
-- We're paying attention! Participation points not "free".
-
-## Reading Assignments
-
-- Assigned throughout the semester.
-- 5750 students are required to submit a 1--2 page discussion summarizing reading, providing thoughts, and connecting to class material.
-- 4750 students can improve participation by posting about readings on Ed.
-
-## Prelims
-
-- Two in-class prelims (10/08, 11/12);
-- Focus on concepts, problem formulations, interpretation.
-- Exams will be scanned and put on Gradescope for grades/feedback.
-- Will discuss ~two weeks after the exams after grades are returned.
-- Accomodations/makeups handled through ATP.
 
 # Academic Integrity
 
@@ -315,74 +292,7 @@ Homework assignments and labs will be distributed using GitHub Classroom.
 - Knowing how to find, evaluate, and use helpful resources is a skill we want to develop. 
 - Don't just copy...learn from others and give credit.
 - Submit your own original work.
-
-
-## Academic Integrity
-
-Obviously, just copying down answers from Chegg or ChatGPT and passing them off as your own is not ok.
-
-But often lines aren't that simple. Let's quickly consider some scenarios (h/t to [Tony Wong](https://tonyewong.github.io/) for these).
-
-
-## Academic Integrity: Scenario 1
-
-Dan searches the internet for relevant code and copy-pastes it into his Jupyter notebook.  They cite the source of the codes.
-
-::: {.callout-important}
-### Is this ok?
-
-::: {.fragment .fade-in}
-**Probably Not**
-
-- What portion of the work is Dan's?
-- How important were the codes?
-- Did Dan understand what they copied?
-:::
-:::
-
-## Academic Integrity: Scenario 1
-
-Dan searches the internet for relevant code and copy-pastes it into his Jupyter notebook.  They cites the source of the codes.
-
-::: {.callout-tip}
-### What Should Dan Do?
-
-::: {.fragment .fade-in}
-Dan should *paraphrase* the codes they found to incorporate them with his own code, and then also cite them.
-:::
-:::
-
-## Academic Integrity: Scenario 2
-
-Matthew and Rhonda work together to figure out how to implement the codes, but each works on their own computer and develops their own solutions.
-
-::: {.callout-important}
-### Is this ok?
-
-::: {.fragment .fade-in}
-**Definitely!**
-
-- Independent implementations shows understanding.
-
-:::
-:::
-
-
-## Academic Integrity: Scenario 3
-
-Felix and Rachel are working together on a problem involving a derivation. Rachel types it up in LaTeX and sends the code to Felix, who pastes it into his Jupyter notebook.
-
-::: {.callout-important}
-### Is this ok?
-
-::: {.fragment .fade-in}
-**Likely Not**
-
-- Did Felix contribute enough to the derivation?
-- ***Definitely not OK if Felix doesn't give Rachel credit for their contribution.***
-
-:::
-:::
+- Group solutions should reflect the understanding of all group members.
 
 
 ## LLMs: The Stochastic Parrot
@@ -406,14 +316,14 @@ Using AI tools is not prohibited. **But**:
 
 ## Next Classes
 
-**Wednesday**: Lab 1: Julia and GitHub setup.
+**Wednesday**: Intro to Systems
 
-- Lab 1 link is available on Ed. Click it to accept the lab before class.
-- Follow setup instructions on website.
+## Setup For Class
 
-**Next Week**: Introduction to Systems Analysis
+Follow the guides to install git, Julia, and VS Code:
+
+<https://envsys.viveks.me/fall2026/setup/index.html>
 
 ## Assessments
 
-- Lab 1: Wednesday
-- HW 1: Available, due 9/11.
+- HW1: Available, due 9/3.

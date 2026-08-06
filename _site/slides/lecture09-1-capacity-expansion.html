@@ -7,8 +7,8 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.31">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e44360b8a8db1e130c7792fece1c8032.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.3">
 
   <meta name="author" content="Vivek Srikrishnan">
   <meta name="dcterms.date" content="2024-10-20">
@@ -19,6 +19,9 @@
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
   <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -97,7 +100,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7b87de61f0bc8c7187b97021a1ec54e0.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-d52ba59528acaf0ac8c09f3308d87e37.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -191,6 +194,14 @@
       margin-right: 0; 
     }
   </style>
+  <!-- MathJax 3 -->
+  <script>
+  window.MathJax = {
+      tex: {
+        tags: 'ams'
+      }
+    };
+  </script>
   <!-- Mathjax 3 config -->
   <script>
   window.MathJax = {
@@ -299,13 +310,13 @@
 <div id="6" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a>E <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.01</span><span class="op">:</span><span class="fl">1</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a>E <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.01</span><span class="op">:</span><span class="fl">1</span></span>
 <span id="cb1-2"><a></a><span class="fu">plot</span>(E, E<span class="op">.^</span><span class="fl">2</span>, legend<span class="op">=</span><span class="cn">false</span>, grid<span class="op">=</span><span class="cn">false</span>, xlabel<span class="op">=</span><span class="st">"Efficiency"</span>, ylabel<span class="op">=</span><span class="st">"Cost"</span>, color<span class="op">=:</span>black, yticks<span class="op">=</span><span class="cn">false</span>, xlims<span class="op">=</span>(<span class="fl">0</span>, <span class="fl">1</span>), ylims<span class="op">=</span>(<span class="fl">0</span>, <span class="fl">1</span>), left_margin<span class="op">=</span><span class="fl">8</span>mm, linewidth<span class="op">=</span><span class="fl">3</span>)</span>
 <span id="cb1-3"><a></a><span class="fu">xticks!</span>([<span class="fl">0.65</span>, <span class="fl">0.95</span>])</span>
 <span id="cb1-4"><a></a><span class="fu">xlims!</span>((<span class="fl">0</span>, <span class="fl">1.05</span>))</span>
 <span id="cb1-5"><a></a><span class="fu">scatter!</span>([<span class="fl">0.65</span>, <span class="fl">0.95</span>], [<span class="fl">0.65</span>, <span class="fl">0.95</span>]<span class="op">.^</span><span class="fl">2</span>, markersize<span class="op">=</span><span class="fl">10</span>, color<span class="op">=:</span>blue)</span>
 <span id="cb1-6"><a></a><span class="fu">plot!</span>(E, <span class="fl">1.6</span> <span class="op">.*</span> E  <span class="op">.-</span> <span class="fl">0.6175</span>, color<span class="op">=:</span>blue, linestyle<span class="op">=:</span>dash, linewidth<span class="op">=</span><span class="fl">3</span>)</span>
-<span id="cb1-7"><a></a><span class="fu">plot!</span>(size<span class="op">=</span>(<span class="fl">600</span>, <span class="fl">500</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-7"><a></a><span class="fu">plot!</span>(size<span class="op">=</span>(<span class="fl">600</span>, <span class="fl">500</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <!--?xml version="1.0" encoding="utf-8"?-->
@@ -353,8 +364,8 @@
 <div id="8" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a></a><span class="fu">scatter!</span>([<span class="fl">0.32</span>, <span class="fl">0.98</span>], [<span class="fl">0.32</span>, <span class="fl">0.98</span>]<span class="op">.^</span><span class="fl">2</span>, markersize<span class="op">=</span><span class="fl">10</span>, color<span class="op">=:</span>red)</span>
-<span id="cb2-2"><a></a><span class="fu">plot!</span>(E, <span class="fl">1.3</span> <span class="op">.*</span> E  <span class="op">.-</span> <span class="fl">0.31</span>, color<span class="op">=:</span>red, linestyle<span class="op">=:</span>dot, linewidth<span class="op">=</span><span class="fl">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a></a><span class="fu">scatter!</span>([<span class="fl">0.32</span>, <span class="fl">0.98</span>], [<span class="fl">0.32</span>, <span class="fl">0.98</span>]<span class="op">.^</span><span class="fl">2</span>, markersize<span class="op">=</span><span class="fl">10</span>, color<span class="op">=:</span>red)</span>
+<span id="cb2-2"><a></a><span class="fu">plot!</span>(E, <span class="fl">1.3</span> <span class="op">.*</span> E  <span class="op">.-</span> <span class="fl">0.31</span>, color<span class="op">=:</span>red, linestyle<span class="op">=:</span>dot, linewidth<span class="op">=</span><span class="fl">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <!--?xml version="1.0" encoding="utf-8"?-->
@@ -413,7 +424,7 @@
 <div id="10" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a></a>x1 <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1200</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a></a>x1 <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1200</span></span>
 <span id="cb3-2"><a></a>x2 <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1400</span></span>
 <span id="cb3-3"><a></a><span class="fu">f1</span>(x) <span class="op">=</span> (<span class="fl">600</span> <span class="op">.-</span> <span class="fl">0.9</span> <span class="op">.*</span> x) <span class="op">./</span> <span class="fl">0.5</span></span>
 <span id="cb3-4"><a></a><span class="fu">f2</span>(x) <span class="op">=</span> <span class="fl">1000</span> <span class="op">.-</span> x</span>
@@ -428,7 +439,7 @@
 <span id="cb3-13"><a></a><span class="fu">Z</span>(x1,x2) <span class="op">=</span> <span class="fl">230</span> <span class="op">*</span> x1 <span class="op">+</span> <span class="fl">120</span> <span class="op">*</span> x2</span>
 <span id="cb3-14"><a></a><span class="fu">contour!</span>(<span class="fl">0</span><span class="op">:</span><span class="fl">660</span>,<span class="fl">0</span><span class="op">:</span><span class="fl">1000</span>,(x1,x2)<span class="fu">-&gt;Z</span>(x1,x2), levels<span class="op">=</span><span class="fl">5</span>, c<span class="op">=:</span>devon, linewidth<span class="op">=</span><span class="fl">2</span>, colorbar <span class="op">=</span> <span class="cn">false</span>, clabels <span class="op">=</span> <span class="cn">true</span>) </span>
 <span id="cb3-15"><a></a></span>
-<span id="cb3-16"><a></a><span class="fu">scatter!</span>(p, [<span class="fl">667</span>], [<span class="fl">0</span>], markersize<span class="op">=</span><span class="fl">10</span>, z<span class="op">=</span><span class="fl">2</span>, label<span class="op">=</span><span class="st">"Optimal Solution"</span>, markercolor<span class="op">=:</span>orange)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-16"><a></a><span class="fu">scatter!</span>(p, [<span class="fl">667</span>], [<span class="fl">0</span>], markersize<span class="op">=</span><span class="fl">10</span>, z<span class="op">=</span><span class="fl">2</span>, label<span class="op">=</span><span class="st">"Optimal Solution"</span>, markercolor<span class="op">=:</span>orange)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <!--?xml version="1.0" encoding="utf-8"?-->
@@ -675,9 +686,9 @@
 <div id="12" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a></a>gens <span class="op">=</span> <span class="fu">DataFrame</span>(CSV.<span class="fu">File</span>(<span class="st">"data/capacity_expansion/generators.csv"</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a></a>gens <span class="op">=</span> <span class="fu">DataFrame</span>(CSV.<span class="fu">File</span>(<span class="st">"data/capacity_expansion/generators.csv"</span>))</span>
 <span id="cb4-2"><a></a>gens_display <span class="op">=</span> <span class="fu">rename</span>(gens, <span class="fu">Symbol</span>.([<span class="op">:</span>Generator, <span class="op">:</span><span class="st">"Fixed Cost (</span><span class="sc">\\</span><span class="st">\$)"</span>, <span class="op">:</span><span class="st">"Variable Cost (</span><span class="sc">\\</span><span class="st">\$/MW)"</span>]))</span>
-<span id="cb4-3"><a></a><span class="fu">markdown_table</span>(gens_display[<span class="fl">1</span><span class="op">:</span><span class="kw">end</span><span class="op">-</span><span class="fl">2</span>, <span class="op">:</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-3"><a></a><span class="fu">markdown_table</span>(gens_display[<span class="fl">1</span><span class="op">:</span><span class="kw">end</span><span class="op">-</span><span class="fl">2</span>, <span class="op">:</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="1">
 <table class="caption-top">
@@ -719,12 +730,12 @@
 <div id="cell-fig-demand" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a></a>NY_demand <span class="op">=</span> <span class="fu">DataFrame</span>(CSV.<span class="fu">File</span>(<span class="st">"data/capacity_expansion/2020_hourly_load_NY.csv"</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a></a>NY_demand <span class="op">=</span> <span class="fu">DataFrame</span>(CSV.<span class="fu">File</span>(<span class="st">"data/capacity_expansion/2020_hourly_load_NY.csv"</span>))</span>
 <span id="cb5-2"><a></a><span class="fu">rename!</span>(NY_demand, <span class="op">:</span><span class="st">"Time Stamp"</span> <span class="op">=&gt;</span> <span class="op">:</span><span class="dt">Date</span>)</span>
 <span id="cb5-3"><a></a>demand <span class="op">=</span> NY_demand[<span class="op">:</span>, [<span class="op">:</span><span class="dt">Date</span>, <span class="op">:</span>C]]</span>
 <span id="cb5-4"><a></a><span class="fu">rename!</span>(demand, <span class="op">:</span>C <span class="op">=&gt;</span> <span class="op">:</span>Demand)</span>
 <span id="cb5-5"><a></a><span class="pp">@df</span> demand <span class="fu">plot</span>(<span class="op">:</span><span class="dt">Date</span>, <span class="op">:</span>Demand, xlabel<span class="op">=</span><span class="st">"Date"</span>, ylabel<span class="op">=</span><span class="st">"Demand (MWh)"</span>, label<span class="op">=:</span><span class="cn">false</span>, xrot<span class="op">=</span><span class="fl">45</span>, bottom_margin<span class="op">=</span><span class="fl">15</span>mm)</span>
-<span id="cb5-6"><a></a><span class="fu">plot!</span>(size<span class="op">=</span>(<span class="fl">1200</span>, <span class="fl">500</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-6"><a></a><span class="fu">plot!</span>(size<span class="op">=</span>(<span class="fl">1200</span>, <span class="fl">500</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="fig-demand" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center" data-execution_count="1">
 <figure class="quarto-float quarto-float-fig">
@@ -804,10 +815,10 @@ Figure&nbsp;1: Demand for 2020 in NYISO Zone C
 <div id="cell-fig-ldc" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a></a><span class="fu">plot</span>(<span class="fu">sort</span>(demand.Demand, rev<span class="op">=</span><span class="cn">true</span>), linewidth<span class="op">=</span><span class="fl">3</span>, label<span class="op">=:</span><span class="cn">false</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a></a><span class="fu">plot</span>(<span class="fu">sort</span>(demand.Demand, rev<span class="op">=</span><span class="cn">true</span>), linewidth<span class="op">=</span><span class="fl">3</span>, label<span class="op">=:</span><span class="cn">false</span>)</span>
 <span id="cb6-2"><a></a><span class="fu">xaxis!</span>(<span class="st">"Hours"</span>)</span>
 <span id="cb6-3"><a></a><span class="fu">yaxis!</span>(<span class="st">"Demand (MWh)"</span>)</span>
-<span id="cb6-4"><a></a><span class="fu">plot!</span>(size<span class="op">=</span>(<span class="fl">1200</span>, <span class="fl">450</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-4"><a></a><span class="fu">plot!</span>(size<span class="op">=</span>(<span class="fl">1200</span>, <span class="fl">450</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="fig-ldc" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center" data-execution_count="1">
 <figure class="quarto-float quarto-float-fig">
@@ -874,11 +885,11 @@ Figure&nbsp;2: Load Duration Curve for 2020 in NYISO Zone C
 <div id="cell-fig-ldc-sections" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a></a><span class="fu">hline!</span>([<span class="fl">2400</span>], color<span class="op">=:</span>red, linewidth<span class="op">=</span><span class="fl">3</span>, label<span class="op">=</span><span class="cn">false</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a></a><span class="fu">hline!</span>([<span class="fl">2400</span>], color<span class="op">=:</span>red, linewidth<span class="op">=</span><span class="fl">3</span>, label<span class="op">=</span><span class="cn">false</span>)</span>
 <span id="cb7-2"><a></a><span class="fu">annotate!</span>(<span class="fl">2000</span>, <span class="fl">2500</span>, <span class="fu">text</span>(<span class="st">"Peak Load"</span>, <span class="op">:</span>red, <span class="op">:</span>right, <span class="fl">20</span>))</span>
 <span id="cb7-3"><a></a><span class="fu">hline!</span>([<span class="fl">1500</span>], color<span class="op">=:</span>brown, linewidth<span class="op">=</span><span class="fl">3</span>, label<span class="op">=</span><span class="cn">false</span>)</span>
 <span id="cb7-4"><a></a><span class="fu">annotate!</span>(<span class="fl">4000</span>, <span class="fl">2000</span>, <span class="fu">text</span>(<span class="st">"Shoulder Load"</span>, <span class="op">:</span>brown, <span class="op">:</span>left, <span class="fl">20</span>))</span>
-<span id="cb7-5"><a></a><span class="fu">annotate!</span>(<span class="fl">2000</span>, <span class="fl">1400</span>, <span class="fu">text</span>(<span class="st">"Base Load"</span>, <span class="op">:</span>blue, <span class="op">:</span>right, <span class="fl">20</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-5"><a></a><span class="fu">annotate!</span>(<span class="fl">2000</span>, <span class="fl">1400</span>, <span class="fu">text</span>(<span class="st">"Base Load"</span>, <span class="op">:</span>blue, <span class="op">:</span>right, <span class="fl">20</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="fig-ldc-sections" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center" data-execution_count="1">
 <figure class="quarto-float quarto-float-fig">
@@ -1033,7 +1044,9 @@ Figure&nbsp;3: Load Duration Curve for 2020 in NYISO Zone C
 <section id="implementation-in-jump.jl" class="slide level2">
 <h2>Implementation in <code>JUMP.jl</code></h2>
 <div id="20" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb8" data-code-line-numbers="|1-4|6|7-12|13-15|16-17|18"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a></a><span class="co"># define sets</span></span>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" data-code-line-numbers="|1-4|6|7-12|13-15|16-17|18"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a></a><span class="co"># define sets</span></span>
 <span id="cb8-2"><a></a>G <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu">nrow</span>(gens[<span class="fl">1</span><span class="op">:</span><span class="kw">end</span><span class="op">-</span><span class="fl">2</span>, <span class="op">:</span>])</span>
 <span id="cb8-3"><a></a>T <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu">nrow</span>(demand)</span>
 <span id="cb8-4"><a></a>NSECost <span class="op">=</span> <span class="fl">9000</span></span>
@@ -1050,7 +1063,8 @@ Figure&nbsp;3: Load Duration Curve for 2020 in NYISO Zone C
 <span id="cb8-15"><a></a>)</span>
 <span id="cb8-16"><a></a><span class="pp">@constraint</span>(gencap, load[t <span class="kw">in</span> T], <span class="fu">sum</span>(y[<span class="op">:</span>, t]) <span class="op">+</span> NSE[t] <span class="op">&gt;=</span> demand.Demand[t])</span>
 <span id="cb8-17"><a></a><span class="pp">@constraint</span>(gencap, availability[g <span class="kw">in</span> G, t <span class="kw">in</span> T], y[g, t] <span class="op">&lt;=</span> x[g])</span>
-<span id="cb8-18"><a></a><span class="fu">optimize!</span>(gencap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-18"><a></a><span class="fu">optimize!</span>(gencap)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
 </section></section>
 <section>
@@ -1351,13 +1365,14 @@ Figure&nbsp;3: Load Duration Curve for 2020 in NYISO Zone C
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy

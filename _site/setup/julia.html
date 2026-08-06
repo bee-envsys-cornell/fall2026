@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.10.3">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Julia – Environmental Systems Analysis</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -73,10 +76,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1d1e7f53b840ad8d06c4ae6c57b8588.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-037772e4b0a8fb61e9a28208dd0e90cd.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ba9c0723bac509a7d8c9561700ea21a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-41afc7412041501ec6863dfe70bda895.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -316,10 +319,22 @@ window.MathJax = {
   <ul>
   <li><a href="#sec-install-julia" id="toc-sec-install-julia" class="nav-link active" data-scroll-target="#sec-install-julia">Install Julia</a>
   <ul class="collapse">
-  <li><a href="#installing-juliaup-on-windows" id="toc-installing-juliaup-on-windows" class="nav-link" data-scroll-target="#installing-juliaup-on-windows">Installing Juliaup on Windows</a></li>
-  <li><a href="#installing-juliaup-on-macos" id="toc-installing-juliaup-on-macos" class="nav-link" data-scroll-target="#installing-juliaup-on-macos">Installing Juliaup on MacOS</a></li>
+  <li><a href="#windows" id="toc-windows" class="nav-link" data-scroll-target="#windows">Windows</a></li>
+  <li><a href="#macos" id="toc-macos" class="nav-link" data-scroll-target="#macos">macOS</a></li>
   <li><a href="#installing-julia-1.11.5" id="toc-installing-julia-1.11.5" class="nav-link" data-scroll-target="#installing-julia-1.11.5">Installing Julia 1.11.5</a></li>
+  <li><a href="#verify-your-installation" id="toc-verify-your-installation" class="nav-link" data-scroll-target="#verify-your-installation">Verify your installation</a></li>
   </ul></li>
+  <li><a href="#opening-the-julia-repl" id="toc-opening-the-julia-repl" class="nav-link" data-scroll-target="#opening-the-julia-repl">Opening the Julia REPL</a></li>
+  <li><a href="#running-a-julia-script" id="toc-running-a-julia-script" class="nav-link" data-scroll-target="#running-a-julia-script">Running a Julia Script</a></li>
+  <li><a href="#julia-environments-and-packages" id="toc-julia-environments-and-packages" class="nav-link" data-scroll-target="#julia-environments-and-packages">Julia Environments and Packages</a></li>
+  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a>
+  <ul class="collapse">
+  <li><a href="#julia-command-not-found" id="toc-julia-command-not-found" class="nav-link" data-scroll-target="#julia-command-not-found"><code>julia: command not found</code></a></li>
+  <li><a href="#the-wrong-julia-version-runs" id="toc-the-wrong-julia-version-runs" class="nav-link" data-scroll-target="#the-wrong-julia-version-runs">The wrong Julia version runs</a></li>
+  <li><a href="#package-installation-errors" id="toc-package-installation-errors" class="nav-link" data-scroll-target="#package-installation-errors">Package installation errors</a></li>
+  <li><a href="#julia-repl-hangs-or-freezes" id="toc-julia-repl-hangs-or-freezes" class="nav-link" data-scroll-target="#julia-repl-hangs-or-freezes">Julia REPL hangs or freezes</a></li>
+  </ul></li>
+  <li><a href="#further-resources" id="toc-further-resources" class="nav-link" data-scroll-target="#further-resources">Further Resources</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/setup/julia.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -345,31 +360,149 @@ window.MathJax = {
 </header>
 
 
-<section id="sec-install-julia" class="level2 page-columns page-full">
+<section id="sec-install-julia" class="level2">
 <h2 class="anchored" data-anchor-id="sec-install-julia">Install Julia</h2>
 <p>I recommend installing Julia using the <code>juliaup</code> tool, which will let you easily manage versions in the future and works seamlessly with VS Code. The instructions can be found at the <a href="https://github.com/JuliaLang/juliaup">JuliaUp GitHub repository</a>, but we will summarize them here.</p>
-<section id="installing-juliaup-on-windows" class="level3">
-<h3 class="anchored" data-anchor-id="installing-juliaup-on-windows">Installing Juliaup on Windows</h3>
-<p>If your computer uses Windows, you can install Juliaup <a href="https://www.microsoft.com/store/apps/9NJNWW8PVKMN">from the Windows Store</a>.</p>
+<section id="windows" class="level3">
+<h3 class="anchored" data-anchor-id="windows">Windows</h3>
+<p>You have two options:</p>
+<ol type="1">
+<li><p><strong>Windows Store (recommended)</strong>: Install Juliaup <a href="https://www.microsoft.com/store/apps/9NJNWW8PVKMN">from the Windows Store</a>. This is the simplest method and handles <code>PATH</code> setup automatically.</p></li>
+<li><p><strong>Command line</strong>: Open <strong>PowerShell</strong> (search for it in the Start menu) and run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>winget install julia <span class="op">-</span>s msstore</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Alternatively, if you have Git Bash installed, you can use the same <code>curl</code> command as macOS below.</p></li>
+</ol>
 </section>
-<section id="installing-juliaup-on-macos" class="level3">
-<h3 class="anchored" data-anchor-id="installing-juliaup-on-macos">Installing Juliaup on MacOS</h3>
-<p>If you have a Mac, open a terminal (such as the Terminal app) and enter:</p>
+<section id="macos" class="level3">
+<h3 class="anchored" data-anchor-id="macos">macOS</h3>
+<p>Open the <strong>Terminal</strong> app (found in Applications → Utilities) and run:</p>
 <pre class="shell"><code>curl -fsSL https://install.julialang.org | sh</code></pre>
+<p>Follow the prompts; the installer will add Julia to your <code>PATH</code> automatically.</p>
 </section>
-<section id="installing-julia-1.11.5" class="level3 page-columns page-full">
+<section id="installing-julia-1.11.5" class="level3">
 <h3 class="anchored" data-anchor-id="installing-julia-1.11.5">Installing Julia 1.11.5</h3>
-<p>Once you install Juliaup, install Julia version 1.11.5 by opening a terminal (in MacOS or Linux) or the command line (in Windows) and entering:</p>
+<p>Once Juliaup is installed, open a terminal and run:</p>
 <pre class="shell"><code>juliaup add 1.11.5
 juliaup default 1.11.5</code></pre>
-<p>This will install Julia 1.11.5 and make it the default version, which should maximize package compatibility throughout this course. Going forward, if you want to add new versions or change the default, you can <a href="https://github.com/JuliaLang/juliaup#using-juliaup">follow the Juliaup instructions</a>. If your code returns an error when you try to load packages, it’s possible you have a different version of Julia: in this case, delete <code>Manifest.toml</code><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> and re-run a code block that contains</p>
-<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;<strong>Not</strong> <code>Project.toml</code>!</p></div></div><div class="sourceCode" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">Pkg</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">activate</span>(<span class="pp">@__DIR__</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">instantiate</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The line <code>Pkg.instantiate()</code> will install the right package versions for your installation and create a new <code>Manifest.toml</code> file.</p>
-
-
+<p>This installs Julia 1.11.5 and makes it the default version, which maximizes package compatibility throughout this course. Going forward, if you want to add new versions or change the default, you can <a href="https://github.com/JuliaLang/juliaup#using-juliaup">follow the Juliaup instructions</a>.</p>
 </section>
+<section id="verify-your-installation" class="level3">
+<h3 class="anchored" data-anchor-id="verify-your-installation">Verify your installation</h3>
+<p>Open a <strong>new</strong> terminal window (important — old windows won’t see the updated <code>PATH</code>) and run:</p>
+<pre class="shell"><code>julia --version</code></pre>
+<p>You should see something like <code>julia version 1.11.5</code>. You can also check your Juliaup configuration with:</p>
+<pre class="shell"><code>juliaup status</code></pre>
+<p>This lists all installed Julia versions and shows which one is the default (marked with <code>*</code>).</p>
+</section>
+</section>
+<section id="opening-the-julia-repl" class="level2">
+<h2 class="anchored" data-anchor-id="opening-the-julia-repl">Opening the Julia REPL</h2>
+<p>The <strong>REPL</strong> (Read-Eval-Print-Loop) is Julia’s interactive environment. To open it, open a terminal and type:</p>
+<pre class="shell"><code>julia</code></pre>
+<p>You’ll see a banner with the Julia version and a green <code>julia&gt;</code> prompt where you can type Julia code. Type <code>exit()</code> or press <kbd>Ctrl</kbd> + <kbd>D</kbd> to quit.</p>
+<p>The REPL has several modes:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Mode</th>
+<th>How to enter</th>
+<th>Prompt</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Julia</td>
+<td><code>julia</code> (default)</td>
+<td><code>julia&gt;</code></td>
+<td>Run Julia code</td>
+</tr>
+<tr class="even">
+<td>Package</td>
+<td>Type <code>]</code></td>
+<td><code>pkg&gt;</code></td>
+<td>Manage packages</td>
+</tr>
+<tr class="odd">
+<td>Help</td>
+<td>Type <code>?</code></td>
+<td><code>help?&gt;</code></td>
+<td>Access documentation</td>
+</tr>
+<tr class="even">
+<td>Shell</td>
+<td>Type <code>;</code></td>
+<td><code>shell&gt;</code></td>
+<td>Run system commands</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong>VS Code</strong>: If you install the <a href="https://marketplace.visualstudio.com/items?itemName=julialang.language-julia">Julia extension</a> for VS Code, you can open a REPL directly inside the editor by pressing <kbd>Alt</kbd> + <kbd>J</kbd> then <kbd>Alt</kbd> + <kbd>O</kbd> (Windows/Linux) or <kbd>Option</kbd> + <kbd>J</kbd> then <kbd>Option</kbd> + <kbd>O</kbd> (macOS).</p>
+</div>
+</div>
+</div>
+</section>
+<section id="running-a-julia-script" class="level2">
+<h2 class="anchored" data-anchor-id="running-a-julia-script">Running a Julia Script</h2>
+<p>To run a <code>.jl</code> script from the terminal, use:</p>
+<pre class="shell"><code>julia path/to/script.jl</code></pre>
+<p>For example, if you want to run a script named <code>hw.jl</code> in the current directory, you would type:</p>
+<pre class="shell"><code>julia hw.jl</code></pre>
+<p>You can also run scripts from the REPL using <code>include</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">include</span>(<span class="st">"path/to/script.jl"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="julia-environments-and-packages" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="julia-environments-and-packages">Julia Environments and Packages</h2>
+<p>If your code returns an error when you try to load packages, it’s possible you have a different version of Julia than the one the environment was set up for. In this case, delete the <code>Manifest.toml</code> file<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> and re-run a code block that contains:</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;<strong>Not</strong> <code>Project.toml</code>!</p></div></div><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">Pkg</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">activate</span>(<span class="pp">@__DIR__</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">instantiate</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The line <code>Pkg.instantiate()</code> will install the right package versions for your installation and create a new <code>Manifest.toml</code> file.</p>
+</section>
+<section id="troubleshooting" class="level2">
+<h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
+<section id="julia-command-not-found" class="level3">
+<h3 class="anchored" data-anchor-id="julia-command-not-found"><code>julia: command not found</code></h3>
+<p>If your terminal says <code>command not found: julia</code> after installation:</p>
+<ul>
+<li><p><strong>Windows</strong>: Restart your terminal. If you installed via the Windows Store and it still doesn’t work, try reinstalling via the PowerShell <code>winget</code> method above, which handles <code>PATH</code> configuration more reliably. You can also add <code>%USERPROFILE%\.julia\juliaup\julia-1.11.5+0.x64\bin</code> to your system <code>PATH</code> manually through <strong>System Properties → Environment Variables</strong>.</p></li>
+<li><p><strong>macOS</strong>: Juliaup adds itself to <code>~/.bash_profile</code> or <code>~/.zshrc</code>. Open a new terminal window to pick up the change. If that doesn’t work, check that the following line exists in <code>~/.zshrc</code> (or <code>~/.bash_profile</code>):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/.juliaup/bin:</span><span class="va">$PATH</span><span class="st">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If it’s missing, add it, then run <code>source ~/.zshrc</code> (or open a new terminal).</p></li>
+</ul>
+</section>
+<section id="the-wrong-julia-version-runs" class="level3">
+<h3 class="anchored" data-anchor-id="the-wrong-julia-version-runs">The wrong Julia version runs</h3>
+<p>Run <code>juliaup status</code> to see your installed versions and which is marked as default (with <code>*</code>). If 1.11.5 is not the default:</p>
+<pre class="shell"><code>juliaup default 1.11.5</code></pre>
+<p>If 1.11.5 isn’t listed at all, install it first:</p>
+<pre class="shell"><code>juliaup add 1.11.5</code></pre>
+</section>
+<section id="package-installation-errors" class="level3">
+<h3 class="anchored" data-anchor-id="package-installation-errors">Package installation errors</h3>
+<p>If you see errors like <code>unsatisfiable requirements</code> or package conflicts:</p>
+<ol type="1">
+<li>Delete the <code>Manifest.toml</code> file in the project folder.</li>
+<li>Run <code>import Pkg; Pkg.activate(@__DIR__); Pkg.instantiate()</code> again (or restart the notebook/code block that does this).</li>
+</ol>
+<p>If that doesn’t work, make sure you’re running Julia 1.11.5 (<code>julia --version</code>) and that the <code>Project.toml</code> file hasn’t been modified.</p>
+</section>
+<section id="julia-repl-hangs-or-freezes" class="level3">
+<h3 class="anchored" data-anchor-id="julia-repl-hangs-or-freezes">Julia REPL hangs or freezes</h3>
+<p>Press <kbd>Ctrl</kbd> + <kbd>C</kbd> (or <kbd>Cmd</kbd> + <kbd>C</kbd> on macOS) to interrupt a running computation. To force-quit the REPL, press <kbd>Ctrl</kbd> + <kbd>D</kbd> or type <code>exit()</code>.</p>
+</section>
+</section>
+<section id="further-resources" class="level2">
+<h2 class="anchored" data-anchor-id="further-resources">Further Resources</h2>
+<p>For more Julia help, see the <a href="../resources/julia.html">Julia Resources</a> page and the <a href="../tutorials/julia-basics.html">Julia Basics tutorial</a>.</p>
+
+
 </section>
 
 
@@ -425,13 +558,14 @@ juliaup default 1.11.5</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

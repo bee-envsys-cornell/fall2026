@@ -1,0 +1,407 @@
+---
+title: "Introduction to Systems Analysis"
+subtitle: "Lecture 02"
+author: "Vivek Srikrishnan"
+course: "BEE 4750"
+institution: "Cornell University"
+date: "August 26, 2025"
+format:
+    revealjs:
+        slide-number: c/t
+        show-slide-number: all
+        center-title-slide: true
+        width: 1280
+        height: 720
+        transition: none
+        toc: true
+        toc-depth: 1
+        toc-title: "Overview"
+        history: false
+        link-external-newwindow: true
+        theme: ../sass/slides.scss
+        template-partials:
+            - title-slide.html
+        menu:
+            numbers: true
+        html-math-method: mathjax
+        include-in-header: mathjax-config.html
+        date-format: long
+        email-obfuscation: javascript
+        chalkboard:
+            theme: whiteboard
+            buttons: true
+        controls: true
+engine: julia
+julia:
+  exeflags: ["+1.11.5"]
+execute:
+    freeze: auto
+    daemon: 600
+filters: 
+    - ../diagram
+---
+
+```{julia}
+#| output: false
+import Pkg
+Pkg.activate(@__DIR__)
+Pkg.instantiate()
+```
+
+```{julia}
+#| output: false
+using Random
+using Plots
+using Measures
+
+plot_font = "Palatino Roman"
+default(
+    fontfamily=plot_font,
+    linewidth=3, 
+    framestyle=:box, 
+    label=nothing, 
+    grid=false,
+    guidefontsize=18,
+    legendfontsize=16,
+    tickfontsize=16,
+    titlefontsize=20,
+    bottom_margin=10mm,
+    left_margin=5mm
+)
+```
+
+# Review of Last Class
+
+## Course Policies
+
+If you missed class last week, make sure you [read the syllabus!](../syllabus.qmd).
+
+## Recap of Grading Policies
+
+- Tag pages on Gradescope **which are relevant for a given problem** (labs this is the whole thing sans the intro/setup).
+- Explain what your code is trying to accomplish **outside of the code block**.
+  - For example: here are the equations you're implementing or this is how you're iterating through a problem.
+- Make sure you include all elements needed for interpretation of e.g. plots.
+- **When in doubt, ask!**
+
+## Questions?
+
+{{< include _poll-prompt.qmd >}}
+
+
+# Modeling Systems
+
+## How Do We Develop Models?
+
+::: {.incremental}
+- Mass balance equations let us track changes in stocks at particular points;
+- Equilibrium conditions are requirements that there is no net flow, and thus that stocks are preserved;
+- Fate and transport modeling involves quantifying how stocks change as they move through the system.
+:::
+
+## Systems Analysis
+
+:::: {.columns}
+
+::: {.column width=50%}
+### What We Study
+
+- System dynamics;
+- Response to inputs;
+- Alternatives for management or design.
+
+:::
+
+::: {.column width=50%}
+### Needs
+
+::: {.fragment  .fade-in}
+- *Definition of the system*
+- System model
+
+:::
+:::
+::::
+
+## What Do We Need To Define A System?
+
+::: {.incremental}
+- **Components**: relevant processes, agents, etc
+- **Interconnections**: relationships between system components
+- **Control volume**: unit of the system we are trying to model and/or manage
+- **Inputs**: control policies and/or external forcings
+- **Outputs**: measured quantities of interest
+:::
+
+## Example: Reservoir System
+
+![Illustration of a system, including notation.](figures/reservoir-system.png){#fig-reservoir width=50%}
+
+
+## What Is A Model?
+
+:::: {.columns}
+::: {.column width=50%}
+### Physical Models
+
+![Falling Water Miniature Model](https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Fallingwater_miniature_model_at_MRRV%2C_Carnegie_Science_Center.JPG/640px-Fallingwater_miniature_model_at_MRRV%2C_Carnegie_Science_Center.JPG){width=75%}
+
+::: {.caption}
+Source: [Wikimedia](https://commons.wikimedia.org/wiki/File:Fallingwater_miniature_model_at_MRRV,_Carnegie_Science_Center.JPG)
+:::
+:::
+
+::: {.column width=50%}
+::: {.fragment .fade-in}
+
+### Mathematical Models
+
+![Mathematical Model Machine](figures/math-model.png)
+
+:::
+:::
+::::
+
+## Mathematical Models of Systems
+
+![Conceptual Model of a System](figures/system-conceptual.svg)
+
+## Environmental Systems
+
+:::: {.columns}
+::: {.column width=60%}
+![Conceptual Model of an Environmental System](figures/system-environmental.svg){width=100%}
+:::
+
+::: {.column width=40%}
+
+- Municipal sewage into lakes, rivers, etc.
+- Power plant emissions into air
+- Solid waste placed on landfill
+- CO<sub>2</sub> into atmosphere
+
+:::
+::::
+
+## Deterministic vs. Stochastic Models
+
+:::: {.columns}
+::: {.column width=50%}
+### Deterministic Models
+
+```{julia}
+#| echo: false
+#| fig-align: center
+
+x = [0, 1]
+y = [3, 5]
+plot(x, y, marker=:circle, markersize=10, linewidth=3, xlabel="Time", legend=:false, grid=:x, yticks=:false, yaxis=:false, ylabel="State", gridalpha=1, left_margin=8mm, right_margin=90mm, bottom_margin=10mm, color=:black, guidefontsize=18, tickfontsize=16, x_foreground_color_border=:white)
+xticks!([0, 1], ["t", "t+1"])
+ylims!((2, 6))
+```
+
+:::
+::: {.column width=50%}
+### Stochastic Models
+
+```{julia}
+#| echo: false
+#| fig-align: center
+
+Random.seed!(12)
+x = [0, 1] # hide
+y = 3 .+ zeros(2, 8)
+y[2, :] .+= (rand(8) * 4) .- 1
+plot(x, y, marker=:circle, markersize=10, linewidth=3, xlabel="Time", label=false, grid=:x, yticks=false, yaxis=false, ylabel="State", gridalpha=1, left_margin=8mm, right_margin=90mm, bottom_margin=10mm, guidefontsize=18, tickfontsize=16, x_foreground_color_border=:white) # hide
+xticks!(0:1, ["t", "t+1"])
+ylims!((2, 6))
+scatter!([0], [3], color=:black, legend=false, markersize=10)
+```
+:::
+::::
+
+## Descriptive vs. Prescriptive Models
+
+:::: {.columns}
+::: {.column width=50%}
+
+### Descriptive Models
+
+- Used primarily for describing or simulating dynamics.
+- Intended for *simulations* and *exploratory* and/or *Monte Carlo analysis*.
+
+:::
+::: {.column width=50%}
+::: {.fragment .fade-in}
+
+### Prescriptive Models
+
+- Specify (prescribe) an action, decision, or policy.
+- Intended for *optimization* or *decision analysis*.
+:::
+:::
+::::
+
+## Analytic vs. Numerical Solutions
+
+Mathematical models can be solved:
+
+1. **Analytically**: can find the exact solution in closed form;
+2. **Numerically**: can only find solutions (exact or approximate) using computational tools.
+
+
+## "All Models Are Wrong, But Some Are Useful"
+
+::: {.quote}
+
+> ...all models are approximations. Essentially, all models are wrong, but some are useful. However, the approximate nature of the model must always be borne in mind....
+
+::: {.cite}
+--- Box & Draper, *Empirical Model Building and Response Surfaces*, 1987
+:::
+:::
+
+## What Are Models Good For?
+
+::: {.quote}
+
+> Models can corroborate a hypothesis by offering evidence to strengthen what may be already partly established through other means... 
+>
+>
+> **Thus, the primary value of models is heuristic: Models are representations, useful for guiding further study but not susceptible to proof.**
+
+::: {.cite} 
+--- Oreskes et al, ["Verification, Validation, and Confirmation of Numerical Models in the Earth Sciences"](https://www.science.org/doi/10.1126/science.263.5147.641), 1994
+:::
+:::
+
+## Models And Assumptions
+
+![XKCD Comic 2355](https://imgs.xkcd.com/comics/university_covid_model_2x.png)
+
+::: {.caption}
+Source: [XKCD 2355](https://xkcd.com/2355)
+:::
+
+# Example: Perturbed Phosphorous Cycle
+
+## System Model
+
+:::: {.columns}
+::: {.column width=50%}
+System with following stocks (in $\mu$mol/L):
+
+- $X_1$: P in living biomass;
+- $X_2$: P in inorganic form;
+- $X_3$: P in dead organic matter.
+:::
+::: {.column width=50%}
+
+::: {#fig-tikz}
+
+```{.tikz}
+%%| width: 100%
+
+\begin{tikzpicture}[>={stealth}]
+    \node (x) at (0, 0) [rectangle, draw] {$X_1$};
+    \node (y) at (2, 0) [rectangle, draw] {$X_2$};
+    \node (z) at (1, 1) [rectangle, draw] {$X_3$};
+    \draw[->] (y) -- (x) node[midway, below, color=red, font=\small] {$\beta X_1 X_2$};
+    \draw[->] (x) -- (z) node[midway, above, sloped, color=red, font=\small] {$\gamma X_1$};
+    \draw[->] (z) -- (y) node[midway, above, sloped, color=red, font=\small] {$\alpha X_3$};
+\end{tikzpicture}
+```
+
+Phosphorous cycle diagram
+:::
+:::
+::::
+
+## System Model
+
+:::: {.columns}
+::: {.column width=60%}
+In the steady-state:
+
+$X_1 = 0.2 \mu\text{mol/L}$; $X_2 = 0.1 \mu\text{mol/L}$; $X_3 = 1.0 \mu\text{mol/L}$.
+
+:::
+::: {.column width=40%}
+
+::: {#fig-tikz}
+
+```{.tikz}
+%%| width: 100%
+
+\begin{tikzpicture}[>={stealth}]
+    \node (x) at (0, 0) [rectangle, draw] {$X_1$};
+    \node (y) at (2, 0) [rectangle, draw] {$X_2$};
+    \node (z) at (1, 1) [rectangle, draw] {$X_3$};
+    \draw[->] (y) -- (x) node[midway, below, color=red, font=\small] {$\beta X_1 X_2$};
+    \draw[->] (x) -- (z) node[midway, above, sloped, color=red, font=\small] {$\gamma X_1$};
+    \draw[->] (z) -- (y) node[midway, above, sloped, color=red, font=\small] {$\alpha X_3$};
+\end{tikzpicture}
+```
+
+Phosphorous cycle diagram
+:::
+:::
+::::
+
+The residence time of P in living biomass is 4 days and the system is perturbed by an inorganic P addition of 0.02 $\mu$mol/L. **What is the new steady-state P in each stock?**
+
+# Key Takeaways
+
+## Key Takeaways (Systems)
+
+- A **system** is an interconnected set of components.
+- Systems are interesting because interconnections can result in unexpected outcomes.
+- Key terms:
+    - **state**
+    - **stocks**
+    - **flows**
+
+## Key Takeaways (Systems Definition)
+
+- To define a system, need to specify:
+    - components
+    - interconnections
+    - control volume
+    - external inputs
+    - outputs of interest
+
+## Key Takeaways (Models)
+
+- Mathematical models allow us to understand how external inputs combine with internal system dynamics to produce outputs.
+- Models can be **prescriptive** or **descriptive** depending on goal of analysis.
+- For most interesting problems, cannot solve analytically and need to use numerical methods.
+
+## Key Takeaways (Models)
+
+- **Simulation** models: Generate data by evaluating model to represent system dynamics.
+- **Optimization** model: Find parameters which maximize/minimize some criterion.
+
+## Key Takeaways (Warning!)
+
+- **All models are at best approximations**: be conscious of what assumptions you've made and how they might change the modeled outcomes (you will be asked to do this on homeworks).
+
+
+# Upcoming Schedule
+
+## Next Classes
+
+**Monday**: System Dynamics and Feedbacks 
+
+**Wednesday**: Equilibria and System Stability
+
+## Assessments
+
+**Homework 1**: Due next Thursday (9/11) at 9pm.
+
+**Weekly Exercises**: Due Monday before class.
+
+**Reading**: @Liu2007-hy (discussion due Monday before class)
+
+# References
+
+## References

@@ -7,11 +7,11 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.31">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e44360b8a8db1e130c7792fece1c8032.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.3">
 
   <meta name="author" content="Vivek Srikrishnan">
-  <meta name="dcterms.date" content="2025-08-25">
+  <meta name="dcterms.date" content="2026-08-24">
   <title>Environmental Systems Analysis – Welcome to BEE 4750/5750!</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -19,6 +19,9 @@
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
   <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -31,7 +34,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7b87de61f0bc8c7187b97021a1ec54e0.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-d52ba59528acaf0ac8c09f3308d87e37.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -125,6 +128,14 @@
       margin-right: 0; 
     }
   </style>
+  <!-- MathJax 3 -->
+  <script>
+  window.MathJax = {
+      tex: {
+        tags: 'ams'
+      }
+    };
+  </script>
   <!-- Mathjax 3 config -->
   <script>
   window.MathJax = {
@@ -158,7 +169,7 @@
     <h1 class="title">Welcome to BEE 4750/5750!</h1>
   <hr>
 <p class="subtitle">Lecture 01</p>
-<p class="date">August 25, 2025</p>
+<p class="date">August 24, 2026</p>
 </section><section id="TOC">
 <nav role="doc-toc"> 
 <h2 id="toc-title">Overview</h2>
@@ -256,7 +267,6 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <li class="fragment">Simulate system dynamics</li>
 <li class="fragment">Analyze and assess risk</li>
 <li class="fragment">Make decisions with optimization</li>
-<li class="fragment">Explore trade-offs across objectives</li>
 </ul>
 </div><div class="column" style="width:50%;">
 <div class="fragment fade-in">
@@ -289,7 +299,7 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <ol type="1">
 <li>Introduction to Systems Analysis</li>
 <li>Simulating Systems and Risk</li>
-<li>Systems Management and Optimization</li>
+<li>Systems Design and Management with Optimization</li>
 <li>Decision-Making Under Uncertainty</li>
 </ol>
 </section></section>
@@ -326,7 +336,7 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 </section>
 <section id="course-website" class="slide level2">
 <h2>Course Website</h2>
-<p><a href="https://envsys.viveks.me/fall2025/" class="uri">https://envsys.viveks.me/fall2025/</a></p>
+<p><a href="https://envsys.viveks.me/fall2026/" class="uri">https://envsys.viveks.me/fall2026/</a></p>
 <ul>
 <li>Central hub for information, schedule, and policies</li>
 <li>Will add link and some information to Canvas (assignment due dates, etc)</li>
@@ -346,6 +356,7 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <h2>Julia</h2>
 <p>In this course, we will use the <a href="https://julialang.org">Julia programming language</a>.</p>
 <p>All assignments and labs will be provided as Jupyter Notebooks.</p>
+<p>You do not have to use the notebooks for your own work.</p>
 </section>
 <section id="what-is-your-programming-experience" class="slide level2">
 <h2>What Is Your Programming Experience?</h2>
@@ -360,15 +371,6 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <p><strong>Text</strong>: VSRIKRISH to 22333</p>
 <p><strong>URL</strong>: <a href="https://pollev.com/vsrikrish">https://pollev.com/vsrikrish</a> <br><br> <a href="https://www.polleverywhere.com/multiple_choice_polls/qKeig0hHShZYHAOmvZtZm?preview=true&amp;controls=none" data-preview-link="true">See Results</a></p>
 </div></div>
-</section>
-<section id="jupyter-notebooks" class="slide level2">
-<h2>Jupyter Notebooks</h2>
-<p>We will use Jupyter Notebooks for most computing tasks (including assignments).</p>
-<ul>
-<li>Allow for interactive evaluation of code and integration with text (including nicely typeset mathematics)</li>
-<li>Can export to PDF (or HTML -&gt; PDF) for submission to Gradescope.</li>
-<li><strong>Be careful before submitting</strong>: Evaluate all cells <em>in order</em>.</li>
-</ul>
 </section>
 <section id="github-classroom" class="slide level2">
 <h2>GitHub Classroom</h2>
@@ -405,27 +407,19 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Participation (4750)</td>
-<td style="text-align: center;">10%</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Reading Assignments (5750)</td>
-<td style="text-align: center;">10%</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Exercises</td>
-<td style="text-align: center;">10%</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">Labs</td>
 <td style="text-align: center;">10%</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">Homework</td>
 <td style="text-align: center;">15%</td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;">Mini-Projects</td>
+<td style="text-align: center;">20%</td>
+</tr>
 <tr class="even">
-<td style="text-align: left;">Prelims</td>
+<td style="text-align: left;">Quizzes</td>
 <td style="text-align: center;">30%</td>
 </tr>
 <tr class="odd">
@@ -452,20 +446,12 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <li>If you have an approved reason (illness, injury, etc), let me know <strong>ahead of time</strong> and we will make accomodations.</li>
 </ul>
 </section>
-<section id="regrade-requests" class="slide level2">
-<h2>Regrade Requests</h2>
+<section id="what-are-we-grading" class="slide level2">
+<h2>What Are We Grading?</h2>
 <ul>
-<li>Can be submitted on Gradescope up to 1 week after grades are released.</li>
-<li>Must include a <em>brief</em> justification.</li>
-<li><strong>Will be evaluated only on the basis of the work in the submission</strong>.</li>
-<li>Can lose points if me/TA notice we missed a mistake initially!</li>
-</ul>
-</section>
-<section id="regrade-requests-special-cases" class="slide level2">
-<h2>Regrade Requests: Special Cases</h2>
-<ul>
-<li>If you (correctly) point out that your grade was graded too leniently, you will get bonus points back.</li>
-<li>If a <em>significant</em> error (as defined by me) is found in the solutions, everyone in the class will receive full credit for that (sub)problem.</li>
+<li><strong>Setup and Interpretation</strong>: Can you set up a model, interpret outputs, and explain your reasoning?</li>
+<li>The logic behind your model and approach should be written clearly and you should provide interpretations of the results and what they mean for the problem.</li>
+<li><strong>Not code</strong>: Will never look at your code while grading unless there is a concern, you don’t have to include it but it should be accessible on GitHub.</li>
 </ul>
 </section>
 <section id="labs" class="slide level2">
@@ -475,7 +461,6 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <li>Focus on “how” to apply methods and concepts from class</li>
 <li><strong>If you can’t bring a laptop to these classes, you can work with someone else</strong></li>
 <li>Can work in groups, but must submit your own work.</li>
-<li>Due by <strong>9:00pm</strong> the day after the lab day, will drop one.</li>
 <li>Graded on a scale of 0-3, largely based on effort.</li>
 </ul>
 </section>
@@ -492,11 +477,30 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <section id="homework-assignments" class="slide level2">
 <h2>Homework Assignments</h2>
 <ul>
-<li>5-6 in total, due two weeks after assignment.</li>
-<li>Focus on new or extended applications</li>
-<li>Managed with GitHub Classroom</li>
-<li>Due by <strong>9:00pm</strong> on the due date (usually Thursday)</li>
-<li>No drops.</li>
+<li>Mix of conceptual/analytical questions and light programming exercises.</li>
+<li>Released after prior assignment is due (though some weeks may not have a homework assignment).</li>
+<li>Due by <strong>9:00pm</strong> on the due date (usually Thursday).</li>
+<li>Can work in groups of up to 3, only one submission required per group.</li>
+<li>Late submissions within 24 hours accepted at a 50% penalty.</li>
+<li>Will drop the lowest score by default.</li>
+</ul>
+</section>
+<section id="quizzes" class="slide level2">
+<h2>Quizzes</h2>
+<ul>
+<li>5-6 given in-class during the first 25 minutes.</li>
+<li>Focus on concepts, problem formulations, interpretation.</li>
+<li><strong>Completely closed book and closed note</strong> (no calculators, phones, or other electronic devices).</li>
+<li>Quizzes will be scanned and put on Gradescope for grades/feedback.</li>
+<li>None dropped by default for students in 5750 but will drop lowest score for students in 4750.</li>
+</ul>
+</section>
+<section id="mini-projects" class="slide level2">
+<h2>Mini-Projects</h2>
+<ul>
+<li>3 throughout the semester, each with a different focus (simulation, optimization, and decision-making).</li>
+<li>Will involve a real world application with a problem posed and relevant data provided.</li>
+<li>Can work in groups of 2 (4750), <strong>5750 students must work alone</strong>.</li>
 </ul>
 </section>
 <section id="term-project" class="slide level2">
@@ -504,40 +508,9 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <ul>
 <li>Analyze a system of interest, including the regulatory environment, going beyond class examples/methods.</li>
 <li>Work in groups of 3–4.</li>
-<li>Submit proposal on 10/24/25.</li>
+<li>Submit proposal on 10/23/26.</li>
 <li>Record presentation by end of semester for peer review by classmates.</li>
 <li>Submit report and group/self evaluations by end of finals week.</li>
-</ul>
-</section>
-<section id="participation" class="slide level2">
-<h2>Participation</h2>
-<ul>
-<li>The class works best when everyone is engaged and collaborative
-<ul>
-<li>Attending every class;</li>
-<li>Asking questions in class or on Ed;</li>
-<li>Answering questions in class or on Ed;</li>
-<li>Coming to office hours.</li>
-</ul></li>
-<li>We’re paying attention! Participation points not “free”.</li>
-</ul>
-</section>
-<section id="reading-assignments" class="slide level2">
-<h2>Reading Assignments</h2>
-<ul>
-<li>Assigned throughout the semester.</li>
-<li>5750 students are required to submit a 1–2 page discussion summarizing reading, providing thoughts, and connecting to class material.</li>
-<li>4750 students can improve participation by posting about readings on Ed.</li>
-</ul>
-</section>
-<section id="prelims" class="slide level2">
-<h2>Prelims</h2>
-<ul>
-<li>Two in-class prelims (10/08, 11/12);</li>
-<li>Focus on concepts, problem formulations, interpretation.</li>
-<li>Exams will be scanned and put on Gradescope for grades/feedback.</li>
-<li>Will discuss ~two weeks after the exams after grades are returned.</li>
-<li>Accomodations/makeups handled through ATP.</li>
 </ul>
 </section></section>
 <section>
@@ -552,100 +525,8 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <li>Knowing how to find, evaluate, and use helpful resources is a skill we want to develop.</li>
 <li>Don’t just copy…learn from others and give credit.</li>
 <li>Submit your own original work.</li>
+<li>Group solutions should reflect the understanding of all group members.</li>
 </ul>
-</section>
-<section id="academic-integrity-1" class="slide level2">
-<h2>Academic Integrity</h2>
-<p>Obviously, just copying down answers from Chegg or ChatGPT and passing them off as your own is not ok.</p>
-<p>But often lines aren’t that simple. Let’s quickly consider some scenarios (h/t to <a href="https://tonyewong.github.io/">Tony Wong</a> for these).</p>
-</section>
-<section id="academic-integrity-scenario-1" class="slide level2">
-<h2>Academic Integrity: Scenario 1</h2>
-<p>Dan searches the internet for relevant code and copy-pastes it into his Jupyter notebook. They cite the source of the codes.</p>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Is this ok?</strong></p>
-</div>
-<div class="callout-content">
-<div class="fragment fade-in">
-<p><strong>Probably Not</strong></p>
-<ul>
-<li>What portion of the work is Dan’s?</li>
-<li>How important were the codes?</li>
-<li>Did Dan understand what they copied?</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="academic-integrity-scenario-1-1" class="slide level2">
-<h2>Academic Integrity: Scenario 1</h2>
-<p>Dan searches the internet for relevant code and copy-pastes it into his Jupyter notebook. They cites the source of the codes.</p>
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>What Should Dan Do?</strong></p>
-</div>
-<div class="callout-content">
-<div class="fragment fade-in">
-<p>Dan should <em>paraphrase</em> the codes they found to incorporate them with his own code, and then also cite them.</p>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="academic-integrity-scenario-2" class="slide level2">
-<h2>Academic Integrity: Scenario 2</h2>
-<p>Matthew and Rhonda work together to figure out how to implement the codes, but each works on their own computer and develops their own solutions.</p>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Is this ok?</strong></p>
-</div>
-<div class="callout-content">
-<div class="fragment fade-in">
-<p><strong>Definitely!</strong></p>
-<ul>
-<li>Independent implementations shows understanding.</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="academic-integrity-scenario-3" class="slide level2">
-<h2>Academic Integrity: Scenario 3</h2>
-<p>Felix and Rachel are working together on a problem involving a derivation. Rachel types it up in LaTeX and sends the code to Felix, who pastes it into his Jupyter notebook.</p>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Is this ok?</strong></p>
-</div>
-<div class="callout-content">
-<div class="fragment fade-in">
-<p><strong>Likely Not</strong></p>
-<ul>
-<li>Did Felix contribute enough to the derivation?</li>
-<li><strong><em>Definitely not OK if Felix doesn’t give Rachel credit for their contribution.</em></strong></li>
-</ul>
-</div>
-</div>
-</div>
-</div>
 </section>
 <section id="llms-the-stochastic-parrot" class="slide level2">
 <h2>LLMs: The Stochastic Parrot</h2>
@@ -673,18 +554,17 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 </section>
 <section id="next-classes" class="slide level2">
 <h2>Next Classes</h2>
-<p><strong>Wednesday</strong>: Lab 1: Julia and GitHub setup.</p>
-<ul>
-<li>Lab 1 link is available on Ed. Click it to accept the lab before class.</li>
-<li>Follow setup instructions on website.</li>
-</ul>
-<p><strong>Next Week</strong>: Introduction to Systems Analysis</p>
+<p><strong>Wednesday</strong>: Intro to Systems</p>
+</section>
+<section id="setup-for-class" class="slide level2">
+<h2>Setup For Class</h2>
+<p>Follow the guides to install git, Julia, and VS Code:</p>
+<p><a href="https://envsys.viveks.me/fall2026/setup/index.html" class="uri">https://envsys.viveks.me/fall2026/setup/index.html</a></p>
 </section>
 <section id="assessments-1" class="slide level2">
 <h2>Assessments</h2>
 <ul>
-<li>Lab 1: Wednesday</li>
-<li>HW 1: Available, due 9/11.</li>
+<li>HW1: Available, due 9/3.</li>
 </ul>
 
 
@@ -954,13 +834,14 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy

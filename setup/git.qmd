@@ -1,14 +1,48 @@
 ---
 title: git and GitHub
+format: 
+    html: default
 ---
 
 ## Installing git
 
 If you have already installed `git`, you don't need to worry about this section. If you haven't, [download](https://git-scm.com/downloads) the appropriate version for your operating system.
 
-## Create GitHub Account
+In both cases, VS Code's built-in terminal (<kbd>Ctrl</kbd> + <kbd>\`</kbd>) will also work once `git` is on your system `PATH`. If `git` is not in your system `PATH`, check the troubleshooting section below for [instructions on how to fix this](#sec-git-not-found).
 
-## Setting Up GitHub Account
+### Windows
+
+Use [Git for Windows](https://git-scm.com/downloads/win), which installs Git Bash — a terminal that understands `git` and standard Unix commands. The installer includes Git Credential Manager, which handles authentication for you.
+
+### MacOS
+
+You have three options:
+
+1. **Standalone installer (recommended)**: Download and run the [macOS Git installer](https://git-scm.com/downloads/mac). This installs Git and Git Credential Manager, which handles GitHub authentication automatically.
+2. **Homebrew**: If you already use [Homebrew](https://brew.sh), run `brew install git` from Terminal.
+3. **Xcode Command Line Tools**: `git` is bundled with these tools. If you haven't installed them yet, running `git` from Terminal will prompt you to install them.
+
+
+::: {.callout-tip}
+Verify that `git` is installed by opening a terminal and running:
+
+```bash
+git --version
+```
+
+You should see something like `git version 2.49.0` (or newer).
+:::
+
+Once `git` is installed, you need to tell it who you are. Run these two commands, replacing the name and email with your own:
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "your-github-email@example.com"
+```
+
+Git attaches this information to every commit you make. The email should match the one you use for your GitHub account.
+
+## Setting Up a GitHub Account
 
 ::: {.callout-note}
 If you already have a GitHub account, you can use that for this course and do not need to create a new account.
@@ -16,4 +50,120 @@ If you already have a GitHub account, you can use that for this course and do no
 
 Create a [GitHub account](https://github.com/join). It doesn't have to be linked to your Cornell email or use your Cornell NetID.
 
-For labs and homework assignments (we will work on Lab 1 in class and Homework 1 is available), you should use the GitHub Classroom link to "accept" the assignment provided on Ed Discussion, which will give you your own GitHub repository for that assignment. The first time you click one of these links, you will need to link your place on the course roster with your GitHub account. After this, you will not need to do so again. 
+For homework assignments and mini-projects, you should use the GitHub Classroom link to "accept" the assignment provided on Ed Discussion, which will give you your own GitHub repository for that assignment^[Even if you don't want to use the provided Jupyter Notebook, you will be given starting environment files with packages we think will be necessary or useful, and we will expect that you use GitHub for sharing files if you need help with your code.]. The first time you click one of these links, you will need to link your name on the course roster with your GitHub account. After this, you will not need to do so again.
+
+## Basic Git Workflow
+
+After accepting an assignment, you'll have a repository on GitHub. To work on it from your computer, you'll use four commands: **clone**, **commit**, **pull**, and **push**.
+
+### Clone (get the repo onto your computer)
+
+"Cloning" downloads a copy of your repository. Open a terminal, navigate to where you want the repository to live, and run:
+
+```bash
+git clone <link to your repository>
+```
+
+Replace the URL with the link from your GitHub Classroom assignment or any other repository you're trying to clone (click the green **Code** button on your repository page to copy it).
+
+### Pull (get the latest version)
+
+If you're working across multiple computers, or collaborating, always pull before you start:
+
+```bash
+git pull
+```
+
+This downloads any changes that were pushed by your other machine (or teammates) and merges them into your local copy. Failing to do this ahead of making changes can lead to merge conflicts and [rejected pushes](#failed-to-push-some-refs-push-rejected), which are not always easy to resolve.
+
+### Make changes and commit
+
+After making changes to files (editing code, writing answers, etc.), you "commit" a snapshot of those changes:
+
+```bash
+git status                 # see which files you've changed
+git add .                  # stage all changes for the commit
+git commit -m "describe what you changed"
+```
+
+You can alternatively pick specific files to add instead of using the `.`, *e.g.* `git add file1.jl file2.jl` if you created or modified some files you do not want to commit. Good commit messages are short but descriptive (e.g., `"Answer problem 2"`, not `"stuff"`).
+
+
+### Push (send your commits to GitHub)
+
+Once you've committed, push your changes so they're saved on GitHub:
+
+```bash
+git push
+```
+
+::: {.callout-tip}
+**Typical Workflow**
+
+1. `git clone` — once, to get the repo
+2. `git pull` — before you start working, to get the latest version
+3. Make edits to your files
+4. `git add .` and `git commit -m "message"` — whenever you finish a chunk of work
+5. `git push` — to save your work on GitHub
+6. Repeat steps 3–5 as you work through the assignment
+:::
+
+## Authentication
+
+When you `git push` for the first time, GitHub will ask for credentials to ensure that you are actually the owner of your account. The simplest approach for this course is **HTTPS with a personal access token**:
+
+1. On GitHub, go to **Settings** → **Developer settings** → **Personal access tokens** → **Tokens (classic)** (or go to <https://github.com/settings/tokens>).
+2. Generate a new token (**make sure to select a Classic Token**), choose a date after the end of the semester or with no expiration date, select the **repo**, **user**, and **workflow** scope, and copy the token.
+3. When prompted for a password during `git push`, paste the token instead of your GitHub password.
+
+::: {.callout-note appearance="simple"}
+If you installed Git for Windows or the standalone Git for macOS installer, Git Credential Manager should handle this for you — you'll log in through your browser once and won't need to re-enter credentials.
+:::
+
+## Troubleshooting
+
+### `git: command not found` {#sec-git-not-found}
+
+If your terminal says `command not found: git` (macOS) or `'git' is not recognized...` (Windows), `git` may not be installed or not added to your system `PATH`.
+
+**Windows:**
+
+1. Re-run the [Git for Windows installer](https://git-scm.com/downloads/win).
+2. On the **Select Components** screen, make sure **Git Bash Here** and **Git GUI Here** are checked.
+3. On the **Adjusting your PATH environment** screen, select **Git from the command line and also from 3rd-party software** (the recommended option).
+4. Complete the installer, then restart any open terminals (or VS Code).
+
+**macOS:**
+
+- If you used the **standalone installer**, `git` should be in your `PATH` automatically. If not, restart your terminal or run:
+  ```bash
+  export PATH="/usr/local/git/bin:$PATH"
+  ```
+  To make it permanent, add that line to `~/.zshrc` (or `~/.bash_profile` if using bash).
+- If you used **Homebrew**, `git` is symlinked into `/usr/local/bin` (Intel Macs) or `/opt/homebrew/bin` (Apple Silicon). Verify with `brew list git` and restart your terminal if needed.
+- If you used **Xcode Command Line Tools**, run `xcode-select --install` to reinstall if `git` is missing.
+
+After adjusting your `PATH`, run `git --version` again to confirm it works.
+
+### `fatal: not a git repository`
+
+You ran a `git` command outside of a cloned repository. Make sure you `cd` into the repository folder first (the one created by `git clone`). You can check you're in the right place by looking for a hidden `.git` folder with:
+
+```bash
+ls -a  # macOS / Git Bash
+# or
+dir /a  # Command Prompt on Windows
+```
+
+### `failed to push some refs` (push rejected)
+
+This usually means the remote repository has commits you don't have locally. Run `git pull` first to sync, then `git push` again.
+
+### Authentication errors on `git push`
+
+- Make sure you're using a **personal access token** (not your GitHub password). See the [Authentication](#authentication) section above.
+- If you're prompted repeatedly despite using Git Credential Manager, open **Credential Manager** on Windows (search from Start) or **Keychain Access** on macOS and remove any stale `github.com` entries, then try `git push` again — you'll be re-prompted to log in.
+
+## Further Resources
+
+For a deeper dive into `git`, see the [GitHub Resources](/resources/github.html) page, which includes interactive tutorials and video walkthroughs.

@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.10.3">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>git and GitHub – Environmental Systems Analysis</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -19,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -38,10 +76,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1d1e7f53b840ad8d06c4ae6c57b8588.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-037772e4b0a8fb61e9a28208dd0e90cd.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ba9c0723bac509a7d8c9561700ea21a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-41afc7412041501ec6863dfe70bda895.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -86,7 +124,7 @@ window.MathJax = {
 <meta property="og:site_name" content="Environmental Systems Analysis">
 </head>
 
-<body class="nav-sidebar docked nav-fixed quarto-light">
+<body class="nav-sidebar docked nav-fixed slimcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -279,14 +317,33 @@ window.MathJax = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#installing-git" id="toc-installing-git" class="nav-link active" data-scroll-target="#installing-git">Installing git</a></li>
-  <li><a href="#create-github-account" id="toc-create-github-account" class="nav-link" data-scroll-target="#create-github-account">Create GitHub Account</a></li>
-  <li><a href="#setting-up-github-account" id="toc-setting-up-github-account" class="nav-link" data-scroll-target="#setting-up-github-account">Setting Up GitHub Account</a></li>
+  <li><a href="#installing-git" id="toc-installing-git" class="nav-link active" data-scroll-target="#installing-git">Installing git</a>
+  <ul class="collapse">
+  <li><a href="#windows" id="toc-windows" class="nav-link" data-scroll-target="#windows">Windows</a></li>
+  <li><a href="#macos" id="toc-macos" class="nav-link" data-scroll-target="#macos">MacOS</a></li>
+  </ul></li>
+  <li><a href="#setting-up-a-github-account" id="toc-setting-up-a-github-account" class="nav-link" data-scroll-target="#setting-up-a-github-account">Setting Up a GitHub Account</a></li>
+  <li><a href="#basic-git-workflow" id="toc-basic-git-workflow" class="nav-link" data-scroll-target="#basic-git-workflow">Basic Git Workflow</a>
+  <ul class="collapse">
+  <li><a href="#clone-get-the-repo-onto-your-computer" id="toc-clone-get-the-repo-onto-your-computer" class="nav-link" data-scroll-target="#clone-get-the-repo-onto-your-computer">Clone (get the repo onto your computer)</a></li>
+  <li><a href="#pull-get-the-latest-version" id="toc-pull-get-the-latest-version" class="nav-link" data-scroll-target="#pull-get-the-latest-version">Pull (get the latest version)</a></li>
+  <li><a href="#make-changes-and-commit" id="toc-make-changes-and-commit" class="nav-link" data-scroll-target="#make-changes-and-commit">Make changes and commit</a></li>
+  <li><a href="#push-send-your-commits-to-github" id="toc-push-send-your-commits-to-github" class="nav-link" data-scroll-target="#push-send-your-commits-to-github">Push (send your commits to GitHub)</a></li>
+  </ul></li>
+  <li><a href="#authentication" id="toc-authentication" class="nav-link" data-scroll-target="#authentication">Authentication</a></li>
+  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a>
+  <ul class="collapse">
+  <li><a href="#sec-git-not-found" id="toc-sec-git-not-found" class="nav-link" data-scroll-target="#sec-git-not-found"><code>git: command not found</code></a></li>
+  <li><a href="#fatal-not-a-git-repository" id="toc-fatal-not-a-git-repository" class="nav-link" data-scroll-target="#fatal-not-a-git-repository"><code>fatal: not a git repository</code></a></li>
+  <li><a href="#failed-to-push-some-refs-push-rejected" id="toc-failed-to-push-some-refs-push-rejected" class="nav-link" data-scroll-target="#failed-to-push-some-refs-push-rejected"><code>failed to push some refs</code> (push rejected)</a></li>
+  <li><a href="#authentication-errors-on-git-push" id="toc-authentication-errors-on-git-push" class="nav-link" data-scroll-target="#authentication-errors-on-git-push">Authentication errors on <code>git push</code></a></li>
+  </ul></li>
+  <li><a href="#further-resources" id="toc-further-resources" class="nav-link" data-scroll-target="#further-resources">Further Resources</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/setup/git.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../setup/julia.html">Software</a></li><li class="breadcrumb-item"><a href="../setup/git.html">git and GitHub</a></li></ol></nav>
 <div class="quarto-title">
@@ -310,12 +367,39 @@ window.MathJax = {
 <section id="installing-git" class="level2">
 <h2 class="anchored" data-anchor-id="installing-git">Installing git</h2>
 <p>If you have already installed <code>git</code>, you don’t need to worry about this section. If you haven’t, <a href="https://git-scm.com/downloads">download</a> the appropriate version for your operating system.</p>
+<p>In both cases, VS Code’s built-in terminal (<kbd>Ctrl</kbd> + <kbd>`</kbd>) will also work once <code>git</code> is on your system <code>PATH</code>. If <code>git</code> is not in your system <code>PATH</code>, check the troubleshooting section below for <a href="#sec-git-not-found">instructions on how to fix this</a>.</p>
+<section id="windows" class="level3">
+<h3 class="anchored" data-anchor-id="windows">Windows</h3>
+<p>Use <a href="https://git-scm.com/downloads/win">Git for Windows</a>, which installs Git Bash — a terminal that understands <code>git</code> and standard Unix commands. The installer includes Git Credential Manager, which handles authentication for you.</p>
 </section>
-<section id="create-github-account" class="level2">
-<h2 class="anchored" data-anchor-id="create-github-account">Create GitHub Account</h2>
+<section id="macos" class="level3">
+<h3 class="anchored" data-anchor-id="macos">MacOS</h3>
+<p>You have three options:</p>
+<ol type="1">
+<li><strong>Standalone installer (recommended)</strong>: Download and run the <a href="https://git-scm.com/downloads/mac">macOS Git installer</a>. This installs Git and Git Credential Manager, which handles GitHub authentication automatically.</li>
+<li><strong>Homebrew</strong>: If you already use <a href="https://brew.sh">Homebrew</a>, run <code>brew install git</code> from Terminal.</li>
+<li><strong>Xcode Command Line Tools</strong>: <code>git</code> is bundled with these tools. If you haven’t installed them yet, running <code>git</code> from Terminal will prompt you to install them.</li>
+</ol>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Verify that <code>git</code> is installed by opening a terminal and running:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You should see something like <code>git version 2.49.0</code> (or newer).</p>
+</div>
+</div>
+</div>
+<p>Once <code>git</code> is installed, you need to tell it who you are. Run these two commands, replacing the name and email with your own:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.name <span class="st">"Your Name"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.email <span class="st">"your-github-email@example.com"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Git attaches this information to every commit you make. The email should match the one you use for your GitHub account.</p>
 </section>
-<section id="setting-up-github-account" class="level2">
-<h2 class="anchored" data-anchor-id="setting-up-github-account">Setting Up GitHub Account</h2>
+</section>
+<section id="setting-up-a-github-account" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="setting-up-a-github-account">Setting Up a GitHub Account</h2>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -327,10 +411,122 @@ window.MathJax = {
 </div>
 </div>
 <p>Create a <a href="https://github.com/join">GitHub account</a>. It doesn’t have to be linked to your Cornell email or use your Cornell NetID.</p>
-<p>For labs and homework assignments (we will work on Lab 1 in class and Homework 1 is available), you should use the GitHub Classroom link to “accept” the assignment provided on Ed Discussion, which will give you your own GitHub repository for that assignment. The first time you click one of these links, you will need to link your place on the course roster with your GitHub account. After this, you will not need to do so again.</p>
+<p>For homework assignments and mini-projects, you should use the GitHub Classroom link to “accept” the assignment provided on Ed Discussion, which will give you your own GitHub repository for that assignment<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. The first time you click one of these links, you will need to link your name on the course roster with your GitHub account. After this, you will not need to do so again.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Even if you don’t want to use the provided Jupyter Notebook, you will be given starting environment files with packages we think will be necessary or useful, and we will expect that you use GitHub for sharing files if you need help with your code.</p></div></div></section>
+<section id="basic-git-workflow" class="level2">
+<h2 class="anchored" data-anchor-id="basic-git-workflow">Basic Git Workflow</h2>
+<p>After accepting an assignment, you’ll have a repository on GitHub. To work on it from your computer, you’ll use four commands: <strong>clone</strong>, <strong>commit</strong>, <strong>pull</strong>, and <strong>push</strong>.</p>
+<section id="clone-get-the-repo-onto-your-computer" class="level3">
+<h3 class="anchored" data-anchor-id="clone-get-the-repo-onto-your-computer">Clone (get the repo onto your computer)</h3>
+<p>“Cloning” downloads a copy of your repository. Open a terminal, navigate to where you want the repository to live, and run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone <span class="op">&lt;</span>link to your repository<span class="op">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Replace the URL with the link from your GitHub Classroom assignment or any other repository you’re trying to clone (click the green <strong>Code</strong> button on your repository page to copy it).</p>
+</section>
+<section id="pull-get-the-latest-version" class="level3">
+<h3 class="anchored" data-anchor-id="pull-get-the-latest-version">Pull (get the latest version)</h3>
+<p>If you’re working across multiple computers, or collaborating, always pull before you start:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This downloads any changes that were pushed by your other machine (or teammates) and merges them into your local copy. Failing to do this ahead of making changes can lead to merge conflicts and <a href="#failed-to-push-some-refs-push-rejected">rejected pushes</a>, which are not always easy to resolve.</p>
+</section>
+<section id="make-changes-and-commit" class="level3">
+<h3 class="anchored" data-anchor-id="make-changes-and-commit">Make changes and commit</h3>
+<p>After making changes to files (editing code, writing answers, etc.), you “commit” a snapshot of those changes:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status                 <span class="co"># see which files you've changed</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .                  <span class="co"># stage all changes for the commit</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"describe what you changed"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You can alternatively pick specific files to add instead of using the <code>.</code>, <em>e.g.</em> <code>git add file1.jl file2.jl</code> if you created or modified some files you do not want to commit. Good commit messages are short but descriptive (e.g., <code>"Answer problem 2"</code>, not <code>"stuff"</code>).</p>
+</section>
+<section id="push-send-your-commits-to-github" class="level3">
+<h3 class="anchored" data-anchor-id="push-send-your-commits-to-github">Push (send your commits to GitHub)</h3>
+<p>Once you’ve committed, push your changes so they’re saved on GitHub:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong>Typical Workflow</strong></p>
+<ol type="1">
+<li><code>git clone</code> — once, to get the repo</li>
+<li><code>git pull</code> — before you start working, to get the latest version</li>
+<li>Make edits to your files</li>
+<li><code>git add .</code> and <code>git commit -m "message"</code> — whenever you finish a chunk of work</li>
+<li><code>git push</code> — to save your work on GitHub</li>
+<li>Repeat steps 3–5 as you work through the assignment</li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="authentication" class="level2">
+<h2 class="anchored" data-anchor-id="authentication">Authentication</h2>
+<p>When you <code>git push</code> for the first time, GitHub will ask for credentials to ensure that you are actually the owner of your account. The simplest approach for this course is <strong>HTTPS with a personal access token</strong>:</p>
+<ol type="1">
+<li>On GitHub, go to <strong>Settings</strong> → <strong>Developer settings</strong> → <strong>Personal access tokens</strong> → <strong>Tokens (classic)</strong> (or go to <a href="https://github.com/settings/tokens" class="uri">https://github.com/settings/tokens</a>).</li>
+<li>Generate a new token (<strong>make sure to select a Classic Token</strong>), choose a date after the end of the semester or with no expiration date, select the <strong>repo</strong>, <strong>user</strong>, and <strong>workflow</strong> scope, and copy the token.</li>
+<li>When prompted for a password during <code>git push</code>, paste the token instead of your GitHub password.</li>
+</ol>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>If you installed Git for Windows or the standalone Git for macOS installer, Git Credential Manager should handle this for you — you’ll log in through your browser once and won’t need to re-enter credentials.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="troubleshooting" class="level2">
+<h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
+<section id="sec-git-not-found" class="level3">
+<h3 class="anchored" data-anchor-id="sec-git-not-found"><code>git: command not found</code></h3>
+<p>If your terminal says <code>command not found: git</code> (macOS) or <code>'git' is not recognized...</code> (Windows), <code>git</code> may not be installed or not added to your system <code>PATH</code>.</p>
+<p><strong>Windows:</strong></p>
+<ol type="1">
+<li>Re-run the <a href="https://git-scm.com/downloads/win">Git for Windows installer</a>.</li>
+<li>On the <strong>Select Components</strong> screen, make sure <strong>Git Bash Here</strong> and <strong>Git GUI Here</strong> are checked.</li>
+<li>On the <strong>Adjusting your PATH environment</strong> screen, select <strong>Git from the command line and also from 3rd-party software</strong> (the recommended option).</li>
+<li>Complete the installer, then restart any open terminals (or VS Code).</li>
+</ol>
+<p><strong>macOS:</strong></p>
+<ul>
+<li><p>If you used the <strong>standalone installer</strong>, <code>git</code> should be in your <code>PATH</code> automatically. If not, restart your terminal or run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="st">"/usr/local/git/bin:</span><span class="va">$PATH</span><span class="st">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To make it permanent, add that line to <code>~/.zshrc</code> (or <code>~/.bash_profile</code> if using bash).</p></li>
+<li><p>If you used <strong>Homebrew</strong>, <code>git</code> is symlinked into <code>/usr/local/bin</code> (Intel Macs) or <code>/opt/homebrew/bin</code> (Apple Silicon). Verify with <code>brew list git</code> and restart your terminal if needed.</p></li>
+<li><p>If you used <strong>Xcode Command Line Tools</strong>, run <code>xcode-select --install</code> to reinstall if <code>git</code> is missing.</p></li>
+</ul>
+<p>After adjusting your <code>PATH</code>, run <code>git --version</code> again to confirm it works.</p>
+</section>
+<section id="fatal-not-a-git-repository" class="level3">
+<h3 class="anchored" data-anchor-id="fatal-not-a-git-repository"><code>fatal: not a git repository</code></h3>
+<p>You ran a <code>git</code> command outside of a cloned repository. Make sure you <code>cd</code> into the repository folder first (the one created by <code>git clone</code>). You can check you’re in the right place by looking for a hidden <code>.git</code> folder with:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-a</span>  <span class="co"># macOS / Git Bash</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dir</span> /a  <span class="co"># Command Prompt on Windows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="failed-to-push-some-refs-push-rejected" class="level3">
+<h3 class="anchored" data-anchor-id="failed-to-push-some-refs-push-rejected"><code>failed to push some refs</code> (push rejected)</h3>
+<p>This usually means the remote repository has commits you don’t have locally. Run <code>git pull</code> first to sync, then <code>git push</code> again.</p>
+</section>
+<section id="authentication-errors-on-git-push" class="level3">
+<h3 class="anchored" data-anchor-id="authentication-errors-on-git-push">Authentication errors on <code>git push</code></h3>
+<ul>
+<li>Make sure you’re using a <strong>personal access token</strong> (not your GitHub password). See the <a href="#authentication">Authentication</a> section above.</li>
+<li>If you’re prompted repeatedly despite using Git Credential Manager, open <strong>Credential Manager</strong> on Windows (search from Start) or <strong>Keychain Access</strong> on macOS and remove any stale <code>github.com</code> entries, then try <code>git push</code> again — you’ll be re-prompted to log in.</li>
+</ul>
+</section>
+</section>
+<section id="further-resources" class="level2">
+<h2 class="anchored" data-anchor-id="further-resources">Further Resources</h2>
+<p>For a deeper dive into <code>git</code>, see the <a href="../resources/github.html">GitHub Resources</a> page, which includes interactive tutorials and video walkthroughs.</p>
 
 
 </section>
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -384,13 +580,14 @@ window.MathJax = {
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

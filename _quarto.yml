@@ -83,7 +83,7 @@ website:
           - policies/grading.qmd
           - policies/rubric.qmd
           - policies/homework.qmd
-          - policies/exam.qmd
+          - policies/quiz.qmd
     - title: "Setup and Workflow"
       contents:
         - section: "Tools Setup"
@@ -103,12 +103,6 @@ website:
       contents:
         - href: labs/index.qmd
           text: "Lab Overview"
-        - href: labs/lab01/lab01.qmd
-          text: "Lab 1"
-        - href: labs/lab02/lab02.qmd
-          text: "Lab 2"
-        - href: labs/lab03/lab03.qmd
-          text: "Lab 3"
     - title: "Homework"
       style: docked
       search: false
@@ -116,16 +110,6 @@ website:
       contents:
         - href: hw/index.qmd
           text: "Homework Overview"
-        - href: hw/hw01/hw01.qmd
-          text: "Homework 1"
-        - href: hw/hw02/hw02.qmd
-          text: "Homework 2" 
-        - href: hw/hw03/hw03.qmd
-          text: "Homework 3" 
-        - href: hw/hw04/hw04.qmd
-          text: "Homework 4" 
-        - href: hw/hw05/hw05.qmd
-          text: "Homework 5" 
     - title: "Project"
       style: docked
       search: false
@@ -150,9 +134,11 @@ website:
       contents:
         - tutorials/index.qmd
         - tutorials/julia-basics.qmd
-        - tutorials/latex-notebook.qmd
         - tutorials/julia-plots.qmd
+        - tutorials/julia-graphs.qmd
         - tutorials/julia-jump.qmd
+        - tutorials/latex-notebook.qmd
+        - tutorials/notebook-to-pdf.qmd
 format:
   html:
     theme: 

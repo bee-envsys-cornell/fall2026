@@ -7,8 +7,8 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.31">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e44360b8a8db1e130c7792fece1c8032.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.3">
 
   <meta name="author" content="Vivek Srikrishnan">
   <meta name="dcterms.date" content="2025-09-29">
@@ -19,6 +19,9 @@
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
   <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -97,7 +100,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-7b87de61f0bc8c7187b97021a1ec54e0.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-d52ba59528acaf0ac8c09f3308d87e37.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -191,6 +194,14 @@
       margin-right: 0; 
     }
   </style>
+  <!-- MathJax 3 -->
+  <script>
+  window.MathJax = {
+      tex: {
+        tags: 'ams'
+      }
+    };
+  </script>
   <!-- Mathjax 3 config -->
   <script>
   window.MathJax = {
@@ -545,7 +556,9 @@ Figure&nbsp;1: Monte Carlo simualtion for Estimating pi
 <h2>MC Example: Dice</h2>
 <p>What is the probability of rolling 4 dice for a total of 19?</p>
 <div id="8" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1" data-code-line-numbers="|14-17|18-20|22-25"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a><span class="kw">function</span> <span class="fu">dice_roll_repeated</span>(n_trials, n_dice)</span>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" data-code-line-numbers="|14-17|18-20|22-25"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a><span class="kw">function</span> <span class="fu">dice_roll_repeated</span>(n_trials, n_dice)</span>
 <span id="cb1-2"><a></a>    dice_dist <span class="op">=</span> <span class="fu">DiscreteUniform</span>(<span class="fl">1</span>, <span class="fl">6</span>) </span>
 <span id="cb1-3"><a></a>    roll_results <span class="op">=</span> <span class="fu">zeros</span>(n_trials)</span>
 <span id="cb1-4"><a></a>    <span class="cf">for</span> i<span class="op">=</span><span class="fl">1</span><span class="op">:</span>n_trials</span>
@@ -569,7 +582,8 @@ Figure&nbsp;1: Monte Carlo simualtion for Estimating pi
 <span id="cb1-22"><a></a><span class="cf">for</span> i <span class="kw">in</span> <span class="fl">2</span><span class="op">:</span><span class="fu">length</span>(rolls)</span>
 <span id="cb1-23"><a></a>    avg_freq[i] <span class="op">=</span> (avg_freq[i<span class="op">-</span><span class="fl">1</span>] <span class="op">*</span> (i<span class="op">-</span><span class="fl">1</span>) <span class="op">+</span> (rolls[i] <span class="op">==</span> <span class="fl">19</span>)) <span class="op">/</span> i</span>
 <span id="cb1-24"><a></a>    std_freq[i] <span class="op">=</span> <span class="fu">std</span>(rolls[<span class="fl">1</span><span class="op">:</span>i] <span class="op">.==</span> <span class="fl">19</span>) <span class="op">/</span> <span class="fu">sqrt</span>(i)</span>
-<span id="cb1-25"><a></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-25"><a></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
 </section>
 <section id="mc-example-dice-1" class="slide level2">
@@ -577,7 +591,7 @@ Figure&nbsp;1: Monte Carlo simualtion for Estimating pi
 <div id="10" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a></a>plt <span class="op">=</span> <span class="fu">plot</span>(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a></a>plt <span class="op">=</span> <span class="fu">plot</span>(</span>
 <span id="cb2-2"><a></a>    avg_freq, ribbon<span class="op">=</span><span class="fl">1.96</span> <span class="op">*</span> std_freq,</span>
 <span id="cb2-3"><a></a>    xlim <span class="op">=</span> (<span class="fl">1</span>, nsamp),</span>
 <span id="cb2-4"><a></a>    ylim <span class="op">=</span> (<span class="fl">0</span>, <span class="fl">0.1</span>),</span>
@@ -593,7 +607,7 @@ Figure&nbsp;1: Monte Carlo simualtion for Estimating pi
 <span id="cb2-14"><a></a><span class="fu">plot!</span>(size<span class="op">=</span>(<span class="fl">1200</span>, <span class="fl">500</span>))</span>
 <span id="cb2-15"><a></a></span>
 <span id="cb2-16"><a></a><span class="fu">hline!</span>(plt, [<span class="fl">0.0432</span>], color<span class="op">=</span><span class="st">"red"</span>, </span>
-<span id="cb2-17"><a></a>    linestyle<span class="op">=:</span>dash) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-17"><a></a>    linestyle<span class="op">=:</span>dash) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <!--?xml version="1.0" encoding="utf-8"?-->
@@ -975,13 +989,14 @@ Figure&nbsp;1: Monte Carlo simualtion for Estimating pi
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy

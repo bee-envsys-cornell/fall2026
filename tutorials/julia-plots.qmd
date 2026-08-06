@@ -19,39 +19,111 @@ Pkg.activate(@__DIR__)
 Pkg.instantiate()
 ```
 
-## Overview
+```{julia}
+#| echo: false
+#| output: false
+# Hidden setup for this document only: work around two environment quirks that
+# can arise when PythonPlot and GR are used in the same session.  Not needed in
+# your own scripts.
+try
+    using Libdl, CondaPkg
+    libdir = joinpath(CondaPkg.envdir(), "lib")
+    for lib in ["libexpat.dylib", "libfreetype.dylib", "libfontconfig.dylib", "libharfbuzz.dylib", "libraqm.dylib"]
+        p = joinpath(libdir, lib)
+        isfile(p) && dlopen(p, RTLD_LAZY | RTLD_GLOBAL)
+    end
+catch
+end
 
-This tutorial will give some examples of plotting and plotting features in Julia, as well as providing references to some relevant resources. The main plotting library is `Plots.jl`, but there are some others that provide useful features.
+# Quarto's notebook runner wraps output streams in IOContext{IOBuffer}, which
+# lacks a `position` method.  PythonCall needs one when matplotlib writes a
+# figure to it.
+Base.position(ioc::IOContext{IOBuffer}) = position(ioc.io)
+```
+
+## Introduction
+
+There are several ways to make plots in Julia. The two most widely-used graphing ecosystems are:
+
+* [`Plots.jl`](https://docs.juliaplots.org/stable/) — a high-level interface that can target many different rendering **backends**. You write the same `Plots.jl` code regardless of which backend you choose.
+* [`Makie.jl`](https://docs.makie.org/stable/) — a modern, GPU-accelerated plotting system that gives you very fine control over every visual element. Its most popular backend for publication-quality vector output is [`CairoMakie.jl`](https://docs.makie.org/stable/explanations/backends/cairomakie).
+
+Other notable libraries include [`VegaLite.jl`](https://github.com/queryverse/VegaLite.jl) (a declarative grammar-of-graphics inspired by ggplot2) and [`Gadfly.jl`](https://gadflyjl.org/stable/).
+
+### `Plots.jl` and Its Backends
+
+`Plots.jl` itself does not draw anything — it hands off the rendering to a backend. Several backends are available: ^[This tutorial focuses on GR and PythonPlot; see the [Plots.jl backend gallery](https://docs.juliaplots.org/latest/backends/) for the full list.]
+
+* **[GR](https://github.com/jheinen/GR.jl)** — the default backend. Fast, simple, and works out of the box.
+* **[PythonPlot](https://github.com/JuliaPy/PythonPlot.jl)** — uses Python's `matplotlib` via `PythonCall.jl`. If you already know `matplotlib`, this backend may feel the most familiar.
+* **[PlotlyJS](https://github.com/JuliaPlots/PlotlyJS.jl)** — interactive, web-based plots using plotly.js.
+* **[PGFPlotsX](https://github.com/JuliaTeX/PGFPlotsX.jl)** — high-quality LaTeX/TikZ output for publications.
+* **[UnicodePlots](https://github.com/JuliaPlots/UnicodePlots.jl)** — plots directly in the terminal using Unicode characters.
+
+This tutorial will give examples of making plots using `Plots.jl` (with the `GR` backend), and will show how the `PythonPlot` backend and `Makie.jl` produce equivalent results. Relevant documentation resources are listed below.
 
 ## Some Resources
 
-* `Plots.jl` [useful tips](https://docs.juliaplots.org/latest/basics/#Useful-Tips)
-* `Plots.jl` [examples](https://docs.juliaplots.org/latest/generated/gr/)
+### `Plots.jl`
+* [Useful tips](https://docs.juliaplots.org/latest/basics/#Useful-Tips)
+* [Examples](https://docs.juliaplots.org/latest/generated/gr/)
 * [Plot attributes](http://docs.juliaplots.org/latest/generated/attributes_plot/)
 * [Axis attributes](http://docs.juliaplots.org/latest/generated/attributes_axis/#Axis)
+
+### `Makie.jl`
+* [Documentation](https://docs.makie.org/stable/)
+* [Plotting function reference](https://docs.makie.org/stable/reference/plots)
+* [Beautiful Makie (gallery)](https://beautiful.makie.org)
+
+### `PythonPlot`
+* [GitHub repository](https://github.com/JuliaPy/PythonPlot.jl)
+
+### Color and styling
 * [Color names](http://juliagraphics.github.io/Colors.jl/stable/namedcolors/)
+* [Colors.jl colormaps and scales](https://juliagraphics.github.io/Colors.jl/stable/colormapsandcolorscales/)
 
-## Making a Basic Plot
+## Setup
 
-Let's walk through making a basic line or scatter plot in Julia, using `Plots.jl`^[There are some other plotting libraries in Julia, but `Plots.jl` is a standard starting point. Feel free to experiment, though! You could look into [`Makie.jl`](https://docs.makie.org/stable/) or [`VegaLite.jl`](https://github.com/queryverse/VegaLite.jl)].
-
-::: {.callout-note}
-### `Plots.jl` Backends
-
-`Plots.jl` is more of a common interface for several different plotting ecosystems (called **backends**) than a self-contained plotting package. By default, `Plots.jl` uses the `GR` backend, which is pretty basic and fast; I will be using this in all my examples in this tutorial and in class for simplicity. 
-
-You can and should feel free to use [other backends](https://docs.juliaplots.org/latest/backends/) if you find them more intuitive or useful for the plot(s) you are trying to make. In particular, you might find `PythonPlot` simple to use if you feel comfortable with `matplotlib` in Python. The downside to `PythonPlot` is that it relies on Python to render the plots, which could create setup problems if you don't already have Python installed.
-:::
-
-Since we'll be generating random numbers, let's import `Random.jl` to allow us set a seed to reproduce the same plot every time we run this code. We'll also import `Plots.jl`, `LaTeXStrings.jl` (which allows us to use LaTeX for mathematical markup of variables in axis labels and titles), and `Measures.jl` (which lets us adjust margins using intuitive units, such as `in` and `mm`).
+Since we'll be generating random numbers, load the packages and set a seed for reproducibility.
 
 ```{julia}
 using Plots
+using StatsPlots   # for distribution plots; re-exports Plots
+using CairoMakie   # the vector-graphics Makie backend
 using LaTeXStrings
 using Measures
 using Random
 Random.seed!(1);
 ```
+
+```{julia}
+#| echo: false
+#| output: false
+# This document uses both Plots.jl and Makie.jl, which export some functions
+# with the same names (e.g. scatter, heatmap).  Resolve the overlaps in favor
+# of Plots.jl; the Makie tabs qualify the affected calls with Makie. .
+import Plots: plot, plot!, scatter, scatter!, heatmap, heatmap!, contour, contour!, surface, surface!, density, density!, stephist, pie, boxplot, violin, xlabel!, ylabel!, text, xlims!, ylims!, contourf, contourf!, hexbin
+```
+
+::: {.callout-note}
+### `Plots.jl` Backends and Makie
+
+`Plots.jl` is more of a common interface for several different plotting ecosystems (called **backends**) than a self-contained plotting package. By default, `Plots.jl` uses the `GR` backend, which is pretty basic and fast; I will use this in class for simplicity. You switch backends at any time by calling their name, e.g. `gr()` or `pythonplot()`.
+
+You can and should feel free to use [other backends](https://docs.juliaplots.org/latest/backends/) if you find them more intuitive or useful for the plot(s) you are trying to make. In particular, you might find `PythonPlot` simple to use if you feel comfortable with `matplotlib` in Python. The downside to `PythonPlot` is that it relies on Python to render the plots; if you don't have Python installed, [`CondaPkg.jl`](https://github.com/JuliaPy/CondaPkg.jl) will install a private copy automatically (which can take a few minutes the first time).
+
+Below, each plot example is shown in a tabset for three approaches: the `GR` backend, the `PythonPlot` backend, and `Makie.jl`.
+:::
+
+::: {.callout-tip}
+### Makie Function Names in This Tutorial
+
+Because this document has both `Plots.jl` and `Makie` loaded at once, a few function names that exist in both packages (such as `scatter` and `heatmap`) are written as `Makie.scatter` and `Makie.heatmap` in the Makie tabs. In your own scripts, where you would normally load only one of the two, you can drop the `Makie.` prefix.
+:::
+
+## Making a Basic Plot
+
+Let's walk through making a basic line plot.
 
 First, to generate a basic line plot, use `plot()`:
 
@@ -66,29 +138,57 @@ plot(x, y, label="Original Data", legend=:topleft) # <3>
 
 Here, we explicitly passed in `x` to provide the $x$ coordinates for the plotted values. If only one array is passed^[This syntax might look like `plot(y, ...)` instead of `plot(x, y, ...)`.], `Plots.jl` will interpret the values as $y$ coordinates and use their indices for the $x$ positions.
 
-Now we can add some other lines and point markers. We will use `plot!` and `scatter!` to add another line and some points. 
+Now add more series and axis labels.
 
 ::: {.callout-tip}
 ### Mutating Function
 
-The exclamation mark says that `plot!()` is a **mutating function**, which changes an existing variable instead of creating a new one. In this case, these functions change or add to an existing plot, instead of creating a new one. Try to remove the exclamation mark: you will get a new plot that no longer contains the old elements. You can contrast this explicit behavior with a language like R, which often requires an argument within the same function to add an element to an existing plot.
+The exclamation mark says that `plot!()` is a **mutating function**, which changes an existing plot instead of creating a new one. Try removing the `!` — you will get a new plot that no longer contains the old elements.
 :::
-
-Notice the arguments in `plot!()` and `scatter!()`, which let us set properties such as color , size, and shape, for the line and scatterplot markers.
 
 ```{julia}
 y2 = rand(5)
 y3 = rand(5)
-plot!(y2, color=:red, linewidth=2, linestyle=:dot, label="New Data")
-scatter!(y3, markercolor=:black, markershape=:square, markersize=5, label="Point Data")
 ```
 
-Let's now add axis labels. We can use [LaTeX syntax](latex-notebook.html) to add mathematical markup elements to labels (such as superscripts, subscripts, Greek letters, and mathematical symbols) using the `LaTeXStrings.jl` package. If we indicate that a string should be interpreted as a LaTeXString using the `L"..."` syntax, it will render content inside `$..$` using LaTeX, as seen below.
+::: {.panel-tabset}
+
+## GR (Plots.jl)
 
 ```{julia}
+gr()
+plot(x, y, label="Original Data")
+plot!(x, y2, color=:red, linewidth=2, linestyle=:dot, label="New Data")
+scatter!(x, y3, markercolor=:black, markershape=:square, markersize=5, label="Point Data")
 xlabel!("Regular String (days)")
 ylabel!(L"LaTeX String $x_2$ (m$^3$)")
 ```
+
+## PythonPlot (Plots.jl)
+
+```{julia}
+pythonplot()
+plot(x, y, label="Original Data")
+plot!(x, y2, color=:red, linewidth=2, linestyle=:dot, label="New Data")
+scatter!(x, y3, markercolor=:black, markershape=:square, markersize=5, label="Point Data")
+xlabel!("Regular String (days)")
+ylabel!(L"LaTeX String $x_2$ (m$^3$)")
+```
+
+## Makie.jl
+
+```{julia}
+fig = Figure()
+ax = Axis(fig[1, 1], xlabel="Regular String (days)", ylabel=L"LaTeX String $x_2$ (m$^3$)")
+lines!(ax, x, y, label="Original Data")
+lines!(ax, x, y2, color=:red, linewidth=2, linestyle=:dot, label="New Data")
+Makie.scatter!(ax, x, y3, color=:black, marker=:rect, markersize=10, label="Point Data")
+axislegend(ax, position=:lt)
+fig
+```
+
+:::
+
 
 ### Removing Plot Elements
 
@@ -108,13 +208,41 @@ The lesson is that sometimes the `Plots.jl` defaults don't look ideal, and we ne
 
 ### Aspect Ratio
 
-If we want to have a square aspect ratio, use `ratio = 1`.
+For a square aspect ratio, `Plots.jl` uses `ratio = 1`; `Makie.jl` uses `aspect = AxisAspect(1)`.
 
 ```{julia}
 v = rand(5)
+```
+
+::: {.panel-tabset}
+
+## GR (Plots.jl)
+
+```{julia}
+gr()
 plot(v, ratio=1, legend=false)
 scatter!(v)
 ```
+
+## PythonPlot (Plots.jl)
+
+```{julia}
+pythonplot()
+plot(v, ratio=1, legend=false)
+scatter!(v)
+```
+
+## Makie.jl
+
+```{julia}
+fig = Figure()
+ax = Axis(fig[1, 1], aspect=AxisAspect(1))
+lines!(ax, v)
+Makie.scatter!(ax, v)
+fig
+```
+
+:::
 
 ## Plot Demos
 
@@ -122,13 +250,40 @@ This section includes some examples of how to make other types of plots.
 
 ### Heatmaps
 
-A heatmap is effectively a plotted matrix with colors chosen according to the values. Use `clim` to specify a fixed range for the color limits.
+A heatmap is a plotted matrix whose cells are colored by value.  Use `clim` (Plots) or `colorrange` (Makie) to fix the color scale.
 
 ```{julia}
 A = rand(10, 10) # <1>
-heatmap(A, clim=(0, 1), ratio=1, legend=false, axis=false, ticks=false)
 ```
-1. Create a random 10x10 matrix, but this could come from actual data.
+1. Create a random 10×10 matrix, but this could come from actual data.
+
+::: {.panel-tabset}
+
+## GR (Plots.jl)
+
+```{julia}
+gr()
+heatmap(A, clim=(0, 1))
+```
+
+## PythonPlot (Plots.jl)
+
+```{julia}
+pythonplot()
+heatmap(A, clim=(0, 1))
+```
+
+## Makie.jl
+
+```{julia}
+fig = Figure()
+ax = Axis(fig[1, 1])
+hm = Makie.heatmap!(ax, A, colorrange=(0, 1))
+Colorbar(fig[1, 2], hm)
+fig
+```
+
+:::
 
 
 ```{julia}
@@ -139,36 +294,112 @@ heatmap(M, c=whiteblack, aspect_ratio = 1, ticks=.5:3.5, lims=(.5,3.5), gridalph
 1. This creates a vector of colors, so `0` (the lower value) will map to `whiteblack[1]` (which is white) and `1` will map to `whiteblack[2]` (black). The specific `0` and `1` values don't matter for this syntax, just that there are two distinct values; the lower one will always be mapped to white. Try changing the values of `M` to `1` and `2`!
 
 
-#### Custom Colors
+#### Custom Colormaps
+
+Use a custom set of colors instead of the default gradients.
 
 ```{julia}
 using Colors # <1>
 
 mycolors = [colorant"lightslateblue",colorant"limegreen",colorant"red"] # <1>
-A = [i for i=50:300, j=1:100] # <2>
-heatmap(A, c=mycolors, clim=(1,300))
+A2 = [i for i=50:300, j=1:100] # <2>
 ```
-1. `Colors.jl` provides a lot more granular control over colors, including [many named colors](https://juliagraphics.github.io/Colors.jl/stable/namedcolors/) and [the ability to generate your own colormaps and scales](https://juliagraphics.github.io/Colors.jl/stable/colormapsandcolorscales/). The `colorant` syntax converts an interpretable string (such as `red`) to an RGB value. You don't often need to explicitly load `Colors.jl` as much of this functionality is available through the `Plots.jl` interface, which includes `Colors.jl` as a dependency, but sometimes it's useful to create your own colormaps or functions. 
-2. This is an example of a **comprehension**, which creates a vector based on the loop(s) inside the array. This comprehension creates a 251x100 array where the values of each row (indexed by `i` ) increase from 50 to 300 in order.
+1. `Colors.jl` provides [many named colors](https://juliagraphics.github.io/Colors.jl/stable/namedcolors/).  The `colorant` function converts a name to an RGB value.
+2. This **comprehension** creates a 251×100 array where each row's value increases from 50 to 300.
 
+::: {.panel-tabset}
 
-### Plotting Areas Under Curves
-
-We can plot the area between a curve and the $x$-axis using `areaplot()`.
+## GR (Plots.jl)
 
 ```{julia}
-x = -3:.01:3
-areaplot(x, exp.(-x.^2/2)/√(2π), alpha=0.25, legend=false) # <1>
+gr()
+heatmap(A2, c=mycolors, clim=(50, 300))
 ```
-1. `alpha` sets the transparency of the plotted color: 1 is totally opaque. Lower alpha values are useful when you want to show an area around a line or if you have a lot of points on a scatterplot.
 
-We can also use this functionality for stacked area plots. The snippet below is good for you to experiment with to see what changes break the plot and why.
+## PythonPlot (Plots.jl)
 
 ```{julia}
-M = [1 2 3; 7 8 9; 4 5 6; 0 .5 1.5]
-areaplot(1:3, M, seriescolor = [:red :green :blue], fillalpha = [0.2 0.3 0.4]) # <1>
+pythonplot()
+heatmap(A2, c=mycolors, clim=(50, 300))
 ```
-1. The shape of the `seriescolor` and `fillalpha` arguments is very important, and also extends to multiple legend labels. 
+
+## Makie.jl
+
+```{julia}
+fig = Figure()
+ax = Axis(fig[1, 1])
+hm = Makie.heatmap!(ax, A2, colormap=mycolors, colorrange=(50, 300))
+Colorbar(fig[1, 2], hm)
+fig
+```
+
+:::
+
+
+### Area Under a Curve
+
+`areaplot()` fills the region between a curve and the x-axis.  The Makie equivalent is `band!` with a zero lower bound.
+
+```{julia}
+xa = -3:0.01:3
+fa = exp.(-xa.^2/2) / √(2π)
+```
+
+::: {.panel-tabset}
+
+## GR (Plots.jl)
+
+```{julia}
+gr()
+areaplot(xa, fa, alpha=0.25, legend=false)
+```
+
+## PythonPlot (Plots.jl)
+
+```{julia}
+pythonplot()
+areaplot(xa, fa, alpha=0.25, legend=false)
+```
+
+## Makie.jl
+
+```{julia}
+fig = Figure()
+ax = Axis(fig[1, 1])
+band!(ax, xa, fill(0.0, length(xa)), fa, color=(:blue, 0.25))
+fig
+```
+
+:::
+
+#### Stacked Area Plots
+
+We can stack multiple area series on top of each other by passing a matrix to `areaplot()`, where each column (or row) represents one layer. The layers are stacked cumulatively. A practical example: visualize the monthly energy use of four sources over three years.
+
+```{julia}
+years = ["2021", "2022", "2023"]
+# Each row is a source; each column is a year.
+# Sources: Solar, Wind, Hydro, Coal (values in GWh)
+energy = [
+    120  180  260;    # Solar (growing)
+    200  220  240;    # Wind
+    150  140  130;    # Hydro (declining)
+     80   60   40     # Coal (declining)
+]
+sources = ["Solar", "Wind", "Hydro", "Coal"]
+
+p = areaplot(1:3, energy',               # transpose so each column = layer
+    seriescolor = [:orange :skyblue :steelblue :gray],
+    fillalpha   = [0.6, 0.5, 0.4, 0.5],
+    labels      = reshape(sources, 1, :), # one label per layer
+    legend      = :topleft,
+    xticks      = (1:3, years),
+    xlabel      = "Year",
+    ylabel      = "Energy Use (GWh)"
+)
+```
+
+When you pass a matrix, each column becomes its own stacked layer. The `seriescolor` and `fillalpha` vectors control the color and transparency per layer. The `labels` must be a row matrix (`reshape(sources, 1, :)`) to match the matrix orientation. Try experimenting — change the values or colors to see how the plot adjusts. 
 
 
 The `fillrange` option lets us color the area between two arbitrary lines/curves if we only want to treat one of those curves as a boundary. `fillcolor` and `fillalpha` let you change the color and transparency of the filled area.
@@ -178,15 +409,45 @@ y = rand(10)
 plot(y, fillrange= y.*0 .+ .5, label= "above/below 1/2", fillcolor=:red, legend =:top)
 ```
 
-Here's a similar example to plot something like a confidence interval around a central estimate.
+#### Confidence Band
+
+Use `fillrange` to color the region between two curves, e.g. to show a confidence band.
 
 ```{julia}
-x = LinRange(0,2,100) # <1>
-y1 = exp.(x)
-y2 = exp.(1.3 .* x)
-plot(x, y1, fillrange = y2, fillalpha = 0.35, c = 1, label = "Confidence band", legend = :topleft)
+xb = LinRange(0, 2, 100) # <1>
+y1 = exp.(xb)
+y2 = exp.(1.3 .* xb)
 ```
-1. `LinRange` creates a range between the first two arguments (0 and 2 in this case) with the specified number of steps (here, 100). This is slightly different than `0:0.01:2`, which will create a length 101 array, not 100, but has steps that are more predictable.
+1. `LinRange` creates a range from 0 to 2 with 100 evenly spaced points.
+
+::: {.panel-tabset}
+
+## GR (Plots.jl)
+
+```{julia}
+gr()
+plot(xb, y1, fillrange=y2, fillalpha=0.35, c=1, label="Confidence band", legend=:topleft)
+```
+
+## PythonPlot (Plots.jl)
+
+```{julia}
+pythonplot()
+plot(xb, y1, fillrange=y2, fillalpha=0.35, c=1, label="Confidence band", legend=:topleft)
+```
+
+## Makie.jl
+
+```{julia}
+fig = Figure()
+ax = Axis(fig[1, 1])
+band!(ax, xb, y1, y2, color=(:blue, 0.35), label="Confidence band")
+lines!(ax, xb, y1, label="Estimate")
+axislegend(ax, position=:lt)
+fig
+```
+
+:::
 
 We can also get more creative and color different parts of a curve differently. Here, we divide a normal distribution into 100 quantiles and alternate red and blue stripes. We'll do this using the `erfinv()` function from `SpecialFunctions.jl` to calculate the quantiles using the inverse cumulative distribution function, but there are other approaches using `Distributions.jl`.
 
@@ -219,22 +480,77 @@ plot!(rectangle(5*√2,5*√2,-2.5*√2,-2.5*√2),c=:white,fill=true,legend=fal
 
 ### Plotting Distributions
 
-The [`StatsPlots.jl`](https://github.com/JuliaPlots/StatsPlots.jl/blob/master/README.md) package is very useful for making various plots of probability distributions.
+[`StatsPlots.jl`](https://github.com/JuliaPlots/StatsPlots.jl) adds distribution-plotting recipes.  `Makie.jl` requires computing the PDF explicitly with `Distributions.jl`.
 
 ```{julia}
-using Distributions, StatsPlots
-plot(Normal(2, 5))
+using Distributions
+d = Normal(2, 5)
+xs_dist = range(-15, 20, length=300)
 ```
 
+::: {.panel-tabset}
 
+## GR (Plots.jl)
 
 ```{julia}
-scatter(LogNormal(0.8, 1.5))
+gr()
+plot(d)
 ```
 
+## PythonPlot (Plots.jl)
 
+```{julia}
+pythonplot()
+plot(d)
+```
 
-We can also use this functionality to plot distributions of data in tabular data structures like `DataFrames`.
+## Makie.jl
+
+```{julia}
+fig = Figure()
+ax = Axis(fig[1, 1], xlabel="x", ylabel="pdf(x)")
+lines!(ax, xs_dist, pdf.(d, xs_dist))
+fig
+```
+
+:::
+
+#### Kernel Density Estimate
+
+```{julia}
+samples = rand(d, 2000)
+```
+
+::: {.panel-tabset}
+
+## GR (Plots.jl)
+
+```{julia}
+gr()
+density(samples, label="KDE", legend=:topleft)
+```
+
+## PythonPlot (Plots.jl)
+
+```{julia}
+pythonplot()
+density(samples, label="KDE", legend=:topleft)
+```
+
+## Makie.jl
+
+```{julia}
+fig = Figure()
+ax = Axis(fig[1, 1], xlabel="Value", ylabel="Density")
+Makie.density!(ax, samples)
+fig
+```
+
+:::
+
+#### DataFrame Density
+
+`StatsPlots.jl` also integrates with `DataFrames.jl`:
 
 ```{julia}
 using DataFrames
@@ -247,8 +563,34 @@ dat = DataFrame(a = 1:10, b = 10 .+ rand(10), c = 10 .* rand(10))
 
 ```{julia}
 xx = 0.1:0.1:10
-plot(xx.^2, xaxis=:log, yaxis=:log)
 ```
+
+::: {.panel-tabset}
+
+## GR (Plots.jl)
+
+```{julia}
+gr()
+plot(xx, xx.^2, xaxis=:log, yaxis=:log, legend=false)
+```
+
+## PythonPlot (Plots.jl)
+
+```{julia}
+pythonplot()
+plot(xx, xx.^2, xaxis=:log, yaxis=:log, legend=false)
+```
+
+## Makie.jl
+
+```{julia}
+fig = Figure()
+ax = Axis(fig[1, 1], xscale=log10, yscale=log10)
+lines!(ax, xx, xx .^ 2)
+fig
+```
+
+:::
 
 
 
@@ -285,3 +627,10 @@ pl[:size]=(300,200) # <1>
 pl
 ```
 
+## Saving Plots
+
+To save plots to a file for inclusion in a report writeup:
+
+```julia
+save("figure.png", p)
+```

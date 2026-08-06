@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.10.3">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>FAQ – Environmental Systems Analysis</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -19,41 +22,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -71,10 +39,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1d1e7f53b840ad8d06c4ae6c57b8588.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-037772e4b0a8fb61e9a28208dd0e90cd.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ba9c0723bac509a7d8c9561700ea21a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-41afc7412041501ec6863dfe70bda895.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -261,7 +229,7 @@ window.MathJax = {
   <li><a href="#why-are-we-using-github" id="toc-why-are-we-using-github" class="nav-link" data-scroll-target="#why-are-we-using-github">Why are we using GitHub?</a></li>
   <li><a href="#what-level-of-github-familiarity-will-i-need" id="toc-what-level-of-github-familiarity-will-i-need" class="nav-link" data-scroll-target="#what-level-of-github-familiarity-will-i-need">What level of GitHub familiarity will I need?</a></li>
   </ul></li>
-  <li><a href="#assignments-homework-labs-and-aes" id="toc-assignments-homework-labs-and-aes" class="nav-link" data-scroll-target="#assignments-homework-labs-and-aes">Assignments (Homework, Labs, and AEs)</a>
+  <li><a href="#assignments-homeworks-and-labs" id="toc-assignments-homeworks-and-labs" class="nav-link" data-scroll-target="#assignments-homeworks-and-labs">Assignments (Homeworks and Labs)</a>
   <ul class="collapse">
   <li><a href="#how-do-i-access-assignments" id="toc-how-do-i-access-assignments" class="nav-link" data-scroll-target="#how-do-i-access-assignments">How do I access assignments?</a></li>
   <li><a href="#what-if-theres-an-error-in-the-assignment-repository" id="toc-what-if-theres-an-error-in-the-assignment-repository" class="nav-link" data-scroll-target="#what-if-theres-an-error-in-the-assignment-repository">What if there’s an error in the assignment repository?</a></li>
@@ -303,7 +271,7 @@ window.MathJax = {
 <p>Why not some common alternatives?</p>
 <ul>
 <li>R is fantastic for statistics, but it has a very unique syntax, and can be slow and struggles to scale to large-scale problems; while we won’t approach those limits in this class, there’s no need to go there for our purposes.</li>
-<li>Python is extremely readable, but also can be very slow unless you’re using libraries which are written in C++, and the syntax for these can be jarringly different than native Python.</li>
+<li>Python is extremely readable, but also can be very slow unless you’re using libraries which are written in C++. The <code>JuMP.jl</code> optimization package is also ideal for translating mathematical representations of optimization problems into code and is becoming a major part of analytic workflows in <em>e.g.</em> energy systems.</li>
 <li>C/C++ are overkill for this class, and focusing on them would distract from our core engineering learning objectives.</li>
 <li>MATLAB is not free or open source. It also has some features which do not align with good broader coding and code maintainance practices (for example, having a single long function per file).</li>
 </ul>
@@ -332,19 +300,20 @@ window.MathJax = {
 </section>
 <section id="what-level-of-github-familiarity-will-i-need" class="level3">
 <h3 class="anchored" data-anchor-id="what-level-of-github-familiarity-will-i-need">What level of GitHub familiarity will I need?</h3>
-<p>None from the start! And the following commands are all you will need for this course (you can also use <a href="https://desktop.github.com/">GitHub Desktop</a> or use the <a href="https://code.visualstudio.com/docs/sourcecontrol/overview">GitHub functionality in VS Code</a>, which we will discuss in class):</p>
+<p>None from the start! And the following commands are all you will need for this course (you can also use <a href="https://desktop.github.com/">GitHub Desktop</a> or use the <a href="https://code.visualstudio.com/docs/sourcecontrol/overview">GitHub functionality in VS Code</a>:</p>
 <ul>
 <li><code>git clone &lt;github-repository-url&gt;</code>: This is needed to “clone” your assignment repository (initialize your local repository).</li>
 <li><code>git commit -m &lt;message&gt;</code>: This is used to “lock in” changes that you’ve made to your files. You should make commits frequently as you make changes so you can revert to prior versions if something goes wrong (and make your messages meaningful so you know what changes you’ve made!)</li>
 <li><code>git push</code>: This syncs any committed changes to the remote GitHub repository. <strong>You must do this prior to using your repository to ask for help</strong>.</li>
+<li><code>git pull</code>: This syncs your local repository with the remote repository. This is essential when working with others or across multiple machines to make sure you are editing the most recent version of the file(s).</li>
 </ul>
 </section>
 </section>
-<section id="assignments-homework-labs-and-aes" class="level2">
-<h2 class="anchored" data-anchor-id="assignments-homework-labs-and-aes">Assignments (Homework, Labs, and AEs)</h2>
+<section id="assignments-homeworks-and-labs" class="level2">
+<h2 class="anchored" data-anchor-id="assignments-homeworks-and-labs">Assignments (Homeworks and Labs)</h2>
 <section id="how-do-i-access-assignments" class="level3">
 <h3 class="anchored" data-anchor-id="how-do-i-access-assignments">How do I access assignments?</h3>
-<p>We will use GitHub Classroom to manage assessments. Links to accept the assignments and create your repository will be posted on <a href="https://us.edstem.org">Ed Discussion</a> as they are released, and posts with the links for active assignments will be pinned. The class schedule will link to a page which has a preview of the assignment, but links are not provided from this page to accept the assignment.</p>
+<p>We will use GitHub Classroom to manage assigments. Links to accept the assignments and create your repository will be posted on <a href="https://us.edstem.org">Ed Discussion</a> as they are released, and posts with the links for active assignments will be pinned. The class schedule will link to a page which has a preview of the assignment, but links are not provided from this page to accept the assignment.</p>
 <p>For the first assignment you accept, you will need to link your GitHub account to your entry in the class roster. You will not need to do this again for the rest of the semester.</p>
 </section>
 <section id="what-if-theres-an-error-in-the-assignment-repository" class="level3">
@@ -368,7 +337,7 @@ window.MathJax = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Don’t Post Screenshots!
+<span class="screen-reader-only">Note</span>Don’t Post Screenshots!
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -381,7 +350,7 @@ Don’t Post Screenshots!
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Update Your Repository!
+<span class="screen-reader-only">Note</span>Update Your Repository!
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -396,7 +365,7 @@ Update Your Repository!
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Give Yourself Time To Problem-Solve
+<span class="screen-reader-only">Warning</span>Give Yourself Time To Problem-Solve
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -413,28 +382,7 @@ Give Yourself Time To Problem-Solve
 </section>
 <section id="how-do-i-get-a-pdf-of-my-notebook-for-submission" class="level3">
 <h3 class="anchored" data-anchor-id="how-do-i-get-a-pdf-of-my-notebook-for-submission">How do I get a PDF of my notebook for submission?</h3>
-<p>There are two main options, depending on what you’ve already got set up on your computer.</p>
-<div class="callout callout-style-simple callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Run Notebook Cells Before Submission
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Remember to “Run All” cells prior to conversion and submission, or else we won’t see your results!</p>
-</div>
-</div>
-<ol type="1">
-<li><p>If you have a Python installation, you can use a tool called <a href="https://nbconvert.readthedocs.io/en/latest/"><code>nbconvert</code></a> to convert to a PDF. This is the easiest thing to do within VS Code: with <code>nbconvert</code> and the <a href="https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter">Jupyter extension</a>, you can [export your notebook] to HTML (which can be saved as a PDF) or directly to a PDF (if you have a TeX installation).</p></li>
-<li><p>If you don’t have a Python installation, within VS Code, you can use <code>IJulia.jl</code> (which will be included in the environments provided with assignments in this class) as follows (enter these commands into the REPL) to open your notebook in your browser:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">IJulia</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">notebook</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This should open a Jupyter notebook interface in your browser. Navigate to and open the notebook, and once it has completed running, go to <code>File -&gt; Print Preview</code> in the browser menu and Print to PDF.</p></li>
-<li><p>The least reliable option is to use an online renderer, such as <a href="https://nbviewer.org/"><code>nbviewer</code></a>. <code>nbviewer</code> will import your notebook from GitHub and render it, in which case you can just print to a PDF from your browser. The downside to <code>nbviewer</code> is it sometimes doesn’t render figures properly.</p></li>
-</ol>
+<p>Consult the options at the <a href="../tutorials/notebook-to-pdf.html">tutorial</a>.</p>
 <p>But remember, you also don’t <strong>need</strong> to submit a PDF derived from a notebook! The code in the notebook will not be graded; this is just a means to an end. You are graded on how you set up the problem, the results, and your analysis: you can write up solutions in Word or some text editor and include plots, then export that to a PDF.</p>
 </section>
 <section id="how-do-i-submit-my-pdf-to-gradescope" class="level3">
@@ -446,7 +394,7 @@ Run Notebook Cells Before Submission
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Tag Pages
+<span class="screen-reader-only">Important</span>Tag Pages
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -510,13 +458,14 @@ Tag Pages
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
