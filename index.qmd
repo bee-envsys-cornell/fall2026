@@ -29,9 +29,9 @@ format:
 ### TA
 
 
-- {{< fa sharp user title="Name" >}} [[Samantha Davies]({{< var instructor.url >}})]{.ms-1}
-- {{< fa sharp envelope title="Email" >}} [[sld238@cornell.edu](mailto:sld238@cornell.edu)]{.ms-1}
-- {{< fa sharp building title="TA Office" >}} [217 Riley-Robb Hall]{.ms-2}
+- {{< fa sharp user title="Name" >}} [TBD]{.ms-1}
+- {{< fa sharp envelope title="Email" >}} [TBD]{.ms-1}
+- {{< fa sharp building title="TA Office" >}} [TBD]{.ms-2}
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-md-3}
