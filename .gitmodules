@@ -1,0 +1,4 @@
+[submodule "hw/hw01"]
+	path = hw/hw01
+	url = https://github.com/bee-envsys-cornell/hw01
+	branch = Fall26

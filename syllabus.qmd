@@ -326,7 +326,7 @@ Your grade will be computed as the weighted average of the following assessment 
 
 | Category | Weight |
 |:--------|:------:|
-| Labs | 10% |
+| Labs/Readings | 10% |
 | Homework | 15% |
 | Mini-Projects | 20% |
 | Quizzes | 30% |
@@ -341,7 +341,13 @@ Grades on individual assessments will not be curved. It is unlikely that the fin
 
 ### Labs
 
-Approximately 4 class periods will be dedicated to working through simple examples to guide you through applying concepts and methods from class. Students should bring their laptops to class, and will be given a worksheet to complete (as much as they can) during these lab classes. Labs will be designed to be completed in class, though you may occasionally require additional time; however, lab worksheets must be submitted by 9:00pm on the day after the lab day. As a result, I encourage you to make sure that you download and set up the lab materials ahead of time; these will be provided for you on Ed Discussion. Labs will be graded on a scale of 0-3 on the basis of effort towards demonstrated work, rather than absolute correctness or completion. No labs will be dropped by default. If you cannot bring a laptop to class, you can work with other students, though you must turn in your own worksheet for grading.
+Approximately 4 class periods will be dedicated to working through simple examples to guide you through applying concepts and methods from class. Students should bring their laptops to class, and will be given a worksheet to complete (as much as they can) during these lab classes. Labs will be designed to be completed in class, though you may occasionally require additional time; however, lab worksheets must be submitted by 9:00pm on the day after the lab day. As a result, I encourage you to make sure that you download and set up the lab materials ahead of time; these will be provided for you on Ed Discussion. Labs will be graded on a scale of 0-2 on the basis of effort towards demonstrated work, rather than absolute correctness or completion. No labs will be dropped by default. If you cannot bring a laptop to class, you can work with other students, though you must turn in your own worksheet for grading.
+
+### Readings
+
+Student in BEE 5750 will be expected to read papers throughout the semester (not every week) and provide annotations through Persuall (via Canvas). Students will be graded on a scale from 0-2 on these assignments based on the quality of their annotations (not their numbers). Annotations should reflect thoughtful engagement with the readings; a couple of deep annotations connecting concepts in the reading to broader class themes or personal experiences/other classes will be given a better grade than a large number of shallow annotations.
+
+Reading assignments will be extra credit for students in BEE 4750 towards their lab grade.
 
 ### Homework 
 
@@ -356,16 +362,16 @@ Some notes on assignment and grading logistics:
   * Homework assignments will be distributed using GitHub Classroom. While GitHub use is not required for the class aside from accepting and cloning assignments, students are encouraged to update their GitHub repositories as they work on the assignments; this helps with answering questions, keeping solutions synced across groups, and gives you a backstop in case something goes wrong and you can't submit your assignment on time. 
   * Homeworks are due by 9:00pm Eastern Time on the designed due date (usually a Thursday). Your assignment writeup should be submitted to Gradescope as a PDF with the answers to each question tagged (a failure to do this will result in a non-negotiable 10% point deduction). **All students in a group are responsible for ensuring that the student who submits the assignment for their group tags each question, as all will have points deducted if this is not done**.
   * A meta-rubric is provided on the website, under the Homework page. These are not customized for each assignment but the principles will apply generally.
-  * One homework assignment will be dropped by default. You can turn in assignments within 24 hours of the due date with a 50% penalty. If you need a further accomodation for a particular assignment, talk to Prof. Srikrishnan ***before the due date.*** Requests for extensions made after the due date will only be considered under extraordinary and unexpected circumstances. Technical challenges submitting assignments are not acceptable reasons for extensions to be granted, and late penalties will apply.
+  * One homework assignment will be dropped by default for students in BEE 4750 (but not for students in BEE 5750). You can turn in assignments within 24 hours of the due date with a 50% penalty. If you need a further accomodation for a particular assignment, talk to Prof. Srikrishnan ***before the due date.*** Requests for extensions made after the due date will only be considered under extraordinary and unexpected circumstances. **Technical challenges submitting assignments are not acceptable reasons for extensions to be granted**, and late penalties will apply.
   * **Your submitted homework must stand on its own***! We cannot grade you on the basis of information which was not included in the submitted assignment. While regrade requests should include a justification for why your grade is incorrect, we will not consider explanations or additional reasoning outside of the submission.
 
 ### Mini Projects
 
-There will be 2-3 more in-depth computational projects assigned throughout the semester which will require students to apply multiple methods from the course to a particular systems problem. These projects will typically involve the formulation and analysis of a mathematical model for the system of question and will involve the preparation of a short report justifying the model formulation, outlining the methods, and presenting and interpreting results. Students in BEE 4750 will be able to work in groups of 2 and should submit a group report following the homework guidelines, while students in BEE 5750 must work independently.
+There will be 3 more in-depth computational projects assigned throughout the semester which will require students to apply multiple methods from the course to a particular systems problem. These projects will typically involve the formulation and analysis of a mathematical model for the system of question and will involve the preparation of a short report justifying the model formulation, outlining the methods, and presenting and interpreting results, but the problems will be more open ended than those the homework assignments. Students in BEE 4750 will be able to work in groups of 2 and should submit a group report following the homework guidelines, while students in BEE 5750 must work independently.
 
 ### Quizzes
 
-Approximately 5-6 quizzes will be given in-class. These will be in the first part of the relevant class, approximately 25 minutes long. No materials (books, notes, computers, or calculators) are allowed. Quizzes will be scanned into Gradescope for grading. The material which will be covered on the quiz will be specified ahead of time in class or on Ed Discussion. No quizzes will be dropped for students in BEE 5750, but one quiz will be dropped for students in 4750.
+Approximately 6 quizzes will be given in-class. These will be in the first part of the relevant class, approximately 25 minutes long. **No materials (books, notes, computers, or calculators) are allowed**. Quizzes will be scanned into Gradescope for grading. The material which will be covered on the quiz will be specified ahead of time in class or on Ed Discussion. No quizzes will be dropped for students in BEE 5750, but one quiz will be dropped for students in 4750.
 
 ### Term Project
 
@@ -376,10 +382,11 @@ The term project will be completed in groups (3-4 students). Graduate students e
 The project will be assessed on the basis of both group and individual components:
 
 1. ***Group*** (80 points):
-   1. (10 points) **Proposal**: Groups will develop a proposal for their final project, which will include two main components. The first is a research plan, which should (succinctly) describe the background for the problem and articulate the key question (system overview, model specification) as well as providing a brief overview of proposed methods (data sources, planned analytic approach). The second is a work plan, which will include task assignments across group members, deadlines for interim tasks, and a plan for coordination (meeting frequency, materials sharing, etc). 
-   2. (20 points) **Presentation**: Groups will present their projects to the class at the end of the semester. Due to time restrictions, these may be recorded and uploaded to Canvas if there are too many projects for the time available. Presentations should be no more than 10 minutes long and should be aimed at a general audience. 
-   3. (10 points) **Peer Review**: Each group will be asked to provide a peer review on two of their classmates' presentations. The format for the review will be made available on the class website.
-   4. (40 points) **Final Report**: Each group will submit a 3-5 page final report aimed at an engineering audience. Instructions will be provided with detailed expectations. 
+   1. (10 points) **Proposal**: Groups will develop a proposal for their final project, which will include two main components. The first is a research plan, which should (succinctly) describe the background for the problem and articulate the key question (system overview, model specification) as well as providing a brief overview of proposed methods (data sources, planned analytic approach). The second is a work plan, which will include task assignments across group members, deadlines for interim tasks, and a plan for coordination (meeting frequency, materials sharing, etc). Students will also be asked to let a large-language model (LLM) generate a project proposal based on a prompt derived from their topic and will be asked to reflect on the differences between their proposal and the LLM-generated one.
+   2. (5 points) **Proposal Peer Review**: Each group will be given a proposal from a different group and will be asked to write a peer review based on a provided rubric. The review will be given to the other group as feedback on their project. Each member of the reviewing group will also be asked to submit the proposal to an LLM and will spend time in class discussing and synthesizing the differences between the LLM-generated review and their own. Groups will be evaluated on the consistency of their review with the rubric and a reflection on the LLM reviews, **but not on the review their proposal received**.
+   3. (20 points) **Presentation**: Groups will present their projects to the class at the end of the semester. Due to time restrictions, these may be recorded and uploaded to Canvas if there are too many projects for the time available. Presentations should be no more than 10 minutes long and should be aimed at a general audience. 
+   4. (5 points) **Presentation Peer Review**: Each group will be asked to provide a peer review on two of their classmates' presentations. The format for the review will be made available on the class website.
+   5. (40 points) **Final Report**: Each group will submit a 3-5 page final report aimed at an engineering audience. Instructions will be provided with detailed expectations. 
 2. **Individual** (20 points):
    1. (5 points) **Self-Assessment**: Each individual in a group will submit a short self-assessment of their project, including a description of the work they contributed to the project (< 1/2 page) and reflections on what worked well or less well (< 1/2 page). 
    2. (15 points) **Peer Evaluation**: Each individual in a group will submit an evaluation of their teammates' contributions to the final project and the group dynamic, including assessments of participation, work quality, and inclusivity. Points will be awarded based on the evaluations from your group; different scales will be applied for undergraduate (4750) and graduate (5750) students. *No points will be given for any student who fails to submit evaluations for their groupmates*. 
@@ -405,8 +412,8 @@ The following grading scale will be used to convert the numerical weighted avera
 | C- | 70--73 |
 | D+ | 67--70 |
 | D | 63--67 |
-| D- | 60--63 | 
-| F | < 60 |
+| D- | 61--63 | 
+| F | < 61 |
 
 We reserve the right to lower these cutoffs as appropriate, but will not raise them from these levels.
 

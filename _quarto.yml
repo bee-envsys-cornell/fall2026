@@ -110,6 +110,8 @@ website:
       contents:
         - href: hw/index.qmd
           text: "Homework Overview"
+        - href: hw/hw01/hw01.qmd
+          text: "Homework 1"
     - title: "Project"
       style: docked
       search: false
@@ -133,6 +135,7 @@ website:
       background: "#f7f7f7"
       contents:
         - tutorials/index.qmd
+        - tutorials/quarto.qmd
         - tutorials/julia-basics.qmd
         - tutorials/julia-plots.qmd
         - tutorials/julia-graphs.qmd

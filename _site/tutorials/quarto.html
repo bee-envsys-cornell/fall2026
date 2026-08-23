@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.3">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Getting Started with Quarto – Environmental Systems Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../tutorials/julia-basics.html" rel="next">
+<link href="../tutorials/index.html" rel="prev">
+<link href="../_assets/logos/favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-037772e4b0a8fb61e9a28208dd0e90cd.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-41afc7412041501ec6863dfe70bda895.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<!-- MathJax 3 -->
+<script>
+window.MathJax = {
+    tex: {
+      tags: 'ams'
+    }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<meta property="og:title" content="Getting Started with Quarto – Environmental Systems Analysis">
+<meta property="og:description" content="Homepage for the Fall 2025 version of BEE 4750/5750, Environmental Systems Analysis, at Cornell University.">
+<meta property="og:site_name" content="Environmental Systems Analysis">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">BEE 4750/5750</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-info" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Info</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-info">    
+        <li>
+    <a class="dropdown-item" href="../syllabus.html">
+ <span class="dropdown-text">Syllabus</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../policies/index.html">
+ <span class="dropdown-text">Course Policies</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../faq/index.html">
+ <span class="dropdown-text">FAQ</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../setup/index.html">
+ <span class="dropdown-text">Setup</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../schedule.html"> 
+<span class="menu-text">Course Schedule</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-coursework" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Coursework</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-coursework">    
+        <li>
+    <a class="dropdown-item" href="../labs/index.html">
+ <span class="dropdown-text">Labs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../hw/index.html">
+ <span class="dropdown-text">Homework</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../project/index.html">
+ <span class="dropdown-text">Final Project</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-resources" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Resources</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-resources">    
+        <li>
+    <a class="dropdown-item" href="../tutorials/index.html">
+ <span class="dropdown-text">Tutorials</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../resources/general.html">
+ <span class="dropdown-text">General Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../resources/julia.html">
+ <span class="dropdown-text">Julia Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../resources/ai.html">
+ <span class="dropdown-text">Generative AI and LLMs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../resources/github.html">
+ <span class="dropdown-text">GitHub Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../resources/markdown.html">
+ <span class="dropdown-text">Markdown Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../resources/optimization.html">
+ <span class="dropdown-text">Optimization Resources</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/bee-envsys-cornell/fall2025"> 
+<span class="menu-text"><i class="fa-brands fa-github" aria-label="github"></i> GitHub</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://canvas.cornell.edu"> 
+<span class="menu-text"><i class="fa-regular fa-notebook" aria-label="notebook"></i> Canvas</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://edstem.org"> 
+<span class="menu-text"><i class="fa-regular fa-comments" aria-label="comments"></i> Ed</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://gradescope.com"> 
+<span class="menu-text"><i class="fa-regular fa-chart-simple" aria-label="chart-simple"></i> Gradescope</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../tutorials/quarto.html">Getting Started with Quarto</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorials</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/quarto.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Getting Started with Quarto</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/julia-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Julia Basics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/julia-plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Making Plots with Julia</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/julia-graphs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Create System Diagrams</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/julia-jump.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linear Optimization in Julia</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/latex-notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Using LaTeX in Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/notebook-to-pdf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Converting Jupyter Notebooks to PDF</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#installing-quarto" id="toc-installing-quarto" class="nav-link" data-scroll-target="#installing-quarto">Installing Quarto</a>
+  <ul class="collapse">
+  <li><a href="#verify-your-installation" id="toc-verify-your-installation" class="nav-link" data-scroll-target="#verify-your-installation">Verify your installation</a></li>
+  </ul></li>
+  <li><a href="#setting-up-quarto-with-julia" id="toc-setting-up-quarto-with-julia" class="nav-link" data-scroll-target="#setting-up-quarto-with-julia">Setting Up Quarto with Julia</a></li>
+  <li><a href="#anatomy-of-a-quarto-document" id="toc-anatomy-of-a-quarto-document" class="nav-link" data-scroll-target="#anatomy-of-a-quarto-document">Anatomy of a Quarto Document</a>
+  <ul class="collapse">
+  <li><a href="#code-chunk-options" id="toc-code-chunk-options" class="nav-link" data-scroll-target="#code-chunk-options">Code chunk options</a></li>
+  <li><a href="#math-and-citations" id="toc-math-and-citations" class="nav-link" data-scroll-target="#math-and-citations">Math and citations</a></li>
+  </ul></li>
+  <li><a href="#rendering-a-document" id="toc-rendering-a-document" class="nav-link" data-scroll-target="#rendering-a-document">Rendering a Document</a></li>
+  <li><a href="#rendering-to-pdf" id="toc-rendering-to-pdf" class="nav-link" data-scroll-target="#rendering-to-pdf">Rendering to PDF</a></li>
+  <li><a href="#quarto-in-vs-code" id="toc-quarto-in-vs-code" class="nav-link" data-scroll-target="#quarto-in-vs-code">Quarto in VS Code</a>
+  <ul class="collapse">
+  <li><a href="#install-the-extension" id="toc-install-the-extension" class="nav-link" data-scroll-target="#install-the-extension">Install the extension</a></li>
+  <li><a href="#using-the-extension" id="toc-using-the-extension" class="nav-link" data-scroll-target="#using-the-extension">Using the extension</a></li>
+  </ul></li>
+  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a></li>
+  <li><a href="#further-resources" id="toc-further-resources" class="nav-link" data-scroll-target="#further-resources">Further Resources</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/tutorials/quarto.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Getting Started with Quarto</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p><a href="https://quarto.org/">Quarto</a> is an open-source scientific and technical publishing system. It lets you write text in Markdown, embed and run code (Julia, Python, R, or Observable JS), and render the combined document to HTML, PDF, Word, slides, and more, all from a single source file. If you have used Jupyter notebooks, think of Quarto as a way to get the same “code + narrative + output” workflow, but with much more control over the final, polished document — this is especially useful for writing up homework and project reports.</p>
+<p>This entire course website, along with the lecture notes, was written in Quarto. You can (and are encouraged to!) use Quarto to write your homework solutions and project reports.</p>
+<p>This tutorial covers:</p>
+<ul>
+<li>installing Quarto and setting it up to run Julia code,</li>
+<li>the basics of writing and rendering a <code>.qmd</code> file,</li>
+<li>generating a PDF from a Quarto document, and</li>
+<li>using Quarto inside VS Code.</li>
+</ul>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Quarto has excellent official documentation. This tutorial is meant to get you up and running quickly for this course; for anything more advanced, the <a href="https://quarto.org/docs/guide/">Quarto Guide</a> is the best reference.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="installing-quarto" class="level2">
+<h2 class="anchored" data-anchor-id="installing-quarto">Installing Quarto</h2>
+<p>Quarto is a standalone command-line tool (it does not require Python, R, or Julia to install, though it can use any of them to run code). Download and install it from the official <a href="https://quarto.org/docs/get-started/">Get Started page</a>:</p>
+<ul>
+<li><p><strong>Windows</strong>: Download and run the <code>.exe</code> installer from <a href="https://quarto.org/docs/download/">quarto.org/docs/download</a>.</p></li>
+<li><p><strong>macOS</strong>: Download and run the <code>.pkg</code> installer from the same page, or install with <a href="https://brew.sh/">Homebrew</a>:</p>
+<pre class="shell"><code>brew install --cask quarto</code></pre></li>
+</ul>
+<section id="verify-your-installation" class="level3">
+<h3 class="anchored" data-anchor-id="verify-your-installation">Verify your installation</h3>
+<p>Open a <strong>new</strong> terminal window (so it picks up the updated <code>PATH</code>) and run:</p>
+<pre class="shell"><code>quarto --version</code></pre>
+<p>You should see a version number (e.g., <code>1.6.40</code>). It’s also worth running Quarto’s built-in diagnostic tool, which checks that your Quarto installation, LaTeX, and any notebook engines are configured correctly:</p>
+<pre class="shell"><code>quarto check</code></pre>
+<p>This will print a report and flag anything that’s missing. Don’t worry if it says LaTeX is not installed — we’ll cover that below in <a href="#rendering-to-pdf">Rendering to PDF</a>.</p>
+</section>
+</section>
+<section id="setting-up-quarto-with-julia" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up-quarto-with-julia">Setting Up Quarto with Julia</h2>
+<p>Quarto needs to know how to <em>execute</em> the code in your document. This is handled by a <strong>notebook engine</strong>. As of Quarto 1.4+, there is a native Julia engine that Quarto manages for you automatically — you do not need to separately install Jupyter or IJulia. See the <a href="https://quarto.org/docs/computations/julia.html">Quarto + Julia documentation</a> for full details.</p>
+<p>To use it, add <code>engine: julia</code> to the YAML header of your <code>.qmd</code> file, as at the top of this page (or any of the <code>.qmd</code> files provided in your homework repositories):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"My Document"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">engine</span><span class="kw">:</span><span class="at"> julia</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The first time you render a document with <code>engine: julia</code>, Quarto will automatically download and set up a small companion package called <a href="https://github.com/PumasAI/QuartoNotebookRunner.jl"><code>QuartoNotebookRunner.jl</code></a> in its own isolated environment. This can take a minute or two — subsequent renders will be much faster, since Quarto keeps a background Julia process “warm” between renders of the same document.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong>Pinning a Julia version</strong>: If you use <a href="https://github.com/JuliaLang/juliaup">Juliaup</a> to manage multiple Julia versions (as recommended on the <a href="../setup/julia.html">Julia setup page</a>), you can force Quarto to use a specific one with the <code>exeflags</code> option, as this page’s own YAML header does:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">julia</span><span class="kw">:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">exeflags</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">"+1.11.5"</span><span class="kw">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<p>Your <code>.qmd</code> file should also live alongside a <code>Project.toml</code> (and, after your first run, a <code>Manifest.toml</code>) that lists the packages it needs — exactly as you would set up a Julia environment for a script or notebook. See <a href="../setup/julia.html#julia-environments-and-packages">Julia Environments and Packages</a> for a refresher on <code>Pkg.activate</code> and <code>Pkg.instantiate</code>.</p>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong>Alternative: the Jupyter engine.</strong> If you’d rather use Jupyter + <a href="https://github.com/JuliaLang/IJulia.jl">IJulia</a> (e.g., because you’re already comfortable with that setup from Python), Quarto supports that too via <code>engine: jupyter</code>. See the <a href="https://quarto.org/docs/computations/julia.html#using-jupyter">Jupyter section of the Julia engine docs</a> for how to register a Julia kernel.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="anatomy-of-a-quarto-document" class="level2">
+<h2 class="anchored" data-anchor-id="anatomy-of-a-quarto-document">Anatomy of a Quarto Document</h2>
+<p>A <code>.qmd</code> file has three parts:</p>
+<ol type="1">
+<li>A <strong>YAML header</strong>, delimited by <code>---</code> lines, containing metadata (title, author, output format, engine, etc.).</li>
+<li><strong>Markdown text</strong> — the same syntax used in the rest of this website (see the <a href="../resources/markdown.html">Markdown resources page</a> for a refresher).</li>
+<li><strong>Code chunks</strong>, fenced with three backticks and a curly-brace language tag, e.g.&nbsp;<code>```{julia}</code>.</li>
+</ol>
+<p>Here’s a minimal example:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "My First Quarto Document"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="an">engine:</span><span class="co"> julia</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introduction</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>This document computes the growth of a pollutant stock over time.</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="in">```{julia}</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Plots</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.1</span><span class="op">:</span><span class="fl">10</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>C <span class="op">=</span> <span class="fl">5</span> <span class="op">.*</span> <span class="fu">exp</span>.(<span class="op">-</span><span class="fl">0.3</span> <span class="op">.*</span> t)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(t, C, xlabel<span class="op">=</span><span class="st">"Time"</span>, ylabel<span class="op">=</span><span class="st">"Concentration"</span>, legend<span class="op">=</span><span class="cn">false</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>The concentration decays exponentially, as shown above.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="code-chunk-options" class="level3">
+<h3 class="anchored" data-anchor-id="code-chunk-options">Code chunk options</h3>
+<p>You can control how a chunk behaves with <code>#|</code> comment options at the top of the chunk. Common ones:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Option</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>#\| echo: false</code></td>
+<td>Hide the code, show only the output</td>
+</tr>
+<tr class="even">
+<td><code>#\| eval: false</code></td>
+<td>Show the code but don’t run it</td>
+</tr>
+<tr class="odd">
+<td><code>#\| output: false</code></td>
+<td>Run the code but hide the output</td>
+</tr>
+<tr class="even">
+<td><code>#\| warning: false</code></td>
+<td>Suppress warnings</td>
+</tr>
+<tr class="odd">
+<td><code>#\| fig-cap: "..."</code></td>
+<td>Add a caption to a figure</td>
+</tr>
+<tr class="even">
+<td><code>#\| label: fig-mylabel</code></td>
+<td>Add a cross-reference label (use with <code>@fig-mylabel</code> in text)</td>
+</tr>
+</tbody>
+</table>
+<p>For example, this chunk uses <code>echo: false</code> to show only the resulting figure:</p>
+<div id="4" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-display" data-execution_count="1">
+<!--?xml version="1.0" encoding="utf-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="672" height="480" viewbox="0 0 2688 1920">
+<defs>
+  <clippath id="clip970">
+    <rect x="0" y="0" width="2688" height="1920"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip970)" d="M0 1920 L2688 1920 L2688 -4.26326e-14 L0 -4.26326e-14  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip971">
+    <rect x="537" y="0" width="1883" height="1883"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip970)" d="M181.719 1734.12 L2640.76 1734.12 L2640.76 47.2441 L181.719 47.2441  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip972">
+    <rect x="181" y="47" width="2460" height="1688"></rect>
+  </clippath>
+</defs>
+<polyline clip-path="url(#clip972)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; stroke-opacity:0.1; fill:none" points="251.315,1734.12 251.315,47.2441 "></polyline>
+<polyline clip-path="url(#clip972)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; stroke-opacity:0.1; fill:none" points="831.276,1734.12 831.276,47.2441 "></polyline>
+<polyline clip-path="url(#clip972)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; stroke-opacity:0.1; fill:none" points="1411.24,1734.12 1411.24,47.2441 "></polyline>
+<polyline clip-path="url(#clip972)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; stroke-opacity:0.1; fill:none" points="1991.2,1734.12 1991.2,47.2441 "></polyline>
+<polyline clip-path="url(#clip972)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; stroke-opacity:0.1; fill:none" points="2571.16,1734.12 2571.16,47.2441 "></polyline>
+<polyline clip-path="url(#clip972)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; stroke-opacity:0.1; fill:none" points="181.719,1434.8 2640.76,1434.8 "></polyline>
+<polyline clip-path="url(#clip972)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; stroke-opacity:0.1; fill:none" points="181.719,1099.85 2640.76,1099.85 "></polyline>
+<polyline clip-path="url(#clip972)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; stroke-opacity:0.1; fill:none" points="181.719,764.894 2640.76,764.894 "></polyline>
+<polyline clip-path="url(#clip972)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; stroke-opacity:0.1; fill:none" points="181.719,429.94 2640.76,429.94 "></polyline>
+<polyline clip-path="url(#clip972)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; stroke-opacity:0.1; fill:none" points="181.719,94.9858 2640.76,94.9858 "></polyline>
+<polyline clip-path="url(#clip970)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="181.719,1734.12 2640.76,1734.12 "></polyline>
+<polyline clip-path="url(#clip970)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="251.315,1734.12 251.315,1715.22 "></polyline>
+<polyline clip-path="url(#clip970)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="831.276,1734.12 831.276,1715.22 "></polyline>
+<polyline clip-path="url(#clip970)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1411.24,1734.12 1411.24,1715.22 "></polyline>
+<polyline clip-path="url(#clip970)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1991.2,1734.12 1991.2,1715.22 "></polyline>
+<polyline clip-path="url(#clip970)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2571.16,1734.12 2571.16,1715.22 "></polyline>
+<path clip-path="url(#clip970)" d="M228.699 1767.34 Q225.088 1767.34 223.259 1770.9 Q221.454 1774.45 221.454 1781.58 Q221.454 1788.68 223.259 1792.25 Q225.088 1795.79 228.699 1795.79 Q232.333 1795.79 234.139 1792.25 Q235.968 1788.68 235.968 1781.58 Q235.968 1774.45 234.139 1770.9 Q232.333 1767.34 228.699 1767.34 M228.699 1763.64 Q234.509 1763.64 237.565 1768.24 Q240.644 1772.83 240.644 1781.58 Q240.644 1790.3 237.565 1794.91 Q234.509 1799.49 228.699 1799.49 Q222.889 1799.49 219.81 1794.91 Q216.755 1790.3 216.755 1781.58 Q216.755 1772.83 219.81 1768.24 Q222.889 1763.64 228.699 1763.64 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M248.861 1792.94 L253.745 1792.94 L253.745 1798.82 L248.861 1798.82 L248.861 1792.94 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M273.93 1767.34 Q270.319 1767.34 268.491 1770.9 Q266.685 1774.45 266.685 1781.58 Q266.685 1788.68 268.491 1792.25 Q270.319 1795.79 273.93 1795.79 Q277.565 1795.79 279.37 1792.25 Q281.199 1788.68 281.199 1781.58 Q281.199 1774.45 279.37 1770.9 Q277.565 1767.34 273.93 1767.34 M273.93 1763.64 Q279.741 1763.64 282.796 1768.24 Q285.875 1772.83 285.875 1781.58 Q285.875 1790.3 282.796 1794.91 Q279.741 1799.49 273.93 1799.49 Q268.12 1799.49 265.042 1794.91 Q261.986 1790.3 261.986 1781.58 Q261.986 1772.83 265.042 1768.24 Q268.12 1763.64 273.93 1763.64 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M803.013 1794.89 L819.332 1794.89 L819.332 1798.82 L797.388 1798.82 L797.388 1794.89 Q800.05 1792.13 804.633 1787.5 Q809.239 1782.85 810.42 1781.51 Q812.665 1778.98 813.545 1777.25 Q814.448 1775.49 814.448 1773.8 Q814.448 1771.04 812.503 1769.31 Q810.582 1767.57 807.48 1767.57 Q805.281 1767.57 802.827 1768.34 Q800.397 1769.1 797.619 1770.65 L797.619 1765.93 Q800.443 1764.79 802.897 1764.21 Q805.35 1763.64 807.388 1763.64 Q812.758 1763.64 815.952 1766.32 Q819.147 1769.01 819.147 1773.5 Q819.147 1775.63 818.337 1777.55 Q817.55 1779.45 815.443 1782.04 Q814.864 1782.71 811.762 1785.93 Q808.661 1789.12 803.013 1794.89 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M829.147 1792.94 L834.031 1792.94 L834.031 1798.82 L829.147 1798.82 L829.147 1792.94 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M844.262 1764.26 L862.619 1764.26 L862.619 1768.2 L848.545 1768.2 L848.545 1776.67 Q849.563 1776.32 850.582 1776.16 Q851.6 1775.97 852.619 1775.97 Q858.406 1775.97 861.785 1779.15 Q865.165 1782.32 865.165 1787.73 Q865.165 1793.31 861.693 1796.41 Q858.221 1799.49 851.901 1799.49 Q849.725 1799.49 847.457 1799.12 Q845.211 1798.75 842.804 1798.01 L842.804 1793.31 Q844.887 1794.45 847.11 1795 Q849.332 1795.56 851.809 1795.56 Q855.813 1795.56 858.151 1793.45 Q860.489 1791.34 860.489 1787.73 Q860.489 1784.12 858.151 1782.02 Q855.813 1779.91 851.809 1779.91 Q849.934 1779.91 848.059 1780.33 Q846.207 1780.74 844.262 1781.62 L844.262 1764.26 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M1378.4 1764.26 L1396.76 1764.26 L1396.76 1768.2 L1382.68 1768.2 L1382.68 1776.67 Q1383.7 1776.32 1384.72 1776.16 Q1385.74 1775.97 1386.76 1775.97 Q1392.55 1775.97 1395.93 1779.15 Q1399.3 1782.32 1399.3 1787.73 Q1399.3 1793.31 1395.83 1796.41 Q1392.36 1799.49 1386.04 1799.49 Q1383.87 1799.49 1381.6 1799.12 Q1379.35 1798.75 1376.94 1798.01 L1376.94 1793.31 Q1379.03 1794.45 1381.25 1795 Q1383.47 1795.56 1385.95 1795.56 Q1389.95 1795.56 1392.29 1793.45 Q1394.63 1791.34 1394.63 1787.73 Q1394.63 1784.12 1392.29 1782.02 Q1389.95 1779.91 1385.95 1779.91 Q1384.07 1779.91 1382.2 1780.33 Q1380.35 1780.74 1378.4 1781.62 L1378.4 1764.26 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M1408.52 1792.94 L1413.4 1792.94 L1413.4 1798.82 L1408.52 1798.82 L1408.52 1792.94 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M1433.59 1767.34 Q1429.98 1767.34 1428.15 1770.9 Q1426.34 1774.45 1426.34 1781.58 Q1426.34 1788.68 1428.15 1792.25 Q1429.98 1795.79 1433.59 1795.79 Q1437.22 1795.79 1439.03 1792.25 Q1440.86 1788.68 1440.86 1781.58 Q1440.86 1774.45 1439.03 1770.9 Q1437.22 1767.34 1433.59 1767.34 M1433.59 1763.64 Q1439.4 1763.64 1442.45 1768.24 Q1445.53 1772.83 1445.53 1781.58 Q1445.53 1790.3 1442.45 1794.91 Q1439.4 1799.49 1433.59 1799.49 Q1427.78 1799.49 1424.7 1794.91 Q1421.64 1790.3 1421.64 1781.58 Q1421.64 1772.83 1424.7 1768.24 Q1427.78 1763.64 1433.59 1763.64 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M1957.52 1764.26 L1979.74 1764.26 L1979.74 1766.25 L1967.19 1798.82 L1962.31 1798.82 L1974.12 1768.2 L1957.52 1768.2 L1957.52 1764.26 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M1988.86 1792.94 L1993.75 1792.94 L1993.75 1798.82 L1988.86 1798.82 L1988.86 1792.94 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M2003.98 1764.26 L2022.33 1764.26 L2022.33 1768.2 L2008.26 1768.2 L2008.26 1776.67 Q2009.28 1776.32 2010.3 1776.16 Q2011.31 1775.97 2012.33 1775.97 Q2018.12 1775.97 2021.5 1779.15 Q2024.88 1782.32 2024.88 1787.73 Q2024.88 1793.31 2021.41 1796.41 Q2017.94 1799.49 2011.62 1799.49 Q2009.44 1799.49 2007.17 1799.12 Q2004.93 1798.75 2002.52 1798.01 L2002.52 1793.31 Q2004.6 1794.45 2006.82 1795 Q2009.05 1795.56 2011.52 1795.56 Q2015.53 1795.56 2017.87 1793.45 Q2020.2 1791.34 2020.2 1787.73 Q2020.2 1784.12 2017.87 1782.02 Q2015.53 1779.91 2011.52 1779.91 Q2009.65 1779.91 2007.77 1780.33 Q2005.92 1780.74 2003.98 1781.62 L2003.98 1764.26 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M2523.23 1794.89 L2530.87 1794.89 L2530.87 1768.52 L2522.56 1770.19 L2522.56 1765.93 L2530.83 1764.26 L2535.5 1764.26 L2535.5 1794.89 L2543.14 1794.89 L2543.14 1798.82 L2523.23 1798.82 L2523.23 1794.89 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M2562.58 1767.34 Q2558.97 1767.34 2557.14 1770.9 Q2555.34 1774.45 2555.34 1781.58 Q2555.34 1788.68 2557.14 1792.25 Q2558.97 1795.79 2562.58 1795.79 Q2566.22 1795.79 2568.02 1792.25 Q2569.85 1788.68 2569.85 1781.58 Q2569.85 1774.45 2568.02 1770.9 Q2566.22 1767.34 2562.58 1767.34 M2562.58 1763.64 Q2568.39 1763.64 2571.45 1768.24 Q2574.53 1772.83 2574.53 1781.58 Q2574.53 1790.3 2571.45 1794.91 Q2568.39 1799.49 2562.58 1799.49 Q2556.77 1799.49 2553.7 1794.91 Q2550.64 1790.3 2550.64 1781.58 Q2550.64 1772.83 2553.7 1768.24 Q2556.77 1763.64 2562.58 1763.64 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M2582.75 1792.94 L2587.63 1792.94 L2587.63 1798.82 L2582.75 1798.82 L2582.75 1792.94 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M2607.82 1767.34 Q2604.2 1767.34 2602.38 1770.9 Q2600.57 1774.45 2600.57 1781.58 Q2600.57 1788.68 2602.38 1792.25 Q2604.2 1795.79 2607.82 1795.79 Q2611.45 1795.79 2613.26 1792.25 Q2615.08 1788.68 2615.08 1781.58 Q2615.08 1774.45 2613.26 1770.9 Q2611.45 1767.34 2607.82 1767.34 M2607.82 1763.64 Q2613.63 1763.64 2616.68 1768.24 Q2619.76 1772.83 2619.76 1781.58 Q2619.76 1790.3 2616.68 1794.91 Q2613.63 1799.49 2607.82 1799.49 Q2602.01 1799.49 2598.93 1794.91 Q2595.87 1790.3 2595.87 1781.58 Q2595.87 1772.83 2598.93 1768.24 Q2602.01 1763.64 2607.82 1763.64 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M1333.11 1835.78 L1373.31 1835.78 L1373.31 1841.19 L1356.44 1841.19 L1356.44 1883.3 L1349.98 1883.3 L1349.98 1841.19 L1333.11 1841.19 L1333.11 1835.78 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M1377.26 1847.65 L1383.12 1847.65 L1383.12 1883.3 L1377.26 1883.3 L1377.26 1847.65 M1377.26 1833.78 L1383.12 1833.78 L1383.12 1841.19 L1377.26 1841.19 L1377.26 1833.78 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M1423.13 1854.5 Q1425.32 1850.55 1428.38 1848.67 Q1431.43 1846.79 1435.57 1846.79 Q1441.14 1846.79 1444.16 1850.71 Q1447.19 1854.59 1447.19 1861.78 L1447.19 1883.3 L1441.3 1883.3 L1441.3 1861.98 Q1441.3 1856.85 1439.49 1854.37 Q1437.67 1851.89 1433.95 1851.89 Q1429.4 1851.89 1426.75 1854.91 Q1424.11 1857.93 1424.11 1863.15 L1424.11 1883.3 L1418.22 1883.3 L1418.22 1861.98 Q1418.22 1856.82 1416.41 1854.37 Q1414.6 1851.89 1410.81 1851.89 Q1406.32 1851.89 1403.68 1854.94 Q1401.04 1857.97 1401.04 1863.15 L1401.04 1883.3 L1395.15 1883.3 L1395.15 1847.65 L1401.04 1847.65 L1401.04 1853.19 Q1403.04 1849.91 1405.84 1848.35 Q1408.64 1846.79 1412.49 1846.79 Q1416.38 1846.79 1419.08 1848.77 Q1421.82 1850.74 1423.13 1854.5 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M1489.36 1864.01 L1489.36 1866.88 L1462.43 1866.88 Q1462.82 1872.92 1466.06 1876.11 Q1469.34 1879.26 1475.17 1879.26 Q1478.54 1879.26 1481.69 1878.43 Q1484.87 1877.6 1487.99 1875.95 L1487.99 1881.49 Q1484.84 1882.82 1481.53 1883.52 Q1478.22 1884.22 1474.82 1884.22 Q1466.29 1884.22 1461.29 1879.26 Q1456.32 1874.29 1456.32 1865.83 Q1456.32 1857.07 1461.03 1851.95 Q1465.78 1846.79 1473.8 1846.79 Q1480.99 1846.79 1485.16 1851.44 Q1489.36 1856.06 1489.36 1864.01 M1483.5 1862.29 Q1483.44 1857.49 1480.8 1854.62 Q1478.19 1851.76 1473.86 1851.76 Q1468.96 1851.76 1466 1854.53 Q1463.07 1857.3 1462.62 1862.33 L1483.5 1862.29 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><polyline clip-path="url(#clip970)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="181.719,1734.12 181.719,47.2441 "></polyline>
+<polyline clip-path="url(#clip970)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="181.719,1434.8 200.617,1434.8 "></polyline>
+<polyline clip-path="url(#clip970)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="181.719,1099.85 200.617,1099.85 "></polyline>
+<polyline clip-path="url(#clip970)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="181.719,764.894 200.617,764.894 "></polyline>
+<polyline clip-path="url(#clip970)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="181.719,429.94 200.617,429.94 "></polyline>
+<polyline clip-path="url(#clip970)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="181.719,94.9858 200.617,94.9858 "></polyline>
+<path clip-path="url(#clip970)" d="M121.492 1448.15 L129.131 1448.15 L129.131 1421.78 L120.821 1423.45 L120.821 1419.19 L129.085 1417.52 L133.761 1417.52 L133.761 1448.15 L141.399 1448.15 L141.399 1452.08 L121.492 1452.08 L121.492 1448.15 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M125.08 1113.19 L141.399 1113.19 L141.399 1117.13 L119.455 1117.13 L119.455 1113.19 Q122.117 1110.44 126.7 1105.81 Q131.307 1101.16 132.488 1099.81 Q134.733 1097.29 135.612 1095.55 Q136.515 1093.8 136.515 1092.11 Q136.515 1089.35 134.571 1087.61 Q132.65 1085.88 129.548 1085.88 Q127.349 1085.88 124.895 1086.64 Q122.464 1087.41 119.687 1088.96 L119.687 1084.24 Q122.511 1083.1 124.964 1082.52 Q127.418 1081.94 129.455 1081.94 Q134.825 1081.94 138.02 1084.63 Q141.214 1087.31 141.214 1091.8 Q141.214 1093.93 140.404 1095.86 Q139.617 1097.75 137.511 1100.35 Q136.932 1101.02 133.83 1104.24 Q130.728 1107.43 125.08 1113.19 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M134.27 763.54 Q137.626 764.258 139.501 766.526 Q141.399 768.795 141.399 772.128 Q141.399 777.244 137.881 780.045 Q134.362 782.846 127.881 782.846 Q125.705 782.846 123.39 782.406 Q121.099 781.989 118.645 781.133 L118.645 776.619 Q120.589 777.753 122.904 778.332 Q125.219 778.911 127.742 778.911 Q132.14 778.911 134.432 777.174 Q136.747 775.438 136.747 772.128 Q136.747 769.073 134.594 767.36 Q132.464 765.624 128.645 765.624 L124.617 765.624 L124.617 761.781 L128.83 761.781 Q132.279 761.781 134.108 760.415 Q135.937 759.026 135.937 756.434 Q135.937 753.772 134.038 752.36 Q132.163 750.925 128.645 750.925 Q126.724 750.925 124.525 751.341 Q122.326 751.758 119.687 752.637 L119.687 748.471 Q122.349 747.73 124.663 747.36 Q127.001 746.989 129.062 746.989 Q134.386 746.989 137.487 749.42 Q140.589 751.827 140.589 755.948 Q140.589 758.818 138.946 760.809 Q137.302 762.776 134.27 763.54 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M131.816 416.734 L120.011 435.183 L131.816 435.183 L131.816 416.734 M130.589 412.66 L136.469 412.66 L136.469 435.183 L141.399 435.183 L141.399 439.072 L136.469 439.072 L136.469 447.22 L131.816 447.22 L131.816 439.072 L116.214 439.072 L116.214 434.558 L130.589 412.66 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M120.497 77.7058 L138.853 77.7058 L138.853 81.6409 L124.779 81.6409 L124.779 90.1131 Q125.798 89.7659 126.816 89.6039 Q127.835 89.4187 128.853 89.4187 Q134.64 89.4187 138.02 92.59 Q141.399 95.7612 141.399 101.178 Q141.399 106.757 137.927 109.858 Q134.455 112.937 128.136 112.937 Q125.96 112.937 123.691 112.567 Q121.446 112.196 119.039 111.456 L119.039 106.757 Q121.122 107.891 123.344 108.446 Q125.566 109.002 128.043 109.002 Q132.048 109.002 134.386 106.895 Q136.724 104.789 136.724 101.178 Q136.724 97.5668 134.386 95.4603 Q132.048 93.3538 128.043 93.3538 Q126.168 93.3538 124.293 93.7705 Q122.441 94.1872 120.497 95.0668 L120.497 77.7058 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M17.7787 1078.33 L24.5582 1078.33 Q21.5345 1081.57 20.0386 1085.26 Q18.5426 1088.92 18.5426 1093.06 Q18.5426 1101.21 23.5397 1105.54 Q28.5049 1109.87 37.9262 1109.87 Q47.3156 1109.87 52.3127 1105.54 Q57.2779 1101.21 57.2779 1093.06 Q57.2779 1088.92 55.782 1085.26 Q54.2861 1081.57 51.2623 1078.33 L57.9782 1078.33 Q60.2698 1081.7 61.4156 1085.49 Q62.5615 1089.24 62.5615 1093.44 Q62.5615 1104.23 55.973 1110.44 Q49.3526 1116.65 37.9262 1116.65 Q26.4679 1116.65 19.8794 1110.44 Q13.2591 1104.23 13.2591 1093.44 Q13.2591 1089.18 14.4049 1085.42 Q15.5189 1081.64 17.7787 1078.33 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M30.0964 1054.84 Q30.0964 1059.55 33.7885 1062.28 Q37.4488 1065.02 43.8463 1065.02 Q50.2438 1065.02 53.9359 1062.32 Q57.5962 1059.58 57.5962 1054.84 Q57.5962 1050.16 53.9041 1047.42 Q50.212 1044.68 43.8463 1044.68 Q37.5124 1044.68 33.8203 1047.42 Q30.0964 1050.16 30.0964 1054.84 M25.1311 1054.84 Q25.1311 1047.2 30.0964 1042.84 Q35.0616 1038.48 43.8463 1038.48 Q52.5991 1038.48 57.5962 1042.84 Q62.5615 1047.2 62.5615 1054.84 Q62.5615 1062.51 57.5962 1066.87 Q52.5991 1071.2 43.8463 1071.2 Q35.0616 1071.2 30.0964 1066.87 Q25.1311 1062.51 25.1311 1054.84 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M40.1224 999.136 L61.6384 999.136 L61.6384 1004.99 L40.3133 1004.99 Q35.2526 1004.99 32.7381 1006.97 Q30.2237 1008.94 30.2237 1012.89 Q30.2237 1017.63 33.2474 1020.37 Q36.2711 1023.1 41.491 1023.1 L61.6384 1023.1 L61.6384 1028.99 L25.9905 1028.99 L25.9905 1023.1 L31.5287 1023.1 Q28.314 1021 26.7225 1018.17 Q25.1311 1015.31 25.1311 1011.58 Q25.1311 1005.44 28.9505 1002.29 Q32.7381 999.136 40.1224 999.136 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M27.3591 961.801 L32.8336 961.801 Q31.465 964.284 30.7966 966.798 Q30.0964 969.281 30.0964 971.827 Q30.0964 977.525 33.7248 980.676 Q37.3214 983.827 43.8463 983.827 Q50.3711 983.827 53.9996 980.676 Q57.5962 977.525 57.5962 971.827 Q57.5962 969.281 56.9278 966.798 Q56.2276 964.284 54.859 961.801 L60.2698 961.801 Q61.4156 964.252 61.9886 966.894 Q62.5615 969.504 62.5615 972.464 Q62.5615 980.517 57.5007 985.259 Q52.44 990.001 43.8463 990.001 Q35.1253 990.001 30.1282 985.227 Q25.1311 980.421 25.1311 972.082 Q25.1311 969.377 25.704 966.798 Q26.2451 964.22 27.3591 961.801 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M42.3504 921.125 L45.2149 921.125 L45.2149 948.051 Q51.2623 947.67 54.4452 944.423 Q57.5962 941.145 57.5962 935.32 Q57.5962 931.946 56.7687 928.795 Q55.9411 925.612 54.2861 922.493 L59.8242 922.493 Q61.161 925.644 61.8612 928.954 Q62.5615 932.265 62.5615 935.67 Q62.5615 944.2 57.5962 949.197 Q52.631 954.163 44.1646 954.163 Q35.4117 954.163 30.2873 949.452 Q25.1311 944.709 25.1311 936.689 Q25.1311 929.495 29.7781 925.326 Q34.3932 921.125 42.3504 921.125 M40.6316 926.981 Q35.8255 927.045 32.9609 929.686 Q30.0964 932.296 30.0964 936.625 Q30.0964 941.527 32.8654 944.487 Q35.6345 947.415 40.6634 947.86 L40.6316 926.981 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M40.1224 881.88 L61.6384 881.88 L61.6384 887.736 L40.3133 887.736 Q35.2526 887.736 32.7381 889.71 Q30.2237 891.683 30.2237 895.63 Q30.2237 900.372 33.2474 903.11 Q36.2711 905.847 41.491 905.847 L61.6384 905.847 L61.6384 911.735 L25.9905 911.735 L25.9905 905.847 L31.5287 905.847 Q28.314 903.746 26.7225 900.913 Q25.1311 898.049 25.1311 894.325 Q25.1311 888.182 28.9505 885.031 Q32.7381 881.88 40.1224 881.88 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M15.869 864.406 L25.9905 864.406 L25.9905 852.343 L30.542 852.343 L30.542 864.406 L49.8937 864.406 Q54.2542 864.406 55.4955 863.228 Q56.7368 862.019 56.7368 858.359 L56.7368 852.343 L61.6384 852.343 L61.6384 858.359 Q61.6384 865.138 59.124 867.716 Q56.5777 870.294 49.8937 870.294 L30.542 870.294 L30.542 874.591 L25.9905 874.591 L25.9905 870.294 L15.869 870.294 L15.869 864.406 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M31.465 823.984 Q30.8921 824.971 30.6375 826.148 Q30.351 827.294 30.351 828.694 Q30.351 833.66 33.5975 836.333 Q36.8122 838.975 42.8596 838.975 L61.6384 838.975 L61.6384 844.863 L25.9905 844.863 L25.9905 838.975 L31.5287 838.975 Q28.2821 837.129 26.7225 834.169 Q25.1311 831.209 25.1311 826.976 Q25.1311 826.371 25.2266 825.639 Q25.2903 824.907 25.4494 824.016 L31.465 823.984 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M43.719 801.64 Q43.719 808.738 45.3422 811.475 Q46.9655 814.212 50.8804 814.212 Q53.9996 814.212 55.8457 812.175 Q57.6599 810.107 57.6599 806.574 Q57.6599 801.704 54.2224 798.776 Q50.7531 795.816 45.0239 795.816 L43.719 795.816 L43.719 801.64 M41.3 789.959 L61.6384 789.959 L61.6384 795.816 L56.2276 795.816 Q59.4741 797.821 61.0337 800.813 Q62.5615 803.805 62.5615 808.133 Q62.5615 813.608 59.5059 816.854 Q56.4186 820.069 51.2623 820.069 Q45.2467 820.069 42.1912 816.059 Q39.1357 812.016 39.1357 804.027 L39.1357 795.816 L38.5628 795.816 Q34.5205 795.816 32.3244 798.489 Q30.0964 801.131 30.0964 805.937 Q30.0964 808.993 30.8284 811.889 Q31.5605 814.785 33.0246 817.459 L27.6137 817.459 Q26.3724 814.244 25.7677 811.221 Q25.1311 808.197 25.1311 805.332 Q25.1311 797.598 29.1415 793.779 Q33.1519 789.959 41.3 789.959 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M15.869 772.103 L25.9905 772.103 L25.9905 760.04 L30.542 760.04 L30.542 772.103 L49.8937 772.103 Q54.2542 772.103 55.4955 770.926 Q56.7368 769.716 56.7368 766.056 L56.7368 760.04 L61.6384 760.04 L61.6384 766.056 Q61.6384 772.835 59.124 775.414 Q56.5777 777.992 49.8937 777.992 L30.542 777.992 L30.542 782.288 L25.9905 782.288 L25.9905 777.992 L15.869 777.992 L15.869 772.103 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M25.9905 752.338 L25.9905 746.481 L61.6384 746.481 L61.6384 752.338 L25.9905 752.338 M12.1132 752.338 L12.1132 746.481 L19.5293 746.481 L19.5293 752.338 L12.1132 752.338 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M30.0964 720.414 Q30.0964 725.124 33.7885 727.862 Q37.4488 730.599 43.8463 730.599 Q50.2438 730.599 53.9359 727.894 Q57.5962 725.156 57.5962 720.414 Q57.5962 715.735 53.9041 712.998 Q50.212 710.26 43.8463 710.26 Q37.5124 710.26 33.8203 712.998 Q30.0964 715.735 30.0964 720.414 M25.1311 720.414 Q25.1311 712.775 30.0964 708.414 Q35.0616 704.054 43.8463 704.054 Q52.5991 704.054 57.5962 708.414 Q62.5615 712.775 62.5615 720.414 Q62.5615 728.084 57.5962 732.445 Q52.5991 736.774 43.8463 736.774 Q35.0616 736.774 30.0964 732.445 Q25.1311 728.084 25.1311 720.414 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><path clip-path="url(#clip970)" d="M40.1224 664.714 L61.6384 664.714 L61.6384 670.57 L40.3133 670.57 Q35.2526 670.57 32.7381 672.544 Q30.2237 674.517 30.2237 678.464 Q30.2237 683.206 33.2474 685.944 Q36.2711 688.681 41.491 688.681 L61.6384 688.681 L61.6384 694.569 L25.9905 694.569 L25.9905 688.681 L31.5287 688.681 Q28.314 686.58 26.7225 683.747 Q25.1311 680.883 25.1311 677.159 Q25.1311 671.016 28.9505 667.865 Q32.7381 664.714 40.1224 664.714 Z" fill="#000000" fill-rule="nonzero" fill-opacity="1"></path><polyline clip-path="url(#clip972)" style="stroke:#009af9; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="251.315,94.9858 274.513,144.483 297.712,192.517 320.91,239.131 344.109,284.368 367.307,328.268 390.506,370.871 413.704,412.214 436.903,452.335 460.101,491.271 483.299,529.056 506.498,565.724 529.696,601.309 552.895,635.842 576.093,669.354 599.292,701.876 622.49,733.436 645.689,764.064 668.887,793.787 692.086,822.631 715.284,850.623 738.482,877.788 761.681,904.149 784.879,929.732 808.078,954.558 831.276,978.651 854.475,1002.03 877.673,1024.72 900.872,1046.74 924.07,1068.11 947.269,1088.85 970.467,1108.97 993.665,1128.5 1016.86,1147.45 1040.06,1165.84 1063.26,1183.69 1086.46,1201.01 1109.66,1217.82 1132.86,1234.13 1156.05,1249.96 1179.25,1265.33 1202.45,1280.23 1225.65,1294.7 1248.85,1308.74 1272.05,1322.37 1295.25,1335.59 1318.44,1348.42 1341.64,1360.87 1364.84,1372.96 1388.04,1384.68 1411.24,1396.07 1434.44,1407.11 1457.63,1417.83 1480.83,1428.23 1504.03,1438.32 1527.23,1448.12 1550.43,1457.62 1573.63,1466.85 1596.83,1475.8 1620.02,1484.49 1643.22,1492.92 1666.42,1501.1 1689.62,1509.04 1712.82,1516.75 1736.02,1524.22 1759.21,1531.48 1782.41,1538.52 1805.61,1545.36 1828.81,1551.99 1852.01,1558.42 1875.21,1564.67 1898.41,1570.73 1921.6,1576.61 1944.8,1582.32 1968,1587.86 1991.2,1593.24 2014.4,1598.45 2037.6,1603.52 2060.79,1608.43 2083.99,1613.2 2107.19,1617.83 2130.39,1622.32 2153.59,1626.67 2176.79,1630.9 2199.99,1635.01 2223.18,1638.99 2246.38,1642.85 2269.58,1646.6 2292.78,1650.24 2315.98,1653.78 2339.18,1657.2 2362.37,1660.53 2385.57,1663.76 2408.77,1666.89 2431.97,1669.93 2455.17,1672.88 2478.37,1675.74 2501.57,1678.52 2524.76,1681.22 2547.96,1683.84 2571.16,1686.38 "></polyline>
+</svg>
+<p>Example figure generated from a hidden code chunk.</p>
+</div>
+</div>
+<p>The full list of chunk options is in the <a href="https://quarto.org/docs/reference/cells/cells-knitr.html">Quarto code cells reference</a>.</p>
+</section>
+<section id="math-and-citations" class="level3">
+<h3 class="anchored" data-anchor-id="math-and-citations">Math and citations</h3>
+<p>Math works the same as in a Jupyter notebook — enclose LaTeX in <code>$...$</code> for inline math or <code>$$...$$</code> for display math. See the <a href="../tutorials/latex-notebook.html">Using LaTeX in Jupyter Notebooks tutorial</a> for a full guide to LaTeX syntax (it applies equally to Quarto).</p>
+<p>Citations use a <code>.bib</code> file referenced in the YAML header and <code>[@key]</code> syntax in the text; see the <a href="https://quarto.org/docs/authoring/citations.html">Quarto citations guide</a> if your report needs references.</p>
+</section>
+</section>
+<section id="rendering-a-document" class="level2">
+<h2 class="anchored" data-anchor-id="rendering-a-document">Rendering a Document</h2>
+<p>To render a <code>.qmd</code> file from the command line:</p>
+<pre class="shell"><code>quarto render mydocument.qmd</code></pre>
+<p>This produces output in whatever format is listed under <code>format:</code> in the YAML header (HTML by default if nothing is specified). You can preview your document with <strong>live reload</strong> as you edit it:</p>
+<pre class="shell"><code>quarto preview mydocument.qmd</code></pre>
+<p>This opens your document in a browser tab that automatically refreshes as you save changes.</p>
+</section>
+<section id="rendering-to-pdf" class="level2">
+<h2 class="anchored" data-anchor-id="rendering-to-pdf">Rendering to PDF</h2>
+<p>To generate a PDF, either set <code>format: pdf</code> in the YAML header, or pass <code>--to pdf</code> on the command line without changing the header:</p>
+<pre class="shell"><code>quarto render mydocument.qmd --to pdf</code></pre>
+<p>Quarto’s default PDF engine uses <strong>LaTeX</strong>. If you don’t already have a LaTeX distribution installed, Quarto can install a lightweight one called <strong>TinyTeX</strong> (~250 MB) for you:</p>
+<pre class="shell"><code>quarto install tinytex</code></pre>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>This course’s <a href="../tutorials/notebook-to-pdf.html#option-6-quarto">Converting Jupyter Notebooks to PDF tutorial</a> covers PDF rendering with Quarto in more depth, including using <strong>Typst</strong> (<code>quarto install typst</code>, then <code>quarto render mydocument.qmd --to typst</code>) as a much lighter, faster, LaTeX-free alternative for producing PDFs. Everything there applies whether your <code>.qmd</code> started life as a notebook or as a Quarto document from the start.</p>
+</div>
+</div>
+</div>
+<p>For full control over PDF appearance (margins, fonts, table of contents, etc.), see the <a href="https://quarto.org/docs/reference/formats/pdf.html">PDF format reference</a> and the <a href="https://quarto.org/docs/reference/formats/typst.html">Typst format reference</a>.</p>
+</section>
+<section id="quarto-in-vs-code" class="level2">
+<h2 class="anchored" data-anchor-id="quarto-in-vs-code">Quarto in VS Code</h2>
+<p>VS Code has first-class support for Quarto through an official extension, and it works alongside the <a href="../setup/vscode.html#install-the-julia-extension">Julia extension</a> you should already have installed.</p>
+<section id="install-the-extension" class="level3">
+<h3 class="anchored" data-anchor-id="install-the-extension">Install the extension</h3>
+<ol type="1">
+<li>Open the <strong>Extensions</strong> view (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>).</li>
+<li>Search for <code>quarto</code> and install the extension named <strong>Quarto</strong> (published by <code>quarto</code>), or install it directly from the <a href="https://marketplace.visualstudio.com/items?itemName=quarto.quarto">VS Code Marketplace</a>.</li>
+<li>Restart VS Code.</li>
+</ol>
+<p>The extension detects your Quarto installation automatically. If it can’t find it, open VS Code Settings (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>,</kbd>), search for <code>quarto.path</code>, and point it to your <code>quarto</code> executable (run <code>which quarto</code> in a terminal to find it).</p>
+</section>
+<section id="using-the-extension" class="level3">
+<h3 class="anchored" data-anchor-id="using-the-extension">Using the extension</h3>
+<p>Once installed, open any <code>.qmd</code> file:</p>
+<ul>
+<li>A <strong>Render</strong> button appears above the YAML header (and in the editor title bar). Click it, or use the keyboard shortcut <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd>, to render and preview the document in a side-by-side pane.</li>
+<li>Code chunks get the same <strong>run cell</strong> affordances as a Jupyter notebook — click the ▷ icon to the left of a chunk, or place your cursor inside it and press <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Enter</kbd>, to run just that chunk in an interactive Julia session.</li>
+<li>The <strong>Visual Editor</strong> (toggle in the top-right of the editor, or <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>F4</kbd>) gives you a WYSIWYG-style view for writing prose, useful if you find raw Markdown source distracting.</li>
+<li>YAML header fields get autocompletion and inline documentation as you type.</li>
+</ul>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Rendering a <code>.qmd</code> with <code>engine: julia</code> from VS Code uses the same Julia installation as the Julia extension. If code chunks fail to run, double check <code>julia.executablePath</code> as described in the <a href="../setup/vscode.html#tell-vs-code-where-julia-is-installed">VS Code setup tutorial</a>.</p>
+</div>
+</div>
+</div>
+<p>For a full walkthrough with screenshots, see Quarto’s own <a href="https://quarto.org/docs/tools/vscode.html">VS Code guide</a>.</p>
+</section>
+</section>
+<section id="troubleshooting" class="level2">
+<h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
+<p><strong><code>quarto: command not found</code></strong>: Open a new terminal window — installers update your <code>PATH</code>, but existing terminal sessions won’t see the change. If it still fails, confirm the install location is on your <code>PATH</code> (run <code>quarto check</code> from the Quarto installer’s directory, or reinstall).</p>
+<p><strong>Rendering a Julia chunk hangs or is very slow the first time</strong>: This is expected — Quarto is downloading and precompiling <code>QuartoNotebookRunner.jl</code> and your project’s packages. Let it finish; subsequent renders reuse the warm session and are much faster.</p>
+<p><strong>“LaTeX Error” or “pdflatex not found” when rendering to PDF</strong>: You need a LaTeX distribution. Run <code>quarto install tinytex</code>, then try again. See the <a href="../tutorials/notebook-to-pdf.html#troubleshooting">LaTeX troubleshooting section</a> of the notebook-to-PDF tutorial for PATH-related issues.</p>
+<p><strong>Wrong Julia version is used</strong>: Check the <code>julia.exeflags</code> setting in your YAML header (or lack thereof) against <code>juliaup status</code>. If you don’t pin a version with <code>exeflags</code>, Quarto uses your Juliaup default.</p>
+<p><strong>Package errors when rendering</strong>: Just like a script or notebook, delete the <code>Manifest.toml</code> in your document’s folder and re-run a chunk containing <code>Pkg.activate(@__DIR__); Pkg.instantiate()</code> (see <a href="../setup/julia.html#julia-environments-and-packages">Julia Environments and Packages</a>).</p>
+<p><strong>VS Code doesn’t show a Render button</strong>: Confirm the Quarto extension is installed and enabled, and that the file is saved with a <code>.qmd</code> extension (not <code>.md</code> or <code>.ipynb</code>).</p>
+</section>
+<section id="further-resources" class="level2">
+<h2 class="anchored" data-anchor-id="further-resources">Further Resources</h2>
+<ul>
+<li><a href="https://quarto.org/docs/guide/">Quarto Guide</a> — the complete official documentation</li>
+<li><a href="https://quarto.org/docs/get-started/">Quarto Get Started</a> — installation and first-document walkthrough</li>
+<li><a href="https://quarto.org/docs/computations/julia.html">Quarto + Julia</a> — details on the native Julia engine and Jupyter alternative</li>
+<li><a href="https://quarto.org/docs/authoring/markdown-basics.html">Quarto Markdown Basics</a> — full Markdown syntax reference</li>
+<li><a href="https://quarto.org/docs/reference/formats/pdf.html">Quarto PDF format reference</a> and <a href="https://quarto.org/docs/reference/formats/typst.html">Typst format reference</a></li>
+<li><a href="https://quarto.org/docs/tools/vscode.html">Quarto + VS Code</a> — the official editor guide</li>
+<li><a href="https://quarto.org/docs/gallery/">Quarto Gallery</a> — examples of what’s possible</li>
+<li>This course’s <a href="../tutorials/notebook-to-pdf.html">Converting Jupyter Notebooks to PDF</a> and <a href="../tutorials/latex-notebook.html">Using LaTeX in Jupyter Notebooks</a> tutorials for related workflows</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/envsys\.viveks\.me\/fall2025");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+        for (let i=0; i<annoteTargets.length; i++) {
+          const annoteTarget = annoteTargets[i];
+          const targetCell = annoteTarget.getAttribute("data-target-cell");
+          const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+          const contentFn = () => {
+            const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+            if (content) {
+              const tipContent = content.cloneNode(true);
+              tipContent.classList.add("code-annotation-tip-content");
+              return tipContent.outerHTML;
+            }
+          }
+          const config = {
+            allowHTML: true,
+            content: contentFn,
+            onShow: (instance) => {
+              selectCodeLines(instance.reference);
+              instance.reference.classList.add('code-annotation-active');
+              window.tippy.hideAll();
+            },
+            onHide: (instance) => {
+              unselectCodeLines();
+              instance.reference.classList.remove('code-annotation-active');
+            },
+            maxWidth: 300,
+            delay: [50, 0],
+            duration: [200, 0],
+            offset: [5, 10],
+            arrow: true,
+            trigger: 'click',
+            appendTo: function(el) {
+              return el.parentElement.parentElement.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'quarto',
+            placement: 'right',
+            positionFixed: true,
+            popperOptions: {
+              modifiers: [
+              {
+                name: 'flip',
+                options: {
+                  flipVariations: false, // true by default
+                  allowedAutoPlacements: ['right'],
+                  fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+                },
+              },
+              {
+                name: 'preventOverflow',
+                options: {
+                  mainAxis: false,
+                  altAxis: false
+                }
+              }
+              ]        
+            }      
+          };
+          window.tippy(annoteTarget, config); 
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../tutorials/index.html" class="pagination-link" aria-label="Tutorials">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Tutorials</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../tutorials/julia-basics.html" class="pagination-link" aria-label="Julia Basics">
+        <span class="nav-page-text">Julia Basics</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><span class="faux-block"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> 2025 Vivek Srikrishnan</span><br> See the <a href="../about.html">About Page</a> for credit information.</p>
+</div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">LICENSE: CC-BY-SA  <i class="fab fa-creative-commons"></i><i class="fab fa-creative-commons-by"></i><i class="fab fa-creative-commons-sa"></i></a>
+  </li>  
+</ul>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/tutorials/quarto.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Made with <a href="https://julialang.org">Julia</a> and <a href="https://quarto.org/">Quarto</a><br> <a href="https://www.github.com/bee-envsys-cornell/fall2026/">View the source at <i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

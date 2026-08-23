@@ -33,7 +33,27 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-  </style>
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-d52ba59528acaf0ac8c09f3308d87e37.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
@@ -175,7 +195,8 @@
 <h2 id="toc-title">Overview</h2>
 <ul>
 <li><a href="#/course-overview" id="/toc-course-overview">Course Overview</a></li>
-<li><a href="#/what-are-we-discussing-this-semester" id="/toc-what-are-we-discussing-this-semester">What Are We Discussing This Semester?</a></li>
+<li><a href="#/systems-basics" id="/toc-systems-basics">Systems Basics</a></li>
+<li><a href="#/course-overview-1" id="/toc-course-overview-1">Course Overview</a></li>
 <li><a href="#/course-policies" id="/toc-course-policies">Course Policies</a></li>
 <li><a href="#/grades" id="/toc-grades">Grades</a></li>
 <li><a href="#/academic-integrity" id="/toc-academic-integrity">Academic Integrity</a></li>
@@ -213,23 +234,10 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 </figure>
 </div>
 </div>
-</section>
-<section id="about-the-ta" class="slide level2">
-<h2>About the TA</h2>
-<p>Samantha Lauren Davies, Ph.D.&nbsp;student, <script type="text/javascript">
-<!--
-h='&#x63;&#x6f;&#114;&#110;&#x65;&#108;&#108;&#46;&#x65;&#100;&#x75;';a='&#64;';n='&#x73;&#108;&#100;&#50;&#x33;&#56;';e=n+a+h;
-document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\/'+'a'+'>');
-// -->
-</script><noscript>sld238 at cornell dot edu</noscript></p>
-<ul>
-<li>B.S. in Earth and Environmental Science from University of Michigan</li>
-<li>Interested in mercury biogeochemistry in aquatic ecosystems</li>
-</ul>
 </section></section>
 <section>
-<section id="what-are-we-discussing-this-semester" class="title-slide slide level1 center">
-<h1>What Are We Discussing This Semester?</h1>
+<section id="systems-basics" class="title-slide slide level1 center">
+<h1>Systems Basics</h1>
 
 </section>
 <section id="what-is-a-system" class="slide level2">
@@ -245,17 +253,93 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 </div>
 </div>
 </section>
-<section id="examples-of-systems" class="slide level2">
-<h2>Examples of Systems</h2>
-<p>Can we think of any examples of systems?</p>
-<div class="fragment">
-<p>What about things that are not systems?</p>
-</div>
-</section>
 <section id="why-are-systems-interesting" class="slide level2">
 <h2>Why Are Systems Interesting?</h2>
-<p>In other words, <strong>a system involves an interconnected set of components</strong>.</p>
-<p>Those interconnections can lead to very different dynamics and outcomes than if the component processes were studied in isolation.</p>
+<ul>
+<li class="fragment">“<strong>Interconnected</strong> set of <strong>elements</strong>”</li>
+<li class="fragment">“<strong>Function</strong> or <strong>purpose</strong>”</li>
+</ul>
+</section>
+<section id="example-climate-change" class="slide level2">
+<h2>Example: Climate Change</h2>
+<p>Changes to climate occur based on a variety of processes (<strong><em>interconnected elements</em></strong>) across scales which <strong>influence the planet’s energy balance</strong> (<strong><em>function</em></strong>), including:</p>
+<ul>
+<li>carbon sources/sinks;</li>
+<li>aerosol emissions;</li>
+<li>ocean heat uptake;</li>
+<li>surface albedo;</li>
+<li>teleconnections (<em>e.g.</em> El Niño/La Niña)</li>
+</ul>
+</section>
+<section id="process-compensation" class="slide level2">
+<h2>Process Compensation</h2>
+
+<img data-src="figures/climate-correlate.svg" class="r-stretch quarto-figure-center"><p class="caption">Correlations among Climate Parameters</p><div class="caption">
+<p>Source: <span class="citation" data-cites="Errickson2021-kr">Errickson et al. (<a href="#/assessments-1" role="doc-biblioref" onclick="">2021</a>)</span></p>
+</div>
+</section>
+<section id="compensations-change-range-of-outcomes" class="slide level2">
+<h2>Compensations Change Range Of Outcomes</h2>
+
+<img data-src="figures/temperature-projections.svg" class="r-stretch quarto-figure-center"><p class="caption">Correlations among Climate Parameters</p><div class="caption">
+<p>Source: <span class="citation" data-cites="Errickson2021-kr">Errickson et al. (<a href="#/assessments-1" role="doc-biblioref" onclick="">2021</a>)</span></p>
+</div>
+</section>
+<section id="example-water-pollution" class="slide level2">
+<h2>Example: Water Pollution</h2>
+<p>Contaminant levels in a body of water also depend on a number of processes which may have different scales and rates.</p>
+<p><strong>Can we think of some?</strong></p>
+</section>
+<section id="system-state" class="slide level2">
+<h2>System State</h2>
+<p><strong>System State</strong>: quantities or variables which evolve over time based on external inputs and system dynamics.</p>
+<p>The state gives you a “snapshot” of the system at a given point in time.</p>
+</section>
+<section id="stocks-and-flows" class="slide level2">
+<h2>Stocks and Flows</h2>
+<ul>
+<li class="fragment">A <strong>stock</strong> is the amount of a system property: concentrations of a pollutant, numbers of currency units, etc.</li>
+<li class="fragment">A <strong>flow</strong> is the way in which a stock changes: decay, diffusion, production, consumption, etc.</li>
+</ul>
+</section>
+<section id="stocks-and-flows-1" class="slide level2">
+<h2>Stocks and Flows</h2>
+
+<img data-src="figures/foley-stocks-flows.png" class="r-stretch quarto-figure-center"><p class="caption">Jonathan Foley Bluesky Post on Stocks vs.&nbsp;Flows</p><div class="caption">
+<p>Source: <a href="https://bsky.app/profile/globalecoguy.bsky.social/post/3mtoroswkek2z">Jonathan Foley’s Bluesky</a></p>
+</div>
+</section>
+<section id="residence-time" class="slide level2">
+<h2>Residence Time</h2>
+<p>We can use the notion of stocks and flows to formalize the idea of <strong>residence time</strong>: average time a unit of a stock remains in the system (or a component of the system).</p>
+<p><span class="math display">\[
+\underbrace{\tau}_{\substack{\text{Residence} \\[0.5em] \text{Time}}} \times \overbrace{F}^{\substack{\text{Flow} \\[0.5em] \text{In/Out}}} = \underbrace{M}_{\text{Stock}}
+\]</span></p>
+</section>
+<section id="steady-state-residence-time" class="slide level2">
+<h2>Steady-State Residence Time</h2>
+<p>Steady-state condition on flows <span class="math inline">\(F_\text{in}\)</span> and <span class="math inline">\(F_\text{out}\)</span>:</p>
+<div class="fragment fade-in">
+<p><span class="math display">\[\begin{gather*}
+F_\text{out} = F_\text{in} = F \\
+\Rightarrow \bbox[5pt, border: 5px solid red]{\tau = M/F}
+\end{gather*}
+\]</span></p>
+</div>
+</section>
+<section id="but-systems-are-often-more-complicated" class="slide level2">
+<h2>But Systems Are Often More Complicated</h2>
+<ul>
+<li>Feedbacks (amplifying/dampening)</li>
+<li>Multiple interacting processes</li>
+<li>Non-steady-state behavior</li>
+<li>Multiple metrics/objectives and tradeoffs</li>
+</ul>
+</section></section>
+<section>
+<section id="course-overview-1" class="title-slide slide level1 center">
+<h1>Course Overview</h1>
+
 </section>
 <section id="example-topics" class="slide level2">
 <h2>Example Topics</h2>
@@ -320,8 +404,8 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <section id="office-hours" class="slide level2">
 <h2>Office Hours</h2>
 <ul>
-<li>Prof.&nbsp;Srikrishnan: TBD in 318 Riley-Robb</li>
-<li>TA: MW 4:15-4:15 in 217 Riley-Robb.</li>
+<li>Prof.&nbsp;Srikrishnan: TuW 1-2 in 318 Riley-Robb</li>
+<li>TA: TBD</li>
 <li>Will send out a poll, but almost impossible to find a time that works for all (or even most); please feel free to email to make appointments as/if needed.</li>
 <li>Can be busy, will triage based on urgency (e.g.&nbsp;if you want code help but have not done basic debugging steps, you will be asked to wait until others are helped).</li>
 </ul>
@@ -407,7 +491,7 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Labs</td>
+<td style="text-align: left;">Labs/Readings</td>
 <td style="text-align: center;">10%</td>
 </tr>
 <tr class="even">
@@ -461,34 +545,30 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <li>Focus on “how” to apply methods and concepts from class</li>
 <li><strong>If you can’t bring a laptop to these classes, you can work with someone else</strong></li>
 <li>Can work in groups, but must submit your own work.</li>
-<li>Graded on a scale of 0-3, largely based on effort.</li>
+<li>Graded on a scale of 0-2, largely based on effort.</li>
 </ul>
 </section>
-<section id="exercises" class="slide level2">
-<h2>Exercises</h2>
-<ul>
-<li>Auto-graded “quizzes” on Gradescope.</li>
-<li>Focus on conceptual questions or quick setups/calculations (at most minor coding)</li>
-<li>Can submit as many times as you like.</li>
-<li>Due before Monday class the next week.</li>
-<li>Will drop one.</li>
-</ul>
+<section id="readings" class="slide level2">
+<h2>Readings</h2>
+<p>Students in BEE 5750 will be required to read and annotate readings during the semester.</p>
+<p>Extra lab credit for students in BEE 4750.</p>
+<p><strong>Quality prioritized over quantity</strong></p>
 </section>
 <section id="homework-assignments" class="slide level2">
 <h2>Homework Assignments</h2>
 <ul>
 <li>Mix of conceptual/analytical questions and light programming exercises.</li>
 <li>Released after prior assignment is due (though some weeks may not have a homework assignment).</li>
-<li>Due by <strong>9:00pm</strong> on the due date (usually Thursday).</li>
+<li>Due by <strong>9:00pm</strong> on the due date.</li>
 <li>Can work in groups of up to 3, only one submission required per group.</li>
 <li>Late submissions within 24 hours accepted at a 50% penalty.</li>
-<li>Will drop the lowest score by default.</li>
+<li>Will drop the lowest score by default for students in 4750, not for 5750.</li>
 </ul>
 </section>
 <section id="quizzes" class="slide level2">
 <h2>Quizzes</h2>
 <ul>
-<li>5-6 given in-class during the first 25 minutes.</li>
+<li>6 given in-class during the first 25 minutes.</li>
 <li>Focus on concepts, problem formulations, interpretation.</li>
 <li><strong>Completely closed book and closed note</strong> (no calculators, phones, or other electronic devices).</li>
 <li>Quizzes will be scanned and put on Gradescope for grades/feedback.</li>
@@ -498,8 +578,9 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <section id="mini-projects" class="slide level2">
 <h2>Mini-Projects</h2>
 <ul>
-<li>3 throughout the semester, each with a different focus (simulation, optimization, and decision-making).</li>
+<li>3 throughout the semester, each with a different focus (<em>e.g.</em> simulation, optimization, and decision-making).</li>
 <li>Will involve a real world application with a problem posed and relevant data provided.</li>
+<li>More open-ended than homeworks.</li>
 <li>Can work in groups of 2 (4750), <strong>5750 students must work alone</strong>.</li>
 </ul>
 </section>
@@ -508,7 +589,7 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <ul>
 <li>Analyze a system of interest, including the regulatory environment, going beyond class examples/methods.</li>
 <li>Work in groups of 3–4.</li>
-<li>Submit proposal on 10/23/26.</li>
+<li>Submit proposal on 10/16/26.</li>
 <li>Record presentation by end of semester for peer review by classmates.</li>
 <li>Submit report and group/self evaluations by end of finals week.</li>
 </ul>
@@ -528,16 +609,6 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <li>Group solutions should reflect the understanding of all group members.</li>
 </ul>
 </section>
-<section id="llms-the-stochastic-parrot" class="slide level2">
-<h2>LLMs: The Stochastic Parrot</h2>
-<div class="fragment fade-in">
-<ul>
-<li><strong>Think of LLMs as a ranting drunk</strong>: It’s stringing together words or code it heard in a way that sounds reasonable, but there’s no sense of concept.</li>
-<li><strong>LLM debugging can be useful</strong>: Think of it as a (error-prone) approximation of a Google search. But it can also lead to new errors with no clear way to fix them, since you don’t understand what you did.</li>
-<li><strong>Hallucinations</strong>: LLMs often just makes stuff up. Do you want your grade to involve a ChatGPT hallucination?</li>
-</ul>
-</div>
-</section>
 <section id="ai-policy" class="slide level2">
 <h2>AI Policy</h2>
 <p>Using AI tools is not prohibited. <strong>But</strong>:</p>
@@ -546,6 +617,20 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <li>Carefully document your query, the output, and how you integrated into your solution, or we can’t distinguish LLM output from your own understanding.</li>
 <li>We will grade your submissions on their own basis, but historically LLM-heavy output has not scored well and using LLMs uncritically may make it difficult for you to ask for help.</li>
 </ul>
+</section>
+<section id="how-have-you-used-ai-in-your-coursework" class="slide level2">
+<h2>How Have You Used AI In Your Coursework?</h2>
+<div class="columns center">
+<div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/vsrikrish-poll.png" class="quarto-figure quarto-figure-center" style="width:100.0%" alt="Poll Everywhere QR Code"></p>
+</figure>
+</div>
+</div><div class="column" style="width:60%;">
+<p><strong>Text</strong>: VSRIKRISH to 22333</p>
+<p><strong>URL</strong>: <a href="https://pollev.com/vsrikrish">https://pollev.com/vsrikrish</a> <br><br> <a href="https://www.polleverywhere.com/multiple_choice_polls/qKeig0hHShZYHAOmvZtZm?preview=true&amp;controls=none" data-preview-link="true">See Results</a></p>
+</div></div>
 </section></section>
 <section>
 <section id="upcoming-schedule" class="title-slide slide level1 center">
@@ -561,13 +646,18 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <p>Follow the guides to install git, Julia, and VS Code:</p>
 <p><a href="https://envsys.viveks.me/fall2026/setup/index.html" class="uri">https://envsys.viveks.me/fall2026/setup/index.html</a></p>
 </section>
-<section id="assessments-1" class="slide level2">
+<section id="assessments-1" class="slide level2 smaller scrollable">
 <h2>Assessments</h2>
 <ul>
 <li>HW1: Available, due 9/3.</li>
 </ul>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-Errickson2021-kr" class="csl-entry" role="listitem">
+Errickson, F. C., Keller, K., Collins, W. D., Srikrishnan, V., &amp; Anthoff, D. (2021). <span class="nocase">Equity is more important for the social cost of methane than climate uncertainty</span>. <em>Nature</em>, <em>592</em>, 564–570. <a href="https://doi.org/10.1038/s41586-021-03386-6">https://doi.org/10.1038/s41586-021-03386-6</a>
+</div>
+</div>
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">

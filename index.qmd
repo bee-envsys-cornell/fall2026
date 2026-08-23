@@ -2,7 +2,7 @@
 title: "{{< var course.title >}}"
 details: |
     This course was developed to teach students to think in systems: how to understand the dynamics resulting from combinations of environmental processes and use mathematical optimization methods to identify management strategies. We emphasize computational modeling for both simulation and optimization and discuss related concepts such as lifecycle assessment and risk quantification. These methods are illustrated using a variety of environmental systems applications.
-subtitle: "BEE 4750/5750<br>Fall 2025<br>Cornell University"  
+subtitle: "BEE 4750/5750<br>Fall 2026<br>Cornell University"  
 sidebar: false
 page-layout: full
 toc: false

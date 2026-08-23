@@ -52,13 +52,8 @@ Prof. Vivek Srikrishnan, [viveks@cornell.edu](mailto:viveks@cornell.edu), 318 Ri
 ![My Supervisors](figures/cats.png){width=30%}
 :::
 
-## About the TA
-Samantha Lauren Davies, Ph.D. student, [sld238@cornell.edu](mailto:sld238@cornell.edu)
 
-- B.S. in Earth and Environmental Science from University of Michigan
-- Interested in mercury biogeochemistry in aquatic ecosystems
-
-# What Are We Discussing This Semester?
+# Systems Basics
 
 ## What Is A System?
 
@@ -74,19 +69,95 @@ A system is:
 :::
 :::
 
-## Examples of Systems
+##  Why Are Systems Interesting?
 
-Can we think of any examples of systems?
+::: {.incremental}
+- "**Interconnected** set of **elements**"
+- "**Function** or **purpose**"
+:::
 
-. . .
+## Example: Climate Change
 
-What about things that are not systems?
+Changes to climate occur based on a variety of processes (***interconnected elements***) across scales which **influence the planet's energy balance** (***function***), including:
 
-## Why Are Systems Interesting?
+- carbon sources/sinks;
+- aerosol emissions;
+- ocean heat uptake;
+- surface albedo;
+- teleconnections (*e.g.* El Niño/La Niña)
 
-In other words, **a system involves an interconnected set of components**.
+## Process Compensation
 
-Those interconnections can lead to very different dynamics and outcomes than if the component processes were studied in isolation.
+![Correlations among Climate Parameters](figures/climate-correlate.svg)
+
+::: {.caption}
+Source: @Errickson2021-kr
+:::
+
+## Compensations Change Range Of Outcomes
+
+![Correlations among Climate Parameters](figures/temperature-projections.svg)
+
+::: {.caption}
+Source: @Errickson2021-kr
+:::
+
+
+## Example: Water Pollution
+
+Contaminant levels in a body of water also depend on a number of processes which may have different scales and rates.
+
+**Can we think of some?**
+
+## System State
+
+**System State**: quantities or variables which evolve over time based on external inputs and system dynamics.
+
+The state gives you a "snapshot" of the system at a given point in time.
+
+## Stocks and Flows
+
+::: {.incremental}
+- A **stock** is the amount of a system property: concentrations of a pollutant, numbers of currency units, etc.
+- A **flow** is the way in which a stock changes: decay, diffusion, production, consumption, etc.
+:::
+
+## Stocks and Flows
+
+![Jonathan Foley Bluesky Post on Stocks vs. Flows](figures/foley-stocks-flows.png)
+
+::: {.caption}
+Source: [Jonathan Foley's Bluesky](https://bsky.app/profile/globalecoguy.bsky.social/post/3mtoroswkek2z)
+:::
+
+## Residence Time
+
+We can use the notion of stocks and flows to formalize the idea of **residence time**: average time a unit of a stock remains in the system (or a component of the system).
+
+$$
+\underbrace{\tau}_{\substack{\text{Residence} \\[0.5em] \text{Time}}} \times \overbrace{F}^{\substack{\text{Flow} \\[0.5em] \text{In/Out}}} = \underbrace{M}_{\text{Stock}}
+$$
+
+## Steady-State Residence Time
+
+Steady-state condition on flows $F_\text{in}$ and $F_\text{out}$:
+
+::: {.fragment .fade-in}
+$$\begin{gather*}
+F_\text{out} = F_\text{in} = F \\
+\Rightarrow \bbox[5pt, border: 5px solid red]{\tau = M/F}
+\end{gather*}
+$$
+:::
+
+## But Systems Are Often More Complicated
+
+- Feedbacks (amplifying/dampening)
+- Multiple interacting processes
+- Non-steady-state behavior
+- Multiple metrics/objectives and tradeoffs
+
+# Course Overview
 
 ## Example Topics
 
@@ -147,8 +218,8 @@ Lack of attendance could contribute to a low participation grade.
 
 ## Office Hours
 
-- Prof. Srikrishnan: TBD in 318 Riley-Robb
-- TA: MW 4:15-4:15 in 217 Riley-Robb.
+- Prof. Srikrishnan: TuW 1-2 in 318 Riley-Robb
+- TA: TBD
 - Will send out a poll, but almost impossible to find a time that works for all (or even most); please feel free to email to make appointments as/if needed.
 - Can be busy, will triage based on urgency (e.g. if you want code help but have not done basic debugging steps, you will be asked to wait until others are helped).
 
@@ -211,7 +282,7 @@ Homework assignments and labs will be distributed using GitHub Classroom.
 
 | Category | Weight |
 |:--------|:------:|
-| Labs | 10% |
+| Labs/Readings | 10% |
 | Homework | 15% |
 | Mini-Projects | 20% |
 | Quizzes | 30% |
@@ -243,28 +314,28 @@ Homework assignments and labs will be distributed using GitHub Classroom.
 - Focus on "how" to apply methods and concepts from class
 - **If you can't bring a laptop to these classes, you can work with someone else**
 - Can work in groups, but must submit your own work.
-- Graded on a scale of 0-3, largely based on effort.
+- Graded on a scale of 0-2, largely based on effort.
 
-## Exercises
+## Readings
 
-- Auto-graded "quizzes" on Gradescope.
-- Focus on conceptual questions or quick setups/calculations (at most minor coding)
-- Can submit as many times as you like.
-- Due before Monday class the next week.
-- Will drop one.
+Students in BEE 5750 will be required to read and annotate readings during the semester.
+
+Extra lab credit for students in BEE 4750.
+
+**Quality prioritized over quantity**
 
 ## Homework Assignments
 
 - Mix of conceptual/analytical questions and light programming exercises.
 - Released after prior assignment is due (though some weeks may not have a homework assignment).
-- Due by **9:00pm** on the due date (usually Thursday).
+- Due by **9:00pm** on the due date.
 - Can work in groups of up to 3, only one submission required per group.
 - Late submissions within 24 hours accepted at a 50% penalty.
-- Will drop the lowest score by default.
+- Will drop the lowest score by default for students in 4750, not for 5750.
 
 ## Quizzes
 
-- 5-6 given in-class during the first 25 minutes.
+- 6 given in-class during the first 25 minutes.
 - Focus on concepts, problem formulations, interpretation.
 - **Completely closed book and closed note** (no calculators, phones, or other electronic devices).
 - Quizzes will be scanned and put on Gradescope for grades/feedback.
@@ -272,15 +343,16 @@ Homework assignments and labs will be distributed using GitHub Classroom.
 
 ## Mini-Projects
 
-- 3 throughout the semester, each with a different focus (simulation, optimization, and decision-making).
+- 3 throughout the semester, each with a different focus (*e.g.* simulation, optimization, and decision-making).
 - Will involve a real world application with a problem posed and relevant data provided.
+- More open-ended than homeworks.
 - Can work in groups of 2 (4750), **5750 students must work alone**.
 
 ## Term Project 
 
 - Analyze a system of interest, including the regulatory environment, going beyond class examples/methods.
 - Work in groups of 3--4.
-- Submit proposal on 10/23/26.
+- Submit proposal on 10/16/26.
 - Record presentation by end of semester for peer review by classmates.
 - Submit report and group/self evaluations by end of finals week.
 
@@ -295,14 +367,6 @@ Homework assignments and labs will be distributed using GitHub Classroom.
 - Group solutions should reflect the understanding of all group members.
 
 
-## LLMs: The Stochastic Parrot
-
-::: {.fragment .fade-in}
-- **Think of LLMs as a ranting drunk**: It's stringing together words or code it heard in a way that sounds reasonable, but there's no sense of concept.
-- **LLM debugging can be useful**: Think of it as a (error-prone) approximation of a Google search. But it  can also lead to new errors with no clear way to fix them, since you don't understand what you did.
-- **Hallucinations**: LLMs often just makes stuff up. Do you want your grade to involve a ChatGPT hallucination?
-:::
-
 ## AI Policy
 
 Using AI tools is not prohibited. **But**:
@@ -311,6 +375,9 @@ Using AI tools is not prohibited. **But**:
 - Carefully document your query, the output, and how you integrated into your solution, or we can't distinguish LLM output from your own understanding.
 - We will grade your submissions on their own basis, but historically LLM-heavy output has not scored well and using LLMs uncritically may make it difficult for you to ask for help.
 
+## How Have You Used AI In Your Coursework?
+
+{{< include _poll-prompt.qmd >}}
 
 # Upcoming Schedule
 
