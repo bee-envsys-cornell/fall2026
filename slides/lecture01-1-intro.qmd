@@ -259,12 +259,12 @@ You do not have to use the notebooks for your own work.
 
 {{< include _poll-prompt.qmd >}}
 
-## GitHub Classroom
+## Forking Assignment Repos
 
-Homework assignments and labs will be distributed using GitHub Classroom.
+Homework assignments and labs will be distributed as GitHub repositories that you fork.
 
-- Every student/team will have a unique "repository."
-- When assignment is released, I will share the link for repository creation on Ed Discussion.
+- Every student/team will fork their own copy of the repository.
+- When an assignment is released, I will share the link to the repository on Ed Discussion.
 - Makes it easy to share code for assistance and debugging (share links to repositories, not out-of-context code and screenshots).
 
 ## Debugging Code

@@ -50,7 +50,7 @@ If you already have a GitHub account, you can use that for this course and do no
 
 Create a [GitHub account](https://github.com/join). It doesn't have to be linked to your Cornell email or use your Cornell NetID.
 
-For homework assignments and mini-projects, you should use the GitHub Classroom link to "accept" the assignment provided on Ed Discussion, which will give you your own GitHub repository for that assignment^[Even if you don't want to use the provided Jupyter Notebook, you will be given starting environment files with packages we think will be necessary or useful, and we will expect that you use GitHub for sharing files if you need help with your code.]. The first time you click one of these links, you will need to link your name on the course roster with your GitHub account. After this, you will not need to do so again.
+For homework assignments and mini-projects, you should fork the assignment repository linked on Ed Discussion to your own GitHub account, which will give you your own copy of the repository for that assignment^[Even if you don't want to use the provided Jupyter Notebook, you will be given starting environment files with packages we think will be necessary or useful, and we will expect that you use GitHub for sharing files if you need help with your code.].
 
 ## Basic Git Workflow
 
@@ -64,7 +64,7 @@ After accepting an assignment, you'll have a repository on GitHub. To work on it
 git clone <link to your repository>
 ```
 
-Replace the URL with the link from your GitHub Classroom assignment or any other repository you're trying to clone (click the green **Code** button on your repository page to copy it).
+Replace the URL with the link to your forked assignment repository or any other repository you're trying to clone (click the green **Code** button on your repository page to copy it).
 
 ### Pull (get the latest version)
 

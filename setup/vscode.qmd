@@ -60,7 +60,7 @@ VS Code has built-in Git and GitHub support through the **Source Control** panel
 ### Clone a repository
 
 1. Open the Command Palette (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>) and type `Git: Clone`.
-2. Paste the repository URL (from your GitHub Classroom assignment) and press <kbd>Enter</kbd>.
+2. Paste the URL of your forked repository and press <kbd>Enter</kbd>.
 3. Choose a folder on your computer to save the repository.
 4. VS Code will ask if you want to open the cloned repository — click **Open**.
 

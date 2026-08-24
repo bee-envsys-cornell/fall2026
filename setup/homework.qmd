@@ -4,17 +4,15 @@ format:
     html: default
 ---
 
-Your assignments (labs and homeworks) will be distributed as Jupyter Notebooks (`.ipynb` files) using GitHub Classroom, and will be submitted to Gradescope as PDF files. This means that the following steps are required for each assignment^[Note that you do not actually have to solve your assignments using the provided notebook: we aren't going to grade your code, so if you want to solve the problems separately and write up your solutions in something like Microsoft Word (with figures), that's fine. But, in this case, I would make sure your code is synced with GitHub in case there are any questions about how you got your solutions].
+Your assignments (labs and homeworks) will be distributed as Jupyter Notebooks (`.ipynb` files) in GitHub repositories that you'll fork, and will be submitted to Gradescope as PDF files. This means that the following steps are required for each assignment^[Note that you do not actually have to solve your assignments using the provided notebook: we aren't going to grade your code, so if you want to solve the problems separately and write up your solutions in something like Microsoft Word (with figures), that's fine. But, in this case, I would make sure your code is synced with GitHub in case there are any questions about how you got your solutions].
 
 If you are totally new to `git`, you can go through the [Software Carpentry "Version Control with Git" course](https://swcarpentry.github.io/git-novice/), which includes links to [several `git` cheatsheets](https://swcarpentry.github.io/git-novice/reference.html).
 
-## Accepting Assignments
+## Forking Assignments
 
-When an assignment is released, I will post a link to GitHub on Ed Discussion. Clicking on this link will cause you to "accept" the assignment from GitHub Classroom. This means that GitHub will create a repository under your account which duplicates the repository I've released. 
+When an assignment is released, I will post a link to the assignment repository on Ed Discussion. Click the **Fork** button on GitHub to create a copy of the repository under your own account.
 
-The first time you accept an assignment (probably Lab 1), you will need to link your GitHub account to the course roster before you can accept the assignment. If you find that either your spot in the course roster has already been assigned to a different GitHub account or that you are not on the roster, please reach out ASAP.
-
-Because GitHub Classroom creates a new repository for you, **you should not use the "template" repository**, as you will be unable to push any changes back to GitHub. In other words, do not clone a repository with the name `bee-envsys-cornell/hwx.git` or `bee-envsys-cornell/labx.git`, but look for a repository named like `bee-envsys-cornell-FA25/<your-username>-hwx.git`. If you accidentally clone the template repository, do not worry: you can re-clone your repository and move any files you edited to the new location.
+Because forking creates a new repository under your own account, **you should not use the original repository**, as you will be unable to push any changes back to GitHub. In other words, do not clone a repository with the name `bee-envsys-cornell/hwx.git` or `bee-envsys-cornell/labx.git`, but look for your fork, named like `<your-username>/hwx.git`. If you accidentally clone the original repository, do not worry: you can re-clone your fork and move any files you edited to the new location.
 
 ## Syncing Changes To GitHub
 

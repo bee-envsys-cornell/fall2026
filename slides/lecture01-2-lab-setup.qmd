@@ -45,7 +45,7 @@ execute:
 At the end, make sure you:
 
 1. Have Julia installed and can open a notebook with a Julia kernel.
-2. Have a GitHub account and be able to accept assignments, clone, and push back to GitHub.
+2. Have a GitHub account and be able to fork assignments, clone, and push back to GitHub.
 3. Can export submissions to PDF for submission to Gradescope.
 
 # Upcoming Schedule

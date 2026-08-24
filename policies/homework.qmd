@@ -27,14 +27,14 @@ But this emphasis on homework as practice also means that you should start the h
 
 ## Homework Logistics
 
-### Accepting Assignments
+### Forking Assignments
 
-- Homework assignments will be distributed through GitHub Classroom. When an assignment is released, a link to accept the assignment will be posted on Ed Discussion. **You must click this link to accept the assignment or subsequent steps will not work properly**. Clicking this link will create your own repository with the files for the assignment. The first time you do this, you will be prompted to connect your GitHub username with your entry in the class roster.
+- Homework assignments will be distributed as GitHub repositories. When an assignment is released, a link to the repository will be posted on Ed Discussion. **You must fork this repository to your own GitHub account** (click the **Fork** button on GitHub) or subsequent steps will not work properly. This will give you your own copy with the files for the assignment.
 - These repositories will include a Jupyter Notebook set up with a Julia kernel, and appropiate environment files for the packages we think you may want to use to complete the assignment. You do not have to use all of them, and you can feel free to install additional packages as would be helpful.
 - Clone your repository to your computer.
 
   ::: {.callout-warning}
-  It is important that you clone the repository created in the previous step, not the "original" repository. Make sure that the URL looks like `https://www.github.com/BEE4750-FA26/<username>-hwxx.git`, **not** `https://www.github.com/bee-envsys-cornell/hwxx.git`.
+  It is important that you clone your fork from the previous step, not the original repository. Make sure that the URL looks like `https://www.github.com/<your-username>/hwxx.git`, **not** `https://www.github.com/bee-envsys-cornell/hwxx.git`.
   :::
 
 ### Working On Assignments
@@ -90,6 +90,7 @@ When you need help debugging or solving a problem, follow these steps to get the
 * PDFs must be submitted by the due date and time to Gradescope **with pages tagged**. Failure to tag pages will receive a 10% deduction.
 * If you did not receive credit for your group's submission, please have someone in your group use a regrade request to bring this to our attention, and we will use the list of names at the top of the page to confirm that you contributed to the assignment.
 * Late submissions are accepted within 24 hours with a 50% penalty unless an extension was arranged **ahead of the original deadline**.
+* One homework assignment will be dropped by default for students in BEE 4750; this does not apply to students in BEE 5750.
 
 ## How To Write Assignments
 
