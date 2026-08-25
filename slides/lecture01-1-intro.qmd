@@ -259,21 +259,13 @@ You do not have to use the notebooks for your own work.
 
 {{< include _poll-prompt.qmd >}}
 
-## Forking Assignment Repos
+## GitHub/Assignment Repos
 
 Homework assignments and labs will be distributed as GitHub repositories that you fork.
 
 - Every student/team will fork their own copy of the repository.
 - When an assignment is released, I will share the link to the repository on Ed Discussion.
 - Makes it easy to share code for assistance and debugging (share links to repositories, not out-of-context code and screenshots).
-
-## Debugging Code
-
-- Look at the class FAQ!
-- Search for the error message you're seeing.
-- Try to divide code into logical "chunks" and test each one to isolate the error where there's a syntax or conceptual error.
-- Post on Ed. **Do not include a screenshot**, link to GitHub or provide a small snippet showing the syntax you're trying.
-- Come to office hours (last recourse!).
 
 
 # Grades

@@ -2018,18 +2018,11 @@
     "text": "What Is Your Programming Experience?\n\n\n\n\n\n\n\n\nText: VSRIKRISH to 22333\nURL: https://pollev.com/vsrikrish  See Results"
   },
   {
-    "objectID": "slides/lecture01-1-intro.html#forking-assignment-repos",
-    "href": "slides/lecture01-1-intro.html#forking-assignment-repos",
+    "objectID": "slides/lecture01-1-intro.html#githubassignment-repos",
+    "href": "slides/lecture01-1-intro.html#githubassignment-repos",
     "title": "Welcome to BEE 4750/5750!",
-    "section": "Forking Assignment Repos",
-    "text": "Forking Assignment Repos\nHomework assignments and labs will be distributed as GitHub repositories that you fork.\n\nEvery student/team will fork their own copy of the repository.\nWhen an assignment is released, I will share the link to the repository on Ed Discussion.\nMakes it easy to share code for assistance and debugging (share links to repositories, not out-of-context code and screenshots)."
-  },
-  {
-    "objectID": "slides/lecture01-1-intro.html#debugging-code",
-    "href": "slides/lecture01-1-intro.html#debugging-code",
-    "title": "Welcome to BEE 4750/5750!",
-    "section": "Debugging Code",
-    "text": "Debugging Code\n\nLook at the class FAQ!\nSearch for the error message you’re seeing.\nTry to divide code into logical “chunks” and test each one to isolate the error where there’s a syntax or conceptual error.\nPost on Ed. Do not include a screenshot, link to GitHub or provide a small snippet showing the syntax you’re trying.\nCome to office hours (last recourse!)."
+    "section": "GitHub/Assignment Repos",
+    "text": "GitHub/Assignment Repos\nHomework assignments and labs will be distributed as GitHub repositories that you fork.\n\nEvery student/team will fork their own copy of the repository.\nWhen an assignment is released, I will share the link to the repository on Ed Discussion.\nMakes it easy to share code for assistance and debugging (share links to repositories, not out-of-context code and screenshots)."
   },
   {
     "objectID": "slides/lecture01-1-intro.html#assessments",
@@ -6424,7 +6417,7 @@
     "href": "slides/lecture01-2-systems-intro.html#course-policies",
     "title": "Introduction to Systems Analysis",
     "section": "Course Policies",
-    "text": "Course Policies\nIf you missed class last week, make sure you read the syllabus!."
+    "text": "Course Policies\nIf you missed class last week, make sure you read the syllabus! and go through any needed computational tools setup"
   },
   {
     "objectID": "slides/lecture01-2-systems-intro.html#recap-of-grading-policies",
@@ -6539,11 +6532,18 @@
     "text": "System Model\n\n\nSystem with following stocks (in \\(\\mu\\)mol/L):\n\n\\(X_1\\): P in living biomass;\n\\(X_2\\): P in inorganic form;\n\\(X_3\\): P in dead organic matter.\n\n\n\n\n\n\n\n\nFigure 2: Phosphorous cycle diagram"
   },
   {
-    "objectID": "slides/lecture01-2-systems-intro.html#system-model-1",
-    "href": "slides/lecture01-2-systems-intro.html#system-model-1",
+    "objectID": "slides/lecture01-2-systems-intro.html#steady-state-conditions",
+    "href": "slides/lecture01-2-systems-intro.html#steady-state-conditions",
     "title": "Introduction to Systems Analysis",
-    "section": "System Model",
-    "text": "System Model\n\n\nIn the steady-state:\n\\(X_1 = 0.2 \\mu\\text{mol/L}\\); \\(X_2 = 0.1 \\mu\\text{mol/L}\\); \\(X_3 = 1.0 \\mu\\text{mol/L}\\).\n\n\n\n\n\n\n\nFigure 3: Phosphorous cycle diagram\n\n\n\n\nThe residence time of P in living biomass is 4 days and the system is perturbed by an inorganic P addition of 0.02 \\(\\mu\\)mol/L. What is the new steady-state P in each stock?"
+    "section": "Steady-State Conditions",
+    "text": "Steady-State Conditions\n\n\n\n\\(X_1 = 0.2 \\mu\\text{mol/L}\\);\n\\(X_2 = 0.1 \\mu\\text{mol/L}\\);\n\\(X_3 = 1.0 \\mu\\text{mol/L}\\).\n\n\n\n\n\n\n\n\nFigure 3: Phosphorous cycle diagram\n\n\n\n\nResidence time of P in living biomass is 4 days. The system is perturbed by an inorganic P addition of 0.02 \\(\\mu\\)mol/L. What is the new steady-state P in each stock?"
+  },
+  {
+    "objectID": "slides/lecture01-2-systems-intro.html#what-does-this-model-assume",
+    "href": "slides/lecture01-2-systems-intro.html#what-does-this-model-assume",
+    "title": "Introduction to Systems Analysis",
+    "section": "What Does This Model Assume?",
+    "text": "What Does This Model Assume?\n\nSteady-state: no continual fluctuations in stocks and flows;\nClose to linear flows: easy to solve equations;\n\nGood and useful for back of the envelope calculations, but may not be realistic!"
   },
   {
     "objectID": "slides/lecture01-2-systems-intro.html#key-takeaways-systems",
@@ -6585,21 +6585,21 @@
     "href": "slides/lecture01-2-systems-intro.html#next-classes",
     "title": "Introduction to Systems Analysis",
     "section": "Next Classes",
-    "text": "Next Classes\nMonday: System Dynamics and Feedbacks\nWednesday: Equilibria and System Stability"
+    "text": "Next Classes\nMonday: More Examples of Systems Models\nWednesday: Feedbacks & Equilibria"
   },
   {
     "objectID": "slides/lecture01-2-systems-intro.html#assessments",
     "href": "slides/lecture01-2-systems-intro.html#assessments",
     "title": "Introduction to Systems Analysis",
     "section": "Assessments",
-    "text": "Assessments\nHomework 1: Due next Thursday (9/11) at 9pm.\nWeekly Exercises: Due Monday before class.\nReading: Liu et al. (2007) (discussion due Monday before class)"
+    "text": "Assessments\nHomework 1: Due next Thursday (9/3) at 9pm."
   },
   {
     "objectID": "slides/lecture01-2-systems-intro.html#references-1",
     "href": "slides/lecture01-2-systems-intro.html#references-1",
     "title": "Introduction to Systems Analysis",
     "section": "References",
-    "text": "References\n\n\n\n\nLiu, J., Dietz, T., Carpenter, S. R., Alberti, M., Folke, C., Moran, E., et al. (2007). Complexity of coupled human and natural systems. Science, 317, 1513–1516. https://doi.org/10.1126/science.1144004"
+    "text": "References"
   },
   {
     "objectID": "slides/lecture10-2-managing-air-sources.html#gaussian-plume-for-air-pollution-dispersion",

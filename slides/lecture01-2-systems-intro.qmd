@@ -74,7 +74,7 @@ default(
 
 ## Course Policies
 
-If you missed class last week, make sure you [read the syllabus!](../syllabus.qmd).
+If you missed class last week, make sure you [read the syllabus!](../syllabus.qmd) and [go through any needed computational tools setup](../setup/index.qmd)
 
 ## Recap of Grading Policies
 
@@ -144,7 +144,7 @@ If you missed class last week, make sure you [read the syllabus!](../syllabus.qm
 ::: {.column width=50%}
 ### Physical Models
 
-![Falling Water Miniature Model](https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Fallingwater_miniature_model_at_MRRV%2C_Carnegie_Science_Center.JPG/640px-Fallingwater_miniature_model_at_MRRV%2C_Carnegie_Science_Center.JPG){width=75%}
+![Falling Water Miniature Model](https://upload.wikimedia.org/wikipedia/commons/8/88/Fallingwater_miniature_model_at_MRRV%2C_Carnegie_Science_Center.JPG?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original){width=75%}
 
 ::: {.caption}
 Source: [Wikimedia](https://commons.wikimedia.org/wiki/File:Fallingwater_miniature_model_at_MRRV,_Carnegie_Science_Center.JPG)
@@ -317,21 +317,21 @@ Phosphorous cycle diagram
 :::
 ::::
 
-## System Model
+## Steady-State Conditions
 
 :::: {.columns}
-::: {.column width=60%}
-In the steady-state:
-
-$X_1 = 0.2 \mu\text{mol/L}$; $X_2 = 0.1 \mu\text{mol/L}$; $X_3 = 1.0 \mu\text{mol/L}$.
+::: {.column width=50%}
+- $X_1 = 0.2 \mu\text{mol/L}$; 
+- $X_2 = 0.1 \mu\text{mol/L}$; 
+- $X_3 = 1.0 \mu\text{mol/L}$.
 
 :::
-::: {.column width=40%}
+::: {.column width=50%}
 
 ::: {#fig-tikz}
 
 ```{.tikz}
-%%| width: 100%
+%%| width: 75%
 
 \begin{tikzpicture}[>={stealth}]
     \node (x) at (0, 0) [rectangle, draw] {$X_1$};
@@ -348,7 +348,14 @@ Phosphorous cycle diagram
 :::
 ::::
 
-The residence time of P in living biomass is 4 days and the system is perturbed by an inorganic P addition of 0.02 $\mu$mol/L. **What is the new steady-state P in each stock?**
+Residence time of P in living biomass is 4 days. The system is perturbed by an inorganic P addition of 0.02 $\mu$mol/L. **What is the new steady-state P in each stock?**
+
+## What Does This Model Assume?
+
+- Steady-state: no continual fluctuations in stocks and flows;
+- Close to linear flows: easy to solve equations;
+
+Good and useful for back of the envelope calculations, but may not be realistic!
 
 # Key Takeaways
 
@@ -390,17 +397,14 @@ The residence time of P in living biomass is 4 days and the system is perturbed 
 
 ## Next Classes
 
-**Monday**: System Dynamics and Feedbacks 
+**Monday**: More Examples of Systems Models
 
-**Wednesday**: Equilibria and System Stability
+**Wednesday**: Feedbacks & Equilibria
 
 ## Assessments
 
-**Homework 1**: Due next Thursday (9/11) at 9pm.
+**Homework 1**: Due next Thursday (9/3) at 9pm.
 
-**Weekly Exercises**: Due Monday before class.
-
-**Reading**: @Liu2007-hy (discussion due Monday before class)
 
 # References
 
