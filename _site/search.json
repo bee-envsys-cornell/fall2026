@@ -6427,13 +6427,6 @@
     "text": "Recap of Grading Policies\n\nTag pages on Gradescope which are relevant for a given problem (labs this is the whole thing sans the intro/setup).\nExplain what your code is trying to accomplish outside of the code block.\n\nFor example: here are the equations you’re implementing or this is how you’re iterating through a problem.\n\nMake sure you include all elements needed for interpretation of e.g. plots.\nWhen in doubt, ask!"
   },
   {
-    "objectID": "slides/lecture01-2-systems-intro.html#questions",
-    "href": "slides/lecture01-2-systems-intro.html#questions",
-    "title": "Introduction to Systems Analysis",
-    "section": "Questions?",
-    "text": "Questions?\n\n\n\n\n\n\n\n\nText: VSRIKRISH to 22333\nURL: https://pollev.com/vsrikrish  See Results"
-  },
-  {
     "objectID": "slides/lecture01-2-systems-intro.html#how-do-we-develop-models",
     "href": "slides/lecture01-2-systems-intro.html#how-do-we-develop-models",
     "title": "Introduction to Systems Analysis",
@@ -6536,7 +6529,7 @@
     "href": "slides/lecture01-2-systems-intro.html#steady-state-conditions",
     "title": "Introduction to Systems Analysis",
     "section": "Steady-State Conditions",
-    "text": "Steady-State Conditions\n\n\n\n\\(X_1 = 0.2 \\mu\\text{mol/L}\\);\n\\(X_2 = 0.1 \\mu\\text{mol/L}\\);\n\\(X_3 = 1.0 \\mu\\text{mol/L}\\).\n\n\n\n\n\n\n\n\nFigure 3: Phosphorous cycle diagram\n\n\n\n\nResidence time of P in living biomass is 4 days. The system is perturbed by an inorganic P addition of 0.02 \\(\\mu\\)mol/L. What is the new steady-state P in each stock?"
+    "text": "Steady-State Conditions\n\n\n\n\\(\\bar{X_1} = 0.2 \\mu\\text{mol/L}\\);\n\\(\\bar{X_2} = 0.1 \\mu\\text{mol/L}\\);\n\\(\\bar{X_3} = 1.0 \\mu\\text{mol/L}\\).\n\n\n\n\n\n\n\n\nFigure 3: Phosphorous cycle diagram\n\n\n\n\nResidence time of P in living biomass is 4 days. The system is perturbed by an inorganic P addition of 0.02 \\(\\mu\\)mol/L. What is the new steady-state P in each stock?"
   },
   {
     "objectID": "slides/lecture01-2-systems-intro.html#what-does-this-model-assume",
