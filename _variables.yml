@@ -3,13 +3,20 @@ author: Vivek Srikrishnan
 instructor:
   name: Professor Vivek Srikrishnan
   name_no_title: Vivek Srikrishnan
-  email: viveks@cornell.edu
+  email: vs498@cornell.edu
   url: "https://viveks.me"
   github: vsrikrish
   office: "318 Riley-Robb"
+  office_hours: TuW 1-2
   contact_policy: >-
     Use the class's Ed Discussion board for any class-related queries.
   appointment_url: https://calendly.com/vsrikrish/
+
+TA:
+  name: Jenna Hynes
+  email: jmh637@cornell.edu
+  office: "105 Riley-Robb"
+  office_hours: MW 4:10-5
 
 course:
   number: "BEE 4750/5750"

@@ -2092,7 +2092,7 @@
     "href": "slides/lecture01-1-intro.html#term-project",
     "title": "Welcome to BEE 4750/5750!",
     "section": "Term Project",
-    "text": "Term Project\n\nAnalyze a system of interest, including the regulatory environment, going beyond class examples/methods.\nWork in groups of 3–4.\nSubmit proposal on 10/16/26.\nRecord presentation by end of semester for peer review by classmates.\nSubmit report and group/self evaluations by end of finals week."
+    "text": "Term Project\n\nAnalyze a system of interest, including the regulatory environment, going beyond class examples/methods.\nWork in groups of 3–4.\nSubmit proposal on 10/16/26.\nPresentations will be during final exam period.\nSubmit report and group/self evaluations by end of finals week."
   },
   {
     "objectID": "slides/lecture01-1-intro.html#hopefully-not-a-concern",
@@ -7272,7 +7272,7 @@
     "href": "syllabus.html#course-information",
     "title": "Syllabus",
     "section": "Course Information",
-    "text": "Course Information\n\n\n\nInstructor\n\n Vivek Srikrishnan\n viveks@cornell.edu\n 318 Riley-Robb\nTuW 1-2\n\n\n\n\nTA\n\n TBD\n TBD\n TBD\nTBD\n\n\n\n\nMeetings\n\n MW\n 2:55-4:10pm\n 105 Riley-Robb\n\n\n\n\n\nCourse Description\nEnvironmental systems involve multiple interacting processes, uncertainties, and potentially conflicting objectives. These dynamics can complicate analyses which focus on a single component of the system, such as an individual pollution source, or a single outcome of interest. In this course, we will adopt a systems approach to environmental quality modeling and management, including applications in air and water pollution control and solid waste management. In particular, we will:\n\ndefine systems and their boundaries;\nidentify feedbacks and quantify the stability of systems;\nsimulate system dynamics using computer models;\nformulate and solve decision problems for systems management;\nanalyze and assess risk;\nmake decisions under uncertainty; and\nexplore trade-offs across competing objectives."
+    "text": "Course Information\n\n\n\nInstructor\n\n Vivek Srikrishnan\n vs498@cornell.edu\n 318 Riley-Robb\nTuW 1-2\n\n\n\n\nTA\n\n Jenna Hynes\n jmh637@cornell.edu\n 105 Riley-Robb\nMW 4:10-5\n\n\n\n\nMeetings\n\n MW\n 2:55-4:10pm\n 105 Riley-Robb\n\n\n\n\n\nCourse Description\nEnvironmental systems involve multiple interacting processes, uncertainties, and potentially conflicting objectives. These dynamics can complicate analyses which focus on a single component of the system, such as an individual pollution source, or a single outcome of interest. In this course, we will adopt a systems approach to environmental quality modeling and management, including applications in air and water pollution control and solid waste management. In particular, we will:\n\ndefine systems and their boundaries;\nidentify feedbacks and quantify the stability of systems;\nsimulate system dynamics using computer models;\nformulate and solve decision problems for systems management;\nanalyze and assess risk;\nmake decisions under uncertainty; and\nexplore trade-offs across competing objectives."
   },
   {
     "objectID": "syllabus.html#learning-outcomes",

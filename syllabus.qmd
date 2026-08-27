@@ -55,10 +55,10 @@ This is a 3 credit course which is required for the Environmental Engineering ma
 ::: {.column width="30%"}
 ### TA
 
-- {{< fa sharp user title="Name" >}} [TBD]{.ms-1}
-- {{< fa sharp envelope title="Email" >}} [TBD]{.ms-1}
-- {{< fa sharp building title="Office" >}} [TBD]{.ms-2}
-- {{< fa sharp door-open title="Office Hours" >}}[TBD]{.ms-1}
+- {{< fa sharp user title="Name" >}} [{{< var TA.name >}}]{.ms-1}
+- {{< fa sharp envelope title="Email" >}} [{{< var TA.email >}}]{.ms-1}
+- {{< fa sharp building title="Office" >}} [{{< var TA.office >}}]{.ms-2}
+- {{< fa sharp door-open title="Office Hours" >}}[{{< var TA.office_hours >}}]{.ms-1}
 ::::
 
 ::: {.column width="30%"}

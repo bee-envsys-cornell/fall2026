@@ -29,13 +29,13 @@ format:
 ### TA
 
 
-- {{< fa sharp user title="Name" >}} [TBD]{.ms-1}
-- {{< fa sharp envelope title="Email" >}} [TBD]{.ms-1}
-- {{< fa sharp building title="TA Office" >}} [TBD]{.ms-2}
+- {{< fa sharp user title="Name" >}} [{{< var TA.name >}}]{.ms-1}
+- {{< fa sharp envelope title="Email" >}} [{{< var TA.email >}}]{.ms-1}
+- {{< fa sharp building title="TA Office" >}} [{{< var TA.office >}}]{.ms-2}
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-md-3}
-### Course details
+### Course Details
 
 - {{< fa sharp calendar title="Class Days" >}} {{< var course.days >}}
 - {{< fa sharp clock title="Class Time" >}} {{< var course.time >}}
@@ -43,16 +43,16 @@ format:
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-md-3 .contact-policy}
-### Contacting staff
+### Contacting Staff
 
-- {{< fa sharp door-open title="Office Hours" >}}[(Instructor) TuW 1-2]{.ms-1}
-- {{< fa sharp door-open title="TA Office Hours" >}}[TBD]{.ms-1}
+- {{< fa sharp door-open title="Office Hours" >}}[(Instructor) {{< var instructor.office_hours >}}]{.ms-1}
+- {{< fa sharp door-open title="TA Office Hours" >}}[(TA) {{< var TA.office_hours >}}]{.ms-1}
 - [{{< fa sharp comments title="Ed Discussion" >}}[Ed Discussion]{.ms-1}](https://edstem.org)
 
 :::
 
 ::::
-
+:::
 
 ## Software Tools
 
