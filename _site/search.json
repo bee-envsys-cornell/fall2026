@@ -5227,7 +5227,7 @@
     "href": "slides/lecture02-1-dynamics-feedbacks.html#example-lake-eutrophication",
     "title": "System Boundaries and Feedbacks",
     "section": "Example: Lake Eutrophication",
-    "text": "Example: Lake Eutrophication\n\n\nSimple model of lake eutrophication:\nAssume steady-state behavior, first-order linear decay, well-mixed, constant volume.\n\n\nBut in reality:\n\n\n\nSchematic of processes resulting in lake eutrophication"
+    "text": "Example: Lake Eutrophication\n\n\nSimple model of lake eutrophication:\nAssume steady-state behavior, first-order linear decay, well-mixed, constant volume.\n\n\nAdding more complexity:\n\n\n\nSchematic of processes resulting in lake eutrophication"
   },
   {
     "objectID": "slides/lecture02-1-dynamics-feedbacks.html#systems-diagrams",
@@ -5286,6 +5286,27 @@
     "text": "Dampening Feedbacks\n\n\nShocks are attenuated (dampened) as they propagate:\n\n\n\n\nDampening Feedback Example"
   },
   {
+    "objectID": "slides/lecture02-1-dynamics-feedbacks.html#feedback-level",
+    "href": "slides/lecture02-1-dynamics-feedbacks.html#feedback-level",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Feedback Level",
+    "text": "Feedback Level\nWith no feedback: \\(\\text{Total Effect} = \\text{Direct Effect}\\)\nOver one pass feedback loop: \\(\\text{Total Effect} = (g) (\\text{Direct Effect})\\)\n\\(g\\) is the feedback factor (or gain): \\(g &gt; 0\\) means amplification, \\(g &lt; 0\\) means dampening."
+  },
+  {
+    "objectID": "slides/lecture02-1-dynamics-feedbacks.html#calculating-g",
+    "href": "slides/lecture02-1-dynamics-feedbacks.html#calculating-g",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Calculating \\(g\\)",
+    "text": "Calculating \\(g\\)\nIf \\(x = F[p(x, \\ldots)]\\), \\[g = \\frac{\\partial F}{\\partial x} = \\frac{\\partial F}{\\partial p} \\frac{\\partial p}{\\partial x}.\\]\nWith multiple feedback processes (\\(x = F[p_1(x, \\ldots), p_2(x, \\ldots), \\ldots]\\)):\n\\[g = \\sum_i \\frac{\\partial F}{\\partial p_i} \\frac{\\partial p_i}{\\partial x} = \\sum_i g_i.\\]"
+  },
+  {
+    "objectID": "slides/lecture02-1-dynamics-feedbacks.html#multiple-feedback-passes",
+    "href": "slides/lecture02-1-dynamics-feedbacks.html#multiple-feedback-passes",
+    "title": "System Boundaries and Feedbacks",
+    "section": "Multiple Feedback Passes",
+    "text": "Multiple Feedback Passes\n\\[\\begin{aligned}\n\\text{Total Effect} &= (\\text{Direct Effect})\\left(1 + g + g^2 + g^3 + \\ldots\\right) \\\\[0.5em]\n&= \\frac{\\text{Direct Effect}}{1-g}\n\\end{aligned}\\]\n\nif \\(0 &lt; g &lt; 1\\): amplifying but stable feedback\nif \\(g &lt; 0\\): dampening feedback\nif \\(g &gt; 1\\): system instability"
+  },
+  {
     "objectID": "slides/lecture02-1-dynamics-feedbacks.html#other-environmental-feedbacks",
     "href": "slides/lecture02-1-dynamics-feedbacks.html#other-environmental-feedbacks",
     "title": "System Boundaries and Feedbacks",
@@ -5302,13 +5323,6 @@
   {
     "objectID": "slides/lecture02-1-dynamics-feedbacks.html#impact-of-including-feedbacks",
     "href": "slides/lecture02-1-dynamics-feedbacks.html#impact-of-including-feedbacks",
-    "title": "System Boundaries and Feedbacks",
-    "section": "Impact of Including Feedbacks",
-    "text": "Impact of Including Feedbacks\n\nClimate Feedbacks Comparisons\nSource: Woodard et al. (2019)"
-  },
-  {
-    "objectID": "slides/lecture02-1-dynamics-feedbacks.html#impact-of-including-feedbacks-1",
-    "href": "slides/lecture02-1-dynamics-feedbacks.html#impact-of-including-feedbacks-1",
     "title": "System Boundaries and Feedbacks",
     "section": "Impact of Including Feedbacks",
     "text": "Impact of Including Feedbacks\n\nClimate Feedbacks Comparisons\nSource: Woodard et al. (2019)"
@@ -5332,7 +5346,7 @@
     "href": "slides/lecture02-1-dynamics-feedbacks.html#predator-prey-dynamics-lotka-volterra",
     "title": "System Boundaries and Feedbacks",
     "section": "Predator-Prey Dynamics (Lotka-Volterra)",
-    "text": "Predator-Prey Dynamics (Lotka-Volterra)\n\\[\n\\begin{align*}\n\\frac{dH}{dt} &= H_t \\underbrace{b_H}_{\\substack{\\text{birth} \\\\ \\text{rate}}} - H_t (\\underbrace{L_t m_H}_{\\substack{\\text{impact of} \\\\ \\text{lynxes}}}) \\\\\n\\frac{dL}{dt} &= L_t (H_t b_L)_{\\substack{\\text{impact of} \\\\ \\text{hares}}}) - \\underbrace{L_t m_L}_{\\substack{\\text{mortality} \\\\ \\text{rate}}})\n\\end{align*}\n\\]"
+    "text": "Predator-Prey Dynamics (Lotka-Volterra)\n\\[\n\\begin{align*}\n\\frac{dH}{dt} &= H_t \\underbrace{b_H}_{\\substack{\\text{birth} \\\\ \\text{rate}}} - H_t (\\underbrace{L_t m_H}_{\\substack{\\text{impact of} \\\\ \\text{lynxes}}}) \\\\\n\\frac{dL}{dt} &= L_t\\underbrace{(H_t b_L)}_{\\substack{\\text{impact of} \\\\ \\text{hares}}} - \\underbrace{L_t m_L}_{\\substack{\\text{mortality} \\\\ \\text{rate}}}\n\\end{align*}\n\\]"
   },
   {
     "objectID": "slides/lecture02-1-dynamics-feedbacks.html#lotka-volterra-fixed-points",

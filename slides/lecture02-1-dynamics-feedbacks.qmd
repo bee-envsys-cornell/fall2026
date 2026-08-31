@@ -177,7 +177,7 @@ Assume steady-state behavior, first-order linear decay, well-mixed, constant vol
 :::
 ::: {.column width=60%}
 ::: {.fragment}
-**But in reality**:
+**Adding more complexity**:
 
 ![Schematic of processes resulting in lake eutrophication](figures/eutrophication-system-schematic.svg)
 :::
@@ -264,13 +264,41 @@ Shocks are attenuated (dampened) as they propagate:
 :::
 ::::
 
+## Feedback Level
+
+**With no feedback**: $\text{Total Effect} = \text{Direct Effect}$
+
+**Over one pass feedback loop**: $\text{Total Effect} = (g) (\text{Direct Effect})$
+
+$g$ is the feedback factor (or **gain**): $g > 0$ means **amplification**, $g < 0$ means **dampening**.
+
+## Calculating $g$
+
+If $x = F[p(x, \ldots)]$, $$g = \frac{\partial F}{\partial x} = \frac{\partial F}{\partial p} \frac{\partial p}{\partial x}.$$
+
+With multiple feedback processes ($x = F[p_1(x, \ldots), p_2(x, \ldots), \ldots]$):
+
+$$g = \sum_i \frac{\partial F}{\partial p_i} \frac{\partial p_i}{\partial x} = \sum_i g_i.$$
+
+## Multiple Feedback Passes
+
+$$\begin{aligned}
+\text{Total Effect} &= (\text{Direct Effect})\left(1 + g + g^2 + g^3 + \ldots\right) \\[0.5em]
+&= \frac{\text{Direct Effect}}{1-g}
+\end{aligned}$$
+
+- if $0 < g < 1$: amplifying but stable feedback
+- if $g < 0$: dampening feedback
+- if $g > 1$: system instability
+
+
 ## Other Environmental Feedbacks
 
 **Can we think of other examples of environmental feedback loops?**
 
 **Are they amplifying or dampening?**
 
-# Example: Climate Feedbacks
+# Example: Climate-Economic Feedbacks
 
 ## Climate System Feedbacks
 
@@ -288,13 +316,6 @@ Source: @Woodard2019-cz
 Source: @Woodard2019-cz
 :::
 
-## Impact of Including Feedbacks
-
-![Climate Feedbacks Comparisons](figures/woodward-feedbacks-components.png)
-
-::: {.caption}
-Source: @Woodard2019-cz
-:::
 
 # Equilibria
 
@@ -328,7 +349,7 @@ plot!(size=(1100, 500))
 $$
 \begin{align*}
 \frac{dH}{dt} &= H_t \underbrace{b_H}_{\substack{\text{birth} \\ \text{rate}}} - H_t (\underbrace{L_t m_H}_{\substack{\text{impact of} \\ \text{lynxes}}}) \\
-\frac{dL}{dt} &= L_t (H_t b_L)_{\substack{\text{impact of} \\ \text{hares}}}) - \underbrace{L_t m_L}_{\substack{\text{mortality} \\ \text{rate}}})
+\frac{dL}{dt} &= L_t\underbrace{(H_t b_L)}_{\substack{\text{impact of} \\ \text{hares}}} - \underbrace{L_t m_L}_{\substack{\text{mortality} \\ \text{rate}}}
 \end{align*}
 $$
 
