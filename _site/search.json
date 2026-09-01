@@ -4,7 +4,7 @@
     "href": "schedule.html",
     "title": "Course Schedule",
     "section": "",
-    "text": "This page contains a schedule of the topics, content, and assignments for the semester. Note that this schedule will be updated as necessary the semester progresses, with all changes documented here. Readings requiring institutional subscriptions can be accessed through the Cornell Library.\n\n\n\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nSlides\nLab\nHW\nQuiz\nReading\n\n\n\n\n1\nAug 24\nCourse Overview\n\n\n\n\n\n\n\n\nAug 26\nIntro to Systems\n\n\n\n\n\n\n\n2\nAug 31\nFeedbacks & Equilibria\n\n\n\n\nWoodard et al. (2019)\n\n\n\nSep 2\nStability & Bifurcations\n\n\nHW2\n\n\n\n\n3\nSep 7\nNo Class: Labor Day\n\n\n\n\n\n\n\n\nSep 9\nBifurcations\n\n\n\nQuiz 1\n\n\n\n\n\n\n\n\nReferences\n\nWoodard, D. L., Davis, S. J., & Randerson, J. T. (2019). Economic carbon cycle feedbacks may offset additional warming from natural feedbacks. Proceedings of the National Academy of Sciences, 116, 759–764. https://doi.org/10.1073/pnas.1805187115"
+    "text": "This page contains a schedule of the topics, content, and assignments for the semester. Note that this schedule will be updated as necessary the semester progresses, with all changes documented here. Readings requiring institutional subscriptions can be accessed through the Cornell Library.\n\n\n\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nSlides\nLab\nHW\nQuiz\nReading\n\n\n\n\n1\nAug 24\nCourse Overview\n\n\n\n\n\n\n\n\nAug 26\nIntro to Systems\n\n\n\n\n\n\n\n2\nAug 31\nFeedbacks & Equilibria\n\n\n\n\n\n\n\n\nSep 2\nStability & Bifurcations\n\n\nHW2\n\n\n\n\n3\nSep 7\nNo Class: Labor Day\n\n\n\n\n\n\n\n\nSep 9\nBifurcations\n\n\n\nQuiz 1"
   },
   {
     "objectID": "tutorials/notebook-to-pdf.html",
@@ -5248,7 +5248,7 @@
     "href": "slides/lecture02-1-dynamics-feedbacks.html#possible-systemlife-cycle-framework",
     "title": "System Boundaries and Feedbacks",
     "section": "Possible System/Life Cycle Framework",
-    "text": "Possible System/Life Cycle Framework\n\nSchematic of PHEV LCA Framework\nSource: Yuksel et al. (2016)"
+    "text": "Possible System/Life Cycle Framework\n\nSchematic of PHEV LCA Framework::: {.caption}G Source: Yuksel et al. (2016) :::"
   },
   {
     "objectID": "slides/lecture02-1-dynamics-feedbacks.html#phev-vs.-gasoline-outcomes",
@@ -5290,7 +5290,7 @@
     "href": "slides/lecture02-1-dynamics-feedbacks.html#feedback-level",
     "title": "System Boundaries and Feedbacks",
     "section": "Feedback Level",
-    "text": "Feedback Level\nWith no feedback: \\(\\text{Total Effect} = \\text{Direct Effect}\\)\nOver one pass feedback loop: \\(\\text{Total Effect} = (g) (\\text{Direct Effect})\\)\n\\(g\\) is the feedback factor (or gain): \\(g &gt; 0\\) means amplification, \\(g &lt; 0\\) means dampening."
+    "text": "Feedback Level\nWith no feedback: \\(\\text{Total Effect} = \\text{Direct Effect}\\)\nOver one pass feedback loop: \\(\\text{Total Effect} = (1+g) (\\text{Direct Effect})\\)\n\\(g\\) is the feedback factor (or gain): \\(g &gt; 0\\) means amplification, \\(g &lt; 0\\) means dampening."
   },
   {
     "objectID": "slides/lecture02-1-dynamics-feedbacks.html#calculating-g",
@@ -5388,7 +5388,7 @@
     "href": "slides/lecture02-1-dynamics-feedbacks.html#assessments",
     "title": "System Boundaries and Feedbacks",
     "section": "Assessments",
-    "text": "Assessments\nHomework 1: Due Thursday at 9pm.\nReading (5750): Woodard et al. (2019)"
+    "text": "Assessments\nHomework 1: Due Thursday at 9pm."
   },
   {
     "objectID": "slides/lecture02-1-dynamics-feedbacks.html#references-1",

@@ -196,7 +196,7 @@ Assume steady-state behavior, first-order linear decay, well-mixed, constant vol
 
 ![Schematic of PHEV LCA Framework](figures/Yuksel-ev-lca-framework.png)
 
-::: {.caption}
+::: {.caption}G
 Source: @Yuksel2016-fk
 :::
 
@@ -268,7 +268,7 @@ Shocks are attenuated (dampened) as they propagate:
 
 **With no feedback**: $\text{Total Effect} = \text{Direct Effect}$
 
-**Over one pass feedback loop**: $\text{Total Effect} = (g) (\text{Direct Effect})$
+**Over one pass feedback loop**: $\text{Total Effect} = (1+g) (\text{Direct Effect})$
 
 $g$ is the feedback factor (or **gain**): $g > 0$ means **amplification**, $g < 0$ means **dampening**.
 
@@ -445,7 +445,6 @@ A similar impact was seen with pesticide deployment: led to widespread die-offs 
 
 **Homework 1**: Due **Thursday** at 9pm.
 
-**Reading** (5750): @Woodard2019-cz
 
 # References
 
