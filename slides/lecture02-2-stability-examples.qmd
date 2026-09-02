@@ -88,7 +88,6 @@ Feedbacks can be:
 - **Amplifying** (sometimes called "positive")
 - **Dampening** (sometimes called "negative")
 
-Can count number of "negatives" to see whether the loop is amplifying or dampening.
 :::
 
 ::: {.column width=40%}
@@ -267,9 +266,13 @@ Then we also want to look at the Jacobian, but the condition is slightly differe
 
 ## "Snowball Earth" and Ice-Albedo Feedback
 
-In the Neoproterozoic Era (550-1000 million years ago), the Earth was covered by ice and snow during two global glaciation events. One theory is "Snowball Earth" melted due to a combination of a one-off increase in CO$_2$ (due to volcanic outgassing) and the ice-albedo feedback.
+In the Neoproterozoic Era (550-1000 million years ago), the Earth was covered by ice and snow during two global glaciation events. 
 
-A simple climate model (with no sustained CO$_2$) with the ice-albedo feedback can be written as
+One theory is "Snowball Earth" melted due to a combination of a one-off increase in CO$_2$ (due to volcanic outgassing) and the ice-albedo feedback.
+
+## Simple (Zero-D) Climate Model
+
+A simple climate model (with no sustained CO$_2$ emissions) with the ice-albedo feedback can be written as
 
 $$C\frac{dT}{dt} = F(T) = \frac{S(1-\alpha)}{4} - (A - BT)$$
 
@@ -280,7 +283,7 @@ $$\frac{dT}{dt} = F(T) = \frac{1}{C}\left(\frac{S(1-\alpha)}{4} - (A - BT)\right
 - $S\approx 1368\ \text{W}/\text{m}^2$: incoming solar insolation,  
 - $C \approx 5\ \text{J}/\text{m}^2/ ^\circ\text{C}$: heat capacity of the mixed atmosphere and upper ocean,  
 - $B=-1.3\ \text{W}/\text{m}^2/^\circ\text{C}$: outgoing radiation feedback factor, 
-- $A=221.2\ \text{W}/\text{m}^2$: remaining constant term for outgoing radiation (based on a stable pre-industrial temperature of 14°C).
+- $A=221.2\ \text{W}/\text{m}^2$: constant for outgoing radiation (based on a stable pre-industrial temperature of 14°C).
 
 
 ## Ice-Albedo Feedback
@@ -501,8 +504,6 @@ So solutions will oscillate around the equilibrium.  This is an example of a **d
 
 ## Visualizing the Lotka-Volterra System
 
-:::: {.columns}
-::: {.column width=55%}
 ```{julia}
 #| label: fig-lotka-volterra-phase
 #| fig-cap: Phase Diagram of the Lotka-Volterra Equations
@@ -544,15 +545,23 @@ for x in 0:0.5:2.5
 end
 
 scatter!(p, [0, 2], [0, 2.2], color=:black)
-plot!(size=(650, 550))
+plot!(size=(1100, 550))
 ```
 
 # Key Takeaways
 
-## Stability of Systems
+## Stability of Equilibria
 
 - Stability of an equilibrium/steady-state solution can be determined by the derivatives (or the eigenvalues of the Jacobian).
-- 
+  - stable if the real parts of the derivatives/eigenvalues are negative (perturbations decay).
+  - unstable if the real parts of the derivatives/eigenvalues are positive (perturbations grow).
+  - degenerate if the real parts of the derivatives/eigenvalues are zero (perturbations oscillate or are semi-stable).
+
+## Feedbacks and Stability
+
+- Not a 1-1 equivalence between feedback types and stability.
+- A system can have amplifying feedbacks but still be stable if the feedback gain is small. 
+- This difference can get larger as the system gets more complex or nonlinear.
 
 # Upcoming Schedule
 

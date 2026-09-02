@@ -2638,7 +2638,7 @@
     "href": "slides/lecture02-2-stability-examples.html#feedback-types",
     "title": "Stability and Examples",
     "section": "Feedback Types",
-    "text": "Feedback Types\n\n\nFeedbacks are “loops” in a system diagram.\nFeedbacks can be:\n\nAmplifying (sometimes called “positive”)\nDampening (sometimes called “negative”)\n\nCan count number of “negatives” to see whether the loop is amplifying or dampening.\n\n\n\n\nIce-Albedo Feedback Loop"
+    "text": "Feedback Types\n\n\nFeedbacks are “loops” in a system diagram.\nFeedbacks can be:\n\nAmplifying (sometimes called “positive”)\nDampening (sometimes called “negative”)\n\n\n\n\n\nIce-Albedo Feedback Loop"
   },
   {
     "objectID": "slides/lecture02-2-stability-examples.html#feedback-level",
@@ -2792,14 +2792,21 @@
     "href": "slides/lecture02-2-stability-examples.html#snowball-earth-and-ice-albedo-feedback",
     "title": "Stability and Examples",
     "section": "“Snowball Earth” and Ice-Albedo Feedback",
-    "text": "“Snowball Earth” and Ice-Albedo Feedback\nIn the Neoproterozoic Era (550-1000 million years ago), the Earth was covered by ice and snow during two global glaciation events. One theory is “Snowball Earth” melted due to a combination of a one-off increase in CO\\(_2\\) (due to volcanic outgassing) and the ice-albedo feedback.\nA simple climate model (with no sustained CO\\(_2\\)) with the ice-albedo feedback can be written as\n\\[C\\frac{dT}{dt} = F(T) = \\frac{S(1-\\alpha)}{4} - (A - BT)\\]"
+    "text": "“Snowball Earth” and Ice-Albedo Feedback\nIn the Neoproterozoic Era (550-1000 million years ago), the Earth was covered by ice and snow during two global glaciation events.\nOne theory is “Snowball Earth” melted due to a combination of a one-off increase in CO\\(_2\\) (due to volcanic outgassing) and the ice-albedo feedback."
+  },
+  {
+    "objectID": "slides/lecture02-2-stability-examples.html#simple-zero-d-climate-model",
+    "href": "slides/lecture02-2-stability-examples.html#simple-zero-d-climate-model",
+    "title": "Stability and Examples",
+    "section": "Simple (Zero-D) Climate Model",
+    "text": "Simple (Zero-D) Climate Model\nA simple climate model (with no sustained CO\\(_2\\) emissions) with the ice-albedo feedback can be written as\n\\[C\\frac{dT}{dt} = F(T) = \\frac{S(1-\\alpha)}{4} - (A - BT)\\]"
   },
   {
     "objectID": "slides/lecture02-2-stability-examples.html#simple-climate-model-terms",
     "href": "slides/lecture02-2-stability-examples.html#simple-climate-model-terms",
     "title": "Stability and Examples",
     "section": "Simple Climate Model Terms",
-    "text": "Simple Climate Model Terms\n\\[\\frac{dT}{dt} = F(T) = \\frac{1}{C}\\left(\\frac{S(1-\\alpha)}{4} - (A - BT)\\right)\\]\n\n\\(S\\approx 1368\\ \\text{W}/\\text{m}^2\\): incoming solar insolation,\n\n\\(C \\approx 5\\ \\text{J}/\\text{m}^2/ ^\\circ\\text{C}\\): heat capacity of the mixed atmosphere and upper ocean,\n\n\\(B=-1.3\\ \\text{W}/\\text{m}^2/^\\circ\\text{C}\\): outgoing radiation feedback factor,\n\\(A=221.2\\ \\text{W}/\\text{m}^2\\): remaining constant term for outgoing radiation (based on a stable pre-industrial temperature of 14°C)."
+    "text": "Simple Climate Model Terms\n\\[\\frac{dT}{dt} = F(T) = \\frac{1}{C}\\left(\\frac{S(1-\\alpha)}{4} - (A - BT)\\right)\\]\n\n\\(S\\approx 1368\\ \\text{W}/\\text{m}^2\\): incoming solar insolation,\n\n\\(C \\approx 5\\ \\text{J}/\\text{m}^2/ ^\\circ\\text{C}\\): heat capacity of the mixed atmosphere and upper ocean,\n\n\\(B=-1.3\\ \\text{W}/\\text{m}^2/^\\circ\\text{C}\\): outgoing radiation feedback factor,\n\\(A=221.2\\ \\text{W}/\\text{m}^2\\): constant for outgoing radiation (based on a stable pre-industrial temperature of 14°C)."
   },
   {
     "objectID": "slides/lecture02-2-stability-examples.html#ice-albedo-feedback",
@@ -2904,14 +2911,21 @@
     "href": "slides/lecture02-2-stability-examples.html#visualizing-the-lotka-volterra-system",
     "title": "Stability and Examples",
     "section": "Visualizing the Lotka-Volterra System",
-    "text": "Visualizing the Lotka-Volterra System\n\n\n\n\nCode\nfunction lotka_volterra!(du, u, p, t)\n  # Unpack the values so that they have clearer meaning\n  prey, pred  = u\n  birth_prey, mort_prey, birth_pred, mort_pred = p\n\n  # Define the ODE\n  du[1] = (birth_prey - mort_prey * pred) * prey\n  du[2] = (birth_pred * prey - mort_pred) * pred\nend\n\n# define model parameters and initial conditions\nθ = [1.1, 0.5, 0.1, 0.2]\nu₀ = [1, 1]\ntspan = 40\nprob = ODEProblem(lotka_volterra!, u₀, (0.0, tspan), θ)\n\n\n# plot phase space\np = plot(xlims=(0, 10), ylims=(0, 6),\n    xlabel = \"Prey Population (1,000)\", ylabel = \"Predator Population (1,000)\", leg = false)\n\nfunction phase_plot(prob, u0, θ, p, tspan = 40)\n    _prob = ODEProblem(prob.f, u0, tspan, θ)\n    sol = solve(_prob, Vern9()) # Use Vern9 solver for higher accuracy\n    plot!(p, sol, idxs = (1, 2))\nend\n\nfor x in 0:0.5:2.5\n    for y in 0:0.5:2.5\n        phase_plot(prob, [y, x], θ, p)\n    end\nend\n\nscatter!(p, [0, 2], [0, 2.2], color=:black)\nplot!(size=(650, 550))\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n0\n\n\n2\n\n\n4\n\n\n6\n\n\n8\n\n\n10\n\n\nPrey Population (1,000)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n0\n\n\n1\n\n\n2\n\n\n3\n\n\n4\n\n\n5\n\n\n6\n\n\nPredator Population (1,000)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 4: Phase Diagram of the Lotka-Volterra Equations\n\n\n\n\n\nKey Takeaways\n\n\n\nStability of Systems\n\nStability of an equilibrium/steady-state solution can be determined by the derivatives (or the eigenvalues of the Jacobian).\n\n\n\n\n\nUpcoming Schedule\n\n\n\nNext Classes\nMonday: Labor Day!\nWednesday: Quiz 1, Lake Problem Example\n\n\nAssessments\n\nHW 1: Due tomorrow at 9pm\nQuiz 1: Wednesday, September 11th"
+    "text": "Visualizing the Lotka-Volterra System\n\n\nCode\nfunction lotka_volterra!(du, u, p, t)\n  # Unpack the values so that they have clearer meaning\n  prey, pred  = u\n  birth_prey, mort_prey, birth_pred, mort_pred = p\n\n  # Define the ODE\n  du[1] = (birth_prey - mort_prey * pred) * prey\n  du[2] = (birth_pred * prey - mort_pred) * pred\nend\n\n# define model parameters and initial conditions\nθ = [1.1, 0.5, 0.1, 0.2]\nu₀ = [1, 1]\ntspan = 40\nprob = ODEProblem(lotka_volterra!, u₀, (0.0, tspan), θ)\n\n\n# plot phase space\np = plot(xlims=(0, 10), ylims=(0, 6),\n    xlabel = \"Prey Population (1,000)\", ylabel = \"Predator Population (1,000)\", leg = false)\n\nfunction phase_plot(prob, u0, θ, p, tspan = 40)\n    _prob = ODEProblem(prob.f, u0, tspan, θ)\n    sol = solve(_prob, Vern9()) # Use Vern9 solver for higher accuracy\n    plot!(p, sol, idxs = (1, 2))\nend\n\nfor x in 0:0.5:2.5\n    for y in 0:0.5:2.5\n        phase_plot(prob, [y, x], θ, p)\n    end\nend\n\nscatter!(p, [0, 2], [0, 2.2], color=:black)\nplot!(size=(1100, 550))\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n0\n\n\n2\n\n\n4\n\n\n6\n\n\n8\n\n\n10\n\n\nPrey Population (1,000)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n0\n\n\n1\n\n\n2\n\n\n3\n\n\n4\n\n\n5\n\n\n6\n\n\nPredator Population (1,000)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 4: Phase Diagram of the Lotka-Volterra Equations"
   },
   {
-    "objectID": "slides/lecture02-2-stability-examples.html#stability-of-systems-1",
-    "href": "slides/lecture02-2-stability-examples.html#stability-of-systems-1",
+    "objectID": "slides/lecture02-2-stability-examples.html#stability-of-equilibria",
+    "href": "slides/lecture02-2-stability-examples.html#stability-of-equilibria",
     "title": "Stability and Examples",
-    "section": "Stability of Systems",
-    "text": "Stability of Systems\n\nStability of an equilibrium/steady-state solution can be determined by the derivatives (or the eigenvalues of the Jacobian)."
+    "section": "Stability of Equilibria",
+    "text": "Stability of Equilibria\n\nStability of an equilibrium/steady-state solution can be determined by the derivatives (or the eigenvalues of the Jacobian).\n\nstable if the real parts of the derivatives/eigenvalues are negative (perturbations decay).\nunstable if the real parts of the derivatives/eigenvalues are positive (perturbations grow).\ndegenerate if the real parts of the derivatives/eigenvalues are zero (perturbations oscillate or are semi-stable)."
+  },
+  {
+    "objectID": "slides/lecture02-2-stability-examples.html#feedbacks-and-stability",
+    "href": "slides/lecture02-2-stability-examples.html#feedbacks-and-stability",
+    "title": "Stability and Examples",
+    "section": "Feedbacks and Stability",
+    "text": "Feedbacks and Stability\n\nNot a 1-1 equivalence between feedback types and stability.\nA system can have amplifying feedbacks but still be stable if the feedback gain is small.\nThis difference can get larger as the system gets more complex or nonlinear."
   },
   {
     "objectID": "slides/lecture02-2-stability-examples.html#next-classes",
