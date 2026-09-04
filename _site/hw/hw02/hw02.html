@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2026-09-04">
 
-<title>Homework – Environmental Systems Analysis</title>
+<title>BEE 4750 Homework 2: Systems Feedbacks and Stability – Environmental Systems Analysis</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,29 +24,64 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../hw/hw01/hw01.html" rel="next">
-<link href="../_assets/logos/favicon.png" rel="icon" type="image/png">
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-037772e4b0a8fb61e9a28208dd0e90cd.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-41afc7412041501ec6863dfe70bda895.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../hw/hw01/hw01.html" rel="prev">
+<link href="../../_assets/logos/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-037772e4b0a8fb61e9a28208dd0e90cd.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-41afc7412041501ec6863dfe70bda895.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -82,8 +118,37 @@ window.MathJax = {
   };
 </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<meta property="og:title" content="Homework – Environmental Systems Analysis">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="BEE 4750 Homework 2: Systems Feedbacks and Stability – Environmental Systems Analysis">
 <meta property="og:description" content="Homepage for the Fall 2025 version of BEE 4750/5750, Environmental Systems Analysis, at Cornell University.">
 <meta property="og:site_name" content="Environmental Systems Analysis">
 </head>
@@ -95,7 +160,7 @@ window.MathJax = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">BEE 4750/5750</span>
     </a>
   </div>
@@ -111,25 +176,25 @@ window.MathJax = {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-info">    
         <li>
-    <a class="dropdown-item" href="../syllabus.html">
+    <a class="dropdown-item" href="../../syllabus.html">
  <span class="dropdown-text">Syllabus</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../policies/index.html">
+    <a class="dropdown-item" href="../../policies/index.html">
  <span class="dropdown-text">Course Policies</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../faq/index.html">
+    <a class="dropdown-item" href="../../faq/index.html">
  <span class="dropdown-text">FAQ</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../setup/index.html">
+    <a class="dropdown-item" href="../../setup/index.html">
  <span class="dropdown-text">Setup</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="../schedule.html"> 
+    <a class="nav-link" href="../../schedule.html"> 
 <span class="menu-text">Course Schedule</span></a>
   </li>  
   <li class="nav-item dropdown ">
@@ -138,15 +203,15 @@ window.MathJax = {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-coursework">    
         <li>
-    <a class="dropdown-item" href="../labs/index.html">
+    <a class="dropdown-item" href="../../labs/index.html">
  <span class="dropdown-text">Labs</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../hw/index.html">
+    <a class="dropdown-item" href="../../hw/index.html">
  <span class="dropdown-text">Homework</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../project/index.html">
+    <a class="dropdown-item" href="../../project/index.html">
  <span class="dropdown-text">Final Project</span></a>
   </li>  
     </ul>
@@ -157,31 +222,31 @@ window.MathJax = {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-resources">    
         <li>
-    <a class="dropdown-item" href="../tutorials/index.html">
+    <a class="dropdown-item" href="../../tutorials/index.html">
  <span class="dropdown-text">Tutorials</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../resources/general.html">
+    <a class="dropdown-item" href="../../resources/general.html">
  <span class="dropdown-text">General Resources</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../resources/julia.html">
+    <a class="dropdown-item" href="../../resources/julia.html">
  <span class="dropdown-text">Julia Resources</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../resources/ai.html">
+    <a class="dropdown-item" href="../../resources/ai.html">
  <span class="dropdown-text">Generative AI and LLMs</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../resources/github.html">
+    <a class="dropdown-item" href="../../resources/github.html">
  <span class="dropdown-text">GitHub Resources</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../resources/markdown.html">
+    <a class="dropdown-item" href="../../resources/markdown.html">
  <span class="dropdown-text">Markdown Resources</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../resources/optimization.html">
+    <a class="dropdown-item" href="../../resources/optimization.html">
  <span class="dropdown-text">Optimization Resources</span></a>
   </li>  
     </ul>
@@ -215,7 +280,7 @@ window.MathJax = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../hw/index.html">Homework Overview</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../hw/hw02/hw02.html">Homework 2</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -229,19 +294,19 @@ window.MathJax = {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../hw/index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../hw/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Homework Overview</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../hw/hw01/hw01.html" class="sidebar-item-text sidebar-link">
+  <a href="../../hw/hw01/hw01.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Homework 1</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../hw/hw02/hw02.html" class="sidebar-item-text sidebar-link">
+  <a href="../../hw/hw02/hw02.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Homework 2</span></a>
   </div>
 </li>
@@ -255,18 +320,28 @@ window.MathJax = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#general-information" id="toc-general-information" class="nav-link active" data-scroll-target="#general-information">General Information</a></li>
-  <li><a href="#grading" id="toc-grading" class="nav-link" data-scroll-target="#grading">Grading</a></li>
-  <li><a href="#schedule" id="toc-schedule" class="nav-link" data-scroll-target="#schedule">Schedule</a></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
+  <ul class="collapse">
+  <li><a href="#instructions" id="toc-instructions" class="nav-link" data-scroll-target="#instructions">Instructions</a></li>
+  <li><a href="#load-environment" id="toc-load-environment" class="nav-link" data-scroll-target="#load-environment">Load Environment</a></li>
+  </ul></li>
+  <li><a href="#problems-total-50-points" id="toc-problems-total-50-points" class="nav-link" data-scroll-target="#problems-total-50-points">Problems (Total: 50 Points)</a>
+  <ul class="collapse">
+  <li><a href="#problem-1-9" id="toc-problem-1-9" class="nav-link" data-scroll-target="#problem-1-9">Problem 1 (9)</a></li>
+  <li><a href="#problem-2-9" id="toc-problem-2-9" class="nav-link" data-scroll-target="#problem-2-9">Problem 2 (9)</a></li>
+  <li><a href="#problem-3-6" id="toc-problem-3-6" class="nav-link" data-scroll-target="#problem-3-6">Problem 3 (6)</a></li>
+  <li><a href="#problem-4-26" id="toc-problem-4-26" class="nav-link" data-scroll-target="#problem-4-26">Problem 4 (26)</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/hw/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/hw/hw02/hw02.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="hw02.pdf"><i class="bi bi-file-earmark-pdf"></i>PDF</a></li><li><a href="hw02.ipynb" download="hw02.ipynb"><i class="bi bi-laptop"></i>Notebook</a></li><li><a href="hw02.ipynb" download="hw02.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li><li><a href="hw02.pdf"><i class="bi bi-file-pdf"></i>Typst</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Homework</h1>
+<h1 class="title">BEE 4750 Homework 2: Systems Feedbacks and Stability</h1>
 </div>
 
 
@@ -274,6 +349,12 @@ window.MathJax = {
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 4, 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -283,65 +364,145 @@ window.MathJax = {
 </header>
 
 
-<p>This page contains information about and a schedule of the homework assignments for the semester.</p>
-<section id="general-information" class="level2">
-<h2 class="anchored" data-anchor-id="general-information">General Information</h2>
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Due Date
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Thursday, 09/17/26, 9:00pm</p>
+</div>
+</div>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<section id="instructions" class="level3">
+<h3 class="anchored" data-anchor-id="instructions">Instructions</h3>
 <ul>
-<li>While the instructions for each assignment are available through the linked pages for quick and public access, <strong>if you are in the class you must fork the assignment repository linked in <a href="http://us.edstem.org">Ed Discussion</a></strong>. This will ensure that:
-<ul>
-<li>You have compatible versions of all relevant packages provided in the environment;</li>
-<li>You have a GitHub repository that you can use to share your code.</li>
-</ul></li>
-<li>Submit assignments by 9:00pm Eastern Time on the due date on <a href="https://gradescope.com">Gradescope</a>.</li>
-<li>Groups of at most three students can submit group solutions. Groups do not have the be the same for all assignments. <strong>Exactly one member of each group should submit the solution</strong>. If you submit as a group, <strong>it is the responsibility of the submitter to tell Gradescope the names of the other group members</strong>. If this information is not entered, the other group members’ grades can be delayed or even lost. Also include the names and NetIDs of all group members on the first page.</li>
-<li>More detailed <a href="../policies/homework.html#homework-logistics">homework instructions and logistics</a> are available.</li>
-<li>Submissions must be PDFs. Make sure that you tag the pages corresponding to each question; points will be deducted otherwise.</li>
-<li>You do not have to write your homeworks using the provided Jupyter Notebook; they are there for your convenience. You can use any tool(s) you like to write up your solutions, as long as you submit a PDF. This could include Microsoft Word, LaTeX, etc. <strong>You do not need to submit your code for any programming problems — we will not look at it when grading, only your derivation/explanation of the approach and the results/your interpretation of the results</strong>.</li>
-<li><strong>If you do use the notebook</strong>: To convert the assignment notebook to PDF, you can use VS Code to render the notebook to HTML, and then use your browser to print to PDF. If you have set up LaTeX with VS Code, you can convert directly to a PDF.
-<ul>
-<li>As an alternative, when you commit and push a <code>.ipynb</code> file (a Jupyter Notebook) to your repository, we have set up a <a href="https://docs.github.com/en/actions">GitHub Action</a> to automatically render your notebook to a PDF, which you can then download and submit to Gradescope. However, sometimes GitHub actions can take a while or can stall out, so you’ll need to monitor this and give yourself some time. If you’ve waited a while and your notebook isn’t rendering, reach out on Ed and we can figure out what’s going on. In the worst case (you push your changes close to the deadline), the timestamp of your commit will be evidence that you completed the assignment on time, even if we can’t render the PDF until the next day.</li>
-</ul></li>
+<li>Problem 1 asks you to find the equilibria of several 1-D systems models and identify their stability.</li>
+<li>Problem 2 asks you to draw a systems diagram and identify the type of a feedback.</li>
+<li>Problem 3 asks you to find and analyze the equilibria of a modified predatory-prey system.</li>
+<li>Problem 4 asks you to analyze a lake system experiencing phosphorous loading, both feedbacks as well as equilibria and stability.</li>
 </ul>
 </section>
-<section id="grading" class="level2">
-<h2 class="anchored" data-anchor-id="grading">Grading</h2>
-<p>Make sure to look over the <a href="../policies/rubric.html">standard homework rubric</a> and familiarize yourself with the <a href="../policies/homework.html">homework</a> and <a href="../policies/grading.html">grading policies</a>.</p>
+<section id="load-environment" class="level3">
+<h3 class="anchored" data-anchor-id="load-environment">Load Environment</h3>
+<p>The following code loads the environment and makes sure all needed packages are installed. This should be at the start of most Julia scripts.</p>
+<div id="2" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">Pkg</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">activate</span>(<span class="pp">@__DIR__</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">instantiate</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="4" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Plots</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">LaTeXStrings</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
-<section id="schedule" class="level2">
-<h2 class="anchored" data-anchor-id="schedule">Schedule</h2>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 5%">
-<col style="width: 5%">
-<col style="width: 10%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: center;">Assignment</th>
-<th style="text-align: center;">Instructions</th>
-<th style="text-align: center;">Solutions</th>
-<th style="text-align: center;">Due Date</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">Homework 1</td>
-<td style="text-align: center;"><a href="../hw/hw01/hw01.html"><i class="fa-sharp fa-pen-field" aria-label="pen-field"></i></a></td>
-<td style="text-align: center;"><p><i class="fa-sharp fa-key-skeleton" aria-label="key-skeleton"></i></p></td>
-<td style="text-align: center;">Sep.&nbsp;03</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Homework 2</td>
-<td style="text-align: center;"><a href="../hw/hw02/hw02.html"><i class="fa-sharp fa-pen-field" aria-label="pen-field"></i></a></td>
-<td style="text-align: center;"><p><i class="fa-sharp fa-key-skeleton" aria-label="key-skeleton"></i></p></td>
-<td style="text-align: center;">Sep.&nbsp;17</td>
-</tr>
-</tbody>
-</table>
+</section>
+<section id="problems-total-50-points" class="level2">
+<h2 class="anchored" data-anchor-id="problems-total-50-points">Problems (Total: 50 Points)</h2>
+<section id="problem-1-9" class="level3 markdown cell">
+<h3 class="anchored" data-anchor-id="problem-1-9">Problem 1 (9)</h3>
+<p>For each of the following systems models, find (i) any equilibria and (ii) their stabilities.</p>
+</section>
+<section id="problem-1.1-3" class="level4 markdown cell">
+<h4 class="anchored" data-anchor-id="problem-1.1-3">Problem 1.1 (3)</h4>
+<p><span class="math display">\[\frac{dx}{dt} = 4x^2 - 16\]</span></p>
+</section>
+<section id="problem-1.2-3" class="level4 markdown cell">
+<h4 class="anchored" data-anchor-id="problem-1.2-3">Problem 1.2 (3)</h4>
+<p><span class="math display">\[\frac{dx}{dt} = x - x^3\]</span></p>
+</section>
+<section id="problem-1.3-3" class="level4 markdown cell">
+<h4 class="anchored" data-anchor-id="problem-1.3-3">Problem 1.3 (3)</h4>
+<p><span class="math display">\[\frac{dx}{dt} = 1 - 2\cos x\]</span></p>
+</section>
+<section id="problem-2-9" class="level3 markdown cell">
+<h3 class="anchored" data-anchor-id="problem-2-9">Problem 2 (9)</h3>
+</section>
+<section id="problem-2.1-5" class="level4 markdown cell">
+<h4 class="anchored" data-anchor-id="problem-2.1-5">Problem 2.1 (5)</h4>
+<p>Draw a systems diagram for the relationship between global mean temperature, atmospheric CO<sub>2</sub> concentrations, and ocean CO<sub>2</sub> concentrations. What are the signs of the interactions between these components and why? What does this suggest about the overall feedback between temperature and the ocean carbon cycle?</p>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Think about Henry’s law for CO<sub>2</sub>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-2.2-4" class="level4 markdown cell">
+<h4 class="anchored" data-anchor-id="problem-2.2-4">Problem 2.2 (4)</h4>
+<p>Of the following quantities related to this system, which are stocks and which are flows?</p>
+<ol type="1">
+<li>The absorbed mass of CO<sub>2</sub> in the ocean.</li>
+<li>The rate at which CO<sub>2</sub> is absorbed by the ocean from the atmosphere.</li>
+<li>The yearly increase in global temperature.</li>
+<li>The heat stored in the ocean.</li>
+</ol>
+</section>
+<section id="problem-3-6" class="level3 markdown cell">
+<h3 class="anchored" data-anchor-id="problem-3-6">Problem 3 (6)</h3>
+<p>One criticism of the Lotka-Volterra predator-prey equations discussed in class is that the behavior of the system is entirely determined by the initial conditions of the model: a perturbation (like a disease among some of the prey) would permanently change the dynamics of the system and the populations would never recover to their “natural” levels.</p>
+<p>We can “fix” this by adding another term to the model, a population-dependent death rate which causes populations to recover more rapidly at lower populations and die off more rapidly at larger populations. This would take the following form:</p>
+<p><span class="math display">\[\begin{aligned}
+\frac{dH}{dt} &amp;= b_h H_t - m_h H_t L_t - \gamma_H H_t^2 \\
+\frac{dL}{dt} &amp;= b_L L_t H_t - m_L L_t - \gamma_L L_t^2
+\end{aligned}\]</span></p>
+<p>What are the equilibria of the system (bearing in mind that all of the model parameters must be positive; <strong>hint: you should get three</strong>)? What are the stabilities of any non-trivial <span class="math inline">\((L_t=H_t=0\)</span>) equilibria? Comparing this result to the Lotka-Volterra analysis from class, what can you say about the impact of the population-dependent death term on the behavior of the system?</p>
+</section>
+<section id="problem-4-26" class="level3 cell markdown">
+<h3 class="anchored" data-anchor-id="problem-4-26">Problem 4 (26)</h3>
+<p>A shallow, temperate, well-mixed lake receiving phosphorus from its catchment. In this lake, phosphorus (P) is the limiting nutrient for algal biomass and whether the lake is oligotrophic or eutrophic.</p>
+<p>The storage level of P in the sediment is primarily determined by the oxygen (O<sub>2</sub>) in the sediment and is thus related to the level of algal biomass (decomposition of dead algae consumes O<sub>2</sub>). P is also lost from the lake system through outflow and permanent deposition in the sediment.</p>
+</section>
+<section id="problem-4.1-4" class="level4 cell markdown">
+<h4 class="anchored" data-anchor-id="problem-4.1-4">Problem 4.1 (4)</h4>
+<p>Draw a systems diagram for this lake system, capturing the feedback due to the impact of O<sub>2</sub> on sediment P recycling and its mediation by algal biomass. Is this an amplifying or a dampening feedback loop?</p>
+</section>
+<section id="problem-4.2-3" class="level4 cell markdown">
+<h4 class="anchored" data-anchor-id="problem-4.2-3">Problem 4.2 (3)</h4>
+<p>Which of the following system quantities are stocks and which are flows?</p>
+<ol type="1">
+<li>The O<sub>2</sub> demand induced by decomposing biomass.</li>
+<li>The sediment P pool.</li>
+<li>The external P loading in a given year</li>
+</ol>
+</section>
+<section id="problem-4.3-5" class="level4 markdown cell">
+<h4 class="anchored" data-anchor-id="problem-4.3-5">Problem 4.3 (5)</h4>
+<p>The P concentration of the lake is determined by <span class="math display">\[\frac{dP}{dt} = L - sP - R(t),\]</span> where <span class="math inline">\(P\)</span> is the P concentration (<span class="math inline">\(\mu\text{g}/\text{L}\)</span>), <span class="math inline">\(L\)</span> is external P loading from runoff (<span class="math inline">\(\mu\text{g}/(\text{L} \cdot \text{yr})\)</span>), <span class="math inline">\(s=1\ \text{yr}^{-1}\)</span> is the first-order rate of combined P outflow and permanent deposition, and <span class="math inline">\(R(t)\)</span> (<span class="math inline">\(\mu\text{g}/(\text{L}\cdot\text{yr})\)</span> is the sediment release rate at time <span class="math inline">\(t\)</span>.</p>
+<p>Since the amount of algal biomass is limited by the P concentration, the sediment release rate <span class="math inline">\(R\)</span> can be written as a function of P instead of time. This can be thought of as consisting of three regimes: (1) when the lake is fully oligotrophic and sediment is fully oxidized, retaining all P; (2) a transitional regime where increasing algae reduces sediment oxygenation, increasing P recycling; (3) when the sediment is releasing at its maximum capacity due to maximum sediment P and/or the ability of bacteria to decompose biomass, and additional biomass will not increase the rate of recycling. We will assume the maximum recycling rate is <span class="math inline">\(20\ \mu\text{g}/\text{L}\)</span>, and the transitional regime occurs between <span class="math inline">\(25\ \mu\text{g}/\text{L}\)</span> and <span class="math inline">\(35\ \mu\text{g}/\text{L}\)</span>.</p>
+<p>Turning this into a piecewise linear model for <span class="math inline">\(R\)</span>: <span class="math display">\[
+R(P) = \begin{cases}
+    0 &amp; \quad \text{if} P \leq 25\ \mu\text{g}/\text{L} \\
+    20 \frac{P - 25}{10} &amp; \quad \text{if} 25\ \mu \text{g}/\text{L} &lt; P &lt; 35\ \mu \text{g}/\text{L} \\
+    20 &amp; \quad \text{if} P \geq 35\ \mu\text{g}/\text{L}
+\end{cases}.
+\]</span></p>
+</section>
+<p>What are the feedback gain(s) for this model in each sediment recycling regime? What does this implify about how a one-off P increase of <span class="math inline">\(1 \mu \text{g}/\text{L}\)</span> would increase the P level of the lake?</p>
+<section id="problem-4.4-6" class="level4 cell markdown">
+<h4 class="anchored" data-anchor-id="problem-4.4-6">Problem 4.4 (6)</h4>
+<p>Find the equilibria of this system assuming external loading of <span class="math inline">\(L=20\ \mu\text{g}/(\text{L} \cdot \text{yr})\)</span>. Are they stable or unstable?</p>
+</section>
+<section id="problem-4.5-8" class="level4 markdown cell">
+<h4 class="anchored" data-anchor-id="problem-4.5-8">Problem 4.5 (8)</h4>
+<p>What are the impacts to the equilibria of the lake if the external loading decreases to <span class="math inline">\(L=10\ \mu\text{g}/(\text{L} \cdot \text{yr})\)</span> or increases to <span class="math inline">\(L=30\ \mu\text{g}/(\text{L} \cdot \text{yr})\)</span>? What does this tell you about how the lake could respond to these different levels of loading?</p>
+</section>
+</section>
+<section id="references" class="level2 markdown cell">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>List any external references consulted, including classmates.</p>
+</section>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -771,18 +932,18 @@ window.MathJax = {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="../../hw/hw01/hw01.html" class="pagination-link" aria-label="Homework 1">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Homework 1</span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../hw/hw01/hw01.html" class="pagination-link" aria-label="Homework 1">
-        <span class="nav-page-text">Homework 1</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p><span class="faux-block"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> 2025 Vivek Srikrishnan</span><br> See the <a href="../about.html">About Page</a> for credit information.</p>
+<p><span class="faux-block"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> 2025 Vivek Srikrishnan</span><br> See the <a href="../../about.html">About Page</a> for credit information.</p>
 </div>   
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">
@@ -790,7 +951,7 @@ window.MathJax = {
  <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">LICENSE: CC-BY-SA  <i class="fab fa-creative-commons"></i><i class="fab fa-creative-commons-by"></i><i class="fab fa-creative-commons-sa"></i></a>
   </li>  
 </ul>
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/hw/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/hw/hw02/hw02.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>Made with <a href="https://julialang.org">Julia</a> and <a href="https://quarto.org/">Quarto</a><br> <a href="https://www.github.com/bee-envsys-cornell/fall2026/">View the source at <i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
 </div>

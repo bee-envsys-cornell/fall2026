@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://envsys.viveks.me/fall2025/schedule.html</loc>
-    <lastmod>2026-09-02T14:04:37.204Z</lastmod>
+    <lastmod>2026-09-04T18:24:53.027Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/tutorials/notebook-to-pdf.html</loc>
@@ -133,16 +133,20 @@
     <lastmod>2026-08-24T00:13:06.995Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/hw/index.html</loc>
-    <lastmod>2026-08-24T00:12:39.062Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/hw/hw02/hw02.html</loc>
+    <lastmod>2026-09-04T18:24:38.381Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/hw/hw01/hw01.html</loc>
+    <lastmod>2026-08-24T00:32:25.144Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/labs/index.html</loc>
     <lastmod>2026-08-24T00:32:15.865Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/hw/hw01/hw01.html</loc>
-    <lastmod>2026-08-24T00:32:25.144Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/hw/index.html</loc>
+    <lastmod>2026-09-04T18:30:52.106Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/resources/github.html</loc>
