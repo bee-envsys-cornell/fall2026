@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-09-04">
+<meta name="dcterms.date" content="2026-09-07">
 
 <title>BEE 4750 Homework 2: Systems Feedbacks and Stability – Environmental Systems Analysis</title>
 <style>
@@ -352,7 +352,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 4, 2026</p>
+      <p class="date">September 7, 2026</p>
     </div>
   </div>
   
@@ -477,7 +477,7 @@ window.Quarto = {
 </section>
 <section id="problem-4.3-5" class="level4 markdown cell">
 <h4 class="anchored" data-anchor-id="problem-4.3-5">Problem 4.3 (5)</h4>
-<p>The P concentration of the lake is determined by <span class="math display">\[\frac{dP}{dt} = L - sP - R(t),\]</span> where <span class="math inline">\(P\)</span> is the P concentration (<span class="math inline">\(\mu\text{g}/\text{L}\)</span>), <span class="math inline">\(L\)</span> is external P loading from runoff (<span class="math inline">\(\mu\text{g}/(\text{L} \cdot \text{yr})\)</span>), <span class="math inline">\(s=1\ \text{yr}^{-1}\)</span> is the first-order rate of combined P outflow and permanent deposition, and <span class="math inline">\(R(t)\)</span> (<span class="math inline">\(\mu\text{g}/(\text{L}\cdot\text{yr})\)</span> is the sediment release rate at time <span class="math inline">\(t\)</span>.</p>
+<p>The P concentration of the lake is determined by <span class="math display">\[\frac{dP}{dt} = L - sP + R(t),\]</span> where <span class="math inline">\(P\)</span> is the P concentration (<span class="math inline">\(\mu\text{g}/\text{L}\)</span>), <span class="math inline">\(L\)</span> is external P loading from runoff (<span class="math inline">\(\mu\text{g}/(\text{L} \cdot \text{yr})\)</span>), <span class="math inline">\(s=1\ \text{yr}^{-1}\)</span> is the first-order rate of combined P outflow and permanent deposition, and <span class="math inline">\(R(t)\)</span> (<span class="math inline">\(\mu\text{g}/(\text{L}\cdot\text{yr})\)</span> is the sediment release rate at time <span class="math inline">\(t\)</span>.</p>
 <p>Since the amount of algal biomass is limited by the P concentration, the sediment release rate <span class="math inline">\(R\)</span> can be written as a function of P instead of time. This can be thought of as consisting of three regimes: (1) when the lake is fully oligotrophic and sediment is fully oxidized, retaining all P; (2) a transitional regime where increasing algae reduces sediment oxygenation, increasing P recycling; (3) when the sediment is releasing at its maximum capacity due to maximum sediment P and/or the ability of bacteria to decompose biomass, and additional biomass will not increase the rate of recycling. We will assume the maximum recycling rate is <span class="math inline">\(20\ \mu\text{g}/\text{L}\)</span>, and the transitional regime occurs between <span class="math inline">\(25\ \mu\text{g}/\text{L}\)</span> and <span class="math inline">\(35\ \mu\text{g}/\text{L}\)</span>.</p>
 <p>Turning this into a piecewise linear model for <span class="math inline">\(R\)</span>: <span class="math display">\[
 R(P) = \begin{cases}
