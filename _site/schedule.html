@@ -23,7 +23,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -318,18 +338,23 @@ window.MathJax = {
 <td style="text-align: center;"></td>
 <td style="text-align: left;">Sep 9</td>
 <td style="text-align: left;">Bifurcations</td>
-<td style="text-align: center;"></td>
+<td style="text-align: center;"><a href="./slides/lecture03-2-lake-hysteresis.html"><i class="fa-sharp fa-presentation-screen" aria-label="presentation-screen"></i></a></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">Quiz 1</td>
-<td style="text-align: center;"></td>
+<td style="text-align: center;"><span class="citation" data-cites="Carpenter1999-wx">Carpenter et al. (<a href="#ref-Carpenter1999-wx" role="doc-biblioref">1999</a>)</span></td>
 </tr>
 </tbody>
 </table>
 
 
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-Carpenter1999-wx" class="csl-entry" role="listitem">
+Carpenter, S. R., Ludwig, D., &amp; Brock, W. A. (1999). Management of eutrophication for lakes subject to potentially irreversible change. <em>Ecol. Appl.</em>, <em>9</em>(3), 751–771. <a href="https://doi.org/10.2307/2641327">https://doi.org/10.2307/2641327</a>
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
