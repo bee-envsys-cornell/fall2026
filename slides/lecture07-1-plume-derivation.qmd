@@ -258,20 +258,24 @@ $$C(x,y,z) = \frac{Q}{2\pi u\sigma_y\sigma_z}\exp\left(\frac{-y^2}{2\sigma_y^2}\
 #| code-fold: true
 #| output: false
 
-Q, H, u_wind = 100.0, 41.0, 2.5
+plume_params = let
+    Q, H, u_wind = 100.0, 41.0, 2.5
+    (; Q, H, u_wind)
+end
+
 sig_y(xk) = 34.0 * xk^0.894
 sig_z(xk) = xk < 1 ? 14.35 * xk^0.740 - 0.35 : 62.6 * xk^0.180 - 48.6
 
-plume(xk, y, z; reflect=true) = begin
+plume(xk, y, z, params; reflect=true) = begin
     sy, sz = sig_y(xk), sig_z(xk)
-    base = (Q / (2π * u_wind * sy * sz)) * exp(-y^2 / (2sy^2))
-    reflect ? base * (exp(-(z - H)^2 / (2sz^2)) + exp(-(z + H)^2 / (2sz^2))) :
-              base * exp(-(z - H)^2 / (2sz^2))
+    base = (params.Q / (2π * params.u_wind * sy * sz)) * exp(-y^2 / (2sy^2))
+    reflect ? base * (exp(-(z - params.H)^2 / (2sz^2)) + exp(-(z + params.H)^2 / (2sz^2))) :
+              base * exp(-(z - params.H)^2 / (2sz^2))
 end
 
 dz = 0.001
-flux_with = (plume(3.0, 0.0, dz) - plume(3.0, 0.0, 0.0)) / dz
-flux_without = (plume(3.0, 0.0, dz; reflect=false) - plume(3.0, 0.0, 0.0; reflect=false)) / dz
+flux_with = (plume(3.0, 0.0, dz, plume_params) - plume(3.0, 0.0, 0.0, plume_params)) / dz
+flux_without = (plume(3.0, 0.0, dz, plume_params; reflect=false) - plume(3.0, 0.0, 0.0, plume_params; reflect=false)) / dz
 ```
 
 $\partial C/\partial z$ at the ground, 3 km downwind: **with** the image term, `{julia} round(flux_with, sigdigits=2)`; **without** it, `{julia} round(flux_without, sigdigits=2)` --- about $3\times 10^4$ times larger. The second exponential is not decoration; it is the boundary condition.
@@ -337,7 +341,7 @@ $$\sigma_y = 34x^{0.894} \qquad \sigma_z = \begin{cases}14.35x^{0.740}-0.35 & x<
 
 xk = 3.0
 sy, sz = sig_y(xk), sig_z(xk)
-Cground = plume(xk, 0.0, 0.0)
+Cground = plume(xk, 0.0, 0.0, plume_params)
 println("σ_y = ", round(sy, digits=1), " m")
 println("σ_z = ", round(sz, digits=1), " m")
 println("C(3 km, 0, 0) = ", round(Cground * 1e6, digits=1), " µg/m³")

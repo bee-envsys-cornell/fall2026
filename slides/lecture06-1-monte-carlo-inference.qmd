@@ -110,24 +110,28 @@ Recall Streeter-Phelps: the incoming CBOD load $B_0$ varies day to day, $B_0 \si
 #| code-fold: true
 #| output: false
 
-ka, kc, kn = 0.6, 0.4, 0.25
-C0, N0, Cs, U = 6.2, 7.0, 7.0, 5.0
-L = 40.0
+do_params = let
+    ka, kc, kn = 0.6, 0.4, 0.25
+    C0, N0, Cs, U = 6.2, 7.0, 7.0, 5.0
+    L = 40.0
+    standard = 2.5
+    (; ka, kc, kn, C0, N0, Cs, U, L, standard)
+end
 
-do_min(B0; dx=0.1) = begin
-    steps = Int(round(L / dx))
-    C = C0
+do_min(B0, params; dx=0.1) = begin
+    steps = Int(round(params.L / dx))
+    C = params.C0
     m = C
     for i in 1:steps
         x = (i - 1) * dx
-        C = C + dx * ((ka * (Cs - C) - kc * B0 * exp(-kc * x / U)
-                        - kn * N0 * exp(-kn * x / U)) / U)
+        C = C + dx * ((params.ka * (params.Cs - C) - params.kc * B0 * exp(-params.kc * x / params.U)
+                        - params.kn * params.N0 * exp(-params.kn * x / params.U)) / params.U)
         m = min(m, C)
     end
     return m
 end
 
-violates(; standard=2.5) = do_min(max(0.1, rand(Normal(9.0, 1.5)))) < standard
+violates(params) = do_min(max(0.1, rand(Normal(9.0, 1.5))), params) < params.standard
 ```
 
 ## Watching the Estimate Settle
@@ -140,7 +144,7 @@ violates(; standard=2.5) = do_min(max(0.1, rand(Normal(9.0, 1.5)))) < standard
 
 Random.seed!(4750)
 N = 20_000
-draws = [violates() for _ in 1:N]
+draws = [violates(do_params) for _ in 1:N]
 running_p = cumsum(draws) ./ (1:N)
 running_se = [i > 1 ? sqrt(running_p[i] * (1 - running_p[i]) / i) : NaN for i in 1:N]
 

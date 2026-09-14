@@ -83,14 +83,17 @@ cb_purple = "#CC79A7"
 #| output: false
 
 # Carried over from Monday: the closed-form plume, Class F stability.
-Q, H, u_wind = 100.0, 41.0, 2.5
+plume_params = let
+    Q, H, u_wind = 100.0, 41.0, 2.5
+    (; Q, H, u_wind)
+end
 sig_y(xk) = 34.0 * xk^0.894
 sig_z(xk) = xk < 1 ? 14.35 * xk^0.740 - 0.35 : 62.6 * xk^0.180 - 48.6
 
-plume(xk, y, z; source=Q) = begin
+function plume(xk, y, z, params)
     sy, sz = sig_y(xk), sig_z(xk)
-    (source / (2π * u_wind * sy * sz)) * exp(-y^2 / (2sy^2)) * (
-        exp(-(z - H)^2 / (2sz^2)) + exp(-(z + H)^2 / (2sz^2)))
+    (params.Q / (2π * params.u_wind * sy * sz)) * exp(-y^2 / (2sy^2)) * (
+        exp(-(z - params.H)^2 / (2sz^2)) + exp(-(z + params.H)^2 / (2sz^2)))
 end
 ```
 
@@ -118,7 +121,7 @@ Built from a real Péclet argument (drop along-wind dispersion) and a real bound
 
 xs = 0.05:0.05:8.0
 ys = -400:10:400
-Z = [plume(x, y, 0.0) * 1e6 for y in ys, x in xs]   # µg/m³
+Z = [plume(x, y, 0.0, plume_params) * 1e6 for y in ys, x in xs]   # µg/m³
 
 p_foot = contourf(xs, ys, Z, color=:tol_rainbow, linewidth=0,
     xlabel="Distance downwind  [km]", ylabel="Crosswind distance  [m]",
@@ -136,7 +139,7 @@ plot!(p_foot, size=(1050, 480), left_margin=12mm, right_margin=14mm,
 #| code-fold: true
 
 xs_fine = 0.05:0.01:8.0
-Cline = [plume(x, 0.0, 0.0) * 1e6 for x in xs_fine]
+Cline = [plume(x, 0.0, 0.0, plume_params) * 1e6 for x in xs_fine]
 peak_val, peak_idx = findmax(Cline)
 peak_x = xs_fine[peak_idx]
 

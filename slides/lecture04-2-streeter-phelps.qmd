@@ -214,10 +214,13 @@ DO drops after a release, then recovers as the BOD is consumed --- the **sag cur
 
 ::: {.small-math}
 $$\begin{aligned}
-C(x) &= C_s(1-\alpha_1) + C_0\alpha_1 - B_0\alpha_2 - N_0\alpha_3 + \left(\frac{P-R-S_B}{k_a}\right)(1-\alpha_1) \\[0.5em]
+C(x) &= C_s(1-\alpha_1) + C_0\alpha_1 - B_0\alpha_2 - N_0\alpha_3 \\
+&\quad + \left(\frac{P-R-S_B}{k_a}\right)(1-\alpha_1) \\[0.5em]
 \alpha_1 &= \exp\left(\frac{-k_ax}{U}\right) \\[0.25em]
-\alpha_2 &= \left(\frac{k_c}{k_a-k_c}\right)\left[\exp\left(\frac{-k_cx}{U}\right) - \exp\left(\frac{-k_ax}{U}\right)\right] \\[0.25em]
-\alpha_3 &= \left(\frac{k_n}{k_a-k_n}\right)\left[\exp\left(\frac{-k_nx}{U}\right) - \exp\left(\frac{-k_ax}{U}\right)\right]
+\alpha_2 &= \left(\frac{k_c}{k_a-k_c}\right) \\
+&\quad \left[\exp\left(\frac{-k_cx}{U}\right) - \exp\left(\frac{-k_ax}{U}\right)\right] \\[0.25em]
+\alpha_3 &= \left(\frac{k_n}{k_a-k_n}\right) \\
+&\quad \left[\exp\left(\frac{-k_nx}{U}\right) - \exp\left(\frac{-k_ax}{U}\right)\right]
 \end{aligned}$$
 :::
 
@@ -270,24 +273,31 @@ $B$ and $N$ already have exact solutions, so only $C$ needs stepping:
 #| code-fold: true
 #| output: false
 
-# River and waste-load parameters.
-ka, kc, kn = 0.6, 0.4, 0.25    # reaeration, CBOD decay, NBOD decay   [1/d]
-C0, B0, N0 = 6.2, 9.0, 7.0     # initial DO deficit-state, CBOD, NBOD [mg/L]
-Cs, U = 7.0, 5.0                # saturation DO [mg/L], velocity [km/d]
+# Raw constants live inside `let` so only the bundle itself becomes global.
+# Bundling every rate into a NamedTuple, passed as a required positional
+# argument, is deliberate: the FA25 version of this function took the
+# positional args (ka, kn, kc) but every call site passed (ka, kc, kn),
+# silently swapping the CBOD and NBOD rates. Accessing rates by field name
+# makes that class of bug impossible --- and unlike a keyword default, a
+# required positional bundle can never quietly fall back to a stale value.
+sp_params = let
+    ka, kc, kn = 0.6, 0.4, 0.25    # reaeration, CBOD decay, NBOD decay   [1/d]
+    B0, N0 = 9.0, 7.0               # initial CBOD, NBOD                  [mg/L]
+    Cs, U = 7.0, 5.0                 # saturation DO [mg/L], velocity [km/d]
+    (; ka, kc, kn, B0, N0, Cs, U)
+end
+C0 = 6.2   # initial DO deficit-state [mg/L] -- a scenario choice, not a model constant
 
-# Passing every rate by keyword, not position, is deliberate: the FA25
-# version of this function took (ka, kn, kc) but every call site passed
-# (ka, kc, kn), silently swapping the CBOD and NBOD rates. Keywords make
-# that class of bug impossible.
-do_change(C, x; ka, kc, kn, Cs, U, B0, N0) =
-    (ka * (Cs - C) - kc * B0 * exp(-kc * x / U) - kn * N0 * exp(-kn * x / U)) / U
+do_change(C, x, params) =
+    (params.ka * (params.Cs - C) - params.kc * params.B0 * exp(-params.kc * x / params.U)
+     - params.kn * params.N0 * exp(-params.kn * x / params.U)) / params.U
 
-function do_march(C_ic, L, Δx; ka, kc, kn, Cs, U, B0, N0)
+function do_march(C_ic, L, Δx, params)
     steps = Int(round(L / Δx))
     C = zeros(steps + 1)
     C[1] = C_ic
     for i in 1:steps
-        C[i+1] = C[i] + Δx * do_change(C[i], (i - 1) * Δx; ka, kc, kn, Cs, U, B0, N0)
+        C[i+1] = C[i] + Δx * do_change(C[i], (i - 1) * Δx, params)
     end
     return C
 end
@@ -307,10 +317,10 @@ This is enough to see what a solver does. **On HW3 you will solve this same mode
 
 L = 40.0
 p_sag = plot(xlabel="Distance downstream  [km]", ylabel="DO  [mg/L]", legend=:bottomright)
-plot!(p_sag, 0:0.002:L, do_march(C0, L, 0.002; ka, kc, kn, Cs, U, B0, N0), color=:black,
+plot!(p_sag, 0:0.002:L, do_march(C0, L, 0.002, sp_params), color=:black,
     linewidth=5, label="reference (Δx = 0.002)")
 for (Δx, col) in zip([2.0, 1.0, 0.5], [cb_vermillion, cb_orange, cb_blue])
-    plot!(p_sag, 0:Δx:L, do_march(C0, L, Δx; ka, kc, kn, Cs, U, B0, N0), color=col,
+    plot!(p_sag, 0:Δx:L, do_march(C0, L, Δx, sp_params), color=col,
         linewidth=3, linestyle=:dash, markershape=:circle, markersize=4, label="Δx = $Δx")
 end
 hline!(p_sag, [2.5], color=cb_green, linewidth=3, linestyle=:dot, label="standard: 2.5 mg/L")
@@ -348,8 +358,8 @@ The standard is $2.5$ mg/L. The true minimum is $2.6$ mg/L --- this river **comp
 #| code-fold: true
 
 Δxs = [4.0, 2.0, 1.0, 0.5, 0.25, 0.125, 0.0625]
-min_ref = minimum(do_march(C0, L, 0.001; ka, kc, kn, Cs, U, B0, N0))
-errs = [abs(minimum(do_march(C0, L, Δx; ka, kc, kn, Cs, U, B0, N0)) - min_ref) for Δx in Δxs]
+min_ref = minimum(do_march(C0, L, 0.001, sp_params))
+errs = [abs(minimum(do_march(C0, L, Δx, sp_params)) - min_ref) for Δx in Δxs]
 orders = [round(log2(errs[i] / errs[i+1]), digits=2) for i in 1:length(errs)-1]
 
 p_doconv = plot(Δxs, errs, xscale=:log10, yscale=:log10, markershape=:circle,
@@ -380,14 +390,14 @@ Real BOD loads vary hour to hour: a treatment plant's effluent rises and falls t
 using Random
 Random.seed!(4750)
 
-function do_march_randomB(C_ic, L, Δx, B0_series; ka, kc, kn, Cs, U, N0)
+function do_march_randomB(C_ic, L, Δx, B0_series, params)
     steps = Int(round(L / Δx))
     C = zeros(steps + 1)
     C[1] = C_ic
     for i in 1:steps
         x = (i - 1) * Δx
-        change = (ka * (Cs - C[i]) - kc * B0_series[i] * exp(-kc * x / U)
-                  - kn * N0 * exp(-kn * x / U)) / U
+        change = (params.ka * (params.Cs - C[i]) - params.kc * B0_series[i] * exp(-params.kc * x / params.U)
+                  - params.kn * params.N0 * exp(-params.kn * x / params.U)) / params.U
         C[i+1] = C[i] + Δx * change
     end
     return C
@@ -398,8 +408,8 @@ nsteps = Int(round(L / Δx)) + 1
 p_ens = plot(xlabel="Distance downstream  [km]", ylabel="DO  [mg/L]", legend=:bottomright)
 mins = Float64[]
 for k in 1:5
-    B0_series = B0 .* (1 .+ 0.2 .* randn(nsteps))
-    Csag = do_march_randomB(C0, L, Δx, B0_series; ka, kc, kn, Cs, U, N0)
+    B0_series = sp_params.B0 .* (1 .+ 0.2 .* randn(nsteps))
+    Csag = do_march_randomB(C0, L, Δx, B0_series, sp_params)
     push!(mins, minimum(Csag))
     plot!(p_ens, 0:Δx:L, Csag, color=cb_blue, alpha=0.5, linewidth=2, label=nothing)
 end
