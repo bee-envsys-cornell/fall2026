@@ -1,0 +1,268 @@
+---
+title: "Monte Carlo: Applying It, Justifying It"
+subtitle: "Lecture 09"
+author: "Vivek Srikrishnan"
+course: "BEE 4750"
+institution: "Cornell University"
+date: "September 28, 2026"
+format:
+    revealjs:
+        slide-number: c/t
+        show-slide-number: all
+        center-title-slide: true
+        width: 1280
+        height: 720
+        transition: none
+        toc: true
+        toc-depth: 1
+        toc-title: "Overview"
+        history: false
+        link-external-newwindow: true
+        theme: ../sass/slides.scss
+        template-partials:
+            - title-slide.html
+        menu:
+            numbers: true
+        html-math-method: mathjax
+        include-in-header: mathjax-config.html
+        date-format: long
+        email-obfuscation: javascript
+        chalkboard:
+            theme: whiteboard
+            buttons: true
+        controls: true
+engine: julia
+julia:
+  exeflags: ["+1.11.5"]
+execute:
+    freeze: auto
+    daemon: 600
+---
+
+```{julia}
+#| output: false
+import Pkg
+Pkg.activate(@__DIR__)
+Pkg.instantiate()
+```
+
+```{julia}
+#| output: false
+using Random
+using Plots
+using Measures
+using Distributions
+using LaTeXStrings
+
+Random.seed!(4750)
+plot_font = "Palatino Roman"
+default(
+    fontfamily=plot_font,
+    linewidth=3,
+    framestyle=:box,
+    label=nothing,
+    grid=false,
+    guidefontsize=18,
+    legendfontsize=16,
+    tickfontsize=16,
+    titlefontsize=20,
+    bottom_margin=10mm,
+    left_margin=5mm
+)
+
+# Okabe-Ito palette: distinguishable under all common types of colour
+# blindness, and every pair also differs in line style so the figures
+# still read in greyscale.
+cb_orange = "#E69F00"
+cb_green = "#009E73"
+cb_yellow = "#F0E442"
+cb_blue = "#0072B2"
+cb_vermillion = "#D55E00"
+cb_purple = "#CC79A7"
+```
+
+# Review of Last Class
+
+## Last Class, In Two Formulas
+
+$$\tilde\mu_n = \frac{1}{n}\sum_{i=1}^n Y_i \quad\text{is unbiased,}\qquad \tilde\sigma_n = \frac{\sigma_Y}{\sqrt{n}} \quad\text{is its standard error.}$$
+
+::: {.fragment .fade-in}
+And a 95% confidence interval: $\tilde\mu_n \pm 1.96\,\sigma_Y/\sqrt{n}$.
+
+**We still owe an answer** to the DO ensemble question from a few classes ago: how many runs would we trust? Today: the actual answer, and how to justify it on your own work.
+:::
+
+## Questions?
+
+{{< include _poll-prompt.qmd >}}
+
+# Back to the River
+
+## Framing the DO Question as Monte Carlo
+
+Recall Streeter-Phelps: the incoming CBOD load $B_0$ varies day to day, $B_0 \sim \mathcal{N}(9, 1.5^2)$ mg/L.
+
+**What is the probability that the minimum DO falls below the 2.5 mg/L standard on a randomly chosen day?**
+
+```{julia}
+#| echo: true
+#| code-fold: true
+#| output: false
+
+ka, kc, kn = 0.6, 0.4, 0.25
+C0, N0, Cs, U = 6.2, 7.0, 7.0, 5.0
+L = 40.0
+
+do_min(B0; dx=0.1) = begin
+    steps = Int(round(L / dx))
+    C = C0
+    m = C
+    for i in 1:steps
+        x = (i - 1) * dx
+        C = C + dx * ((ka * (Cs - C) - kc * B0 * exp(-kc * x / U)
+                        - kn * N0 * exp(-kn * x / U)) / U)
+        m = min(m, C)
+    end
+    return m
+end
+
+violates(; standard=2.5) = do_min(max(0.1, rand(Normal(9.0, 1.5)))) < standard
+```
+
+## Watching the Estimate Settle
+
+```{julia}
+#| label: fig-mc-do
+#| fig-cap: "Running Monte Carlo estimate of P(violation), with its 95% confidence band."
+#| echo: true
+#| code-fold: true
+
+Random.seed!(4750)
+N = 20_000
+draws = [violates() for _ in 1:N]
+running_p = cumsum(draws) ./ (1:N)
+running_se = [i > 1 ? sqrt(running_p[i] * (1 - running_p[i]) / i) : NaN for i in 1:N]
+
+p_mc = plot(1:N, running_p, ribbon=1.96 .* running_se, xscale=:log10,
+    color=:black, linewidth=3, fillalpha=0.25, fillcolor=cb_blue,
+    xlabel="Number of samples  n", ylabel="P(violation)", legend=false,
+    ylims=(0, 1))
+hline!(p_mc, [running_p[end]], color=cb_vermillion, linestyle=:dash, linewidth=2)
+plot!(p_mc, size=(1100, 460), left_margin=12mm, right_margin=8mm,
+    bottom_margin=12mm, top_margin=5mm)
+```
+
+## The Number, With Honesty About Its Uncertainty
+
+```{julia}
+#| echo: false
+#| output: asis
+
+println("| \$n\$ | estimate | 95% CI |")
+println("|---:|---:|:---|")
+for n in [5, 20, 100, 500, 2000, 20_000]
+    p = running_p[n]
+    lo, hi = round(p - 1.96 * running_se[n], digits=2), round(p + 1.96 * running_se[n], digits=2)
+    println("| \$$(n)\$ | \$$(round(p, digits=2))\$ | \$[$(lo), $(hi)]\$ |")
+end
+```
+
+::: {.fragment .fade-in}
+**At $n=5$ the interval spans nearly the whole unit range** --- it can't even rule out "the river always violates" or "never does." That is exactly the five runs Streeter-Phelps used to pose the question. They were not enough to trust.
+:::
+
+# Justifying a Sample Size
+
+## The Rubric You Will Be Graded On
+
+::: {.quote}
+> +2 for justification of Monte Carlo sample size. **Deadly Sin: No points will be given for a Monte Carlo solution with an arbitrary sample size.** +2 for an estimate of the Monte Carlo standard error. +1 for setting a seed for reproducibility.
+
+::: {.cite}
+--- the Monte Carlo Rubric, `policies/rubric.qmd`
+:::
+:::
+
+::: {.fragment .fade-in}
+This is the **same discipline as $\Delta t$ in Week 4**, with $n$ in place of the step size:
+:::
+
+## The Same Discipline, a Different Knob
+
+:::: {.columns}
+::: {.column width=50%}
+**Simulation** (Week 4)
+
+- pick $\Delta t$ from a characteristic timescale
+- halve it; see if the answer moves
+- error $\sim \Delta t$
+:::
+::: {.column width=50%}
+**Monte Carlo** (today)
+
+- pick $n$ from a target CI half-width
+- double it; see if the estimate moves
+- error $\sim 1/\sqrt{n}$
+:::
+::::
+
+::: {.fragment .fade-in}
+Both times: name a quantity of interest, refine the knob, estimate what's left, **report what you did**. Both rubrics penalize not doing it.
+:::
+
+## The Sentence You Copy Into Your Homework
+
+```{julia}
+#| echo: false
+#| output: asis
+
+p2, se2 = round(running_p[2000], digits=3), round(running_se[2000], digits=4)
+p4 = round(running_p[4000], digits=3)
+lo, hi = round(p2 - 1.96 * se2, digits=2), round(p2 + 1.96 * se2, digits=2)
+change = round(abs(p4 - p2), digits=4)
+println("> \"I estimated \$P(\\text{DO} < 2.5\\ \\text{mg/L})\$ with \$n = 2{,}000\$ Monte Carlo ",
+        "samples, seeded for reproducibility. The estimate is \$$(p2)\$ with a Monte Carlo ",
+        "standard error of \$$(se2)\$, giving a 95% CI of \$[$(lo), $(hi)]\$. Doubling to ",
+        "\$n=4{,}000\$ changed the estimate by \$$(change)\$ --- less than the standard error --- ",
+        "so \$n=2{,}000\$ is sufficient for this analysis.\"")
+```
+
+# Practical Notes
+
+## Pseudorandomness and Seeds
+
+:::: {.columns}
+::: {.column width=40%}
+Random number generators are not *really* random --- only **pseudorandom**, and deterministic given a seed.
+
+**Always set a seed.** It's how your results (and your grader's) reproduce.
+:::
+::: {.column width=60%}
+![XKCD 221: Random Number](https://imgs.xkcd.com/comics/random_number.png){width=90%}
+
+::: {.caption}
+Source: [XKCD #221](https://xkcd.com/221/)
+:::
+:::
+::::
+
+# Key Takeaways
+
+## Key Takeaways
+
+::: {.incremental}
+- **Sample size needs justification**, exactly like Week 4's step size: pick $n$ from a target precision, double it and check, report the standard error.
+- Five samples were nowhere near enough to trust the DO ensemble --- now you know how to say precisely how far short they fell.
+- The same discipline (name a quantity of interest, refine a knob, report what changed) has now shown up for $\Delta t$, $\Delta x$, and $n$.
+:::
+
+# Upcoming Schedule
+
+## Next Classes
+
+**Wednesday**: 2D discretization and Gaussian plumes --- the plume equation, boundary conditions, and why the analytic solution isn't always the right tool.
+
+# References
+
+## References

@@ -1,0 +1,353 @@
+---
+title: "Uncertainty, Probability, and Monte Carlo"
+subtitle: "Lecture 08"
+author: "Vivek Srikrishnan"
+course: "BEE 4750"
+institution: "Cornell University"
+date: "September 23, 2026"
+format:
+    revealjs:
+        slide-number: c/t
+        show-slide-number: all
+        center-title-slide: true
+        width: 1280
+        height: 720
+        transition: none
+        toc: true
+        toc-depth: 1
+        toc-title: "Overview"
+        history: false
+        link-external-newwindow: true
+        theme: ../sass/slides.scss
+        template-partials:
+            - title-slide.html
+        menu:
+            numbers: true
+        html-math-method: mathjax
+        include-in-header: mathjax-config.html
+        date-format: long
+        email-obfuscation: javascript
+        chalkboard:
+            theme: whiteboard
+            buttons: true
+        controls: true
+engine: julia
+julia:
+  exeflags: ["+1.11.5"]
+execute:
+    freeze: auto
+    daemon: 600
+---
+
+```{julia}
+#| output: false
+import Pkg
+Pkg.activate(@__DIR__)
+Pkg.instantiate()
+```
+
+```{julia}
+#| output: false
+using Random
+using Plots
+using Measures
+using Distributions
+using LaTeXStrings
+
+Random.seed!(4750)
+plot_font = "Palatino Roman"
+default(
+    fontfamily=plot_font,
+    linewidth=3,
+    framestyle=:box,
+    label=nothing,
+    grid=false,
+    guidefontsize=18,
+    legendfontsize=16,
+    tickfontsize=16,
+    titlefontsize=20,
+    bottom_margin=10mm,
+    left_margin=5mm
+)
+
+# Okabe-Ito palette: distinguishable under all common types of colour
+# blindness, and every pair also differs in line style so the figures
+# still read in greyscale.
+cb_orange = "#E69F00"
+cb_green = "#009E73"
+cb_yellow = "#F0E442"
+cb_blue = "#0072B2"
+cb_vermillion = "#D55E00"
+cb_purple = "#CC79A7"
+```
+
+# Review of Last Class
+
+## Last Week's Open Question
+
+Streeter-Phelps: we ran **5 realizations** of a fluctuating CBOD load through the DO sag curve and got 5 different minimum-DO values.
+
+::: {.fragment .fade-in}
+**How many runs would we need before we trust that spread?**
+
+That is a question about *sampling*, not discretization. Today: the tools. Monday: the answer.
+:::
+
+## Questions?
+
+{{< include _poll-prompt.qmd >}}
+
+# Uncertainty and Systems Analysis
+
+## Where Does Uncertainty Come From?
+
+Uncertainty can come from several places at once:
+
+- Stochastic models (internal randomness)
+- Uncertain external conditions (forcings)
+- Uncertain parameters
+- Uncertain model dynamics --- the model itself may be wrong
+
+## Two Kinds of Uncertainty
+
+:::: {.columns}
+::: {.column width=50%}
+- **Aleatory** uncertainty: from randomness. More data does not remove it.
+- **Epistemic** uncertainty: from lack of knowledge. More data *can* remove it.
+:::
+::: {.column width=50%}
+![Aleatory vs epistemic uncertainty](https://imgs.xkcd.com/comics/epistemic_uncertainty_2x.png){width=80%}
+
+::: {.caption}
+Source: [XKCD 2440](https://xkcd.com/2440/)
+:::
+:::
+::::
+
+::: {.fragment .fade-in}
+The CBOD load varying day to day is **aleatory** --- it's genuine variability, not something we could measure away.
+:::
+
+# Probability Distributions
+
+## Distributions Are Assumptions
+
+**Specifying a distribution is making an assumption about observations and any applicable constraints.**
+
+Examples: if your observations are...
+
+- Continuous and fat-tailed? **Cauchy distribution**
+- Continuous and bounded? **Beta distribution**
+- Sums of positive random variables? **Gamma or Normal distribution**
+
+## Selecting a Distribution
+
+A distribution implicitly answers questions like:
+
+- What is the most probable event? How much more likely is it than the others?
+- Are larger or smaller events more, less, or equally probable?
+- How probable are extreme events?
+- Are different events correlated, or are they independent?
+
+## Distribution Tails
+
+:::: {.columns}
+::: {.column width=50%}
+The tails represent the probability of high-impact outcomes.
+
+**Small changes to these (low) probabilities can greatly influence risk.**
+:::
+::: {.column width=50%}
+```{julia}
+#| label: fig-tails
+#| fig-cap: "Comparison of Cauchy and Normal tails."
+#| echo: true
+#| code-fold: true
+
+x = range(-5, 10, length=200)
+p_tails = plot(x, pdf.(Cauchy(), x), linewidth=3, color=cb_vermillion,
+    linestyle=:dash, yaxis=false, yticks=false, label="Cauchy", xlabel="Value",
+    legend=:topright)
+plot!(p_tails, x, pdf.(Normal(), x), linewidth=3, color=cb_blue, label="Normal")
+xf = x[x.>1.75]
+plot!(p_tails, xf, pdf.(Cauchy(), xf), fillrange=pdf.(Normal(), xf),
+    fillcolor=cb_vermillion, fillalpha=0.25, label=nothing, linecolor=nothing)
+plot!(p_tails, size=(550, 420), left_margin=10mm, bottom_margin=10mm)
+```
+:::
+::::
+
+## "What Distribution Should I Use?"
+
+**There is no right answer, no matter what a statistical test tells you.**
+
+- What assumptions are justifiable? Think about tails, symmetry, skew.
+- What information do you actually have?
+
+::: {.fragment .fade-in}
+Example: if your data are counts of events, knowing something about **rates** points to a Poisson; knowing something about **probabilities** points to a Binomial.
+:::
+
+## Choosing $B_0$'s Distribution
+
+For the CBOD load: not too far from a typical value, symmetric-ish, occasionally larger or smaller by a moderate amount, never negative in reality (though the Normal doesn't know that).
+
+$$B_0 \sim \mathcal{N}(9,\ 1.5^2)\ \text{mg/L}$$
+
+::: {.fragment .fade-in}
+That choice --- the mean, the spread, the shape --- is a modeling assumption you must be ready to defend, the same way you'd defend a choice of $\Delta t$.
+:::
+
+# Monte Carlo Simulation
+
+## What Is Monte Carlo?
+
+**Monte Carlo simulation**: propagate random samples through a model to estimate a value --- usually an expectation or a probability.
+
+```{dot}
+//| fig-width: 100%
+digraph G {
+    graph [rankdir=LR, layout=dot]
+    node [fontname = "IBM Plex Sans, sans-serif", fontsize=25]
+    edge [arrowsize=0.75, labeldistance=3, penwidth=3,
+          fontname = "IBM Plex Sans, sans-serif", fontsize=25,
+          style=dashed, color="#b31b1b", fontcolor="#b31b1b"]
+    a [label="Probability\n Distribution"]
+    b [label = "Random\n Samples"]
+    c [label="Model"]
+    d [label="Outputs"]
+    a -> b [label="Sample"]
+    b -> c [label="Input"]
+    c -> d [label="Simulate"]
+}
+```
+
+## The Monte Carlo Principle
+
+**Goal**: estimate $\mathbb{E}_f[h(x)]$ for $x \sim f(x)$.
+
+Sample $x^1, \ldots, x^N \sim f(x)$ and estimate
+
+$$\mathbb{E}_f[h(x)] = \int_{x\in X} h(x)f(x)\,dx \approx \frac{1}{N}\sum_{n=1}^N h(x^n)$$
+
+::: {.fragment .fade-in}
+A probability is just a special case: $h(x) = \mathbb{1}[\text{event}]$, and the average becomes a frequency --- exactly what the DO question needs.
+:::
+
+## Example: Estimating $\pi$
+
+:::: {.columns}
+::: {.column width=50%}
+Sample points uniformly in a square; the fraction landing in the inscribed circle estimates
+
+$$\frac{\text{Area of Circle}}{\text{Area of Square}} = \frac{\pi}{4}$$
+:::
+::: {.column width=50%}
+```{julia}
+#| label: fig-mc-pi
+#| fig-cap: "Estimating π by Monte Carlo."
+#| echo: true
+#| code-fold: true
+
+nsamp = 3000
+x = rand(Uniform(-1, 1), (nsamp, 2))
+in_circ = vec(sum(x .^ 2, dims=2)) .< 1
+pi_est = [4 * mean(in_circ[1:i]) for i in 1:nsamp]
+
+p_pts = scatter(x[in_circ, 1], x[in_circ, 2], color=cb_blue, markersize=3,
+    markerstrokewidth=0, xlims=(-1, 1), ylims=(-1, 1), aspect_ratio=1, legend=false)
+scatter!(p_pts, x[.!in_circ, 1], x[.!in_circ, 2], color=cb_vermillion, markersize=3,
+    markerstrokewidth=0)
+p_est = plot(pi_est, xlabel="Samples", ylabel="Estimate", color=:black, linewidth=2,
+    ylims=(2.8, 3.5))
+hline!(p_est, [π], color=cb_vermillion, linestyle=:dash, linewidth=2)
+plot(p_pts, p_est, layout=(1, 2), size=(1000, 420), left_margin=10mm,
+    bottom_margin=10mm)
+```
+:::
+::::
+
+# Is the Estimate Any Good?
+
+## The Estimate Is Itself Random
+
+The Monte Carlo mean $\tilde{\mu}_n = \frac{1}{n}\sum_{i=1}^n Y_i$ is a random variable --- rerun the sampling and you get a different number.
+
+::: {.incremental}
+- **Unbiased**: $\mathbb{E}[\tilde{\mu}_n] = \mu$. On average, across many *sets* of samples, it's correct.
+- Does a **single** run converge? The Law of Large Numbers says yes, eventually: $\lim_{n\to\infty}\mathbb{P}(|\tilde\mu_n - \mu| \le \varepsilon) = 1$.
+- "Eventually" is doing a lot of work in that sentence. **How large is large enough?**
+:::
+
+## The Error Has a Rate
+
+The variance of the estimator is
+
+$$\text{Var}(\tilde\mu_n) = \frac{\sigma_Y^2}{n} \qquad\Longrightarrow\qquad \text{standard error } \tilde\sigma_n = \frac{\sigma_Y}{\sqrt{n}}$$
+
+::: {.fragment .fade-in}
+**To cut the error by 10×, you need 100× more samples.** Monte Carlo converges at order $1/2$ in $n$ --- much slower than forward Euler's order 1 in $\Delta t$.
+:::
+
+::: {.fragment .fade-in}
+::: {.quote}
+> Monte Carlo is an extremely bad method. It should only be used when all alternative methods are worse.
+
+::: {.cite}
+--- Sokal, *Monte Carlo Methods in Statistical Mechanics*, 1996
+:::
+:::
+
+...but often, they are.
+:::
+
+## Confidence Intervals
+
+By the Central Limit Theorem, for large $n$ the error is approximately normal, giving the $\alpha$-confidence interval
+
+$$\tilde\mu_n \pm \Phi^{-1}\left(1-\frac{\alpha}{2}\right)\frac{\sigma_Y}{\sqrt{n}}$$
+
+For 95%: $\tilde\mu_n \pm 1.96\,\sigma_Y/\sqrt{n}$.
+
+## Reading a Confidence Interval Correctly
+
+**A 95% CI is not** "there is a 95% chance the true value is in this interval." The true value is fixed; it either is or isn't.
+
+::: {.fragment .fade-in}
+It **is**: if you repeated this whole experiment many times, about 95% of the intervals you'd construct would contain the true value.
+
+Think of horseshoes: the post doesn't move. Your throwing accuracy tells you how often you'd land near it --- not the odds on any one already-thrown shoe.
+:::
+
+## Where This Is Going
+
+We now know: the estimator is unbiased, and its error shrinks like $\sigma_Y/\sqrt{n}$.
+
+::: {.fragment .fade-in}
+**Monday**: back to the river. We'll actually estimate $P(\text{DO} < 2.5\ \text{mg/L})$, watch the estimate settle as $n$ grows, and learn exactly how to justify a sample size on your own homework.
+:::
+
+# Key Takeaways
+
+## Key Takeaways
+
+::: {.incremental}
+- Uncertainty comes from stochastic models, forcings, parameters, and model structure itself --- and **choosing a distribution is a modeling assumption**, not a neutral default.
+- Tails matter: small changes in low-probability, high-impact outcomes can dominate a risk estimate.
+- Monte Carlo estimates are **unbiased**, but any single run is a random draw --- and the standard error shrinks only as $1/\sqrt{n}$.
+- A confidence interval describes the **procedure**, not the one interval you happened to construct.
+:::
+
+# Upcoming Schedule
+
+## Next Classes
+
+**Monday**: Applying Monte Carlo to the DO model, and how to justify a sample size for your own work.
+
+## Assessments
+
+**Homework 3**: Due **today** at 9pm.
+
+# References
+
+## References

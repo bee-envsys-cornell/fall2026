@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://envsys.viveks.me/fall2025/schedule.html</loc>
-    <lastmod>2026-09-09T17:15:22.224Z</lastmod>
+    <lastmod>2026-09-14T04:25:06.458Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/tutorials/notebook-to-pdf.html</loc>
@@ -41,12 +41,16 @@
     <lastmod>2026-08-26T17:46:06.981Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture05-1-dissolved-oxygen-2.html</loc>
-    <lastmod>2026-04-15T11:42:55.325Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture07-1-plume-derivation.html</loc>
+    <lastmod>2026-09-12T23:13:20.225Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture11-2-unit-commitment.html</loc>
-    <lastmod>2026-04-15T11:42:55.327Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture10-1-gaussian-plumes.html</loc>
+    <lastmod>2026-04-15T11:42:55.326Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture04-1-simulation-discretization.html</loc>
+    <lastmod>2026-09-14T04:21:32.964Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecture13-1-stochastic-optimization.html</loc>
@@ -59,6 +63,10 @@
   <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecturexx-xx-lake-uncertainty.html</loc>
     <lastmod>2026-09-09T16:35:50.258Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture04-2-streeter-phelps.html</loc>
+    <lastmod>2026-09-12T23:33:40.087Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecture04-1-simulation.html</loc>
@@ -85,8 +93,12 @@
     <lastmod>2026-04-15T11:42:55.326Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture04-2-dissolved-oxygen.html</loc>
-    <lastmod>2026-04-15T11:42:55.325Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture05-2-monte-carlo-foundations.html</loc>
+    <lastmod>2026-09-12T23:04:28.029Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture14-1-sensitivity-analysis.html</loc>
+    <lastmod>2026-04-15T11:42:55.327Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/policies/rubric.html</loc>
@@ -193,8 +205,12 @@
     <lastmod>2026-07-28T21:15:22.525Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture14-1-sensitivity-analysis.html</loc>
-    <lastmod>2026-04-15T11:42:55.327Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture07-2-plume-analytics.html</loc>
+    <lastmod>2026-09-12T23:22:34.099Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture04-2-dissolved-oxygen.html</loc>
+    <lastmod>2026-04-15T11:42:55.325Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecture06-1-monte-carlo.html</loc>
@@ -221,6 +237,10 @@
     <lastmod>2026-04-15T11:42:55.327Z</lastmod>
   </url>
   <url>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture06-1-monte-carlo-inference.html</loc>
+    <lastmod>2026-09-12T23:03:39.006Z</lastmod>
+  </url>
+  <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecture10-2-economic-dispatch.html</loc>
     <lastmod>2026-04-15T11:42:55.326Z</lastmod>
   </url>
@@ -237,8 +257,12 @@
     <lastmod>2026-04-15T11:42:55.326Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture10-1-gaussian-plumes.html</loc>
-    <lastmod>2026-04-15T11:42:55.326Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture11-2-unit-commitment.html</loc>
+    <lastmod>2026-04-15T11:42:55.327Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture05-1-dissolved-oxygen-2.html</loc>
+    <lastmod>2026-04-15T11:42:55.325Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecture03-2-lake-hysteresis.html</loc>

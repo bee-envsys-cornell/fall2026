@@ -1,0 +1,369 @@
+---
+title: "Gaussian Plumes: Deriving the Model"
+subtitle: "Lecture 10"
+author: "Vivek Srikrishnan"
+course: "BEE 4750"
+institution: "Cornell University"
+date: "October 05, 2026"
+format:
+    revealjs:
+        slide-number: c/t
+        show-slide-number: all
+        center-title-slide: true
+        width: 1280
+        height: 720
+        transition: none
+        toc: true
+        toc-depth: 1
+        toc-title: "Overview"
+        history: false
+        link-external-newwindow: true
+        theme: ../sass/slides.scss
+        template-partials:
+            - title-slide.html
+        menu:
+            numbers: true
+        html-math-method: mathjax
+        include-in-header: mathjax-config.html
+        date-format: long
+        email-obfuscation: javascript
+        chalkboard:
+            theme: whiteboard
+            buttons: true
+        controls: true
+engine: julia
+julia:
+  exeflags: ["+1.11.5"]
+execute:
+    freeze: auto
+    daemon: 600
+---
+
+```{julia}
+#| output: false
+import Pkg
+Pkg.activate(@__DIR__)
+Pkg.instantiate()
+```
+
+```{julia}
+#| output: false
+using Plots
+using Measures
+using LaTeXStrings
+
+plot_font = "Palatino Roman"
+default(
+    fontfamily=plot_font,
+    linewidth=3,
+    framestyle=:box,
+    label=nothing,
+    grid=false,
+    guidefontsize=18,
+    legendfontsize=16,
+    tickfontsize=16,
+    titlefontsize=20,
+    bottom_margin=10mm,
+    left_margin=5mm
+)
+
+# Okabe-Ito palette: distinguishable under all common types of colour
+# blindness, and every pair also differs in line style so the figures
+# still read in greyscale.
+cb_orange = "#E69F00"
+cb_green = "#009E73"
+cb_yellow = "#F0E442"
+cb_blue = "#0072B2"
+cb_vermillion = "#D55E00"
+cb_purple = "#CC79A7"
+```
+
+# Review of Last Class
+
+## From a Line to a Point
+
+The airshed was a well-mixed box. Streeter-Phelps marched along **one line** downstream.
+
+Air pollution downwind of a stack spreads **across** the wind as well as along it --- a genuinely spatial problem.
+
+## Questions?
+
+{{< include _poll-prompt.qmd >}}
+
+# Point Sources and Receptors
+
+## Some Approaches for Modeling Air Pollution
+
+**So far**: box (airshed) models --- overall mass balance across a whole region.
+
+**Today**: point sources and receptors --- *plume* models, which track concentration as a continuous function of position.
+
+## Point Sources and Receptors
+
+![Point Source/Receptor Schematic](figures/air-pollution.png){width=75%}
+
+## Emissions Follow Instantaneous Paths
+
+![Point Source Flow Traces](figures/air-pollution-instant.png){width=75%}
+
+## Plume: Time-Averaged Positions
+
+![Point Source Average Plume](figures/air-pollution-plume-timeavg.png){width=75%}
+
+## "Gaussian Plume"
+
+![Gaussian Plume](figures/air-pollution-plume-shape.png){width=75%}
+
+## "Gaussian Plume"
+
+![Gaussian Plume Distribution](figures/air-pollution-plume-dist.png){width=75%}
+
+# Deriving the Model
+
+## The Advective-Diffusion Equation
+
+The mass balance of a small air parcel:
+
+$$\frac{\partial C}{\partial t} - \underbrace{[D+K]\nabla^2 C}_{\text{diffusion}} + \underbrace{\vec{u}\cdot\vec{\nabla}C}_{\text{advection}} = 0$$
+
+- $D$: molecular diffusion coefficient
+- $K$: dispersion coefficient (turbulent mixing)
+
+::: {.fragment .fade-in}
+This is the **same equation family** as the airshed and DO models --- just with the spatial term kept instead of dropped or reduced to one line.
+:::
+
+## Diffusive Flux
+
+:::: {.columns}
+::: {.column width=50%}
+![Diffusive Flux](figures/diffusion-flux.png)
+:::
+::: {.column width=50%}
+Concentration gradient + diffusion $\Rightarrow$ flux.
+
+**Fick's law**: $$F_x = D\frac{dC}{dx}$$
+:::
+::::
+
+## Turbulent Flux
+
+:::: {.columns}
+::: {.column width=50%}
+![Turbulent Flux](figures/turbulent-flux.png)
+:::
+::: {.column width=50%}
+Concentration gradient + turbulent mixing $\Rightarrow$ flux.
+
+$$F_x = K_{xx}\frac{dC}{dx}$$
+
+$K_{xx}$ depends on flow/eddy characteristics --- not a material property like $D$.
+:::
+::::
+
+## Assumption 1: Steady State
+
+$$\frac{\partial C}{\partial t} + \vec{u}\cdot\vec\nabla C - [D+K]\nabla^2C = 0$$
+
+$$\frac{\partial C}{\partial t} = 0$$
+
+## Assumption 2: Wind Only Along $x$
+
+$$\vec{u}\cdot\vec\nabla C = u_x\frac{\partial C}{\partial x} + \cancel{u_y\frac{\partial C}{\partial y}} + \cancel{u_z\frac{\partial C}{\partial z}}$$
+
+## Assumption 3: Turbulence Dominates Molecular Diffusion, and Along-Wind Dispersion Is Negligible
+
+$$-[\cancel{D}+K]\nabla^2C = \cancel{K_{xx}}\frac{\partial^2C}{\partial x^2} + K_{yy}\frac{\partial^2C}{\partial y^2} + K_{zz}\frac{\partial^2C}{\partial z^2}$$
+
+::: {.fragment .fade-in}
+This isn't an arbitrary simplification --- it's a **Péclet number** argument, exactly like the one from Week 6: $Pe = uL/D_x \gg 1$ for atmospheric transport at any distance you'd care about.
+
+```{julia}
+#| label: fig-peclet
+#| fig-cap: "Péclet number for along-wind transport, u = 2.5 m/s, Dx = 50 m²/s."
+#| echo: true
+#| code-fold: true
+
+u_wind, Dx = 2.5, 50.0
+Lvals = 100:50:10000
+Pe = u_wind .* Lvals ./ Dx
+plot(Lvals ./ 1000, Pe, xlabel="Distance  [km]", ylabel=L"Pe = uL/D_x",
+    color=cb_vermillion, linewidth=4, legend=false, yscale=:log10)
+hline!([1], color=:black, linestyle=:dash, linewidth=2)
+plot!(size=(950, 400), left_margin=12mm, right_margin=8mm,
+    bottom_margin=12mm, top_margin=5mm)
+```
+:::
+
+## What's Left
+
+With these three assumptions:
+
+$$\bbox[5pt, border: 3px solid red]{u\frac{\partial C}{\partial x} = K_{yy}\frac{\partial^2 C}{\partial y^2} + K_{zz}\frac{\partial^2 C}{\partial z^2}}$$
+
+::: {.fragment .fade-in}
+:::: {.columns}
+::: {.column width=70%}
+Plus a boundary condition: mass flowing through any downwind cross-section must equal the emission rate $Q$:
+
+$$Q = \iint u\,C\,dy\,dz$$
+:::
+::: {.column width=30%}
+![Boundary Condition for the A-D Equation](figures/boundary-mass.png)
+:::
+::::
+:::
+
+## Solving the PDE
+
+$$C(x,y,z) = \frac{Q}{4\pi x\sqrt{K_{yy}K_{zz}}}\exp\left[-\frac{u}{4x}\left(\frac{y^2}{K_{yy}} + \frac{(z-H)^2}{K_{zz}}\right)\right]$$
+
+::: {.fragment .fade-in}
+Substitute $\sigma_y^2 = 2K_{yy}\dfrac{x}{u}$, $\sigma_z^2 = 2K_{zz}\dfrac{x}{u}$ --- the distance a diffusing parcel has spread by the time it reaches $x$:
+:::
+
+## The Gaussian Plume
+
+$$C(x,y,z) = \frac{Q}{2\pi u\sigma_y\sigma_z}\exp\left[-\frac{1}{2}\left(\frac{y^2}{\sigma_y^2} + \frac{(z-H)^2}{\sigma_z^2}\right)\right]$$
+
+A Gaussian distribution in $y$ and in $z$ --- which is where the name comes from, and why $\sigma_y,\sigma_z$ read exactly like standard deviations.
+
+# The Ground Is a Boundary Condition
+
+## Reflection
+
+![Reflected Mass Off Ground](figures/reflection.png){width=65%}
+
+Pollutant doesn't vanish into the ground: $\partial C/\partial z = 0$ at $z=0$ --- a **Neumann** condition.
+
+## Enforcing It With an Image Source
+
+:::: {.columns}
+::: {.column width=30%}
+Add a second, "reflected" source below ground, the mirror image of the real one.
+:::
+::: {.column width=40%}
+![Reflected Mass Off Ground](figures/reflection-image.png)
+:::
+::::
+
+## Final Model: Elevated Source With Reflection
+
+$$C(x,y,z) = \frac{Q}{2\pi u\sigma_y\sigma_z}\exp\left(\frac{-y^2}{2\sigma_y^2}\right)\left[\exp\left(\frac{-(z-H)^2}{2\sigma_z^2}\right) + \exp\left(\frac{-(z+H)^2}{2\sigma_z^2}\right)\right]$$
+
+## Does the Image Term Actually Work?
+
+```{julia}
+#| echo: true
+#| code-fold: true
+#| output: false
+
+Q, H, u_wind = 100.0, 41.0, 2.5
+sig_y(xk) = 34.0 * xk^0.894
+sig_z(xk) = xk < 1 ? 14.35 * xk^0.740 - 0.35 : 62.6 * xk^0.180 - 48.6
+
+plume(xk, y, z; reflect=true) = begin
+    sy, sz = sig_y(xk), sig_z(xk)
+    base = (Q / (2π * u_wind * sy * sz)) * exp(-y^2 / (2sy^2))
+    reflect ? base * (exp(-(z - H)^2 / (2sz^2)) + exp(-(z + H)^2 / (2sz^2))) :
+              base * exp(-(z - H)^2 / (2sz^2))
+end
+
+dz = 0.001
+flux_with = (plume(3.0, 0.0, dz) - plume(3.0, 0.0, 0.0)) / dz
+flux_without = (plume(3.0, 0.0, dz; reflect=false) - plume(3.0, 0.0, 0.0; reflect=false)) / dz
+```
+
+$\partial C/\partial z$ at the ground, 3 km downwind: **with** the image term, `{julia} round(flux_with, sigdigits=2)`; **without** it, `{julia} round(flux_without, sigdigits=2)` --- about $3\times 10^4$ times larger. The second exponential is not decoration; it is the boundary condition.
+
+## Final Model Assumptions
+
+1. Steady-state
+2. Constant wind velocity and direction
+3. Wind $\gg$ dispersion in the $x$-direction
+4. No reactions
+5. Smooth ground (no extra turbulent eddies or reflections)
+
+# Dispersion and Atmospheric Stability
+
+## Estimating Dispersion "Spread"
+
+$\sigma_y,\sigma_z$ matter enormously for the plume's footprint. What sets them?
+
+**Main driver**: atmospheric stability --- greater stability means less vertical/cross-wind spreading.
+
+Pasquill (1961): six stability classes.
+
+## Atmospheric Stability Classes
+
+| Class | Stability | Description |
+|:----:|:----------|:-----------|
+| A | Extremely unstable | Sunny summer day |
+| B | Moderately unstable | Sunny & warm |
+| C | Slightly unstable | Partly cloudy day |
+| D | Neutral | Cloudy day or night |
+| E | Slightly stable | Partly cloudy night |
+| F | Moderately stable | Clear night |
+
+::: {.caption}
+Source: <https://courses.ecampus.oregonstate.edu/ne581/eleven/>
+:::
+
+## Estimating Dispersion "Spread"
+
+$$\sigma_y = ax^{0.894}, \qquad \sigma_z = cx^d + f$$
+
+![Dispersion Coefficients](figures/plume-dispersion.png)
+
+::: {.caption}
+Source: <https://courses.washington.edu/cee490/DISPCOEF4WP.htm>
+:::
+
+**Note**: here $x$ is in km, while $y,z$ in the plume equation are in m.
+
+# Worked Example
+
+## Example
+
+The emission rate of SO$_2$ from a smokestack is 100 g/s. At **3 km downwind** on a clear fall evening (class F), **what is the centerline ground-level concentration of SO$_2$**? Effective plume height is 41 m; wind speed at that height is 2.5 m/s.
+
+$$\sigma_y = 34x^{0.894} \qquad \sigma_z = \begin{cases}14.35x^{0.740}-0.35 & x<1\text{ km} \\ 62.6x^{0.180}-48.6 & x>1\text{ km}\end{cases}$$
+
+## Working It Through
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+xk = 3.0
+sy, sz = sig_y(xk), sig_z(xk)
+Cground = plume(xk, 0.0, 0.0)
+println("σ_y = ", round(sy, digits=1), " m")
+println("σ_z = ", round(sz, digits=1), " m")
+println("C(3 km, 0, 0) = ", round(Cground * 1e6, digits=1), " µg/m³")
+```
+
+- Centerline, ground level: $y=0,\ z=0$
+- $\sigma_y \approx$ `{julia} round(sy, digits=0)` m, $\sigma_z \approx$ `{julia} round(sz, digits=0)` m
+- $C \approx$ `{julia} round(Cground*1e6, digits=0)` µg/m$^3$
+
+# Key Takeaways
+
+## Key Takeaways
+
+::: {.incremental}
+- The plume equation is the same advective-diffusion family as the airshed and DO models --- here the spatial structure is kept rather than simplified away.
+- Dropping along-wind dispersion is a **Péclet number** argument: $Pe \gg 1$ for atmospheric transport at any distance of interest.
+- The ground is a **Neumann boundary condition**, enforced with an image source --- verified numerically to kill the vertical flux at $z=0$.
+- $\sigma_y,\sigma_z$ are empirical, tied to atmospheric stability class --- not derived from first principles.
+:::
+
+# Upcoming Schedule
+
+## Next Classes
+
+**Wednesday**: Where the plume actually lands on the ground, what breaks when emissions vary in time, and why the closed form isn't always the right tool.
+
+# References
+
+## References

@@ -1,0 +1,325 @@
+---
+title: "Gaussian Plumes: Footprints and Flexibility"
+subtitle: "Lecture 11"
+author: "Vivek Srikrishnan"
+course: "BEE 4750"
+institution: "Cornell University"
+date: "October 07, 2026"
+format:
+    revealjs:
+        slide-number: c/t
+        show-slide-number: all
+        center-title-slide: true
+        width: 1280
+        height: 720
+        transition: none
+        toc: true
+        toc-depth: 1
+        toc-title: "Overview"
+        history: false
+        link-external-newwindow: true
+        theme: ../sass/slides.scss
+        template-partials:
+            - title-slide.html
+        menu:
+            numbers: true
+        html-math-method: mathjax
+        include-in-header: mathjax-config.html
+        date-format: long
+        email-obfuscation: javascript
+        chalkboard:
+            theme: whiteboard
+            buttons: true
+        controls: true
+engine: julia
+julia:
+  exeflags: ["+1.11.5"]
+execute:
+    freeze: auto
+    daemon: 600
+---
+
+```{julia}
+#| output: false
+import Pkg
+Pkg.activate(@__DIR__)
+Pkg.instantiate()
+```
+
+```{julia}
+#| output: false
+using Plots
+using Measures
+using LaTeXStrings
+using DifferentialEquations
+
+plot_font = "Palatino Roman"
+default(
+    fontfamily=plot_font,
+    linewidth=3,
+    framestyle=:box,
+    label=nothing,
+    grid=false,
+    guidefontsize=18,
+    legendfontsize=16,
+    tickfontsize=16,
+    titlefontsize=20,
+    bottom_margin=10mm,
+    left_margin=5mm
+)
+
+# Okabe-Ito palette: distinguishable under all common types of colour
+# blindness, and every pair also differs in line style so the figures
+# still read in greyscale.
+cb_orange = "#E69F00"
+cb_green = "#009E73"
+cb_yellow = "#F0E442"
+cb_blue = "#0072B2"
+cb_vermillion = "#D55E00"
+cb_purple = "#CC79A7"
+```
+
+```{julia}
+#| output: false
+
+# Carried over from Monday: the closed-form plume, Class F stability.
+Q, H, u_wind = 100.0, 41.0, 2.5
+sig_y(xk) = 34.0 * xk^0.894
+sig_z(xk) = xk < 1 ? 14.35 * xk^0.740 - 0.35 : 62.6 * xk^0.180 - 48.6
+
+plume(xk, y, z; source=Q) = begin
+    sy, sz = sig_y(xk), sig_z(xk)
+    (source / (2π * u_wind * sy * sz)) * exp(-y^2 / (2sy^2)) * (
+        exp(-(z - H)^2 / (2sz^2)) + exp(-(z + H)^2 / (2sz^2)))
+end
+```
+
+# Review of Last Class
+
+## The Model, Recapped
+
+$$C(x,y,z) = \frac{Q}{2\pi u\sigma_y\sigma_z}\exp\left(\frac{-y^2}{2\sigma_y^2}\right)\left[\exp\left(\frac{-(z-H)^2}{2\sigma_z^2}\right) + \exp\left(\frac{-(z+H)^2}{2\sigma_z^2}\right)\right]$$
+
+Built from a real Péclet argument (drop along-wind dispersion) and a real boundary condition (ground reflection, verified numerically to cancel the vertical flux).
+
+## Questions?
+
+{{< include _poll-prompt.qmd >}}
+
+# Where Does the Plume Actually Land?
+
+## The Ground-Level Footprint
+
+```{julia}
+#| label: fig-footprint
+#| fig-cap: "Ground-level (z=0) concentration footprint, constant emissions."
+#| echo: true
+#| code-fold: true
+
+xs = 0.05:0.05:8.0
+ys = -400:10:400
+Z = [plume(x, y, 0.0) * 1e6 for y in ys, x in xs]   # µg/m³
+
+p_foot = contourf(xs, ys, Z, color=:tol_rainbow, linewidth=0,
+    xlabel="Distance downwind  [km]", ylabel="Crosswind distance  [m]",
+    colorbar_title="  µg/m³")
+plot!(p_foot, size=(1050, 480), left_margin=12mm, right_margin=14mm,
+    bottom_margin=12mm, top_margin=5mm)
+```
+
+## The Peak Isn't at the Stack
+
+```{julia}
+#| label: fig-centerline
+#| fig-cap: "Ground-level centerline concentration vs. downwind distance."
+#| echo: true
+#| code-fold: true
+
+xs_fine = 0.05:0.01:8.0
+Cline = [plume(x, 0.0, 0.0) * 1e6 for x in xs_fine]
+peak_val, peak_idx = findmax(Cline)
+peak_x = xs_fine[peak_idx]
+
+p_line = plot(xs_fine, Cline, color=:black, linewidth=4,
+    xlabel="Distance downwind  [km]", ylabel="Ground-level centerline C  [µg/m³]",
+    legend=false)
+scatter!(p_line, [peak_x], [peak_val], color=cb_vermillion, markersize=9)
+annotate!(p_line, peak_x + 0.4, peak_val, text("peak: $(round(peak_val, digits=0)) µg/m³ at $(round(peak_x, digits=1)) km", 14, :left))
+plot!(p_line, size=(1050, 440), left_margin=12mm, right_margin=8mm,
+    bottom_margin=12mm, top_margin=5mm)
+```
+
+::: {.fragment .fade-in}
+The same lesson as the DO sag curve: **the worst point is downstream of the source, not at it.**
+:::
+
+# What If Emissions Vary in Time?
+
+## Real Emissions Aren't Constant
+
+A load-following power plant, a flare, a batch process --- $Q$ genuinely varies with time.
+
+**Does that force us to abandon the closed form?**
+
+## Surprisingly, No
+
+If the wind is constant, a parcel now at distance $x$ left the stack at time $t - x/u$. Its cross-wind spread only depends on how far it's travelled, not on the emission history:
+
+$$\bbox[5pt, border: 3px solid red]{C(x,y,z,t) = \frac{Q(t - x/u)}{2\pi u\sigma_y(x)\sigma_z(x)}\exp\left(\frac{-y^2}{2\sigma_y(x)^2}\right)\Big[\ldots\Big]}$$
+
+::: {.fragment .fade-in}
+**Verified**: substituting this into the unsteady PDE $\partial C/\partial t + u\,\partial C/\partial x = K_{yy}\partial^2C/\partial y^2 + K_{zz}\partial^2C/\partial z^2$ gives a residual of $5\times10^{-11}$ against terms of size $10^{-6}$ --- exact, to numerical precision.
+:::
+
+## What Discretizing Does *Not* Buy You
+
+Exactly like Streeter-Phelps: **time-varying emissions under a known, constant wind is not a reason to discretize.** Substitute the retarded time into the closed form you already have.
+
+::: {.fragment .fade-in}
+This only works because advection in $x$ is pure translation --- no along-$x$ mixing, and a fixed wind field. **Break either assumption and the trick stops working.**
+:::
+
+# What Actually Forces the Issue
+
+## Wind Doesn't Hold Still
+
+Real wind changes speed and direction over the course of a day. Does the retarded-time trick survive that?
+
+## Varying Speed: Timing Gets Confused, But It's Still 1D
+
+```{julia}
+#| echo: true
+#| code-fold: true
+#| output: false
+
+wind_speed(t) = 1.5 + 2.0 * max(0.0, sin(π * t / (12 * 3600)))^1.5   # m/s, picks up over the day
+
+function travel_time(t0, x_target)
+    t, x = t0, 0.0
+    while x < x_target
+        x += wind_speed(t) * 1.0
+        t += 1.0
+    end
+    return t - t0
+end
+```
+
+A puff released at different hours takes very different times to travel 3 km: `{julia} round(travel_time(0.0, 3000.0), digits=0)`s at midnight vs. `{julia} round(travel_time(6*3600.0, 3000.0), digits=0)`s at 6am (a naive fixed-wind estimate says `{julia} round(3000.0/2.5, digits=0)`s always). Wrong arrival time --- but still a straight line. **One ODE, `dx/dt = u(t)`, fixes it.**
+
+## Varying Direction: Now It's Genuinely 2D
+
+If the wind direction also drifts, a puff's crosswind position depends on the **integrated history** of the direction it experienced --- not a single number you can substitute in.
+
+```{julia}
+#| label: fig-puff-traj
+#| fig-cap: "A puff's actual path under a drifting wind direction, vs. the naive straight-line assumption, out to the 3 km receptor."
+#| echo: true
+#| code-fold: true
+
+wind_dir(t) = 0.3 * sin(2π * t / (8 * 3600))    # radians, ±17° swing over 8 hours
+
+function puff!(du, u, p, t)
+    du[1] = wind_speed(t) * cos(wind_dir(t))
+    du[2] = wind_speed(t) * sin(wind_dir(t))
+end
+
+# Stop once the puff reaches the receptor at x = 3 km -- otherwise a 3-hour
+# integration carries it far past the distances we're actually discussing.
+reaches_receptor(u, t, integrator) = u[1] - 3000.0
+terminate_at_receptor = ContinuousCallback(reaches_receptor, terminate!)
+
+prob = ODEProblem(puff!, [0.0, 0.0], (0.0, 3 * 3600.0))
+sol = solve(prob, Tsit5(); saveat=5.0, callback=terminate_at_receptor)
+X = [s[1] for s in sol.u]
+Y = [s[2] for s in sol.u]
+
+p_traj = plot(X ./ 1000, Y, color=cb_vermillion, linewidth=4, label="actual path",
+    xlabel="Distance downwind  [km]", ylabel="Crosswind drift  [m]", legend=:topleft)
+plot!(p_traj, X ./ 1000, zeros(length(X)), color=:black, linestyle=:dash,
+    linewidth=3, label="naive: fixed wind direction")
+plot!(p_traj, size=(1000, 440), left_margin=12mm, right_margin=8mm,
+    bottom_margin=12mm, top_margin=5mm)
+```
+
+## The Drift Is Not Small
+
+```{julia}
+#| label: fig-puff-multi
+#| fig-cap: "Trajectories of puffs released every 20 minutes across a 2-hour emissions event."
+#| echo: true
+#| code-fold: true
+
+emission_release_times = 0.0:1200.0:7200.0
+p_multi = plot(xlabel="Distance downwind  [km]", ylabel="Crosswind drift  [m]",
+    legend=false)
+drifts = Float64[]
+for t0 in emission_release_times
+    # Each puff is stopped at the same receptor (x = 3 km) via the callback
+    # defined above, so every trajectory ends where we're comparing them.
+    prob_i = ODEProblem(puff!, [0.0, 0.0], (t0, t0 + 3 * 3600.0))
+    sol_i = solve(prob_i, Tsit5(); saveat=5.0, callback=terminate_at_receptor)
+    Xi = [s[1] for s in sol_i.u]
+    Yi = [s[2] for s in sol_i.u]
+    push!(drifts, Yi[end])
+    plot!(p_multi, Xi ./ 1000, Yi, color=cb_blue, alpha=0.6, linewidth=2)
+end
+plot!(p_multi, size=(1000, 440), left_margin=12mm, right_margin=8mm,
+    bottom_margin=12mm, top_margin=5mm)
+```
+
+Crosswind position at $x=3$ km ranges from `{julia} round(minimum(drifts), digits=0)` to `{julia} round(maximum(drifts), digits=0)` m across puffs released just 20 minutes apart --- **no single formula captures this.**
+
+# Why This Earns Its Keep
+
+## The Same Argument as Streeter-Phelps
+
+:::: {.columns}
+::: {.column width=50%}
+**Closed form still works for:**
+
+- constant wind, any $Q(t)$ (retarded time)
+- multiple steady sources (superposition)
+:::
+::: {.column width=50%}
+**Needs real simulation for:**
+
+- wind that changes direction over the transit time
+- anything where the *coordinate system itself* depends on history
+:::
+::::
+
+::: {.fragment .fade-in}
+Discretizing doesn't just trade accuracy for cost --- it buys you **flexibility** the closed form structurally cannot have, once its assumptions are gone.
+:::
+
+## What Solved the Puff Trajectory
+
+Notice what built the curved-path figure: `ODEProblem` and `solve(prob, Tsit5())`.
+
+::: {.fragment .fade-in}
+**This is the same call from Week 4's `Vern9()` moment.** No hand-rolled grid, no Thomas algorithm, no tridiagonal solve --- once you can write the governing equations as an ODE system, a real solver takes it from there. That is what "2D discretization" bought you: not a bigger loop to hand-code, but the ability to *state* the right ODE system and let the tool handle it.
+:::
+
+# Key Takeaways
+
+## Key Takeaways
+
+::: {.incremental}
+- The ground-level footprint peaks **downwind** of the source, not at it --- the same lesson as the DO sag curve, in a new geometry.
+- Time-varying emissions under constant wind are **exactly** solvable via a retarded-time substitution --- discretizing buys nothing there.
+- A wind that changes **direction** breaks that trick completely: the crosswind position depends on integrated history, a genuinely 2D problem.
+- The fix is the same one from Week 4: formulate the right ODE system, then call a real solver --- not hand-derive a numerical scheme from scratch.
+:::
+
+## The Whole Arc, Once More
+
+::: {.incremental}
+- **Forward Euler**, first order: halve $\Delta t$, halve the error.
+- **Centered differences**, second order, for estimating derivatives you can't write down.
+- **Monte Carlo**, order $1/2$: halve the error by quadrupling $n$.
+- Every one of these traded a **knob** for **error**, at a **cost** --- and every rubric in this course has asked you to say which knob, and why.
+:::
+
+# References
+
+## References
