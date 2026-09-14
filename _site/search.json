@@ -1133,7 +1133,7 @@
     "href": "slides/lecture04-1-simulation-discretization.html#the-shallow-lake",
     "title": "Computational Models",
     "section": "The Shallow Lake",
-    "text": "The Shallow Lake\nLast week: equilibria, feedback gain, bifurcation in the loading \\(L\\), and hysteresis.\n\\[P_{t+1} = P_t + L - sP_t + R(P_t)\\]\nWe found the oligotrophic equilibrium is stable because \\(F'(\\hat{P}) = 0.4 &lt; 1\\)."
+    "text": "The Shallow Lake\nLast week: equilibria, feedback gain, bifurcation in the loading \\(L\\), and hysteresis.\nRecall: bifurcations/hysteresis are the results of competing feedbacks: which one(s) win for a given set of parameters influences equilibria/dynamics."
   },
   {
     "objectID": "slides/lecture04-1-simulation-discretization.html#bifurcation-diagram",
@@ -1157,11 +1157,11 @@
     "text": "Questions?\n\n\n\n\n\n\n\n\nText: VSRIKRISH to 22333\nURL: https://pollev.com/vsrikrish  See Results"
   },
   {
-    "objectID": "slides/lecture04-1-simulation-discretization.html#which-answer-is-about-the-lake",
-    "href": "slides/lecture04-1-simulation-discretization.html#which-answer-is-about-the-lake",
+    "objectID": "slides/lecture04-1-simulation-discretization.html#why-simulate",
+    "href": "slides/lecture04-1-simulation-discretization.html#why-simulate",
     "title": "Computational Models",
-    "section": "Which Answer Is About the Lake?",
-    "text": "Which Answer Is About the Lake?\nLast week: the oligotrophic equilibrium is stable, \\(F'(\\hat{P}) = 0.4 &lt; 1\\).\nSame lake. Same parameters. Same equilibrium. Five-year step instead of one-year.\n\nThe lake eutrophies.\nWhich of those answers is about the lake, and which is about our model?"
+    "section": "Why Simulate?",
+    "text": "Why Simulate?\nSo far, we have looked at global dynamics: where are the equilibria, and where will trajectories tend to as \\(t \\to \\infty\\).\nBut often we want to understand how the system evolves over time under a set of specific conditions. This is the domain of simulation."
   },
   {
     "objectID": "slides/lecture04-1-simulation-discretization.html#what-is-simulation",
@@ -1178,11 +1178,11 @@
     "text": "When Is There No Analytic Solution?\nModels you have already met:\n\n\n\n\n\n\n\n\nModel\nClosed form?\nWhy\n\n\n\n\nClimate + ice-albedo\npiecewise\n3 linear regimes; exact per piece, but must match at \\(T=\\pm10°C\\)\n\n\nShallow lake (smooth)\nno\ndegree-\\(q\\) recycling term\n\n\n\n\nAnd even the ones with closed forms often lose them the moment inputs vary in time."
   },
   {
-    "objectID": "slides/lecture04-1-simulation-discretization.html#so-we-need-a-numerical-solution",
-    "href": "slides/lecture04-1-simulation-discretization.html#so-we-need-a-numerical-solution",
+    "objectID": "slides/lecture04-1-simulation-discretization.html#when-is-a-numerical-solution-useful",
+    "href": "slides/lecture04-1-simulation-discretization.html#when-is-a-numerical-solution-useful",
     "title": "Computational Models",
-    "section": "So We Need a Numerical Solution",
-    "text": "So We Need a Numerical Solution\n\nNo closed form at all (the smooth lake): there is no formula to evaluate — the only way to know \\(P(t)\\) is to advance the model, one step at a time.\nA piecewise closed form (ice-albedo): technically exact, but you must track which regime you’re in and match solutions at every switch — exactly the bookkeeping a computer is good at and a person is not."
+    "section": "When Is A Numerical Solution Useful?",
+    "text": "When Is A Numerical Solution Useful?\n\nNo closed form at all (the smooth lake): there is no formula to evaluate — the only way to know \\(P(t)\\) is to advance the model, one step at a time.\nA piecewise closed form (ice-albedo): technically exact, but you must track which regime you’re in and match solutions at every switch."
   },
   {
     "objectID": "slides/lecture04-1-simulation-discretization.html#the-downsides-of-cleverness",

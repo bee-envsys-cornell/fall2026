@@ -85,9 +85,7 @@ cb_purple = "#CC79A7"
 
 Last week: equilibria, feedback gain, bifurcation in the loading $L$, and hysteresis.
 
-$$P_{t+1} = P_t + L - sP_t + R(P_t)$$
-
-We found the oligotrophic equilibrium is **stable** because $F'(\hat{P}) = 0.4 < 1$.
+Recall: bifurcations/hysteresis are the results of **competing feedbacks**: which one(s) win for a given set of parameters influences equilibria/dynamics.
 
 ## Bifurcation Diagram
 
@@ -215,19 +213,13 @@ plot(p_hyst, p_basin, layout=(1, 2), size=(1200, 490),
 
 {{< include _poll-prompt.qmd >}}
 
-# Why Simulate?
+# Simulation
 
-## Which Answer Is About the Lake?
+## Why Simulate?
 
-Last week: the oligotrophic equilibrium is stable, $F'(\hat{P}) = 0.4 < 1$.
+So far, we have looked at **global dynamics**: where are the equilibria, and where will trajectories tend to as $t \to \infty$.
 
-Same lake. Same parameters. Same equilibrium. **Five-year step instead of one-year.**
-
-::: {.fragment .fade-in}
-The lake eutrophies.
-
-**Which of those answers is about the lake, and which is about our model?**
-:::
+But often we want to understand how the system evolves over time under a set of specific conditions. This is the domain of **simulation**.
 
 ## What is Simulation?
 
@@ -250,11 +242,11 @@ Models you have already met:
 And even the ones with closed forms often lose them the moment inputs vary in time.
 :::
 
-## So We Need a Numerical Solution
+## When Is A Numerical Solution Useful?
 
 ::: {.incremental}
 - **No closed form at all** (the smooth lake): there is no formula to evaluate --- the only way to know $P(t)$ is to advance the model, one step at a time.
-- **A piecewise closed form** (ice-albedo): technically exact, but you must track which regime you're in and match solutions at every switch --- exactly the bookkeeping a computer is good at and a person is not.
+- **A piecewise closed form** (ice-albedo): technically exact, but you must track which regime you're in and match solutions at every switch.
 :::
 
 ## The Downsides Of Cleverness
