@@ -2528,7 +2528,7 @@
     "href": "slides/lecture04-2-streeter-phelps.html#two-reasons-to-discretize-anyway",
     "title": "Streeter-Phelps and Dissolved Oxygen",
     "section": "Two Reasons to Discretize Anyway",
-    "text": "Two Reasons to Discretize Anyway\n\nOne solver, any model: each closed form is bespoke to its own assumptions — this one even divides by \\(k_a - k_c\\) and \\(k_a - k_n\\), so equal rates need a separate formula (appendix). Change the kinetics and you re-derive from scratch. Forward Euler does not care.\nConditions change as a parcel travels — temperature driving \\(k_a\\) through the day, a flow wave changing \\(U\\), or dispersion mixing neighbouring parcels. Then no single closed form covers the trip. But be careful of numerical errors and computational complexity."
+    "text": "Two Reasons to Discretize Anyway\n\nSimplifies solving: each closed form makes its own assumptions — this one divides by \\(k_a - k_c\\) and \\(k_a - k_n\\), so equal rates need a separate formula (appendix). Change the kinetics and you re-derive from scratch. Forward Euler does not care.\nConditions change as a parcel travels — temperature driving \\(k_a\\) through the day, changing \\(U\\), or dispersion mixing neighbouring parcels. Then no single closed form covers the trip."
   },
   {
     "objectID": "slides/lecture04-2-streeter-phelps.html#when-dont-you-need-to-discretize",

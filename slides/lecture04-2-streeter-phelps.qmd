@@ -258,8 +258,8 @@ C(x) &= C_s(1-\alpha_1) + C_0\alpha_1 - B_0\alpha_2 - N_0\alpha_3 + \left(\frac{
 
 ## Two Reasons to Discretize Anyway
 
-1. **One solver, any model**: each closed form is bespoke to its own assumptions --- this one even divides by $k_a - k_c$ and $k_a - k_n$, so equal rates need a separate formula ([appendix](#sp-solution)). Change the kinetics and you re-derive from scratch. Forward Euler does not care.
-2. **Conditions change as a parcel travels** --- temperature driving $k_a$ through the day, a flow wave changing $U$, or dispersion mixing neighbouring parcels. Then no single closed form covers the trip. But be careful of numerical errors and computational complexity.
+1. **Simplifies solving**: each closed form makes its own assumptions --- this one divides by $k_a - k_c$ and $k_a - k_n$, so equal rates need a separate formula ([appendix](#sp-solution)). Change the kinetics and you re-derive from scratch. Forward Euler does not care.
+2. **Conditions change as a parcel travels** --- temperature driving $k_a$ through the day, changing $U$, or dispersion mixing neighbouring parcels. Then no single closed form covers the trip.
 
 
 ## When Don't You Need To Discretize
