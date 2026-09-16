@@ -238,13 +238,14 @@ U\frac{dC}{dx} &= k_a(C_s - C) + P - R - S_B \\
 
 ::: {.small-math}
 $$\begin{aligned}
-C(x) &= C_s(1-\alpha_1) + C_0\alpha_1 - B_0\alpha_2 - N_0\alpha_3 \\
-&\quad + \left(\frac{P-R-S_B}{k_a}\right)(1-\alpha_1) \\[0.5em]
+C(x) &= C_s(1-\alpha_1) + C_0\alpha_1 - B_0\alpha_2 - N_0\alpha_3 + \left(\frac{P-R-S_B}{k_a}\right)(1-\alpha_1) \\[0.25em]
 \alpha_1 &= \exp\left(\frac{-k_ax}{U}\right) \\[0.25em]
 \alpha_2 &= \left(\frac{k_c}{k_a-k_c}\right)\left[\exp\left(\frac{-k_cx}{U}\right) - \exp\left(\frac{-k_ax}{U}\right)\right] \\[0.25em]
 \alpha_3 &= \left(\frac{k_n}{k_a-k_n}\right)\left[\exp\left(\frac{-k_nx}{U}\right) - \exp\left(\frac{-k_ax}{U}\right)\right]
 \end{aligned}$$
 :::
+
+[Derivation in the appendix](#sp-solution).
 
 ## What Assumptions Did We Make?
 
@@ -257,7 +258,7 @@ C(x) &= C_s(1-\alpha_1) + C_0\alpha_1 - B_0\alpha_2 - N_0\alpha_3 \\
 
 ## Two Reasons to Discretize Anyway
 
-1. Numerical solution defined more generally (analytic solution undefined when $k_a = k_c$ or $k_a = k_n$).
+1. **One solver, any model**: each closed form is bespoke to its own assumptions --- this one even divides by $k_a - k_c$ and $k_a - k_n$, so equal rates need a separate formula ([appendix](#sp-solution)). Change the kinetics and you re-derive from scratch. Forward Euler does not care.
 2. **Conditions change as a parcel travels** --- temperature driving $k_a$ through the day, a flow wave changing $U$, or dispersion mixing neighbouring parcels. Then no single closed form covers the trip. But be careful of numerical errors and computational complexity.
 
 
@@ -267,9 +268,22 @@ C(x) &= C_s(1-\alpha_1) + C_0\alpha_1 - B_0\alpha_2 - N_0\alpha_3 \\
 - **Multiple discharges**: chain closed-form segments end to end, using one segment's output as the next segment's inlet condition. No discretization needed.
 - **A $B_0$ that varies over time**: each parcel still meets constant conditions on its way down, so it gets the same closed form --- just started from the load released when *it* left.
 
+## Discretizing Anyway
 
+## Numerical Solution
 
-## Discretizing Anyway 
+**What is the discretized version of the DO ODE?**
+
+::: {.small-math}
+$$
+\begin{aligned}
+C(x + \Delta x) &= C(x) + \frac{\Delta x}{U}\Bigl[k_a (C_s - C(x)) + P - R - S_B \\
+&\quad - k_cB_0\exp\left(\frac{-k_cx}{U}\right) - k_n N_0\exp\left(\frac{-k_nx}{U}\right)\Bigr]
+\end{aligned}
+$$
+:::
+
+## Code for Discretized Model
 
 ```{julia}
 #| echo: true
@@ -551,11 +565,42 @@ Run each plant **alone** on the clean river, changing nothing else:
 
 ## A Plant on a Daily Cycle
 
-Plant load is not constant.
+:::: {.columns}
+::: {.column width=40%}
+Plant load is not constant --- it typically peaks with morning and evening flows.
 
-Often peaks with morning and evening flows. 
+We simplify to **one** cycle a day: CBOD swinging $\pm 40\%$, everything else fixed.
+:::
+::: {.column width=60%}
+```{julia}
+#| label: fig-cbod-diurnal
+#| fig-cap: "CBOD leaving the effluent over one day. Marked times are followed downstream next."
+#| echo: true
+#| code-fold: true
 
-Suppose CBOD swings $\pm 40\%$ over 24 hours, everything else fixed.
+# The load is a function of clock time, not of grid index, so refining the
+# grid cannot silently change the scenario.
+B_diurnal(τ) = sp_params.B0 * (1 + 0.4 * sin(2π * τ))   # τ in days
+
+# Three times of day we will follow downstream on the next slide
+parcel_start = [0.0, 0.25, 0.75]                        # days: mean, peak, trough
+parcel_color = [cb_blue, cb_orange, cb_purple]
+
+hours = 0:0.1:24
+CBOD_released = [B_diurnal(h / 24) for h in hours]
+
+p_load = plot(hours, CBOD_released, color=cb_green, linewidth=3,
+    xlabel="Time of day  [h]", ylabel="CBOD  [mg/L]",
+    legend=false, xticks=0:6:24)
+hline!(p_load, [sp_params.B0], color=:black, linewidth=2, linestyle=:dash)
+for i in 1:length(parcel_start)
+    scatter!(p_load, [parcel_start[i] * 24], [B_diurnal(parcel_start[i])],
+        color=parcel_color[i], markersize=9, markerstrokewidth=0)
+end
+plot!(p_load, size=(620, 420), left_margin=10mm, bottom_margin=10mm)
+```
+:::
+::::
 
 ## Following One Parcel Downstream
 
@@ -567,10 +612,6 @@ A parcel picks up the load the plant is releasing at the moment it leaves, then 
 #| echo: true
 #| code-fold: true
 
-# The load is a function of clock time, not of grid index, so refining the
-# grid cannot silently change the scenario.
-B_diurnal(τ) = sp_params.B0 * (1 + 0.4 * sin(2π * τ))   # τ in days
-
 # Follow one parcel. Its CBOD is fixed when it leaves, so the closed form
 # applies to it unchanged.
 function do_along_parcel(departure_time, distance, params)
@@ -579,15 +620,13 @@ function do_along_parcel(departure_time, distance, params)
 end
 
 xd = 0:0.02:L
-departure_time = [0.0, 0.25, 0.75]                      # days: mean, peak, trough
-parcel_color = [cb_blue, cb_orange, cb_purple]
 
 p_parcel = plot(xlabel="Distance downstream  [km]", ylabel="DO  [mg/L]",
     legend=:outerright, ylims=(1.2, 7))
-for i in 1:length(departure_time)
-    DO_parcel = [do_along_parcel(departure_time[i], x, sp_params) for x in xd]
+for i in 1:length(parcel_start)
+    DO_parcel = [do_along_parcel(parcel_start[i], x, sp_params) for x in xd]
     plot!(p_parcel, xd, DO_parcel, color=parcel_color[i], linewidth=2.5,
-        label="left at $(Int(round(departure_time[i] * 24))) h")
+        label="left at $(Int(round(parcel_start[i] * 24))) h")
 end
 hline!(p_parcel, [2.5], color=cb_green, linewidth=3, linestyle=:dot, label="standard")
 plot!(p_parcel, size=(1200, 350), left_margin=10mm)
@@ -638,7 +677,7 @@ plot!(p_diel, size=(600, 600), left_margin=10mm, bottom_margin=0mm)
 ## Key Takeaways
 
 - The DO **sag curve** has a minimum downstream of the release --- the regulated quantity is not the endpoint or the point of emissions.
-- The closed-form Streeter-Phelps solution is undefined at $k_a = k_c$ or $k_a = k_n$, and assumes every rate is constant along the river --- reasons to possibly discretize.
+- The closed-form Streeter-Phelps solution divides by $k_a - k_c$ and $k_a - k_n$, and assumes every rate is constant along the river --- reasons to possibly discretize.
 - Discretizing buys you **generality**.
 
 ## Next Classes
@@ -652,6 +691,63 @@ plot!(p_diel, size=(600, 600), left_margin=10mm, bottom_margin=0mm)
 **Homework 2**: Due tomorrow at 9pm.
 
 **Homework 3**: Assigned Friday, due Thursday, September 24.
+
+# Appendix
+
+## Streeter-Phelps Solution {#sp-solution}
+
+Assuming we have known solutions for $B$ and $N$:.
+
+Writing rates per km, $a = k_a/U$, $c = k_c/U$, $n = k_n/U$, and $S = (P-R-S_B)/U$:
+
+$$\begin{gathered}
+U\frac{dC}{dx} = k_a(C_s - C) + P - R - S_B - k_cB_0e^{-k_cx/U} - k_nN_0e^{-k_nx/U} \\[0.5em]
+\Rightarrow \frac{dC}{dx} + aC = aC_s + S - cB_0e^{-cx} - nN_0e^{-nx}
+\end{gathered}$$
+
+## Streeter-Phelps Solution
+
+Multiply by the integrating factor $\mu = e^{ax}$. The left side collapses into a single derivative:
+
+\begin{aligned}
+\frac{d}{dx}\left(Ce^{ax}\right) &= aC_se^{ax} + Se^{ax} - cB_0e^{(a-c)x} - nN_0e^{(a-n)x}
+\end{aligned}
+
+Every term on the right is now a bare exponential.
+
+## Streeter-Phelps Solution
+
+Integrate from $0$ to $x$, with $C(0) = C_0$:
+
+::: {.small-math}
+\begin{aligned}
+Ce^{ax} - C_0 &= C_s\left(e^{ax}-1\right) + \frac{S}{a}\left(e^{ax}-1\right) \\[0.5em]
+&\quad - \frac{cB_0}{a-c}\left(e^{(a-c)x}-1\right) - \frac{nN_0}{a-n}\left(e^{(a-n)x}-1\right)
+\end{aligned}
+:::
+
+## Streeter-Phelps Solution
+
+Multiply through by $e^{-ax}$:
+
+::: {.small-math}
+\begin{aligned}
+C(x) &= C_0e^{-ax} + \left(C_s + \frac{S}{a}\right)\left(1-e^{-ax}\right) \\[0.5em]
+&\quad - \frac{cB_0}{a-c}\left(e^{-cx}-e^{-ax}\right) - \frac{nN_0}{a-n}\left(e^{-nx}-e^{-ax}\right)
+\end{aligned}
+:::
+
+The $U$s cancel in every ratio --- $\frac{c}{a-c} = \frac{k_c}{k_a-k_c}$ and $\frac{S}{a} = \frac{P-R-S_B}{k_a}$ --- which is the $\alpha_1, \alpha_2, \alpha_3$ form.
+
+## When $k_a = k_c$
+
+At $a = c$ the third integral is $\int_0^x ds = x$, not $\left(e^{(a-c)x}-1\right)/(a-c)$. Only that term changes:
+
+$$-B_0\left(\frac{k_cx}{U}\right)e^{-k_ax/U}$$
+
+The singularity is **removable**: the formula fails, not the solution.
+
+Near-equality is harmless --- the relative error stays under $10^{-9}$ for $k_a - k_c \geq 10^{-7}$/d. This is a case to code around, not a modeling limitation.
 
 # References
 
