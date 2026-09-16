@@ -126,6 +126,26 @@ Two consequences:
 - **Verify by looking.** Invalid markup frequently renders without any error. After rendering, convert
   pages to images (`pdftoppm -png`) and actually look at them — that is how the "None" callout above
   went unnoticed.
+- **Looking at a *deck's* figures needs an extra step.** Plots.jl figures land as inline SVG in the
+  rendered HTML, and Quarto's HTML pass lowercases SVG attribute names: `viewBox` → `viewbox`,
+  `clipPath` → `clippath`, and it drops the `xmlns:` from `xmlns:xlink`. Browsers correct for this, so
+  **the deck displays correctly** — but SVG is case-sensitive, so an extract handed to `rsvg-convert`,
+  Inkscape, or any strict renderer ignores the viewBox and crops to the top-left corner. Restore the
+  casing first, or you will "fix" a figure that was never broken:
+
+  ```bash
+  # pull one figure out of the rendered deck, then repair and convert it
+  python3 - <<'PY'
+  html = open("_site/slides/<deck>.html").read()
+  i = html.find('id="<fig-label>"'); s = html.find("<svg", i); e = html.find("</svg>", s) + 6
+  svg = (html[s:e].replace("viewbox=", "viewBox=")
+                  .replace("<clippath", "<clipPath").replace("</clippath>", "</clipPath>"))
+  open("/tmp/fig.svg", "w").write(svg)
+  PY
+  rsvg-convert -w 1600 /tmp/fig.svg -o /tmp/fig.png
+  ```
+
+  `qlmanage -t` crops the same way and cannot be fixed by flags; use `rsvg-convert`.
 
 ## Known stale artifacts
 

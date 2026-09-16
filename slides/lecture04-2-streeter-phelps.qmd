@@ -81,23 +81,52 @@ cb_purple = "#CC79A7"
 
 # Review of Last Class
 
-## The Cliffhanger
+## Numerical Solutions Are Samples on a Grid
 
-Monday: forward Euler on the airshed, $\Delta t = 2.5\ \text{s}$, never settles.
+Track the state at a sequence of times $t_0, t_1, t_2, \ldots$ and use the model to advance from one to the next:
 
-$$F'(C) = 1 - l\Delta t = 1 - 0.8(2.5) = -1$$
+$$X(t + \Delta t) = X(t) + \underbrace{\Delta X_t}_{\text{derived from } dX/dt}$$
 
 ::: {.fragment .fade-in}
-$|F'| = 1$ exactly: a perturbation neither grows nor decays. The simulation **oscillates forever**, undamped --- for any $l$, this happens whenever $\Delta t > 2/l$.
+The grid is a **choice we make**, not a property of the system. Everything we report is read off those samples.
+:::
 
-This is the same "does a small perturbation grow?" question you already know from CEE 3200 --- just asked about the *simulation* instead of the *system*. We won't dwell on it further; today is about a new model.
+## Forward Euler Is First Order
+
+Evaluate the rate at the state we already know:
+
+$$\bbox[5pt, border: 3px solid red]{X(t+\Delta t) = X(t) + \Delta t\, f\left(X(t)\right)}$$
+
+::: {.incremental}
+- Local error per step is $O(\Delta t^2)$; we take $T/\Delta t$ steps, so **global error is $O(\Delta t)$**.
+- Practically: **halve $\Delta t$, halve the error.**
+- On log-log axes, the **slope** of error against $\Delta t$ *is* that order.
+:::
+
+## How We Justified a Step Size
+
+:::: {.columns}
+::: {.column width=50%}
+**Where to start**
+
+The characteristic timescale $1/|\text{rate}|$ of the fastest process in the model. $\Delta t$ must sit well inside it.
+:::
+::: {.column width=50%}
+**When to stop**
+
+Name a scalar **quantity of interest**, halve $\Delta t$ until it stops moving, and report what that changed.
+:::
+::::
+
+::: {.fragment .fade-in}
+Neither step is optional: the timescale tells you where to begin, the refinement tells you when you are done.
 :::
 
 ## Questions?
 
 {{< include _poll-prompt.qmd >}}
 
-# Why Dissolved Oxygen Matters
+# Modeling Dissolved Oxygen
 
 ## Dissolved Oxygen
 
@@ -125,7 +154,7 @@ DO is essential for aquatic life.
 **Hypoxia** occurs when DO levels are $< 2$ mg/L.
 :::
 ::: {.column width=45%}
-![Minimum DO requirements for freshwater fish](https://www.fondriest.com/environmental-measurements/wp-content/uploads/2013/11/dissolvedoxygen_levels-fresh.jpg){width=70%}
+![Minimum DO requirements for freshwater fish](https://www.fondriest.com/environmental-measurements/wp-content/uploads/2013/11/dissolvedoxygen_levels-fresh.jpg){width=45%}
 
 ::: {.caption}
 Source: [fondriest.com](https://www.fondriest.com/environmental-measurements/parameters/water-quality/dissolved-oxygen/)
@@ -135,14 +164,10 @@ Source: [fondriest.com](https://www.fondriest.com/environmental-measurements/par
 
 ## Impact of Paris on Seine DO, 1874
 
-![Dissolved Oxygen Downstream of Paris, 1874](https://www.researchgate.net/publication/325721176/figure/fig10/AS:962439298445322@1606474818380/Longitudinal-profiles-x-axis-in-km-downstream-of-Paris-center-of-dissolved-oxygen_W640.jpg)
+![Dissolved Oxygen Downstream of Paris, 1874](figures/Dmitrieva_Seine.png)
 
 ::: {.caption}
 Source: Dmitrieva, T., et al. (2018). <https://doi.org/10.1007/s12685-018-0216-7>
-:::
-
-::: {.fragment .fade-in}
-DO drops sharply below the city, then **recovers downstream**. You are about to derive exactly this shape.
 :::
 
 ## DO Regulatory Standards
@@ -154,7 +179,6 @@ In NY (via [Westlaw](https://govt.westlaw.com/nycrr/Document/I4ed90412cd1711dda4
 - DO levels may not fall below 3 mg/L
 - DO may not be below 4.8 mg/L for an extended period
 
-# Deriving the Model
 
 ## Oxygen Balance in Rivers and Streams
 
@@ -182,11 +206,11 @@ We track the mass balance **in terms of rates**, following an element of water a
 
 Let $U$ be the river velocity (km/d), $x$ the distance downstream from a release site, and $C(x)$ the DO concentration at $x$ (mg/L):
 
-$$U\frac{dC}{dx} = \Delta\ \text{DO} = \text{Reaeration} + \text{Photosynthesis} - \text{Respiration} - \text{Benthal Uptake} - \text{CBOD} - \text{NBOD}$$
+$$\begin{aligned}
+U\frac{dC}{dx} &= \Delta\ \text{DO} = \text{Reaeration} + \text{Photosynthesis} - \text{Respiration} \\
+&\qquad - \text{Benthal Uptake} - \text{CBOD} - \text{NBOD}
+\end{aligned}$$
 
-::: {.fragment .fade-in}
-The "clock" here is **distance downstream**, not time --- the same idea as marching in $t$, just relabeled.
-:::
 
 ## BOD Oxygen Uptake
 
@@ -200,15 +224,15 @@ where $k_c$, $k_n$ are the CBOD and NBOD decay rates.
 
 ## Putting It Together
 
-Reaeration is proportional to the deficit from saturation, $k_a(C_s - C)$. Photosynthesis ($P$), respiration ($R$), and benthal uptake ($S_B$) are usually measured and often small enough to neglect:
+Reaeration is proportional to the deficit from saturation, $k_a(C_s - C)$. Photosynthesis ($P$), respiration ($R$), and benthal uptake ($S_B$) are usually measured and treated as constants:
 
-$$\bbox[5pt, border: 3px solid red]{U\frac{dC}{dx} = k_a(C_s - C) + P - R - S_B - k_cB_0e^{-k_cx/U} - k_nN_0e^{-k_nx/U}}$$
+$$\begin{aligned}
+U\frac{dC}{dx} &= k_a(C_s - C) + P - R - S_B \\
+&\qquad - k_cB_0e^{-k_cx/U} - k_nN_0e^{-k_nx/U}
+\end{aligned}$$
 
-::: {.fragment .fade-in}
-DO drops after a release, then recovers as the BOD is consumed --- the **sag curve** from the Seine data. The **minimum**, not the endpoint, is the regulated quantity.
-:::
 
-# Why Discretize an Equation You Can Already Solve?
+# Why Discretize an Equation You Can  Solve?
 
 ## Analytic Solution (Streeter-Phelps)
 
@@ -217,10 +241,8 @@ $$\begin{aligned}
 C(x) &= C_s(1-\alpha_1) + C_0\alpha_1 - B_0\alpha_2 - N_0\alpha_3 \\
 &\quad + \left(\frac{P-R-S_B}{k_a}\right)(1-\alpha_1) \\[0.5em]
 \alpha_1 &= \exp\left(\frac{-k_ax}{U}\right) \\[0.25em]
-\alpha_2 &= \left(\frac{k_c}{k_a-k_c}\right) \\
-&\quad \left[\exp\left(\frac{-k_cx}{U}\right) - \exp\left(\frac{-k_ax}{U}\right)\right] \\[0.25em]
-\alpha_3 &= \left(\frac{k_n}{k_a-k_n}\right) \\
-&\quad \left[\exp\left(\frac{-k_nx}{U}\right) - \exp\left(\frac{-k_ax}{U}\right)\right]
+\alpha_2 &= \left(\frac{k_c}{k_a-k_c}\right)\left[\exp\left(\frac{-k_cx}{U}\right) - \exp\left(\frac{-k_ax}{U}\right)\right] \\[0.25em]
+\alpha_3 &= \left(\frac{k_n}{k_a-k_n}\right)\left[\exp\left(\frac{-k_nx}{U}\right) - \exp\left(\frac{-k_ax}{U}\right)\right]
 \end{aligned}$$
 :::
 
@@ -232,54 +254,28 @@ C(x) &= C_s(1-\alpha_1) + C_0\alpha_1 - B_0\alpha_2 - N_0\alpha_3 \\
 - A single, steady release at $x = 0$.
 :::
 
-::: {.fragment .fade-in}
-Every one of those is a modeling convenience, not a physical law. **What happens when they don't hold?**
-:::
 
 ## Two Reasons to Discretize Anyway
 
-::: {.quote}
-> Defined more generally (analytic solution undefined when $k_a = k_c$ or $k_a = k_n$). Can add more complexity (time/temperature variation). But be careful of numerical errors and computational complexity.
+1. Numerical solution defined more generally (analytic solution undefined when $k_a = k_c$ or $k_a = k_n$).
+2. **Conditions change as a parcel travels** --- temperature driving $k_a$ through the day, a flow wave changing $U$, or dispersion mixing neighbouring parcels. Then no single closed form covers the trip. But be careful of numerical errors and computational complexity.
 
-::: {.cite}
---- adapted from the FA25 deck's own assessment
-:::
-:::
 
-::: {.incremental}
-- $\alpha_2$ and $\alpha_3$ divide by $k_a - k_c$ and $k_a - k_n$. **At $k_a = k_c$ the formula is undefined** --- a removable singularity you'd need to special-case in code. The discretized version never notices.
-- The formula needs $U$, $k_a$, $k_c$, $k_n$ **constant along the reach**. That is true by assumption, not by physics: reaeration depends on temperature, which is not constant.
-:::
+## When Don't You Need To Discretize
 
-## What Discretizing Does *Not* Buy You
 
-Two things the closed form already handles, so don't claim them as reasons to discretize:
-
-::: {.incremental}
 - **Multiple discharges**: chain closed-form segments end to end, using one segment's output as the next segment's inlet condition. No discretization needed.
-- **A constant but uncertain** $B_0$: resample it and re-evaluate the closed form as many times as you like. Still no discretization needed.
-:::
+- **A $B_0$ that varies over time**: each parcel still meets constant conditions on its way down, so it gets the same closed form --- just started from the load released when *it* left.
 
-::: {.fragment .fade-in}
-**What actually forces the issue** is a driver that is not just uncertain but genuinely **varies along the domain** --- exactly what we'll do at the end of class.
-:::
 
-## Discretizing Anyway --- One March, By Hand
 
-$B$ and $N$ already have exact solutions, so only $C$ needs stepping:
+## Discretizing Anyway 
 
 ```{julia}
 #| echo: true
-#| code-fold: true
+#| code-fold: false
 #| output: false
 
-# Raw constants live inside `let` so only the bundle itself becomes global.
-# Bundling every rate into a NamedTuple, passed as a required positional
-# argument, is deliberate: the FA25 version of this function took the
-# positional args (ka, kn, kc) but every call site passed (ka, kc, kn),
-# silently swapping the CBOD and NBOD rates. Accessing rates by field name
-# makes that class of bug impossible --- and unlike a keyword default, a
-# required positional bundle can never quietly fall back to a stale value.
 sp_params = let
     ka, kc, kn = 0.6, 0.4, 0.25    # reaeration, CBOD decay, NBOD decay   [1/d]
     B0, N0 = 9.0, 7.0               # initial CBOD, NBOD                  [mg/L]
@@ -292,7 +288,7 @@ do_change(C, x, params) =
     (params.ka * (params.Cs - C) - params.kc * params.B0 * exp(-params.kc * x / params.U)
      - params.kn * params.N0 * exp(-params.kn * x / params.U)) / params.U
 
-function do_march(C_ic, L, Δx, params)
+function simulate_do(C_ic, L, Δx, params)
     steps = Int(round(L / Δx))
     C = zeros(steps + 1)
     C[1] = C_ic
@@ -303,9 +299,6 @@ function do_march(C_ic, L, Δx, params)
 end
 ```
 
-::: {.fragment .fade-in}
-This is enough to see what a solver does. **On HW3 you will solve this same model with `DifferentialEquations.jl`** --- the properly engineered version of this loop, closing the loop on Monday's unexplained `Vern9()`.
-:::
 
 ## The Sag Curve
 
@@ -317,10 +310,10 @@ This is enough to see what a solver does. **On HW3 you will solve this same mode
 
 L = 40.0
 p_sag = plot(xlabel="Distance downstream  [km]", ylabel="DO  [mg/L]", legend=:bottomright)
-plot!(p_sag, 0:0.002:L, do_march(C0, L, 0.002, sp_params), color=:black,
+plot!(p_sag, 0:0.002:L, simulate_do(C0, L, 0.002, sp_params), color=:black,
     linewidth=5, label="reference (Δx = 0.002)")
 for (Δx, col) in zip([2.0, 1.0, 0.5], [cb_vermillion, cb_orange, cb_blue])
-    plot!(p_sag, 0:Δx:L, do_march(C0, L, Δx, sp_params), color=col,
+    plot!(p_sag, 0:Δx:L, simulate_do(C0, L, Δx, sp_params), color=col,
         linewidth=3, linestyle=:dash, markershape=:circle, markersize=4, label="Δx = $Δx")
 end
 hline!(p_sag, [2.5], color=cb_green, linewidth=3, linestyle=:dot, label="standard: 2.5 mg/L")
@@ -328,26 +321,77 @@ plot!(p_sag, size=(1100, 450), left_margin=12mm, right_margin=8mm,
     bottom_margin=12mm, top_margin=5mm)
 ```
 
-::: {.caption}
-The **minimum**, not the endpoint, is what a regulator checks.
-:::
 
-## Does Step Size Change the Verdict?
+## Why Is There a Sag At All?
 
-The standard is $2.5$ mg/L. The true minimum is $2.6$ mg/L --- this river **complies**.
+```{julia}
+#| label: fig-sag-components
+#| fig-cap: "The closed-form solution is a sum: a monotone recovery plus two transient drawdowns."
+#| echo: true
+#| code-fold: true
 
-| $\Delta x$ (km) | minimum DO (mg/L) | verdict |
-|---:|---:|:---|
-| $4.0$ | $1.3$ | **violation** ❌ |
-| $2.0$ | $2.0$ | **violation** ❌ |
-| $1.0$ | $2.3$ | **violation** ❌ |
-| $0.5$ | $2.4$ | **violation** ❌ |
-| $0.25$ | $2.5$ | complies ✓ |
-| $0.125$ | $2.5$ | complies ✓ |
+# The closed-form solution is a sum of three pieces. Write each one out
+# separately so we can plot them.
 
-::: {.fragment .fade-in}
-**Four reasonable-looking step sizes all manufacture a violation that is not there.** Sharper than Monday's airshed story: here the whole coarse-to-moderate range is wrong, not just the coarsest two.
-:::
+# Reaeration acting alone: DO relaxes from its starting value toward
+# saturation. This piece only ever rises.
+function reaeration_only(distance, params)
+    reaeration = exp(-params.ka * distance / params.U)
+    return params.Cs * (1 - reaeration) + C0 * reaeration
+end
+
+# Oxygen consumed by carbonaceous BOD. It is zero at the effluent (no time to
+# act yet) and returns to zero once the CBOD is used up, so it must dip in
+# between.
+function cbod_drawdown(distance, params)
+    reaeration = exp(-params.ka * distance / params.U)
+    cbod_left  = exp(-params.kc * distance / params.U)
+    return -params.B0 * (params.kc / (params.ka - params.kc)) * (cbod_left - reaeration)
+end
+
+# Same shape for nitrogenous BOD, but slower and shallower.
+function nbod_drawdown(distance, params)
+    reaeration = exp(-params.ka * distance / params.U)
+    nbod_left  = exp(-params.kn * distance / params.U)
+    return -params.N0 * (params.kn / (params.ka - params.kn)) * (nbod_left - reaeration)
+end
+
+distances     = 0:0.05:L
+recovery_part = [reaeration_only(x, sp_params) for x in distances]
+cbod_part     = [cbod_drawdown(x, sp_params) for x in distances]
+nbod_part     = [nbod_drawdown(x, sp_params) for x in distances]
+total_DO      = [recovery_part[i] + cbod_part[i] + nbod_part[i] for i in 1:length(distances)]
+
+critical_point = distances[argmin(total_DO)]
+
+p_comp = plot(xlabel="Distance downstream  [km]", ylabel="Contribution to DO  [mg/L]",
+    legend=:outerright, ylims=(-4, 8))
+hline!(p_comp, [0], color=:grey, linewidth=1, label=nothing)
+plot!(p_comp, distances, recovery_part, color=cb_blue, linewidth=3,
+    linestyle=:dash, label="reaeration alone")
+plot!(p_comp, distances, cbod_part, color=cb_vermillion, linewidth=3,
+    linestyle=:dashdot, label="CBOD drawdown")
+plot!(p_comp, distances, nbod_part, color=cb_orange, linewidth=3,
+    linestyle=:dot, label="NBOD drawdown")
+plot!(p_comp, distances, total_DO, color=:black, linewidth=5, label="sum = DO")
+vline!(p_comp, [critical_point], color=:grey, linewidth=2, linestyle=:dot, label=nothing)
+annotate!(p_comp, critical_point + 1.0, -3.2,
+    text("critical point\n$(round(critical_point, digits=1)) km", 14, :left))
+plot!(p_comp, size=(1100, 450), left_margin=12mm, right_margin=8mm,
+    bottom_margin=12mm, top_margin=5mm)
+```
+
+## Impact of Step Size
+
+| $\Delta x$ (km) | minimum DO (mg/L) | 
+|---:|---:|
+| $4.0$ | $1.3$ | 
+| $2.0$ | $2.0$ | 
+| $1.0$ | $2.3$ | 
+| $0.5$ | $2.4$ | 
+| $0.25$ | $2.5$ |
+| $0.125$ | $2.5$ |
+
 
 ## Does It Converge at First Order?
 
@@ -358,8 +402,8 @@ The standard is $2.5$ mg/L. The true minimum is $2.6$ mg/L --- this river **comp
 #| code-fold: true
 
 Δxs = [4.0, 2.0, 1.0, 0.5, 0.25, 0.125, 0.0625]
-min_ref = minimum(do_march(C0, L, 0.001, sp_params))
-errs = [abs(minimum(do_march(C0, L, Δx, sp_params)) - min_ref) for Δx in Δxs]
+min_ref = minimum(simulate_do(C0, L, 0.001, sp_params))
+errs = [abs(minimum(simulate_do(C0, L, Δx, sp_params)) - min_ref) for Δx in Δxs]
 orders = [round(log2(errs[i] / errs[i+1]), digits=2) for i in 1:length(errs)-1]
 
 p_doconv = plot(Δxs, errs, xscale=:log10, yscale=:log10, markershape=:circle,
@@ -371,89 +415,243 @@ plot!(p_doconv, size=(1000, 430), left_margin=12mm, right_margin=8mm,
     bottom_margin=12mm, top_margin=5mm)
 ```
 
-::: {.caption}
-Observed orders: `{julia} join(string.(orders), ", ")` --- the same first-order signature as Monday, on an entirely different model.
-:::
 
-# Time-Varying and Uncertain Loading
+# Multiple Discharges
 
-## A Load That Actually Varies
+## Three Plants on One River
 
-Real BOD loads vary hour to hour: a treatment plant's effluent rises and falls through the day. This is exactly the case that forces discretization --- not just uncertainty, but variation **along the domain**.
+Each effluent mixes with the river; between effluents the closed form applies unchanged. 
+
+**Note: No discretization needed** --- chain the segments by treating each stretch between each effluent as a "box" with a new initial condition, then using the closed form solution.
+
+## The Combined Sag Curve
 
 ```{julia}
-#| label: fig-do-timevarying
-#| fig-cap: "Sag curves under five realizations of a fluctuating CBOD load."
+#| label: fig-multi-sag
+#| fig-cap: "Three discharges in sequence. Only the third reach violates the standard."
 #| echo: true
 #| code-fold: true
 
-using Random
-Random.seed!(4750)
 
-function do_march_randomB(C_ic, L, Δx, B0_series, params)
-    steps = Int(round(L / Δx))
-    C = zeros(steps + 1)
-    C[1] = C_ic
-    for i in 1:steps
-        x = (i - 1) * Δx
-        change = (params.ka * (params.Cs - C[i]) - params.kc * B0_series[i] * exp(-params.kc * x / params.U)
-                  - params.kn * params.N0 * exp(-params.kn * x / params.U)) / params.U
-        C[i+1] = C[i] + Δx * change
+# Conditions in the river upstream of the first plant (clean water)
+river_flow = 1.0e5      # m³/d
+river_DO   = 6.8        # mg/L
+river_CBOD = 0.0        # mg/L
+river_NBOD = 0.0        # mg/L
+
+# One entry per plant, in order going downstream
+plant_location = [0.0, 18.0, 36.0]      # km
+plant_flow     = [1.5e4, 1.5e4, 1.5e4]  # m³/d
+plant_DO       = [1.0, 1.0, 1.0]        # mg/L
+plant_CBOD     = [55.0, 50.0, 65.0]     # mg/L
+plant_NBOD     = [33.0, 30.0, 39.0]     # mg/L
+
+# Streeter-Phelps: DO after travelling `distance` down a stretch that begins
+# with the given DO, CBOD, and NBOD.
+function do_downstream(distance, DO_start, CBOD_start, NBOD_start, params)
+    reaeration = exp(-params.ka * distance / params.U)
+    cbod_left  = exp(-params.kc * distance / params.U)
+    nbod_left  = exp(-params.kn * distance / params.U)
+
+    recovery = params.Cs * (1 - reaeration) + DO_start * reaeration
+    cbod_sag = CBOD_start * (params.kc / (params.ka - params.kc)) * (cbod_left - reaeration)
+    nbod_sag = NBOD_start * (params.kn / (params.ka - params.kn)) * (nbod_left - reaeration)
+
+    return recovery - cbod_sag - nbod_sag
+end
+
+# Each stretch below a plant is a "box": mix the effluent in to get the box's
+# starting condition, then apply the closed form within the box.
+function simulate_river(x_grid, location, flow, effluent_DO, effluent_CBOD, effluent_NBOD, params)
+    DO = zeros(length(x_grid))
+
+    # State of the water entering the current box
+    current_flow = river_flow
+    DO_in   = river_DO
+    CBOD_in = river_CBOD
+    NBOD_in = river_NBOD
+
+    # Water upstream of the first plant is clean, so it relaxes toward saturation
+    for i in 1:length(x_grid)
+        if x_grid[i] < location[1]
+            DO[i] = do_downstream(x_grid[i] - x_grid[1], river_DO, river_CBOD, river_NBOD, params)
+        end
     end
-    return C
+
+    # Carry the clean river down to the first plant
+    distance = location[1] - x_grid[1]
+    DO_in   = do_downstream(distance, DO_in, CBOD_in, NBOD_in, params)
+    CBOD_in = CBOD_in * exp(-params.kc * distance / params.U)
+    NBOD_in = NBOD_in * exp(-params.kn * distance / params.U)
+
+    for plant in 1:length(location)
+        # Carry the river from the previous plant down to this one
+        if plant > 1
+            distance = location[plant] - location[plant-1]
+            DO_in   = do_downstream(distance, DO_in, CBOD_in, NBOD_in, params)
+            CBOD_in = CBOD_in * exp(-params.kc * distance / params.U)
+            NBOD_in = NBOD_in * exp(-params.kn * distance / params.U)
+        end
+
+        # Mix this plant's effluent in. Flow-weighted, so a bigger river dilutes more.
+        total_flow = current_flow + flow[plant]
+        DO_in   = (current_flow * DO_in   + flow[plant] * effluent_DO[plant])   / total_flow
+        CBOD_in = (current_flow * CBOD_in + flow[plant] * effluent_CBOD[plant]) / total_flow
+        NBOD_in = (current_flow * NBOD_in + flow[plant] * effluent_NBOD[plant]) / total_flow
+        current_flow = total_flow
+
+        # This box runs from this plant to the next one (or to the end)
+        if plant < length(location)
+            box_end = location[plant+1]
+        else
+            box_end = maximum(x_grid) + 1.0
+        end
+
+        for i in 1:length(x_grid)
+            if location[plant] <= x_grid[i] < box_end
+                distance_into_box = x_grid[i] - location[plant]
+                DO[i] = do_downstream(distance_into_box, DO_in, CBOD_in, NBOD_in, params)
+            end
+        end
+    end
+
+    return DO
 end
 
-Δx = 0.25
-nsteps = Int(round(L / Δx)) + 1
-p_ens = plot(xlabel="Distance downstream  [km]", ylabel="DO  [mg/L]", legend=:bottomright)
-mins = Float64[]
-for k in 1:5
-    B0_series = sp_params.B0 .* (1 .+ 0.2 .* randn(nsteps))
-    Csag = do_march_randomB(C0, L, Δx, B0_series, sp_params)
-    push!(mins, minimum(Csag))
-    plot!(p_ens, 0:Δx:L, Csag, color=cb_blue, alpha=0.5, linewidth=2, label=nothing)
+x_grid = 0:0.02:70
+DO_combined = simulate_river(x_grid, plant_location, plant_flow,
+                             plant_DO, plant_CBOD, plant_NBOD, sp_params)
+
+p_multi = plot(xlabel="Distance downstream  [km]", ylabel="DO  [mg/L]",
+    legend=:topright, ylims=(1.5, 7))
+plot!(p_multi, x_grid, DO_combined, color=:black, linewidth=5, label="DO")
+hline!(p_multi, [2.5], color=cb_green, linewidth=3, linestyle=:dot, label="standard: 2.5 mg/L")
+for plant in 1:length(plant_location)
+    vline!(p_multi, [plant_location[plant]], color=cb_vermillion, linewidth=2,
+        linestyle=:dash, label=nothing)
+    annotate!(p_multi, plant_location[plant] + 0.7, 6.7,
+        text("Effluent $plant", 13, cb_vermillion, :left))
 end
-hline!(p_ens, [2.5], color=cb_green, linewidth=3, linestyle=:dot, label="standard")
-plot!(p_ens, size=(1000, 440), left_margin=12mm, right_margin=8mm,
-    bottom_margin=12mm, top_margin=5mm)
+plot!(p_multi, size=(1200, 500))
 ```
 
-::: {.caption}
-Minimum DO across 5 realizations: `{julia} join(string.(round.(mins, digits=2)), ", ")` mg/L.
+
+## Who Is Responsible?
+
+Run each plant **alone** on the clean river, changing nothing else:
+
+| Plant | CBOD load | Minimum DO, alone | Minimum DO, in sequence |
+|:--|--:|--:|--:|
+| 1 | 55 mg/L | 3.64 | 3.64 |
+| 2 | 50 mg/L | 3.97 | 2.64 |
+| 3 | 65 mg/L | 3.14 | **2.05** |
+
+
+# Time-Varying Loading
+
+## A Plant on a Daily Cycle
+
+Plant load is not constant.
+
+Often peaks with morning and evening flows. 
+
+Suppose CBOD swings $\pm 40\%$ over 24 hours, everything else fixed.
+
+## Following One Parcel Downstream
+
+A parcel picks up the load the plant is releasing at the moment it leaves, then carries **that** load the whole way down.
+
+```{julia}
+#| label: fig-do-parcel
+#| fig-cap: "Three parcels leaving the effluent at different points in the daily cycle."
+#| echo: true
+#| code-fold: true
+
+# The load is a function of clock time, not of grid index, so refining the
+# grid cannot silently change the scenario.
+B_diurnal(τ) = sp_params.B0 * (1 + 0.4 * sin(2π * τ))   # τ in days
+
+# Follow one parcel. Its CBOD is fixed when it leaves, so the closed form
+# applies to it unchanged.
+function do_along_parcel(departure_time, distance, params)
+    CBOD_carried = B_diurnal(departure_time)
+    return do_downstream(distance, C0, CBOD_carried, params.N0, params)
+end
+
+xd = 0:0.02:L
+departure_time = [0.0, 0.25, 0.75]                      # days: mean, peak, trough
+parcel_color = [cb_blue, cb_orange, cb_purple]
+
+p_parcel = plot(xlabel="Distance downstream  [km]", ylabel="DO  [mg/L]",
+    legend=:outerright, ylims=(1.2, 7))
+for i in 1:length(departure_time)
+    DO_parcel = [do_along_parcel(departure_time[i], x, sp_params) for x in xd]
+    plot!(p_parcel, xd, DO_parcel, color=parcel_color[i], linewidth=2.5,
+        label="left at $(Int(round(departure_time[i] * 24))) h")
+end
+hline!(p_parcel, [2.5], color=cb_green, linewidth=3, linestyle=:dot, label="standard")
+plot!(p_parcel, size=(1200, 350), left_margin=10mm)
+```
+
+
+## River Snapshot
+
+:::: {.columns}
+::: {.column width=50%}
+Survey the whole river at some clock time and you see something else (the parcel at $x$ left the effluent at $\tau = t - x/U$):
 :::
+::: {.column width=50%}
+```{julia}
+#| label: fig-do-diurnal
+#| fig-cap: "Snapshots through one day, against the steady profile at the mean load."
+#| echo: true
+#| code-fold: true
 
-## How Many Runs Would We Trust?
+do_snapshot(t, x, params) = do_downstream(x, C0, B_diurnal(t - x / params.U), params.N0, params)
 
-Five realizations give five different minimum-DO values, and a real range of outcomes.
+snapshot_time = [0.0, 0.25, 0.5, 0.75]                  # days
+snapshot_color = [cb_blue, cb_orange, cb_purple, cb_vermillion]
 
-::: {.fragment .fade-in}
-**How many runs would we need before we trust that range?**
-
-That is not a question this lecture can answer yet --- it is a question about *sampling*, not about discretization. **Next week.**
+p_diel = plot(xlabel="Distance downstream  [km]", ylabel="DO  [mg/L]",
+    legend=:outerbottom, legend_columns=2, ylims=(1.2, 7))
+for i in 1:length(snapshot_time)
+    DO_snapshot = [do_snapshot(snapshot_time[i], x, sp_params) for x in xd]
+    plot!(p_diel, xd, DO_snapshot, color=snapshot_color[i],
+        linewidth=2.5, label="t = $(Int(round(snapshot_time[i] * 24))) h")
+end
+plot!(p_diel, xd, [do_downstream(x, C0, sp_params.B0, sp_params.N0, sp_params) for x in xd],
+    color=:black, linewidth=5, linestyle=:dash, label="steady, mean load")
+hline!(p_diel, [2.5], color=cb_green, linewidth=3, linestyle=:dot, label="standard")
+plot!(p_diel, size=(600, 600), left_margin=10mm, bottom_margin=0mm)
+```
 :::
+::::
 
-# Key Takeaways
+## Averaging the Load Hides the "True" Minimum
+
+- DO is *linear* in $B_0$, so the **time-averaged DO** does match the steady-state DO at the mean load.
+- But `minimum` is **not** a linear operator: the worst moment is not the average moment.
+- The standard regulates the extreme, so the averaged calculation answers the wrong question.
+
+# Key Takeaways and Upcoming Schedule
 
 ## Key Takeaways
 
-::: {.incremental}
-- The DO **sag curve** has a minimum downstream of the release --- the regulated quantity is not the endpoint.
-- The closed-form Streeter-Phelps solution is undefined at $k_a = k_c$ or $k_a = k_n$, and assumes every rate is constant along the reach --- assumptions of convenience, not physics.
-- Discretizing buys you **generality**, not results you couldn't already get by chaining closed-form segments or resampling a constant parameter.
-- The same halve-and-check discipline from Monday applies word-for-word to $\Delta x$: four reasonable step sizes manufactured a violation that was not there.
-:::
-
-# Upcoming Schedule
+- The DO **sag curve** has a minimum downstream of the release --- the regulated quantity is not the endpoint or the point of emissions.
+- The closed-form Streeter-Phelps solution is undefined at $k_a = k_c$ or $k_a = k_n$, and assumes every rate is constant along the river --- reasons to possibly discretize.
+- Discretizing buys you **generality**.
 
 ## Next Classes
 
-**Monday**: Lab 1 --- convergence, on the airshed and the DO models.
+**Monday**: Lab 1 --- convergence of discretized simulation models.
 
-**Wednesday**: How many Monte Carlo samples are enough? The same convergence question, a different knob.
+**Wednesday**: Monte Carlo
 
 ## Assessments
 
-**Homework 3**: Due Wednesday, September 23.
+**Homework 2**: Due tomorrow at 9pm.
+
+**Homework 3**: Assigned Friday, due Thursday, September 24.
 
 # References
 

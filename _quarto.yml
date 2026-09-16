@@ -2,6 +2,11 @@ project:
   type: website
   preview:
     port: 4200
+  # data/ holds planning notes and source data, not site pages. Without this,
+  # Quarto treats data/schedule.md as a page and builds it into the site.
+  render:
+    - "**/*.qmd"
+    - "!data/"
 
 website:
   page-navigation: true
