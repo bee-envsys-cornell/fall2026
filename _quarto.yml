@@ -11,7 +11,7 @@ project:
 website:
   page-navigation: true
   title: "Environmental Systems Analysis"
-  description: "Homepage for the Fall 2025 version of BEE 4750/5750, Environmental Systems Analysis, at Cornell University."
+  description: "Homepage for the Fall 2026 version of BEE 4750/5750, Environmental Systems Analysis, at Cornell University."
   site-url: "https://envsys.viveks.me/fall2025"
   repo-url: https://github.com/bee-envsys-cornell/fall2025
   repo-actions: [edit, issue]
@@ -108,6 +108,7 @@ website:
       contents:
         - href: labs/index.qmd
           text: "Lab Overview"
+        - href: labs/lab01.qmd
     - title: "Homework"
       style: docked
       search: false
@@ -118,7 +119,9 @@ website:
         - href: hw/hw01/hw01.qmd
           text: "Homework 1"
         - href: hw/hw02/hw02.qmd
-          text: "Homework 2"          
+          text: "Homework 2"      
+        - href: hw/hw03/hw03.qmd
+          text: "Homework 3"       
     - title: "Project"
       style: docked
       search: false

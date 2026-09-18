@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-09-07">
+<meta name="dcterms.date" content="2026-09-18">
 
-<title>BEE 4750 Homework 2: Systems Feedbacks and Stability – Environmental Systems Analysis</title>
+<title>BEE 4750 Homework 3: Discretization, Numerical Convergence, and Simulation – Environmental Systems Analysis</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -68,8 +68,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../hw/hw03/hw03.html" rel="next">
-<link href="../../hw/hw01/hw01.html" rel="prev">
+<link href="../../hw/hw02/hw02.html" rel="prev">
 <link href="../../_assets/logos/favicon.png" rel="icon" type="image/png">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -149,7 +148,7 @@ window.Quarto = {
 };
 </script>
 
-<meta property="og:title" content="BEE 4750 Homework 2: Systems Feedbacks and Stability – Environmental Systems Analysis">
+<meta property="og:title" content="BEE 4750 Homework 3: Discretization, Numerical Convergence, and Simulation – Environmental Systems Analysis">
 <meta property="og:description" content="Homepage for the Fall 2026 version of BEE 4750/5750, Environmental Systems Analysis, at Cornell University.">
 <meta property="og:site_name" content="Environmental Systems Analysis">
 </head>
@@ -281,7 +280,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../hw/hw02/hw02.html">Homework 2</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../hw/hw03/hw03.html">Homework 3</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -307,13 +306,13 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../hw/hw02/hw02.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../hw/hw02/hw02.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Homework 2</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../hw/hw03/hw03.html" class="sidebar-item-text sidebar-link">
+  <a href="../../hw/hw03/hw03.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Homework 3</span></a>
   </div>
 </li>
@@ -334,21 +333,19 @@ window.Quarto = {
   </ul></li>
   <li><a href="#problems-total-50-points" id="toc-problems-total-50-points" class="nav-link" data-scroll-target="#problems-total-50-points">Problems (Total: 50 Points)</a>
   <ul class="collapse">
-  <li><a href="#problem-1-9" id="toc-problem-1-9" class="nav-link" data-scroll-target="#problem-1-9">Problem 1 (9)</a></li>
-  <li><a href="#problem-2-9" id="toc-problem-2-9" class="nav-link" data-scroll-target="#problem-2-9">Problem 2 (9)</a></li>
-  <li><a href="#problem-3-6" id="toc-problem-3-6" class="nav-link" data-scroll-target="#problem-3-6">Problem 3 (6)</a></li>
-  <li><a href="#problem-4-26" id="toc-problem-4-26" class="nav-link" data-scroll-target="#problem-4-26">Problem 4 (26)</a></li>
+  <li><a href="#problem-1-15" id="toc-problem-1-15" class="nav-link" data-scroll-target="#problem-1-15">Problem 1 (15)</a></li>
+  <li><a href="#problem-2-35" id="toc-problem-2-35" class="nav-link" data-scroll-target="#problem-2-35">Problem 2 (35)</a></li>
   </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/hw/hw02/hw02.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="hw02.pdf"><i class="bi bi-file-earmark-pdf"></i>PDF</a></li><li><a href="hw02.ipynb" download="hw02.ipynb"><i class="bi bi-laptop"></i>Notebook</a></li><li><a href="hw02.ipynb" download="hw02.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li><li><a href="hw02.pdf"><i class="bi bi-file-pdf"></i>Typst</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/hw/hw03/hw03.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="hw03.pdf"><i class="bi bi-file-earmark-pdf"></i>PDF</a></li><li><a href="hw03.ipynb" download="hw03.ipynb"><i class="bi bi-laptop"></i>Notebook</a></li><li><a href="hw03.ipynb" download="hw03.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li><li><a href="hw03.pdf"><i class="bi bi-file-pdf"></i>Typst</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">BEE 4750 Homework 2: Systems Feedbacks and Stability</h1>
+<h1 class="title">BEE 4750 Homework 3: Discretization, Numerical Convergence, and Simulation</h1>
 </div>
 
 
@@ -359,7 +356,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 7, 2026</p>
+      <p class="date">September 18, 2026</p>
     </div>
   </div>
   
@@ -381,7 +378,18 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Thursday, 09/17/26, 9:00pm</p>
+<p>Thursday, 09/24/26, 9:00pm</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-caution">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>If you are enrolled in the course, make sure that you use the GitHub Classroom link provided in Ed Discussion, or you may not be able to get help if you run into problems.</p>
+<p>Otherwise, you can <a href="https://github.com/BEE4750/hw03">find the Github repository here</a>.</p>
+</div>
 </div>
 </div>
 <section id="overview" class="level2">
@@ -389,10 +397,8 @@ window.Quarto = {
 <section id="instructions" class="level3">
 <h3 class="anchored" data-anchor-id="instructions">Instructions</h3>
 <ul>
-<li>Problem 1 asks you to find the equilibria of several 1-D systems models and identify their stability.</li>
-<li>Problem 2 asks you to draw a systems diagram and identify the type of a feedback.</li>
-<li>Problem 3 asks you to find and analyze the equilibria of a modified predatory-prey system.</li>
-<li>Problem 4 asks you to analyze a lake system experiencing phosphorous loading, both feedbacks as well as equilibria and stability.</li>
+<li>Problem 1 asks you to discretize several systems models by hand and reason about characteristic timescales and convergence, without writing any code.</li>
+<li>Problem 2 asks you to extend the shallow lake model from class to include a sediment phosphorus stock, then use numerical simulation to check convergence and study the resulting long-term lake dynamics.</li>
 </ul>
 </section>
 <section id="load-environment" class="level3">
@@ -411,97 +417,156 @@ window.Quarto = {
 </section>
 <section id="problems-total-50-points" class="level2">
 <h2 class="anchored" data-anchor-id="problems-total-50-points">Problems (Total: 50 Points)</h2>
-<section id="problem-1-9" class="level3 markdown cell">
-<h3 class="anchored" data-anchor-id="problem-1-9">Problem 1 (9)</h3>
-<p>For each of the following systems models, find (i) any equilibria and (ii) their stabilities.</p>
+<section id="problem-1-15" class="level3 markdown cell">
+<h3 class="anchored" data-anchor-id="problem-1-15">Problem 1 (15)</h3>
+<p>For each of the following systems models, (i) write the forward Euler update rule, (ii) find the (local) characteristic timescale and use it to evaluate whether the given step size <span class="math inline">\(\Delta t\)</span> is a reasonable choice, and (iii) use the given error to predict the error at the new step size, assuming the method is well into its first-order convergence regime.</p>
 </section>
-<section id="problem-1.1-3" class="level4 markdown cell">
-<h4 class="anchored" data-anchor-id="problem-1.1-3">Problem 1.1 (3)</h4>
-<p><span class="math display">\[\frac{dx}{dt} = 4x^2 - 16\]</span></p>
+<section id="problem-1.1-4" class="level4 markdown cell">
+<h4 class="anchored" data-anchor-id="problem-1.1-4">Problem 1.1 (4)</h4>
+<p><span class="math display">\[\frac{dC}{dt} = 5 - 0.25C\]</span></p>
+<ol type="a">
+<li><p>Write the forward Euler update rule for <span class="math inline">\(C(t + \Delta t)\)</span>.</p></li>
+<li><p>Find the characteristic timescale of this system. Is <span class="math inline">\(\Delta t = 1\)</span> a reasonable starting choice of step size? Justify your answer.</p></li>
+<li><p>A forward Euler simulation of this system has an error of <span class="math inline">\(0.6\)</span> at <span class="math inline">\(\Delta t = 2\)</span>. What error would you expect at <span class="math inline">\(\Delta t = 1\)</span>?</p></li>
+</ol>
 </section>
-<section id="problem-1.2-3" class="level4 markdown cell">
-<h4 class="anchored" data-anchor-id="problem-1.2-3">Problem 1.2 (3)</h4>
-<p><span class="math display">\[\frac{dx}{dt} = x - x^3\]</span></p>
+<section id="problem-1.2-5" class="level4 markdown cell">
+<h4 class="anchored" data-anchor-id="problem-1.2-5">Problem 1.2 (5)</h4>
+<p>A well-mixed holding tank has volume <span class="math inline">\(V = 200\ \text{m}^3\)</span> and a through-flow of <span class="math inline">\(Q = 50\ \text{m}^3/\text{yr}\)</span> carrying an inflow concentration <span class="math inline">\(C_\text{in} = 2\ \text{mg/L}\)</span>. A pollutant in the tank also decays at a first-order rate <span class="math inline">\(k = 0.3\ \text{yr}^{-1}\)</span>. The concentration in the tank, <span class="math inline">\(C(t)\)</span>, is governed by</p>
+<p><span class="math display">\[\frac{dC}{dt} = \frac{Q}{V}\left(C_\text{in} - C\right) - kC.\]</span></p>
+<ol type="a">
+<li><p>Write the forward Euler update rule for <span class="math inline">\(C(t + \Delta t)\)</span>.</p></li>
+<li><p>Find the characteristic timescale of this system. Is <span class="math inline">\(\Delta t = 1\ \text{yr}\)</span> a reasonable starting choice of step size? Justify your answer.</p></li>
+<li><p>A forward Euler simulation of this system has an error of <span class="math inline">\(0.8\)</span> at <span class="math inline">\(\Delta t = 1.6\ \text{yr}\)</span>. What error would you expect at <span class="math inline">\(\Delta t = 0.4\ \text{yr}\)</span>?</p></li>
+</ol>
 </section>
-<section id="problem-1.3-3" class="level4 markdown cell">
-<h4 class="anchored" data-anchor-id="problem-1.3-3">Problem 1.3 (3)</h4>
-<p><span class="math display">\[\frac{dx}{dt} = 1 - 2\cos x\]</span></p>
+<section id="problem-1.3-6" class="level4 markdown cell">
+<h4 class="anchored" data-anchor-id="problem-1.3-6">Problem 1.3 (6)</h4>
+<p><span class="math display">\[\frac{dx}{dt} = 3 - 0.5x^2, \qquad x \geq 0\]</span></p>
+<ol type="a">
+<li><p>Write the forward Euler update rule for <span class="math inline">\(x(t + \Delta t)\)</span>.</p></li>
+<li><p>This system’s rate of change depends on the state <span class="math inline">\(x\)</span>, so there is no single characteristic timescale for the whole system — only a <em>local</em> one. Find the system’s equilibrium (be careful about the problem domain), then linearize near it to find the local feedback gain and the local characteristic timescale there. Is <span class="math inline">\(\Delta t = 0.5\)</span> a reasonable starting choice of step size near this equilibrium? Justify your answer.</p></li>
+<li><p>A forward Euler simulation of this system has an error of <span class="math inline">\(1.5\)</span> at <span class="math inline">\(\Delta t = 0.3\)</span>. What error would you expect at <span class="math inline">\(\Delta t = 0.1\)</span>?</p></li>
+</ol>
 </section>
-<section id="problem-2-9" class="level3 markdown cell">
-<h3 class="anchored" data-anchor-id="problem-2-9">Problem 2 (9)</h3>
+<section id="problem-2-35" class="level3 markdown cell">
+<h3 class="anchored" data-anchor-id="problem-2-35">Problem 2 (35)</h3>
+<p>In class, we modeled a shallow lake’s phosphorus (P) concentration with</p>
+<p><span class="math display">\[\frac{dP}{dt} = L - sP + R(P),\]</span></p>
+<p>treating the maximum sediment release rate <span class="math inline">\(r\)</span> (inside <span class="math inline">\(R(P)\)</span>) as a fixed constant. A more advanced version of this model could be built by noting that <span class="math inline">\(r\)</span> is really <span class="math inline">\(\kappa M\)</span>, where <span class="math inline">\(M\)</span> is a <strong>sediment phosphorus pool</strong> — a slowly-filling stock.</p>
+<p>The two-stock model splits the single loss rate <span class="math inline">\(s\)</span> into two pieces (outflow/permanent burial, <span class="math inline">\(s_\text{out}\)</span>, and transfer into the sediment, <span class="math inline">\(h\)</span>), and adds a second state variable <span class="math inline">\(M(t)\)</span> for the sediment pool:</p>
+<p><span class="math display">\[\begin{aligned}
+\frac{dP}{dt} &amp;= L - s_\text{out}P - hP + \kappa M\,\frac{P^q}{m^q + P^q} \\[0.3em]
+\frac{dM}{dt} &amp;= hP - bM - \kappa M\,\frac{P^q}{m^q + P^q}
+\end{aligned}\]</span></p>
+<p>where <span class="math inline">\(b\)</span> is the rate at which sediment P is permanently buried. Use the parameter values in <a href="#tbl-lake-params" class="quarto-xref">Table&nbsp;1</a> for the rest of this problem.</p>
+<div id="tbl-lake-params" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-lake-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Parameters for the two-stock lake model.
+</figcaption>
+<div aria-describedby="tbl-lake-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 35%">
+<col style="width: 28%">
+<col style="width: 35%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Parameter</th>
+<th style="text-align: left;">Meaning</th>
+<th style="text-align: center;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(s_\text{out}\)</span></td>
+<td style="text-align: left;">P outflow/permanent burial rate (from the water column)</td>
+<td style="text-align: center;"><span class="math inline">\(0.3\ \text{yr}^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(h\)</span></td>
+<td style="text-align: left;">P transfer rate into the sediment</td>
+<td style="text-align: center;"><span class="math inline">\(0.3\ \text{yr}^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(b\)</span></td>
+<td style="text-align: left;">sediment P burial rate</td>
+<td style="text-align: center;"><span class="math inline">\(0.02\ \text{yr}^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(\kappa\)</span></td>
+<td style="text-align: left;">sediment recycling rate coefficient</td>
+<td style="text-align: center;"><span class="math inline">\(0.15\ \text{yr}^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(m\)</span></td>
+<td style="text-align: left;">P concentration at half-maximum sediment release</td>
+<td style="text-align: center;"><span class="math inline">\(25\ \mu\text{g}/\text{L}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(q\)</span></td>
+<td style="text-align: left;">steepness of the sediment release response</td>
+<td style="text-align: center;"><span class="math inline">\(8\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Assume the lake starts with no phosphorus anywhere in the system, <span class="math inline">\(P(0) = M(0) = 0\)</span>.</p>
 </section>
 <section id="problem-2.1-5" class="level4 markdown cell">
 <h4 class="anchored" data-anchor-id="problem-2.1-5">Problem 2.1 (5)</h4>
-<p>Draw a systems diagram for the relationship between global mean temperature, atmospheric CO<sub>2</sub> concentrations, and ocean CO<sub>2</sub> concentrations. What are the signs of the interactions between these components and why? What does this suggest about the overall feedback between temperature and the ocean carbon cycle?</p>
-<div class="callout callout-style-simple callout-tip">
-<div class="callout-body d-flex">
+<p>Derive the forward Euler update rules for <span class="math inline">\(P(t+\Delta t)\)</span> and <span class="math inline">\(M(t + \Delta t)\)</span>. Note that these two updates are coupled: at each step, both updates use the <em>current</em> <span class="math inline">\(P(t)\)</span> and <span class="math inline">\(M(t)\)</span> (not the newly-updated value of one when computing the other).</p>
+</section>
+<section id="problem-2.2-13" class="level4 markdown cell">
+<h4 class="anchored" data-anchor-id="problem-2.2-13">Problem 2.2 (13)</h4>
+<p>Implement your update rules from Problem 2.1 and use them to simulate the lake under a loading of <span class="math inline">\(L = 10\ \mu\text{g}/(\text{L}\cdot\text{yr})\)</span>, starting from <span class="math inline">\(P(0) = M(0) = 0\)</span>.</p>
+<p>Two different quantities have to be “large enough” here, for two different reasons:</p>
+<ul>
+<li>the <strong>simulation horizon</strong> <span class="math inline">\(T\)</span> has to be long enough for the slow sediment stock <span class="math inline">\(M\)</span> to fill. Its characteristic timescale is <span class="math inline">\(1/b = 1/0.02 = 50\ \text{yr}\)</span>, so use <span class="math inline">\(T = 300\ \text{yr}\)</span> — six of those timescales. You will reuse this same run in Problem 2.3.</li>
+<li>the <strong>step size</strong> <span class="math inline">\(\Delta t\)</span> is what you are actually checking for numerical convergence, at that fixed <span class="math inline">\(T\)</span>.</li>
+</ul>
+<p>Run a convergence study on <span class="math inline">\(P(30)\)</span>, the phosphorus concentration thirty years in. Build a reference solution at a very fine step size (smaller than you think you might need), then test a sequence of successively-halved, coarser step sizes against it. Here is a starting point:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">simulate_lake</span>(loading, horizon, step)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span><span class="co">: forward Euler on P and M, using your update rules from Problem 2.1.</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Both updates use the *current* P and M, not a partly-updated value.</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return the full P trajectory as a vector, one entry per step taken.</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">error</span>(<span class="st">"simulate_lake has not been written yet -- replace this line with your loop"</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>step_reference <span class="op">=</span> <span class="fl">0.001</span>                        <span class="co"># 300,000 steps at T = 300; a few seconds</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>P_reference <span class="op">=</span> <span class="fu">simulate_lake</span>(<span class="fl">10.0</span>, <span class="fl">300.0</span>, step_reference)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>P30_reference <span class="op">=</span> P_reference[<span class="fu">Int</span>(<span class="fl">30</span> <span class="op">/</span> step_reference)]     <span class="co"># the entry at t = 30 yr</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Report a table of your step sizes, the resulting <span class="math inline">\(P(30)\)</span>, the error relative to your reference, and the empirical order of convergence between successive refinements. Make a log-log plot of error vs.&nbsp;<span class="math inline">\(\Delta t\)</span>, and state which step size you will use for the rest of this problem and why.</p>
+<div class="callout callout-style-simple callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-body-container">
-<p>Think about Henry’s law for CO<sub>2</sub>.</p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>A step size that is too large will not just be inaccurate
 </div>
 </div>
+<div class="callout-body-container callout-body">
+<p>Forward Euler can blow up entirely, rather than merely losing accuracy, when the step is too large for the <em>fastest</em> process in the system. Here that is <span class="math inline">\(P\)</span> itself, with a timescale of <span class="math inline">\(1/(s_\text{out} + h) \approx 1.7\ \text{yr}\)</span> — much faster than the sediment pool that set <span class="math inline">\(T\)</span>. <strong>The horizon is governed by the slowest process; the step size is governed by the fastest one.</strong></p>
+<p>Start your sequence at <span class="math inline">\(\Delta t = 2\ \text{yr}\)</span> and halve from there. If you try something much coarser you may see the simulation diverge or oscillate wildly; that is worth a sentence, but it is not what the convergence study is measuring.</p>
+</div>
 </div>
 </section>
-<section id="problem-2.2-4" class="level4 markdown cell">
-<h4 class="anchored" data-anchor-id="problem-2.2-4">Problem 2.2 (4)</h4>
-<p>Of the following quantities related to this system, which are stocks and which are flows?</p>
-<ol type="1">
-<li>The absorbed mass of CO<sub>2</sub> in the ocean.</li>
-<li>The rate at which CO<sub>2</sub> is absorbed by the ocean from the atmosphere.</li>
-<li>The yearly increase in global temperature.</li>
-<li>The heat stored in the ocean.</li>
-</ol>
+<section id="problem-2.3-10" class="level4 markdown cell">
+<h4 class="anchored" data-anchor-id="problem-2.3-10">Problem 2.3 (10)</h4>
+<p>Using the step size you justified in Problem 2.2, plot <span class="math inline">\(P(t)\)</span> over the full 300-year simulation.</p>
+<p>You already have <span class="math inline">\(P(30)\)</span> from Problem 2.2. What does <span class="math inline">\(P\)</span> look like once the simulation has fully run? What is happening physically to the lake between those two points in time, and around when does it happen?</p>
 </section>
-<section id="problem-3-6" class="level3 markdown cell">
-<h3 class="anchored" data-anchor-id="problem-3-6">Problem 3 (6)</h3>
-<p>One criticism of the Lotka-Volterra predator-prey equations discussed in class is that the behavior of the system is entirely determined by the initial conditions of the model: a perturbation (like a disease among some of the prey) would permanently change the dynamics of the system and the populations would never recover to their “natural” levels.</p>
-<p>We can “fix” this by adding another term to the model, a population-dependent death rate which causes populations to recover more rapidly at lower populations and die off more rapidly at larger populations. This would take the following form:</p>
-<p><span class="math display">\[\begin{aligned}
-\frac{dH}{dt} &amp;= b_h H_t - m_h H_t L_t - \gamma_H H_t^2 \\
-\frac{dL}{dt} &amp;= b_L L_t H_t - m_L L_t - \gamma_L L_t^2
-\end{aligned}\]</span></p>
-<p>What are the equilibria of the system (bearing in mind that all of the model parameters must be positive; <strong>hint: you should get three</strong>)? What are the stabilities of any non-trivial <span class="math inline">\((L_t=H_t=0\)</span>) equilibria? Comparing this result to the Lotka-Volterra analysis from class, what can you say about the impact of the population-dependent death term on the behavior of the system?</p>
-</section>
-<section id="problem-4-26" class="level3 cell markdown">
-<h3 class="anchored" data-anchor-id="problem-4-26">Problem 4 (26)</h3>
-<p>A shallow, temperate, well-mixed lake receiving phosphorus from its catchment. In this lake, phosphorus (P) is the limiting nutrient for algal biomass and whether the lake is oligotrophic or eutrophic.</p>
-<p>The storage level of P in the sediment is primarily determined by the oxygen (O<sub>2</sub>) in the sediment and is thus related to the level of algal biomass (decomposition of dead algae consumes O<sub>2</sub>). P is also lost from the lake system through outflow and permanent deposition in the sediment.</p>
-</section>
-<section id="problem-4.1-4" class="level4 cell markdown">
-<h4 class="anchored" data-anchor-id="problem-4.1-4">Problem 4.1 (4)</h4>
-<p>Draw a systems diagram for this lake system, capturing the feedback due to the impact of O<sub>2</sub> on sediment P recycling and its mediation by algal biomass. Is this an amplifying or a dampening feedback loop?</p>
-</section>
-<section id="problem-4.2-3" class="level4 cell markdown">
-<h4 class="anchored" data-anchor-id="problem-4.2-3">Problem 4.2 (3)</h4>
-<p>Which of the following system quantities are stocks and which are flows?</p>
-<ol type="1">
-<li>The O<sub>2</sub> demand induced by decomposing biomass.</li>
-<li>The sediment P pool.</li>
-<li>The external P loading in a given year</li>
-</ol>
-</section>
-<section id="problem-4.3-5" class="level4 markdown cell">
-<h4 class="anchored" data-anchor-id="problem-4.3-5">Problem 4.3 (5)</h4>
-<p>The P concentration of the lake is determined by <span class="math display">\[\frac{dP}{dt} = L - sP + R(t),\]</span> where <span class="math inline">\(P\)</span> is the P concentration (<span class="math inline">\(\mu\text{g}/\text{L}\)</span>), <span class="math inline">\(L\)</span> is external P loading from runoff (<span class="math inline">\(\mu\text{g}/(\text{L} \cdot \text{yr})\)</span>), <span class="math inline">\(s=1\ \text{yr}^{-1}\)</span> is the first-order rate of combined P outflow and permanent deposition, and <span class="math inline">\(R(t)\)</span> (<span class="math inline">\(\mu\text{g}/(\text{L}\cdot\text{yr})\)</span> is the sediment release rate at time <span class="math inline">\(t\)</span>.</p>
-<p>Since the amount of algal biomass is limited by the P concentration, the sediment release rate <span class="math inline">\(R\)</span> can be written as a function of P instead of time. This can be thought of as consisting of three regimes: (1) when the lake is fully oligotrophic and sediment is fully oxidized, retaining all P; (2) a transitional regime where increasing algae reduces sediment oxygenation, increasing P recycling; (3) when the sediment is releasing at its maximum capacity due to maximum sediment P and/or the ability of bacteria to decompose biomass, and additional biomass will not increase the rate of recycling. We will assume the maximum recycling rate is <span class="math inline">\(20\ \mu\text{g}/\text{L}\)</span>, and the transitional regime occurs between <span class="math inline">\(25\ \mu\text{g}/\text{L}\)</span> and <span class="math inline">\(35\ \mu\text{g}/\text{L}\)</span>.</p>
-<p>Turning this into a piecewise linear model for <span class="math inline">\(R\)</span>: <span class="math display">\[
-R(P) = \begin{cases}
-    0 &amp; \quad \text{if} P \leq 25\ \mu\text{g}/\text{L} \\
-    20 \frac{P - 25}{10} &amp; \quad \text{if} 25\ \mu \text{g}/\text{L} &lt; P &lt; 35\ \mu \text{g}/\text{L} \\
-    20 &amp; \quad \text{if} P \geq 35\ \mu\text{g}/\text{L}
-\end{cases}.
-\]</span></p>
-</section>
-<p>What are the feedback gain(s) for this model in each sediment recycling regime? What does this implify about how a one-off P increase of <span class="math inline">\(1 \mu \text{g}/\text{L}\)</span> would increase the P level of the lake?</p>
-<section id="problem-4.4-6" class="level4 cell markdown">
-<h4 class="anchored" data-anchor-id="problem-4.4-6">Problem 4.4 (6)</h4>
-<p>Find the equilibria of this system assuming external loading of <span class="math inline">\(L=20\ \mu\text{g}/(\text{L} \cdot \text{yr})\)</span>. Are they stable or unstable?</p>
-</section>
-<section id="problem-4.5-8" class="level4 markdown cell">
-<h4 class="anchored" data-anchor-id="problem-4.5-8">Problem 4.5 (8)</h4>
-<p>What are the impacts to the equilibria of the lake if the external loading decreases to <span class="math inline">\(L=10\ \mu\text{g}/(\text{L} \cdot \text{yr})\)</span> or increases to <span class="math inline">\(L=30\ \mu\text{g}/(\text{L} \cdot \text{yr})\)</span>? What does this tell you about how the lake could respond to these different levels of loading?</p>
+<section id="problem-2.4-7" class="level4 markdown cell">
+<h4 class="anchored" data-anchor-id="problem-2.4-7">Problem 2.4 (7)</h4>
+<p>Suppose a lake manager instead used a simpler one-stock model that ignores the sediment pool entirely (as if <span class="math inline">\(\kappa = 0\)</span>, so there is no recycling at all):</p>
+<p><span class="math display">\[\frac{dP}{dt} = L - s_\text{out}P - hP.\]</span></p>
+<p>What is this simplified model’s equilibrium <span class="math inline">\(P\)</span> at <span class="math inline">\(L = 10\ \mu\text{g}/(\text{L}\cdot\text{yr})\)</span>, and would the manager have concluded the lake is safely oligotrophic at this loading (recall that sediment release becomes significant once <span class="math inline">\(P\)</span> approaches <span class="math inline">\(m = 25\ \mu\text{g}/\text{L}\)</span>)?</p>
+<p>Compare this to what you found in Problem 2.3. What does this tell you about the risk of using a simplified model, or a short simulation, to set a “safe” loading level? What would you recommend a lake manager do differently, given what you now know about this system?</p>
 </section>
 </section>
 <section id="references" class="level2 markdown cell">
@@ -939,14 +1004,11 @@ R(P) = \begin{cases}
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../hw/hw01/hw01.html" class="pagination-link" aria-label="Homework 1">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Homework 1</span>
+      <a href="../../hw/hw02/hw02.html" class="pagination-link" aria-label="Homework 2">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Homework 2</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../hw/hw03/hw03.html" class="pagination-link" aria-label="Homework 3">
-        <span class="nav-page-text">Homework 3</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
@@ -961,7 +1023,7 @@ R(P) = \begin{cases}
  <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">LICENSE: CC-BY-SA  <i class="fab fa-creative-commons"></i><i class="fab fa-creative-commons-by"></i><i class="fab fa-creative-commons-sa"></i></a>
   </li>  
 </ul>
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/hw/hw02/hw02.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/hw/hw03/hw03.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>Made with <a href="https://julialang.org">Julia</a> and <a href="https://quarto.org/">Quarto</a><br> <a href="https://www.github.com/bee-envsys-cornell/fall2026/">View the source at <i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
 </div>
