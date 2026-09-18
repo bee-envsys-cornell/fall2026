@@ -6,3 +6,7 @@
 	path = hw/hw02
 	url = https://github.com/bee-envsys-cornell/hw02
 	branch = Fall26
+[submodule "hw/hw03"]
+	path = hw/hw03
+	url = https://github.com/bee-envsys-cornell/hw03
+	branch = Fall26
