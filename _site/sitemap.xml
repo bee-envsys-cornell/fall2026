@@ -5,51 +5,55 @@
     <lastmod>2026-07-30T15:57:58.104Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/tutorials/notebook-to-pdf.html</loc>
-    <lastmod>2026-07-28T21:00:44.267Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/tutorials/probability.html</loc>
+    <lastmod>2026-09-20T18:31:45.460Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/tutorials/julia-plots.html</loc>
-    <lastmod>2026-07-30T16:35:49.023Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/tutorials/latex-notebook.html</loc>
+    <lastmod>2026-07-28T20:23:03.633Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/tutorials/julia-graphs.html</loc>
-    <lastmod>2026-07-30T17:48:42.883Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/tutorials/julia-jump.html</loc>
+    <lastmod>2026-04-15T11:42:55.393Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/tutorials/index.html</loc>
-    <lastmod>2026-07-30T15:52:55.305Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/tutorials/julia-basics.html</loc>
+    <lastmod>2026-07-28T20:18:06.702Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/solutions/hw01/hw01.html</loc>
-    <lastmod>2026-09-07T22:59:20.022Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/syllabus.html</loc>
+    <lastmod>2026-08-27T12:25:34.035Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture15-2-simulation-optimization.html</loc>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecturexx-xx-lake-uncertainty.html</loc>
+    <lastmod>2026-09-09T16:35:50.258Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture14-1-sensitivity-analysis.html</loc>
     <lastmod>2026-04-15T11:42:55.327Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture13-2-limits-optimization.html</loc>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture13-1-stochastic-optimization.html</loc>
     <lastmod>2026-04-15T11:42:55.327Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture12-1-waste-management.html</loc>
-    <lastmod>2026-04-15T11:42:55.327Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture11-2-unit-commitment.html</loc>
+    <lastmod>2026-09-18T17:19:19.702Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture11-1-mixed-integer.html</loc>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture10-2-managing-air-sources.html</loc>
     <lastmod>2026-04-15T11:42:55.326Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture10-2-economic-dispatch.html</loc>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture10-1-gaussian-plumes.html</loc>
     <lastmod>2026-04-15T11:42:55.326Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture10-1-capacity-expansion-2.html</loc>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture09-2-jump-lp.html</loc>
     <lastmod>2026-04-15T11:42:55.326Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture09-1-capacity-expansion.html</loc>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture08-2-optimization.html</loc>
     <lastmod>2026-04-15T11:42:55.326Z</lastmod>
   </url>
   <url>
@@ -58,15 +62,11 @@
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecture06-2-plume-derivation.html</loc>
-    <lastmod>2026-09-15T18:03:10.356Z</lastmod>
-  </url>
-  <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture06-1-monte-carlo-inference.html</loc>
-    <lastmod>2026-09-14T04:41:04.691Z</lastmod>
+    <lastmod>2026-09-18T16:18:50.569Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecture05-2-monte-carlo-foundations.html</loc>
-    <lastmod>2026-09-12T23:04:28.029Z</lastmod>
+    <lastmod>2026-09-20T16:32:37.352Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecture04-2-streeter-phelps.html</loc>
@@ -166,7 +166,11 @@
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/labs/index.html</loc>
-    <lastmod>2026-08-24T00:32:15.865Z</lastmod>
+    <lastmod>2026-09-20T19:46:07.123Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/labs/lab01/lab01.html</loc>
+    <lastmod>2026-09-20T19:45:00.908Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/policies/groups.html</loc>
@@ -237,64 +241,64 @@
     <lastmod>2026-09-16T18:25:56.567Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture05-2-uncertainty-monte-carlo.html</loc>
-    <lastmod>2026-04-15T11:42:55.325Z</lastmod>
-  </url>
-  <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture06-1-monte-carlo.html</loc>
-    <lastmod>2026-04-15T11:42:55.325Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture06-1-monte-carlo-inference.html</loc>
+    <lastmod>2026-09-20T18:38:02.603Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecture07-1-plume-analytics.html</loc>
-    <lastmod>2026-09-15T18:03:22.040Z</lastmod>
+    <lastmod>2026-09-18T16:25:30.387Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture08-2-optimization.html</loc>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture07-2-model-validation.html</loc>
+    <lastmod>2026-09-18T16:35:54.296Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture09-1-capacity-expansion.html</loc>
     <lastmod>2026-04-15T11:42:55.326Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture09-2-jump-lp.html</loc>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture10-1-capacity-expansion-2.html</loc>
     <lastmod>2026-04-15T11:42:55.326Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture10-1-gaussian-plumes.html</loc>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture10-2-economic-dispatch.html</loc>
+    <lastmod>2026-09-18T16:57:40.182Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture11-1-mixed-integer.html</loc>
     <lastmod>2026-04-15T11:42:55.326Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture10-2-managing-air-sources.html</loc>
-    <lastmod>2026-04-15T11:42:55.326Z</lastmod>
-  </url>
-  <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture11-2-unit-commitment.html</loc>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture12-1-waste-management.html</loc>
     <lastmod>2026-04-15T11:42:55.327Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture13-1-stochastic-optimization.html</loc>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture13-2-limits-optimization.html</loc>
     <lastmod>2026-04-15T11:42:55.327Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecture14-1-sensitivity-analysis.html</loc>
+    <loc>https://envsys.viveks.me/fall2025/slides/lecture15-2-simulation-optimization.html</loc>
     <lastmod>2026-04-15T11:42:55.327Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/slides/lecturexx-xx-lake-uncertainty.html</loc>
-    <lastmod>2026-09-09T16:35:50.258Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/solutions/hw01/hw01.html</loc>
+    <lastmod>2026-09-07T22:59:20.022Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/syllabus.html</loc>
-    <lastmod>2026-08-27T12:25:34.035Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/tutorials/index.html</loc>
+    <lastmod>2026-07-30T15:52:55.305Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/tutorials/julia-basics.html</loc>
-    <lastmod>2026-07-28T20:18:06.702Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/tutorials/julia-graphs.html</loc>
+    <lastmod>2026-07-30T17:48:42.883Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/tutorials/julia-jump.html</loc>
-    <lastmod>2026-04-15T11:42:55.393Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/tutorials/julia-plots.html</loc>
+    <lastmod>2026-07-30T16:35:49.023Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/tutorials/latex-notebook.html</loc>
-    <lastmod>2026-07-28T20:23:03.633Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/tutorials/notebook-to-pdf.html</loc>
+    <lastmod>2026-07-28T21:00:44.267Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/tutorials/quarto.html</loc>

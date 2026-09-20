@@ -118,7 +118,7 @@ do_params = let
     (; ka, kc, kn, C0, N0, Cs, U, L, standard)
 end
 
-do_min(B0, params; dx=0.1) = begin
+function do_min(B0, params; dx=0.1)
     steps = Int(round(params.L / dx))
     C = params.C0
     m = C
@@ -146,7 +146,11 @@ Random.seed!(4750)
 N = 20_000
 draws = [violates(do_params) for _ in 1:N]
 running_p = cumsum(draws) ./ (1:N)
-running_se = [i > 1 ? sqrt(running_p[i] * (1 - running_p[i]) / i) : NaN for i in 1:N]
+running_se = zeros(N)
+running_se[1] = NaN
+for i in 2:N
+    running_se[i] = sqrt(running_p[i] * (1 - running_p[i]) / i)
+end
 
 p_mc = plot(1:N, running_p, ribbon=1.96 .* running_se, xscale=:log10,
     color=:black, linewidth=3, fillalpha=0.25, fillcolor=cb_blue,
@@ -232,6 +236,222 @@ println("> \"I estimated \$P(\\text{DO} < 2.5\\ \\text{mg/L})\$ with \$n = 2{,}0
         "so \$n=2{,}000\$ is sufficient for this analysis.\"")
 ```
 
+# Two Errors, One Answer
+
+## You Now Have Two Knobs
+
+Every number you report from this model is shaped by two choices you made:
+
+::: {.incremental}
+- $\Delta x$, the spatial step --- Week 4's knob.
+- $n$, the number of samples --- today's.
+:::
+
+::: {.fragment .fade-in}
+Refining either one costs time. **Which should you refine?**
+:::
+
+## Put Them in the Same Units
+
+The two errors are not comparable until they describe the same quantity. So express both as an error in **the violation probability**, which is the number you would actually report.
+
+- **Grid error**: hold $n$ and the seed fixed, vary $\Delta x$, see how $P$ moves.
+- **Sampling error**: hold $\Delta x$ fixed, and read the half-width $1.96\sqrt{p(1-p)/n}$.
+
+## Measuring the Grid Error
+
+```{julia}
+#| echo: true
+#| output: false
+
+function violation_fraction(grid_step, sample_count, seed)
+    Random.seed!(seed)
+    violations = 0
+    for _ in 1:sample_count
+        load = max(0.1, rand(Normal(9.0, 1.5)))
+        if do_min(load, do_params; dx=grid_step) < do_params.standard
+            violations += 1
+        end
+    end
+    return violations / sample_count
+end
+
+grid_steps = [1.0, 0.5, 0.25, 0.1]
+reference_p = violation_fraction(0.02, 3000, 99)
+
+grid_estimates = zeros(length(grid_steps))
+for i in 1:length(grid_steps)
+    grid_estimates[i] = violation_fraction(grid_steps[i], 3000, 99)
+end
+grid_errors = abs.(grid_estimates .- reference_p)
+```
+
+```{julia}
+#| echo: false
+#| output: asis
+
+println("| \$\\Delta x\$ (km) | \$P\$ | error vs. fine grid |")
+println("|---:|---:|---:|")
+for i in 1:length(grid_steps)
+    println("| \$$(grid_steps[i])\$ | \$$(round(grid_estimates[i], digits=3))\$ | \$$(round(grid_errors[i], digits=3))\$ |")
+end
+```
+
+## Measuring the Sampling Error
+
+```{julia}
+#| echo: false
+#| output: asis
+
+println("| \$n\$ | 95% half-width |")
+println("|---:|---:|")
+for n_samples in [100, 500, 2000, 8000]
+    half_width = 1.96 * sqrt(reference_p * (1 - reference_p) / n_samples)
+    println("| \$$(n_samples)\$ | \$$(round(half_width, digits=3))\$ |")
+end
+```
+
+::: {.fragment .fade-in}
+Sampling error falls as $1/\sqrt{n}$ --- predictably, and as slowly as we warned on Wednesday.
+:::
+
+## Two Errors, Two Rates
+
+```{julia}
+#| label: fig-two-rates
+#| fig-cap: "Left: measured grid error against step size, with a slope-1 reference. Right: the reported 95% half-width against sample count, with a slope -1/2 reference. Both on log-log axes."
+#| echo: true
+#| code-fold: true
+
+# Sampling error measured against this chain's own long-run estimate.
+# The sampling error we plot is the half-width we would actually report, not
+# one chain's realised error -- a single chain's error is itself random and
+# does not fall smoothly.
+sample_sizes = [50, 100, 200, 500, 1000, 2000, 5000, 10_000]
+sampling_errors = zeros(length(sample_sizes))
+for i in 1:length(sample_sizes)
+    sampling_errors[i] = 1.96 * sqrt(reference_p * (1 - reference_p) / sample_sizes[i])
+end
+
+p_grid = plot(grid_steps, grid_errors, xscale=:log10, yscale=:log10,
+    markershape=:circle, markersize=7, color=cb_vermillion, linewidth=3,
+    xlabel="Δx  [km]", ylabel="error in P", label="measured", legend=:bottomright,
+    xticks=(grid_steps, string.(grid_steps)))
+plot!(p_grid, grid_steps, grid_errors[1] .* (grid_steps ./ grid_steps[1]),
+    color=:black, linewidth=2, linestyle=:dash, label="slope 1")
+
+p_samp = plot(sample_sizes, sampling_errors, xscale=:log10, yscale=:log10,
+    markershape=:circle, markersize=7, color=cb_blue, linewidth=3,
+    xlabel="n", ylabel="95% half-width in P", label="reported", legend=:bottomleft)
+plot!(p_samp, sample_sizes, sampling_errors[1] .* sqrt.(sample_sizes[1] ./ sample_sizes),
+    color=:black, linewidth=2, linestyle=:dash, label="slope -1/2")
+
+plot(p_grid, p_samp, layout=(1, 2), size=(1100, 430), left_margin=12mm,
+    right_margin=8mm, bottom_margin=12mm, top_margin=5mm)
+```
+
+## One You Measure, One You Predict
+
+Note what had to be done to get each panel.
+
+::: {.incremental}
+- **Grid error**: there is no formula. You found it by *refining and comparing* --- the same thing Week 4 made you do.
+- **Sampling error**: you can write it down **before running anything**, from $1.96\sqrt{p(1-p)/n}$.
+:::
+
+::: {.fragment .fade-in}
+That asymmetry is why the grid error is the one people skip. Nothing prompts you to look for it, and no formula hands it to you.
+:::
+
+## Which One Dominates?
+
+```{julia}
+#| output: false
+coarse_grid_error = grid_errors[1]
+typical_half_width = 1.96 * sqrt(reference_p * (1 - reference_p) / 2000)
+error_ratio = coarse_grid_error / typical_half_width
+```
+
+At $\Delta x = 1$ km and $n = 2{,}000$ --- both perfectly reasonable-looking choices --- the grid error is **`{julia} round(error_ratio, digits=1)` times** the sampling half-width.
+
+::: {.fragment .fade-in}
+Refining $n$ here buys you almost nothing. The answer is limited by the grid, not the samples.
+:::
+
+## The Error You Can See
+
+Your confidence interval is computed from $n$ alone. **It knows nothing about $\Delta x$.**
+
+::: {.fragment .fade-in}
+So a report that says $P = 0.30 \pm 0.02$ is quoting a precise answer to a model that has not been resolved. The interval is honest about the error it measures and silent about the one that dominates.
+:::
+
+::: {.fragment .fade-in}
+**Report both, or the interval misleads.**
+:::
+
+# From Probability to Risk
+
+## You Have a Number. Is It Risk?
+
+We estimated the probability that dissolved oxygen falls below the standard on a given day.
+
+::: {.fragment .fade-in}
+That is a real and useful number. It is also **not** a risk estimate.
+:::
+
+## What Risk Means
+
+The [*Society for Risk Analysis* definition](https://www.sra.org/wp-content/uploads/2020/04/SRA-Glossary-FINAL.pdf):
+
+::: {.quote}
+> "risk" involves uncertainty about the effects/implications of an activity with respect to something that humans value (such as health, well-being, wealth, property or the environment), often focusing on negative, undesirable consequences.
+:::
+
+## Risk Is Not Probability
+
+**"Risk" is not just another word for probability.** It involves:
+
+::: {.incremental}
+- uncertainty;
+- *undesirable* outcomes;
+- **effects**, not just the events themselves.
+:::
+
+## Components of Risk
+
+:::: {.columns}
+::: {.column width=50%}
+Several things combine to produce risk:
+
+- Probability of a **hazard**;
+- **Exposure** to that hazard;
+- **Vulnerability** to the outcomes;
+- Socioeconomic **responses**.
+:::
+::: {.column width=50%}
+![Overview of the Components of Risk](figures/simpson_risk.svg)
+
+::: {.caption}
+Source: [Simpson et al. (2021)](https://doi.org/10.1016/j.oneear.2021.03.005)
+:::
+:::
+::::
+
+## Our Model Contains One of Four
+
+$P(\text{DO} < 2.5)$ is a **hazard** statistic, and nothing more.
+
+::: {.incremental}
+- Who is **exposed**? Which reach, whose water intake, which fishery?
+- How **vulnerable** are they? A brief dip matters differently to a trout stream than to an industrial intake.
+- What is the **response**? A warning system, a permit change, a treatment upgrade.
+:::
+
+::: {.fragment .fade-in}
+None of those three are in the model. **Managing risk needs all four, and simulation gives you one.**
+:::
+
 # Practical Notes
 
 ## Pseudorandomness and Seeds
@@ -251,21 +471,29 @@ Source: [XKCD #221](https://xkcd.com/221/)
 :::
 ::::
 
-# Key Takeaways
+# Key Takeaways and Upcoming Schedule
 
 ## Key Takeaways
 
 ::: {.incremental}
 - **Sample size needs justification**, exactly like Week 4's step size: pick $n$ from a target precision, double it and check, report the standard error.
 - Five samples were nowhere near enough to trust the DO ensemble --- now you know how to say precisely how far short they fell.
-- The same discipline (name a quantity of interest, refine a knob, report what changed) has now shown up for $\Delta t$, $\Delta x$, and $n$.
+- **Two errors sit in every answer**, and they fall at different rates. Refining the wrong knob buys nothing.
+- **Your confidence interval measures one of them and is silent about the other.**
+- A violation probability is a **hazard** statistic. Risk needs exposure, vulnerability, and response as well --- and none of those is in the model.
 :::
-
-# Upcoming Schedule
 
 ## Next Classes
 
-**Wednesday**: 2D discretization and Gaussian plumes --- the plume equation, boundary conditions, and why the analytic solution isn't always the right tool.
+**Wednesday**: Gaussian plumes --- deriving the model, boundary conditions, and where the closed form comes from.
+
+## Assessments
+
+**Mini-Project 1**: Due Thursday, October 8.
+
+**Homework 4**: Assigned Wednesday, due Thursday, October 8.
+
+**Quiz 2**: Wednesday, covering discretization, convergence, Streeter-Phelps, and Monte Carlo foundations.
 
 # References
 

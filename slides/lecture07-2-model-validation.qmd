@@ -1,0 +1,640 @@
+---
+title: "Model Validation"
+subtitle: "Lecture 12"
+author: "Vivek Srikrishnan"
+course: "BEE 4750"
+institution: "Cornell University"
+date: "October 07, 2026"
+format:
+    revealjs:
+        slide-number: c/t
+        show-slide-number: all
+        center-title-slide: true
+        width: 1280
+        height: 720
+        transition: none
+        toc: true
+        toc-depth: 1
+        toc-title: "Overview"
+        history: false
+        link-external-newwindow: true
+        theme: ../sass/slides.scss
+        template-partials:
+            - title-slide.html
+        menu:
+            numbers: true
+        html-math-method: mathjax
+        include-in-header: mathjax-config.html
+        date-format: long
+        email-obfuscation: javascript
+        chalkboard:
+            theme: whiteboard
+            buttons: true
+        controls: true
+engine: julia
+julia:
+  exeflags: ["+1.11.5"]
+execute:
+    freeze: auto
+    daemon: 600
+---
+
+```{julia}
+#| output: false
+import Pkg
+Pkg.activate(@__DIR__)
+Pkg.instantiate()
+```
+
+```{julia}
+#| output: false
+using Plots
+using Measures
+using LaTeXStrings
+using Random
+using Distributions
+using Optim
+using Statistics
+
+plot_font = "Palatino Roman"
+default(
+    fontfamily=plot_font,
+    linewidth=3,
+    framestyle=:box,
+    label=nothing,
+    grid=false,
+    guidefontsize=18,
+    legendfontsize=16,
+    tickfontsize=16,
+    titlefontsize=20,
+    bottom_margin=10mm,
+    left_margin=5mm
+)
+
+# Okabe-Ito palette: distinguishable under all common types of colour
+# blindness, and every pair also differs in line style so the figures
+# still read in greyscale.
+cb_orange = "#E69F00"
+cb_green = "#009E73"
+cb_yellow = "#F0E442"
+cb_blue = "#0072B2"
+cb_vermillion = "#D55E00"
+cb_purple = "#CC79A7"
+```
+
+```{julia}
+#| output: false
+
+# The dissolved oxygen model from Week 4, unchanged. Rates are accessed by
+# field name rather than by position, so a CBOD rate can never be silently
+# passed into an NBOD slot.
+true_params = (; ka=0.6, kc=0.4, kn=0.25, B0=9.0, N0=7.0, Cs=7.0, U=5.0)
+
+C0 = 6.2          # DO entering the reach below the effluent [mg/L]
+river_length = 40.0
+Δx = 0.25
+
+do_change(C, x, params) =
+    (params.ka * (params.Cs - C) - params.kc * params.B0 * exp(-params.kc * x / params.U)
+     - params.kn * params.N0 * exp(-params.kn * x / params.U)) / params.U
+
+function simulate_do(C_ic, L, Δx, params)
+    steps = Int(round(L / Δx))
+    C = zeros(steps + 1)
+    C[1] = C_ic
+    for i in 1:steps
+        C[i+1] = C[i] + Δx * do_change(C[i], (i - 1) * Δx, params)
+    end
+    return C
+end
+```
+
+# Review of Last Class
+
+## The Grid Is a Choice We Make
+
+The plume equation gives a concentration at **every** point. A grid is how we look at it, and looking is not free.
+
+Monday: the samples themselves are exact, but everything we *compute from them* --- a maximum, a location, an area --- depends on where the samples fell.
+
+## Sigma Sets the Spacing
+
+$\sigma_y$ grows from a couple of metres near the stack to hundreds of metres downwind.
+
+A grid that resolves the plume far away can step straight over it near the source.
+
+## Superposition Creates New Structure
+
+Three stacks that each comply can jointly violate, and the combined maximum sits where **no single plume** peaks.
+
+## Questions?
+
+{{< include _poll-prompt.qmd >}}
+
+# What Are We Even Claiming?
+
+## A Model Gave You a Number
+
+You have simulated a sag curve, a footprint, a capacity plan.
+
+A regulator asks: **why should I believe this?**
+
+::: {.fragment .fade-in}
+"I solved the equations correctly" answers a different question than the one being asked.
+:::
+
+## Where Did Every Parameter Come From?
+
+Every model we have built this term needed numbers. We have never asked where they came from.
+
+| Model | Parameters | Where they came from |
+|:--|:--|:--|
+| Shallow lake | $b$, $q$, $m$ | Literature values for a lake type |
+| Airshed box | $u$, $k$, $S$ | Given in the problem statement |
+| Streeter-Phelps | $k_a$, $k_c$, $k_n$ | **Fitted to measurements** |
+| Gaussian plume | $\sigma_y$, $\sigma_z$ | Table lookup by stability class |
+
+::: {.fragment .fade-in}
+Only one of those rows involves data from the system being modeled.
+:::
+
+## Three Ways to Be Wrong
+
+::: {.incremental}
+1. **Numerical**: the equations are right, the grid or step size is too coarse.
+2. **Parametric**: the structure is right, the parameter values are wrong.
+3. **Structural**: the model is the wrong model for this system.
+:::
+
+## You Already Fixed the First One
+
+Numerical error is the friendly kind: **you control it, and you can drive it toward zero.**
+
+Halve the step, watch the answer stop moving, report what changed. Week 4 in time, Monday in space.
+
+::: {.fragment .fade-in}
+No amount of refinement fixes the other two.
+:::
+
+## Today: The Other Two
+
+Parametric error has a standard treatment --- **calibration** --- and a standard trap.
+
+Structural error has neither.
+
+# Calibration: Fitting to Data
+
+## Calibrating the DO Model
+
+$k_a$, $k_c$, and $k_n$ are not constants of nature. They depend on the river: its turbulence, its temperature, what is actually in the waste.
+
+In practice you **measure dissolved oxygen downstream and fit the rates to it**.
+
+## The Data We Would Actually Have
+
+```{julia}
+#| label: fig-calibration-data
+#| fig-cap: "Twenty-one dissolved oxygen measurements, every 2 km, against the model that generated them."
+#| echo: true
+#| code-fold: true
+
+# Seeded so the lecture reports the same numbers every time it renders.
+Random.seed!(3)
+
+observation_step = 8                      # one observation every 2 km on a 0.25 km grid
+truth = simulate_do(C0, river_length, Δx, true_params)
+observation_index = 1:observation_step:length(truth)
+observation_distance = [(i - 1) * Δx for i in observation_index]
+observations = truth[observation_index] + rand(Normal(0, 0.2), length(observation_index))
+
+p_data = scatter(observation_distance, observations, color=cb_vermillion, markersize=7,
+    xlabel="Distance downstream  [km]", ylabel="DO  [mg/L]",
+    label="measurements", legend=:bottomright)
+plot!(p_data, 0:Δx:river_length, truth, color=:black, linewidth=4, label="model that generated them")
+plot!(p_data, size=(1100, 430), left_margin=12mm, right_margin=8mm,
+    bottom_margin=12mm, top_margin=5mm)
+```
+
+## Score Two Candidates By Hand
+
+Pick the parameters that make the simulation closest to the measurements:
+
+$$\text{RMSE} = \sqrt{\frac{1}{n}\sum_{i=1}^{n}\left(y^\text{sim}_i - y^\text{obs}_i\right)^2}$$
+
+```{julia}
+#| echo: true
+#| output: false
+
+rmse(simulated, observed) = sqrt(mean((simulated .- observed).^2))
+
+function do_rmse(ka, kc, kn)
+    candidate = (; ka, kc, kn, B0=true_params.B0, N0=true_params.N0,
+                   Cs=true_params.Cs, U=true_params.U)
+    simulated = simulate_do(C0, river_length, Δx, candidate)
+    return rmse(simulated[observation_index], observations)
+end
+```
+
+Before handing anything to a solver, score two guesses:
+
+- $(k_a, k_c, k_n) = (0.6, 0.4, 0.25)$, the true values: RMSE `{julia} round(do_rmse(0.6, 0.4, 0.25); digits=3)`
+- $(k_a, k_c, k_n) = (0.5, 0.5, 0.5)$, a naive start: RMSE `{julia} round(do_rmse(0.5, 0.5, 0.5); digits=3)`
+
+## Handing It to a Solver
+
+```{julia}
+#| echo: true
+#| output: false
+#| code-line-numbers: "|1-3|5-7"
+
+lower_bounds = [0.05, 0.05, 0.05]
+upper_bounds = [2.0, 2.0, 2.0]
+initial_guess = [0.5, 0.5, 0.5]
+
+calibration = Optim.optimize(v -> do_rmse(v[1], v[2], v[3]),
+    lower_bounds, upper_bounds, initial_guess)
+fitted = Optim.minimizer(calibration)
+```
+
+## The Calibrated Fit
+
+```{julia}
+#| label: fig-calibrated-fit
+#| fig-cap: "The calibrated model against the measurements. It passes through the data at least as well as the truth does."
+#| echo: true
+#| code-fold: true
+
+fitted_params = (; ka=fitted[1], kc=fitted[2], kn=fitted[3],
+                   B0=true_params.B0, N0=true_params.N0,
+                   Cs=true_params.Cs, U=true_params.U)
+
+p_fit = scatter(observation_distance, observations, color=cb_vermillion, markersize=7,
+    xlabel="Distance downstream  [km]", ylabel="DO  [mg/L]",
+    label="measurements", legend=:bottomright)
+plot!(p_fit, 0:Δx:river_length, truth, color=:black, linewidth=4, label="true model")
+plot!(p_fit, 0:Δx:river_length, simulate_do(C0, river_length, Δx, fitted_params),
+    color=cb_blue, linewidth=3, linestyle=:dash, label="calibrated model")
+plot!(p_fit, size=(1100, 430), left_margin=12mm, right_margin=8mm,
+    bottom_margin=12mm, top_margin=5mm)
+```
+
+# The Fit Is Not the Truth
+
+## We Recovered the Wrong Rates
+
+| Rate | True | Calibrated |
+|:--|--:|--:|
+| $k_a$ reaeration | $0.60$ | `{julia} round(fitted[1]; digits=2)` |
+| $k_c$ CBOD decay | $0.40$ | `{julia} round(fitted[2]; digits=2)` |
+| $k_n$ NBOD decay | $0.25$ | `{julia} round(fitted[3]; digits=2)` |
+
+::: {.fragment .fade-in}
+The calibration did not just miss. The two decay rates came back **identical**. The data cannot tell carbonaceous demand from nitrogenous demand, so the fit stopped distinguishing them.
+:::
+
+## It Fits Better Than the Truth
+
+RMSE of the calibrated model: `{julia} round(Optim.minimum(calibration); digits=4)` mg/L
+
+RMSE of the **true** model: `{julia} round(do_rmse(0.6, 0.4, 0.25); digits=4)` mg/L
+
+::: {.fragment .fade-in}
+This is not bad luck with one noise draw. Three free parameters chasing twenty-one noisy points will **essentially always** beat the truth in-sample.
+:::
+
+## Two Processes, One Curve
+
+CBOD and NBOD both remove oxygen, and both decay exponentially downstream.
+
+The measurements see only their **sum**. Faster carbonaceous decay and slower nitrogenous decay produce very nearly the same sag.
+
+## A Valley, Not a Basin
+
+```{julia}
+#| label: fig-rmse-valley
+#| fig-cap: "RMSE in mg/L over the two decay rates, with reaeration held at its true value. The minimum is a trough, not a point."
+#| echo: true
+#| code-fold: true
+
+cbod_rates = 0.10:0.01:0.80
+nbod_rates = 0.05:0.01:0.60
+error_surface = [do_rmse(0.6, kc, kn) for kn in nbod_rates, kc in cbod_rates]
+
+p_valley = contourf(cbod_rates, nbod_rates, error_surface, color=:viridis, linewidth=0,
+    xlabel="CBOD decay rate  [1/d]", ylabel="NBOD decay rate  [1/d]")
+scatter!(p_valley, [0.4], [0.25], color=:white, markersize=11, markershape=:star5,
+    label="truth", legend=:topright)
+scatter!(p_valley, [fitted[2]], [fitted[3]], color=cb_vermillion, markersize=9,
+    label="calibrated")
+plot!(p_valley, size=(1050, 470), left_margin=12mm, right_margin=10mm,
+    bottom_margin=12mm, top_margin=5mm)
+```
+
+## Refit It Eight Times
+
+```{julia}
+#| echo: true
+#| output: false
+
+# Score a candidate against any set of measurements, not just the ones above.
+function rmse_against(ka, kc, kn, measured)
+    candidate = (; ka, kc, kn, B0=true_params.B0, N0=true_params.N0,
+                   Cs=true_params.Cs, U=true_params.U)
+    simulated = simulate_do(C0, river_length, Δx, candidate)
+    return rmse(simulated[observation_index], measured)
+end
+
+# Nothing about the river changes across these refits. The only difference is
+# which measurements we happened to take.
+refit_ka = Float64[]
+refit_kc = Float64[]
+refit_kn = Float64[]
+
+for seed in 1:8
+    Random.seed!(seed)
+    draw = truth[observation_index] + rand(Normal(0, 0.2), length(observation_index))
+    result = Optim.optimize(v -> rmse_against(v[1], v[2], v[3], draw),
+        lower_bounds, upper_bounds, initial_guess)
+    best = Optim.minimizer(result)
+    push!(refit_ka, best[1])
+    push!(refit_kc, best[2])
+    push!(refit_kn, best[3])
+end
+```
+
+## The Same River, Eight Answers
+
+| Rate | True | Lowest | Highest | Spread |
+|:--|--:|--:|--:|--:|
+| $k_a$ reaeration | $0.60$ | `{julia} round(minimum(refit_ka); digits=2)` | `{julia} round(maximum(refit_ka); digits=2)` | `{julia} round(maximum(refit_ka) - minimum(refit_ka); digits=2)` |
+| $k_c$ CBOD decay | $0.40$ | `{julia} round(minimum(refit_kc); digits=2)` | `{julia} round(maximum(refit_kc); digits=2)` | `{julia} round(maximum(refit_kc) - minimum(refit_kc); digits=2)` |
+| $k_n$ NBOD decay | $0.25$ | `{julia} round(minimum(refit_kn); digits=2)` | `{julia} round(maximum(refit_kn); digits=2)` | `{julia} round(maximum(refit_kn) - minimum(refit_kn); digits=2)` |
+
+::: {.fragment .fade-in}
+Reaeration is **pinned down**. Nothing else pulls the curve back toward saturation, so the data can see it.
+:::
+
+::: {.fragment .fade-in}
+The two decay rates are not. They slide along the trough from one draw to the next, and on the draw we fitted earlier they landed on **exactly the same value**.
+:::
+
+::: {.fragment .fade-in}
+**Nonuniqueness**: the data constrain a *combination* of the rates, not the rates themselves. Which parameters a dataset can pin down, and which move together, is a question with real machinery behind it --- here we are only meeting the symptom.
+:::
+
+# Controls
+
+## We Just Ran a Positive Control
+
+We generated data from **known** parameters and asked whether the procedure could recover them.
+
+That is a *positive control*: a test with a known right answer, run on the procedure rather than on the system.
+
+## What It Told Us
+
+::: {.incremental}
+- The procedure fits the data. It does **not** recover the parameters.
+- The failure is not a bug. It is a property of this model and this data.
+- We only know that because we knew the answer in advance.
+:::
+
+## The Other Control
+
+A **negative control** feeds the procedure something with no signal in it and asks whether it finds one anyway.
+
+If a calibration reports confident parameters when handed noise, its confident parameters mean nothing.
+
+## Fitting Pure Noise
+
+```{julia}
+#| echo: true
+#| output: false
+
+# Same procedure, but the "measurements" are noise about a flat line ---
+# there is no sag here for any parameter set to explain.
+Random.seed!(11)
+flat_observations = fill(mean(observations), length(observation_index)) +
+    rand(Normal(0, 0.2), length(observation_index))
+
+function noise_rmse(ka, kc, kn)
+    candidate = (; ka, kc, kn, B0=true_params.B0, N0=true_params.N0,
+                   Cs=true_params.Cs, U=true_params.U)
+    rmse(simulate_do(C0, river_length, Δx, candidate)[observation_index], flat_observations)
+end
+
+noise_fit = Optim.minimizer(Optim.optimize(v -> noise_rmse(v[1], v[2], v[3]),
+    lower_bounds, upper_bounds, initial_guess))
+```
+
+It returns rates anyway: `{julia} join(string.(round.(noise_fit; digits=2)), ", ")`.
+
+::: {.fragment .fade-in}
+An optimiser always returns its argument minimum. **Getting an answer is not evidence that there was one.**
+:::
+
+# Validation: A Different Question
+
+## Calibration Is Not Validation
+
+Following @Oreskes1994-br:
+
+- **Calibration**: choosing parameters so simulations match observations.
+- **Validation**: establishing that the model is a legitimate basis for the claim you want to make.
+
+::: {.fragment .fade-in}
+Everything so far has been calibration. None of it was validation.
+:::
+
+## Two Kinds of Evidence
+
+::: {.incremental}
+- **Empirical validity**: does it predict data it has never seen? Hold observations back; do not fit them.
+- **Face validity**: are the processes in the model the ones that actually operate, parameterised the way they actually behave?
+:::
+
+::: {.fragment .fade-in}
+They fail independently. A model can predict well for the wrong reason, and be mechanistically right but useless.
+:::
+
+## A Plume From the Wrong Night
+
+```{julia}
+#| output: false
+
+# Pasquill-Gifford coefficients, read from the table in Monday's deck.
+# x in km, sigmas in m.
+stability = Dict(
+    :E => (; a=50.5, c_near=22.8,  d_near=0.678, f_near=-1.3,
+             c_far=55.4, d_far=0.305, f_far=-34.0),
+    :F => (; a=34.0, c_near=14.35, d_near=0.740, f_near=-0.35,
+             c_far=62.6, d_far=0.180, f_far=-48.6))
+
+sigma_y(downwind_km, coef) = coef.a * downwind_km^0.894
+
+function sigma_z(downwind_km, coef)
+    if downwind_km < 1.0
+        return coef.c_near * downwind_km^coef.d_near + coef.f_near
+    else
+        return coef.c_far * downwind_km^coef.d_far + coef.f_far
+    end
+end
+
+function ground_concentration(downwind_km, crosswind_m, coef, params)
+    spread_y = sigma_y(downwind_km, coef)
+    spread_z = sigma_z(downwind_km, coef)
+    if downwind_km <= 0.05 || spread_z <= 0.0
+        return 0.0        # the fitted coefficients do not apply at the stack
+    end
+    return (params.emission / (π * params.wind * spread_y * spread_z)) *
+        exp(-crosswind_m^2 / (2 * spread_y^2)) *
+        exp(-params.height^2 / (2 * spread_z^2)) * 1e6
+end
+
+plume_params = (; emission=100.0, height=41.0, wind=2.5)
+
+# Monitors along the plume, at a range of downwind and crosswind positions.
+Random.seed!(7)
+monitor_downwind = [0.5, 0.8, 1.2, 1.6, 2.0, 2.5, 3.0, 3.5, 4.0, 5.0, 6.0, 7.0]
+monitor_crosswind = [0.0, 40.0, -40.0, 0.0, 60.0, 0.0, -60.0, 0.0, 80.0, 0.0, -80.0, 0.0]
+
+# The night was Class E. The engineer assumed Class F.
+monitor_observed = [ground_concentration(monitor_downwind[i], monitor_crosswind[i],
+        stability[:E], plume_params) * (1 + 0.08 * randn()) for i in 1:length(monitor_downwind)]
+monitor_modelled = [ground_concentration(monitor_downwind[i], monitor_crosswind[i],
+        stability[:F], plume_params) for i in 1:length(monitor_downwind)]
+```
+
+An engineer models a stack on a stable night --- **Class F**. The night was actually **Class E**.
+
+No parameter is being fitted here. The *structure* of the dispersion is wrong.
+
+## A Number Without a Diagnosis
+
+```{julia}
+#| output: false
+plume_rmse = rmse(monitor_modelled, monitor_observed)
+relative_error = 100 * plume_rmse / mean(monitor_observed)
+```
+
+RMSE across the twelve monitors: `{julia} round(plume_rmse; digits=1)` µg/m³ --- about `{julia} Int(round(relative_error))`% of the mean observed concentration.
+
+::: {.fragment .fade-in}
+The metric tells us **how big** the error is. It says nothing about **what kind** it is, and so nothing about whether calibration can fix it.
+:::
+
+## Can We Calibrate Our Way Out?
+
+Wind speed is the obvious knob: genuinely uncertain, and the whole field scales as $1/u$.
+
+```{julia}
+#| echo: true
+#| output: false
+
+function wind_rmse(wind_speed)
+    trial = (; emission=100.0, height=41.0, wind=wind_speed)
+    modelled = [ground_concentration(monitor_downwind[i], monitor_crosswind[i],
+        stability[:F], trial) for i in 1:length(monitor_downwind)]
+    return rmse(modelled, monitor_observed)
+end
+
+wind_fit = Optim.optimize(v -> wind_rmse(first(v)), [0.3], [20.0], [2.5])
+fitted_wind = first(Optim.minimizer(wind_fit))
+```
+
+Fitted wind: `{julia} round(fitted_wind; digits=2)` m/s against a true $2.5$. RMSE afterwards: `{julia} round(Optim.minimum(wind_fit); digits=1)` µg/m³, from `{julia} round(plume_rmse; digits=1)`.
+
+::: {.fragment .fade-in}
+The calibration returns a **perfectly plausible wind speed** and the error does not move.
+:::
+
+## The Residuals Say Otherwise
+
+```{julia}
+#| label: fig-plume-residuals
+#| fig-cap: "Model minus observation at each monitor. The sign flips with distance --- the error is structure, not scatter."
+#| echo: true
+#| code-fold: true
+
+residual = monitor_modelled - monitor_observed
+
+p_resid = scatter(monitor_downwind, residual, color=cb_vermillion, markersize=9,
+    xlabel="Distance downwind  [km]", ylabel="Model − observed  [µg/m³]",
+    legend=false)
+hline!(p_resid, [0.0], color=:black, linewidth=2, linestyle=:dash)
+plot!(p_resid, size=(1100, 430), left_margin=14mm, right_margin=8mm,
+    bottom_margin=12mm, top_margin=5mm)
+```
+
+## A Shape Error, Not a Scale Error
+
+Wind speed multiplies the whole field by a constant. It can lift the model or lower it --- it cannot lift it near the stack **and** lower it far away.
+
+::: {.fragment .fade-in}
+The residuals change sign with distance. That is a plume spreading at the wrong **rate**, and no multiplicative parameter can absorb it. The optimiser was never going to find this.
+:::
+
+::: {.fragment .fade-in}
+A correct model with noisy data scatters its residuals around zero. RMSE squares them and averages --- exactly the operation that throws the sign pattern away.
+:::
+
+## So What Would Have Caught It?
+
+Calibrating the wind speed did not improve the RMSE, and would not have mattered if it had. The stability class would still be wrong.
+
+::: {.incremental}
+- **Empirical check**: plot residuals against every variable you have --- distance, direction, time of day.
+- **Face check**: was it actually a stable night? Does the assumed class match the conditions?
+:::
+
+# Key Takeaways and Upcoming Schedule
+
+## Key Takeaways
+
+::: {.incremental}
+- **A model that fits better can be more wrong.** Calibration minimises a metric, not error in the parameters.
+- **Nonuniqueness is normal.** Compensating processes mean data often constrain a *combination* of parameters.
+- **An aggregate metric hides structure.** Look at residuals, not just the scalar.
+- **Controls test the procedure**, not the system: positive asks whether it can recover a known answer, negative asks whether it invents one.
+- **Empirical and face validity fail independently.**
+:::
+
+## The Whole Arc, Once More
+
+::: {.incremental}
+- Forward Euler: error $O(\Delta t)$ --- halve the step, halve the error.
+- Monte Carlo: error $O(n^{-1/2})$ --- quadruple the samples, halve the error.
+- A grid on a closed form: the samples are exact; the error is in what you ask of them.
+- **Calibration: the error does not shrink with effort at all.** More optimisation makes the fit better and the parameters no more true.
+:::
+
+## Next Classes
+
+**Monday**: Fall Break --- no class.
+
+**Wednesday, Oct 14**: Decision models and linear programming. The second half of the course moves from *describing* systems to *prescribing* what to do about them.
+
+## Assessments
+
+**HW5**: assigned today, due Thursday Oct 15. Gaussian plumes and model validation.
+
+**Quiz 3**: Monday Oct 19.
+
+# Appendix
+
+## Why Compensating Processes Make a Valley
+
+Both oxygen sinks decay exponentially in distance:
+
+$$k_c B_0 e^{-k_c x/U} + k_n N_0 e^{-k_n x/U}$$
+
+Over the stretch where measurements exist, raising $k_c$ and lowering $k_n$ leaves this sum nearly unchanged. The data constrain the sum; they do not separate the terms.
+
+Reaeration is different in kind --- it pulls toward $C_s$ rather than away --- so $k_a$ stays identifiable.
+
+## The Lake, Revisited
+
+Homework 3 asked what happens when a manager uses a one-stock lake model that ignores sediment recycling entirely.
+
+That is structural error, met before we had a name for it: the fitted model is internally consistent and still sets an unsafe loading.
+
+## References

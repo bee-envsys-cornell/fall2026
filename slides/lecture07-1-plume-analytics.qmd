@@ -1,5 +1,5 @@
 ---
-title: "Gaussian Plumes: Footprints and Flexibility"
+title: "Gaussian Plumes: Footprints on a Grid"
 subtitle: "Lecture 11"
 author: "Vivek Srikrishnan"
 course: "BEE 4750"
@@ -51,7 +51,6 @@ Pkg.instantiate()
 using Plots
 using Measures
 using LaTeXStrings
-using DifferentialEquations
 
 plot_font = "Palatino Roman"
 default(
@@ -82,19 +81,35 @@ cb_purple = "#CC79A7"
 ```{julia}
 #| output: false
 
-# Carried over from Monday: the closed-form plume, Class F stability.
+# Carried over from Wednesday: the closed-form plume, Class F stability.
 plume_params = let
     Q, H, u_wind = 100.0, 41.0, 2.5
     (; Q, H, u_wind)
 end
+
 sig_y(xk) = 34.0 * xk^0.894
-sig_z(xk) = xk < 1 ? 14.35 * xk^0.740 - 0.35 : 62.6 * xk^0.180 - 48.6
+
+function sig_z(xk)
+    if xk < 1
+        return 14.35 * xk^0.740 - 0.35
+    else
+        return 62.6 * xk^0.180 - 48.6
+    end
+end
 
 function plume(xk, y, z, params)
+    # The fitted dispersion coefficients do not apply at the stack itself:
+    # sig_y is zero at xk = 0 and sig_z is negative for the first few metres.
+    if xk <= 0.05
+        return 0.0
+    end
     sy, sz = sig_y(xk), sig_z(xk)
-    (params.Q / (2π * params.u_wind * sy * sz)) * exp(-y^2 / (2sy^2)) * (
+    return (params.Q / (2π * params.u_wind * sy * sz)) * exp(-y^2 / (2sy^2)) * (
         exp(-(z - params.H)^2 / (2sz^2)) + exp(-(z + params.H)^2 / (2sz^2)))
 end
+
+# Concentrations in µg/m³ read better than g/m³ for everything below.
+plume_ugm3(xk, y, z, params) = plume(xk, y, z, params) * 1e6
 ```
 
 # Review of Last Class
@@ -105,224 +120,390 @@ $$C(x,y,z) = \frac{Q}{2\pi u\sigma_y\sigma_z}\exp\left(\frac{-y^2}{2\sigma_y^2}\
 
 Built from a real Péclet argument (drop along-wind dispersion) and a real boundary condition (ground reflection, verified numerically to cancel the vertical flux).
 
+## What Wednesday Left Open
+
+We computed **one number**: the centreline concentration at 3 km.
+
+A permit does not ask for one number. It asks *where* the worst point is, *how much* is there, and *how large* the region above the limit is.
+
 ## Questions?
 
 {{< include _poll-prompt.qmd >}}
 
-# Where Does the Plume Actually Land?
+# Three Views of One Plume
+
+## Three Slices, One Function
+
+$C(x,y,z)$ is defined everywhere. We can only ever look at slices of it:
+
+::: {.incremental}
+- **Plan view**, $z = 0$: the footprint on the ground, which is what a standard applies to.
+- **Vertical section**, $y = 0$: how the plume gets from the stack down to the ground.
+- **Crosswind profile**, fixed $x$: how wide it is where you are standing.
+:::
 
 ## The Ground-Level Footprint
 
 ```{julia}
 #| label: fig-footprint
-#| fig-cap: "Ground-level (z=0) concentration footprint, constant emissions."
+#| fig-cap: "Ground-level concentration. The domain is 8 km long and 1.4 km wide, so the plume is far narrower than it looks here."
 #| echo: true
 #| code-fold: true
 
-xs = 0.05:0.05:8.0
-ys = -400:10:400
-Z = [plume(x, y, 0.0, plume_params) * 1e6 for y in ys, x in xs]   # µg/m³
+downwind_positions = 0.05:0.02:8.0
+crosswind_positions = -700:5:700
+footprint = [plume_ugm3(x, y, 0.0, plume_params) for y in crosswind_positions, x in downwind_positions]
 
-p_foot = contourf(xs, ys, Z, color=:tol_rainbow, linewidth=0,
-    xlabel="Distance downwind  [km]", ylabel="Crosswind distance  [m]",
-    colorbar_title="  µg/m³")
-plot!(p_foot, size=(1050, 480), left_margin=12mm, right_margin=14mm,
+p_foot = contourf(downwind_positions, crosswind_positions, footprint,
+    color=:viridis, linewidth=0, clims=(0, 2000),
+    xlabel="Distance downwind  [km]", ylabel="Crosswind distance  [m]")
+plot!(p_foot, size=(1050, 450), left_margin=12mm, right_margin=10mm,
     bottom_margin=12mm, top_margin=5mm)
 ```
+
+## Reading the Footprint
+
+The axes are not to scale. The plume is **kilometres long and a few hundred metres wide**.
+
+::: {.fragment .fade-in}
+Nothing reaches the ground for the first few hundred metres --- the plume is still aloft at 41 m and has not spread down to $z = 0$ yet.
+:::
+
+## How Wide Is It, Really?
+
+```{julia}
+#| label: fig-crosswind
+#| fig-cap: "Crosswind profiles at three downwind distances. Dashed lines mark plus and minus one sigma_y."
+#| echo: true
+#| code-fold: true
+
+p_cross = plot(xlabel="Crosswind distance  [m]", ylabel="Ground-level C  [µg/m³]",
+    legend=:topright)
+for (distance, colour) in zip([1.0, 2.5, 6.0], [cb_vermillion, cb_blue, cb_green])
+    profile = [plume_ugm3(distance, y, 0.0, plume_params) for y in crosswind_positions]
+    plot!(p_cross, crosswind_positions, profile, color=colour, linewidth=3,
+        label="x = $distance km")
+    vline!(p_cross, [sig_y(distance), -sig_y(distance)], color=colour,
+        linewidth=2, linestyle=:dash, label=nothing)
+end
+plot!(p_cross, size=(1050, 430), left_margin=12mm, right_margin=8mm,
+    bottom_margin=12mm, top_margin=5mm)
+```
+
+## Sigma Sets the Width
+
+$\sigma_y$ at 1 km: `{julia} Int(round(sig_y(1.0)))` m. At 8 km: `{julia} Int(round(sig_y(8.0)))` m.
+
+Close to the stack it is smaller still --- `{julia} round(sig_y(0.1); digits=1)` m at 100 m downwind.
+
+::: {.fragment .fade-in}
+**The plume spans two orders of magnitude in width across one domain.** Remember that number.
+:::
+
+## The Plume in Section
+
+```{julia}
+#| label: fig-section
+#| fig-cap: "Vertical section through the centreline. The plume leaves the stack at 41 m and reaches the ground by roughly 1 km."
+#| echo: true
+#| code-fold: true
+
+heights = 0:2:200
+section_positions = 0.2:0.02:8.0
+section = [plume_ugm3(x, 0.0, z, plume_params) for z in heights, x in section_positions]
+
+# Immediately above the stack the plume is a few metres across and the
+# concentration there is enormous. Cap the scale at the ground-level range so
+# the descent to the ground stays visible instead of being washed out.
+p_section = contourf(section_positions, heights, section, color=:viridis, linewidth=0,
+    clims=(0, 2000), xlabel="Distance downwind  [km]", ylabel="Height  [m]")
+hline!(p_section, [plume_params.H], color=:white, linewidth=2, linestyle=:dash,
+    label="stack height", legend=:topright)
+plot!(p_section, size=(1050, 430), left_margin=12mm, right_margin=10mm,
+    bottom_margin=12mm, top_margin=5mm)
+```
+
+## This Is the Image Term Working
+
+The plume does not pass through the ground; it **piles up against it**.
+
+That is the second exponential from Wednesday, doing exactly what it was derived to do --- and it is why the ground-level concentration is twice what an unbounded Gaussian would give.
 
 ## The Peak Isn't at the Stack
 
 ```{julia}
 #| label: fig-centerline
-#| fig-cap: "Ground-level centerline concentration vs. downwind distance."
+#| fig-cap: "Ground-level centreline concentration against downwind distance."
 #| echo: true
 #| code-fold: true
 
-xs_fine = 0.05:0.01:8.0
-Cline = [plume(x, 0.0, 0.0, plume_params) * 1e6 for x in xs_fine]
-peak_val, peak_idx = findmax(Cline)
-peak_x = xs_fine[peak_idx]
+centerline_positions = 0.05:0.01:8.0
+centerline = [plume_ugm3(x, 0.0, 0.0, plume_params) for x in centerline_positions]
+peak_value, peak_index = findmax(centerline)
+peak_distance = centerline_positions[peak_index]
 
-p_line = plot(xs_fine, Cline, color=:black, linewidth=4,
-    xlabel="Distance downwind  [km]", ylabel="Ground-level centerline C  [µg/m³]",
+p_line = plot(centerline_positions, centerline, color=:black, linewidth=4,
+    xlabel="Distance downwind  [km]", ylabel="Ground-level centreline C  [µg/m³]",
     legend=false)
-scatter!(p_line, [peak_x], [peak_val], color=cb_vermillion, markersize=9)
-annotate!(p_line, peak_x + 0.4, peak_val, text("peak: $(round(peak_val, digits=0)) µg/m³ at $(round(peak_x, digits=1)) km", 14, :left))
-plot!(p_line, size=(1050, 440), left_margin=12mm, right_margin=8mm,
+scatter!(p_line, [peak_distance], [peak_value], color=cb_vermillion, markersize=9)
+plot!(p_line, size=(1050, 420), left_margin=12mm, right_margin=8mm,
     bottom_margin=12mm, top_margin=5mm)
 ```
+
+Peak of `{julia} round(peak_value; digits=0)` µg/m³ at `{julia} round(peak_distance; digits=2)` km.
 
 ::: {.fragment .fade-in}
 The same lesson as the DO sag curve: **the worst point is downstream of the source, not at it.**
 :::
 
-# What If Emissions Vary in Time?
+# The Grid Is a Choice
 
-## Real Emissions Aren't Constant
+## The Samples Are Exact
 
-A load-following power plant, a flare, a batch process --- $Q$ genuinely varies with time.
-
-**Does that force us to abandon the closed form?**
-
-## Surprisingly, No
-
-If the wind is constant, a parcel now at distance $x$ left the stack at time $t - x/u$. Its cross-wind spread only depends on how far it's travelled, not on the emission history:
-
-$$\bbox[5pt, border: 3px solid red]{C(x,y,z,t) = \frac{Q(t - x/u)}{2\pi u\sigma_y(x)\sigma_z(x)}\exp\left(\frac{-y^2}{2\sigma_y(x)^2}\right)\Big[\ldots\Big]}$$
+Every number in those figures is the **exact** solution of the plume equation at that point. There is no truncation error here at all.
 
 ::: {.fragment .fade-in}
-**Verified**: substituting this into the unsteady PDE $\partial C/\partial t + u\,\partial C/\partial x = K_{yy}\partial^2C/\partial y^2 + K_{zz}\partial^2C/\partial z^2$ gives a residual of $5\times10^{-11}$ against terms of size $10^{-6}$ --- exact, to numerical precision.
+And yet the answer you report still depends on the grid. Not because the samples are wrong --- because of **where they fall.**
 :::
 
-## What Discretizing Does *Not* Buy You
-
-Exactly like Streeter-Phelps: **time-varying emissions under a known, constant wind is not a reason to discretize.** Substitute the retarded time into the closed form you already have.
-
-::: {.fragment .fade-in}
-This only works because advection in $x$ is pure translation --- no along-$x$ mixing, and a fixed wind field. **Break either assumption and the trick stops working.**
-:::
-
-# What Actually Forces the Issue
-
-## Wind Doesn't Hold Still
-
-Real wind changes speed and direction over the course of a day. Does the retarded-time trick survive that?
-
-## Varying Speed: Timing Gets Confused, But It's Still 1D
+## A Grid Can Step Over the Plume
 
 ```{julia}
-#| echo: true
-#| code-fold: true
 #| output: false
 
-wind_speed(t) = 1.5 + 2.0 * max(0.0, sin(π * t / (12 * 3600)))^1.5   # m/s, picks up over the day
-
-function travel_time(t0, x_target)
-    t, x = t0, 0.0
-    while x < x_target
-        x += wind_speed(t) * 1.0
-        t += 1.0
+# A grid whose cells are centred rather than edge-aligned does not land on y = 0.
+function sampled_peak(spacing)
+    largest = 0.0
+    y = -700.0 + spacing / 2
+    while y <= 700.0
+        value = plume_ugm3(peak_distance, y, 0.0, plume_params)
+        if value > largest
+            largest = value
+        end
+        y += spacing
     end
-    return t - t0
+    return largest
+end
+
+coarse_peak = sampled_peak(400.0)
+fine_peak = sampled_peak(10.0)
+```
+
+At the peak distance the plume is only `{julia} Int(round(sig_y(peak_distance)))` m wide.
+
+- Crosswind spacing of 400 m reports `{julia} round(coarse_peak; digits=0)` µg/m³
+- Crosswind spacing of 10 m reports `{julia} round(fine_peak; digits=0)` µg/m³
+
+::: {.fragment .fade-in}
+The coarse grid is not slightly wrong. It is `{julia} Int(round(100 * coarse_peak / fine_peak))`% of the right answer, because **no sample landed near the centreline.**
+:::
+
+## Sigma Sets the Spacing
+
+In Week 4 the step size had to sit well inside the **shortest characteristic timescale** in the system.
+
+Here the spacing has to sit well inside the **smallest $\sigma_y$ over the region you care about** --- and $\sigma_y$ varies a hundredfold across this domain.
+
+::: {.fragment .fade-in}
+A grid that comfortably resolves the plume at 8 km steps straight over it at 100 m.
+:::
+
+## What You Should Report
+
+Same recipe as the sag curve:
+
+::: {.incremental}
+1. Name the quantity you actually care about --- peak, location, area above a limit.
+2. Halve the spacing until that quantity stops moving.
+3. **Say what you did and what it changed.**
+:::
+
+::: {.fragment .fade-in}
+The grid you chose changed the number you report to the regulator. That belongs in the report.
+:::
+
+# More Than One Stack
+
+## Concentrations Add
+
+The plume equation is linear in $Q$. Two stacks in the same airshed contribute independently, and the concentration at a receptor is the **sum** of what each one puts there.
+
+A receptor only sees a stack that is **upwind** of it.
+
+## Three Stacks in Code
+
+```{julia}
+#| echo: true
+#| output: false
+#| code-line-numbers: "|1-4|6-17"
+
+# One entry per stack, positions in km along and across the wind
+stack_downwind  = [0.0, 1.5, 3.0]
+stack_crosswind = [0.0, 150.0, -120.0]
+stack_emission  = [100.0, 60.0, 80.0]
+
+function total_concentration(xk, y, z)
+    total = 0.0
+    for stack in 1:length(stack_downwind)
+        downwind_of_stack = xk - stack_downwind[stack]
+        if downwind_of_stack > 0.05
+            crosswind_of_stack = y - stack_crosswind[stack]
+            single = (; Q=stack_emission[stack], H=plume_params.H,
+                        u_wind=plume_params.u_wind)
+            total += plume_ugm3(downwind_of_stack, crosswind_of_stack, z, single)
+        end
+    end
+    return total
 end
 ```
 
-A puff released at different hours takes very different times to travel 3 km: `{julia} round(travel_time(0.0, 3000.0), digits=0)`s at midnight vs. `{julia} round(travel_time(6*3600.0, 3000.0), digits=0)`s at 6am (a naive fixed-wind estimate says `{julia} round(3000.0/2.5, digits=0)`s always). Wrong arrival time --- but still a straight line. **One ODE, `dx/dt = u(t)`, fixes it.**
-
-## Varying Direction: Now It's Genuinely 2D
-
-If the wind direction also drifts, a puff's crosswind position depends on the **integrated history** of the direction it experienced --- not a single number you can substitute in.
+## The Combined Footprint
 
 ```{julia}
-#| label: fig-puff-traj
-#| fig-cap: "A puff's actual path under a drifting wind direction, vs. the naive straight-line assumption, out to the 3 km receptor."
+#| label: fig-combined
+#| fig-cap: "Three stacks sharing an airshed. Markers show the stacks; the white contour is a 500 µg/m³ limit."
 #| echo: true
 #| code-fold: true
 
-wind_dir(t) = 0.3 * sin(2π * t / (8 * 3600))    # radians, ±17° swing over 8 hours
+combined = [total_concentration(x, y, 0.0) for y in crosswind_positions, x in downwind_positions]
 
-function puff!(du, u, p, t)
-    du[1] = wind_speed(t) * cos(wind_dir(t))
-    du[2] = wind_speed(t) * sin(wind_dir(t))
-end
-
-# Stop once the puff reaches the receptor at x = 3 km -- otherwise a 3-hour
-# integration carries it far past the distances we're actually discussing.
-reaches_receptor(u, t, integrator) = u[1] - 3000.0
-terminate_at_receptor = ContinuousCallback(reaches_receptor, terminate!)
-
-prob = ODEProblem(puff!, [0.0, 0.0], (0.0, 3 * 3600.0))
-sol = solve(prob, Tsit5(); saveat=5.0, callback=terminate_at_receptor)
-X = [s[1] for s in sol.u]
-Y = [s[2] for s in sol.u]
-
-p_traj = plot(X ./ 1000, Y, color=cb_vermillion, linewidth=4, label="actual path",
-    xlabel="Distance downwind  [km]", ylabel="Crosswind drift  [m]", legend=:topleft)
-plot!(p_traj, X ./ 1000, zeros(length(X)), color=:black, linestyle=:dash,
-    linewidth=3, label="naive: fixed wind direction")
-plot!(p_traj, size=(1000, 440), left_margin=12mm, right_margin=8mm,
+p_comb = contourf(downwind_positions, crosswind_positions, combined,
+    color=:viridis, linewidth=0,
+    xlabel="Distance downwind  [km]", ylabel="Crosswind distance  [m]")
+contour!(p_comb, downwind_positions, crosswind_positions, combined,
+    levels=[500.0], color=:white, linewidth=3)
+scatter!(p_comb, stack_downwind, stack_crosswind, color=cb_vermillion,
+    markersize=9, markershape=:utriangle, label="stacks", legend=:topright)
+plot!(p_comb, size=(1050, 450), left_margin=12mm, right_margin=10mm,
     bottom_margin=12mm, top_margin=5mm)
 ```
 
-## The Drift Is Not Small
+## The Sum Is Not the Parts
 
 ```{julia}
-#| label: fig-puff-multi
-#| fig-cap: "Trajectories of puffs released every 20 minutes across a 2-hour emissions event."
-#| echo: true
-#| code-fold: true
+#| output: false
 
-emission_release_times = 0.0:1200.0:7200.0
-p_multi = plot(xlabel="Distance downwind  [km]", ylabel="Crosswind drift  [m]",
-    legend=false)
-drifts = Float64[]
-for t0 in emission_release_times
-    # Each puff is stopped at the same receptor (x = 3 km) via the callback
-    # defined above, so every trajectory ends where we're comparing them.
-    prob_i = ODEProblem(puff!, [0.0, 0.0], (t0, t0 + 3 * 3600.0))
-    sol_i = solve(prob_i, Tsit5(); saveat=5.0, callback=terminate_at_receptor)
-    Xi = [s[1] for s in sol_i.u]
-    Yi = [s[2] for s in sol_i.u]
-    push!(drifts, Yi[end])
-    plot!(p_multi, Xi ./ 1000, Yi, color=cb_blue, alpha=0.6, linewidth=2)
+function solo_peak(stack)
+    single = (; Q=stack_emission[stack], H=plume_params.H, u_wind=plume_params.u_wind)
+    largest = 0.0
+    for x in centerline_positions
+        value = plume_ugm3(x, 0.0, 0.0, single)
+        if value > largest
+            largest = value
+        end
+    end
+    return largest
 end
-plot!(p_multi, size=(1000, 440), left_margin=12mm, right_margin=8mm,
-    bottom_margin=12mm, top_margin=5mm)
+
+solo_peaks = [solo_peak(stack) for stack in 1:length(stack_downwind)]
+combined_peak = maximum(combined)
 ```
 
-Crosswind position at $x=3$ km ranges from `{julia} round(minimum(drifts), digits=0)` to `{julia} round(maximum(drifts), digits=0)` m across puffs released just 20 minutes apart --- **no single formula captures this.**
+| Source | Peak on its own |
+|:--|--:|
+| Stack 1 | `{julia} round(solo_peaks[1]; digits=0)` µg/m³ |
+| Stack 2 | `{julia} round(solo_peaks[2]; digits=0)` µg/m³ |
+| Stack 3 | `{julia} round(solo_peaks[3]; digits=0)` µg/m³ |
+| All three together | **`{julia} round(combined_peak; digits=0)` µg/m³** |
 
-# Why This Earns Its Keep
+## Who Causes the Exceedance?
 
-## The Same Argument as Streeter-Phelps
+```{julia}
+#| output: false
 
-:::: {.columns}
-::: {.column width=50%}
-**Closed form still works for:**
+# Locate the worst point on the combined field, then ask what each stack put there.
+worst_value = 0.0
+worst_downwind = 0.0
+worst_crosswind = 0.0
+for i in 1:length(downwind_positions)
+    for j in 1:length(crosswind_positions)
+        if combined[j, i] > worst_value
+            worst_value = combined[j, i]
+            worst_downwind = downwind_positions[i]
+            worst_crosswind = crosswind_positions[j]
+        end
+    end
+end
 
-- constant wind, any $Q(t)$ (retarded time)
-- multiple steady sources (superposition)
-:::
-::: {.column width=50%}
-**Needs real simulation for:**
+contributions = Float64[]
+for stack in 1:length(stack_downwind)
+    downwind_of_stack = worst_downwind - stack_downwind[stack]
+    single = (; Q=stack_emission[stack], H=plume_params.H, u_wind=plume_params.u_wind)
+    push!(contributions,
+        plume_ugm3(downwind_of_stack, worst_crosswind - stack_crosswind[stack], 0.0, single))
+end
+```
 
-- wind that changes direction over the transit time
-- anything where the *coordinate system itself* depends on history
-:::
-::::
+The worst point sits at `{julia} round(worst_downwind; digits=2)` km, `{julia} Int(round(worst_crosswind))` m off the centreline.
+
+| Source | Emission | Share of the worst point |
+|:--|--:|--:|
+| Stack 1 | 100 g/s | `{julia} Int(round(100 * contributions[1] / worst_value))`% |
+| Stack 2 | 60 g/s | `{julia} Int(round(100 * contributions[2] / worst_value))`% |
+| Stack 3 | 80 g/s | `{julia} Int(round(100 * contributions[3] / worst_value))`% |
 
 ::: {.fragment .fade-in}
-Discretizing doesn't just trade accuracy for cost --- it buys you **flexibility** the closed form structurally cannot have, once its assumptions are gone.
+The **largest emitter is not the largest contributor** here. Regulating by emission rate and regulating by impact give different answers.
 :::
 
-## What Solved the Puff Trajectory
+# When the Closed Form Stops Working
 
-Notice what built the curved-path figure: `ODEProblem` and `solve(prob, Tsit5())`.
+## Emissions That Vary in Time
+
+A load-following plant or a batch process gives a genuinely time-varying $Q$.
+
+If the wind is steady, a parcel now at distance $x$ left the stack at $t - x/u$:
+
+$$C(x,y,z,t) = \frac{Q(t - x/u)}{2\pi u\sigma_y(x)\sigma_z(x)}\exp\left(\frac{-y^2}{2\sigma_y(x)^2}\right)\Big[\ldots\Big]$$
+
+## When Don't You Need To Discretize
+
+Substituting the retarded time into the formula you already have costs nothing.
 
 ::: {.fragment .fade-in}
-**This is the same call from Week 4's `Vern9()` moment.** No hand-rolled grid, no Thomas algorithm, no tridiagonal solve --- once you can write the governing equations as an ODE system, a real solver takes it from there. That is what "2D discretization" bought you: not a bigger loop to hand-code, but the ability to *state* the right ODE system and let the tool handle it.
+This works **only** because advection in $x$ is pure translation --- no along-wind mixing, and a fixed wind field.
 :::
 
-# Key Takeaways
+## What the Steady Plume Cannot Do
+
+::: {.incremental}
+- Wind that changes **direction** during the transit: crosswind position depends on integrated history, not a single number.
+- Terrain, buildings, or a mixing-height lid.
+- Anything that reacts on the way downwind.
+:::
+
+::: {.fragment .fade-in}
+Every one of these is an **assumption we made on Wednesday**. On Wednesday we ask how you would ever find out that one of them is wrong.
+:::
+
+# Key Takeaways and Upcoming Schedule
 
 ## Key Takeaways
 
 ::: {.incremental}
-- The ground-level footprint peaks **downwind** of the source, not at it --- the same lesson as the DO sag curve, in a new geometry.
-- Time-varying emissions under constant wind are **exactly** solvable via a retarded-time substitution --- discretizing buys nothing there.
-- A wind that changes **direction** breaks that trick completely: the crosswind position depends on integrated history, a genuinely 2D problem.
-- The fix is the same one from Week 4: formulate the right ODE system, then call a real solver --- not hand-derive a numerical scheme from scratch.
+- The ground-level footprint peaks **downwind** of the stack --- the DO sag curve in a new geometry.
+- The vertical section shows the image term working: the plume piles up against the ground rather than passing through it.
+- **The samples are exact; what you compute from them is not.** A grid that misses the centreline reports a small fraction of the true peak.
+- $\sigma_y$ sets the spacing, exactly as the characteristic timescale set $\Delta t$.
+- Superposition puts the worst point where **no single plume** peaks.
 :::
 
 ## The Whole Arc, Once More
 
 ::: {.incremental}
 - **Forward Euler**, first order: halve $\Delta t$, halve the error.
-- **Centered differences**, second order, for estimating derivatives you can't write down.
-- **Monte Carlo**, order $1/2$: halve the error by quadrupling $n$.
-- Every one of these traded a **knob** for **error**, at a **cost** --- and every rubric in this course has asked you to say which knob, and why.
+- **Monte Carlo**, order one-half: quadruple $n$ to halve the error.
+- **A grid on a closed form**: no error in the samples at all --- the error is entirely in the question you asked of them.
 :::
 
-# References
+## Next Classes
 
-## References
+**Wednesday**: Model validation. Every figure today rested on assumptions we chose. How would we find out if one of them were wrong?
+
+## Assessments
+
+**Mini-Project 1**: Due Thursday, October 8.
+
+**Homework 4**: Due Thursday, October 8.
+
+# References

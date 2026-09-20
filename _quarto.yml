@@ -108,7 +108,7 @@ website:
       contents:
         - href: labs/index.qmd
           text: "Lab Overview"
-        - href: labs/lab01.qmd
+        - href: labs/lab01/lab01.qmd
     - title: "Homework"
       style: docked
       search: false
@@ -147,6 +147,7 @@ website:
         - tutorials/index.qmd
         - tutorials/quarto.qmd
         - tutorials/julia-basics.qmd
+        - tutorials/probability.qmd
         - tutorials/julia-plots.qmd
         - tutorials/julia-graphs.qmd
         - tutorials/julia-jump.qmd

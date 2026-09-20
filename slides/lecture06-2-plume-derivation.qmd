@@ -264,13 +264,24 @@ plume_params = let
 end
 
 sig_y(xk) = 34.0 * xk^0.894
-sig_z(xk) = xk < 1 ? 14.35 * xk^0.740 - 0.35 : 62.6 * xk^0.180 - 48.6
+function sig_z(xk)
+    if xk < 1
+        return 14.35 * xk^0.740 - 0.35
+    else
+        return 62.6 * xk^0.180 - 48.6
+    end
+end
 
-plume(xk, y, z, params; reflect=true) = begin
+function plume(xk, y, z, params; reflect=true)
     sy, sz = sig_y(xk), sig_z(xk)
     base = (params.Q / (2π * params.u_wind * sy * sz)) * exp(-y^2 / (2sy^2))
-    reflect ? base * (exp(-(z - params.H)^2 / (2sz^2)) + exp(-(z + params.H)^2 / (2sz^2))) :
-              base * exp(-(z - params.H)^2 / (2sz^2))
+    real_source = exp(-(z - params.H)^2 / (2sz^2))
+    if reflect
+        image_source = exp(-(z + params.H)^2 / (2sz^2))
+    else
+        image_source = 0.0
+    end
+    return base * (real_source + image_source)
 end
 
 dz = 0.001
@@ -366,7 +377,15 @@ println("C(3 km, 0, 0) = ", round(Cground * 1e6, digits=1), " µg/m³")
 
 ## Next Classes
 
-**Wednesday**: Where the plume actually lands on the ground, what breaks when emissions vary in time, and why the closed form isn't always the right tool.
+**Monday**: Where the plume actually lands --- the footprint on the ground, a vertical section that makes the reflection visible, and what happens when several stacks share an airshed.
+
+**Wednesday**: Model validation. How we decide whether to believe any of this.
+
+## Assessments
+
+**Homework 4**: Assigned today, due Thursday, October 8.
+
+**Mini-Project 1**: Also due Thursday, October 8.
 
 # References
 

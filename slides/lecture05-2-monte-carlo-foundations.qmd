@@ -128,6 +128,71 @@ Source: [XKCD 2440](https://xkcd.com/2440/)
 The CBOD load varying day to day is **aleatory** --- it's genuine variability, not something we could measure away.
 :::
 
+# Describing What We Don't Know
+
+## Density and Cumulative Probability
+
+A distribution $\mathcal{D}$ is described two equivalent ways.
+
+- The **probability density function** $f_\mathcal{D}(x)$: how concentrated probability is at $x$.
+- The **cumulative distribution function** $F_\mathcal{D}(x) = \int_{-\infty}^x f_\mathcal{D}(u)\,du$: how much probability sits *at or below* $x$.
+
+::: {.fragment .fade-in}
+The CDF is the one that answers questions of the form "how often is it worse than this?" --- which is every question a standard asks.
+:::
+
+## Reading Both at Once
+
+```{julia}
+#| label: fig-pdf-cdf
+#| fig-cap: "The shaded area under the density is the height of the cumulative curve. Both panels show the same quarter of the probability."
+#| echo: true
+#| code-fold: true
+
+example_dist = TDist(4)
+grid = -5:0.01:5
+level = 0.25
+cut = quantile(example_dist, level)
+
+p_cdf = plot(grid, cdf.(example_dist, grid), color=:black, linewidth=4,
+    xlabel=L"x", ylabel="Cumulative probability", legend=false)
+plot!(p_cdf, [-5, cut], [level, level], color=cb_vermillion, linewidth=3, linestyle=:dash)
+plot!(p_cdf, [cut, cut], [0, level], color=cb_vermillion, linewidth=3, linestyle=:dash)
+
+p_pdf = plot(grid, pdf.(example_dist, grid), color=:black, linewidth=4,
+    xlabel=L"x", ylabel="Density", legend=false)
+shaded = -5:0.01:cut
+plot!(p_pdf, shaded, pdf.(example_dist, shaded), fillrange=zeros(length(shaded)),
+    fillalpha=0.35, color=cb_blue, linewidth=0)
+
+plot(p_cdf, p_pdf, layout=(1, 2), size=(1100, 400), left_margin=12mm,
+    right_margin=8mm, bottom_margin=12mm, top_margin=5mm)
+```
+
+## Quantiles Run It Backwards
+
+The **quantile function** is the inverse of the CDF:
+
+$$q(\alpha) = F^{-1}_\mathcal{D}(\alpha), \qquad\text{so}\qquad x_0 = q(\alpha) \iff \mathbb{P}(X < x_0) = \alpha.$$
+
+The CDF asks *"given a value, how much probability is below it?"* The quantile asks the same question from the other end: *"given a probability, what value sits there?"*
+
+## Expectation and Variance
+
+$$\mathbb{E}[X] = \int x f(x)\,dx \qquad\qquad \text{Var}(X) = \mathbb{E}\left[(X - \mathbb{E}[X])^2\right]$$
+
+The mean is where the distribution balances; the variance is how far it typically sits from there.
+
+## The Average of a Function Is Not the Function of the Average
+
+Run the DO model once at the *mean* load and you get $h(\mathbb{E}[B_0])$.
+
+What you actually want is $\mathbb{E}[h(B_0)]$ --- the average **outcome**, not the outcome at the average input.
+
+::: {.fragment .fade-in}
+**These are not the same** unless $h$ is linear, and the sag curve is not. This gap is the entire reason we are about to start sampling.
+:::
+
 # Probability Distributions
 
 ## Distributions Are Assumptions
@@ -196,6 +261,61 @@ $$B_0 \sim \mathcal{N}(9,\ 1.5^2)\ \text{mg/L}$$
 
 ::: {.fragment .fade-in}
 That choice --- the mean, the spread, the shape --- is a modeling assumption you must be ready to defend, the same way you'd defend a choice of $\Delta t$.
+:::
+
+# Risk Language
+
+## Standards Are Written as Probabilities
+
+Design and regulatory standards are almost never stated as "never fails." They are stated as frequencies.
+
+> Levees in the United States are supposed to only fail once in 100 years --- or, equivalently, to have at most a 1% chance of failure in a given year.
+
+## Exceedance Probability
+
+The probability that a quantity is **worse than** some threshold $x^*$:
+
+$$p = \mathbb{P}(X > x^*) = 1 - F_\mathcal{D}(x^*)$$
+
+It is the complement of the CDF --- the unshaded tail in the figure we just drew.
+
+## Return Periods
+
+The **return period** is its reciprocal:
+
+$$T = \frac{1}{p}$$
+
+A 1% annual exceedance probability is a 100-year event. The two say exactly the same thing in different units.
+
+## Once a Century?
+
+A "100-year event" does **not** mean one per century, or that you are safe for 99 years after one happens.
+
+::: {.fragment .fade-in}
+If years are independent, the chance of *at least one* in a 30-year design life is
+$$1 - (1 - 0.01)^{30} \approx 26\%.$$
+Better than one in four, over the life of the structure.
+:::
+
+## What a Return Period Assumes
+
+::: {.incremental}
+- Each year is an **independent** draw.
+- The distribution is **not changing** --- the same $F$ next decade as last.
+:::
+
+::: {.fragment .fade-in}
+Both assumptions are doing real work, and the second one is under strain wherever the climate is shifting.
+:::
+
+## Where Would We Get $F$?
+
+Exceedance probability is $1 - F(x^*)$. That is easy when you know $F$.
+
+::: {.fragment .fade-in}
+For the DO model you do not. The minimum dissolved oxygen is the output of a simulation, and nobody hands you its distribution in closed form.
+
+**That is what Monte Carlo is for.**
 :::
 
 # Monte Carlo Simulation
@@ -273,10 +393,32 @@ plot(p_pts, p_est, layout=(1, 2), size=(1000, 420), left_margin=10mm,
 
 The Monte Carlo mean $\tilde{\mu}_n = \frac{1}{n}\sum_{i=1}^n Y_i$ is a random variable --- rerun the sampling and you get a different number.
 
-::: {.incremental}
-- **Unbiased**: $\mathbb{E}[\tilde{\mu}_n] = \mu$. On average, across many *sets* of samples, it's correct.
-- Does a **single** run converge? The Law of Large Numbers says yes, eventually: $\lim_{n\to\infty}\mathbb{P}(|\tilde\mu_n - \mu| \le \varepsilon) = 1$.
-- "Eventually" is doing a lot of work in that sentence. **How large is large enough?**
+So we should ask of it exactly what we would ask of any estimate: is it right on average, and does it get closer with effort?
+
+## The Estimate Is Unbiased
+
+Provided the mean of $Y$ exists and its variance is finite,
+
+$$\mathbb{E}[\tilde{\mu}_n] = \frac{1}{n}\sum_{i=1}^n \mathbb{E}[Y_i] = \frac{1}{n}\, n\, \mu = \mu.$$
+
+::: {.fragment .fade-in}
+Averaged over many *sets* of samples, the estimate is correct. That is a statement about the procedure, not about the run you just did.
+:::
+
+## Does One Run Converge?
+
+Unbiasedness says nothing about a single trajectory. You ran the sampler once. Does *your* number approach the truth as you keep drawing?
+
+## The Law of Large Numbers
+
+If $Y$ is a random variable whose expectation exists, and $Y_1, \ldots, Y_n$ are independent and identically distributed, then by the **weak law of large numbers**
+
+$$\lim_{n \to \infty} \mathbb{P}\left(\left|\tilde{\mu}_n - \mu\right| \leq \varepsilon\right) = 1$$
+
+for any $\varepsilon > 0$.
+
+::: {.fragment .fade-in}
+So yes --- *eventually* a single run gets within any error you name. **"Eventually" is doing a lot of work in that sentence.**
 :::
 
 ## The Error Has a Rate
@@ -301,9 +443,19 @@ $$\text{Var}(\tilde\mu_n) = \frac{\sigma_Y^2}{n} \qquad\Longrightarrow\qquad \te
 ...but often, they are.
 :::
 
+## Why the Error Is Normal
+
+The law of large numbers says the estimate arrives. The **Central Limit Theorem** says how far off it is likely to be on the way:
+
+$$\left\|\tilde{\mu}_n - \mu\right\| \to \mathcal{N}\left(0, \frac{\sigma_Y^2}{n}\right)$$
+
+::: {.fragment .fade-in}
+Two theorems, two jobs. The LLN tells us the estimate is going to the right place; the CLT tells us how wrong it is right now. **The error bar comes from the second one.**
+:::
+
 ## Confidence Intervals
 
-By the Central Limit Theorem, for large $n$ the error is approximately normal, giving the $\alpha$-confidence interval
+The CLT gives the $\alpha$-confidence interval
 
 $$\tilde\mu_n \pm \Phi^{-1}\left(1-\frac{\alpha}{2}\right)\frac{\sigma_Y}{\sqrt{n}}$$
 
@@ -327,18 +479,17 @@ We now know: the estimator is unbiased, and its error shrinks like $\sigma_Y/\sq
 **Monday**: back to the river. We'll actually estimate $P(\text{DO} < 2.5\ \text{mg/L})$, watch the estimate settle as $n$ grows, and learn exactly how to justify a sample size on your own homework.
 :::
 
-# Key Takeaways
+# Key Takeaways and Upcoming Schedule
 
 ## Key Takeaways
 
 ::: {.incremental}
 - Uncertainty comes from stochastic models, forcings, parameters, and model structure itself --- and **choosing a distribution is a modeling assumption**, not a neutral default.
-- Tails matter: small changes in low-probability, high-impact outcomes can dominate a risk estimate.
-- Monte Carlo estimates are **unbiased**, but any single run is a random draw --- and the standard error shrinks only as $1/\sqrt{n}$.
+- **The average outcome is not the outcome at the average input.** For a nonlinear model those differ, which is why we sample rather than run once at the mean.
+- An exceedance probability is $1 - F(x^*)$, and a return period is its reciprocal. Neither means "once per century."
+- Monte Carlo estimates are **unbiased** and the law of large numbers says they converge --- but the standard error shrinks only as $1/\sqrt{n}$.
 - A confidence interval describes the **procedure**, not the one interval you happened to construct.
 :::
-
-# Upcoming Schedule
 
 ## Next Classes
 
@@ -346,7 +497,9 @@ We now know: the estimator is unbiased, and its error shrinks like $\sigma_Y/\sq
 
 ## Assessments
 
-**Homework 3**: Due **today** at 9pm.
+**Homework 3**: Due tomorrow at 9pm.
+
+**Mini-Project 1**: Assigned today, due Thursday, October 8.
 
 # References
 

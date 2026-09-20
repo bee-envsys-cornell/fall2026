@@ -1,10 +1,10 @@
 ---
 title: "Economic Dispatch"
-subtitle: "Lecture 14"
+subtitle: "Lecture 15"
 author: "Vivek Srikrishnan"
 course: "BEE 4750"
 institution: "Cornell University"
-date: "October 29, 2025"
+date: "October 28, 2026"
 format:
     revealjs:
         slide-number: c/t
@@ -524,13 +524,14 @@ Source: [EIA](https://www.eia.gov/todayinenergy/detail.php?id=56880)
 
 ## Next Classes
 
-**Next Week**: 
+**Monday**: Capacity expansion --- deciding what to *build*, not just how to run what exists.
 
-- Prof. Srikrishnan out of town
-- Guest lectures on Mixed Integer Linear Programming (Prof. Anderson) and Unit Commitment (Prof. Mays).
+**Wednesday**: Mixed integer programming.
 
 ## Assessments
 
-- Exercises assigned.
-- HW4 due 11/06.
-- Prelim 2 on 11/12.
+**Homework 7**: Due tomorrow at 9pm.
+
+**Mini-Project 2**: Assigned today, due Thursday, November 12.
+
+**Quiz 4**: Wednesday, November 4.
