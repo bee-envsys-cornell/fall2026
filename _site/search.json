@@ -2585,6 +2585,20 @@
     "text": "Two Kinds of Uncertainty\n\n\n\nAleatory uncertainty: “Truly” random processes/fluctuations.\nEpistemic uncertainty: From lack of knowledge.\n\n\n\n\n\nAleatory vs epistemic uncertainty\n\n\n\nSource: XKCD 2440"
   },
   {
+    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#random-variables",
+    "href": "slides/lecture05-2-monte-carlo-foundations.html#random-variables",
+    "title": "Uncertainty, Probability, and Monte Carlo",
+    "section": "Random Variables",
+    "text": "Random Variables\nA random variable is a quantity whose value we do not know. Its distribution describes how plausible each possible value is.\n\n\nDiscrete: values you can list, like storms per year.\nProbability mass function: \\(p(x) = \\mathbb{P}(X = x)\\)\n\nContinuous: any value in a range, like CBOD load.\nProbability density function: \\(\\mathbb{P}(a &lt; X &lt; b) = \\int_a^b f(x)\\,dx\\)"
+  },
+  {
+    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#what-is-a-probability-distribution",
+    "href": "slides/lecture05-2-monte-carlo-foundations.html#what-is-a-probability-distribution",
+    "title": "Uncertainty, Probability, and Monte Carlo",
+    "section": "What Is a Probability Distribution?",
+    "text": "What Is a Probability Distribution?\nA probability distribution assigns probabilities to the possible outcomes of a random variable, following three rules:\n\n\\(\\mathbb{P}(A) \\geq 0\\) for any event \\(A\\)\n\\(\\mathbb{P}(\\text{some outcome occurs}) = 1\\)\n\\(\\mathbb{P}(A \\cup B) = \\mathbb{P}(A) + \\mathbb{P}(B)\\) if \\(A\\) and \\(B\\) cannot both happen\n\nNotation: \\(X \\sim \\mathcal{D}\\) means \\(X\\) follows \\(\\mathcal{D}\\), e.g. \\(B_0 \\sim \\mathcal{N}(9, 1.5^2)\\)."
+  },
+  {
     "objectID": "slides/lecture05-2-monte-carlo-foundations.html#density-and-cumulative-probability",
     "href": "slides/lecture05-2-monte-carlo-foundations.html#density-and-cumulative-probability",
     "title": "Uncertainty, Probability, and Monte Carlo",
@@ -2606,11 +2620,25 @@
     "text": "Quantiles\nThe quantile function is the inverse of the CDF:\n\\[q(\\alpha) = F^{-1}_\\mathcal{D}(\\alpha), \\qquad\\text{so}\\qquad x_0 = q(\\alpha) \\iff \\mathbb{P}(X &lt; x_0) = \\alpha.\\]\n\nCDF: for a given \\(x_0\\), what is \\(\\mathcal{P}(X \\leq x_0)\\)?\nQuantile: for a given \\(0 \\leq \\alpha \\leq 1\\), what value \\(x_0\\) has \\(\\mathcal{P}(X \\leq x_0) = \\alpha\\)?"
   },
   {
+    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#independence",
+    "href": "slides/lecture05-2-monte-carlo-foundations.html#independence",
+    "title": "Uncertainty, Probability, and Monte Carlo",
+    "section": "Independence",
+    "text": "Independence\nTwo events are independent if knowing one happened tells you nothing about the other:\n\\[\\mathbb{P}(A \\cap B) = \\mathbb{P}(A)\\,\\mathbb{P}(B)\\]"
+  },
+  {
     "objectID": "slides/lecture05-2-monte-carlo-foundations.html#expectation-and-variance",
     "href": "slides/lecture05-2-monte-carlo-foundations.html#expectation-and-variance",
     "title": "Uncertainty, Probability, and Monte Carlo",
     "section": "Expectation and Variance",
     "text": "Expectation and Variance\n\\[\\begin{aligned}\n\\mathbb{E}[X] &= \\int x f(x)\\,dx \\\\\n\\text{Var}(X) &= \\mathbb{E}\\left[(X - \\mathbb{E}[X])^2\\right]\n\\end{aligned}\\]"
+  },
+  {
+    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#rules-for-expectation-and-variance",
+    "href": "slides/lecture05-2-monte-carlo-foundations.html#rules-for-expectation-and-variance",
+    "title": "Uncertainty, Probability, and Monte Carlo",
+    "section": "Rules for Expectation and Variance",
+    "text": "Rules for Expectation and Variance\nFor constants \\(a\\) and \\(b\\) and random variables \\(X\\) and \\(Y\\):\n\\[\\begin{aligned}\n\\mathbb{E}[aX + b] &= a\\,\\mathbb{E}[X] + b \\\\\n\\text{Var}(aX + b) &= a^2\\,\\text{Var}(X) \\\\\n\\mathbb{E}[X + Y] &= \\mathbb{E}[X] + \\mathbb{E}[Y] \\\\\n\\end{aligned}\\]\nIf \\(X\\) and \\(Y\\) are independent: \\[\\text{Var}(X + Y) = \\text{Var}(X) + \\text{Var}(Y)\\]"
   },
   {
     "objectID": "slides/lecture05-2-monte-carlo-foundations.html#the-average-of-a-function-is-not-the-function-of-the-average",
@@ -2625,6 +2653,13 @@
     "title": "Uncertainty, Probability, and Monte Carlo",
     "section": "Distributions Are Assumptions",
     "text": "Distributions Are Assumptions\nSpecifying a distribution is making an assumption about the probability model producing observations.\nThere are defaults. If your data is:\n\nContinuous and fat-tailed? Cauchy distribution\nContinuous and bounded? Beta distribution\nSums of positive random variables? Gamma or Normal distribution"
+  },
+  {
+    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#common-distributions",
+    "href": "slides/lecture05-2-monte-carlo-foundations.html#common-distributions",
+    "title": "Uncertainty, Probability, and Monte Carlo",
+    "section": "Common Distributions",
+    "text": "Common Distributions\n\n\n\nDistribution\nUse it when\n\n\n\n\nUniform\nEvery value in a range equally likely\n\n\nNormal\nSymmetric about a typical value\n\n\nLogNormal\nPositive and right-skewed\n\n\nBernoulli\nA yes/no event"
   },
   {
     "objectID": "slides/lecture05-2-monte-carlo-foundations.html#selecting-a-distribution",
@@ -2676,18 +2711,18 @@
     "text": "Return Periods\nThe return period is its reciprocal:\n\\[T = \\frac{1}{p}\\]\nA 1% annual exceedance probability is a 100-year event. The two say exactly the same thing in different units."
   },
   {
-    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#once-a-century",
-    "href": "slides/lecture05-2-monte-carlo-foundations.html#once-a-century",
+    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#how-often-does-an-extreme-occur",
+    "href": "slides/lecture05-2-monte-carlo-foundations.html#how-often-does-an-extreme-occur",
     "title": "Uncertainty, Probability, and Monte Carlo",
-    "section": "Once a Century?",
-    "text": "Once a Century?\nA “100-year event” does not mean one per century, or that you are safe for 99 years after one happens.\n\nIf years are independent, the chance of at least one in a 30-year design life is \\[1 - (1 - 0.01)^{30} \\approx 26\\%.\\] Better than one in four, over the life of the structure."
+    "section": "How Often Does An Extreme Occur?",
+    "text": "How Often Does An Extreme Occur?\nA “100-year event” does not mean one per century, or that you are safe for 99 years after one happens.\n\nIf years are independent, the chance of at least one in a 30-year design life is \\[1 - (1 - 0.01)^{30} \\approx 26\\%.\\] Better than one in four, over the life of the structure."
   },
   {
     "objectID": "slides/lecture05-2-monte-carlo-foundations.html#what-a-return-period-assumes",
     "href": "slides/lecture05-2-monte-carlo-foundations.html#what-a-return-period-assumes",
     "title": "Uncertainty, Probability, and Monte Carlo",
     "section": "What a Return Period Assumes",
-    "text": "What a Return Period Assumes\n\nEach year is an independent draw.\nThe distribution is not changing — the same \\(F\\) next decade as last."
+    "text": "What a Return Period Assumes\n\nEach year is an independent draw.\nThe distribution is not changing — the same \\(F\\) next decade as last.\nIf it is changing, the return period is conditional on the scenario driving the change."
   },
   {
     "objectID": "slides/lecture05-2-monte-carlo-foundations.html#where-would-we-get-f",
@@ -2715,70 +2750,63 @@
     "href": "slides/lecture05-2-monte-carlo-foundations.html#example-estimating-pi",
     "title": "Uncertainty, Probability, and Monte Carlo",
     "section": "Example: Estimating \\(\\pi\\)",
-    "text": "Example: Estimating \\(\\pi\\)\n\n\nSample points uniformly in a square; the fraction landing in the inscribed circle estimates\n\\[\\frac{\\text{Area of Circle}}{\\text{Area of Square}} = \\frac{\\pi}{4}\\]\n\n\n\nCode\nusing Logging\n\nRandom.seed!(4750)\nsample_count = 3000\npoints = rand(Uniform(-1, 1), (sample_count, 2))\ninside = [points[i, 1]^2 + points[i, 2]^2 &lt; 1 for i in 1:sample_count]\nrunning_estimate = [4 * mean(inside[1:i]) for i in 1:sample_count]\n\ncircle_angles = range(0, 2π, length=500)\nbatch_size = 100\n\n# Each frame redraws everything drawn so far, 100 more samples at a time.\nanimation = @animate for shown_count in batch_size:batch_size:sample_count\n    shown_points = points[1:shown_count, :]\n    shown_inside = inside[1:shown_count]\n\n    p_square = plot(cos.(circle_angles), sin.(circle_angles), color=:black, linewidth=1,\n        xlims=(-1, 1), ylims=(-1, 1), xticks=[-1, 0, 1], yticks=[-1, 0, 1],\n        aspect_ratio=1, legend=false)\n    scatter!(p_square, shown_points[shown_inside, 1], shown_points[shown_inside, 2],\n        color=cb_blue, markershape=:x, markersize=3)\n    scatter!(p_square, shown_points[.!shown_inside, 1], shown_points[.!shown_inside, 2],\n        color=cb_vermillion, markershape=:x, markersize=3)\n\n    p_estimate = plot(1:shown_count, running_estimate[1:shown_count], color=:black,\n        linewidth=3, xlims=(1, sample_count), ylims=(2.8, 3.5), legend=false,\n        xlabel=\"Number of samples\", ylabel=\"Estimate\")\n    hline!(p_estimate, [π], color=cb_green, linestyle=:dash, linewidth=2)\n\n    plot(p_square, p_estimate, layout=grid(2, 1, heights=[3/4, 1/4]), size=(600, 550),\n        right_margin=8mm)\nend\n\n# gif() prints a \"saved animation\" message; this keeps it off the slide.\nLogging.disable_logging(Logging.Info)\ngif(animation, \"figures/mc_pi.gif\", fps=2)\n\n\n\n\n\n\n\nFigure 3: Points are revealed 100 at a time. Blue land inside the circle, vermillion outside, and the estimate settles toward π (dashed)."
+    "text": "Example: Estimating \\(\\pi\\)\n\n\n\nSample points uniformly in a square; the fraction landing in the inscribed circle estimates\n\\[\\frac{\\text{Area of Circle}}{\\text{Area of Square}} = \\frac{\\pi}{4}\\]\n\n\n\n\n\nCode\nusing Logging\n\nRandom.seed!(4750)\nsample_count = 3000\npoints = rand(Uniform(-1, 1), (sample_count, 2))\ninside = [points[i, 1]^2 + points[i, 2]^2 &lt; 1 for i in 1:sample_count]\nrunning_estimate = [4 * mean(inside[1:i]) for i in 1:sample_count]\n\ncircle_angles = range(0, 2π, length=500)\nbatch_size = 100\n\n# Each frame redraws everything drawn so far, 100 more samples at a time.\nanimation = @animate for shown_count in batch_size:batch_size:sample_count\n    shown_points = points[1:shown_count, :]\n    shown_inside = inside[1:shown_count]\n\n    p_square = plot(cos.(circle_angles), sin.(circle_angles), color=:black, linewidth=1,\n        xlims=(-1, 1), ylims=(-1, 1), xticks=[-1, 0, 1], yticks=[-1, 0, 1],\n        aspect_ratio=1, legend=false)\n    scatter!(p_square, shown_points[shown_inside, 1], shown_points[shown_inside, 2],\n        color=cb_blue, markershape=:x, markersize=3)\n    scatter!(p_square, shown_points[.!shown_inside, 1], shown_points[.!shown_inside, 2],\n        color=cb_vermillion, markershape=:x, markersize=3)\n\n    p_estimate = plot(1:shown_count, running_estimate[1:shown_count], color=:black,\n        linewidth=3, xlims=(1, sample_count), ylims=(2.8, 3.5), legend=false,\n        xlabel=\"Number of samples\", ylabel=\"Estimate\")\n    hline!(p_estimate, [π], color=cb_green, linestyle=:dash, linewidth=2)\n\n    plot(p_square, p_estimate, layout=grid(2, 1, heights=[3/4, 1/4]), size=(600, 550),\n        right_margin=8mm)\nend\n\n# gif() prints a \"saved animation\" message; this keeps it off the slide.\nLogging.disable_logging(Logging.Info)\ngif(animation, \"figures/mc_pi.gif\", fps=2)\n\n\n\n\n\n\n\nFigure 3: Points are revealed 100 at a time. Blue land inside the circle, vermillion outside, and the estimate settles toward π (dashed)."
   },
   {
-    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#the-estimate-is-itself-random",
-    "href": "slides/lecture05-2-monte-carlo-foundations.html#the-estimate-is-itself-random",
+    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#monte-carlo-estimates-are-random",
+    "href": "slides/lecture05-2-monte-carlo-foundations.html#monte-carlo-estimates-are-random",
     "title": "Uncertainty, Probability, and Monte Carlo",
-    "section": "The Estimate Is Itself Random",
-    "text": "The Estimate Is Itself Random\nThe Monte Carlo mean \\(\\tilde{\\mu}_n = \\frac{1}{n}\\sum_{i=1}^n Y_i\\) is a random variable — rerun the sampling and you get a different number.\nSo we should ask of it exactly what we would ask of any estimate: is it right on average, and does it get closer with effort?"
+    "section": "Monte Carlo Estimates Are Random",
+    "text": "Monte Carlo Estimates Are Random\n\\(Y_i\\) is a random sample, so \\(\\tilde{\\mu}_n = \\frac{1}{n}\\sum_{i=1}^n Y_i\\) is a random variable.\nThis raises the question: on average, how right or wrong is the estimate?\nBias of a statistic \\(T\\) used to estimate a “true” value \\(T_0\\): \\(\\mathbb{E}[T] - T_0\\)."
   },
   {
-    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#the-estimate-is-unbiased",
-    "href": "slides/lecture05-2-monte-carlo-foundations.html#the-estimate-is-unbiased",
+    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#mc-estimates-is-unbiased",
+    "href": "slides/lecture05-2-monte-carlo-foundations.html#mc-estimates-is-unbiased",
     "title": "Uncertainty, Probability, and Monte Carlo",
-    "section": "The Estimate Is Unbiased",
-    "text": "The Estimate Is Unbiased\nProvided the mean of \\(Y\\) exists and its variance is finite,\n\\[\\mathbb{E}[\\tilde{\\mu}_n] = \\frac{1}{n}\\sum_{i=1}^n \\mathbb{E}[Y_i] = \\frac{1}{n}\\, n\\, \\mu = \\mu.\\]\n\nAveraged over many sets of samples, the estimate is correct. That is a statement about the procedure, not about the run you just did."
+    "section": "MC Estimates Is Unbiased",
+    "text": "MC Estimates Is Unbiased\nProvided the mean of \\(Y\\) exists and its variance is finite,\n\\[\\mathbb{E}[\\tilde{\\mu}_n] = \\frac{1}{n}\\sum_{i=1}^n \\mathbb{E}[Y_i] = \\frac{1}{n}\\, n\\, \\mu = \\mu.\\]\nAveraged over many sets of samples, the estimate is correct. That is a statement about the procedure, not about the run you just did."
   },
   {
-    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#does-one-run-converge",
-    "href": "slides/lecture05-2-monte-carlo-foundations.html#does-one-run-converge",
+    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#monte-carlo-convergence",
+    "href": "slides/lecture05-2-monte-carlo-foundations.html#monte-carlo-convergence",
     "title": "Uncertainty, Probability, and Monte Carlo",
-    "section": "Does One Run Converge?",
-    "text": "Does One Run Converge?\nUnbiasedness says nothing about a single trajectory. You ran the sampler once. Does your number approach the truth as you keep drawing?"
+    "section": "Monte Carlo Convergence",
+    "text": "Monte Carlo Convergence\nWhat are the convergence properties of any given MC run?\n\nIf \\(Y\\) is a random variable whose expectation exists, and \\(Y_1, \\ldots, Y_n\\) are independent and identically distributed, then by the weak law of large numbers\n\\[\\lim_{n \\to \\infty} \\mathbb{P}\\left(\\tilde{\\mu}_n - \\mu \\leq \\varepsilon\\right) = 1\\]\nfor any \\(\\varepsilon &gt; 0\\)."
   },
   {
-    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#the-law-of-large-numbers",
-    "href": "slides/lecture05-2-monte-carlo-foundations.html#the-law-of-large-numbers",
+    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#monte-carlo-error",
+    "href": "slides/lecture05-2-monte-carlo-foundations.html#monte-carlo-error",
     "title": "Uncertainty, Probability, and Monte Carlo",
-    "section": "The Law of Large Numbers",
-    "text": "The Law of Large Numbers\nIf \\(Y\\) is a random variable whose expectation exists, and \\(Y_1, \\ldots, Y_n\\) are independent and identically distributed, then by the weak law of large numbers\n\\[\\lim_{n \\to \\infty} \\mathbb{P}\\left(\\left|\\tilde{\\mu}_n - \\mu\\right| \\leq \\varepsilon\\right) = 1\\]\nfor any \\(\\varepsilon &gt; 0\\).\n\nSo yes — eventually a single run gets within any error you name. “Eventually” is doing a lot of work in that sentence."
+    "section": "Monte Carlo Error",
+    "text": "Monte Carlo Error\nThe variance of the estimator is\n\\[\\text{Var}(\\tilde\\mu_n) = \\frac{\\sigma_Y^2}{n} \\qquad\\Longrightarrow\\qquad \\text{standard error } \\tilde\\sigma_n = \\frac{\\sigma_Y}{\\sqrt{n}}\\]\nIn practice: replace \\(\\sigma_Y\\) with the sample standard deviation \\(\\sqrt{\\text{Var}(Y_i)}\\)."
   },
   {
-    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#the-error-has-a-rate",
-    "href": "slides/lecture05-2-monte-carlo-foundations.html#the-error-has-a-rate",
+    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#implications-of-monte-carlo-error",
+    "href": "slides/lecture05-2-monte-carlo-foundations.html#implications-of-monte-carlo-error",
     "title": "Uncertainty, Probability, and Monte Carlo",
-    "section": "The Error Has a Rate",
-    "text": "The Error Has a Rate\nThe variance of the estimator is\n\\[\\text{Var}(\\tilde\\mu_n) = \\frac{\\sigma_Y^2}{n} \\qquad\\Longrightarrow\\qquad \\text{standard error } \\tilde\\sigma_n = \\frac{\\sigma_Y}{\\sqrt{n}}\\]\n\nTo cut the error by 10×, you need 100× more samples. Monte Carlo converges at order \\(1/2\\) in \\(n\\) — much slower than forward Euler’s order 1 in \\(\\Delta t\\).\n\n\n\n\nMonte Carlo is an extremely bad method. It should only be used when all alternative methods are worse.\n\n\n— Sokal, Monte Carlo Methods in Statistical Mechanics, 1996\n\n\n…but often, they are."
+    "section": "Implications of Monte Carlo Error",
+    "text": "Implications of Monte Carlo Error\nTo cut the error by 10×, you need 100× more samples. Monte Carlo converges at order \\(\\sqrt{n}\\).\n\n\n\nMonte Carlo is an extremely bad method. It should only be used when all alternative methods are worse.\n\n\n— Sokal, Monte Carlo Methods in Statistical Mechanics, 1996"
   },
   {
-    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#why-the-error-is-normal",
-    "href": "slides/lecture05-2-monte-carlo-foundations.html#why-the-error-is-normal",
+    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#mc-confidence-intervals",
+    "href": "slides/lecture05-2-monte-carlo-foundations.html#mc-confidence-intervals",
     "title": "Uncertainty, Probability, and Monte Carlo",
-    "section": "Why the Error Is Normal",
-    "text": "Why the Error Is Normal\nThe law of large numbers says the estimate arrives. The Central Limit Theorem says how far off it is likely to be on the way:\n\\[\\left\\|\\tilde{\\mu}_n - \\mu\\right\\| \\to \\mathcal{N}\\left(0, \\frac{\\sigma_Y^2}{n}\\right)\\]\n\nTwo theorems, two jobs. The LLN tells us the estimate is going to the right place; the CLT tells us how wrong it is right now. The error bar comes from the second one."
+    "section": "MC Confidence Intervals",
+    "text": "MC Confidence Intervals\nTo get estimates of the error, we need to understand the distribution of errors.\nThe Central Limit Theorem says that sums of random variables converge to a Gaussian distribution.\nApplying to the mean (which is effectively a sum):\n\\[\\left\\|\\tilde{\\mu}_n - \\mu\\right\\| \\to \\mathcal{N}\\left(0, \\frac{\\sigma_Y^2}{n}\\right)\\]"
   },
   {
     "objectID": "slides/lecture05-2-monte-carlo-foundations.html#confidence-intervals",
     "href": "slides/lecture05-2-monte-carlo-foundations.html#confidence-intervals",
     "title": "Uncertainty, Probability, and Monte Carlo",
     "section": "Confidence Intervals",
-    "text": "Confidence Intervals\nThe CLT gives the \\(\\alpha\\)-confidence interval\n\\[\\tilde\\mu_n \\pm \\Phi^{-1}\\left(1-\\frac{\\alpha}{2}\\right)\\frac{\\sigma_Y}{\\sqrt{n}}\\]\nFor 95%: \\(\\tilde\\mu_n \\pm 1.96\\,\\sigma_Y/\\sqrt{n}\\)."
+    "text": "Confidence Intervals\nWe can use this large-\\(n\\) Gaussian approximation to get an \\(\\alpha\\)-confidence interval.\n\\[\\tilde\\mu_n \\pm \\Phi^{-1}\\left(1-\\frac{\\alpha}{2}\\right)\\frac{\\sigma_Y}{\\sqrt{n}}\\]\nFor 95%: \\[\\tilde\\mu_n \\pm 1.96\\frac{\\sigma_Y}{\\sqrt{n}}.\\]"
   },
   {
-    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#reading-a-confidence-interval-correctly",
-    "href": "slides/lecture05-2-monte-carlo-foundations.html#reading-a-confidence-interval-correctly",
+    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#reading-a-ci-correctly",
+    "href": "slides/lecture05-2-monte-carlo-foundations.html#reading-a-ci-correctly",
     "title": "Uncertainty, Probability, and Monte Carlo",
-    "section": "Reading a Confidence Interval Correctly",
-    "text": "Reading a Confidence Interval Correctly\nA 95% CI is not “there is a 95% chance the true value is in this interval.” The true value is fixed; it either is or isn’t.\n\nIt is: if you repeated this whole experiment many times, about 95% of the intervals you’d construct would contain the true value.\nThink of horseshoes: the post doesn’t move. Your throwing accuracy tells you how often you’d land near it — not the odds on any one already-thrown shoe."
-  },
-  {
-    "objectID": "slides/lecture05-2-monte-carlo-foundations.html#where-this-is-going",
-    "href": "slides/lecture05-2-monte-carlo-foundations.html#where-this-is-going",
-    "title": "Uncertainty, Probability, and Monte Carlo",
-    "section": "Where This Is Going",
-    "text": "Where This Is Going\nWe now know: the estimator is unbiased, and its error shrinks like \\(\\sigma_Y/\\sqrt{n}\\).\n\nMonday: back to the river. We’ll actually estimate \\(P(\\text{DO} &lt; 2.5\\ \\text{mg/L})\\), watch the estimate settle as \\(n\\) grows, and learn exactly how to justify a sample size on your own homework."
+    "section": "Reading a CI Correctly",
+    "text": "Reading a CI Correctly\nA 95% CI is not “there is a 95% chance the true value is in this interval.” According to the frequentist interpretation of statistics, the true value is fixed.\nFor any given experiment, the “true value” is either in or out of the constructed interval.\nThe idea: if you repeated this whole experiment many times, about 95% of the intervals you’d construct would contain the true value."
   },
   {
     "objectID": "slides/lecture05-2-monte-carlo-foundations.html#key-takeaways",
@@ -2792,7 +2820,7 @@
     "href": "slides/lecture05-2-monte-carlo-foundations.html#next-classes",
     "title": "Uncertainty, Probability, and Monte Carlo",
     "section": "Next Classes",
-    "text": "Next Classes\nMonday: Applying Monte Carlo to the DO model, and how to justify a sample size for your own work."
+    "text": "Next Classes\nMonday: Applying Monte Carlo to the DO model, and how to justify a sample size for your own work.\nThe probability tutorial covers today’s review in more depth, with Julia examples."
   },
   {
     "objectID": "slides/lecture05-2-monte-carlo-foundations.html#assessments",
@@ -4552,7 +4580,7 @@
     "href": "schedule.html",
     "title": "Course Schedule",
     "section": "",
-    "text": "This page contains a schedule of the topics, content, and assignments for the semester. Note that this schedule will be updated as necessary the semester progresses, with all changes documented here. Readings requiring institutional subscriptions can be accessed through the Cornell Library.\n\n\n\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nSlides\nLab\nHW\nQuiz\nReading\n\n\n\n\n1\nAug 24\nCourse Overview\n\n\n\n\n\n\n\n\nAug 26\nIntro to Systems\n\n\n\n\n\n\n\n2\nAug 31\nFeedbacks & Equilibria\n\n\n\n\n\n\n\n\nSep 2\nStability & Examples\n\n\n\n\n\n\n\n3\nSep 7\nNo Class: Labor Day\n\n\n\n\n\n\n\n\nSep 9\nBifurcations and Hysteresis\n\n\n\nQuiz 1\nCarpenter et al. (1999)\n\n\n4\nSep 14\nSimulation and Discretization\n\n\n\n\n\n\n\n4\nSep 16\nDissolved Oxygen and Streeter-Phelps\n\n\n\n\n\n\n\n\n\n\n\n\nReferences\n\nCarpenter, S. R., Ludwig, D., & Brock, W. A. (1999). Management of eutrophication for lakes subject to potentially irreversible change. Ecol. Appl., 9(3), 751–771. https://doi.org/10.2307/2641327"
+    "text": "This page contains a schedule of the topics, content, and assignments for the semester. Note that this schedule will be updated as necessary the semester progresses, with all changes documented here. Readings requiring institutional subscriptions can be accessed through the Cornell Library.\n\n\n\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nSlides\nLab\nHW\nQuiz\nReading\n\n\n\n\n1\nAug 24\nCourse Overview\n\n\n\n\n\n\n\n\nAug 26\nIntro to Systems\n\n\n\n\n\n\n\n2\nAug 31\nFeedbacks & Equilibria\n\n\n\n\n\n\n\n\nSep 2\nStability & Examples\n\n\n\n\n\n\n\n3\nSep 7\nNo Class: Labor Day\n\n\n\n\n\n\n\n\nSep 9\nBifurcations and Hysteresis\n\n\n\nQuiz 1\nCarpenter et al. (1999)\n\n\n4\nSep 14\nSimulation and Discretization\n\n\n\n\n\n\n\n\nSep 16\nDissolved Oxygen and Streeter-Phelps\n\n\n\n\n\n\n\n5\nSep 21\nDiscretization & Convergence Lab\n\n\n\n\n\n\n\n\nSep 23\nMonte Carlo Foundations\n\n\n\n\n\n\n\n\n\n\n\n\nReferences\n\nCarpenter, S. R., Ludwig, D., & Brock, W. A. (1999). Management of eutrophication for lakes subject to potentially irreversible change. Ecol. Appl., 9(3), 751–771. https://doi.org/10.2307/2641327"
   },
   {
     "objectID": "setup/homework.html",

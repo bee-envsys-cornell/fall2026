@@ -123,6 +123,33 @@ Source: [XKCD 2440](https://xkcd.com/2440/)
 
 # Probability Review
 
+## Random Variables
+
+A **random variable** is a quantity whose value we do not know. Its **distribution** describes how plausible each possible value is.
+
+:::: {.columns}
+::: {.column width=50%}
+**Discrete**: values you can list, like storms per year.
+
+**Probability mass function**: $p(x) = \mathbb{P}(X = x)$
+:::
+::: {.column width=50%}
+**Continuous**: any value in a range, like CBOD load.
+
+**Probability density function**: $\mathbb{P}(a < X < b) = \int_a^b f(x)\,dx$
+:::
+::::
+
+## What Is a Probability Distribution?
+
+A **probability distribution** assigns probabilities to the possible outcomes of a random variable, following three rules:
+
+1. $\mathbb{P}(A) \geq 0$ for any event $A$
+2. $\mathbb{P}(\text{some outcome occurs}) = 1$
+3. $\mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb{P}(B)$ if $A$ and $B$ cannot both happen
+
+**Notation**: $X \sim \mathcal{D}$ means $X$ follows $\mathcal{D}$, e.g. $B_0 \sim \mathcal{N}(9, 1.5^2)$.
+
 ## Density and Cumulative Probability
 
 A probability distribution $\mathcal{D}$ is described using two equivalent specifications:
@@ -168,6 +195,13 @@ $$q(\alpha) = F^{-1}_\mathcal{D}(\alpha), \qquad\text{so}\qquad x_0 = q(\alpha) 
 - CDF: for a given $x_0$, what is $\mathcal{P}(X \leq x_0)$? 
 - Quantile: for a given $0 \leq \alpha \leq 1$, what value $x_0$ has $\mathcal{P}(X \leq x_0) = \alpha$?
 
+## Independence
+
+Two events are **independent** if knowing one happened tells you nothing about the other:
+
+$$\mathbb{P}(A \cap B) = \mathbb{P}(A)\,\mathbb{P}(B)$$
+
+
 ## Expectation and Variance
 
 $$\begin{aligned}
@@ -175,13 +209,26 @@ $$\begin{aligned}
 \text{Var}(X) &= \mathbb{E}\left[(X - \mathbb{E}[X])^2\right]
 \end{aligned}$$
 
+## Rules for Expectation and Variance
+
+For constants $a$ and $b$ and random variables $X$ and $Y$:
+
+$$\begin{aligned}
+\mathbb{E}[aX + b] &= a\,\mathbb{E}[X] + b \\
+\text{Var}(aX + b) &= a^2\,\text{Var}(X) \\
+\mathbb{E}[X + Y] &= \mathbb{E}[X] + \mathbb{E}[Y] \\
+\end{aligned}$$
+
+If $X$ and $Y$ are independent:
+$$\text{Var}(X + Y) = \text{Var}(X) + \text{Var}(Y)$$
+
+
 ## The Average of a Function Is Not the Function of the Average
 
 $$\mathbb{E}[h(B_0)] = h(\mathbb{E}[B_0])\ \text{if and only if}\ h\ \text{is linear}.$$
 
 **Which of these do we want**?
 
-# Probability Distributions
 
 ## Distributions Are Assumptions
 
@@ -192,6 +239,15 @@ There are defaults. If your data is:
 - Continuous and fat-tailed? **Cauchy distribution**
 - Continuous and bounded? **Beta distribution**
 - Sums of positive random variables? **Gamma or Normal distribution**
+
+## Common Distributions
+
+| Distribution | Use it when |
+|:--|:-----------|
+| Uniform | Every value in a range equally likely | 
+| Normal | Symmetric about a typical value | 
+| LogNormal | Positive and right-skewed | 
+| Bernoulli | A yes/no event | 
 
 ## Selecting a Distribution
 
@@ -245,7 +301,6 @@ $$B_0 \sim \mathcal{N}(9,\ 1.5^2)\ \text{mg/L}$$
 
 Perhaps use a truncated Normal to eliminate possibility of negatives.
 
-# Risk and Probabilities
 
 ## Standards Are Written as Probabilities
 
@@ -271,7 +326,7 @@ $$T = \frac{1}{p}$$
 
 A 1% annual exceedance probability is a 100-year event. The two say exactly the same thing in different units.
 
-## Once a Century?
+## How Often Does An Extreme Occur?
 
 A "100-year event" does **not** mean one per century, or that you are safe for 99 years after one happens.
 
@@ -286,6 +341,7 @@ Better than one in four, over the life of the structure.
 ::: {.incremental}
 - Each year is an **independent** draw.
 - The distribution is **not changing** --- the same $F$ next decade as last.
+- If it is changing, the return period is **conditional** on the scenario driving the change.
 :::
 
 ## Where Would We Get $F$?
@@ -336,11 +392,15 @@ A probability is just a special case: $h(x) = \mathbb{1}[\text{event}]$, and the
 
 :::: {.columns}
 ::: {.column width=50%}
+::: {.fragment .fade-in}
+
 Sample points uniformly in a square; the fraction landing in the inscribed circle estimates
 
 $$\frac{\text{Area of Circle}}{\text{Area of Square}} = \frac{\pi}{4}$$
 :::
+:::
 ::: {.column width=50%}
+::: {.fragment .fade-in}
 ```{julia}
 #| label: fig-mc-pi
 #| fig-cap: "Points are revealed 100 at a time. Blue land inside the circle, vermillion outside, and the estimate settles toward π (dashed)."
@@ -385,6 +445,7 @@ Logging.disable_logging(Logging.Info)
 gif(animation, "figures/mc_pi.gif", fps=2)
 ```
 :::
+:::
 ::::
 
 # How Uncertain is the Estimate?
@@ -395,41 +456,42 @@ $Y_i$ is a random sample, so  $\tilde{\mu}_n = \frac{1}{n}\sum_{i=1}^n Y_i$ is a
 
 This raises the question: **on average**, how right or wrong is the estimate?
 
+**Bias** of a statistic $T$ used to estimate a "true" value $T_0$: $\mathbb{E}[T] - T_0$.
+
+
 ## MC Estimates Is Unbiased
+
 
 Provided the mean of $Y$ exists and its variance is finite,
 
 $$\mathbb{E}[\tilde{\mu}_n] = \frac{1}{n}\sum_{i=1}^n \mathbb{E}[Y_i] = \frac{1}{n}\, n\, \mu = \mu.$$
 
+Averaged over many *sets* of samples, the estimate is correct. That is a statement about the **procedure**, not about the run you just did.
+
+## Monte Carlo Convergence
+
+What are the convergence properties of any given MC run?
+
 ::: {.fragment .fade-in}
-Averaged over many *sets* of samples, the estimate is correct. That is a statement about the procedure, not about the run you just did.
-:::
-
-## Does One Run Converge?
-
-Unbiasedness says nothing about a single trajectory. You ran the sampler once. Does *your* number approach the truth as you keep drawing?
-
-## The Law of Large Numbers
-
 If $Y$ is a random variable whose expectation exists, and $Y_1, \ldots, Y_n$ are independent and identically distributed, then by the **weak law of large numbers**
 
-$$\lim_{n \to \infty} \mathbb{P}\left(\left|\tilde{\mu}_n - \mu\right| \leq \varepsilon\right) = 1$$
+$$\lim_{n \to \infty} \mathbb{P}\left(\tilde{\mu}_n - \mu \leq \varepsilon\right) = 1$$
 
 for any $\varepsilon > 0$.
 
-::: {.fragment .fade-in}
-So yes --- *eventually* a single run gets within any error you name. **"Eventually" is doing a lot of work in that sentence.**
 :::
 
-## The Error Has a Rate
+## Monte Carlo Error
 
 The variance of the estimator is
 
 $$\text{Var}(\tilde\mu_n) = \frac{\sigma_Y^2}{n} \qquad\Longrightarrow\qquad \text{standard error } \tilde\sigma_n = \frac{\sigma_Y}{\sqrt{n}}$$
 
-::: {.fragment .fade-in}
-**To cut the error by 10×, you need 100× more samples.** Monte Carlo converges at order $1/2$ in $n$ --- much slower than forward Euler's order 1 in $\Delta t$.
-:::
+In practice: replace $\sigma_Y$ with the sample standard deviation $\sqrt{\text{Var}(Y_i)}$.
+
+## Implications of Monte Carlo Error
+
+**To cut the error by 10×, you need 100× more samples.** Monte Carlo converges at order $\sqrt{n}$.
 
 ::: {.fragment .fade-in}
 ::: {.quote}
@@ -439,45 +501,35 @@ $$\text{Var}(\tilde\mu_n) = \frac{\sigma_Y^2}{n} \qquad\Longrightarrow\qquad \te
 --- Sokal, *Monte Carlo Methods in Statistical Mechanics*, 1996
 :::
 :::
-
-...but often, they are.
 :::
 
-## Why the Error Is Normal
+## MC Confidence Intervals
 
-The law of large numbers says the estimate arrives. The **Central Limit Theorem** says how far off it is likely to be on the way:
+To get estimates of the error, we need to understand the distribution of errors.
+
+The **Central Limit Theorem** says that sums of random variables converge to a Gaussian distribution.
+
+Applying to the mean (which is effectively a sum):
 
 $$\left\|\tilde{\mu}_n - \mu\right\| \to \mathcal{N}\left(0, \frac{\sigma_Y^2}{n}\right)$$
 
-::: {.fragment .fade-in}
-Two theorems, two jobs. The LLN tells us the estimate is going to the right place; the CLT tells us how wrong it is right now. **The error bar comes from the second one.**
-:::
 
 ## Confidence Intervals
 
-The CLT gives the $\alpha$-confidence interval
+We can use this large-$n$ Gaussian approximation to get an $\alpha$-confidence interval.
 
 $$\tilde\mu_n \pm \Phi^{-1}\left(1-\frac{\alpha}{2}\right)\frac{\sigma_Y}{\sqrt{n}}$$
 
-For 95%: $\tilde\mu_n \pm 1.96\,\sigma_Y/\sqrt{n}$.
+For 95%: $$\tilde\mu_n \pm 1.96\frac{\sigma_Y}{\sqrt{n}}.$$
 
-## Reading a Confidence Interval Correctly
+## Reading a CI Correctly
 
-**A 95% CI is not** "there is a 95% chance the true value is in this interval." The true value is fixed; it either is or isn't.
+**A 95% CI is not** "there is a 95% chance the true value is in this interval." According to the **frequentist** interpretation of statistics, the true value is fixed.
 
-::: {.fragment .fade-in}
-It **is**: if you repeated this whole experiment many times, about 95% of the intervals you'd construct would contain the true value.
+For any given experiment, the "true value" is either in or out of the constructed interval.
 
-Think of horseshoes: the post doesn't move. Your throwing accuracy tells you how often you'd land near it --- not the odds on any one already-thrown shoe.
-:::
+**The idea**: if you repeated this whole experiment many times, about 95% of the intervals you'd construct would contain the true value.
 
-## Where This Is Going
-
-We now know: the estimator is unbiased, and its error shrinks like $\sigma_Y/\sqrt{n}$.
-
-::: {.fragment .fade-in}
-**Monday**: back to the river. We'll actually estimate $P(\text{DO} < 2.5\ \text{mg/L})$, watch the estimate settle as $n$ grows, and learn exactly how to justify a sample size on your own homework.
-:::
 
 # Key Takeaways and Upcoming Schedule
 
@@ -494,6 +546,8 @@ We now know: the estimator is unbiased, and its error shrinks like $\sigma_Y/\sq
 ## Next Classes
 
 **Monday**: Applying Monte Carlo to the DO model, and how to justify a sample size for your own work.
+
+The [probability tutorial](../tutorials/probability.qmd) covers today's review in more depth, with Julia examples.
 
 ## Assessments
 
