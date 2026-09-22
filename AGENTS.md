@@ -71,6 +71,14 @@ Quarto activates the **closest** `Project.toml` when rendering a file:
 Run Julia from the relevant directory to activate the right env. The VS Code setting
 `julia.environmentPath` points to the repo root.
 
+**Every lab and homework environment includes `IJulia`.** Assignments ship to students as `.ipynb`
+notebooks, and IJulia provides the Julia kernel Jupyter needs to run them. Leaving it out has stopped
+students from doing the exercises — but only some students, on some setups, which is how the repos
+drifted: **it will usually work when you test it**, so a passing check is not evidence it can go. No
+cell ever loads it either, so it looks unused. Do not remove it when trimming an environment down to
+what an assignment uses, and check for it whenever you create a new year's branch. The
+same rule holds for BEE 4850.
+
 ## Structure
 
 - **`_quarto.yml`** — site config, nav, sidebar, format settings (HTML, Typst, RevealJS, Beamer)

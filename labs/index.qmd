@@ -25,8 +25,8 @@ Labs will be graded on a scale of 0-3:
 
 ## Schedule
 
-| Lab | Instructions | Due Date |
-|:----------:|:------------:|:------:|
-| Lab 1 | [{{< fa sharp pen-field >}}](lab01/lab01.qmd) | Sep. 21, 2026 |
+| Lab | Instructions | Solutions | Due Date | 
+|:----------:|:------:|:------:|:------------:|
+| Lab 1 | [{{< fa sharp pen-field >}}](lab01/lab01.qmd) |  [{{< fa sharp key-skeleton  >}}](../solutions/lab01/lab01.qmd) | Sep. 21, 2026 |
 | Lab 2 | [{{< fa sharp pen-field >}}](lab02/lab02.qmd) | | TBD |
-| Lab 3 | [{{< fa sharp pen-field >}}](lab03/lab03.qmd) | | TBD |
+| Lab 3 | [{{< fa sharp pen-field >}}](lab03/lab03.qmd) |  |TBD |

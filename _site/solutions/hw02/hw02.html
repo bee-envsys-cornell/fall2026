@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.3">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-09-22">
+
+<title>HW 2 Solutions – Environmental Systems Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../_assets/logos/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-037772e4b0a8fb61e9a28208dd0e90cd.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-41afc7412041501ec6863dfe70bda895.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<!-- MathJax 3 -->
+<script>
+window.MathJax = {
+    tex: {
+      tags: 'ams'
+    }
+  };
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="HW 2 Solutions – Environmental Systems Analysis">
+<meta property="og:description" content="Homepage for the Fall 2026 version of BEE 4750/5750, Environmental Systems Analysis, at Cornell University.">
+<meta property="og:image" content="https://envsys.viveks.me/fall2025/solutions/hw02/figures/ocean_diagram.svg">
+<meta property="og:site_name" content="Environmental Systems Analysis">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">BEE 4750/5750</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-info" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Info</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-info">    
+        <li>
+    <a class="dropdown-item" href="../../syllabus.html">
+ <span class="dropdown-text">Syllabus</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../policies/index.html">
+ <span class="dropdown-text">Course Policies</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../faq/index.html">
+ <span class="dropdown-text">FAQ</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../setup/index.html">
+ <span class="dropdown-text">Setup</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../schedule.html"> 
+<span class="menu-text">Course Schedule</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-coursework" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Coursework</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-coursework">    
+        <li>
+    <a class="dropdown-item" href="../../labs/index.html">
+ <span class="dropdown-text">Labs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../hw/index.html">
+ <span class="dropdown-text">Homework</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../project/index.html">
+ <span class="dropdown-text">Final Project</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-resources" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Resources</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-resources">    
+        <li>
+    <a class="dropdown-item" href="../../tutorials/index.html">
+ <span class="dropdown-text">Tutorials</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/general.html">
+ <span class="dropdown-text">General Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/julia.html">
+ <span class="dropdown-text">Julia Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/ai.html">
+ <span class="dropdown-text">Generative AI and LLMs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/github.html">
+ <span class="dropdown-text">GitHub Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/markdown.html">
+ <span class="dropdown-text">Markdown Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/optimization.html">
+ <span class="dropdown-text">Optimization Resources</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/bee-envsys-cornell/fall2025"> 
+<span class="menu-text"><i class="fa-brands fa-github" aria-label="github"></i> GitHub</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://canvas.cornell.edu"> 
+<span class="menu-text"><i class="fa-regular fa-notebook" aria-label="notebook"></i> Canvas</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://edstem.org"> 
+<span class="menu-text"><i class="fa-regular fa-comments" aria-label="comments"></i> Ed</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://gradescope.com"> 
+<span class="menu-text"><i class="fa-regular fa-chart-simple" aria-label="chart-simple"></i> Gradescope</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
+  <ul class="collapse">
+  <li><a href="#load-environment" id="toc-load-environment" class="nav-link" data-scroll-target="#load-environment">Load Environment</a></li>
+  </ul></li>
+  <li><a href="#problems-total-50-points" id="toc-problems-total-50-points" class="nav-link" data-scroll-target="#problems-total-50-points">Problems (Total: 50 Points)</a>
+  <ul class="collapse">
+  <li><a href="#problem-1-9" id="toc-problem-1-9" class="nav-link" data-scroll-target="#problem-1-9">Problem 1 (9)</a></li>
+  <li><a href="#problem-2-9" id="toc-problem-2-9" class="nav-link" data-scroll-target="#problem-2-9">Problem 2 (9)</a></li>
+  <li><a href="#problem-3-6" id="toc-problem-3-6" class="nav-link" data-scroll-target="#problem-3-6">Problem 3 (6)</a></li>
+  <li><a href="#problem-4-26" id="toc-problem-4-26" class="nav-link" data-scroll-target="#problem-4-26">Problem 4 (26)</a></li>
+  </ul></li>
+  <li><a href="#solution" id="toc-solution" class="nav-link" data-scroll-target="#solution">Solution</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/solutions/hw02/hw02.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="hw02.ipynb" download="hw02.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">HW 2 Solutions</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 22, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<section id="load-environment" class="level3">
+<h3 class="anchored" data-anchor-id="load-environment">Load Environment</h3>
+<p>The following code loads the environment and makes sure all needed packages are installed. This should be at the start of most Julia scripts.</p>
+<div id="2" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">Pkg</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">activate</span>(<span class="pp">@__DIR__</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">instantiate</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="4" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Plots</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">LaTeXStrings</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+<section id="problems-total-50-points" class="level2">
+<h2 class="anchored" data-anchor-id="problems-total-50-points">Problems (Total: 50 Points)</h2>
+<section id="problem-1-9" class="level3">
+<h3 class="anchored" data-anchor-id="problem-1-9">Problem 1 (9)</h3>
+<section id="problem-1.1-3" class="level4">
+<h4 class="anchored" data-anchor-id="problem-1.1-3">Problem 1.1 (3)</h4>
+<p>Denoting <span class="math inline">\(dx/dt = f(x)\)</span>, <span class="math display">\[f(x) = 0 \implies x = \pm 2.\]</span></p>
+<p>At <span class="math inline">\(x=2\)</span>, <span class="math inline">\(df/dx = 8x = 16 &gt; 0\)</span>, so this equilibrium is <strong>unstable</strong>. At <span class="math inline">\(x=-2\)</span>, <span class="math inline">\(df/dx=-16 &lt; 0\)</span>, so this equilibrium is <strong>stable</strong>.</p>
+</section>
+<section id="problem-1.2-3" class="level4">
+<h4 class="anchored" data-anchor-id="problem-1.2-3">Problem 1.2 (3)</h4>
+<p>Denoting <span class="math inline">\(dx/dt = f(x)\)</span>, <span class="math display">\[f(x) = 0 \implies x = 0, \pm 1.\]</span></p>
+<p>At <span class="math inline">\(x=0\)</span>, <span class="math inline">\(df/dx = 1-3x^2 = 1 &gt; 0\)</span>, so this equilibrium is <strong>unstable</strong>. At <span class="math inline">\(x=\pm 1\)</span>, <span class="math inline">\(df/dx=-2 &lt; 0\)</span>, so these equilibria are <strong>stable</strong>.</p>
+</section>
+<section id="problem-1.3-3" class="level4">
+<h4 class="anchored" data-anchor-id="problem-1.3-3">Problem 1.3 (3)</h4>
+<p>Denoting <span class="math inline">\(dx/dt = f(x)\)</span>, <span class="math display">\[f(x) = 0 \implies \cos x = \frac{1}{2} \implies x = \pm \frac{\pi}{3} + 2\pi n.\]</span></p>
+<p>In this case, <span class="math inline">\(df/dx = 2\sin x\)</span>, so we can ignore the <span class="math inline">\(2 \pi n\)</span> when we do the calculations, as these will not change the stability of the relevant points. If you don’t recall the formula for <span class="math inline">\(\sin\left(\pm \frac{\pi}{3}\right)\)</span>, observe from the Pythagorean Theorem that <span class="math inline">\(\sin x = \pm \sqrt{1 - \cos^2 x}\)</span>, with the sign depending on which quadrant the angle <span class="math inline">\(x\)</span> is in.</p>
+<p>Starting with <span class="math inline">\(x = \frac{\pi}{3} + 2\pi n\)</span>, using the formula above, <span class="math inline">\(2 \sin(\pi/3) = \sqrt{3} \approx 1.73\)</span> (positive since <span class="math inline">\(\pi/3\)</span> is in the first quadrant, so has both a positive <span class="math inline">\(\sin\)</span> and <span class="math inline">\(\cos\)</span>). So <span class="math inline">\(x = \frac{\pi}{3} + 2 \pi n\)</span> is <strong>unstable</strong>.</p>
+<p>Similarly, for <span class="math inline">\(x = -\frac{\pi}{3} + 2 \pi n\)</span>, <span class="math inline">\(2 \sin(-\pi/3) = -\sqrt{3} \approx 1.73\)</span> (negative since <span class="math inline">\(-\pi/3\)</span> is in the fourth quadrant, so has a negative <span class="math inline">\(\sin\)</span>). So <span class="math inline">\(x =-\frac{\pi}{3} + 2 \pi n\)</span> is <strong>stable</strong>.</p>
+</section>
+</section>
+<section id="problem-2-9" class="level3">
+<h3 class="anchored" data-anchor-id="problem-2-9">Problem 2 (9)</h3>
+<section id="problem-2.1-5" class="level4">
+<h4 class="anchored" data-anchor-id="problem-2.1-5">Problem 2.1 (5)</h4>
+<p>The systems diagram should look like this:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/ocean_diagram.svg" class="img-fluid figure-img"></p>
+<figcaption>Systems Diagram for Problem 2</figcaption>
+</figure>
+</div>
+<ul>
+<li>The positive connection between atmospheric CO<sub>2</sub> concentrations and global temperatures is just capturing the greenhouse effect: CO<sub>2</sub> blocks the transmission of radiation along certain frequencies which would normally cause a loss of energy back to space.</li>
+<li>The negative connection between global temperatures and ocean CO<sub>2</sub> concentrations is a result of Henry’s law for the solubility of CO<sub>2</sub>. While the oceans are not an ideal mixture and the atmospheres and oceans aren’t in equilibrium (so one would be cautious in using Henry’s law to make specific predictions about concentrations), the key insight is the temperature dependence of Henry’s constant, where increasing temperature decreases solubility.</li>
+<li>The negative connection from ocean to atmospheric CO<sub>2</sub> concentrations is the result of the mass balance of CO<sub>2</sub>: CO<sub>2</sub> taken up by the oceans must come from the atmosphere.</li>
+<li>The positive connection from atmospheric to ocean CO~2 concentrations is not simply a matter of mass balance: higher atmospheric partial pressure results in increased dissolution in the oceans. <strong>This is slightly tricky: if this were just a matter of mass balance, the feedback between ocean and atmospheric CO<sub>2</sub> would be self-amplifying, which is impossible</strong>.</li>
+</ul>
+<p>The overall feedback between global temperature, ocean CO<sub>2</sub>, and atmospheric CO<sub>2</sub> is therefore amplifying: increases in temperature decrease the concentration of CO<sub>2</sub> in oceans, which increase the atmospheric concentration, causing further temperature increases.</p>
+</section>
+<section id="problem-2.2-4" class="level4">
+<h4 class="anchored" data-anchor-id="problem-2.2-4">Problem 2.2 (4)</h4>
+<ol type="1">
+<li>This is a <strong>stock</strong> as it is a total absorbed mass. If it were the amount absorbed per year (or per unit of atmospheric CO<sub>2</sub>, etc), it would be a flow.</li>
+<li>This is a <strong>flow</strong>, as it is a rate.</li>
+<li>This is a <strong>flow</strong> as it is an increase per year, rather than the actual measured temperature or total anomaly (which would be a stock).</li>
+<li>This is a <strong>stock</strong> as it is a total amount of heat.</li>
+</ol>
+</section>
+</section>
+<section id="problem-3-6" class="level3">
+<h3 class="anchored" data-anchor-id="problem-3-6">Problem 3 (6)</h3>
+<p>To find the equilibria, start by denoting <span class="math inline">\(\frac{dH}{dt} = f(H, L)\)</span> and <span class="math inline">\(\frac{dL}{dt} = g(H, L).\)</span> We want to solve the system <span class="math inline">\(f(H, L) = 0\)</span> and <span class="math inline">\(g(H, L) = 0\)</span>. These are the equations</p>
+<p><span class="math display">\[\begin{aligned}
+b_h H_t - m_h H_t L_t - \gamma_h H_t^2 &amp;= 0 \\
+b_l L_t H_t - m_l L_t - \gamma_l L_t^2 &amp;= 0.
+\end{aligned}\]</span></p>
+<p>We can factor out <span class="math inline">\(H_t\)</span> from the first equation and <span class="math inline">\(L_t\)</span> from the second, giving</p>
+<p><span class="math display">\[\begin{aligned}
+H_t(b_h - m_h L_t - \gamma_h H_t) &amp;= 0 \label{eq:prey} \\
+L_t(b_l H_t - m_l - \gamma_l L_t) &amp;= 0. \label{eq:pred}
+\end{aligned}\]</span></p>
+<p>Thus we have four possible cases to check. The simpliest is <span class="math inline">\(H_t=L_t=0\)</span>: this is the extinction equilibrium. Call this solution <span class="math inline">\(E_0\)</span>.</p>
+<p>If <span class="math inline">\(H_t = 0\)</span> but <span class="math inline">\(L_t \neq 0\)</span>, then Equation <span class="math inline">\(\eqref{eq:pred}\)</span> simplifies to <span class="math display">\[-\gamma_l L_t = m_l \implies L_t = -\frac{m_l}{\gamma_l}.\]</span> But this is impossible, as <span class="math inline">\(L_t\)</span> cannot be negative. This also makes sense: the predator population cannot be nonzero without any prey.</p>
+<p>If <span class="math inline">\(L_t = 0\)</span> but <span class="math inline">\(H_t \neq 0\)</span>, then Equation <span class="math inline">\(\eqref{eq:prey}\)</span> simplifies to <span class="math display">\[\gamma_h H_t = b_h \implies H_t = \frac{b_h}{\gamma_h}.\]</span> This is the population the prey will stabilize at without predation, where the birth rate and the self-death rate balance. Note that this equilibrium does not exist for the Lotka-Volterra model, because without the self-death term the prey population will increase infinitely in the absence of predators. Call this solution <span class="math inline">\(E_1\)</span>.</p>
+<p>The last case is the most complex, where <span class="math inline">\(H_t \neq 0\)</span> and <span class="math inline">\(L_t \neq 0\)</span>. First, solve the relevant part of Equation <span class="math inline">\(\eqref{eq:pred}\)</span> for <span class="math inline">\(L_t\)</span>: <span class="math display">\[L_t = \frac{b_l H_t - m_l}{\gamma_l}. \label{eq:pred2}\]</span> Substituting this into Equation <span class="math inline">\(\eqref{eq:prey}\)</span>: <span class="math display">\[\begin{aligned}
+\gamma_h H_t + m_h \frac{b_l H_t - m_l}{\gamma_l} &amp;= b_h \\
+\gamma_h \gamma_l H_t + m_h \left(b_l H_t - m_l\right) &amp;= b_h \gamma_l \\
+H_t \left(\gamma_h \gamma_l + m_h b_l) &amp;= b_h \gamma_l + m_l m_h \\
+H_t &amp;= \frac{b_h \gamma_l + m_l m_h}{\gamma_h \gamma_l + m_h b_l}. \label{eq:preysolve}
+\end{aligned}\]</span> And plugging into Equation <span class="math inline">\(\eqref{eq:pred2}\)</span> and simplifying gives: <span class="math display">\[\begin{aligned}
+L_t &amp;= \frac{b_l\left(b_h \gamma_l + m_l m_h\right) - m_l\left(\gamma_h \gamma_l + m_h b_l\right)}{\gamma_l\left(\gamma_h \gamma_l + m_h b_l\right)} \\
+&amp;= \frac{b_l b_h - m_l \gamma_h}{\gamma_h \gamma_l + m_h b_l}. \label{eq:predsolve}
+\end{aligned}\]</span></p>
+<p>Denote these solutions by <span class="math inline">\(H^*\)</span> and <span class="math inline">\(L^*\)</span>, respectively, and this entire solution by <span class="math inline">\(E_2\)</span>. To answer the question of stability, we want to calculate the eigenvalues of the Jacobian (we will drop the <span class="math inline">\(t\)</span> as these solutions are equilibria and are therefore independent of time), <span class="math display">\[\begin{aligned}
+J &amp;= \begin{pmatrix}\frac{\partial f}{\partial H} &amp; \frac{\partial f}{\partial L} \\ \frac{\partial g}{\partial H} &amp; \frac{\partial g}{\partial L} \end{pmatrix} \\
+&amp;= \begin{pmatrix}b_h - m_h L - 2 \gamma_h H &amp; -m_h H \\ b_l L &amp; b_l H - m_l - 2 \gamma_l L \end{pmatrix}.
+\end{aligned}\]</span> These eigenvalues are the solution to the <strong>characteristic equation</strong> <span class="math display">\[\det(J - \lambda I) = 0.\]</span> If at a given equilibrium <span class="math inline">\(E_i\)</span> both eigenvalues (since this is a 2d system, and <span class="math inline">\(J\)</span> is a 2x2 matrix) have negative real part, <span class="math inline">\(E_i\)</span> is <strong>stable.</strong> If any eigenvalues have a positive real part, <span class="math inline">\(E_i\)</span> is <strong>unstable</strong>. And if the eigenvalues are purely imaginary, the solutions will oscillate around <span class="math inline">\(E_i\)</span> and the system is <strong>degenerate</strong> (or <strong>marginally stable</strong>).</p>
+<div class="note callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>This asymmetry is the result of how any positive real part of a given value means that a component of a perturbation in the direction of the associated eigenvector will grow, even if all of the other directions decay, and this is an instability, whereas stability can only result from perturbations in all directions decaying asymptotically.</p>
+</div>
+</div>
+</div>
+<p><strong><em>Extra Credit</em></strong>:</p>
+<p>You didn’t have to analyze <span class="math inline">\(E_0\)</span>, but note that <span class="math display">\[J|_{E_0} = \begin{pmatrix} b_h &amp; 0 \\ 0 &amp; -m_l \end{pmatrix}.\]</span> Since all of the parameters of this model have to be positive, this means the eigenvalues are <span class="math inline">\(b_h &gt; 0\)</span> and <span class="math inline">\(-m_l &lt; 0\)</span>, so the solution is unstable (introducing any hares will cause the population to increase away from zero, even though introducing only lynxes will result in them dying out again). In fact, this is an example of a <strong>saddle point</strong>, which you might recall from multivariable calculus as a type of critical point.</p>
+<p>For <span class="math inline">\(E_1\)</span>, the Jacobian becomes <span class="math display">\[J|_{E_0} = \begin{pmatrix} -b_h &amp; \frac{-m_h b_h}{\gamma_h} \\ 0 &amp; -\frac{b_l b_h \gamma_h} - m_l \end{pmatrix}.\]</span> As this is a triangular matrix, the eigenvalues are the diagonal entries. The first is <span class="math inline">\(-b_h &lt; 0\)</span>. The second is <span class="math inline">\(\frac{b_l b_h \gamma_h} - m_l\)</span>, which can be positive or negative. The condition for it to be negative (and hence for <span class="math inline">\(E_1\)</span> to be stable) is <span class="math display">\[\frac{b_h}{\gamma_h} &lt; \frac{m_l}{b_l},\]</span> and it is unstable otherwise. Notice that this condition is intuitive: the equilibrium where there are no lynx but there are hares is stable if the mortality rate of lynxes is greater than the birth rate of hares, as the lynx will die off without enough hare population growth to sustain them.</p>
+<p><span class="math inline">\(E_2\)</span> is the most involved case. As both <span class="math inline">\(H^*\)</span> and <span class="math inline">\(L^*\)</span> have the same denominator, let’s simplify notation by writing <span class="math inline">\(H^* = P/\Delta\)</span> and <span class="math inline">\(L^* = Q/Delta\)</span>. In other words, <span class="math display">\[
+P = b_h\gamma_l + m_h m_L,
+\qquad
+Q = b_h b_L - \gamma_h m_L,
+\qquad
+\Delta = \gamma_h\gamma_l + m_h b_L.
+\]</span> Observe that <span class="math inline">\(P &gt; 0\)</span> and <span class="math inline">\(\Delta &gt; 0\)</span>, but <span class="math inline">\(Q\)</span> may not be positive; we will need this later.</p>
+<p>Start by computing the upper-left term <span class="math inline">\(J_{11}\)</span>: <span class="math display">\[\begin{aligned}
+J_{11} &amp;= b_h - m_h L^* - 2\gamma_h H^* \\
+&amp;= b_h - m_h\frac{Q}{\Delta} - 2\gamma_h\frac{P}{\Delta},
+\end{aligned}\]</span> or</p>
+<p><span class="math display">\[
+J_{11} = \frac{b_h(\gamma_h\gamma_l + m_h b_L) - m_h(b_h b_L - \gamma_h m_L)
+               - 2\gamma_h(b_h\gamma_l + m_h m_L)}{\Delta}.
+\]</span> Expanding the numerator and collecting terms leaves us with <span class="math display">\[\begin{aligned}
+J_{11} &amp;= \frac{-b_h\gamma_h\gamma_l - \gamma_h m_h m_L}{\Delta} \\
+&amp;= \frac{-\gamma_h \left(b_h\gamma_l + m_h m_L\right)}{\Delta} \\
+&amp;= -\frac{\gamma_h P}{\Delta} = -\gamma_h H^*
+\end{aligned}\]</span> A similar calculation gives that the bottom-left term <span class="math inline">\(J_{22}\)</span> is <span class="math display">\[J_{22} = -\frac{\gamma_l Q}{\Delta} = -\gamma_l L^*.\]</span> The off diagonal terms are easier: <span class="math display">\[\begin{aligned}
+J_{12} &amp;= -m_h H^* = \frac{-m_h P}{\Delta} \\
+J_{21} &amp;= b_l L^* = \frac{b_l Q }{\Delta}.
+\end{aligned}\]</span></p>
+<p>Thus <span class="math display">\[J_{E_2} = \frac{1}{\Delta}
+\begin{pmatrix}
+-\gamma_h P &amp; -m_h P \\[4pt]
+b_l Q &amp; -\gamma_l Q
+\end{pmatrix}
+=
+\begin{pmatrix}
+-\gamma_h H^* &amp; -m_h H^* \\[4pt]
+b_l L^* &amp; -\gamma_l L^*
+\end{pmatrix}.
+\]</span></p>
+<div class="tip callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Doing all of this algebra is great and builds character, but we also could have observed that <span class="math inline">\(J_{11}_{E_2}\)</span> is <span class="math inline">\(\frac{df}{dH}\)</span> minus one extra <span class="math inline">\(\gamma_h H^*\)</span>, and as <span class="math inline">\(\frac{df}{dH} = 0\)</span>, the only remaining term was <span class="math inline">\(-\gamma_h H^*\)</span>. Similarly for <span class="math inline">\(J_{22} = -\gamma_l L^*\)</span>.</p>
+</div>
+</div>
+</div>
+<p>Now we need to find the eigenvalues. The characteristic polynomial is <span class="math display">\[\begin{aligned}
+0 &amp;= \det(J^* - \lambda I) \\
+&amp;= \det
+\begin{pmatrix}
+-\gamma_h H^* - \lambda &amp; -m_h H^* \\[4pt]
+b_L L^* &amp; -\gamma_l L^* - \lambda
+\end{pmatrix} \\
+&amp;= \left(-\gamma_h H^* - \lambda\right)\left(-\gamma_l L^* - \lambda\right)
+- \left(-m_h H^*\right)\left(b_L L^*\right).
+\end{aligned}\]</span></p>
+<p>This simplifies to <span class="math display">\[\lambda^2 + \left(\gamma_h H^* + \gamma_l L^*\right)\lambda + \left(\gamma_h\gamma_l + m_h b_L\right)H^*L^* = 0.\]</span></p>
+<p>To simplify notation for the stability conditions, introduce new notation: <span class="math display">\[T = \left(\gamma_h H^* + \gamma_l L^*\right), \qquad D = \Delta\,H^*L^* = \Delta\cdot\frac{P}{\Delta}\cdot\frac{Q}{\Delta} = \frac{PQ}{\Delta}.\]</span></p>
+<p>This makes the characteristic polynomial <span class="math inline">\(\lambda^2 + T\lambda + D = 0\)</span>, and so the roots are <span class="math display">\[\lambda = \frac{-T \pm \sqrt{T^2 - 4D}}{2}.\]</span> Observe that <span class="math inline">\(T &gt; 0\)</span> and <span class="math inline">\(D &gt; 0\)</span>.</p>
+<p>Now, we have to check all cases of the sign of the discriminant. First, if <span class="math inline">\(T^2 = 4D\)</span>, when the eigenvalues are just <span class="math inline">\(-T &lt; 0\)</span>, so <span class="math inline">\(E_2\)</span> is stable.</p>
+<p>If <span class="math inline">\(T^2 - 4D &gt; 0\)</span>, one root <span class="math display">\[\lambda_- = \frac{-T - \sqrt{T^2 - 4D}}{2} &lt; 0\]</span> as the numerator is one negative number subtracted from another. For <span class="math inline">\(\lambda_+\)</span>, note that <span class="math inline">\(T^2 - 4D &lt; T^2\)</span>, so <span class="math display">\[\sqrt{T^2 - 4D} &lt; \sqrt{T^2} = T.\]</span> So <span class="math display">\[\lambda_+ = \frac{-T + \sqrt{T^2 - 4D}}{2} &lt; \frac{-T + T}{2} = 0,\]</span> and both eigenvalues are still negative, and <span class="math inline">\(E_2\)</span> is stable.</p>
+<p>Finally, consider when <span class="math inline">\(T^2 - 4D &lt; 0\)</span>. Then we can rewrite <span class="math inline">\(\sqrt{T^2 - 4D} = i \sqrt{4D - T^2}\)</span>, and <span class="math display">\[\lambda_{\pm} = \frac{-T \pm i\sqrt{4D - T^2}}{2}\]</span> with real part <span class="math inline">\(-\frac{T}{2} &lt; 0\)</span>, and once again <span class="math inline">\(E_2\)</span> is stable.</p>
+</section>
+<section id="problem-4-26" class="level3">
+<h3 class="anchored" data-anchor-id="problem-4-26">Problem 4 (26)</h3>
+<section id="problem-4.1-4" class="level4">
+<h4 class="anchored" data-anchor-id="problem-4.1-4">Problem 4.1 (4)</h4>
+<p>One way we could draw this diagram is</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/lake_diagram.svg" class="img-fluid figure-img"></p>
+<figcaption>Systems Diagram for Problem 4</figcaption>
+</figure>
+</div>
+<p>Yours might look slightly different, but we can conclude that this is an amplifying feedback loop due to the negative connections between algal biomass and oxygen stored in the sediment (due to the oxygen demand caused by decomposition of dead biomass) and between the P stored in the sediment and P stored in the lake water (due to uptake or recycling; this is mass-balance of P).</p>
+</section>
+<section id="problem-4.2-3" class="level4">
+<h4 class="anchored" data-anchor-id="problem-4.2-3">Problem 4.2 (3)</h4>
+<ol type="1">
+<li>This is a <strong>flow</strong>, as this is the rate at which oxygen will be removed due to decomposition.</li>
+<li>This is a <strong>stock</strong>, as it is a quantity of P mass.</li>
+<li>This is a <strong>flow</strong>, as it is the amount of P added to the lake in a given year, therefore it is a change in the P mass.</li>
+</ol>
+</section>
+<section id="problem-4.3-5" class="level4">
+<h4 class="anchored" data-anchor-id="problem-4.3-5">Problem 4.3 (5)</h4>
+<p>Notice that we have two feedbacks in this model: through permanent removal of <span class="math inline">\(P\)</span>, with gain <span class="math inline">\(g_\text{out}\)</span>, and through sediment recycling (with gain <span class="math inline">\(g_\text{sed}\)</span>). <span class="math inline">\(g_\text{out}\)</span> is captured by the term <span class="math inline">\(\alpha_\text{out}(P) = -sP\)</span>, and so <span class="math display">\[g_\text{out} = \partial \alpha_\text{out}/\partial P = -s = -1.\]</span> As <span class="math inline">\(R(P)\)</span> is only non-constant for <span class="math inline">\(P\)</span> between 25 and 35 <span class="math inline">\(\mu\text{g} /\text{L}\)</span>, <span class="math inline">\(g_\text{sed}\)</span> is only non-zero in this range, and has a value of 2. This the total gain <span class="math inline">\(g = g_\text{out} + g_\text{sed}\)</span> is <span class="math inline">\(-1\)</span> when P is below 25 or above 35 <span class="math inline">\(\mu\text{g} / \text{L}\)</span> and 1 otherwise. So in the first two cases, this is a <strong>dampening</strong> feedback (P increases are decreased through outflow) and in the last, <strong>amplifying</strong> (P increases lead to increased soil sedimentation and recycling, outweighing the outflow).</p>
+<p>This means that the total effect of an addition of <span class="math inline">\(1\ \mu\text{g} / \text{L}\)</span> P will be reduced by half in the high-P and low-P regimes (using the formula from class, $ = $ when <span class="math inline">\(|g| &lt; 1\)</span>). In the middle regime, it is more complicated because <span class="math inline">\(g=1\)</span> and so the infinite series we used to derive that formula does not converge. As a result, the system will start to runaway until it hits the upper limit of the sedimentation feedback, where it will stabilize as the sediment recycling plateaus.</p>
+</section>
+<section id="problem-4.4-6" class="level4">
+<h4 class="anchored" data-anchor-id="problem-4.4-6">Problem 4.4 (6)</h4>
+<p>Setting the model to zero at <span class="math inline">\(L = 20\ \mu\text{g}/(\text{L}\cdot\text{yr})\)</span> gives</p>
+<p><span class="math display">\[20 - P + R(P) = 0.\]</span></p>
+<p>We need to solve this equation for each regime and check that the solutions are consistent with the assumptions for each regime.</p>
+<p>First, if <span class="math inline">\(P &lt; 25\)</span>, then <span class="math inline">\(R = 0\)</span>, so <span class="math display">\[\begin{aligned}
+20 - P &amp;= 0 \\
+P_1 &amp;= 20\ \mu\text{g}/\text{L}
+\end{aligned}\]</span> As <span class="math inline">\(20 &lt; 25\)</span>, this is a valid solution. In this case, the derivative of the model is <span class="math inline">\(-1\)</span>, so <span class="math inline">\(P_1\)</span> is a <strong>stable</strong> equilibrium, which aligns with our understanding of the feedback mechanism: a small amount of increased phosphorous is removed from the system faster than it is reintroduced from the external loading, while a small amount of removed phosphorous will analogously be added back.</p>
+<p>If <span class="math inline">\(25 &lt; P &lt; 35\)</span>, <span class="math inline">\(R(P) = 2(P-25)\)</span>, so <span class="math display">\[\begin{aligned}
+20 - P + 2(P - 25) &amp;= 0 \\
+P - 30 &amp;= 0 \\
+P_2 &amp;= 30\ \mu\text{g}/\text{L}.
+\end{aligned}\]</span> <span class="math inline">\(25 &lt; 30 &lt; 35\)</span>, so this is a valid solution. The derivative in this case is <span class="math inline">\(1\)</span>, so this is an <strong>unstable</strong> equilibrium. Again, this makes sense: an increased amount of P causes an increase in recycling which outpaces the outflow, so the concentration of P in the lake will increase accordingly, and this feedback will continue until the recycled P stabilizes. Similarly, a decreased amount of P will result in less recycling, at a rate lower than the reduction in outflow.</p>
+<p>Finally, if <span class="math inline">\(P &lt; 35\)</span>, <span class="math inline">\(R = 20\)</span>, so <span class="math display">\[\begin{aligned}
+20 - P + 20 &amp;= 0 \\
+P_3 &amp;= 40\ \mu\text{g}/\text{L}
+\end{aligned}\]</span> <span class="math inline">\(40 &gt; 35\)</span>, so this is again a valid solution. The stability is the same as in the first case, as the derivative is <span class="math inline">\(-1\)</span>, so <span class="math inline">\(P_3\)</span> is <strong>stable</strong>.</p>
+<div class="note callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">None</span>Hysteresis
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Notice that these three equilibria mean that there is not a unique value of <span class="math inline">\(P\)</span> associated with an external loading <span class="math inline">\(L = 20\)</span> (or indeed, any <span class="math inline">\(L\)</span> in the intermediate range). Depending on the history of the P concentration, the lake can settle at <span class="math inline">\(P_1 = 20\)</span> or <span class="math inline">\(P_3 = 40\ \mu\text{g}/\text{L}\)</span>. This means that if the lake was eutrophic (the third regime), a reduction of loading to a value that would have been fine if the lake had only been oligotrophic will not “undo” the eutrophication and much further reductions are needed (in this case, to <span class="math inline">\(L=15\)</span>). This dependence on the system’s history is a property called <strong>hysteresis</strong> and is characteristic of many environmental systems. This is one reason why cleaning up environmental problems is so challenging!</p>
+</div>
+</div>
+</section>
+<section id="problem-4.5-8" class="level4">
+<h4 class="anchored" data-anchor-id="problem-4.5-8">Problem 4.5 (8)</h4>
+</section>
+</section>
+</section>
+<section id="solution" class="level2">
+<h2 class="anchored" data-anchor-id="solution">Solution</h2>
+<p>In each P concentration regime, the associated equilibria are: <span class="math display">\[\begin{aligned}
+P_1 &amp;= L \\
+P_2 &amp;= 50 - L \\
+P_3 &amp;= L + 20.
+\end{aligned}\]</span> and each is an equilibrium only if it lands inside the case that produced it.</p>
+<p>For example, when <span class="math inline">\(L = 10\)</span>, <span class="math inline">\(P_2 = 40\)</span> and <span class="math inline">\(P_3 = 30\)</span>, neither of which are consistent with the relevant case assumptions. The only surviving equilibrium is <span class="math inline">\(P_1 = 10\ \mu\text{g}/\text{L}\)</span> and it is <strong>stable</strong> as the model’s derivative is <span class="math inline">\(-1\)</span>. There is not enough loading to cause the lake’s P concentration to enter a sediment-recycling regime, as the outflow always stabilizes the concentration.</p>
+<p>When <span class="math inline">\(L=30\)</span>, similarly the only surviving value is <span class="math inline">\(P_3 = 50\ \mu\text{g}/\text{L}\)</span>, and it is again <strong>stable</strong>, as the amount of recycling outweighs outflow (so the lake cannot return to an oligotrophic state), but any additional P will leave the system as the amount of recycling is saturated.</p>
+<div class="note callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">None</span>Implications for Management and Remediation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This has consequences for the hysteresis observed earlier: for these low and high values, the history of the lake does not matter, and the lake will either always be oligotrophic or eutrophic. Thus, if we took this eutrophic lake and could reduce the external loading to 10 <span class="math inline">\(\mu\text{g}/\text{L}\)</span>, the lake would eventually be restored to an oligotrophic state. In fact, this occurs at any value of <span class="math inline">\(L\)</span> below <span class="math inline">\(15\ \mu\text{g}/\text{L}\)</span>. This is quite a bit lower, however, than the original loading value of <span class="math inline">\(25\ \mu\text{g}/\text{L}\)</span> which could have caused the lake to eutrophy.</p>
+</div>
+</div>
+</section>
+<section id="references" class="level2 cell markdown">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>List any external references consulted, including classmates.</p>
+</section>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/envsys\.viveks\.me\/fall2025");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><span class="faux-block"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> 2025 Vivek Srikrishnan</span><br> See the <a href="../../about.html">About Page</a> for credit information.</p>
+</div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">LICENSE: CC-BY-SA  <i class="fab fa-creative-commons"></i><i class="fab fa-creative-commons-by"></i><i class="fab fa-creative-commons-sa"></i></a>
+  </li>  
+</ul>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/solutions/hw02/hw02.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Made with <a href="https://julialang.org">Julia</a> and <a href="https://quarto.org/">Quarto</a><br> <a href="https://www.github.com/bee-envsys-cornell/fall2026/">View the source at <i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

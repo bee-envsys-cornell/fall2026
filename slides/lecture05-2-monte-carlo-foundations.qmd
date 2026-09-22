@@ -83,15 +83,11 @@ cb_purple = "#CC79A7"
 
 # Review of Last Class
 
-## Last Week's Open Question
+## Dissolved Oxygen and Streeter-Phelps
 
-Streeter-Phelps: we ran **5 realizations** of a fluctuating CBOD load through the DO sag curve and got 5 different minimum-DO values.
-
-::: {.fragment .fade-in}
-**How many runs would we need before we trust that spread?**
-
-That is a question about *sampling*, not discretization. Today: the tools. Monday: the answer.
-:::
+- **Dissolved Oxygen**: Critical for aquatic life/ecosystem health
+- Depleted by decomposition of organic matter/waste, often regulated
+- Derived Streeter-Phelps equation: produces **sag curve** due to competition between reaeration and decomposition of CBOD and NBOD.
 
 ## Questions?
 
@@ -101,19 +97,19 @@ That is a question about *sampling*, not discretization. Today: the tools. Monda
 
 ## Where Does Uncertainty Come From?
 
-Uncertainty can come from several places at once:
+Uncertainty can come from several sources:
 
 - Stochastic models (internal randomness)
 - Uncertain external conditions (forcings)
 - Uncertain parameters
-- Uncertain model dynamics --- the model itself may be wrong
+- Uncertain model dynamics from different specifications/neglecting processes
 
 ## Two Kinds of Uncertainty
 
 :::: {.columns}
 ::: {.column width=50%}
-- **Aleatory** uncertainty: from randomness. More data does not remove it.
-- **Epistemic** uncertainty: from lack of knowledge. More data *can* remove it.
+- **Aleatory** uncertainty: "Truly" random processes/fluctuations.
+- **Epistemic** uncertainty: From lack of knowledge.
 :::
 ::: {.column width=50%}
 ![Aleatory vs epistemic uncertainty](https://imgs.xkcd.com/comics/epistemic_uncertainty_2x.png){width=80%}
@@ -124,24 +120,18 @@ Source: [XKCD 2440](https://xkcd.com/2440/)
 :::
 ::::
 
-::: {.fragment .fade-in}
-The CBOD load varying day to day is **aleatory** --- it's genuine variability, not something we could measure away.
-:::
 
-# Describing What We Don't Know
+# Probability Review
 
 ## Density and Cumulative Probability
 
-A distribution $\mathcal{D}$ is described two equivalent ways.
+A probability distribution $\mathcal{D}$ is described using two equivalent specifications:
 
-- The **probability density function** $f_\mathcal{D}(x)$: how concentrated probability is at $x$.
-- The **cumulative distribution function** $F_\mathcal{D}(x) = \int_{-\infty}^x f_\mathcal{D}(u)\,du$: how much probability sits *at or below* $x$.
+- **Probability Density Function (PDF)** $f_\mathcal{D}(x)$: how concentrated is the probability at $x$. 
+- **Cumulative Distribution Function (CDF)** $F_\mathcal{D}(x) = \int_{-\infty}^x f_\mathcal{D}(u)\,du$: what is the total probability *at or below* $x$.
 
-::: {.fragment .fade-in}
-The CDF is the one that answers questions of the form "how often is it worse than this?" --- which is every question a standard asks.
-:::
 
-## Reading Both at Once
+## CDF vs. PDF
 
 ```{julia}
 #| label: fig-pdf-cdf
@@ -150,56 +140,54 @@ The CDF is the one that answers questions of the form "how often is it worse tha
 #| code-fold: true
 
 example_dist = TDist(4)
-grid = -5:0.01:5
+x_values = -5:0.01:5
 level = 0.25
 cut = quantile(example_dist, level)
 
-p_cdf = plot(grid, cdf.(example_dist, grid), color=:black, linewidth=4,
-    xlabel=L"x", ylabel="Cumulative probability", legend=false)
-plot!(p_cdf, [-5, cut], [level, level], color=cb_vermillion, linewidth=3, linestyle=:dash)
-plot!(p_cdf, [cut, cut], [0, level], color=cb_vermillion, linewidth=3, linestyle=:dash)
-
-p_pdf = plot(grid, pdf.(example_dist, grid), color=:black, linewidth=4,
+p_pdf = plot(x_values, pdf.(example_dist, x_values), color=:black, linewidth=4,
     xlabel=L"x", ylabel="Density", legend=false)
 shaded = -5:0.01:cut
 plot!(p_pdf, shaded, pdf.(example_dist, shaded), fillrange=zeros(length(shaded)),
     fillalpha=0.35, color=cb_blue, linewidth=0)
 
-plot(p_cdf, p_pdf, layout=(1, 2), size=(1100, 400), left_margin=12mm,
-    right_margin=8mm, bottom_margin=12mm, top_margin=5mm)
+p_cdf = plot(x_values, cdf.(example_dist, x_values), color=:black, linewidth=4,
+    xlabel=L"x", ylabel="Cumulative probability", legend=false)
+plot!(p_cdf, [-5, cut], [level, level], color=cb_vermillion, linewidth=3, linestyle=:dash)
+plot!(p_cdf, [cut, cut], [0, level], color=cb_vermillion, linewidth=3, linestyle=:dash)
+
+plot(p_pdf, p_cdf, layout=(1, 2), size=(1200, 450), left_margin=10mm,
+    bottom_margin=10mm)
 ```
 
-## Quantiles Run It Backwards
+## Quantiles
 
 The **quantile function** is the inverse of the CDF:
 
 $$q(\alpha) = F^{-1}_\mathcal{D}(\alpha), \qquad\text{so}\qquad x_0 = q(\alpha) \iff \mathbb{P}(X < x_0) = \alpha.$$
 
-The CDF asks *"given a value, how much probability is below it?"* The quantile asks the same question from the other end: *"given a probability, what value sits there?"*
+- CDF: for a given $x_0$, what is $\mathcal{P}(X \leq x_0)$? 
+- Quantile: for a given $0 \leq \alpha \leq 1$, what value $x_0$ has $\mathcal{P}(X \leq x_0) = \alpha$?
 
 ## Expectation and Variance
 
-$$\mathbb{E}[X] = \int x f(x)\,dx \qquad\qquad \text{Var}(X) = \mathbb{E}\left[(X - \mathbb{E}[X])^2\right]$$
-
-The mean is where the distribution balances; the variance is how far it typically sits from there.
+$$\begin{aligned}
+\mathbb{E}[X] &= \int x f(x)\,dx \\ 
+\text{Var}(X) &= \mathbb{E}\left[(X - \mathbb{E}[X])^2\right]
+\end{aligned}$$
 
 ## The Average of a Function Is Not the Function of the Average
 
-Run the DO model once at the *mean* load and you get $h(\mathbb{E}[B_0])$.
+$$\mathbb{E}[h(B_0)] = h(\mathbb{E}[B_0])\ \text{if and only if}\ h\ \text{is linear}.$$
 
-What you actually want is $\mathbb{E}[h(B_0)]$ --- the average **outcome**, not the outcome at the average input.
-
-::: {.fragment .fade-in}
-**These are not the same** unless $h$ is linear, and the sag curve is not. This gap is the entire reason we are about to start sampling.
-:::
+**Which of these do we want**?
 
 # Probability Distributions
 
 ## Distributions Are Assumptions
 
-**Specifying a distribution is making an assumption about observations and any applicable constraints.**
+**Specifying a distribution is making an assumption about the probability model producing observations.**
 
-Examples: if your observations are...
+There are defaults. If your data is:
 
 - Continuous and fat-tailed? **Cauchy distribution**
 - Continuous and bounded? **Beta distribution**
@@ -249,27 +237,23 @@ plot!(p_tails, size=(550, 420), left_margin=10mm, bottom_margin=10mm)
 - What assumptions are justifiable? Think about tails, symmetry, skew.
 - What information do you actually have?
 
-::: {.fragment .fade-in}
-Example: if your data are counts of events, knowing something about **rates** points to a Poisson; knowing something about **probabilities** points to a Binomial.
-:::
-
 ## Choosing $B_0$'s Distribution
 
 For the CBOD load: not too far from a typical value, symmetric-ish, occasionally larger or smaller by a moderate amount, never negative in reality (though the Normal doesn't know that).
 
 $$B_0 \sim \mathcal{N}(9,\ 1.5^2)\ \text{mg/L}$$
 
-::: {.fragment .fade-in}
-That choice --- the mean, the spread, the shape --- is a modeling assumption you must be ready to defend, the same way you'd defend a choice of $\Delta t$.
-:::
+Perhaps use a truncated Normal to eliminate possibility of negatives.
 
-# Risk Language
+# Risk and Probabilities
 
 ## Standards Are Written as Probabilities
 
-Design and regulatory standards are almost never stated as "never fails." They are stated as frequencies.
+Design and regulatory standards are almost never stated as "never fails." They are usually stated as frequencies.
 
-> Levees in the United States are supposed to only fail once in 100 years --- or, equivalently, to have at most a 1% chance of failure in a given year.
+For example:
+
+Levees in the United States are supposed to only fail at "once in 100 years" --- or, equivalently, to have at most a **1% chance of failure in any given year**.
 
 ## Exceedance Probability
 
@@ -277,7 +261,7 @@ The probability that a quantity is **worse than** some threshold $x^*$:
 
 $$p = \mathbb{P}(X > x^*) = 1 - F_\mathcal{D}(x^*)$$
 
-It is the complement of the CDF --- the unshaded tail in the figure we just drew.
+It is the complement of the CDF.
 
 ## Return Periods
 
@@ -304,19 +288,13 @@ Better than one in four, over the life of the structure.
 - The distribution is **not changing** --- the same $F$ next decade as last.
 :::
 
-::: {.fragment .fade-in}
-Both assumptions are doing real work, and the second one is under strain wherever the climate is shifting.
-:::
-
 ## Where Would We Get $F$?
 
 Exceedance probability is $1 - F(x^*)$. That is easy when you know $F$.
 
-::: {.fragment .fade-in}
-For the DO model you do not. The minimum dissolved oxygen is the output of a simulation, and nobody hands you its distribution in closed form.
+For many systems, you do not. Outcomes of interest may be the output of a non-linear system with multiple inputs.
 
-**That is what Monte Carlo is for.**
-:::
+In that case, we need a simulation-based approach to estimate expectations or exceedance probabilities.
 
 # Monte Carlo Simulation
 
@@ -351,7 +329,7 @@ Sample $x^1, \ldots, x^N \sim f(x)$ and estimate
 $$\mathbb{E}_f[h(x)] = \int_{x\in X} h(x)f(x)\,dx \approx \frac{1}{N}\sum_{n=1}^N h(x^n)$$
 
 ::: {.fragment .fade-in}
-A probability is just a special case: $h(x) = \mathbb{1}[\text{event}]$, and the average becomes a frequency --- exactly what the DO question needs.
+A probability is just a special case: $h(x) = \mathbb{1}[\text{event}]$, and the average becomes a frequency.
 :::
 
 ## Example: Estimating $\pi$
@@ -365,37 +343,59 @@ $$\frac{\text{Area of Circle}}{\text{Area of Square}} = \frac{\pi}{4}$$
 ::: {.column width=50%}
 ```{julia}
 #| label: fig-mc-pi
-#| fig-cap: "Estimating π by Monte Carlo."
+#| fig-cap: "Points are revealed 100 at a time. Blue land inside the circle, vermillion outside, and the estimate settles toward π (dashed)."
 #| echo: true
 #| code-fold: true
 
-nsamp = 3000
-x = rand(Uniform(-1, 1), (nsamp, 2))
-in_circ = vec(sum(x .^ 2, dims=2)) .< 1
-pi_est = [4 * mean(in_circ[1:i]) for i in 1:nsamp]
+using Logging
 
-p_pts = scatter(x[in_circ, 1], x[in_circ, 2], color=cb_blue, markersize=3,
-    markerstrokewidth=0, xlims=(-1, 1), ylims=(-1, 1), aspect_ratio=1, legend=false)
-scatter!(p_pts, x[.!in_circ, 1], x[.!in_circ, 2], color=cb_vermillion, markersize=3,
-    markerstrokewidth=0)
-p_est = plot(pi_est, xlabel="Samples", ylabel="Estimate", color=:black, linewidth=2,
-    ylims=(2.8, 3.5))
-hline!(p_est, [π], color=cb_vermillion, linestyle=:dash, linewidth=2)
-plot(p_pts, p_est, layout=(1, 2), size=(1000, 420), left_margin=10mm,
-    bottom_margin=10mm)
+Random.seed!(4750)
+sample_count = 3000
+points = rand(Uniform(-1, 1), (sample_count, 2))
+inside = [points[i, 1]^2 + points[i, 2]^2 < 1 for i in 1:sample_count]
+running_estimate = [4 * mean(inside[1:i]) for i in 1:sample_count]
+
+circle_angles = range(0, 2π, length=500)
+batch_size = 100
+
+# Each frame redraws everything drawn so far, 100 more samples at a time.
+animation = @animate for shown_count in batch_size:batch_size:sample_count
+    shown_points = points[1:shown_count, :]
+    shown_inside = inside[1:shown_count]
+
+    p_square = plot(cos.(circle_angles), sin.(circle_angles), color=:black, linewidth=1,
+        xlims=(-1, 1), ylims=(-1, 1), xticks=[-1, 0, 1], yticks=[-1, 0, 1],
+        aspect_ratio=1, legend=false)
+    scatter!(p_square, shown_points[shown_inside, 1], shown_points[shown_inside, 2],
+        color=cb_blue, markershape=:x, markersize=3)
+    scatter!(p_square, shown_points[.!shown_inside, 1], shown_points[.!shown_inside, 2],
+        color=cb_vermillion, markershape=:x, markersize=3)
+
+    p_estimate = plot(1:shown_count, running_estimate[1:shown_count], color=:black,
+        linewidth=3, xlims=(1, sample_count), ylims=(2.8, 3.5), legend=false,
+        xlabel="Number of samples", ylabel="Estimate")
+    hline!(p_estimate, [π], color=cb_green, linestyle=:dash, linewidth=2)
+
+    plot(p_square, p_estimate, layout=grid(2, 1, heights=[3/4, 1/4]), size=(600, 550),
+        right_margin=8mm)
+end
+
+# gif() prints a "saved animation" message; this keeps it off the slide.
+Logging.disable_logging(Logging.Info)
+gif(animation, "figures/mc_pi.gif", fps=2)
 ```
 :::
 ::::
 
-# Is the Estimate Any Good?
+# How Uncertain is the Estimate?
 
-## The Estimate Is Itself Random
+## Monte Carlo Estimates Are Random
 
-The Monte Carlo mean $\tilde{\mu}_n = \frac{1}{n}\sum_{i=1}^n Y_i$ is a random variable --- rerun the sampling and you get a different number.
+$Y_i$ is a random sample, so  $\tilde{\mu}_n = \frac{1}{n}\sum_{i=1}^n Y_i$ is a random variable.
 
-So we should ask of it exactly what we would ask of any estimate: is it right on average, and does it get closer with effort?
+This raises the question: **on average**, how right or wrong is the estimate?
 
-## The Estimate Is Unbiased
+## MC Estimates Is Unbiased
 
 Provided the mean of $Y$ exists and its variance is finite,
 

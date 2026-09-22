@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.3">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-09-22">
+
+<title>Lab 1 Solutions – Environmental Systems Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../_assets/logos/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-037772e4b0a8fb61e9a28208dd0e90cd.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-41afc7412041501ec6863dfe70bda895.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<!-- MathJax 3 -->
+<script>
+window.MathJax = {
+    tex: {
+      tags: 'ams'
+    }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Lab 1 Solutions – Environmental Systems Analysis">
+<meta property="og:description" content="Homepage for the Fall 2026 version of BEE 4750/5750, Environmental Systems Analysis, at Cornell University.">
+<meta property="og:site_name" content="Environmental Systems Analysis">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">BEE 4750/5750</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-info" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Info</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-info">    
+        <li>
+    <a class="dropdown-item" href="../../syllabus.html">
+ <span class="dropdown-text">Syllabus</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../policies/index.html">
+ <span class="dropdown-text">Course Policies</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../faq/index.html">
+ <span class="dropdown-text">FAQ</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../setup/index.html">
+ <span class="dropdown-text">Setup</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../schedule.html"> 
+<span class="menu-text">Course Schedule</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-coursework" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Coursework</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-coursework">    
+        <li>
+    <a class="dropdown-item" href="../../labs/index.html">
+ <span class="dropdown-text">Labs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../hw/index.html">
+ <span class="dropdown-text">Homework</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../project/index.html">
+ <span class="dropdown-text">Final Project</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-resources" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Resources</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-resources">    
+        <li>
+    <a class="dropdown-item" href="../../tutorials/index.html">
+ <span class="dropdown-text">Tutorials</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/general.html">
+ <span class="dropdown-text">General Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/julia.html">
+ <span class="dropdown-text">Julia Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/ai.html">
+ <span class="dropdown-text">Generative AI and LLMs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/github.html">
+ <span class="dropdown-text">GitHub Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/markdown.html">
+ <span class="dropdown-text">Markdown Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/optimization.html">
+ <span class="dropdown-text">Optimization Resources</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/bee-envsys-cornell/fall2025"> 
+<span class="menu-text"><i class="fa-brands fa-github" aria-label="github"></i> GitHub</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://canvas.cornell.edu"> 
+<span class="menu-text"><i class="fa-regular fa-notebook" aria-label="notebook"></i> Canvas</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://edstem.org"> 
+<span class="menu-text"><i class="fa-regular fa-comments" aria-label="comments"></i> Ed</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://gradescope.com"> 
+<span class="menu-text"><i class="fa-regular fa-chart-simple" aria-label="chart-simple"></i> Gradescope</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#problem-1-discretize-and-implement" id="toc-problem-1-discretize-and-implement" class="nav-link" data-scroll-target="#problem-1-discretize-and-implement">Problem 1: Discretize and Implement</a>
+  <ul class="collapse">
+  <li><a href="#derivation" id="toc-derivation" class="nav-link" data-scroll-target="#derivation">Derivation</a></li>
+  <li><a href="#implementation" id="toc-implementation" class="nav-link" data-scroll-target="#implementation">Implementation</a></li>
+  </ul></li>
+  <li><a href="#problem-2-how-small-does-delta-t-need-to-be" id="toc-problem-2-how-small-does-delta-t-need-to-be" class="nav-link" data-scroll-target="#problem-2-how-small-does-delta-t-need-to-be">Problem 2: How Small Does <span class="math inline">\(\Delta t\)</span> Need to Be?</a>
+  <ul class="collapse">
+  <li><a href="#problem-2a-characteristic-timescale" id="toc-problem-2a-characteristic-timescale" class="nav-link" data-scroll-target="#problem-2a-characteristic-timescale">Problem 2a: Characteristic Timescale</a></li>
+  <li><a href="#problem-2b-convergence-results" id="toc-problem-2b-convergence-results" class="nav-link" data-scroll-target="#problem-2b-convergence-results">Problem 2b: Convergence Results</a></li>
+  </ul></li>
+  <li><a href="#problem-3-make-and-justify-a-recommendation" id="toc-problem-3-make-and-justify-a-recommendation" class="nav-link" data-scroll-target="#problem-3-make-and-justify-a-recommendation">Problem 3: Make and Justify a Recommendation</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/solutions/lab01/lab01.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="lab01.ipynb" download="lab01.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li><li><a href="lab01.pdf"><i class="bi bi-file-pdf"></i>Typst</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lab 1 Solutions</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 22, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Labs are graded 0–2 on effort toward demonstrated work, not on correctness. The notes in this key describe what a complete answer might look like.</p>
+</div>
+</div>
+</div>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<p>The model setup is as given in the lab.</p>
+<div id="4" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>landfill_params <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    k <span class="op">=</span> <span class="fl">0.15</span>            <span class="co"># generation-response rate            [1/yr]</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    L0 <span class="op">=</span> <span class="fl">100.0</span>          <span class="co"># methane generation potential        [m³ CH₄/Mg]</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    Wmax <span class="op">=</span> <span class="fl">1.0e5</span>        <span class="co"># waste acceptance rate while open    [Mg/yr]</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    active_life <span class="op">=</span> <span class="fl">20.0</span>  <span class="co"># years the landfill accepts waste    [yr]</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    (; k, L0, Wmax, active_life)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>T_total <span class="op">=</span> <span class="fl">40.0</span>   <span class="co"># total simulation horizon [yr]</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>G0 <span class="op">=</span> <span class="fl">0.0</span>         <span class="co"># initial gas generation rate [m³ CH₄/yr]</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Waste acceptance rate: constant while the landfill is open, zero after closure.</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">waste_rate</span>(t, p)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t <span class="op">&lt;</span> p.active_life</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> p.Wmax</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="fl">0.0</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="problem-1-discretize-and-implement" class="level2">
+<h2 class="anchored" data-anchor-id="problem-1-discretize-and-implement">Problem 1: Discretize and Implement</h2>
+<section id="derivation" class="level3">
+<h3 class="anchored" data-anchor-id="derivation">Derivation</h3>
+<p>Approximate the derivative at time <span class="math inline">\(t\)</span> with a forward difference over one step:</p>
+<p><span class="math display">\[\frac{dG}{dt} \approx \frac{G(t + \Delta t) - G(t)}{\Delta t}.\]</span></p>
+<p>Forward Euler evaluates the right-hand side at the <em>start</em> of the step, using what we already know at time <span class="math inline">\(t\)</span>:</p>
+<p><span class="math display">\[\frac{G(t + \Delta t) - G(t)}{\Delta t} = k\left(L_0 W(t) - G(t)\right).\]</span></p>
+<p>Solving for the unknown:</p>
+<p><span class="math display">\[G(t + \Delta t) = G(t) + \Delta t \, k\left(L_0 W(t) - G(t)\right).\]</span></p>
+<p>We can consolidate:</p>
+<p><span class="math display">\[G(t + \Delta t) = \left(1 - k\Delta t\right) G(t) + k\Delta t \, L_0 W(t).\]</span></p>
+<p>Each step blends the current gas generation rate with the rate the waste in place would eventually produce. <span class="math inline">\(L_0 W(t)\)</span>, and <span class="math inline">\(k\Delta t\)</span> determine the influence of new waste.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Evaluating <span class="math inline">\(W\)</span> or <span class="math inline">\(G\)</span> at <span class="math inline">\(t + \Delta t\)</span> on the right-hand side is wrong (that is no longer forward Euler). For forward Euler, the <strong>present state</strong> (at time <span class="math inline">\(t\)</span>) is what determines the update rule.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="implementation" class="level3">
+<h3 class="anchored" data-anchor-id="implementation">Implementation</h3>
+<p>The only line to fill in is the update, which is the derivation above written in code.</p>
+<div id="6" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">landfill_gas_rate</span>(G, t, p) <span class="op">=</span> p.k <span class="op">*</span> (p.L0 <span class="op">*</span> <span class="fu">waste_rate</span>(t, p) <span class="op">-</span> G)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">landfill_gas_simulate</span>(G_ic, T, Δt, p)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    steps <span class="op">=</span> <span class="fu">Int</span>(<span class="fu">round</span>(T <span class="op">/</span> Δt))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    G <span class="op">=</span> <span class="fu">zeros</span>(steps <span class="op">+</span> <span class="fl">1</span>)   <span class="co"># index 1 holds the initial condition</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    G[<span class="fl">1</span>] <span class="op">=</span> G_ic</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>steps</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        t <span class="op">=</span> (i <span class="op">-</span> <span class="fl">1</span>) <span class="op">*</span> Δt</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        G[i<span class="op">+</span><span class="fl">1</span>] <span class="op">=</span> G[i] <span class="op">+</span> Δt <span class="op">*</span> <span class="fu">landfill_gas_rate</span>(G[i], t, p)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> G</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The sanity check:</p>
+<div id="cell-fig-sanity" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Δt_check <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>G_check <span class="op">=</span> <span class="fu">landfill_gas_simulate</span>(G0, T_total, Δt_check, landfill_params)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>times_check <span class="op">=</span> <span class="fu">collect</span>(<span class="fl">0</span><span class="op">:</span><span class="fu">length</span>(G_check)<span class="op">-</span><span class="fl">1</span>) <span class="op">.*</span> Δt_check</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>p_check <span class="op">=</span> <span class="fu">plot</span>(times_check, G_check <span class="op">./</span> <span class="fl">1e6</span>, color<span class="op">=</span>cb_blue, legend<span class="op">=</span><span class="cn">false</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Time  [yr]"</span>, ylabel<span class="op">=</span><span class="st">"Gas generation  [million m³/yr]"</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">vline!</span>(p_check, [landfill_params.active_life], color<span class="op">=:</span>black, linewidth<span class="op">=</span><span class="fl">2</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=:</span>dash)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot!</span>(p_check, size<span class="op">=</span>(<span class="fl">900</span>, <span class="fl">380</span>), left_margin<span class="op">=</span><span class="fl">10</span>mm, bottom_margin<span class="op">=</span><span class="fl">10</span>mm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="fig-sanity" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="1">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sanity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<!--?xml version="1.0" encoding="utf-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="900" height="380" viewbox="0 0 3600 1520">
+<defs>
+  <clippath id="clip850">
+    <rect x="0" y="0" width="3600" height="1520"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip850)" d="M0 1520 L3600 1520 L3600 4.44089e-15 L0 4.44089e-15  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip851">
+    <rect x="720" y="0" width="2521" height="1520"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip850)" d="M325.379 1218.07 L3552.76 1218.07 L3552.76 47.2441 L325.379 47.2441  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip852">
+    <rect x="325" y="47" width="3228" height="1172"></rect>
+  </clippath>
+</defs>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="325.379,1218.07 3552.76,1218.07 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="325.379,47.2441 3552.76,47.2441 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="416.72,1218.07 416.72,1199.17 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1177.89,1218.07 1177.89,1199.17 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1939.07,1218.07 1939.07,1199.17 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2700.24,1218.07 2700.24,1199.17 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3461.42,1218.07 3461.42,1199.17 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="416.72,47.2441 416.72,66.1417 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1177.89,47.2441 1177.89,66.1417 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1939.07,47.2441 1939.07,66.1417 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2700.24,47.2441 2700.24,66.1417 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3461.42,47.2441 3461.42,66.1417 "></polyline>
+<g clip-path="url(#clip850)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 416.72, 1308.39)" x="416.72" y="1308.39">0</text>
+</g>
+<g clip-path="url(#clip850)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 1177.89, 1308.39)" x="1177.89" y="1308.39">10</text>
+</g>
+<g clip-path="url(#clip850)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 1939.07, 1308.39)" x="1939.07" y="1308.39">20</text>
+</g>
+<g clip-path="url(#clip850)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 2700.24, 1308.39)" x="2700.24" y="1308.39">30</text>
+</g>
+<g clip-path="url(#clip850)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 3461.42, 1308.39)" x="3461.42" y="1308.39">40</text>
+</g>
+<g clip-path="url(#clip850)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:75px; text-anchor:middle;" transform="rotate(0, 1939.07, 1418.6)" x="1939.07" y="1418.6">Time  [yr]</text>
+</g>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="325.379,1218.07 325.379,47.2441 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,1218.07 3552.76,47.2441 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="325.379,1184.93 344.277,1184.93 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="325.379,953.797 344.277,953.797 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="325.379,722.666 344.277,722.666 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="325.379,491.534 344.277,491.534 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="325.379,260.403 344.277,260.403 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,1184.93 3533.86,1184.93 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,953.797 3533.86,953.797 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,722.666 3533.86,722.666 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,491.534 3533.86,491.534 "></polyline>
+<polyline clip-path="url(#clip850)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,260.403 3533.86,260.403 "></polyline>
+<g clip-path="url(#clip850)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 254.212, 1208.93)" x="254.212" y="1208.93">0</text>
+</g>
+<g clip-path="url(#clip850)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 254.212, 977.797)" x="254.212" y="977.797">2</text>
+</g>
+<g clip-path="url(#clip850)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 254.212, 746.666)" x="254.212" y="746.666">4</text>
+</g>
+<g clip-path="url(#clip850)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 254.212, 515.534)" x="254.212" y="515.534">6</text>
+</g>
+<g clip-path="url(#clip850)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 254.212, 284.403)" x="254.212" y="284.403">8</text>
+</g>
+<g clip-path="url(#clip850)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:75px; text-anchor:middle;" transform="rotate(-90, 163.564, 632.655)" x="163.564" y="632.655">Gas generation  [million m³/yr]</text>
+</g>
+<polyline clip-path="url(#clip852)" style="stroke:#0072b2; stroke-linecap:round; stroke-linejoin:round; stroke-width:12; stroke-opacity:1; fill:none" points="416.72,1184.93 454.779,1098.25 492.838,1018.08 530.896,943.92 568.955,875.321 607.014,811.868 645.072,753.173 683.131,698.88 721.19,648.66 759.248,602.206 797.307,559.235 835.366,519.488 873.424,482.722 911.483,448.713 949.542,417.255 987.6,388.156 1025.66,361.24 1063.72,336.342 1101.78,313.312 1139.84,292.009 1177.89,272.304 1215.95,254.076 1254.01,237.216 1292.07,221.62 1330.13,207.194 1368.19,193.85 1406.25,181.506 1444.3,170.089 1482.36,159.527 1520.42,149.758 1558.48,140.722 1596.54,132.363 1634.6,124.631 1672.66,117.479 1710.72,110.864 1748.77,104.744 1786.83,99.0836 1824.89,93.8477 1862.95,89.0045 1901.01,84.5245 1939.07,80.3805 1977.13,163.222 2015.19,239.85 2053.24,310.731 2091.3,376.295 2129.36,436.943 2167.42,493.042 2205.48,544.933 2243.54,592.933 2281.6,637.333 2319.65,678.402 2357.71,716.392 2395.77,751.532 2433.83,784.037 2471.89,814.104 2509.95,841.916 2548.01,867.642 2586.07,891.438 2624.12,913.45 2662.18,933.811 2700.24,952.645 2738.3,970.066 2776.36,986.181 2814.42,1001.09 2852.48,1014.88 2890.53,1027.63 2928.59,1039.43 2966.65,1050.34 3004.71,1060.43 3042.77,1069.77 3080.83,1078.41 3118.89,1086.4 3156.95,1093.79 3195,1100.62 3233.06,1106.95 3271.12,1112.79 3309.18,1118.2 3347.24,1123.21 3385.3,1127.84 3423.36,1132.12 3461.42,1136.08 "></polyline>
+<polyline clip-path="url(#clip852)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:8; stroke-opacity:1; fill:none" stroke-dasharray="32, 20" points="1939.07,2388.89 1939.07,-1123.58 "></polyline>
+</svg>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sanity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Methane generation at a step of half a year. The dashed line marks closure.
+</figcaption>
+</figure>
+</div>
+</div>
+<p>This shape makes sense given what the model tells us. While the landfill is open (from <span class="math inline">\(t=0\)</span> to <span class="math inline">\(t=20\)</span>), <span class="math inline">\(G\)</span> rises quickly at first and then flattens as it approaches <span class="math inline">\(L_0 W_\text{max} =\)</span> 10,000,000 m<sup>3</sup> CH<sub>4</sub>/yr, the rate that constant waste acceptance would eventually support. It never gets there: by facility closure it has reached 96% of that level. The peak falls exactly at closure, because that is the moment the source switches off. After closure, <span class="math inline">\(G\)</span> decays exponentially on the same timescale it rose, down to 4% of the peak by year 40.</p>
+</section>
+</section>
+<section id="problem-2-how-small-does-delta-t-need-to-be" class="level2">
+<h2 class="anchored" data-anchor-id="problem-2-how-small-does-delta-t-need-to-be">Problem 2: How Small Does <span class="math inline">\(\Delta t\)</span> Need to Be?</h2>
+<section id="problem-2a-characteristic-timescale" class="level3">
+<h3 class="anchored" data-anchor-id="problem-2a-characteristic-timescale">Problem 2a: Characteristic Timescale</h3>
+<p>The model has one rate, <span class="math inline">\(k = 0.15\ \text{yr}^{-1}\)</span>, so the characteristic timescale is</p>
+<p><span class="math display">\[\frac{1}{k} = \frac{1}{0.15\ \text{yr}^{-1}} \approx 6.7\ \text{yr}\]</span></p>
+<p>The waste acceptance rate <span class="math inline">\(W(t)\)</span> is a forcing, not a rate. It switches off abruptly at closure, but <span class="math inline">\(G\)</span> still responds to that switch on the <span class="math inline">\(1/k\)</span> timescale.</p>
+<p>For a starting step, we might pick <span class="math inline">\(\Delta t = 0.5\)</span> yr. That is about thirteen steps per timescale, which is well inside it, and it divides 20 evenly, so a grid point lands exactly on closure. But any value reasonably below the timescale is defensible as a starting point.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Impact of choosing too large an initial step
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Look at the rearranged update rule from Problem 1. The weight on <span class="math inline">\(G(t)\)</span> is <span class="math inline">\(1 - k\Delta t\)</span>. Once <span class="math inline">\(\Delta t\)</span> exceeds <span class="math inline">\(1/k\)</span>, that weight is negative: after closure, each step flips the sign of <span class="math inline">\(G\)</span>, and the model reports <em>negative</em> gas generation, which is physically impossible. Beyond <span class="math inline">\(2/k \approx 13\)</span> yr the flips grow and the solution blows up. So <span class="math inline">\(1/k\)</span> is a hard ceiling on <span class="math inline">\(\Delta t\)</span>, and you usually want to pick something much smaller than that.</p>
+</div>
+</div>
+<div id="12" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>too_coarse <span class="op">=</span> <span class="fu">landfill_gas_simulate</span>(G0, T_total, <span class="fl">7.0</span>, landfill_params)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>most_negative <span class="op">=</span> <span class="fu">minimum</span>(too_coarse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>At <span class="math inline">\(\Delta t = 7\)</span> yr, just past the ceiling, the lowest value of <span class="math inline">\(G\)</span> is −500,062 m³ CH<sub>4</sub>/yr.</p>
+</section>
+<section id="problem-2b-convergence-results" class="level3">
+<h3 class="anchored" data-anchor-id="problem-2b-convergence-results">Problem 2b: Convergence Results</h3>
+<p>Let’s build the reference. A step of <span class="math inline">\(10^{-4}\)</span> yr is 400,000 steps, which still runs in a few milliseconds for this simple model.</p>
+<div id="16" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Δt_ref <span class="op">=</span> <span class="fl">1e-4</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>G_ref <span class="op">=</span> <span class="fu">landfill_gas_simulate</span>(G0, T_total, Δt_ref, landfill_params)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>peak_ref <span class="op">=</span> <span class="fu">maximum</span>(G_ref)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The reference peak is 9,502,141 m<sup>3</sup> CH<sub>4</sub>/yr.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Checking the Reference
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You did not have to do this, but here we can actually find an analytic solution to the maximum gas generation to compare the reference to (this is not possible in general). While the landfill is open, <span class="math inline">\(G(t) = L_0 W_\text{max}\left(1 - e^{-kt}\right)\)</span>, so the true peak at closure is</p>
+<p><span class="math display">\[L_0 W_\text{max}\left(1 - e^{-k \cdot 20}\right) = 10^7 \left(1 - e^{-3}\right),\]</span></p>
+<p>which is 9,502,129 m³ CH<sub>4</sub>/yr.</p>
+<p>The reference is off by 11 m³ CH<sub>4</sub>/yr, far smaller than any error in the table below, so it is safe to measure against. Again, if you don’t have an analytic solution, just pick something that seems very small.</p>
+</div>
+</div>
+<p>Starting from the Problem 2a estimate and halving four times:</p>
+<div id="18" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Δts <span class="op">=</span> [<span class="fl">0.5</span>, <span class="fl">0.25</span>, <span class="fl">0.125</span>, <span class="fl">0.0625</span>, <span class="fl">0.03125</span>]</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>peaks <span class="op">=</span> <span class="fu">zeros</span>(<span class="fu">length</span>(Δts))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>errs <span class="op">=</span> <span class="fu">zeros</span>(<span class="fu">length</span>(Δts))</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(Δts)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    G_test <span class="op">=</span> <span class="fu">landfill_gas_simulate</span>(G0, T_total, Δts[i], landfill_params)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    peaks[i] <span class="op">=</span> <span class="fu">maximum</span>(G_test)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    errs[i] <span class="op">=</span> <span class="fu">abs</span>(peaks[i] <span class="op">-</span> peak_ref)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>orders <span class="op">=</span> <span class="fu">zeros</span>(<span class="fu">length</span>(Δts) <span class="op">-</span> <span class="fl">1</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(Δts)<span class="op">-</span><span class="fl">1</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    orders[i] <span class="op">=</span> <span class="fu">log2</span>(errs[i] <span class="op">/</span> errs[i<span class="op">+</span><span class="fl">1</span>])</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;"><span class="math inline">\(\Delta t\)</span> [yr]</th>
+<th style="text-align: right;">Peak <span class="math inline">\(G\)</span> [m³ CH₄/yr]</th>
+<th style="text-align: right;">Error vs.&nbsp;reference</th>
+<th style="text-align: right;">Error improvement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">9,557,749</td>
+<td style="text-align: right;">55,608</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">9,530,042</td>
+<td style="text-align: right;">27,901</td>
+<td style="text-align: right;">0.99</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.125</td>
+<td style="text-align: right;">9,516,109</td>
+<td style="text-align: right;">13,969</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0625</td>
+<td style="text-align: right;">9,509,125</td>
+<td style="text-align: right;">6,985</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.03125</td>
+<td style="text-align: right;">9,505,629</td>
+<td style="text-align: right;">3,488</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+</tbody>
+</table>
+<div id="cell-fig-convergence" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>error_ticks <span class="op">=</span> [<span class="fl">5e3</span>, <span class="fl">1e4</span>, <span class="fl">2e4</span>, <span class="fl">5e4</span>]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>p_conv <span class="op">=</span> <span class="fu">plot</span>(Δts, errs, xscale<span class="op">=:</span>log10, yscale<span class="op">=:</span>log10, markershape<span class="op">=:</span>circle,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    markersize<span class="op">=</span><span class="fl">7</span>, color<span class="op">=</span>cb_vermillion, label<span class="op">=</span><span class="st">"forward Euler"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    xticks<span class="op">=</span>(Δts, <span class="fu">string</span>.(Δts)), yticks<span class="op">=</span>(error_ticks, <span class="fu">with_commas</span>.(error_ticks)),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Δt  [yr]"</span>, ylabel<span class="op">=</span><span class="st">"Error in peak  [m³/yr]"</span>, legend<span class="op">=:</span>bottomright)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Slope-1 reference: errors parallel to it mean a first-order method.</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot!</span>(p_conv, Δts, errs[<span class="fl">1</span>] <span class="op">.*</span> (Δts <span class="op">./</span> Δts[<span class="fl">1</span>]), color<span class="op">=:</span>black, linewidth<span class="op">=</span><span class="fl">2</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=:</span>dash, label<span class="op">=</span><span class="st">"slope 1"</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot!</span>(p_conv, size<span class="op">=</span>(<span class="fl">900</span>, <span class="fl">400</span>), left_margin<span class="op">=</span><span class="fl">12</span>mm, bottom_margin<span class="op">=</span><span class="fl">10</span>mm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="fig-convergence" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="1">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-convergence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<!--?xml version="1.0" encoding="utf-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="900" height="400" viewbox="0 0 3600 1600">
+<defs>
+  <clippath id="clip910">
+    <rect x="0" y="0" width="3600" height="1600"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip910)" d="M0 1600 L3600 1600 L3600 8.88178e-14 L0 8.88178e-14  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip911">
+    <rect x="720" y="0" width="2521" height="1600"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip910)" d="M513.204 1293.78 L3552.76 1293.78 L3552.76 47.2441 L513.204 47.2441  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip912">
+    <rect x="513" y="47" width="3041" height="1248"></rect>
+  </clippath>
+</defs>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="513.204,1293.78 3552.76,1293.78 "></polyline>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="513.204,47.2441 3552.76,47.2441 "></polyline>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3466.73,1293.78 3466.73,1274.88 "></polyline>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2749.86,1293.78 2749.86,1274.88 "></polyline>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2032.98,1293.78 2032.98,1274.88 "></polyline>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1316.1,1293.78 1316.1,1274.88 "></polyline>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="599.229,1293.78 599.229,1274.88 "></polyline>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3466.73,47.2441 3466.73,66.1417 "></polyline>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2749.86,47.2441 2749.86,66.1417 "></polyline>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2032.98,47.2441 2032.98,66.1417 "></polyline>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1316.1,47.2441 1316.1,66.1417 "></polyline>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="599.229,47.2441 599.229,66.1417 "></polyline>
+<g clip-path="url(#clip910)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 3466.73, 1384.11)" x="3466.73" y="1384.11">0.5</text>
+</g>
+<g clip-path="url(#clip910)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 2749.86, 1384.11)" x="2749.86" y="1384.11">0.25</text>
+</g>
+<g clip-path="url(#clip910)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 2032.98, 1384.11)" x="2032.98" y="1384.11">0.125</text>
+</g>
+<g clip-path="url(#clip910)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 1316.1, 1384.11)" x="1316.1" y="1384.11">0.0625</text>
+</g>
+<g clip-path="url(#clip910)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 599.229, 1384.11)" x="599.229" y="1384.11">0.03125</text>
+</g>
+<g clip-path="url(#clip910)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:75px; text-anchor:middle;" transform="rotate(0, 2032.98, 1494.31)" x="2032.98" y="1494.31">Δt  [yr]</text>
+</g>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="513.204,1293.78 513.204,47.2441 "></polyline>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,1293.78 3552.76,47.2441 "></polyline>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="513.204,1104.24 532.101,1104.24 "></polyline>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="513.204,810.244 532.101,810.244 "></polyline>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="513.204,516.25 532.101,516.25 "></polyline>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="513.204,127.611 532.101,127.611 "></polyline>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,1104.24 3533.86,1104.24 "></polyline>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,810.244 3533.86,810.244 "></polyline>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,516.25 3533.86,516.25 "></polyline>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,127.611 3533.86,127.611 "></polyline>
+<g clip-path="url(#clip910)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 381.949, 1128.24)" x="381.949" y="1128.24">5,000</text>
+</g>
+<g clip-path="url(#clip910)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 364.782, 834.244)" x="364.782" y="834.244">10,000</text>
+</g>
+<g clip-path="url(#clip910)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 364.782, 540.25)" x="364.782" y="540.25">20,000</text>
+</g>
+<g clip-path="url(#clip910)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 364.782, 151.611)" x="364.782" y="151.611">50,000</text>
+</g>
+<g clip-path="url(#clip910)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:75px; text-anchor:middle;" transform="rotate(-90, 196.879, 670.511)" x="196.879" y="670.511">Error in peak  [m³/yr]</text>
+</g>
+<polyline clip-path="url(#clip912)" style="stroke:#d55e00; stroke-linecap:round; stroke-linejoin:round; stroke-width:12; stroke-opacity:1; fill:none" points="3466.73,82.5233 2749.86,375.033 2032.98,668.474 1316.1,962.462 599.229,1256.97 "></polyline>
+<circle clip-path="url(#clip912)" cx="3466.73" cy="82.5233" r="25.2" fill="#d55e00" fill-rule="evenodd" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="3.2"></circle>
+<circle clip-path="url(#clip912)" cx="2749.86" cy="375.033" r="25.2" fill="#d55e00" fill-rule="evenodd" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="3.2"></circle>
+<circle clip-path="url(#clip912)" cx="2032.98" cy="668.474" r="25.2" fill="#d55e00" fill-rule="evenodd" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="3.2"></circle>
+<circle clip-path="url(#clip912)" cx="1316.1" cy="962.462" r="25.2" fill="#d55e00" fill-rule="evenodd" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="3.2"></circle>
+<circle clip-path="url(#clip912)" cx="599.229" cy="1256.97" r="25.2" fill="#d55e00" fill-rule="evenodd" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="3.2"></circle>
+<polyline clip-path="url(#clip912)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:8; stroke-opacity:1; fill:none" stroke-dasharray="32, 20" points="3466.73,82.5233 2749.86,376.517 2032.98,670.511 1316.1,964.505 599.229,1258.5 "></polyline>
+<path clip-path="url(#clip910)" d="M2718.77 1252.23 L3451.44 1252.23 L3451.44 1027.06 L2718.77 1027.06  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2718.77,1252.23 3451.44,1252.23 3451.44,1027.06 2718.77,1027.06 2718.77,1252.23 "></polyline>
+<polyline clip-path="url(#clip910)" style="stroke:#d55e00; stroke-linecap:round; stroke-linejoin:round; stroke-width:16.5; stroke-opacity:1; fill:none" points="2752.55,1102.11 2955.18,1102.11 "></polyline>
+<circle clip-path="url(#clip910)" cx="2853.86" cy="1102.11" r="19.4384" fill="#d55e00" fill-rule="evenodd" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="3.75467"></circle>
+<g clip-path="url(#clip910)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:start;" transform="rotate(0, 2988.95, 1126.11)" x="2988.95" y="1126.11">forward Euler</text>
+</g>
+<polyline clip-path="url(#clip910)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:11; stroke-opacity:1; fill:none" stroke-dasharray="44, 28" points="2752.55,1177.17 2955.18,1177.17 "></polyline>
+<g clip-path="url(#clip910)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:start;" transform="rotate(0, 2988.95, 1201.17)" x="2988.95" y="1201.17">slope 1</text>
+</g>
+</svg>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-convergence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Error in the peak methane generation rate against step size, on log-log axes.
+</figcaption>
+</figure>
+</div>
+</div>
+<p>The error halves every time <span class="math inline">\(\Delta t\)</span> halves: each improvement is close to 1, and the errors run parallel to the slope-1 line. That is first-order convergence, which is what the Taylor argument predicts. Forward Euler keeps the first two terms of <span class="math inline">\(G(t + \Delta t) = G(t) + \Delta t \, G'(t) + \frac{1}{2}\Delta t^2 G''(t) + \cdots\)</span>, so each step commits an error proportional to <span class="math inline">\(\Delta t^2\)</span>. Reaching closure takes <span class="math inline">\(20/\Delta t\)</span> steps, and <span class="math inline">\(20/\Delta t\)</span> errors of size <span class="math inline">\(\Delta t^2\)</span> add up to an error proportional to <span class="math inline">\(\Delta t\)</span>.</p>
+<p>The errors also all have the same sign: forward Euler <em>over</em>-predicts the peak at every step size. While the landfill fills, <span class="math inline">\(dG/dt\)</span> shrinks over each step as <span class="math inline">\(G\)</span> climbs toward <span class="math inline">\(L_0 W_\text{max}\)</span>. Forward Euler uses the rate from the start of the step, when it is largest, so it overshoots a little on every step.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Some Pathologies Unrelated to Coding
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You might see the following, but these are not code errors:</p>
+<ul>
+<li><strong>Improvements that wobble around 1.</strong> If you start from <span class="math inline">\(1/(10k)\)</span> and rounded it to 0.67 yr get a sequence whose grid points never land on closure. The step that straddles year 20 keeps adding waste for part of a step, and that fraction changes irregularly as <span class="math inline">\(\Delta t\)</span> halves. Starting from 0.67, the improvements run 0.87, 0.77, 1.30, 0.84, while the slope across the whole sequence is 0.95. This is still first order.</li>
+<li><strong>Improvements that creep above 1 at the fine end.</strong> This one <em>is</em> a problem, with the reference rather than the method: <span class="math inline">\(\Delta t_\text{ref}\)</span> was not much finer than the finest test step. The reference carries an error of the same sign, so the measured errors shrink faster than the true ones. With <span class="math inline">\(\Delta t_\text{ref} = 0.01\)</span> yr and the step sizes above, the improvements run 1.02, 1.06, 1.13, 1.30. The fix is a finer reference.</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="problem-3-make-and-justify-a-recommendation" class="level2">
+<h2 class="anchored" data-anchor-id="problem-3-make-and-justify-a-recommendation">Problem 3: Make and Justify a Recommendation</h2>
+<p>From this analysis, we might recommend using <span class="math inline">\(\Delta t = 0.25\)</span> yr, a quarterly step.</p>
+<p>Other step sizes are equally defensible. Even an annual step puts the peak only 1.2% high, which is a real feature of this model: a timescale of nearly seven years is forgiving.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/envsys\.viveks\.me\/fall2025");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><span class="faux-block"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> 2025 Vivek Srikrishnan</span><br> See the <a href="../../about.html">About Page</a> for credit information.</p>
+</div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">LICENSE: CC-BY-SA  <i class="fab fa-creative-commons"></i><i class="fab fa-creative-commons-by"></i><i class="fab fa-creative-commons-sa"></i></a>
+  </li>  
+</ul>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/solutions/lab01/lab01.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Made with <a href="https://julialang.org">Julia</a> and <a href="https://quarto.org/">Quarto</a><br> <a href="https://www.github.com/bee-envsys-cornell/fall2026/">View the source at <i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
