@@ -530,6 +530,158 @@ For any given experiment, the "true value" is either in or out of the constructe
 
 **The idea**: if you repeated this whole experiment many times, about 95% of the intervals you'd construct would contain the true value.
 
+## Example: 95% CIs for N(0.4, 2)
+
+```{julia}
+#| label: fig-cis
+#| code-fold: true
+#| code-overflow: wrap
+#| echo: true
+#| layout-ncol: 2
+#| fig-cap: "Display of 95% confidence intervals"
+#| fig-subcap: 
+#|  - "Sample Size 100"
+#|  - "Sample Size 1,000"
+
+# set up distribution
+mean_true = 0.4
+n_cis = 100 # number of CIs to compute
+dist = Normal(mean_true, 2)
+
+# use sample size of 100
+samples = rand(dist, (100, n_cis))
+# mapslices broadcasts over a matrix dimension, could also use a loop
+sample_means = mapslices(mean, samples; dims=1)
+sample_sd = mapslices(std, samples; dims=1) 
+mc_sd = 1.96 * sample_sd / sqrt(100)
+mc_ci = zeros(n_cis, 2) # preallocate
+for i = 1:n_cis
+    mc_ci[i, 1] = sample_means[i] - mc_sd[i]
+    mc_ci[i, 2] = sample_means[i] + mc_sd[i]
+end
+# find which CIs contain the true value
+ci_true = (mc_ci[:, 1] .< mean_true) .&& (mc_ci[:, 2] .> mean_true)
+# compute percentage of CIs which contain the true value
+ci_frac1 = 100 * sum(ci_true) ./ n_cis
+
+# plot CIs
+p1 = plot([mc_ci[1, :]], [1, 1], linewidth=3, color=:deepskyblue, label="95% Confidence Interval", title="Sample Size 100", yticks=:false, legend=:false)
+for i = 2:n_cis
+    if ci_true[i]
+        plot!(p1, [mc_ci[i, :]], [i, i], linewidth=2, color=:deepskyblue, label=:false)
+    else
+        plot!(p1, [mc_ci[i, :]], [i, i], linewidth=2, color=:red, label=:false)
+    end
+end
+vline!(p1, [mean_true], color=:black, linewidth=2, linestyle=:dash, label="True Value") # plot true value as a vertical line
+xaxis!(p1, "Estimate")
+plot!(p1, size=(500, 350)) # resize to fit slide
+
+# use sample size of 1000
+samples = rand(dist, (1000, n_cis))
+# mapslices broadcasts over a matrix dimension, could also use a loop
+sample_means = mapslices(mean, samples; dims=1)
+sample_sd = mapslices(std, samples; dims=1) 
+mc_sd = 1.96 * sample_sd / sqrt(1000)
+mc_ci = zeros(n_cis, 2) # preallocate
+for i = 1:n_cis
+    mc_ci[i, 1] = sample_means[i] - mc_sd[i]
+    mc_ci[i, 2] = sample_means[i] + mc_sd[i]
+end
+# find which CIs contain the true value
+ci_true = (mc_ci[:, 1] .< mean_true) .&& (mc_ci[:, 2] .> mean_true)
+# compute percentage of CIs which contain the true value
+ci_frac2 = 100 * sum(ci_true) ./ n_cis
+
+# plot CIs
+p2 = plot([mc_ci[1, :]], [1, 1], linewidth=3, color=:deepskyblue, label="95% Confidence Interval", title="Sample Size 1,000", yticks=:false, legend=:false)
+for i = 2:n_cis
+    if ci_true[i]
+        plot!(p2, [mc_ci[i, :]], [i, i], linewidth=2, color=:deepskyblue, label=:false)
+    else
+        plot!(p2, [mc_ci[i, :]], [i, i], linewidth=2, color=:red, label=:false)
+    end
+end
+vline!(p2, [mean_true], color=:black, linewidth=2, linestyle=:dash, label="True Value") # plot true value as a vertical line
+xaxis!(p2, "Estimate")
+plot!(p2, size=(500, 350)) # resize to fit slide
+
+display(p1)
+display(p2)
+```
+
+`{julia} Int64(round(ci_frac1))`% of the CIs contain the true value (left) vs. `{julia} Int64(round(ci_frac2))`% (right)
+
+
+## MC Example: Dice
+
+What is the probability of rolling 4 dice for a total of 19?
+
+::: {.fragment .fade-in}
+```{julia}
+#| echo: true
+#| output: false
+#| code-line-numbers: "|14-17|18-20|22-25"
+
+function dice_roll_repeated(n_trials, n_dice)
+    dice_dist = DiscreteUniform(1, 6) 
+	roll_results = zeros(n_trials)
+	for i=1:n_trials
+		roll_results[i] = sum(rand(dice_dist, n_dice))
+	end
+	return roll_results
+end
+
+nsamp = 10_000
+# roll four dice 10,000 times
+rolls = dice_roll_repeated(nsamp, 4) 
+
+# initialize storage for frequencies by sample length
+avg_freq = zeros(length(rolls)) 
+# initialize storage for standard error of estimate
+std_freq = zeros(length(rolls))
+# compute average frequencies of 19
+avg_freq[1] = (rolls[1] == 19)
+std_freq[1] = 0 # no standard error for the first sample
+
+for i in 2:length(rolls)
+    avg_freq[i] = (avg_freq[i-1] * (i-1) + (rolls[i] == 19)) / i
+    std_freq[i] = std(rolls[1:i] .== 19) / sqrt(i)
+end
+```
+:::
+
+## MC Example: Dice
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+plt = plot(
+    avg_freq, ribbon=1.96 * std_freq,
+    xlim = (1, nsamp),
+    ylim = (0, 0.1),
+    legend = :false,
+    xlabel="Iteration",
+    ylabel="Estimate",
+    left_margin=10mm,
+    bottom_margin=10mm,
+    right_margin=10mm,
+    color=:black,
+    linewidth=3
+)
+plot!(size=(1200, 500))
+
+hline!(plt, [0.0432], color="red", 
+    linestyle=:dash) 
+
+```
+
+## MC Example: Dice
+
+After 10,000 iterations, the 95% confidence interval for the MC estimate is `{julia} round(100 * avg_freq[end]; digits=1)` $\pm$ `{julia} round(196 * std_freq[end]; digits=1)`%.
+
+**Is this good enough? Should we keep going?**
 
 # Key Takeaways and Upcoming Schedule
 
