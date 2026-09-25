@@ -383,9 +383,9 @@ println("C(3 km, 0, 0) = ", round(Cground * 1e6, digits=1), " µg/m³")
 
 ## Assessments
 
-**Homework 4**: Assigned today, due Thursday, October 8.
+**Homework 4**: Due Thursday, October 8.
 
-**Mini-Project 1**: Also due Thursday, October 8.
+**Mini-Project 1**: Due Thursday, October 22.
 
 # References
 

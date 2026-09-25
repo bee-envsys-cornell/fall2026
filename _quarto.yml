@@ -47,6 +47,7 @@ website:
         menu:
           - labs/index.qmd
           - hw/index.qmd
+          - mini-project/index.qmd
           - project/index.qmd
       - text: "Resources"
         menu:
@@ -122,6 +123,17 @@ website:
           text: "Homework 2"      
         - href: hw/hw03/hw03.qmd
           text: "Homework 3"       
+        - href: hw/hw04/hw04.qmd
+          text: "Homework 4"
+    - title: "Mini-Projects"
+      style: docked
+      search: false
+      background: "#f7f7f7"
+      contents:
+        - href: mini-project/index.qmd
+          text: "Mini-Project Overview"
+        - href: mini-project/mp01/mp01.qmd
+          text: Mini-Project 1
     - title: "Project"
       style: docked
       search: false

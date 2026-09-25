@@ -14,3 +14,11 @@
 	path = labs/lab01
 	url = https://github.com/bee-envsys-cornell/lab01
 	branch = Fall26
+[submodule "hw/hw04"]
+	path = hw/hw04
+	url = https://github.com/bee-envsys-cornell/hw04
+	branch = Fall26
+[submodule "mini-project/mp01"]
+	path = mini-project/mp01
+	url = https://github.com/bee-envsys-cornell/mp01
+	branch = Fall26

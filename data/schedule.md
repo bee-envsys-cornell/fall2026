@@ -39,9 +39,9 @@ change named · **New** — nothing exists, build from scratch.
 |:--:|:--|:--|:--|:--|:--|
 | 4 | Wed Sep 16 | Dissolved Oxygen and Streeter-Phelps | `lecture04-2-streeter-phelps` | Ready | HW3 |
 | 5 | Mon Sep 21 | **Lab: Convergence and Discretization** | `labs/lab01` (Fall26 branch) | Ready | Lab 1 |
-| 5 | Wed Sep 23 | Uncertainty, Probability, and Monte Carlo | `lecture05-2-monte-carlo-foundations` | Ready | MP1 assigned |
+| 5 | Wed Sep 23 | Uncertainty, Probability, and Monte Carlo | `lecture05-2-monte-carlo-foundations` | Ready | MP1 assigned · HW4 released Sep 25 |
 | 6 | Mon Sep 28 | Monte Carlo: Applying It, Justifying It | `lecture06-1-monte-carlo-inference` | Ready | |
-| 6 | Wed Sep 30 | Gaussian Plumes: Deriving the Model | `lecture06-2-plume-derivation` | Ready | HW4 · **Quiz 2** |
+| 6 | Wed Sep 30 | Gaussian Plumes: Deriving the Model | `lecture06-2-plume-derivation` | Ready | **Quiz 2** |
 | 7 | Mon Oct 5 | Gaussian Plumes: Footprints and Flexibility | `lecture07-1-plume-analytics` | Revise — add the three views and a light grid introduction; move the puff material to Oct 7 | |
 | 7 | Wed Oct 7 | **Model Validation** | `lecture07-2-model-validation` | **Written** — ported from the FA25 validation section of `lecture05-1-dissolved-oxygen-2`, extended | HW5 |
 | 8 | Mon Oct 12 | *No class — Fall Break* | | | |
@@ -55,7 +55,7 @@ change named · **New** — nothing exists, build from scratch.
 | 12 | Mon Nov 9 | Solid Waste and Network Models — *sub* | `lecture12-1-waste-management` | Reuse — make sub-ready | HW9 |
 | 12 | Wed Nov 11 | Unit Commitment — *sub (power systems expert)* | `lecture11-2-unit-commitment` | Revise — FA24 to FA26; the canonical MIP application, reinforcing Nov 4 | |
 | 13 | Mon Nov 16 | Stochastic Optimization and Scenario Trees | `lecture13-1-stochastic-optimization` | Reuse | **Quiz 5** |
-| 13 | Wed Nov 18 | Sequential Decisions and Dynamic Programming | *nothing exists* | **New** | MP3 assigned |
+| 13 | Wed Nov 18 | Sequential Decisions and Dynamic Programming | *nothing exists* | **New** | |
 | 14 | Mon Nov 23 | **Lab: Scenario Trees and Sequential Decisions** | *nothing exists* | **New** — reservoir operations under hydroclimatic uncertainty | Lab 3 |
 | 14 | Wed Nov 25 | *No class — Thanksgiving* | | | |
 | 15 | Mon Nov 30 | Sensitivity, Robustness, and Multiple Objectives | `lecture13-2` (MOO half) + `lecture14-1-sensitivity-analysis` | Revise — merge 2→1 | |
@@ -125,23 +125,24 @@ Thursdays 9pm. Nine homeworks total, inside the syllabus's 8–10, one dropped.
 
 | HW | Assign | Due | Topic | By-hand | Computational (light) |
 |:--|:--|:--|:--|:--|:--|
-| 4 | Wed Sep 30 | Thu Oct 8 | Monte Carlo, uncertainty & risk | Expectation/variance of a function of a random variable; why MC error scales as σ/√n and the samples a target precision needs; exceedance probability and return periods; aleatory vs. epistemic | Propagate parameter uncertainty through the HW3 model; CI on one decision-relevant quantity plus an *n*-convergence plot |
+| 4 | Fri Sep 25 | Thu Oct 8 | Monte Carlo, uncertainty & risk | Expectation/variance of a function of a random variable; why MC error scales as σ/√n and the samples a target precision needs; exceedance probability and return periods; aleatory vs. epistemic | Propagate parameter uncertainty through the HW3 model; CI on one decision-relevant quantity plus an *n*-convergence plot |
 | 5 | Wed Oct 7 | Thu Oct 15 | Gaussian plumes & model validation | Evaluate the plume equation at a receptor; stability class and wind speed effects; where the max ground-level concentration occurs; what a goodness-of-fit metric is blind to | Evaluate the plume on a coarse grid, locate the max, and score it against observations |
 | 6 | Wed Oct 14 | Thu Oct 22 | Decision models & linear programming | Formulate from a word problem: decision variables with units and bounds, objective, constraints; standard form; solve a 2-variable LP graphically | None required |
 | 7 | Wed Oct 21 | Thu Oct 29 | Duality, shadow prices & first JuMP | Identify binding constraints; interpret shadow prices with units; decide whether to buy capacity given a shadow price; what a zero shadow price implies | Solve the *same* LP in JuMP, extract duals, confirm they match the hand answer |
 | 8 | Wed Nov 4 | Thu Nov 12 | Mixed integer programming | Model a fixed cost, an either/or, and an indicator with binaries; why the LP relaxation bounds; trace 2–3 branch-and-bound nodes | Solve a small MIP; compare to its LP relaxation |
 | 9 | Mon Nov 9 | Thu Nov 19 | Network models & waste allocation | Set up a small facility-allocation network; flow-conservation and capacity constraints; siting indicators | Solve the instance; interpret which facilities open |
 
-**Design notes.** HW4 deliberately echoes HW3, putting deterministic truncation error in Δt beside
+**Design notes.** HW4 was released early (Fri Sep 25, not Wed Sep 30) so its Problem 1 is practice for Quiz 2's Monte Carlo and probability items; 1.2 and 2.2 wait on Monday's confidence intervals. HW4 deliberately echoes HW3, putting deterministic truncation error in Δt beside
 statistical error in *n*. HW6's graphical-LP question should match Quiz 4's format so the homework is
 real practice. HW7 asks for the hand answer *before* the JuMP check. Weeks 13–16 carry no new
-homework — MP3, the project update (Nov 13), presentations (Dec 8), and the report (Dec 20) fill it.
+homework — the term project fills them: update (Nov 13), presentations (Dec 8), report (Dec 20).
+
+**Two mini-projects, not three** (decided Sep 23), each worth 10% and scoped to a short report so it reads as a project rather than a heavier homework. MP1 runs four weeks because Fall Break and the proposal fall inside it; MP2 runs three, opening with the dispatch lecture it depends on. MP3 is dropped; Lab 3 stands on its own.
 
 | MP | Assign | Due | Topic |
 |:--|:--|:--|:--|
-| 1 | Wed Sep 23 | Thu Oct 8 | **Simulating DO with multiple effluents** — extend Streeter-Phelps to several discharges, resolve the discretization, identify the critical point and compliance |
-| 2 | Wed Oct 28 | Thu Nov 12 | **Capacity expansion under a CO₂ constraint** — NYISO demand and capacity-factor data. Repurposes `hw/hw04` essentially as-is |
-| 3 | Wed Nov 18 | Thu Dec 3 | **Reservoir operations under hydroclimatic uncertainty** — scenario trees and sequential decisions; scaffolded by Lab 3 |
+| 1 | Wed Sep 23 | Thu Oct 22 | **Simulating DO with multiple effluents** — three effluents and a tapered sludge bed; justify the spatial step, check four candidate treatment plans against the standard, propagate an uncertain load by Monte Carlo, and recommend a plan. Adds the sludge bed's share of the problem and one-step treatment upgrades. Four weeks at a 4-page report scope, so it runs lighter per week than a homework |
+| 2 | Wed Oct 28 | Thu Nov 19 | **Electricity dispatch with a carbon tax** — multi-period economic dispatch of an existing fleet (NYISO-style demand and wind/solar capacity factors, ramping limits), hourly prices from the demand-constraint duals, and a carbon-tax sweep to find where coal and gas switch. Final part (after the Nov 2 lecture): add build decisions, impose a CO₂ cap, and show a tax at the cap's shadow price gives the same result. Pure LP. Reuses the FA25 `hw/hw04` data |
 
 ---
 
@@ -152,7 +153,7 @@ homework — MP3, the project update (Nov 13), presentations (Dec 8), and the re
 - **Sequential decisions & dynamic programming** lecture (Nov 18) — no deck exists
 - **Lab 3**, scenario trees + sequential decisions / reservoir operations (Nov 23)
 - Quiz questions for plumes, validation, MIP, networks, scenario trees, DP — none have exam precedent
-- **Every homework from HW4 on**, and all three mini-projects (no `mini-project/` directory exists)
+- **Every homework from HW4 on**, and both mini-projects (MP1 is drafted in `mini-project/mp01`; MP2 does not exist yet)
 
 **Major revision**
 - Split `lecture09-1-capacity-expansion.qmd`: shadow-price half + JuMP intro → Oct 21; capacity half

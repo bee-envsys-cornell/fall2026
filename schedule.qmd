@@ -3,23 +3,25 @@ title: "Course Schedule"
 format:
     html:
         page-layout: article
-tbl-colwidths: [3, 5, 12, 3, 3, 3, 3, 10]
+tbl-colwidths: [3, 5, 12, 3, 3, 3, 3, 3, 10]
 citation-location: document
 ---
 
 This page contains a schedule of the topics, content, and assignments for the semester.
 Note that this schedule will be updated as necessary the semester progresses, with all changes documented here. Readings requiring institutional subscriptions can be accessed through the [Cornell Library](https://www.library.cornell.edu/).
 
-| Week | Date        | Topic | Slides | Lab | HW | Quiz | Reading |
-|:-----:|:------------|:------|:------:|:--:|:---:|:-------:|:------:|
-| 1 |   Aug 24  | Course Overview | [{{< fa sharp presentation-screen >}}](slides/lecture01-1-intro.qmd) |  | [{{< fa sharp file-pen >}}](hw/hw01/hw01.qmd)  |  | |
-|   |   Aug 26 | Intro to Systems | [{{< fa sharp presentation-screen >}}](slides/lecture01-2-systems-intro.qmd)  |  |  |  | |
-| 2 |   Aug 31 | Feedbacks & Equilibria | [{{< fa sharp presentation-screen >}}](slides/lecture02-1-dynamics-feedbacks.qmd) | |  | |  |
-|   |   Sep 2  | Stability & Examples | [{{< fa sharp presentation-screen >}}](slides/lecture02-2-stability-examples.qmd) | | [{{< fa sharp file-pen >}}](hw/hw02/hw02.qmd)  | | | 
-| 3 |   Sep 7  | **No Class: Labor Day** | | | | | |
-|   |   Sep 9   | Bifurcations and Hysteresis | [{{< fa sharp presentation-screen >}}](slides/lecture03-2-lake-hysteresis.qmd) | | | Quiz 1 |  @Carpenter1999-wx |
-| 4  |   Sep 14   | Simulation and Discretization | [{{< fa sharp presentation-screen >}}](slides/lecture04-1-simulation-discretization.qmd) | | | |  |
-|   |   Sep 16   | Dissolved Oxygen and Streeter-Phelps | [{{< fa sharp presentation-screen >}}](slides/lecture04-2-streeter-phelps.qmd) | | [{{< fa sharp file-pen >}}](hw/hw03/hw03.qmd) | |  |
-| 5  |   Sep 21   | Discretization & Convergence Lab |  | [{{< fa laptop >}}](labs/lab01/lab01.qmd) |  | |  |
-|   |   Sep 23   | Monte Carlo Foundations | [{{< fa sharp presentation-screen >}}](slides/lecture05-2-monte-carlo-foundations.qmd) | | [{{< fa sharp file-pen >}}](hw/hw04/hw04.qmd) | |  |
+| Week | Date        | Topic | Slides | Lab | HW | MP | Quiz | Reading |
+|:-----:|:------------|:------|:------:|:--:|:---:|:--:|:-------:|:------:|
+| 1 |   Aug 24  | Course Overview | [{{< fa sharp presentation-screen >}}](slides/lecture01-1-intro.qmd) |  | [{{< fa sharp file-pen >}}](hw/hw01/hw01.qmd)  |  |  | |
+|   |   Aug 26 | Intro to Systems | [{{< fa sharp presentation-screen >}}](slides/lecture01-2-systems-intro.qmd)  |  |  |  |  | |
+| 2 |   Aug 31 | Feedbacks & Equilibria | [{{< fa sharp presentation-screen >}}](slides/lecture02-1-dynamics-feedbacks.qmd) | |  |  | |  |
+|   |   Sep 2  | Stability & Examples | [{{< fa sharp presentation-screen >}}](slides/lecture02-2-stability-examples.qmd) | | [{{< fa sharp file-pen >}}](hw/hw02/hw02.qmd)  |  | | | 
+| 3 |   Sep 7  | **No Class: Labor Day** | | | |  | | |
+|   |   Sep 9   | Bifurcations and Hysteresis | [{{< fa sharp presentation-screen >}}](slides/lecture03-2-lake-hysteresis.qmd) | | |  | Quiz 1 |  @Carpenter1999-wx |
+| 4  |   Sep 14   | Simulation and Discretization | [{{< fa sharp presentation-screen >}}](slides/lecture04-1-simulation-discretization.qmd) | | |  | |  |
+|   |   Sep 16   | Dissolved Oxygen and Streeter-Phelps | [{{< fa sharp presentation-screen >}}](slides/lecture04-2-streeter-phelps.qmd) | | [{{< fa sharp file-pen >}}](hw/hw03/hw03.qmd) |  | |  |
+| 5  |   Sep 21   | Discretization & Convergence Lab |  | [{{< fa laptop >}}](labs/lab01/lab01.qmd) |  |  | |  |
+|   |   Sep 23   | Monte Carlo Foundations | [{{< fa sharp presentation-screen >}}](slides/lecture05-2-monte-carlo-foundations.qmd) | | [{{< fa sharp file-pen >}}](hw/hw04/hw04.qmd) | [{{< fa sharp diagram-project >}}](mini-project/mp01/mp01.qmd) | |  |
+|  6 |   Sep 28   | More Monte Carlo | [{{< fa sharp presentation-screen >}}](slides/lecture05-2-monte-carlo-foundations.qmd) | | [{{< fa sharp file-pen >}}](hw/hw04/hw04.qmd) | [{{< fa sharp diagram-project >}}](mini-project/mp01/mp01.qmd) | |  |
+|   |   Sep 30   | Gaussian Plume Model |  | |  |  | Quiz 2 |  |
 

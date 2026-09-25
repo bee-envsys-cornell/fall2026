@@ -22,7 +22,7 @@
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/syllabus.html</loc>
-    <lastmod>2026-08-27T12:25:34.035Z</lastmod>
+    <lastmod>2026-09-23T17:50:28.970Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/solutions/hw02/hw02.html</loc>
@@ -66,11 +66,11 @@
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecture06-2-plume-derivation.html</loc>
-    <lastmod>2026-09-18T16:18:50.569Z</lastmod>
+    <lastmod>2026-09-25T17:34:24.567Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecture05-2-monte-carlo-foundations.html</loc>
-    <lastmod>2026-09-23T16:14:34.141Z</lastmod>
+    <lastmod>2026-09-23T20:26:06.523Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecture04-2-streeter-phelps.html</loc>
@@ -141,32 +141,40 @@
     <lastmod>2026-08-24T00:31:24.039Z</lastmod>
   </url>
   <url>
+    <loc>https://envsys.viveks.me/fall2025/mini-project/index.html</loc>
+    <lastmod>2026-09-25T17:22:41.670Z</lastmod>
+  </url>
+  <url>
     <loc>https://envsys.viveks.me/fall2025/index.html</loc>
     <lastmod>2026-08-27T12:28:56.848Z</lastmod>
   </url>
   <url>
-    <loc>https://envsys.viveks.me/fall2025/hw/hw03/hw03.html</loc>
-    <lastmod>2026-09-18T13:28:24.921Z</lastmod>
-  </url>
-  <url>
-    <loc>https://envsys.viveks.me/fall2025/hw/hw01/hw01.html</loc>
-    <lastmod>2026-08-24T00:32:25.144Z</lastmod>
-  </url>
-  <url>
-    <loc>https://envsys.viveks.me/fall2025/about.html</loc>
-    <lastmod>2026-07-28T21:13:32.713Z</lastmod>
-  </url>
-  <url>
-    <loc>https://envsys.viveks.me/fall2025/faq/index.html</loc>
-    <lastmod>2026-08-24T00:13:06.995Z</lastmod>
+    <loc>https://envsys.viveks.me/fall2025/hw/hw04/hw04.html</loc>
+    <lastmod>2026-09-25T16:41:01.333Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/hw/hw02/hw02.html</loc>
     <lastmod>2026-09-07T18:29:08.672Z</lastmod>
   </url>
   <url>
+    <loc>https://envsys.viveks.me/fall2025/faq/index.html</loc>
+    <lastmod>2026-08-24T00:13:06.995Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/about.html</loc>
+    <lastmod>2026-07-28T21:13:32.713Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/hw/hw01/hw01.html</loc>
+    <lastmod>2026-08-24T00:32:25.144Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/hw/hw03/hw03.html</loc>
+    <lastmod>2026-09-18T13:28:24.921Z</lastmod>
+  </url>
+  <url>
     <loc>https://envsys.viveks.me/fall2025/hw/index.html</loc>
-    <lastmod>2026-09-22T15:52:36.234Z</lastmod>
+    <lastmod>2026-09-25T17:34:24.568Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/labs/index.html</loc>
@@ -175,6 +183,10 @@
   <url>
     <loc>https://envsys.viveks.me/fall2025/labs/lab01/lab01.html</loc>
     <lastmod>2026-09-20T19:45:00.908Z</lastmod>
+  </url>
+  <url>
+    <loc>https://envsys.viveks.me/fall2025/mini-project/mp01/mp01.html</loc>
+    <lastmod>2026-09-25T17:32:25.386Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/policies/groups.html</loc>
@@ -214,7 +226,7 @@
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/schedule.html</loc>
-    <lastmod>2026-09-22T21:35:02.358Z</lastmod>
+    <lastmod>2026-09-25T17:34:47.281Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/setup/homework.html</loc>
@@ -246,11 +258,11 @@
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecture06-1-monte-carlo-inference.html</loc>
-    <lastmod>2026-09-20T18:38:02.603Z</lastmod>
+    <lastmod>2026-09-25T17:34:24.567Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecture07-1-plume-analytics.html</loc>
-    <lastmod>2026-09-18T16:25:30.387Z</lastmod>
+    <lastmod>2026-09-23T17:19:03.267Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecture07-2-model-validation.html</loc>
@@ -266,7 +278,7 @@
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecture10-2-economic-dispatch.html</loc>
-    <lastmod>2026-09-18T16:57:40.182Z</lastmod>
+    <lastmod>2026-09-23T17:56:36.163Z</lastmod>
   </url>
   <url>
     <loc>https://envsys.viveks.me/fall2025/slides/lecture11-1-mixed-integer.html</loc>

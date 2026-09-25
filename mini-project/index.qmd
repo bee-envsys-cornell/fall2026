@@ -1,0 +1,31 @@
+---
+title: "Mini-Projects"
+tbl-colwidths: [20, 5, 5, 10]
+format:
+    html: default
+---
+
+This page contains information about and a schedule of the mini-projects for the semester.
+
+## General Information
+
+- There are **two mini-projects**, each worth 10% of the final grade. They are more in-depth than a homework: each applies several methods from the course to one systems problem, is more open-ended, and is written up as a short report. Each runs three to four weeks, so it should be lighter per week than a homework.
+-  While the instructions for each mini-project are available through the linked pages for quick and public access, **if you are in the class you must fork the assignment repository linked in [Ed Discussion](http://us.edstem.org)**. This will ensure that:
+    - You have compatible versions of all relevant packages provided in the environment;
+    - You have a GitHub repository that you can use to share your code.
+- Submit mini-projects by 9:00pm Eastern Time on the due date on [Gradescope](https://gradescope.com).
+- Students in BEE 4750 may work in **groups of 2**; students in BEE 5750 must work independently. **Exactly one member of each group should submit the report**, and it is the responsibility of the submitter to tell Gradescope the name of the other group member. Also include both names and NetIDs on the first page.
+- Submit a **report**, not a set of answers. Each assignment sets a page limit, which does not count figures, tables, code, or references. Answer every numbered question in the report, label each answer with its number, and tag those pages in Gradescope.
+- Put your code in an appendix or submit the notebook alongside the report. The report should read on its own without it.
+- The same [late policy](../policies/homework.qmd#homework-logistics) applies as for homework.
+
+## Grading
+
+Mini-projects are graded on Gradescope using rubrics similar to the [standard homework rubric](../policies/rubric.qmd). See also the [grading policies](../policies/grading.qmd).
+
+## Schedule
+
+| Assignment | Instructions | Solutions | Due Date |
+|:----------:|:------------:|:---------:|:--------:|
+| Mini-Project 1 | [{{< fa sharp pen-field >}}](mp01/mp01.qmd) | {{< fa sharp key-skeleton >}} | Oct. 22 |
+| Mini-Project 2 | {{< fa sharp pen-field >}} | {{< fa sharp key-skeleton >}} | Nov. 19 |

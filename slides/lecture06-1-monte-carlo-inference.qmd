@@ -83,27 +83,214 @@ cb_purple = "#CC79A7"
 
 # Review of Last Class
 
-## Last Class, In Two Formulas
+## Monte Carlo Estimate and Error
 
 $$\tilde\mu_n = \frac{1}{n}\sum_{i=1}^n Y_i \quad\text{is unbiased,}\qquad \tilde\sigma_n = \frac{\sigma_Y}{\sqrt{n}} \quad\text{is its standard error.}$$
 
-::: {.fragment .fade-in}
-And a 95% confidence interval: $\tilde\mu_n \pm 1.96\,\sigma_Y/\sqrt{n}$.
-
-**We still owe an answer** to the DO ensemble question from a few classes ago: how many runs would we trust? Today: the actual answer, and how to justify it on your own work.
-:::
 
 ## Questions?
 
 {{< include _poll-prompt.qmd >}}
 
-# Back to the River
+# Confidence Intervals
 
-## Framing the DO Question as Monte Carlo
+## MC Confidence Intervals
 
-Recall Streeter-Phelps: the incoming CBOD load $B_0$ varies day to day, $B_0 \sim \mathcal{N}(9, 1.5^2)$ mg/L.
+To get estimates of the error, we need to understand the distribution of errors.
+
+The **Central Limit Theorem** says that sums of random variables converge to a Gaussian distribution.
+
+Applying to the mean (which is effectively a sum):
+
+$$\left\|\tilde{\mu}_n - \mu\right\| \to \mathcal{N}\left(0, \frac{\sigma_Y^2}{n}\right)$$
+
+
+## Confidence Intervals
+
+We can use this large-$n$ Gaussian approximation to get an $\alpha$-confidence interval.
+
+$$\tilde\mu_n \pm \Phi^{-1}\left(1-\frac{\alpha}{2}\right)\frac{\sigma_Y}{\sqrt{n}}$$
+
+For 95%: $$\tilde\mu_n \pm 1.96\frac{\sigma_Y}{\sqrt{n}}.$$
+
+## Reading a CI Correctly
+
+**A 95% CI is not** "there is a 95% chance the true value is in this interval." According to the **frequentist** interpretation of statistics, the true value is fixed.
+
+For any given experiment, the "true value" is either in or out of the constructed interval.
+
+**The idea**: if you repeated this whole experiment many times, about 95% of the intervals you'd construct would contain the true value.
+
+## Example: 95% CIs for N(0.4, 2)
+
+```{julia}
+#| label: fig-cis
+#| code-fold: true
+#| code-overflow: wrap
+#| echo: true
+#| layout-ncol: 2
+#| fig-cap: "Display of 95% confidence intervals"
+#| fig-subcap: 
+#|  - "Sample Size 100"
+#|  - "Sample Size 1,000"
+
+# set up distribution
+mean_true = 0.4
+n_cis = 100 # number of CIs to compute
+dist = Normal(mean_true, 2)
+
+# use sample size of 100
+samples = rand(dist, (100, n_cis))
+# mapslices broadcasts over a matrix dimension, could also use a loop
+sample_means = mapslices(mean, samples; dims=1)
+sample_sd = mapslices(std, samples; dims=1) 
+mc_sd = 1.96 * sample_sd / sqrt(100)
+mc_ci = zeros(n_cis, 2) # preallocate
+for i = 1:n_cis
+    mc_ci[i, 1] = sample_means[i] - mc_sd[i]
+    mc_ci[i, 2] = sample_means[i] + mc_sd[i]
+end
+# find which CIs contain the true value
+ci_true = (mc_ci[:, 1] .< mean_true) .&& (mc_ci[:, 2] .> mean_true)
+# compute percentage of CIs which contain the true value
+ci_frac1 = 100 * sum(ci_true) ./ n_cis
+
+# plot CIs
+p1 = plot([mc_ci[1, :]], [1, 1], linewidth=3, color=:deepskyblue, label="95% Confidence Interval", title="Sample Size 100", yticks=:false, legend=:false)
+for i = 2:n_cis
+    if ci_true[i]
+        plot!(p1, [mc_ci[i, :]], [i, i], linewidth=2, color=:deepskyblue, label=:false)
+    else
+        plot!(p1, [mc_ci[i, :]], [i, i], linewidth=2, color=:red, label=:false)
+    end
+end
+vline!(p1, [mean_true], color=:black, linewidth=2, linestyle=:dash, label="True Value") # plot true value as a vertical line
+xaxis!(p1, "Estimate")
+plot!(p1, size=(500, 350)) # resize to fit slide
+
+# use sample size of 1000
+samples = rand(dist, (1000, n_cis))
+# mapslices broadcasts over a matrix dimension, could also use a loop
+sample_means = mapslices(mean, samples; dims=1)
+sample_sd = mapslices(std, samples; dims=1) 
+mc_sd = 1.96 * sample_sd / sqrt(1000)
+mc_ci = zeros(n_cis, 2) # preallocate
+for i = 1:n_cis
+    mc_ci[i, 1] = sample_means[i] - mc_sd[i]
+    mc_ci[i, 2] = sample_means[i] + mc_sd[i]
+end
+# find which CIs contain the true value
+ci_true = (mc_ci[:, 1] .< mean_true) .&& (mc_ci[:, 2] .> mean_true)
+# compute percentage of CIs which contain the true value
+ci_frac2 = 100 * sum(ci_true) ./ n_cis
+
+# plot CIs
+p2 = plot([mc_ci[1, :]], [1, 1], linewidth=3, color=:deepskyblue, label="95% Confidence Interval", title="Sample Size 1,000", yticks=:false, legend=:false)
+for i = 2:n_cis
+    if ci_true[i]
+        plot!(p2, [mc_ci[i, :]], [i, i], linewidth=2, color=:deepskyblue, label=:false)
+    else
+        plot!(p2, [mc_ci[i, :]], [i, i], linewidth=2, color=:red, label=:false)
+    end
+end
+vline!(p2, [mean_true], color=:black, linewidth=2, linestyle=:dash, label="True Value") # plot true value as a vertical line
+xaxis!(p2, "Estimate")
+plot!(p2, size=(500, 350)) # resize to fit slide
+
+display(p1)
+display(p2)
+```
+
+`{julia} Int64(round(ci_frac1))`% of the CIs contain the true value (left) vs. `{julia} Int64(round(ci_frac2))`% (right)
+
+
+## MC Example: Dice
+
+What is the probability of rolling 4 dice for a total of 19?
+
+::: {.fragment .fade-in}
+```{julia}
+#| echo: true
+#| output: false
+#| code-line-numbers: "|14-17|18-20|22-25"
+
+function dice_roll_repeated(n_trials, n_dice)
+    dice_dist = DiscreteUniform(1, 6) 
+	roll_results = zeros(n_trials)
+	for i=1:n_trials
+		roll_results[i] = sum(rand(dice_dist, n_dice))
+	end
+	return roll_results
+end
+
+nsamp = 10_000
+# roll four dice 10,000 times
+rolls = dice_roll_repeated(nsamp, 4) 
+
+# initialize storage for frequencies by sample length
+avg_freq = zeros(length(rolls)) 
+# initialize storage for standard error of estimate
+std_freq = zeros(length(rolls))
+# compute average frequencies of 19
+avg_freq[1] = (rolls[1] == 19)
+std_freq[1] = 0 # no standard error for the first sample
+
+for i in 2:length(rolls)
+    avg_freq[i] = (avg_freq[i-1] * (i-1) + (rolls[i] == 19)) / i
+    std_freq[i] = std(rolls[1:i] .== 19) / sqrt(i)
+end
+```
+:::
+
+## MC Example: Dice
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+plt = plot(
+    avg_freq, ribbon=1.96 * std_freq,
+    xlim = (1, nsamp),
+    ylim = (0, 0.1),
+    legend = :false,
+    xlabel="Iteration",
+    ylabel="Estimate",
+    left_margin=10mm,
+    bottom_margin=10mm,
+    right_margin=10mm,
+    color=:black,
+    linewidth=3
+)
+plot!(size=(1200, 500))
+
+hline!(plt, [0.0432], color="red", 
+    linestyle=:dash) 
+
+```
+
+## MC Example: Dice
+
+After 10,000 iterations, the 95% confidence interval for the MC estimate is `{julia} round(100 * avg_freq[end]; digits=1)` $\pm$ `{julia} round(196 * std_freq[end]; digits=1)`%.
+
+**Is this good enough? Should we keep going?**
+
+# Back to the DO
+
+## Framing the DO Question for Monte Carlo
 
 **What is the probability that the minimum DO falls below the 2.5 mg/L standard on a randomly chosen day?**
+
+Recall Streeter-Phelps. Today, three of its inputs vary from day to day, not just the CBOD load.
+
+## Sampling the Three Inputs
+
+| Input | Distribution (mg/L) |
+|:--|:--|
+| Incoming DO, $C_0$ | $\mathcal{N}(6.2, 0.5^2)$, at most 7 |
+| CBOD, $B_0$ | $\mathcal{N}(9, 1.5^2)$, at least 0 |
+| NBOD, $N_0$ | $\mathcal{N}(7, 1^2)$, at least 0 |
+
+We draw them independently. CBOD and NBOD come from the same effluent: is that reasonable?
 
 ```{julia}
 #| echo: true
@@ -111,27 +298,38 @@ Recall Streeter-Phelps: the incoming CBOD load $B_0$ varies day to day, $B_0 \si
 #| output: false
 
 do_params = let
-    ka, kc, kn = 0.6, 0.4, 0.25
-    C0, N0, Cs, U = 6.2, 7.0, 7.0, 5.0
-    L = 40.0
-    standard = 2.5
-    (; ka, kc, kn, C0, N0, Cs, U, L, standard)
+    ka, kc, kn = 0.6, 0.4, 0.25   # reaeration, CBOD decay, NBOD decay [1/d]
+    Cs, U = 7, 5                  # saturation DO [mg/L], velocity [km/d]
+    L = 40                        # reach length [km]
+    standard = 2.5                # DO standard [mg/L]
+    (; ka, kc, kn, Cs, U, L, standard)
 end
 
-function do_min(B0, params; dx=0.1)
+# The three uncertain inputs [mg/L]; truncation keeps every draw physical
+incoming_DO = truncated(Normal(6.2, 0.5); upper=7)
+incoming_CBOD = truncated(Normal(9, 1.5); lower=0)
+incoming_NBOD = truncated(Normal(7, 1); lower=0)
+
+function do_min(C0, B0, N0, params; dx=0.1)
     steps = Int(round(params.L / dx))
-    C = params.C0
-    m = C
+    C = C0
+    lowest = C
     for i in 1:steps
         x = (i - 1) * dx
         C = C + dx * ((params.ka * (params.Cs - C) - params.kc * B0 * exp(-params.kc * x / params.U)
-                        - params.kn * params.N0 * exp(-params.kn * x / params.U)) / params.U)
-        m = min(m, C)
+                        - params.kn * N0 * exp(-params.kn * x / params.U)) / params.U)
+        lowest = min(lowest, C)
     end
-    return m
+    return lowest
 end
 
-violates(params) = do_min(max(0.1, rand(Normal(9.0, 1.5))), params) < params.standard
+# One Monte Carlo sample: draw all three inputs, then check the standard
+function violates(params; dx=0.1)
+    C0 = rand(incoming_DO)
+    B0 = rand(incoming_CBOD)
+    N0 = rand(incoming_NBOD)
+    return do_min(C0, B0, N0, params; dx=dx) < params.standard
+end
 ```
 
 ## Watching the Estimate Settle
@@ -176,8 +374,15 @@ for n in [5, 20, 100, 500, 2000, 20_000]
 end
 ```
 
+```{julia}
+#| echo: false
+#| output: false
+five_low = round(running_p[5] - 1.96 * running_se[5], digits=2)
+five_high = round(running_p[5] + 1.96 * running_se[5], digits=2)
+```
+
 ::: {.fragment .fade-in}
-**At $n=5$ the interval spans nearly the whole unit range** --- it can't even rule out "the river always violates" or "never does." That is exactly the five runs Streeter-Phelps used to pose the question. They were not enough to trust.
+**At $n=5$ the interval runs from `{julia} five_low` to `{julia} five_high`** --- nearly the whole unit range, with a lower end below zero. Five runs, like the ensemble that posed this question in the Streeter-Phelps lecture, are not enough to trust.
 :::
 
 # Justifying a Sample Size
@@ -227,13 +432,24 @@ Both times: name a quantity of interest, refine the knob, estimate what's left, 
 
 p2, se2 = round(running_p[2000], digits=3), round(running_se[2000], digits=4)
 p4 = round(running_p[4000], digits=3)
-lo, hi = round(p2 - 1.96 * se2, digits=2), round(p2 + 1.96 * se2, digits=2)
+half_width2 = 1.96 * se2
+lo, hi = round(p2 - half_width2, digits=2), round(p2 + half_width2, digits=2)
 change = round(abs(p4 - p2), digits=4)
+# The wording follows the numbers, so the sentence stays true for any seed.
+if change < se2
+    comparison = "less than one standard error"
+    verdict = "so \$n=2{,}000\$ is sufficient for this analysis."
+elseif change < half_width2
+    comparison = "less than the 95% half-width"
+    verdict = "so \$n=2{,}000\$ is sufficient for this analysis."
+else
+    comparison = "more than the 95% half-width"
+    verdict = "so \$n=2{,}000\$ is not yet enough."
+end
 println("> \"I estimated \$P(\\text{DO} < 2.5\\ \\text{mg/L})\$ with \$n = 2{,}000\$ Monte Carlo ",
         "samples, seeded for reproducibility. The estimate is \$$(p2)\$ with a Monte Carlo ",
         "standard error of \$$(se2)\$, giving a 95% CI of \$[$(lo), $(hi)]\$. Doubling to ",
-        "\$n=4{,}000\$ changed the estimate by \$$(change)\$ --- less than the standard error --- ",
-        "so \$n=2{,}000\$ is sufficient for this analysis.\"")
+        "\$n=4{,}000\$ changed the estimate by \$$(change)\$, $(comparison), ", verdict, "\"")
 ```
 
 # Two Errors, One Answer
@@ -268,15 +484,14 @@ function violation_fraction(grid_step, sample_count, seed)
     Random.seed!(seed)
     violations = 0
     for _ in 1:sample_count
-        load = max(0.1, rand(Normal(9.0, 1.5)))
-        if do_min(load, do_params; dx=grid_step) < do_params.standard
+        if violates(do_params; dx=grid_step)
             violations += 1
         end
     end
     return violations / sample_count
 end
 
-grid_steps = [1.0, 0.5, 0.25, 0.1]
+grid_steps = [1, 0.5, 0.25, 0.1]
 reference_p = violation_fraction(0.02, 3000, 99)
 
 grid_estimates = zeros(length(grid_steps))
@@ -383,7 +598,7 @@ Refining $n$ here buys you almost nothing. The answer is limited by the grid, no
 Your confidence interval is computed from $n$ alone. **It knows nothing about $\Delta x$.**
 
 ::: {.fragment .fade-in}
-So a report that says $P = 0.30 \pm 0.02$ is quoting a precise answer to a model that has not been resolved. The interval is honest about the error it measures and silent about the one that dominates.
+So a report that says $P =$ `{julia} round(running_p[2000], digits=2)` $\pm$ `{julia} round(1.96 * running_se[2000], digits=2)` is quoting a precise answer to a model that has not been resolved. The interval is honest about the error it measures and silent about the one that dominates.
 :::
 
 ::: {.fragment .fade-in}
@@ -476,6 +691,7 @@ Source: [XKCD #221](https://xkcd.com/221/)
 ## Key Takeaways
 
 ::: {.incremental}
+- A confidence interval describes the **procedure**, not the one interval you happened to construct.
 - **Sample size needs justification**, exactly like Week 4's step size: pick $n$ from a target precision, double it and check, report the standard error.
 - Five samples were nowhere near enough to trust the DO ensemble --- now you know how to say precisely how far short they fell.
 - **Two errors sit in every answer**, and they fall at different rates. Refining the wrong knob buys nothing.
@@ -489,9 +705,9 @@ Source: [XKCD #221](https://xkcd.com/221/)
 
 ## Assessments
 
-**Mini-Project 1**: Due Thursday, October 8.
+**Mini-Project 1**: Due Thursday, October 22.
 
-**Homework 4**: Assigned Wednesday, due Thursday, October 8.
+**Homework 4**: Due Thursday, October 8.
 
 **Quiz 2**: Wednesday, covering discretization, convergence, Streeter-Phelps, and Monte Carlo foundations.
 
