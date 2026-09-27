@@ -80,17 +80,19 @@ cb_purple = "#CC79A7"
 
 # Review of Last Class
 
+## Questions?
+
+{{< include _poll-prompt.qmd >}}
+
+
+# Point Sources and Receptors
+
 ## From a Line to a Point
 
 The airshed was a well-mixed box. Streeter-Phelps marched along **one line** downstream.
 
 Air pollution downwind of a stack spreads **across** the wind as well as along it --- a genuinely spatial problem.
 
-## Questions?
-
-{{< include _poll-prompt.qmd >}}
-
-# Point Sources and Receptors
 
 ## Some Approaches for Modeling Air Pollution
 
@@ -367,6 +369,7 @@ println("C(3 km, 0, 0) = ", round(Cground * 1e6, digits=1), " µg/m³")
 ## Key Takeaways
 
 ::: {.incremental}
+- A violation probability is a **hazard** statistic. Risk needs exposure, vulnerability, and response as well --- and none of those is in the model.
 - The plume equation is the same advective-diffusion family as the airshed and DO models --- here the spatial structure is kept rather than simplified away.
 - Dropping along-wind dispersion is a **Péclet number** argument: $Pe \gg 1$ for atmospheric transport at any distance of interest.
 - The ground is a **Neumann boundary condition**, enforced with an image source --- verified numerically to kill the vertical flux at $z=0$.
@@ -377,15 +380,17 @@ println("C(3 km, 0, 0) = ", round(Cground * 1e6, digits=1), " µg/m³")
 
 ## Next Classes
 
-**Monday**: Where the plume actually lands --- the footprint on the ground, a vertical section that makes the reflection visible, and what happens when several stacks share an airshed.
+**Monday**: Quiz 2, then where the plume actually lands --- the footprint on the ground and a vertical section that makes the reflection visible.
 
 **Wednesday**: Model validation. How we decide whether to believe any of this.
 
 ## Assessments
 
-**Homework 4**: Due Thursday, October 8.
+**Homework 4**: Assigned today, due Thursday, October 8.
 
 **Mini-Project 1**: Due Thursday, October 22.
+
+**Quiz 2**: Monday, October 5, covering discretization, convergence, Streeter-Phelps, and Monte Carlo.
 
 # References
 

@@ -120,6 +120,12 @@ Two consequences:
 
 ## Known traps
 
+- **A code block must be the first thing on its slide — never put text above it.** Revealjs slides
+  are a fixed 1280×720 and do not scroll. Text above a code block pushes it down, and the code's own
+  scroll box is cut off by the slide's bottom edge, so readers cannot scroll to the end of the code.
+  Put the code first (right under the slide title); its output and any discussion can go below it,
+  or on the next slide. **Folded code counts** (`code-fold: true`): it expands in place, so text
+  above a folded cell breaks the rule too.
 - **Callout syntax.** Use `::: {.callout-note}` — hyphenated. The space-separated `::: {.callout .note}`
   is invalid, renders a callout titled literally "None" rather than failing, and currently appears in
   `~/Teaching/BEE4750/hw/solutions/hw02/hw02.qmd`.

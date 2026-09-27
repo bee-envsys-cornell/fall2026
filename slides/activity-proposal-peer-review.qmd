@@ -1,0 +1,121 @@
+---
+title: "Project Proposal Peer Review"
+subtitle: "In-Class Activity"
+author: "Vivek Srikrishnan"
+course: "BEE 4750"
+institution: "Cornell University"
+date: "October 21, 2026"
+format:
+    revealjs:
+        slide-number: c/t
+        show-slide-number: all
+        center-title-slide: true
+        width: 1280
+        height: 720
+        transition: none
+        toc: false
+        history: false
+        link-external-newwindow: true
+        theme: ../sass/slides.scss
+        template-partials:
+            - title-slide.html
+        menu:
+            numbers: true
+        date-format: long
+        email-obfuscation: javascript
+        chalkboard:
+            theme: whiteboard
+            buttons: true
+        controls: true
+---
+
+## Today
+
+1. **Quiz 3** (25 minutes)
+2. **Proposal peer review** in your project groups (remaining time)
+
+You need the proposal you are reviewing and each member's LLM-generated proposal on the same topic.
+
+::: {.notes}
+Quiz 3 first, 25 minutes. Collect quizzes before starting the activity. Groups without their LLM proposals can generate them now, topic sentence only.
+:::
+
+## What a Useful Review Does
+
+- Tells the authors what they are **actually proposing**, as a reader understood it.
+- Points to **specific places** in the proposal, not general impressions.
+- Ranks concerns: the **two or three that matter most**, not everything.
+- Gives suggestions the authors can **act on** this week.
+
+::: {.notes}
+About 2 minutes. The contrast to name: "consider the data" versus "the hourly load data you need is published by NYISO, but only by zone."
+:::
+
+## Step 1: What Is the Question? (Individually)
+
+On your own, write down in **one sentence** the key question the proposal will answer.
+
+Then note your first reaction: what is the most promising part, and what is the biggest risk?
+
+Compare sentences within your group. **If they disagree, that is feedback for the authors.**
+
+::: {.notes}
+About 8 minutes: 4 writing, 4 comparing. If a group's sentences diverge, have them record why; that goes in Part A.
+:::
+
+## Step 2: The Rubric (As a Group)
+
+For each criterion, agree on a rating (*Strong*, *Adequate*, *Needs work*) and **one sentence of evidence**:
+
+:::: {.columns}
+::: {.column width="50%"}
+- Key question
+- System definition
+- Methods
+- Data
+:::
+::: {.column width="50%"}
+- Uncertainty
+- Regulatory context
+- Work plan
+:::
+::::
+
+::: {.notes}
+About 15 minutes. Circulate. Push generic evidence ("seems fine") toward a location in the proposal. If a group is stuck on a rating, ask what would move it up one level.
+:::
+
+## Step 3: The LLM Proposals
+
+- How do your LLM proposals differ from each other, and from the one in the authors' appendix?
+- Where do they differ from the students' plan? **Whose choice is better here, and why?**
+- Did an LLM invent anything: data that may not exist, scope no group could finish?
+- Do you agree with the authors' assessment of their LLM's proposal?
+
+::: {.notes}
+About 15 minutes. The point is judgement, not a list of differences. Useful prompts: "Which tool gave the most usable plan, and why?" "Could you actually get that dataset?" "What does the LLM plan know about this site that the students know better?" "Is the broader scope a strength or a trap for a semester?"
+:::
+
+## Step 4: Share Out
+
+Each group, in one minute:
+
+- One place where the **LLM's plan was better**, and why.
+- One place where the **students' proposal was better**, and why.
+
+::: {.notes}
+About 7 minutes. Collect patterns on the board: typically LLMs are broader and more generic, name plausible-sounding data, and miss local constraints; students are more specific but can under-specify uncertainty and regulations.
+:::
+
+## Before Monday, October 26
+
+Submit **one PDF per group** to Gradescope by 9:00 PM:
+
+- **Part A**: the review, which will be shared with the other group.
+- **Part B**: the LLM comparison (at most 1 page), graded but not shared, with prompts and outputs in an appendix.
+
+Full instructions: [Proposal Peer Review](../project/proposal-review.qmd)
+
+::: {.notes}
+Remind them: they are graded on their review and reflection, not on the review their own proposal receives.
+:::

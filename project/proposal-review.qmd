@@ -1,0 +1,70 @@
+---
+title: Proposal Peer Review Instructions
+format:
+    html: default
+---
+
+## Overview
+
+Each group will review one other group's project proposal. The review has two purposes:
+
+- To give that group specific, usable feedback while their project can still change;
+- To practise judging a plan critically, including comparing it against a plan an LLM would write for the same topic.
+
+Your review will be sent to the other group. As the syllabus says, you will be graded on how well your review follows the rubric and on your reflection on the LLM comparison, **but not on the review your own proposal receives**.
+
+## Before Class (by Wednesday, October 21)
+
+You will receive the proposal you are reviewing on Canvas by Monday, October 19.
+
+1. **Every group member** reads the proposal.
+2. **Every group member, separately,** asks a large language model (any one you like) to write a project proposal on **the same topic**. Use only a one-sentence description of the topic, for example: *"Write a proposal for a semester-long environmental systems analysis project on [topic], including the key question, system definition, methods, data sources, uncertainties, and relevant regulations."* **Do not paste the other group's proposal into the LLM.** If you can, use a different LLM from your groupmates, so that you can compare what different tools produce. Bring the LLM's output (and your exact prompt) to class.
+
+## In Class (Wednesday, October 21)
+
+After Quiz 3, you will work through the review in your group: each of you restates the proposal's key question, the group agrees on the rubric ratings, and then you compare the students' proposal against your LLM proposals. The steps and timings will be on the slides.
+
+## What to Submit (by Monday, October 26, 9:00 PM)
+
+Submit **one PDF per group** to Gradescope, with two parts.
+
+### Part A: The Review (shared with the other group)
+
+- **The key question, in your words** (2–3 sentences). If you cannot restate it, say so; that is useful feedback.
+- **A rubric table.** For each criterion below, give a rating (*Strong*, *Adequate*, or *Needs work*) and one sentence of evidence pointing to the part of the proposal you mean.
+
+| Criterion | What to look for |
+|:--|:--|
+| Key question | Clear, specific, and answerable in a semester |
+| System definition | Control volume, metrics, and exogenous factors are identified; the diagram matches the text |
+| Methods | The model and approach can answer the question, and extend methods from the course |
+| Data | Sources are named, plausible, and obtainable |
+| Uncertainty | The important uncertainties are identified, with some idea of how they will be treated |
+| Regulatory context | Relevant regulations or standards are identified |
+| Work plan | Tasks are divided, milestones are realistic, and there is a plan for coordinating |
+
+- **Strengths:** the two or three most important things the proposal does well.
+- **Concerns:** the two or three most important risks or gaps, most important first.
+- **Suggestions:** specific, actionable changes. "Consider the data" is not actionable; "the hourly load data you need is published by NYISO, but only by zone" is.
+
+### Part B: The LLM Comparison (graded, not shared; no more than 1 page)
+
+Compare your LLM proposals with each other, with the LLM proposal in the authors' appendix, and with the students' proposal:
+
+- How do the LLM proposals differ from one another? What did a different tool (or prompt) change?
+- Where do they differ most from the students' plan (the question, the scope, the methods, the data)?
+- For each important difference: is the LLM's choice reasonable here, or is the students' proposal better? **Why?**
+- Did the LLM invent anything or get anything wrong (for example, data sources that may not exist, or scope no group could finish in a semester)?
+- Do you agree with the authors' assessment of their LLM's proposal? Where does your judgement differ, and why?
+- Did the comparison change your review in Part A? How?
+
+Put the name of the tool, your exact prompts, and the LLM outputs in an appendix, labelled as LLM output. Following the course's [AI/ML resource policy](../syllabus.qmd#aiml-resource-policy), Parts A and B must be your own writing.
+
+## Grading (5 points)
+
+- **Part A (3 points):** the rubric is completed with specific evidence, and the strengths, concerns, and suggestions follow from it.
+- **Part B (2 points):** the comparison goes beyond listing differences to judging which choices are better and why.
+
+## Guidance
+
+Write the review you would want to receive: specific, constructive, and focused on the plan rather than the people. Point to the section or sentence you mean. A short, specific review is more useful than a long, general one.

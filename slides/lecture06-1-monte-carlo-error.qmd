@@ -1,5 +1,5 @@
 ---
-title: "Monte Carlo: Applying It, Justifying It"
+title: "Monte Carlo Error and Risk"
 subtitle: "Lecture 09"
 author: "Vivek Srikrishnan"
 course: "BEE 4750"
@@ -54,7 +54,7 @@ using Measures
 using Distributions
 using LaTeXStrings
 
-Random.seed!(4750)
+Random.seed!(1)
 plot_font = "Palatino Roman"
 default(
     fontfamily=plot_font,
@@ -85,8 +85,23 @@ cb_purple = "#CC79A7"
 
 ## Monte Carlo Estimate and Error
 
-$$\tilde\mu_n = \frac{1}{n}\sum_{i=1}^n Y_i \quad\text{is unbiased,}\qquad \tilde\sigma_n = \frac{\sigma_Y}{\sqrt{n}} \quad\text{is its standard error.}$$
+**Monte Carlo Principle**: Estimate $\mu = \mathbb{E}[Y] = \mathbb{E}[f(X)]$ using 
+$$\tilde\mu_n = \frac{1}{n}\sum_{i=1}^n Y_i\dots.$$
 
+This is an unbiased estimate, and
+$$\tilde\sigma_n = \frac{\sigma_Y}{\sqrt{n}}$$
+
+is its standard error.
+
+
+## Derivation of MC Standard Error
+
+$$\begin{aligned}
+\tilde{\sigma}_n^2 &= \text{Var}\left(\tilde{\mu}_n\right)  \\
+&= \text{Var}\left(\frac{1}{n}\sum_{i=1}^n Y_i\right) \\
+&= \left(\frac{1}{n}\right)^2 \sum_{i=1}^n \text{Var}(Y_i) \\
+&= \frac{1}{n^2} n \sigma_Y^2 = \frac{\sigma_Y^2}{n}
+\end{aligned}$$
 
 ## Questions?
 
@@ -203,16 +218,36 @@ display(p2)
 
 `{julia} Int64(round(ci_frac1))`% of the CIs contain the true value (left) vs. `{julia} Int64(round(ci_frac2))`% (right)
 
+## Pseudorandomness and Seeds
+
+:::: {.columns}
+::: {.column width=40%}
+Random number generators are not *really* random --- only **pseudorandom**, and deterministic given a seed.
+
+:::
+::: {.column width=60%}
+
+**Always set a seed.** It's how your results reproduce. But sometimes even that can go wrong...
+
+![XKCD 221: Random Number](https://imgs.xkcd.com/comics/random_number.png){width=90%}
+
+::: {.caption}
+Source: [XKCD #221](https://xkcd.com/221/)
+:::
+:::
+::::
+
 
 ## MC Example: Dice
 
 What is the probability of rolling 4 dice for a total of 19?
 
-::: {.fragment .fade-in}
+## MC Example: Dice
+
 ```{julia}
 #| echo: true
-#| output: false
-#| code-line-numbers: "|14-17|18-20|22-25"
+#| code-fold: true
+
 
 function dice_roll_repeated(n_trials, n_dice)
     dice_dist = DiscreteUniform(1, 6) 
@@ -239,19 +274,12 @@ for i in 2:length(rolls)
     avg_freq[i] = (avg_freq[i-1] * (i-1) + (rolls[i] == 19)) / i
     std_freq[i] = std(rolls[1:i] .== 19) / sqrt(i)
 end
-```
-:::
-
-## MC Example: Dice
-
-```{julia}
-#| echo: true
-#| code-fold: true
 
 plt = plot(
     avg_freq, ribbon=1.96 * std_freq,
     xlim = (1, nsamp),
     ylim = (0, 0.1),
+    fillcolor=cb_blue,
     legend = :false,
     xlabel="Iteration",
     ylabel="Estimate",
@@ -274,27 +302,33 @@ After 10,000 iterations, the 95% confidence interval for the MC estimate is `{ju
 
 **Is this good enough? Should we keep going?**
 
-# Back to the DO
+# Dissolved Oxygen Example
 
-## Framing the DO Question for Monte Carlo
+## What Is The Reliability of the System?
 
-**What is the probability that the minimum DO falls below the 2.5 mg/L standard on a randomly chosen day?**
+Or:
 
-Recall Streeter-Phelps. Today, three of its inputs vary from day to day, not just the CBOD load.
+**What is the probability that the minimum DO falls below a regulatory standard on a random day?**
+
 
 ## Sampling the Three Inputs
 
 | Input | Distribution (mg/L) |
-|:--|:--|
-| Incoming DO, $C_0$ | $\mathcal{N}(6.2, 0.5^2)$, at most 7 |
-| CBOD, $B_0$ | $\mathcal{N}(9, 1.5^2)$, at least 0 |
-| NBOD, $N_0$ | $\mathcal{N}(7, 1^2)$, at least 0 |
+|:--|:----------------|
+| Mixed DO, $C_0$ | $\mathcal{N}(6.2, 0.5^2)$, at most 7 |
+| Mixed CBOD, $B_0$ | $\mathcal{N}(9, 1.5^2)$, at least 0 |
+| Mixed NBOD, $N_0$ | $\mathcal{N}(7, 1^2)$, at least 0 |
 
-We draw them independently. CBOD and NBOD come from the same effluent: is that reasonable?
+We draw them independently. CBOD and NBOD come from the same mixed effluent-river combination: is that reasonable?
+
+**Key Decision**: What is the quantity we want to estimate?
+
+
+## Monte Carlo Simulation Code
 
 ```{julia}
 #| echo: true
-#| code-fold: true
+#| code-fold: false
 #| output: false
 
 do_params = let
@@ -306,33 +340,32 @@ do_params = let
 end
 
 # The three uncertain inputs [mg/L]; truncation keeps every draw physical
-incoming_DO = truncated(Normal(6.2, 0.5); upper=7)
-incoming_CBOD = truncated(Normal(9, 1.5); lower=0)
-incoming_NBOD = truncated(Normal(7, 1); lower=0)
+mixed_DO = truncated(Normal(6.2, 0.5); upper=7)
+mixed_CBOD = truncated(Normal(9, 1.5); lower=0)
+mixed_NBOD = truncated(Normal(7, 1); lower=0)
 
 function do_min(C0, B0, N0, params; dx=0.1)
     steps = Int(round(params.L / dx))
-    C = C0
-    lowest = C
+    C = zeros(steps + 1)
+    C[1] = C0
     for i in 1:steps
         x = (i - 1) * dx
-        C = C + dx * ((params.ka * (params.Cs - C) - params.kc * B0 * exp(-params.kc * x / params.U)
+        C[i+1] = C[i] + dx * ((params.ka * (params.Cs - C[i]) - params.kc * B0 * exp(-params.kc * x / params.U)
                         - params.kn * N0 * exp(-params.kn * x / params.U)) / params.U)
-        lowest = min(lowest, C)
     end
-    return lowest
+    return minimum(C)
 end
 
 # One Monte Carlo sample: draw all three inputs, then check the standard
 function violates(params; dx=0.1)
-    C0 = rand(incoming_DO)
-    B0 = rand(incoming_CBOD)
-    N0 = rand(incoming_NBOD)
+    C0 = rand(mixed_DO)
+    B0 = rand(mixed_CBOD)
+    N0 = rand(mixed_NBOD)
     return do_min(C0, B0, N0, params; dx=dx) < params.standard
 end
 ```
 
-## Watching the Estimate Settle
+## Monte Carlo Estimate By Sample
 
 ```{julia}
 #| label: fig-mc-do
@@ -340,26 +373,28 @@ end
 #| echo: true
 #| code-fold: true
 
-Random.seed!(4750)
+Random.seed!(1)
 N = 20_000
 draws = [violates(do_params) for _ in 1:N]
 running_p = cumsum(draws) ./ (1:N)
 running_se = zeros(N)
-running_se[1] = NaN
+running_se[1] = 0 # no standard error for the first sample
 for i in 2:N
-    running_se[i] = sqrt(running_p[i] * (1 - running_p[i]) / i)
+    running_se[i] = std(draws[1:i]) / sqrt(i)
 end
+
+# Sample standard deviation of one draw, used later to predict the half-width for any n
+draw_sd = std(draws)
 
 p_mc = plot(1:N, running_p, ribbon=1.96 .* running_se, xscale=:log10,
     color=:black, linewidth=3, fillalpha=0.25, fillcolor=cb_blue,
     xlabel="Number of samples  n", ylabel="P(violation)", legend=false,
     ylims=(0, 1))
-hline!(p_mc, [running_p[end]], color=cb_vermillion, linestyle=:dash, linewidth=2)
 plot!(p_mc, size=(1100, 460), left_margin=12mm, right_margin=8mm,
     bottom_margin=12mm, top_margin=5mm)
 ```
 
-## The Number, With Honesty About Its Uncertainty
+## Evolution of Estimates and CI Over Simulation
 
 ```{julia}
 #| echo: false
@@ -374,105 +409,43 @@ for n in [5, 20, 100, 500, 2000, 20_000]
 end
 ```
 
-```{julia}
-#| echo: false
-#| output: false
-five_low = round(running_p[5] - 1.96 * running_se[5], digits=2)
-five_high = round(running_p[5] + 1.96 * running_se[5], digits=2)
-```
+## Key Considerations
 
-::: {.fragment .fade-in}
-**At $n=5$ the interval runs from `{julia} five_low` to `{julia} five_high`** --- nearly the whole unit range, with a lower end below zero. Five runs, like the ensemble that posed this question in the Streeter-Phelps lecture, are not enough to trust.
-:::
+**But**: these estimates and how they converge are entirely dependent on the choice of input distribution(s) (and whether or not they are correlated).
+
+You need to make sure you can justify those choices, either from empirical data or some field convention (*e.g.* wind speeds using a Weibull distribution).
 
 # Justifying a Sample Size
 
-## The Rubric You Will Be Graded On
-
-::: {.quote}
-> +2 for justification of Monte Carlo sample size. **Deadly Sin: No points will be given for a Monte Carlo solution with an arbitrary sample size.** +2 for an estimate of the Monte Carlo standard error. +1 for setting a seed for reproducibility.
-
-::: {.cite}
---- the Monte Carlo Rubric, `policies/rubric.qmd`
-:::
-:::
-
-::: {.fragment .fade-in}
-This is the **same discipline as $\Delta t$ in Week 4**, with $n$ in place of the step size:
-:::
-
-## The Same Discipline, a Different Knob
+## Two Potential Sources of Error
 
 :::: {.columns}
 ::: {.column width=50%}
-**Simulation** (Week 4)
+**Discretization**
 
 - pick $\Delta t$ from a characteristic timescale
 - halve it; see if the answer moves
-- error $\sim \Delta t$
+- error scales linearly with $\Delta t$
 :::
 ::: {.column width=50%}
-**Monte Carlo** (today)
+**Monte Carlo** 
 
 - pick $n$ from a target CI half-width
 - double it; see if the estimate moves
-- error $\sim 1/\sqrt{n}$
+- error scales as $\sim 1/\sqrt{n}$
 :::
 ::::
 
-::: {.fragment .fade-in}
-Both times: name a quantity of interest, refine the knob, estimate what's left, **report what you did**. Both rubrics penalize not doing it.
-:::
 
-## The Sentence You Copy Into Your Homework
-
-```{julia}
-#| echo: false
-#| output: asis
-
-p2, se2 = round(running_p[2000], digits=3), round(running_se[2000], digits=4)
-p4 = round(running_p[4000], digits=3)
-half_width2 = 1.96 * se2
-lo, hi = round(p2 - half_width2, digits=2), round(p2 + half_width2, digits=2)
-change = round(abs(p4 - p2), digits=4)
-# The wording follows the numbers, so the sentence stays true for any seed.
-if change < se2
-    comparison = "less than one standard error"
-    verdict = "so \$n=2{,}000\$ is sufficient for this analysis."
-elseif change < half_width2
-    comparison = "less than the 95% half-width"
-    verdict = "so \$n=2{,}000\$ is sufficient for this analysis."
-else
-    comparison = "more than the 95% half-width"
-    verdict = "so \$n=2{,}000\$ is not yet enough."
-end
-println("> \"I estimated \$P(\\text{DO} < 2.5\\ \\text{mg/L})\$ with \$n = 2{,}000\$ Monte Carlo ",
-        "samples, seeded for reproducibility. The estimate is \$$(p2)\$ with a Monte Carlo ",
-        "standard error of \$$(se2)\$, giving a 95% CI of \$[$(lo), $(hi)]\$. Doubling to ",
-        "\$n=4{,}000\$ changed the estimate by \$$(change)\$, $(comparison), ", verdict, "\"")
-```
-
-# Two Errors, One Answer
-
-## You Now Have Two Knobs
-
-Every number you report from this model is shaped by two choices you made:
-
-::: {.incremental}
-- $\Delta x$, the spatial step --- Week 4's knob.
-- $n$, the number of samples --- today's.
-:::
-
-::: {.fragment .fade-in}
-Refining either one costs time. **Which should you refine?**
-:::
 
 ## Put Them in the Same Units
 
-The two errors are not comparable until they describe the same quantity. So express both as an error in **the violation probability**, which is the number you would actually report.
+The two errors are not comparable until they describe the same quantity, the output of interest. 
 
-- **Grid error**: hold $n$ and the seed fixed, vary $\Delta x$, see how $P$ moves.
-- **Sampling error**: hold $\Delta x$ fixed, and read the half-width $1.96\sqrt{p(1-p)/n}$.
+**Here**: Express both as the error in **the violation probability**.
+
+- **Discretization error**: hold $n$ and the seed fixed, vary $\Delta x$/$\Delta t$, see how the probability moves.
+- **Sampling error**: hold $\Delta x$/$\Delta t$ fixed, and read the half-width $1.96\, s_Y/\sqrt{n}$, where $s_Y$ is the sample standard deviation of the draws.
 
 ## Measuring the Grid Error
 
@@ -508,11 +481,15 @@ grid_errors = abs.(grid_estimates .- reference_p)
 println("| \$\\Delta x\$ (km) | \$P\$ | error vs. fine grid |")
 println("|---:|---:|---:|")
 for i in 1:length(grid_steps)
-    println("| \$$(grid_steps[i])\$ | \$$(round(grid_estimates[i], digits=3))\$ | \$$(round(grid_errors[i], digits=3))\$ |")
+    println("| \$$(grid_steps[i])\$ | \$$(round(grid_estimates[i], digits=2))\$ | \$$(round(grid_errors[i], digits=2))\$ |")
 end
 ```
 
+**Held fixed**: $n = 3{,}000$, seed 99. Reference: $\Delta x = 0.02$ km.
+
 ## Measuring the Sampling Error
+
+**Held fixed**: $\Delta x = 0.1$ km, with $s_Y$ from the 20,000 draws on the Monte Carlo estimate slide. **Varied**: $n$.
 
 ```{julia}
 #| echo: false
@@ -521,99 +498,125 @@ end
 println("| \$n\$ | 95% half-width |")
 println("|---:|---:|")
 for n_samples in [100, 500, 2000, 8000]
-    half_width = 1.96 * sqrt(reference_p * (1 - reference_p) / n_samples)
-    println("| \$$(n_samples)\$ | \$$(round(half_width, digits=3))\$ |")
+    half_width = 1.96 * draw_sd / sqrt(n_samples)
+    println("| \$$(n_samples)\$ | \$$(round(half_width, digits=2))\$ |")
 end
 ```
 
-::: {.fragment .fade-in}
-Sampling error falls as $1/\sqrt{n}$ --- predictably, and as slowly as we warned on Wednesday.
-:::
-
-## Two Errors, Two Rates
-
-```{julia}
-#| label: fig-two-rates
-#| fig-cap: "Left: measured grid error against step size, with a slope-1 reference. Right: the reported 95% half-width against sample count, with a slope -1/2 reference. Both on log-log axes."
-#| echo: true
-#| code-fold: true
-
-# Sampling error measured against this chain's own long-run estimate.
-# The sampling error we plot is the half-width we would actually report, not
-# one chain's realised error -- a single chain's error is itself random and
-# does not fall smoothly.
-sample_sizes = [50, 100, 200, 500, 1000, 2000, 5000, 10_000]
-sampling_errors = zeros(length(sample_sizes))
-for i in 1:length(sample_sizes)
-    sampling_errors[i] = 1.96 * sqrt(reference_p * (1 - reference_p) / sample_sizes[i])
-end
-
-p_grid = plot(grid_steps, grid_errors, xscale=:log10, yscale=:log10,
-    markershape=:circle, markersize=7, color=cb_vermillion, linewidth=3,
-    xlabel="Δx  [km]", ylabel="error in P", label="measured", legend=:bottomright,
-    xticks=(grid_steps, string.(grid_steps)))
-plot!(p_grid, grid_steps, grid_errors[1] .* (grid_steps ./ grid_steps[1]),
-    color=:black, linewidth=2, linestyle=:dash, label="slope 1")
-
-p_samp = plot(sample_sizes, sampling_errors, xscale=:log10, yscale=:log10,
-    markershape=:circle, markersize=7, color=cb_blue, linewidth=3,
-    xlabel="n", ylabel="95% half-width in P", label="reported", legend=:bottomleft)
-plot!(p_samp, sample_sizes, sampling_errors[1] .* sqrt.(sample_sizes[1] ./ sample_sizes),
-    color=:black, linewidth=2, linestyle=:dash, label="slope -1/2")
-
-plot(p_grid, p_samp, layout=(1, 2), size=(1100, 430), left_margin=12mm,
-    right_margin=8mm, bottom_margin=12mm, top_margin=5mm)
-```
-
-## One You Measure, One You Predict
-
-Note what had to be done to get each panel.
-
-::: {.incremental}
-- **Grid error**: there is no formula. You found it by *refining and comparing* --- the same thing Week 4 made you do.
-- **Sampling error**: you can write it down **before running anything**, from $1.96\sqrt{p(1-p)/n}$.
-:::
-
-::: {.fragment .fade-in}
-That asymmetry is why the grid error is the one people skip. Nothing prompts you to look for it, and no formula hands it to you.
-:::
-
-## Which One Dominates?
+## Where Should the Next Run Go?
 
 ```{julia}
 #| output: false
-coarse_grid_error = grid_errors[1]
-typical_half_width = 1.96 * sqrt(reference_p * (1 - reference_p) / 2000)
-error_ratio = coarse_grid_error / typical_half_width
+# Starting point: the settings used throughout, Δx = 0.1 km and n = 2,000.
+# A run costs about n × L/Δx Euler steps, so halving Δx and doubling n each double the cost.
+current_grid_error = grid_errors[end]                                   # Δx = 0.1 km
+finer_grid_error = abs(violation_fraction(0.05, 3000, 99) - reference_p) # Δx = 0.05 km
+typical_half_width = 1.96 * draw_sd / sqrt(2000)
+halve_dx_reduction = current_grid_error - finer_grid_error    # measured
+double_n_reduction = typical_half_width * (1 - 1 / sqrt(2))   # predicted
+benefit_ratio = halve_dx_reduction / double_n_reduction
 ```
 
-At $\Delta x = 1$ km and $n = 2{,}000$ --- both perfectly reasonable-looking choices --- the grid error is **`{julia} round(error_ratio, digits=1)` times** the sampling half-width.
+Start from the settings we have been using, $\Delta x = 0.1$ km and $n = 2{,}000$. Each refinement **doubles** the cost of a run:
+
+| Refinement | Error removed |
+|:--|--:|
+| Halve $\Delta x$ (0.1 → 0.05 km) | `{julia} round(halve_dx_reduction, digits=3)` (measured) |
+| Double $n$ (2,000 → 4,000) | `{julia} round(double_n_reduction, digits=3)` (predicted) |
+
+For the same cost, refining the grid removes about **`{julia} round(benefit_ratio, digits=1)` times** as much error.
+
+## It Depends on Where You Start
+
+Which refinement removes more error for the same cost, and by how much?
+
+```{julia}
+#| echo: false
+#| output: asis
+
+# Print whole numbers without a decimal point
+tidy(x) = x == round(x) ? string(Int(round(x))) : string(x)
+
+# Error removed by halving Δx, from each starting grid (measured)
+start_steps = [1, 0.5, 0.1]
+grid_reductions = [grid_errors[1] - grid_errors[2],
+                   grid_errors[2] - grid_errors[3],
+                   current_grid_error - finer_grid_error]
+start_samples = [100, 500, 2000, 8000]
+
+println("| Starting \$\\Delta x\$ | " * join(["\$n = $(n)\$" for n in start_samples], " | ") * " |")
+println("|:--|" * repeat(":--:|", length(start_samples)))
+for i in 1:length(start_steps)
+    cells = String[]
+    for n in start_samples
+        # Error removed by doubling n, from this sample size (predicted)
+        sample_reduction = 1.96 * draw_sd / sqrt(n) * (1 - 1 / sqrt(2))
+        ratio = grid_reductions[i] / sample_reduction
+        if ratio >= 1
+            push!(cells, "\$\\Delta x\$, $(tidy(round(ratio, digits=1)))×")
+        else
+            push!(cells, "**\$n\$, $(tidy(round(1 / ratio, digits=1)))×**")
+        end
+    end
+    println("| $(tidy(start_steps[i])) km | " * join(cells, " | ") * " |")
+end
+```
+
+## What Each Refinement Buys
+
+Both refinements double the cost of a run. From the current settings:
+
+- **Halve $\Delta x$**: forward Euler is first order, so the grid error goes from $e_{\Delta x}$ to $e_{\Delta x}/2$. You remove $\tfrac{1}{2}\,e_{\Delta x}$.
+- **Double $n$**: the half-width $h_n = 1.96\,s_Y/\sqrt{n}$ goes from $h_n$ to $h_n/\sqrt{2}$. You remove $h_n - h_n/\sqrt{2} \approx 0.29\,h_n$.
+
+## When to Add Samples
+
+Doubling $n$ removes more error than halving $\Delta x$ when
+
+$$(1 - 1/\sqrt{2})\,h_n > \tfrac{1}{2}\,e_{\Delta x} \iff h_n > (1 + 1/\sqrt{2})\,e_{\Delta x} \approx 1.7\,e_{\Delta x}.$$
+
+Unless the Monte Carlo half-width is at least 1.7 times the grid error, the grid is the lowest-hanging fruit.
+
+At $\Delta x = 0.1$ km and $n = 2{,}000$: $h_n =$ `{julia} round(typical_half_width, digits=3)` and $1.7\,e_{\Delta x} =$ `{julia} round((1 + 1 / sqrt(2)) * current_grid_error, digits=3)`, so halve $\Delta x$.
+
+## How To Report Error
+
+Your confidence interval is computed from $n$ alone. It doesn't reflect the discretization error.
 
 ::: {.fragment .fade-in}
-Refining $n$ here buys you almost nothing. The answer is limited by the grid, not the samples.
-:::
-
-## The Error You Can See
-
-Your confidence interval is computed from $n$ alone. **It knows nothing about $\Delta x$.**
-
-::: {.fragment .fade-in}
-So a report that says $P =$ `{julia} round(running_p[2000], digits=2)` $\pm$ `{julia} round(1.96 * running_se[2000], digits=2)` is quoting a precise answer to a model that has not been resolved. The interval is honest about the error it measures and silent about the one that dominates.
+So a report that says $P =$ `{julia} round(running_p[2000], digits=2)` $\pm$ `{julia} round(1.96 * running_se[2000], digits=2)` leaves out a grid error of about `{julia} round(current_grid_error, digits=3)` at $\Delta x = 0.1$ km, most of the size of the interval itself. 
 :::
 
 ::: {.fragment .fade-in}
-**Report both, or the interval misleads.**
+Only reporting the Monte Carlo CI if there is also discretization error can mislead!
 :::
 
-# From Probability to Risk
 
-## You Have a Number. Is It Risk?
+## Know Your Error Tolerance
 
-We estimated the probability that dissolved oxygen falls below the standard on a given day.
+Ultimately, at some point chasing more error reduction does not help your analysis.
 
-::: {.fragment .fade-in}
-That is a real and useful number. It is also **not** a risk estimate.
-:::
+Here: suppose the river may violate the standard on at most **10%** of days (a hypothetical tolerance).
+
+```{julia}
+#| output: false
+tolerance = 0.1
+current_p = running_p[2000]
+total_error = 1.96 * running_se[2000] + current_grid_error   # sampling half-width + grid error
+```
+
+- $P =$ `{julia} round(current_p, digits=2)` $\pm$ `{julia} round(total_error, digits=2)` (sampling plus grid error): `{julia} round(current_p - tolerance, digits=2)` above the tolerance.
+- Halving $\Delta x$ would move it by `{julia} round(halve_dx_reduction, digits=3)`.
+
+## When Would the Error Matter?
+
+Against a 10% tolerance, even the coarsest grid ($\Delta x = 1$ km, $P =$ `{julia} round(grid_estimates[1], digits=2)`) gives the same answer: the river fails.
+
+If the tolerance were **50%**, $P =$ `{julia} round(current_p, digits=2)` $\pm$ `{julia} round(total_error, digits=2)` would straddle it, and refining would decide the answer.
+
+Set the tolerance from the decision **before** choosing $\Delta x$ and $n$.
+
+# Probability vs. Risk
 
 ## What Risk Means
 
@@ -653,38 +656,16 @@ Source: [Simpson et al. (2021)](https://doi.org/10.1016/j.oneear.2021.03.005)
 :::
 ::::
 
-## Our Model Contains One of Four
+## Our DO Model Contains Only One of Four
 
 $P(\text{DO} < 2.5)$ is a **hazard** statistic, and nothing more.
 
 ::: {.incremental}
-- Who is **exposed**? Which reach, whose water intake, which fishery?
-- How **vulnerable** are they? A brief dip matters differently to a trout stream than to an industrial intake.
-- What is the **response**? A warning system, a permit change, a treatment upgrade.
+- Who is **exposed**? What residents, intakes, ecosystems?
+- How **vulnerable** are they? A brief reduction in DO matters differently to a trout community than to an industrial intake.
+- What is the **response**? A warning system might cause the effluent release to change.
 :::
 
-::: {.fragment .fade-in}
-None of those three are in the model. **Managing risk needs all four, and simulation gives you one.**
-:::
-
-# Practical Notes
-
-## Pseudorandomness and Seeds
-
-:::: {.columns}
-::: {.column width=40%}
-Random number generators are not *really* random --- only **pseudorandom**, and deterministic given a seed.
-
-**Always set a seed.** It's how your results (and your grader's) reproduce.
-:::
-::: {.column width=60%}
-![XKCD 221: Random Number](https://imgs.xkcd.com/comics/random_number.png){width=90%}
-
-::: {.caption}
-Source: [XKCD #221](https://xkcd.com/221/)
-:::
-:::
-::::
 
 # Key Takeaways and Upcoming Schedule
 
@@ -692,24 +673,23 @@ Source: [XKCD #221](https://xkcd.com/221/)
 
 ::: {.incremental}
 - A confidence interval describes the **procedure**, not the one interval you happened to construct.
-- **Sample size needs justification**, exactly like Week 4's step size: pick $n$ from a target precision, double it and check, report the standard error.
-- Five samples were nowhere near enough to trust the DO ensemble --- now you know how to say precisely how far short they fell.
-- **Two errors sit in every answer**, and they fall at different rates. Refining the wrong knob buys nothing.
-- **Your confidence interval measures one of them and is silent about the other.**
-- A violation probability is a **hazard** statistic. Risk needs exposure, vulnerability, and response as well --- and none of those is in the model.
+- Sample size needs justification: check if the estimate is stable and make sure the CI half-width is small enough.
+- Discretization error **and** Monte Carlo error are included in every MC estimate you produce using a discretized simulation model. They fall at different rates: include both and focus computation where the potential for error reduction is greatest.
 :::
 
 ## Next Classes
 
-**Wednesday**: Gaussian plumes --- deriving the model, boundary conditions, and where the closed form comes from.
+**Wednesday/Monday**: Gaussian Plumes and 2D Simulation
 
 ## Assessments
 
-**Mini-Project 1**: Due Thursday, October 22.
+**Quiz 2**: Monday, October 5, covering discretization, convergence, Streeter-Phelps, and Monte Carlo, including confidence intervals and risk.
 
 **Homework 4**: Due Thursday, October 8.
 
-**Quiz 2**: Wednesday, covering discretization, convergence, Streeter-Phelps, and Monte Carlo foundations.
+**Mini-Project 1**: Due Thursday, October 22.
+
+**Project Proposal**: Due Friday, October 16. See website for guidelines.
 
 # References
 

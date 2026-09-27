@@ -39,15 +39,15 @@ change named · **New** — nothing exists, build from scratch.
 |:--:|:--|:--|:--|:--|:--|
 | 4 | Wed Sep 16 | Dissolved Oxygen and Streeter-Phelps | `lecture04-2-streeter-phelps` | Ready | HW3 |
 | 5 | Mon Sep 21 | **Lab: Convergence and Discretization** | `labs/lab01` (Fall26 branch) | Ready | Lab 1 |
-| 5 | Wed Sep 23 | Uncertainty, Probability, and Monte Carlo | `lecture05-2-monte-carlo-foundations` | Ready | MP1 assigned · HW4 released Sep 25 |
+| 5 | Wed Sep 23 | Uncertainty, Probability, and Monte Carlo | `lecture05-2-monte-carlo-foundations` | Ready | MP1 assigned |
 | 6 | Mon Sep 28 | Monte Carlo: Applying It, Justifying It | `lecture06-1-monte-carlo-inference` | Ready | |
-| 6 | Wed Sep 30 | Gaussian Plumes: Deriving the Model | `lecture06-2-plume-derivation` | Ready | **Quiz 2** |
-| 7 | Mon Oct 5 | Gaussian Plumes: Footprints and Flexibility | `lecture07-1-plume-analytics` | Revise — add the three views and a light grid introduction; move the puff material to Oct 7 | |
+| 6 | Wed Sep 30 | Gaussian Plumes: Deriving the Model | `lecture06-2-plume-derivation` | Ready | HW4 |
+| 7 | Mon Oct 5 | Gaussian Plumes: Footprints and Flexibility | `lecture07-1-plume-analytics` | Revise — add the three views and a light grid introduction; move the puff material to Oct 7 | **Quiz 2** |
 | 7 | Wed Oct 7 | **Model Validation** | `lecture07-2-model-validation` | **Written** — ported from the FA25 validation section of `lecture05-1-dissolved-oxygen-2`, extended | HW5 |
 | 8 | Mon Oct 12 | *No class — Fall Break* | | | |
 | 8 | Wed Oct 14 | Decision Models and Linear Programming | `lecture07-1-prescriptive-modeling` + `lecture08-2-optimization` | Revise — compress 2→1 | HW6 |
-| 9 | Mon Oct 19 | Project Proposal Peer Review | *activity, no deck* | **New** | **Quiz 3** |
-| 9 | Wed Oct 21 | Shadow Prices and Duality | `lecture09-1-capacity-expansion` (shadow-price half) | Revise — split; carries first JuMP | HW7 |
+| 9 | Mon Oct 19 | Shadow Prices and Duality | `lecture09-1-capacity-expansion` (shadow-price half) | Revise — split; carries first JuMP | |
+| 9 | Wed Oct 21 | Project Proposal Peer Review | `activity-proposal-peer-review` + `project/proposal-review.qmd` | Drafted | HW7 · **Quiz 3** |
 | 10 | Mon Oct 26 | **Lab: Linear Programming with JuMP** — *TA* | `labs/lab03` | Revise — re-theme to power systems | Lab 2 |
 | 10 | Wed Oct 28 | Economic Dispatch — *sub (power systems expert)* | `lecture10-2-economic-dispatch` | Revise — FA25 to FA26; **keep** multi-period dispatch and the renewables/duck-curve material | MP2 assigned |
 | 11 | Mon Nov 2 | Capacity Expansion | `lecture09-1` (capacity half) + `lecture10-1-capacity-expansion-2` | Revise — compress 2→1 | |
@@ -63,7 +63,7 @@ change named · **New** — nothing exists, build from scratch.
 | 16 | Mon Dec 7 | Course Wrap-Up and Synthesis | *flex* | **New** | **Quiz 6** |
 
 **Totals from Sep 16**: 24 rows — 2 no-class days and **22 sessions**, of which 6 are ready, 3 reuse
-as-is, 8 need revision, and 4 are new builds (the peer-review activity, DP, Lab 3, and the wrap-up —
+as-is, 8 need revision, 1 new build is drafted (the peer-review activity), and 3 are new builds still to do (DP, Lab 3, and the wrap-up —
 model validation turned out to be a port, not a new build). The simulation half ends Oct 7; optimization runs Oct 14 – Dec 7. Instructor away
 weeks 10 and 12 (Oct 26/28, Nov 9/11) — each gets one TA-supervised lab or a procedural lecture, and
 no quiz falls in either.
@@ -80,13 +80,17 @@ from-scratch or already-compressed material.
 | Quiz | Date | Gap | Covers | Host absorbs it? |
 |:--|:--|:--:|:--|:--|
 | 1 | Wed Sep 9 | — | — | — |
-| 2 | Wed Sep 30 | 21 d | Discretization, convergence, Streeter-Phelps, Monte Carlo foundations | Plume derivation — existing deck |
-| 3 | Mon Oct 19 | 19 d | Monte Carlo inference, both plume sessions, model validation. **Stops short of week 8**, leaving LP to anchor Quiz 4 | Peer review — activity session |
-| 4 | Wed Nov 4 | 16 d | LP, shadow prices, economic dispatch (including multi-period and ramping) | MIP — reuse deck |
+| 2 | Mon Oct 5 | 26 d | Discretization, convergence, Streeter-Phelps, and all of Monte Carlo (foundations, confidence intervals, sample size, risk) | Plume analytics — trimmed to 16 slides; plume is the lowest-value material |
+| 3 | Wed Oct 21 | 16 d | Both plume sessions and model validation. **Stops short of week 8**, leaving LP to anchor Quiz 4 | Peer review — activity session |
+| 4 | Wed Nov 4 | 14 d | LP, shadow prices, economic dispatch (including multi-period and ramping) | MIP — reuse deck |
 | 5 | Mon Nov 16 | 12 d | Capacity expansion, MIP, waste/networks, unit commitment | Stochastic optimization — reuse deck |
 | 6 | Mon Dec 7 | 21 d | Scenario trees, DP, sensitivity/robustness/MOO, limits of optimization | Wrap-up session |
 
-Spacing runs 12–21 days. The two 21-day gaps sit at the ends: Quiz 2 waits for enough material to
+**Quiz 2 moved to Mon Oct 5** (decided Sep 25) so students have worked on HW4 (released Sep 30) over a weekend before it, and so it can cover all of Monte Carlo; Sep 30 keeps its full session and finishes Monte Carlo with the risk section. This breaks the 12–21-day spacing (26 days after Quiz 1, 16 before Quiz 3).
+
+**Oct 19 and Oct 21 swapped** (decided Sep 26): duality moves to Monday, straight after the Oct 14 LP lecture, and the proposal peer review with Quiz 3 moves to Wednesday, giving two working days to distribute the Oct 16 proposals. The written peer review moves to Mon Oct 26, clear of the Oct 22 MP1 and HW6 deadlines.
+
+Spacing otherwise runs 12–21 days. The two 21-day gaps sit at the ends: Quiz 2 waits for enough material to
 accumulate, and Quiz 6 spans Thanksgiving. Coverage balances at 3/4/3/4/4 sessions.
 
 ### Question bank
@@ -125,14 +129,14 @@ Thursdays 9pm. Nine homeworks total, inside the syllabus's 8–10, one dropped.
 
 | HW | Assign | Due | Topic | By-hand | Computational (light) |
 |:--|:--|:--|:--|:--|:--|
-| 4 | Fri Sep 25 | Thu Oct 8 | Monte Carlo, uncertainty & risk | Expectation/variance of a function of a random variable; why MC error scales as σ/√n and the samples a target precision needs; exceedance probability and return periods; aleatory vs. epistemic | Propagate parameter uncertainty through the HW3 model; CI on one decision-relevant quantity plus an *n*-convergence plot |
+| 4 | Wed Sep 30 | Thu Oct 8 | Monte Carlo, uncertainty & risk | Expectation/variance of a function of a random variable; why MC error scales as σ/√n and the samples a target precision needs; exceedance probability and return periods; aleatory vs. epistemic | Propagate parameter uncertainty through the HW3 model; CI on one decision-relevant quantity plus an *n*-convergence plot |
 | 5 | Wed Oct 7 | Thu Oct 15 | Gaussian plumes & model validation | Evaluate the plume equation at a receptor; stability class and wind speed effects; where the max ground-level concentration occurs; what a goodness-of-fit metric is blind to | Evaluate the plume on a coarse grid, locate the max, and score it against observations |
 | 6 | Wed Oct 14 | Thu Oct 22 | Decision models & linear programming | Formulate from a word problem: decision variables with units and bounds, objective, constraints; standard form; solve a 2-variable LP graphically | None required |
 | 7 | Wed Oct 21 | Thu Oct 29 | Duality, shadow prices & first JuMP | Identify binding constraints; interpret shadow prices with units; decide whether to buy capacity given a shadow price; what a zero shadow price implies | Solve the *same* LP in JuMP, extract duals, confirm they match the hand answer |
 | 8 | Wed Nov 4 | Thu Nov 12 | Mixed integer programming | Model a fixed cost, an either/or, and an indicator with binaries; why the LP relaxation bounds; trace 2–3 branch-and-bound nodes | Solve a small MIP; compare to its LP relaxation |
 | 9 | Mon Nov 9 | Thu Nov 19 | Network models & waste allocation | Set up a small facility-allocation network; flow-conservation and capacity constraints; siting indicators | Solve the instance; interpret which facilities open |
 
-**Design notes.** HW4 was released early (Fri Sep 25, not Wed Sep 30) so its Problem 1 is practice for Quiz 2's Monte Carlo and probability items; 1.2 and 2.2 wait on Monday's confidence intervals. HW4 deliberately echoes HW3, putting deterministic truncation error in Δt beside
+**Design notes.** HW4 deliberately echoes HW3, putting deterministic truncation error in Δt beside
 statistical error in *n*. HW6's graphical-LP question should match Quiz 4's format so the homework is
 real practice. HW7 asks for the hand answer *before* the JuMP check. Weeks 13–16 carry no new
 homework — the term project fills them: update (Nov 13), presentations (Dec 8), report (Dec 20).

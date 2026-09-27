@@ -169,27 +169,6 @@ The axes are not to scale. The plume is **kilometres long and a few hundred metr
 Nothing reaches the ground for the first few hundred metres --- the plume is still aloft at 41 m and has not spread down to $z = 0$ yet.
 :::
 
-## How Wide Is It, Really?
-
-```{julia}
-#| label: fig-crosswind
-#| fig-cap: "Crosswind profiles at three downwind distances. Dashed lines mark plus and minus one sigma_y."
-#| echo: true
-#| code-fold: true
-
-p_cross = plot(xlabel="Crosswind distance  [m]", ylabel="Ground-level C  [µg/m³]",
-    legend=:topright)
-for (distance, colour) in zip([1.0, 2.5, 6.0], [cb_vermillion, cb_blue, cb_green])
-    profile = [plume_ugm3(distance, y, 0.0, plume_params) for y in crosswind_positions]
-    plot!(p_cross, crosswind_positions, profile, color=colour, linewidth=3,
-        label="x = $distance km")
-    vline!(p_cross, [sig_y(distance), -sig_y(distance)], color=colour,
-        linewidth=2, linestyle=:dash, label=nothing)
-end
-plot!(p_cross, size=(1050, 430), left_margin=12mm, right_margin=8mm,
-    bottom_margin=12mm, top_margin=5mm)
-```
-
 ## Sigma Sets the Width
 
 $\sigma_y$ at 1 km: `{julia} Int(round(sig_y(1.0)))` m. At 8 km: `{julia} Int(round(sig_y(8.0)))` m.
@@ -222,12 +201,6 @@ hline!(p_section, [plume_params.H], color=:white, linewidth=2, linestyle=:dash,
 plot!(p_section, size=(1050, 430), left_margin=12mm, right_margin=10mm,
     bottom_margin=12mm, top_margin=5mm)
 ```
-
-## This Is the Image Term Working
-
-The plume does not pass through the ground; it **piles up against it**.
-
-That is the second exponential from Wednesday, doing exactly what it was derived to do --- and it is why the ground-level concentration is twice what an unbounded Gaussian would give.
 
 ## The Peak Isn't at the Stack
 
@@ -322,160 +295,6 @@ Same recipe as the sag curve:
 The grid you chose changed the number you report to the regulator. That belongs in the report.
 :::
 
-# More Than One Stack
-
-## Concentrations Add
-
-The plume equation is linear in $Q$. Two stacks in the same airshed contribute independently, and the concentration at a receptor is the **sum** of what each one puts there.
-
-A receptor only sees a stack that is **upwind** of it.
-
-## Three Stacks in Code
-
-```{julia}
-#| echo: true
-#| output: false
-#| code-line-numbers: "|1-4|6-17"
-
-# One entry per stack, positions in km along and across the wind
-stack_downwind  = [0.0, 1.5, 3.0]
-stack_crosswind = [0.0, 150.0, -120.0]
-stack_emission  = [100.0, 60.0, 80.0]
-
-function total_concentration(xk, y, z)
-    total = 0.0
-    for stack in 1:length(stack_downwind)
-        downwind_of_stack = xk - stack_downwind[stack]
-        if downwind_of_stack > 0.05
-            crosswind_of_stack = y - stack_crosswind[stack]
-            single = (; Q=stack_emission[stack], H=plume_params.H,
-                        u_wind=plume_params.u_wind)
-            total += plume_ugm3(downwind_of_stack, crosswind_of_stack, z, single)
-        end
-    end
-    return total
-end
-```
-
-## The Combined Footprint
-
-```{julia}
-#| label: fig-combined
-#| fig-cap: "Three stacks sharing an airshed. Markers show the stacks; the white contour is a 500 µg/m³ limit."
-#| echo: true
-#| code-fold: true
-
-combined = [total_concentration(x, y, 0.0) for y in crosswind_positions, x in downwind_positions]
-
-p_comb = contourf(downwind_positions, crosswind_positions, combined,
-    color=:viridis, linewidth=0,
-    xlabel="Distance downwind  [km]", ylabel="Crosswind distance  [m]")
-contour!(p_comb, downwind_positions, crosswind_positions, combined,
-    levels=[500.0], color=:white, linewidth=3)
-scatter!(p_comb, stack_downwind, stack_crosswind, color=cb_vermillion,
-    markersize=9, markershape=:utriangle, label="stacks", legend=:topright)
-plot!(p_comb, size=(1050, 450), left_margin=12mm, right_margin=10mm,
-    bottom_margin=12mm, top_margin=5mm)
-```
-
-## The Sum Is Not the Parts
-
-```{julia}
-#| output: false
-
-function solo_peak(stack)
-    single = (; Q=stack_emission[stack], H=plume_params.H, u_wind=plume_params.u_wind)
-    largest = 0.0
-    for x in centerline_positions
-        value = plume_ugm3(x, 0.0, 0.0, single)
-        if value > largest
-            largest = value
-        end
-    end
-    return largest
-end
-
-solo_peaks = [solo_peak(stack) for stack in 1:length(stack_downwind)]
-combined_peak = maximum(combined)
-```
-
-| Source | Peak on its own |
-|:--|--:|
-| Stack 1 | `{julia} round(solo_peaks[1]; digits=0)` µg/m³ |
-| Stack 2 | `{julia} round(solo_peaks[2]; digits=0)` µg/m³ |
-| Stack 3 | `{julia} round(solo_peaks[3]; digits=0)` µg/m³ |
-| All three together | **`{julia} round(combined_peak; digits=0)` µg/m³** |
-
-## Who Causes the Exceedance?
-
-```{julia}
-#| output: false
-
-# Locate the worst point on the combined field, then ask what each stack put there.
-worst_value = 0.0
-worst_downwind = 0.0
-worst_crosswind = 0.0
-for i in 1:length(downwind_positions)
-    for j in 1:length(crosswind_positions)
-        if combined[j, i] > worst_value
-            worst_value = combined[j, i]
-            worst_downwind = downwind_positions[i]
-            worst_crosswind = crosswind_positions[j]
-        end
-    end
-end
-
-contributions = Float64[]
-for stack in 1:length(stack_downwind)
-    downwind_of_stack = worst_downwind - stack_downwind[stack]
-    single = (; Q=stack_emission[stack], H=plume_params.H, u_wind=plume_params.u_wind)
-    push!(contributions,
-        plume_ugm3(downwind_of_stack, worst_crosswind - stack_crosswind[stack], 0.0, single))
-end
-```
-
-The worst point sits at `{julia} round(worst_downwind; digits=2)` km, `{julia} Int(round(worst_crosswind))` m off the centreline.
-
-| Source | Emission | Share of the worst point |
-|:--|--:|--:|
-| Stack 1 | 100 g/s | `{julia} Int(round(100 * contributions[1] / worst_value))`% |
-| Stack 2 | 60 g/s | `{julia} Int(round(100 * contributions[2] / worst_value))`% |
-| Stack 3 | 80 g/s | `{julia} Int(round(100 * contributions[3] / worst_value))`% |
-
-::: {.fragment .fade-in}
-The **largest emitter is not the largest contributor** here. Regulating by emission rate and regulating by impact give different answers.
-:::
-
-# When the Closed Form Stops Working
-
-## Emissions That Vary in Time
-
-A load-following plant or a batch process gives a genuinely time-varying $Q$.
-
-If the wind is steady, a parcel now at distance $x$ left the stack at $t - x/u$:
-
-$$C(x,y,z,t) = \frac{Q(t - x/u)}{2\pi u\sigma_y(x)\sigma_z(x)}\exp\left(\frac{-y^2}{2\sigma_y(x)^2}\right)\Big[\ldots\Big]$$
-
-## When Don't You Need To Discretize
-
-Substituting the retarded time into the formula you already have costs nothing.
-
-::: {.fragment .fade-in}
-This works **only** because advection in $x$ is pure translation --- no along-wind mixing, and a fixed wind field.
-:::
-
-## What the Steady Plume Cannot Do
-
-::: {.incremental}
-- Wind that changes **direction** during the transit: crosswind position depends on integrated history, not a single number.
-- Terrain, buildings, or a mixing-height lid.
-- Anything that reacts on the way downwind.
-:::
-
-::: {.fragment .fade-in}
-Every one of these is an **assumption we made on Wednesday**. On Wednesday we ask how you would ever find out that one of them is wrong.
-:::
-
 # Key Takeaways and Upcoming Schedule
 
 ## Key Takeaways
@@ -485,15 +304,6 @@ Every one of these is an **assumption we made on Wednesday**. On Wednesday we as
 - The vertical section shows the image term working: the plume piles up against the ground rather than passing through it.
 - **The samples are exact; what you compute from them is not.** A grid that misses the centreline reports a small fraction of the true peak.
 - $\sigma_y$ sets the spacing, exactly as the characteristic timescale set $\Delta t$.
-- Superposition puts the worst point where **no single plume** peaks.
-:::
-
-## The Whole Arc, Once More
-
-::: {.incremental}
-- **Forward Euler**, first order: halve $\Delta t$, halve the error.
-- **Monte Carlo**, order one-half: quadruple $n$ to halve the error.
-- **A grid on a closed form**: no error in the samples at all --- the error is entirely in the question you asked of them.
 :::
 
 ## Next Classes
@@ -501,6 +311,8 @@ Every one of these is an **assumption we made on Wednesday**. On Wednesday we as
 **Wednesday**: Model validation. Every figure today rested on assumptions we chose. How would we find out if one of them were wrong?
 
 ## Assessments
+
+**Quiz 2**: Today.
 
 **Mini-Project 1**: Due Thursday, October 22.
 

@@ -14,20 +14,53 @@ The project proposal is intended to provide an initial idea of your project to f
 
 The proposal is **not** binding: you can change aspects of the project later, for example, if you find that you cannot formulate your proposed problem appropriately or cannot find data. However, please discuss these changes with Prof. Srikrishnan as soon as possible to make sure the revised project satisfies the project requirement.
 
-While you may have to submit the proposal before we can discuss certain prescriptive problems in class, your project can focus on decision-making. Provide an idea of the decision problem you would like to study, and you will have the opportunity to refine your problem formulation through discussions with Prof. Srikrishnan and in the project update based on the course content.
+While you have to submit the proposal before we can discuss prescriptive problems at length in class, your project can focus on optimization and decision-making. Provide an idea of the decision problem you would like to study and where you would get data or other information to formulate the optimization problem, and you will have the opportunity to refine your formulation and report it in the project update.
+
+In addition to my feedback, your proposal will be shared with one other group, who will review it and send you their feedback (see the [proposal peer review instructions](proposal-review.qmd)). **It will not be uploaded to any AI tool**. Your proposal is your intellectual property and should not be uploaded for training without your explicit approval.
 
 ## Instructions
 
-- The scope and problem description should be no more than 1 page, not including references or figures.
-  - Provide a brief overview of the system you would like to analyze, a motivation for the choice, and the problem you will study. 
-- Your proposal should include:
-    - An overview of your system (including a diagram showing the control volume of your study, relevant metrics, and what exogenous factors you will consider).
-    - A rough idea of the experimental design, possible data sources and including what uncertainties you will consider.
-    - A work plan including tasks for each group member to lead, a timeline of milestones for interim goals, and plans for group coordination.
-    - References for any sources consulted, including academic literature, websites, and news articles.
+Your proposal has three parts.
+
+### Research Plan 
+
+Provide a brief overview of the system you would like to analyze, a motivation for the choice, and the problem you will study. Your research plan should include:
+
+- The background for the problem, and why it matters.
+- The key question your project will answer.
+- An overview of your system, including showing your systems diagram and reporting any relevant metrics and what exogenous factors you will consider.
+- A rough idea of the model you will build and the experimental design, including possible data sources and what uncertainties you will consider.
+- Any regulations or standards relevant to your problem. Your final report will need to explain how you incorporated them, so start identifying them now.
+- References for any sources consulted, including academic literature, websites, and news articles.
+
+Your research plan should be no more than 2 pages, not including references or figures, with no larger than 11pt Arial font (or equivalent) and 1" margins.
+
+### Work Plan 
+
+The work plan articulates how you will distribute your workload and keep your group accountable. This will be the foundation for how you assess the group performance at the end of the semester.
+
+- The tasks each group member will lead and/or contribute to;
+- A timeline of milestones for interim goals, through the project update (Nov. 13), the presentation (finals week), and the report (Dec. 20);
+- Your plan for group coordination (how often you will meet, and how you will share materials).
+
+Your work plan should be no more than 1 page, not including references or figures, with no larger than 11pt Arial font (or equivalent) and 1" margins.
+
+### LLM Comparison
+
+One common use of large language models (LLMs) is to generate a research plan. The goal of the comparison is for you, having thought through your topic and researched regulations and data sources, to evaluate how well the LLM works without this level of domain expertise.
+
+Ask an LLM (any one you like) to write a project proposal on your topic, using a short description of the topic as your prompt^[While you could refine this further with more detailed prompting, you do not need to do that here; the goal is to assess the initial LLM output, which in principle could inform how you further prompt it.].Then, in your own words, reflect on the differences between its proposal and yours:
+
+- What did the LLM include that you did not? Should you?
+- What is generic, unrealistic, or impossible to verify (for example, data sources that may not exist, or methods that could not be carried out in a semester)?
+- What, if anything, will you adopt?
+- Where is your proposal stronger, and why?
+
+ This reflection should be no more than 1 page, with no larger than 11pt Arial font (or equivalent) and 1" margins.
+
+Put the LLM's full output in an appendix, labelled as LLM output, together with the name of the tool (including the model and effort level, if that is a setting for the tool you've chosen) and the exact prompt you used. The appendix does not count toward any page limit. Following the course's [AI/ML resource policy](../syllabus.qmd#aiml-resource-policy), the reflection and the rest of your proposal must be your own writing.
+
+## Format and Submission
+
 - Include the name(s) of the project team at the top of the PDF.
-- The proposal should have the following format:
-    - 1/2 inch margins on each side;
-    - 11 point Calibri font;
-    - 1.5x line spacing.
-- Submit a PDF of the proposal to Gradescope by 9:00 PM on the due date. 
+- Submit a PDF of the proposal to Gradescope by 9:00 PM on the due date.

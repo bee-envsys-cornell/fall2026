@@ -89,7 +89,7 @@ window.MathJax = {
 <meta property="og:site_name" content="Environmental Systems Analysis">
 </head>
 
-<body class="nav-sidebar docked nav-fixed quarto-light">
+<body class="nav-sidebar docked nav-fixed slimcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -279,12 +279,18 @@ window.MathJax = {
    
   <ul>
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
-  <li><a href="#instructions" id="toc-instructions" class="nav-link" data-scroll-target="#instructions">Instructions</a></li>
+  <li><a href="#instructions" id="toc-instructions" class="nav-link" data-scroll-target="#instructions">Instructions</a>
+  <ul class="collapse">
+  <li><a href="#research-plan" id="toc-research-plan" class="nav-link" data-scroll-target="#research-plan">Research Plan</a></li>
+  <li><a href="#work-plan" id="toc-work-plan" class="nav-link" data-scroll-target="#work-plan">Work Plan</a></li>
+  <li><a href="#llm-comparison" id="toc-llm-comparison" class="nav-link" data-scroll-target="#llm-comparison">LLM Comparison</a></li>
+  </ul></li>
+  <li><a href="#format-and-submission" id="toc-format-and-submission" class="nav-link" data-scroll-target="#format-and-submission">Format and Submission</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/project/proposal.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -314,34 +320,59 @@ window.MathJax = {
 <li>Your plan for conducting the project, including group contributions and a planned timeline.</li>
 </ul>
 <p>The proposal is <strong>not</strong> binding: you can change aspects of the project later, for example, if you find that you cannot formulate your proposed problem appropriately or cannot find data. However, please discuss these changes with Prof.&nbsp;Srikrishnan as soon as possible to make sure the revised project satisfies the project requirement.</p>
-<p>While you may have to submit the proposal before we can discuss certain prescriptive problems in class, your project can focus on decision-making. Provide an idea of the decision problem you would like to study, and you will have the opportunity to refine your problem formulation through discussions with Prof.&nbsp;Srikrishnan and in the project update based on the course content.</p>
+<p>While you have to submit the proposal before we can discuss prescriptive problems at length in class, your project can focus on optimization and decision-making. Provide an idea of the decision problem you would like to study and where you would get data or other information to formulate the optimization problem, and you will have the opportunity to refine your formulation and report it in the project update.</p>
+<p>In addition to my feedback, your proposal will be shared with one other group, who will review it and send you their feedback (see the <a href="../project/proposal-review.html">proposal peer review instructions</a>). <strong>It will not be uploaded to any AI tool</strong>. Your proposal is your intellectual property and should not be uploaded for training without your explicit approval.</p>
 </section>
-<section id="instructions" class="level2">
+<section id="instructions" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="instructions">Instructions</h2>
+<p>Your proposal has three parts.</p>
+<section id="research-plan" class="level3">
+<h3 class="anchored" data-anchor-id="research-plan">Research Plan</h3>
+<p>Provide a brief overview of the system you would like to analyze, a motivation for the choice, and the problem you will study. Your research plan should include:</p>
 <ul>
-<li>The scope and problem description should be no more than 1 page, not including references or figures.
-<ul>
-<li>Provide a brief overview of the system you would like to analyze, a motivation for the choice, and the problem you will study.</li>
-</ul></li>
-<li>Your proposal should include:
-<ul>
-<li>An overview of your system (including a diagram showing the control volume of your study, relevant metrics, and what exogenous factors you will consider).</li>
-<li>A rough idea of the experimental design, possible data sources and including what uncertainties you will consider.</li>
-<li>A work plan including tasks for each group member to lead, a timeline of milestones for interim goals, and plans for group coordination.</li>
+<li>The background for the problem, and why it matters.</li>
+<li>The key question your project will answer.</li>
+<li>An overview of your system, including showing your systems diagram and reporting any relevant metrics and what exogenous factors you will consider.</li>
+<li>A rough idea of the model you will build and the experimental design, including possible data sources and what uncertainties you will consider.</li>
+<li>Any regulations or standards relevant to your problem. Your final report will need to explain how you incorporated them, so start identifying them now.</li>
 <li>References for any sources consulted, including academic literature, websites, and news articles.</li>
-</ul></li>
-<li>Include the name(s) of the project team at the top of the PDF.</li>
-<li>The proposal should have the following format:
+</ul>
+<p>Your research plan should be no more than 2 pages, not including references or figures, with no larger than 11pt Arial font (or equivalent) and 1” margins.</p>
+</section>
+<section id="work-plan" class="level3">
+<h3 class="anchored" data-anchor-id="work-plan">Work Plan</h3>
+<p>The work plan articulates how you will distribute your workload and keep your group accountable. This will be the foundation for how you assess the group performance at the end of the semester.</p>
 <ul>
-<li>1/2 inch margins on each side;</li>
-<li>11 point Calibri font;</li>
-<li>1.5x line spacing.</li>
-</ul></li>
+<li>The tasks each group member will lead and/or contribute to;</li>
+<li>A timeline of milestones for interim goals, through the project update (Nov.&nbsp;13), the presentation (finals week), and the report (Dec.&nbsp;20);</li>
+<li>Your plan for group coordination (how often you will meet, and how you will share materials).</li>
+</ul>
+<p>Your work plan should be no more than 1 page, not including references or figures, with no larger than 11pt Arial font (or equivalent) and 1” margins.</p>
+</section>
+<section id="llm-comparison" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="llm-comparison">LLM Comparison</h3>
+<p>One common use of large language models (LLMs) is to generate a research plan. The goal of the comparison is for you, having thought through your topic and researched regulations and data sources, to evaluate how well the LLM works without this level of domain expertise.</p>
+<p>Ask an LLM (any one you like) to write a project proposal on your topic, using a short description of the topic as your prompt<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.Then, in your own words, reflect on the differences between its proposal and yours:</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;While you could refine this further with more detailed prompting, you do not need to do that here; the goal is to assess the initial LLM output, which in principle could inform how you further prompt it.</p></div></div><ul>
+<li>What did the LLM include that you did not? Should you?</li>
+<li>What is generic, unrealistic, or impossible to verify (for example, data sources that may not exist, or methods that could not be carried out in a semester)?</li>
+<li>What, if anything, will you adopt?</li>
+<li>Where is your proposal stronger, and why?</li>
+</ul>
+<p>This reflection should be no more than 1 page, with no larger than 11pt Arial font (or equivalent) and 1” margins.</p>
+<p>Put the LLM’s full output in an appendix, labelled as LLM output, together with the name of the tool (including the model and effort level, if that is a setting for the tool you’ve chosen) and the exact prompt you used. The appendix does not count toward any page limit. Following the course’s <a href="../syllabus.html#aiml-resource-policy">AI/ML resource policy</a>, the reflection and the rest of your proposal must be your own writing.</p>
+</section>
+</section>
+<section id="format-and-submission" class="level2">
+<h2 class="anchored" data-anchor-id="format-and-submission">Format and Submission</h2>
+<ul>
+<li>Include the name(s) of the project team at the top of the PDF.</li>
 <li>Submit a PDF of the proposal to Gradescope by 9:00 PM on the due date.</li>
 </ul>
 
 
 </section>
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
