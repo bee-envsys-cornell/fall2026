@@ -118,6 +118,20 @@ Two consequences:
   title block falls back to the plain `title`. If a file must render both ways, vendor the filter
   alongside it.
 
+
+**The PDF students download may be built from the notebook, not from the `.qmd`.** An assignment's
+`.qmd` can specify Typst while its CI builds the PDF from the generated `.ipynb` through LaTeX. Then
+rendering the `.qmd` locally looks perfect and proves nothing about what students receive. Read the
+repo's workflow for which file and which target it invokes, and reproduce that command.
+
+**The notebook intermediate silently drops Quarto markup.** Callouts are flattened to blockquotes on
+the way into `.ipynb`, and `content-visible when-format=` is resolved for the notebook rather than the
+eventual PDF. Anything built downstream of the notebook therefore shows callouts as plain indented text
+and leaks notebook-only content, such as the name and ID fields, into the PDF. Neither failure raises an
+error, and both survive a source review. If the PDF has to carry callouts, build it from the `.qmd`.
+*(Moved here from the `assignment-authoring` skill on 2026-09-28, since it is specific to this course's
+Quarto → notebook → PDF pipeline.)*
+
 ## Known traps
 
 - **A code block must be the first thing on its slide — never put text above it.** Revealjs slides
