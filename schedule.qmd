@@ -23,6 +23,6 @@ Note that this schedule will be updated as necessary the semester progresses, wi
 | 5  |   Sep 21   | Discretization & Convergence Lab |  | [{{< fa laptop >}}](labs/lab01/lab01.qmd) |  |  | |  |
 |   |   Sep 23   | Monte Carlo Foundations | [{{< fa sharp presentation-screen >}}](slides/lecture05-2-monte-carlo-foundations.qmd) | |  |  | |  |
 |  6 |   Sep 28   | Monte Carlo Error and Risk | [{{< fa sharp presentation-screen >}}](slides/lecture06-1-monte-carlo-error.qmd) | | [{{< fa sharp file-pen >}}](hw/hw04/hw04.qmd)  | [{{< fa sharp diagram-project >}}](mini-project/mp01/mp01.qmd) | |  |
-|   |   Sep 30   | Gaussian Plume Derivation | [{{< fa sharp diagram-project >}}](mini-project/mp01/mp01.qmd)  | |  |  |  |  |
+|   |   Sep 30   | Gaussian Plume Derivation |  [{{< fa sharp presentation-screen >}}](slides/lecture06-2-plume-derivation.qmd) | |  |  |  |  |
 |  7 |   Oct 5    | Gaussian Plume Simulation |  | |  |  | Quiz 2 |  |
 
