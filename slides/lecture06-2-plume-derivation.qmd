@@ -80,6 +80,26 @@ cb_purple = "#CC79A7"
 
 # Review of Last Class
 
+## Monte Carlo vs. Discretization Error
+
+:::: {.columns}
+::: {.column width=50%}
+**Discretization**
+
+- pick $\Delta t$ from a characteristic timescale
+- halve it; see if the answer moves
+- error scales linearly with $\Delta t$
+:::
+::: {.column width=50%}
+**Monte Carlo** 
+
+- pick $n$ from a target CI half-width
+- double it; see if the estimate moves
+- error scales as $\sim 1/\sqrt{n}$
+:::
+::::
+
+
 ## Questions?
 
 {{< include _poll-prompt.qmd >}}
@@ -87,24 +107,17 @@ cb_purple = "#CC79A7"
 
 # Point Sources and Receptors
 
-## From a Line to a Point
-
-The airshed was a well-mixed box. Streeter-Phelps marched along **one line** downstream.
-
-Air pollution downwind of a stack spreads **across** the wind as well as along it --- a genuinely spatial problem.
-
-
 ## Some Approaches for Modeling Air Pollution
 
 **So far**: box (airshed) models --- overall mass balance across a whole region.
 
-**Today**: point sources and receptors --- *plume* models, which track concentration as a continuous function of position.
+**Today**: point sources and receptors --- *plume* models, which track concentration as a continuous function of position relative to a source.
 
 ## Point Sources and Receptors
 
 ![Point Source/Receptor Schematic](figures/air-pollution.png){width=75%}
 
-## Emissions Follow Instantaneous Paths
+## Individual Paths of Emissions
 
 ![Point Source Flow Traces](figures/air-pollution-instant.png){width=75%}
 
@@ -124,15 +137,16 @@ Air pollution downwind of a stack spreads **across** the wind as well as along i
 
 ## The Advective-Diffusion Equation
 
-The mass balance of a small air parcel:
+The mass balance of a small air control volume:
 
-$$\frac{\partial C}{\partial t} - \underbrace{[D+K]\nabla^2 C}_{\text{diffusion}} + \underbrace{\vec{u}\cdot\vec{\nabla}C}_{\text{advection}} = 0$$
+$$\frac{\partial C}{\partial t} = \underbrace{\sum_{i=x,y,z}(D+K_{ii})\frac{\partial^2 C}{\partial x_i^2}}_{\text{diffusion}} - \underbrace{\vec{u}\cdot\vec{\nabla}C}_{\text{advection}} + \underbrace{S}_{\text{reactions}}$$
 
-- $D$: molecular diffusion coefficient
-- $K$: dispersion coefficient (turbulent mixing)
+$D$: molecular diffusion; $K_{ii}$: turbulent mixing in direction $i$; $S$: reactions (none here).
 
-::: {.fragment .fade-in}
-This is the **same equation family** as the airshed and DO models --- just with the spatial term kept instead of dropped or reduced to one line.
+Full derivation, step by step: [appendix](#plume-derivation).
+
+::: {.notes}
+This is the same mass balance as the box and DO models, applied to a tiny cube of air instead of a whole airshed or river reach. Pollutant in the cube changes because the wind carries it in or out (advection), because it spreads from crowded places to less crowded ones (diffusion, molecular and turbulent), or because it reacts. Everything that follows is deciding which of these terms we can ignore for a smokestack plume. The appendix has every step with the math.
 :::
 
 ## Diffusive Flux
@@ -144,9 +158,25 @@ This is the **same equation family** as the airshed and DO models --- just with 
 ::: {.column width=50%}
 Concentration gradient + diffusion $\Rightarrow$ flux.
 
-**Fick's law**: $$F_x = D\frac{dC}{dx}$$
+**Fick's law**: $$F_x = -D\frac{dC}{dx}$$
 :::
 ::::
+
+::: {.notes}
+Fick's law comes from random molecular motion. Molecules jiggle in every direction, and wherever there are more of them, more wander out than wander in. The net result is a flow from high to low concentration, proportional to how steep the difference is, which is why there is a minus sign. Fick found it in 1855 by analogy with Fourier's law for heat. D is a property of the gases themselves, and it is tiny: about a hundred-thousandth of a square metre per second for a gas in air.
+:::
+
+## Where Turbulent Flux Comes From
+
+The plume is the **time average** of the individual puffs. Split wind and concentration into mean and fluctuation, $u = \bar u + u'$ and $C = \bar C + c'$. Averaging the advective flux leaves an extra term:
+
+$$\overline{uC} = \bar u\,\bar C + \overline{u'c'}$$
+
+$\overline{u'c'}$ is pollutant carried by eddies. **K-theory** closes it by analogy with Fick's law: $\overline{u'c'} = -K_{xx}\,\partial \bar C/\partial x$.
+
+::: {.notes}
+We are not predicting where the smoke is at one instant; that is the wiggly puffs in the earlier figure. We are predicting the average concentration over roughly an hour. When you average the wind carrying the pollutant, most of the cross terms average to zero, but one survives: the correlation between gusts and concentration. Below the plume centreline, for example, updrafts bring up cleaner air and downdrafts bring down dirtier air, so on average pollutant moves downward, from high to low concentration, just like diffusion. K-theory says to treat this like Fick's law, with eddies playing the role of molecules.
+:::
 
 ## Turbulent Flux
 
@@ -157,53 +187,90 @@ Concentration gradient + diffusion $\Rightarrow$ flux.
 ::: {.column width=50%}
 Concentration gradient + turbulent mixing $\Rightarrow$ flux.
 
-$$F_x = K_{xx}\frac{dC}{dx}$$
+$$F_x = -K_{xx}\frac{dC}{dx}$$
 
-$K_{xx}$ depends on flow/eddy characteristics --- not a material property like $D$.
+$K_{xx}$ depends on flow/eddy characteristics.
 :::
 ::::
 
+::: {.notes}
+Same form as Fick's law, but K describes the eddies, not the air. A rough way to think about it: K is an eddy's speed times the distance it carries a parcel before mixing in. That is about half a metre per second times tens of metres, so tens of square metres per second. Molecules follow the same recipe with a tiny step, which is why D is about a million times smaller. K also differs by direction: vertical mixing is suppressed when the atmosphere is stable, which is where stability classes come in later.
+:::
+
 ## Assumption 1: Steady State
 
-$$\frac{\partial C}{\partial t} + \vec{u}\cdot\vec\nabla C - [D+K]\nabla^2C = 0$$
+$$\cancel{\frac{\partial C}{\partial t}} = \sum_{i=x,y,z}(D+K_{ii})\frac{\partial^2 C}{\partial x_i^2} - \vec{u}\cdot\vec{\nabla}C$$
 
-$$\frac{\partial C}{\partial t} = 0$$
+Constant emissions and weather over the averaging period.
+
+::: {.notes}
+Steady state means we describe the plume averaged over a period when the stack emits at a constant rate and the weather holds steady, typically about an hour. It does not mean nothing moves; the air is moving the whole time. It means the averaged picture is not changing. If emissions or the wind shift during the hour, the model describes a blend of conditions, and the real footprint wanders around.
+:::
 
 ## Assumption 2: Wind Only Along $x$
 
 $$\vec{u}\cdot\vec\nabla C = u_x\frac{\partial C}{\partial x} + \cancel{u_y\frac{\partial C}{\partial y}} + \cancel{u_z\frac{\partial C}{\partial z}}$$
 
-## Assumption 3: Turbulence Dominates Molecular Diffusion, and Along-Wind Dispersion Is Negligible
+::: {.notes}
+Part of this is just a choice: we point the x axis along the average wind, so by definition there is no mean wind across it. The real assumption is that the wind is uniform, with the same speed and direction everywhere, including at every height. Real wind speeds up with height, and that is one of the first things more advanced models relax. This is only about the mean wind; the gusts are still there, hiding inside K.
+:::
 
-$$-[\cancel{D}+K]\nabla^2C = \cancel{K_{xx}}\frac{\partial^2C}{\partial x^2} + K_{yy}\frac{\partial^2C}{\partial y^2} + K_{zz}\frac{\partial^2C}{\partial z^2}$$
+## Assumption 3: Turbulence Dominates Molecular Diffusion
 
-::: {.fragment .fade-in}
-This isn't an arbitrary simplification --- it's a **Péclet number** argument, exactly like the one from Week 6: $Pe = uL/D_x \gg 1$ for atmospheric transport at any distance you'd care about.
+$D \sim 10^{-5}$ m²/s for a gas in air; $K \sim 1$--$100$ m²/s. Five or more orders of magnitude apart:
+
+$$(\cancel{D}+K_{ii})\frac{\partial^2 C}{\partial x_i^2} \approx K_{ii}\frac{\partial^2 C}{\partial x_i^2}$$
+
+::: {.notes}
+This one is just a size comparison. In the atmosphere, molecular diffusion is roughly a million times weaker than turbulent mixing, so dropping it changes nothing you could measure. It is the same reason stirring coffee mixes the milk in seconds, while waiting for diffusion alone would take hours.
+:::
+
+## Assumption 4: Negligible Along-Wind Dispersion
+
+Along-wind advection against dispersion, over a distance $L$:
+
+$$\frac{u\,\partial C/\partial x}{K_{xx}\,\partial^2 C/\partial x^2} \sim \frac{u\,C/L}{K_{xx}\,C/L^2} = \frac{uL}{K_{xx}} = Pe$$
+
+A **Péclet number** argument: $Pe \gg 1$ at any distance you'd care about, so drop $K_{xx}$. The crosswind terms stay: with no wind in $y$ or $z$, mixing is the only transport there.
+
+::: {.notes}
+Compare how fast the wind carries pollutant downwind with how fast turbulence spreads it along the wind. The wind covers a kilometre in a few minutes; along-wind mixing would take hours to spread pollutant over the same distance. That ratio is the Péclet number, and at a kilometre it is around 50, so along-wind spreading is a correction of a few percent. Why not drop the crosswind terms the same way? Because there is no wind across the plume to compete with: mixing is the only thing moving pollutant sideways. The plume is also narrow, so concentration changes sharply across it, which makes the crosswind terms as large as the advection term. They are what balance it.
+:::
+
+## Peclet number
 
 ```{julia}
 #| label: fig-peclet
-#| fig-cap: "Péclet number for along-wind transport, u = 2.5 m/s, Dx = 50 m²/s."
+#| fig-cap: "Péclet number for along-wind transport, u = 2.5 m/s, Kxx = 50 m²/s."
 #| echo: true
 #| code-fold: true
 
-u_wind, Dx = 2.5, 50.0
+u_wind, Kxx = 2.5, 50
 Lvals = 100:50:10000
-Pe = u_wind .* Lvals ./ Dx
-plot(Lvals ./ 1000, Pe, xlabel="Distance  [km]", ylabel=L"Pe = uL/D_x",
+Pe = u_wind .* Lvals ./ Kxx
+plot(Lvals ./ 1000, Pe, xlabel="Distance  [km]", ylabel=L"Pe = uL/K_{xx}",
     color=cb_vermillion, linewidth=4, legend=false, yscale=:log10)
 hline!([1], color=:black, linestyle=:dash, linewidth=2)
 plot!(size=(950, 400), left_margin=12mm, right_margin=8mm,
     bottom_margin=12mm, top_margin=5mm)
 ```
+
+::: {.notes}
+Pe grows linearly with distance. With these numbers it passes 1 at about 20 metres and 10 at about 200 metres, so beyond a few hundred metres along-wind dispersion really is negligible. The assumption fails right next to the stack, which is also where the plume formula blows up, and in very light winds, where u is small. That is one reason Gaussian plume models are not used in calm conditions.
 :::
 
 ## What's Left
 
-With these three assumptions:
+With these four assumptions:
 
 $$\bbox[5pt, border: 3px solid red]{u\frac{\partial C}{\partial x} = K_{yy}\frac{\partial^2 C}{\partial y^2} + K_{zz}\frac{\partial^2 C}{\partial z^2}}$$
 
-::: {.fragment .fade-in}
+::: {.notes}
+Read this equation as a balance between two things: the wind carrying pollutant downwind on the left, and turbulence spreading it sideways and vertically on the right. There is no time derivative, no along-wind spreading, and no molecular diffusion left. The next move is to see that this is a diffusion equation in disguise.
+:::
+
+## Boundary Condition
+
 :::: {.columns}
 ::: {.column width=70%}
 Plus a boundary condition: mass flowing through any downwind cross-section must equal the emission rate $Q$:
@@ -214,6 +281,21 @@ $$Q = \iint u\,C\,dy\,dz$$
 ![Boundary Condition for the A-D Equation](figures/boundary-mass.png)
 :::
 ::::
+
+::: {.notes}
+The stack is where the pollutant comes from, and this says none of it disappears. Take any slice across the plume downwind: the wind pushes pollutant through it at some rate, and with steady state and no reactions that rate must equal what the stack emits. Another way to see it: in one second the stack emits Q, and the wind stretches that over u metres of plume, so every metre of plume carries Q divided by u. This is what fixes the overall size of the concentration.
+:::
+
+## Distance Becomes Travel Time
+
+Let $\tau = x/u$, the time the air takes to reach $x$. Then $u\,\partial C/\partial x = \partial C/\partial \tau$:
+
+$$\frac{\partial C}{\partial \tau} = K_{yy}\frac{\partial^2 C}{\partial y^2} + K_{zz}\frac{\partial^2 C}{\partial z^2}$$
+
+This is the 2-D **diffusion (heat) equation**: each downwind slice is a puff that has been spreading for time $x/u$. Its point-source solution is a Gaussian.
+
+::: {.notes}
+This is the key trick. Imagine riding downwind on a thin slice of air, moving at the wind speed. From your seat there is no wind, since you are moving with it; all you see is the pollutant in your slice spreading sideways and up and down. Distance downwind is just how long your slice has been travelling. So the steady plume is a procession of puffs, each a little older than the one behind it. That turns a steady three-dimensional problem into a two-dimensional spreading problem in time, which is the ordinary diffusion equation. It only works because the wind is uniform and because we dropped along-wind spreading; otherwise neighbouring slices would leak into each other.
 :::
 
 ## Solving the PDE
@@ -221,14 +303,22 @@ $$Q = \iint u\,C\,dy\,dz$$
 $$C(x,y,z) = \frac{Q}{4\pi x\sqrt{K_{yy}K_{zz}}}\exp\left[-\frac{u}{4x}\left(\frac{y^2}{K_{yy}} + \frac{(z-H)^2}{K_{zz}}\right)\right]$$
 
 ::: {.fragment .fade-in}
-Substitute $\sigma_y^2 = 2K_{yy}\dfrac{x}{u}$, $\sigma_z^2 = 2K_{zz}\dfrac{x}{u}$ --- the distance a diffusing parcel has spread by the time it reaches $x$:
+Substitute $\sigma_y^2 = 2K_{yy}\dfrac{x}{u}$, $\sigma_z^2 = 2K_{zz}\dfrac{x}{u}$ --- the distance a diffusing parcel has spread by the time it reaches $x$.
+:::
+
+::: {.notes}
+The diffusion equation starting from a single point has a well-known solution: a bell curve that gets wider and flatter over time while keeping the same total mass. One way to see why: each bit of pollutant has been kicked around by many random eddies, and the sum of many small random kicks is normally distributed, by the central limit theorem. The width grows like the square root of the travel time, the same result as a random walk. Crosswind and vertical spreading happen independently, so the answer is a bell curve across the wind times a bell curve in the vertical. The formula blows up at the stack itself; it describes the plume away from the source.
 :::
 
 ## The Gaussian Plume
 
 $$C(x,y,z) = \frac{Q}{2\pi u\sigma_y\sigma_z}\exp\left[-\frac{1}{2}\left(\frac{y^2}{\sigma_y^2} + \frac{(z-H)^2}{\sigma_z^2}\right)\right]$$
 
-A Gaussian distribution in $y$ and in $z$ --- which is where the name comes from, and why $\sigma_y,\sigma_z$ read exactly like standard deviations.
+A Gaussian distribution in $y$ and in $z$ --- which is where the name of the model comes from, and why we use the $\sigma_y,\sigma_z$ notation.
+
+::: {.notes}
+Rewriting with sigma makes the shape readable: it is two normal distributions, and sigma y and sigma z are their standard deviations, literally how spread out the plume is at that distance. The factor in front is exactly what makes every cross-section carry the full emission rate Q. In theory sigma grows like the square root of distance, but in practice we do not know K well, so we read sigma off empirical curves for each stability class, which comes shortly.
+:::
 
 # The Ground Is a Boundary Condition
 
@@ -251,9 +341,12 @@ Add a second, "reflected" source below ground, the mirror image of the real one.
 
 ## Final Model: Elevated Source With Reflection
 
-$$C(x,y,z) = \frac{Q}{2\pi u\sigma_y\sigma_z}\exp\left(\frac{-y^2}{2\sigma_y^2}\right)\left[\exp\left(\frac{-(z-H)^2}{2\sigma_z^2}\right) + \exp\left(\frac{-(z+H)^2}{2\sigma_z^2}\right)\right]$$
+$$\begin{aligned}
+C(x,y,z) &= \frac{Q}{2\pi u\sigma_y\sigma_z}\exp\left(\frac{-y^2}{2\sigma_y^2}\right) \times \\
+&\left[\exp\left(\frac{-(z-H)^2}{2\sigma_z^2}\right) + \exp\left(\frac{-(z+H)^2}{2\sigma_z^2}\right)\right]
+\end{aligned}$$
 
-## Does the Image Term Actually Work?
+## Impact of the Image Term
 
 ```{julia}
 #| echo: true
@@ -291,15 +384,16 @@ flux_with = (plume(3.0, 0.0, dz, plume_params) - plume(3.0, 0.0, 0.0, plume_para
 flux_without = (plume(3.0, 0.0, dz, plume_params; reflect=false) - plume(3.0, 0.0, 0.0, plume_params; reflect=false)) / dz
 ```
 
-$\partial C/\partial z$ at the ground, 3 km downwind: **with** the image term, `{julia} round(flux_with, sigdigits=2)`; **without** it, `{julia} round(flux_without, sigdigits=2)` --- about $3\times 10^4$ times larger. The second exponential is not decoration; it is the boundary condition.
+$\partial C/\partial z$ at the ground, 3 km downwind: **with** the image term, `{julia} round(flux_with, sigdigits=2)`; **without** it, `{julia} round(flux_without, sigdigits=2)` --- about $3\times 10^4$ times larger. 
 
 ## Final Model Assumptions
 
 1. Steady-state
 2. Constant wind velocity and direction
-3. Wind $\gg$ dispersion in the $x$-direction
-4. No reactions
-5. Smooth ground (no extra turbulent eddies or reflections)
+3. Turbulent mixing $\gg$ molecular diffusion
+4. Wind $\gg$ dispersion in the $x$-direction
+5. No reactions
+6. Smooth ground (no extra turbulent eddies or reflections)
 
 # Dispersion and Atmospheric Stability
 
@@ -309,7 +403,7 @@ $\sigma_y,\sigma_z$ matter enormously for the plume's footprint. What sets them?
 
 **Main driver**: atmospheric stability --- greater stability means less vertical/cross-wind spreading.
 
-Pasquill (1961): six stability classes.
+@Pasquill1961-ew: six stability classes.
 
 ## Atmospheric Stability Classes
 
@@ -369,10 +463,8 @@ println("C(3 km, 0, 0) = ", round(Cground * 1e6, digits=1), " µg/m³")
 ## Key Takeaways
 
 ::: {.incremental}
-- A violation probability is a **hazard** statistic. Risk needs exposure, vulnerability, and response as well --- and none of those is in the model.
-- The plume equation is the same advective-diffusion family as the airshed and DO models --- here the spatial structure is kept rather than simplified away.
-- Dropping along-wind dispersion is a **Péclet number** argument: $Pe \gg 1$ for atmospheric transport at any distance of interest.
-- The ground is a **Neumann boundary condition**, enforced with an image source --- verified numerically to kill the vertical flux at $z=0$.
+- The plume equation is based on the advective-diffusion equation.
+- Number of key assumptions: when do they hold and when don't they?
 - $\sigma_y,\sigma_z$ are empirical, tied to atmospheric stability class --- not derived from first principles.
 :::
 
@@ -380,17 +472,128 @@ println("C(3 km, 0, 0) = ", round(Cground * 1e6, digits=1), " µg/m³")
 
 ## Next Classes
 
-**Monday**: Quiz 2, then where the plume actually lands --- the footprint on the ground and a vertical section that makes the reflection visible.
+**Monday**: Quiz 2, then simulating the plume model
 
-**Wednesday**: Model validation. How we decide whether to believe any of this.
+**Wednesday**: Model calibration and validation.
 
 ## Assessments
-
-**Homework 4**: Assigned today, due Thursday, October 8.
 
 **Mini-Project 1**: Due Thursday, October 22.
 
 **Quiz 2**: Monday, October 5, covering discretization, convergence, Streeter-Phelps, and Monte Carlo.
+
+# Appendix
+
+## Deriving the Plume: Mass Balance {#plume-derivation}
+
+The same bookkeeping as the box and DO models, on a small cube of air $dx\,dy\,dz$:
+
+$$\frac{\partial C}{\partial t} = -\nabla\cdot\vec F + S$$
+
+- $\vec F$: flux of pollutant through the cube's faces [mass/(area·time)]
+- $S$: reactions or sources inside the cube
+
+As the cube shrinks, "outflow minus inflow" per unit volume becomes the divergence $\nabla\cdot\vec F$.
+
+## Three Fluxes
+
+$$\vec F = \underbrace{\vec u\,C}_{\text{advection}} + \underbrace{\vec F_{\text{mol}}}_{\text{molecular diffusion}} + \underbrace{\vec F_{\text{turb}}}_{\text{turbulent mixing}}$$
+
+Advection is the wind carrying pollutant along. The other two are spreading, and both are driven by concentration gradients.
+
+## Molecular Diffusion: Fick's Law
+
+**Fick's law** [@Fick1855-ud], modelled on Fourier's law of heat conduction:
+
+$$\vec F_{\text{mol}} = -D\,\nabla C$$
+
+Molecules random-walk, and more of them step out of the crowded side than into it, so the flux runs **down** the gradient. $D \approx 10^{-5}$ m²/s for a gas in air: a property of the gases.
+
+## Where the Turbulent Flux Comes From
+
+The model predicts the **time-averaged** concentration. Split each quantity into mean and fluctuation:
+
+$$u = \bar u + u', \qquad C = \bar C + c', \qquad \overline{u'} = \overline{c'} = 0$$
+
+Averaging the advective flux leaves an extra term, pollutant carried by eddies:
+
+$$\overline{uC} = \bar u\,\bar C + \overline{u'c'}$$
+
+## Closing the Turbulent Term
+
+$\overline{u'c'}$ cannot be computed from mean quantities. **K-theory**, by analogy with Boussinesq's eddy viscosity [@Boussinesq1877-es], treats eddies like large, fast molecules:
+
+$$\overline{u_i'c'} = -K_{ii}\,\frac{\partial \bar C}{\partial x_i}$$
+
+- $K$ is a property of the **flow**, not the air: roughly 1--100 m²/s.
+- Vertical mixing $K_{zz}$ depends on stability.
+
+## The Advection-Diffusion Equation
+
+Substitute the three fluxes (with $C$ now meaning $\bar C$), assuming
+
+- no reactions ($S = 0$);
+- incompressible flow ($\nabla\cdot\vec u = 0$, so $\nabla\cdot(\vec u C) = \vec u\cdot\nabla C$);
+- constant coefficients.
+
+::: {.small-math}
+$$\frac{\partial C}{\partial t} + \vec u\cdot\nabla C = (D + K_{xx})\frac{\partial^2 C}{\partial x^2} + (D + K_{yy})\frac{\partial^2 C}{\partial y^2} + (D + K_{zz})\frac{\partial^2 C}{\partial z^2}$$
+:::
+
+## Applying the Assumptions
+
+**Steady state**: constant emissions and weather over the averaging period, so $\partial C/\partial t = 0$.
+
+**Wind along $x$**: align the axes with the mean wind, and assume it is uniform, $\vec u = (u, 0, 0)$. Then $\vec u\cdot\nabla C = u\,\partial C/\partial x$.
+
+**Turbulence dominates molecular diffusion**: $D \sim 10^{-5}$ m²/s against $K \sim 1$--$100$ m²/s, five or more orders of magnitude apart. Drop $D$.
+
+## Along-Wind Dispersion
+
+Compare the two along-wind terms over a distance $L$:
+
+$$\frac{u\,\partial C/\partial x}{K_{xx}\,\partial^2 C/\partial x^2} \sim \frac{u\,C/L}{K_{xx}\,C/L^2} = \frac{uL}{K_{xx}} = Pe$$
+
+With $u = 2.5$ m/s, $K_{xx} = 50$ m²/s, $L = 1$ km: $Pe = 50$. Drop $K_{xx}$.
+
+The crosswind terms stay: with no wind in $y$ or $z$, mixing is the only transport there, across sharp gradients (over $\sigma$, not $L$).
+
+## Distance Becomes Travel Time
+
+$$u\frac{\partial C}{\partial x} = K_{yy}\frac{\partial^2 C}{\partial y^2} + K_{zz}\frac{\partial^2 C}{\partial z^2}$$
+
+Let $\tau = x/u$, the travel time to $x$, so $u\,\partial C/\partial x = \partial C/\partial \tau$. This is the 2-D **diffusion (heat) equation**:
+
+$$\frac{\partial C}{\partial \tau} = K_{yy}\frac{\partial^2 C}{\partial y^2} + K_{zz}\frac{\partial^2 C}{\partial z^2}$$
+
+Each slice is a puff that has spread for time $x/u$.
+
+## The Solution Is a Random Walk
+
+For a point release, the diffusion equation's solution is a Gaussian whose variance grows linearly in time. For a random walk, $\langle \Delta y^2\rangle = 2Kt$ [@Einstein1905-ub]:
+
+::: {.small-math}
+$$C \propto \exp\left[-\frac{y^2}{2\sigma_y^2} - \frac{(z-H)^2}{2\sigma_z^2}\right], \qquad \sigma_y^2 = 2K_{yy}\frac{x}{u}, \quad \sigma_z^2 = 2K_{zz}\frac{x}{u}$$
+:::
+
+So $\sigma_y$ and $\sigma_z$ **are** the spread of a random walk after travel time $x/u$.
+
+## Fixing the Constant: Mass Conservation
+
+With steady state and no reactions, every downwind cross-section carries the full emission rate, $\iint u\,C\,dy\,dz = Q$. Each Gaussian integrates to $\sqrt{2\pi}\,\sigma$, so:
+
+$$C(x,y,z) = \frac{Q}{2\pi u\sigma_y\sigma_z}\exp\left[-\frac{y^2}{2\sigma_y^2} - \frac{(z-H)^2}{2\sigma_z^2}\right]$$
+
+Units: $\dfrac{\text{g/s}}{(\text{m/s})\,\text{m}^2} = \text{g/m}^3$.
+
+## From Theory to the $\sigma$ Curves
+
+Real turbulence has eddies of every size: there is no single constant $K$.
+
+- Near the source $\sigma \propto t$; far from it, $\sigma \propto \sqrt{t}$ [@Taylor1922-dc].
+- In practice, $\sigma_y(x)$ and $\sigma_z(x)$ are fitted per stability class: e.g. $\sigma_y = 34\,x^{0.894}$ (class F, $x$ in km).
+
+The derivation fixes the Gaussian **shape**; the data fix the **widths**.
 
 # References
 

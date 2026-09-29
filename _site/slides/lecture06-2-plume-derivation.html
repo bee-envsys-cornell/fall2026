@@ -99,7 +99,27 @@
     code span.va { color: #111111; } /* Variable */
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
-  </style>
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-d52ba59528acaf0ac8c09f3308d87e37.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
@@ -251,6 +271,7 @@
 <li><a href="#/worked-example" id="/toc-worked-example">Worked Example</a></li>
 <li><a href="#/key-takeaways" id="/toc-key-takeaways">Key Takeaways</a></li>
 <li><a href="#/upcoming-schedule" id="/toc-upcoming-schedule">Upcoming Schedule</a></li>
+<li><a href="#/appendix" id="/toc-appendix">Appendix</a></li>
 <li><a href="#/references" id="/toc-references">References</a></li>
 </ul>
 </nav>
@@ -259,6 +280,25 @@
 <section id="review-of-last-class" class="title-slide slide level1 center">
 <h1>Review of Last Class</h1>
 
+</section>
+<section id="monte-carlo-vs.-discretization-error" class="slide level2">
+<h2>Monte Carlo vs.&nbsp;Discretization Error</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Discretization</strong></p>
+<ul>
+<li>pick <span class="math inline">\(\Delta t\)</span> from a characteristic timescale</li>
+<li>halve it; see if the answer moves</li>
+<li>error scales linearly with <span class="math inline">\(\Delta t\)</span></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Monte Carlo</strong></p>
+<ul>
+<li>pick <span class="math inline">\(n\)</span> from a target CI half-width</li>
+<li>double it; see if the estimate moves</li>
+<li>error scales as <span class="math inline">\(\sim 1/\sqrt{n}\)</span></li>
+</ul>
+</div></div>
 </section>
 <section id="questions" class="slide level2">
 <h2>Questions?</h2>
@@ -279,22 +319,17 @@
 <h1>Point Sources and Receptors</h1>
 
 </section>
-<section id="from-a-line-to-a-point" class="slide level2">
-<h2>From a Line to a Point</h2>
-<p>The airshed was a well-mixed box. Streeter-Phelps marched along <strong>one line</strong> downstream.</p>
-<p>Air pollution downwind of a stack spreads <strong>across</strong> the wind as well as along it — a genuinely spatial problem.</p>
-</section>
 <section id="some-approaches-for-modeling-air-pollution" class="slide level2">
 <h2>Some Approaches for Modeling Air Pollution</h2>
 <p><strong>So far</strong>: box (airshed) models — overall mass balance across a whole region.</p>
-<p><strong>Today</strong>: point sources and receptors — <em>plume</em> models, which track concentration as a continuous function of position.</p>
+<p><strong>Today</strong>: point sources and receptors — <em>plume</em> models, which track concentration as a continuous function of position relative to a source.</p>
 </section>
 <section id="point-sources-and-receptors-1" class="slide level2">
 <h2>Point Sources and Receptors</h2>
 
 <img data-src="figures/air-pollution.png" style="width:75.0%" class="r-stretch quarto-figure-center"><p class="caption">Point Source/Receptor Schematic</p></section>
-<section id="emissions-follow-instantaneous-paths" class="slide level2">
-<h2>Emissions Follow Instantaneous Paths</h2>
+<section id="individual-paths-of-emissions" class="slide level2">
+<h2>Individual Paths of Emissions</h2>
 
 <img data-src="figures/air-pollution-instant.png" style="width:75.0%" class="r-stretch quarto-figure-center"><p class="caption">Point Source Flow Traces</p></section>
 <section id="plume-time-averaged-positions" class="slide level2">
@@ -316,15 +351,23 @@
 </section>
 <section id="the-advective-diffusion-equation" class="slide level2">
 <h2>The Advective-Diffusion Equation</h2>
-<p>The mass balance of a small air parcel:</p>
-<p><span class="math display">\[\frac{\partial C}{\partial t} - \underbrace{[D+K]\nabla^2 C}_{\text{diffusion}} + \underbrace{\vec{u}\cdot\vec{\nabla}C}_{\text{advection}} = 0\]</span></p>
-<ul>
-<li><span class="math inline">\(D\)</span>: molecular diffusion coefficient</li>
-<li><span class="math inline">\(K\)</span>: dispersion coefficient (turbulent mixing)</li>
-</ul>
-<div class="fragment fade-in">
-<p>This is the <strong>same equation family</strong> as the airshed and DO models — just with the spatial term kept instead of dropped or reduced to one line.</p>
-</div>
+<p>The mass balance of a small air control volume:</p>
+<p><span class="math display">\[\frac{\partial C}{\partial t} = \underbrace{\sum_{i=x,y,z}(D+K_{ii})\frac{\partial^2 C}{\partial x_i^2}}_{\text{diffusion}} - \underbrace{\vec{u}\cdot\vec{\nabla}C}_{\text{advection}} + \underbrace{S}_{\text{reactions}}\]</span></p>
+<p><span class="math inline">\(D\)</span>: molecular diffusion; <span class="math inline">\(K_{ii}\)</span>: turbulent mixing in direction <span class="math inline">\(i\)</span>; <span class="math inline">\(S\)</span>: reactions (none here).</p>
+<p>Full derivation, step by step: <a href="#/plume-derivation">appendix</a>.</p>
+<aside class="notes">
+<p>This is the same mass balance as the box and DO models, applied to a tiny cube of air instead of a whole airshed or river reach. Pollutant in the cube changes because the wind carries it in or out (advection), because it spreads from crowded places to less crowded ones (diffusion, molecular and turbulent), or because it reacts. Everything that follows is deciding which of these terms we can ignore for a smokestack plume. The appendix has every step with the math.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="diffusive-flux" class="slide level2">
 <h2>Diffusive Flux</h2>
@@ -338,8 +381,40 @@
 </div>
 </div><div class="column" style="width:50%;">
 <p>Concentration gradient + diffusion <span class="math inline">\(\Rightarrow\)</span> flux.</p>
-<p><strong>Fick’s law</strong>: <span class="math display">\[F_x = D\frac{dC}{dx}\]</span></p>
+<p><strong>Fick’s law</strong>: <span class="math display">\[F_x = -D\frac{dC}{dx}\]</span></p>
 </div></div>
+<aside class="notes">
+<p>Fick’s law comes from random molecular motion. Molecules jiggle in every direction, and wherever there are more of them, more wander out than wander in. The net result is a flow from high to low concentration, proportional to how steep the difference is, which is why there is a minus sign. Fick found it in 1855 by analogy with Fourier’s law for heat. D is a property of the gases themselves, and it is tiny: about a hundred-thousandth of a square metre per second for a gas in air.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="where-turbulent-flux-comes-from" class="slide level2">
+<h2>Where Turbulent Flux Comes From</h2>
+<p>The plume is the <strong>time average</strong> of the individual puffs. Split wind and concentration into mean and fluctuation, <span class="math inline">\(u = \bar u + u'\)</span> and <span class="math inline">\(C = \bar C + c'\)</span>. Averaging the advective flux leaves an extra term:</p>
+<p><span class="math display">\[\overline{uC} = \bar u\,\bar C + \overline{u'c'}\]</span></p>
+<p><span class="math inline">\(\overline{u'c'}\)</span> is pollutant carried by eddies. <strong>K-theory</strong> closes it by analogy with Fick’s law: <span class="math inline">\(\overline{u'c'} = -K_{xx}\,\partial \bar C/\partial x\)</span>.</p>
+<aside class="notes">
+<p>We are not predicting where the smoke is at one instant; that is the wiggly puffs in the earlier figure. We are predicting the average concentration over roughly an hour. When you average the wind carrying the pollutant, most of the cross terms average to zero, but one survives: the correlation between gusts and concentration. Below the plume centreline, for example, updrafts bring up cleaner air and downdrafts bring down dirtier air, so on average pollutant moves downward, from high to low concentration, just like diffusion. K-theory says to treat this like Fick’s law, with eddies playing the role of molecules.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="turbulent-flux" class="slide level2">
 <h2>Turbulent Flux</h2>
@@ -353,31 +428,104 @@
 </div>
 </div><div class="column" style="width:50%;">
 <p>Concentration gradient + turbulent mixing <span class="math inline">\(\Rightarrow\)</span> flux.</p>
-<p><span class="math display">\[F_x = K_{xx}\frac{dC}{dx}\]</span></p>
-<p><span class="math inline">\(K_{xx}\)</span> depends on flow/eddy characteristics — not a material property like <span class="math inline">\(D\)</span>.</p>
+<p><span class="math display">\[F_x = -K_{xx}\frac{dC}{dx}\]</span></p>
+<p><span class="math inline">\(K_{xx}\)</span> depends on flow/eddy characteristics.</p>
 </div></div>
+<aside class="notes">
+<p>Same form as Fick’s law, but K describes the eddies, not the air. A rough way to think about it: K is an eddy’s speed times the distance it carries a parcel before mixing in. That is about half a metre per second times tens of metres, so tens of square metres per second. Molecules follow the same recipe with a tiny step, which is why D is about a million times smaller. K also differs by direction: vertical mixing is suppressed when the atmosphere is stable, which is where stability classes come in later.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="assumption-1-steady-state" class="slide level2">
 <h2>Assumption 1: Steady State</h2>
-<p><span class="math display">\[\frac{\partial C}{\partial t} + \vec{u}\cdot\vec\nabla C - [D+K]\nabla^2C = 0\]</span></p>
-<p><span class="math display">\[\frac{\partial C}{\partial t} = 0\]</span></p>
+<p><span class="math display">\[\cancel{\frac{\partial C}{\partial t}} = \sum_{i=x,y,z}(D+K_{ii})\frac{\partial^2 C}{\partial x_i^2} - \vec{u}\cdot\vec{\nabla}C\]</span></p>
+<p>Constant emissions and weather over the averaging period.</p>
+<aside class="notes">
+<p>Steady state means we describe the plume averaged over a period when the stack emits at a constant rate and the weather holds steady, typically about an hour. It does not mean nothing moves; the air is moving the whole time. It means the averaged picture is not changing. If emissions or the wind shift during the hour, the model describes a blend of conditions, and the real footprint wanders around.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="assumption-2-wind-only-along-x" class="slide level2">
 <h2>Assumption 2: Wind Only Along <span class="math inline">\(x\)</span></h2>
 <p><span class="math display">\[\vec{u}\cdot\vec\nabla C = u_x\frac{\partial C}{\partial x} + \cancel{u_y\frac{\partial C}{\partial y}} + \cancel{u_z\frac{\partial C}{\partial z}}\]</span></p>
+<aside class="notes">
+<p>Part of this is just a choice: we point the x axis along the average wind, so by definition there is no mean wind across it. The real assumption is that the wind is uniform, with the same speed and direction everywhere, including at every height. Real wind speeds up with height, and that is one of the first things more advanced models relax. This is only about the mean wind; the gusts are still there, hiding inside K.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="assumption-3-turbulence-dominates-molecular-diffusion-and-along-wind-dispersion-is-negligible" class="slide level2">
-<h2>Assumption 3: Turbulence Dominates Molecular Diffusion, and Along-Wind Dispersion Is Negligible</h2>
-<p><span class="math display">\[-[\cancel{D}+K]\nabla^2C = \cancel{K_{xx}}\frac{\partial^2C}{\partial x^2} + K_{yy}\frac{\partial^2C}{\partial y^2} + K_{zz}\frac{\partial^2C}{\partial z^2}\]</span></p>
-<div class="fragment fade-in">
-<p>This isn’t an arbitrary simplification — it’s a <strong>Péclet number</strong> argument, exactly like the one from Week 6: <span class="math inline">\(Pe = uL/D_x \gg 1\)</span> for atmospheric transport at any distance you’d care about.</p>
+<section id="assumption-3-turbulence-dominates-molecular-diffusion" class="slide level2">
+<h2>Assumption 3: Turbulence Dominates Molecular Diffusion</h2>
+<p><span class="math inline">\(D \sim 10^{-5}\)</span> m²/s for a gas in air; <span class="math inline">\(K \sim 1\)</span>–<span class="math inline">\(100\)</span> m²/s. Five or more orders of magnitude apart:</p>
+<p><span class="math display">\[(\cancel{D}+K_{ii})\frac{\partial^2 C}{\partial x_i^2} \approx K_{ii}\frac{\partial^2 C}{\partial x_i^2}\]</span></p>
+<aside class="notes">
+<p>This one is just a size comparison. In the atmosphere, molecular diffusion is roughly a million times weaker than turbulent mixing, so dropping it changes nothing you could measure. It is the same reason stirring coffee mixes the milk in seconds, while waiting for diffusion alone would take hours.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="assumption-4-negligible-along-wind-dispersion" class="slide level2">
+<h2>Assumption 4: Negligible Along-Wind Dispersion</h2>
+<p>Along-wind advection against dispersion, over a distance <span class="math inline">\(L\)</span>:</p>
+<p><span class="math display">\[\frac{u\,\partial C/\partial x}{K_{xx}\,\partial^2 C/\partial x^2} \sim \frac{u\,C/L}{K_{xx}\,C/L^2} = \frac{uL}{K_{xx}} = Pe\]</span></p>
+<p>A <strong>Péclet number</strong> argument: <span class="math inline">\(Pe \gg 1\)</span> at any distance you’d care about, so drop <span class="math inline">\(K_{xx}\)</span>. The crosswind terms stay: with no wind in <span class="math inline">\(y\)</span> or <span class="math inline">\(z\)</span>, mixing is the only transport there.</p>
+<aside class="notes">
+<p>Compare how fast the wind carries pollutant downwind with how fast turbulence spreads it along the wind. The wind covers a kilometre in a few minutes; along-wind mixing would take hours to spread pollutant over the same distance. That ratio is the Péclet number, and at a kilometre it is around 50, so along-wind spreading is a correction of a few percent. Why not drop the crosswind terms the same way? Because there is no wind across the plume to compete with: mixing is the only thing moving pollutant sideways. The plume is also narrow, so concentration changes sharply across it, which makes the crosswind terms as large as the advection term. They are what balance it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="peclet-number" class="slide level2">
+<h2>Peclet number</h2>
 <div id="cell-fig-peclet" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a>u_wind, Dx <span class="op">=</span> <span class="fl">2.5</span>, <span class="fl">50.0</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a>u_wind, Kxx <span class="op">=</span> <span class="fl">2.5</span>, <span class="fl">50</span></span>
 <span id="cb1-2"><a></a>Lvals <span class="op">=</span> <span class="fl">100</span><span class="op">:</span><span class="fl">50</span><span class="op">:</span><span class="fl">10000</span></span>
-<span id="cb1-3"><a></a>Pe <span class="op">=</span> u_wind <span class="op">.*</span> Lvals <span class="op">./</span> Dx</span>
-<span id="cb1-4"><a></a><span class="fu">plot</span>(Lvals <span class="op">./</span> <span class="fl">1000</span>, Pe, xlabel<span class="op">=</span><span class="st">"Distance  [km]"</span>, ylabel<span class="op">=</span>L<span class="st">"Pe = uL/D_x"</span>,</span>
+<span id="cb1-3"><a></a>Pe <span class="op">=</span> u_wind <span class="op">.*</span> Lvals <span class="op">./</span> Kxx</span>
+<span id="cb1-4"><a></a><span class="fu">plot</span>(Lvals <span class="op">./</span> <span class="fl">1000</span>, Pe, xlabel<span class="op">=</span><span class="st">"Distance  [km]"</span>, ylabel<span class="op">=</span>L<span class="st">"Pe = uL/K_{xx}"</span>,</span>
 <span id="cb1-5"><a></a>    color<span class="op">=</span>cb_vermillion, linewidth<span class="op">=</span><span class="fl">4</span>, legend<span class="op">=</span><span class="cn">false</span>, yscale<span class="op">=:</span>log10)</span>
 <span id="cb1-6"><a></a><span class="fu">hline!</span>([<span class="fl">1</span>], color<span class="op">=:</span>black, linestyle<span class="op">=:</span>dash, linewidth<span class="op">=</span><span class="fl">2</span>)</span>
 <span id="cb1-7"><a></a><span class="fu">plot!</span>(size<span class="op">=</span>(<span class="fl">950</span>, <span class="fl">400</span>), left_margin<span class="op">=</span><span class="fl">12</span>mm, right_margin<span class="op">=</span><span class="fl">8</span>mm,</span>
@@ -389,203 +537,246 @@
 <!--?xml version="1.0" encoding="utf-8"?-->
 <svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="950" height="400" viewbox="0 0 3800 1600">
 <defs>
-  <clippath id="clip600">
+  <clippath id="clip740">
     <rect x="0" y="0" width="3800" height="1600"></rect>
   </clippath>
 </defs>
-<path clip-path="url(#clip600)" d="M0 1600 L3800 1600 L3800 8.88178e-14 L0 8.88178e-14  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<path clip-path="url(#clip740)" d="M0 1600 L3800 1600 L3800 8.88178e-14 L0 8.88178e-14  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
 <defs>
-  <clippath id="clip601">
+  <clippath id="clip741">
     <rect x="760" y="0" width="2661" height="1600"></rect>
   </clippath>
 </defs>
-<path clip-path="url(#clip600)" d="M482.145 1234.35 L3642.52 1234.35 L3642.52 110.236 L482.145 110.236  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<path clip-path="url(#clip740)" d="M482.145 1234.35 L3642.52 1234.35 L3642.52 110.236 L482.145 110.236  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
 <defs>
-  <clippath id="clip602">
+  <clippath id="clip742">
     <rect x="482" y="110" width="3161" height="1125"></rect>
   </clippath>
 </defs>
-<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,1234.35 3642.52,1234.35 "></polyline>
-<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,110.236 3642.52,110.236 "></polyline>
-<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="541.473,1234.35 541.473,1215.45 "></polyline>
-<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1294.37,1234.35 1294.37,1215.45 "></polyline>
-<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2047.27,1234.35 2047.27,1215.45 "></polyline>
-<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2800.17,1234.35 2800.17,1215.45 "></polyline>
-<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3553.08,1234.35 3553.08,1215.45 "></polyline>
-<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="541.473,110.236 541.473,129.134 "></polyline>
-<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1294.37,110.236 1294.37,129.134 "></polyline>
-<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2047.27,110.236 2047.27,129.134 "></polyline>
-<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2800.17,110.236 2800.17,129.134 "></polyline>
-<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3553.08,110.236 3553.08,129.134 "></polyline>
-<g clip-path="url(#clip600)">
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,1234.35 3642.52,1234.35 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,110.236 3642.52,110.236 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="541.473,1234.35 541.473,1215.45 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1294.37,1234.35 1294.37,1215.45 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2047.27,1234.35 2047.27,1215.45 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2800.17,1234.35 2800.17,1215.45 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3553.08,1234.35 3553.08,1215.45 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="541.473,110.236 541.473,129.134 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1294.37,110.236 1294.37,129.134 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2047.27,110.236 2047.27,129.134 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2800.17,110.236 2800.17,129.134 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3553.08,110.236 3553.08,129.134 "></polyline>
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 541.473, 1353.84)" x="541.473" y="1353.84">0.0</text>
 </g>
-<g clip-path="url(#clip600)">
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 1294.37, 1353.84)" x="1294.37" y="1353.84">2.5</text>
 </g>
-<g clip-path="url(#clip600)">
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 2047.27, 1353.84)" x="2047.27" y="1353.84">5.0</text>
 </g>
-<g clip-path="url(#clip600)">
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 2800.17, 1353.84)" x="2800.17" y="1353.84">7.5</text>
 </g>
-<g clip-path="url(#clip600)">
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 3553.08, 1353.84)" x="3553.08" y="1353.84">10.0</text>
 </g>
-<g clip-path="url(#clip600)">
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:112px; text-anchor:middle;" transform="rotate(0, 2062.33, 1507.74)" x="2062.33" y="1507.74">Distance  [km]</text>
 </g>
-<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,1234.35 482.145,110.236 "></polyline>
-<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3642.52,1234.35 3642.52,110.236 "></polyline>
-<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,1202.54 501.042,1202.54 "></polyline>
-<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,809.613 501.042,809.613 "></polyline>
-<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,416.691 501.042,416.691 "></polyline>
-<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3642.52,1202.54 3623.62,1202.54 "></polyline>
-<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3642.52,809.613 3623.62,809.613 "></polyline>
-<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3642.52,416.691 3623.62,416.691 "></polyline>
-<g clip-path="url(#clip600)">
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,1234.35 482.145,110.236 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3642.52,1234.35 3642.52,110.236 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,1202.54 501.042,1202.54 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,809.613 501.042,809.613 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,416.691 501.042,416.691 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3642.52,1202.54 3623.62,1202.54 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3642.52,809.613 3623.62,809.613 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3642.52,416.691 3623.62,416.691 "></polyline>
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:start;" transform="rotate(0, 284.682, 1249.99)" x="284.682" y="1249.99">10</text>
 </g>
-<g clip-path="url(#clip600)">
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:81px; text-anchor:start;" transform="rotate(0, 384.567, 1195.17)" x="384.567" y="1195.17">0</text>
 </g>
-<g clip-path="url(#clip600)">
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:start;" transform="rotate(0, 284.682, 857.069)" x="284.682" y="857.069">10</text>
 </g>
-<g clip-path="url(#clip600)">
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:81px; text-anchor:start;" transform="rotate(0, 384.567, 802.248)" x="384.567" y="802.248">1</text>
 </g>
-<g clip-path="url(#clip600)">
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:start;" transform="rotate(0, 284.682, 464.147)" x="284.682" y="464.147">10</text>
 </g>
-<g clip-path="url(#clip600)">
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:81px; text-anchor:start;" transform="rotate(0, 384.567, 409.326)" x="384.567" y="409.326">2</text>
 </g>
-<g clip-path="url(#clip600)">
-<image width="108" height="594" href="data:image/png;base64,
-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
-gg==
-" transform="translate(125, 376)"></image>
+<g clip-path="url(#clip740)">
+<image width="108" height="644" href="data:image/png;base64,
+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
+e21hyAT7HobGSluAd4G3t7dhfro8EqwwAIC3tze1XC73/10UBSil8PLyEne73TTlUTeiLp0RM4YY
+fecUwbZhn2Eu4GxSlmUwR72ORdBVYhuvr68KEVXb1bybzYYgRZ6hLuJDhJ79pU6HVInCB9hViVNH
+hDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFD
+hDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFDhDFDhDGDjTDz
+pqOXl5dBzqoY43eODZtzOsY4jo/jEX9sSpjwjghjhghjhghjhghjhghjhghjhghjhghjhghjhghj
+hghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghj
+hghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghj
+hghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghjhghj
+BhthSZLsv57P58H+zrFhc8us8A6bEia8I8KYIcKYIcKYIcKYIcKYIcKYIcKYIcKYIcKYIcKYIcKY
+IcKYIcKYIcKYIcKYIcKYIcKYIcKYIcKYIcKYIcKYIcKYIcKYIcKYIcKYIcKYIcKYIcKYIcKYIcKY
+IcKYIcKYIcKYIcKYIcKYIcKYIcKYIcJa+P79e7BnYcg5HQ0uLy+xqioAACiKAm5ubhRtig5hUcIe
+Hh7w4uIClVJ4fX2NY5YA80ScNE3DK22IGGxEUYQAcDSqqsKhn1uW5cEz5vP54M9wDfIEtEVd1ydF
+mRHH8eAZ2kzDarUKQlqQbZhSyilRiDh4e2Ompaoq+PLlC2mbFlwbdnFxcSBrtVoBIqpmrFarkz87
+BHVd77+O43joX28PdRE3o6qqg2qoy8/M5/ODn8mybPCqy2zToigirRrJJZlhdjLquu6cMavVylq0
+bWRZtv/9m82GTBq5pIPE/MmQNE2tM8TM0DE6IWb6xvpQsBJmVoehZqiZxjzPSaSRi9KR53nvzC6K
+Yv87lsvlKBlqVtuTFpam6SAZMXYpM9/PKN7NguvW92Xsw5Zns9n+PYziYOezE7ZcLvdfv7y8jDIq
+UBTFGL+2E8EIG+ql1CwBbS/XQ2CO4D88PPgdKqJuu3QM0enw1Y4hIsRxTNL5CKaEZVm2/3q32/X6
+1KZp2jc5Jxmr9J4iGGFXV1eDNeY+hJnV4na79VYtBiPMZLPZ9Pp5H8JMfJa2oISZHY8+M72+p/X7
+fsCsoO5smNGc6R2i4zFmeod62WfZ6QA4bMcAAK6vr3u3DU9PT6O1L76rXoDAqkSAw2qxLMtRM7wv
+IgzeJZmkadqrm2/OGJ8DwQkzRyo0URQ5S2t+ALgTnDCA9lIRRdFoY4OuUIwpBilsNpuptrHFJEn8
+j90dwRxo9kWQwgAAXl9fW9+llsslKKWw7/DVEOiawLxLc2yCFQZw/IU0iiK4vLwkk2Y+O89zfw+m
+flk+FUmSdFr921zJpP99jLUXzaV1PvPjX38fDTeen59Vl5XAf0b7MYqiUcf2rq+v0ex5RlE02rNa
+oS5BXQMs1tqbEccxFkXRuxQ01z7qsFk/OUg+UIvwIa0Z8/m8k8TVaoXmRGXbh8F3HgS5GeIYrhsl
+xgBH2HxxiqB7iW1QZFIbVENe7IQBvEujGHjVlGXZOoTmA3ZVosnLywv6fGkFeC9ZVLIAmJYwzdXV
+lUJE5ePFNUkSQERFKQsAePUST8VisRikF2lGFEXeu+7HgjwBY0RVVWhuP3KJkDaim8G6DevKbrfD
+zWYDRVFAVVUfpkXSNN1HaOdyNJmEsHOCdadjiogwZogwZogwZogwZogwZow249xcsRv6+w0bhhxd
+ODbZZ8ZYRzJMIXq/OO92O3Rd15CmKfz+/VtKngW92rCHhwdnWQDvK2eVUqOeMHpuOJew5uqhIcBA
+ZpNDxqmEjSELAIJZ0Rsy1sLu7+9HkaUJcdNDSFhViX06GLaUZflhR6ZgKcz3EjPq9RMh0rlKXK/X
+3qsp78ugGdC5hHVd326uYirLEoqi6LWGL4oieHt7k1Km6TqKAZ+MWtgc91pVFTZ3fnQJGRn5G52+
+6bMhp7Ise2XkcrnsLI06o0KJbt/UkoFD7AjRUdc1nrq2g2LjQYjhJMzl1OsucazqBfC/tSfEOPkN
+bdXW2IkyjwQyg/qQ/xDiZLe+uc/YPNdwLH7//q3adujXdd37LEX2nCyChI1/W49y6m3Zyfew5vsX
+eh5RN2/Mo0pDSFgN/lKMPLSd10Ex6hIKVsIozmkH+NiOUqUjBKyqRMpLPKmr5lAIvkrUNEvZVOfM
+rEoY9afaTEuWZfD4+Di5UsZKWHNpAnV6KGC18pfqcP+QYFXCAMJLj29YlTCBoTCzpxryidtjwU4Y
+5Qk4IcBOmO+Tb0KDnTApYQIrRBgzRBgzRBgzRBgzrIRNfgFMAFgJ83p1oNCKlbDFYjFWOoSOWAmr
+6xqUUvjr1y+pGolw6nRkWQZKKVRK4d3dHU51up6C3r3EzWYDSZKIQE8M3q0XgeMy+nuYCBwW7y/O
+IrAf5CMdXAXq9Po+WYFcWBOuAr1hu92IOswrFofctmsbZpq8PtdWWJ7nuFwue9+8MGRkWdZ7g/xZ
+Cvtsy2pZlpMTyEJY1xtbpyCQhTDXNuMcBZ61sHMUyELYWIngJnCz2Rx8/+SEcRPYPLVn8sJCF9gM
+EcZMoAhjJjAoYTpDfI8kcBIYnDDuMbZAEcZMoAhjJlCEMRMowgKLUwJ9pkXucbbk9vYWmxd3o8fj
+J0SYA5QHlQW3poMDeZ6TPVtKmAPNS4OkSmQA1RFKUiUyQ4QxQ4QxQ4QxQ4QxQ4QxQ4Q5QnWc7f8B
+NsTVZDO4yPMAAAAASUVORK5CYII=
+" transform="translate(125, 350)"></image>
 </g>
-<polyline clip-path="url(#clip602)" style="stroke:#d55e00; stroke-linecap:round; stroke-linejoin:round; stroke-width:16; stroke-opacity:1; fill:none" points="571.589,927.895 586.647,858.705 601.705,809.613 616.763,771.535 631.821,740.423 646.879,714.118 661.937,691.332 676.995,671.233 692.053,653.254 707.111,636.99 722.169,622.142 737.227,608.483 752.285,595.837 767.343,584.064 782.401,573.051 797.459,562.706 812.517,552.952 827.575,543.726 842.633,534.973 857.692,526.647 872.75,518.709 887.808,511.123 902.866,503.861 917.924,496.895 932.982,490.202 948.04,483.762 963.098,477.556 978.156,471.568 993.214,465.783 1008.27,460.187 1023.33,454.769 1038.39,449.518 1053.45,444.424 1068.5,439.478 1083.56,434.671 1098.62,429.995 1113.68,425.444 1128.74,421.012 1143.79,416.691 1158.85,412.478 1173.91,408.366 1188.97,404.35 1204.03,400.427 1219.08,396.592 1234.14,392.842 1249.2,389.172 1264.26,385.579 1279.32,382.061 1294.37,378.613 1309.43,375.234 1324.49,371.921 1339.55,368.67 1354.61,365.48 1369.66,362.349 1384.72,359.274 1399.78,356.254 1414.84,353.286 1429.9,350.369 1444.95,347.501 1460.01,344.681 1475.07,341.906 1490.13,339.176 1505.19,336.488 1520.24,333.842 1535.3,331.237 1550.36,328.671 1565.42,326.143 1580.48,323.652 1595.53,321.196 1610.59,318.776 1625.65,316.389 1640.71,314.035 1655.77,311.714 1670.82,309.423 1685.88,307.163 1700.94,304.932 1716,302.73 1731.06,300.557 1746.11,298.41 1761.17,296.29 1776.23,294.196 1791.29,292.128 1806.35,290.084 1821.4,288.065 1836.46,286.069 1851.52,284.096 1866.58,282.146 1881.64,280.218 1896.69,278.311 1911.75,276.426 1926.81,274.561 1941.87,272.716 1956.93,270.891 1971.98,269.085 1987.04,267.298 2002.1,265.53 2017.16,263.78 2032.22,262.047 2047.27,260.332 2062.33,258.634 2077.39,256.953 2092.45,255.288 2107.51,253.639 2122.56,252.006 2137.62,250.389 2152.68,248.787 2167.74,247.199 2182.8,245.626 2197.85,244.068 2212.91,242.524 2227.97,240.993 2243.03,239.476 2258.09,237.973 2273.14,236.483 2288.2,235.005 2303.26,233.54 2318.32,232.088 2333.38,230.648 2348.43,229.22 2363.49,227.804 2378.55,226.399 2393.61,225.006 2408.67,223.625 2423.72,222.254 2438.78,220.894 2453.84,219.545 2468.9,218.207 2483.96,216.879 2499.01,215.561 2514.07,214.254 2529.13,212.956 2544.19,211.668 2559.25,210.39 2574.3,209.121 2589.36,207.862 2604.42,206.612 2619.48,205.37 2634.54,204.138 2649.59,202.915 2664.65,201.701 2679.71,200.495 2694.77,199.297 2709.83,198.108 2724.88,196.927 2739.94,195.754 2755,194.589 2770.06,193.432 2785.12,192.283 2800.17,191.142 2815.23,190.008 2830.29,188.882 2845.35,187.763 2860.41,186.651 2875.46,185.547 2890.52,184.449 2905.58,183.359 2920.64,182.275 2935.7,181.199 2950.75,180.129 2965.81,179.066 2980.87,178.009 2995.93,176.959 3010.99,175.915 3026.04,174.878 3041.1,173.847 3056.16,172.822 3071.22,171.803 3086.28,170.79 3101.33,169.784 3116.39,168.783 3131.45,167.788 3146.51,166.799 3161.57,165.815 3176.62,164.837 3191.68,163.865 3206.74,162.898 3221.8,161.937 3236.86,160.981 3251.91,160.03 3266.97,159.084 3282.03,158.144 3297.09,157.209 3312.15,156.279 3327.2,155.354 3342.26,154.434 3357.32,153.52 3372.38,152.609 3387.44,151.704 3402.5,150.804 3417.55,149.908 3432.61,149.017 3447.67,148.13 3462.73,147.248 3477.79,146.371 3492.84,145.498 3507.9,144.63 3522.96,143.766 3538.02,142.906 3553.08,142.051 "></polyline>
-<polyline clip-path="url(#clip602)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:8; stroke-opacity:1; fill:none" stroke-dasharray="32, 20" points="-2678.23,1202.54 6802.89,1202.54 "></polyline>
+<polyline clip-path="url(#clip742)" style="stroke:#d55e00; stroke-linecap:round; stroke-linejoin:round; stroke-width:16; stroke-opacity:1; fill:none" points="571.589,927.895 586.647,858.705 601.705,809.613 616.763,771.535 631.821,740.423 646.879,714.118 661.937,691.332 676.995,671.233 692.053,653.254 707.111,636.99 722.169,622.142 737.227,608.483 752.285,595.837 767.343,584.064 782.401,573.051 797.459,562.706 812.517,552.952 827.575,543.726 842.633,534.973 857.692,526.647 872.75,518.709 887.808,511.123 902.866,503.861 917.924,496.895 932.982,490.202 948.04,483.762 963.098,477.556 978.156,471.568 993.214,465.783 1008.27,460.187 1023.33,454.769 1038.39,449.518 1053.45,444.424 1068.5,439.478 1083.56,434.671 1098.62,429.995 1113.68,425.444 1128.74,421.012 1143.79,416.691 1158.85,412.478 1173.91,408.366 1188.97,404.35 1204.03,400.427 1219.08,396.592 1234.14,392.842 1249.2,389.172 1264.26,385.579 1279.32,382.061 1294.37,378.613 1309.43,375.234 1324.49,371.921 1339.55,368.67 1354.61,365.48 1369.66,362.349 1384.72,359.274 1399.78,356.254 1414.84,353.286 1429.9,350.369 1444.95,347.501 1460.01,344.681 1475.07,341.906 1490.13,339.176 1505.19,336.488 1520.24,333.842 1535.3,331.237 1550.36,328.671 1565.42,326.143 1580.48,323.652 1595.53,321.196 1610.59,318.776 1625.65,316.389 1640.71,314.035 1655.77,311.714 1670.82,309.423 1685.88,307.163 1700.94,304.932 1716,302.73 1731.06,300.557 1746.11,298.41 1761.17,296.29 1776.23,294.196 1791.29,292.128 1806.35,290.084 1821.4,288.065 1836.46,286.069 1851.52,284.096 1866.58,282.146 1881.64,280.218 1896.69,278.311 1911.75,276.426 1926.81,274.561 1941.87,272.716 1956.93,270.891 1971.98,269.085 1987.04,267.298 2002.1,265.53 2017.16,263.78 2032.22,262.047 2047.27,260.332 2062.33,258.634 2077.39,256.953 2092.45,255.288 2107.51,253.639 2122.56,252.006 2137.62,250.389 2152.68,248.787 2167.74,247.199 2182.8,245.626 2197.85,244.068 2212.91,242.524 2227.97,240.993 2243.03,239.476 2258.09,237.973 2273.14,236.483 2288.2,235.005 2303.26,233.54 2318.32,232.088 2333.38,230.648 2348.43,229.22 2363.49,227.804 2378.55,226.399 2393.61,225.006 2408.67,223.625 2423.72,222.254 2438.78,220.894 2453.84,219.545 2468.9,218.207 2483.96,216.879 2499.01,215.561 2514.07,214.254 2529.13,212.956 2544.19,211.668 2559.25,210.39 2574.3,209.121 2589.36,207.862 2604.42,206.612 2619.48,205.37 2634.54,204.138 2649.59,202.915 2664.65,201.701 2679.71,200.495 2694.77,199.297 2709.83,198.108 2724.88,196.927 2739.94,195.754 2755,194.589 2770.06,193.432 2785.12,192.283 2800.17,191.142 2815.23,190.008 2830.29,188.882 2845.35,187.763 2860.41,186.651 2875.46,185.547 2890.52,184.449 2905.58,183.359 2920.64,182.275 2935.7,181.199 2950.75,180.129 2965.81,179.066 2980.87,178.009 2995.93,176.959 3010.99,175.915 3026.04,174.878 3041.1,173.847 3056.16,172.822 3071.22,171.803 3086.28,170.79 3101.33,169.784 3116.39,168.783 3131.45,167.788 3146.51,166.799 3161.57,165.815 3176.62,164.837 3191.68,163.865 3206.74,162.898 3221.8,161.937 3236.86,160.981 3251.91,160.03 3266.97,159.084 3282.03,158.144 3297.09,157.209 3312.15,156.279 3327.2,155.354 3342.26,154.434 3357.32,153.52 3372.38,152.609 3387.44,151.704 3402.5,150.804 3417.55,149.908 3432.61,149.017 3447.67,148.13 3462.73,147.248 3477.79,146.371 3492.84,145.498 3507.9,144.63 3522.96,143.766 3538.02,142.906 3553.08,142.051 "></polyline>
+<polyline clip-path="url(#clip742)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:8; stroke-opacity:1; fill:none" stroke-dasharray="32, 20" points="-2678.23,1202.54 6802.89,1202.54 "></polyline>
 </svg>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-peclet-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Péclet number for along-wind transport, u = 2.5 m/s, Dx = 50 m²/s.
+Figure&nbsp;1: Péclet number for along-wind transport, u = 2.5 m/s, Kxx = 50 m²/s.
 </figcaption>
 </figure>
 </div>
 </div>
-</div>
+<aside class="notes">
+<p>Pe grows linearly with distance. With these numbers it passes 1 at about 20 metres and 10 at about 200 metres, so beyond a few hundred metres along-wind dispersion really is negligible. The assumption fails right next to the stack, which is also where the plume formula blows up, and in very light winds, where u is small. That is one reason Gaussian plume models are not used in calm conditions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="whats-left" class="slide level2">
 <h2>What’s Left</h2>
-<p>With these three assumptions:</p>
+<p>With these four assumptions:</p>
 <p><span class="math display">\[\bbox[5pt, border: 3px solid red]{u\frac{\partial C}{\partial x} = K_{yy}\frac{\partial^2 C}{\partial y^2} + K_{zz}\frac{\partial^2 C}{\partial z^2}}\]</span></p>
-<div class="fragment fade-in">
+<aside class="notes">
+<p>Read this equation as a balance between two things: the wind carrying pollutant downwind on the left, and turbulence spreading it sideways and vertically on the right. There is no time derivative, no along-wind spreading, and no molecular diffusion left. The next move is to see that this is a diffusion equation in disguise.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="boundary-condition" class="slide level2">
+<h2>Boundary Condition</h2>
 <div class="columns">
 <div class="column" style="width:70%;">
 <p>Plus a boundary condition: mass flowing through any downwind cross-section must equal the emission rate <span class="math inline">\(Q\)</span>:</p>
@@ -598,19 +789,76 @@ Figure&nbsp;1: Péclet number for along-wind transport, u = 2.5 m/s, Dx = 50 m²
 </figure>
 </div>
 </div></div>
-</div>
+<aside class="notes">
+<p>The stack is where the pollutant comes from, and this says none of it disappears. Take any slice across the plume downwind: the wind pushes pollutant through it at some rate, and with steady state and no reactions that rate must equal what the stack emits. Another way to see it: in one second the stack emits Q, and the wind stretches that over u metres of plume, so every metre of plume carries Q divided by u. This is what fixes the overall size of the concentration.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="distance-becomes-travel-time" class="slide level2">
+<h2>Distance Becomes Travel Time</h2>
+<p>Let <span class="math inline">\(\tau = x/u\)</span>, the time the air takes to reach <span class="math inline">\(x\)</span>. Then <span class="math inline">\(u\,\partial C/\partial x = \partial C/\partial \tau\)</span>:</p>
+<p><span class="math display">\[\frac{\partial C}{\partial \tau} = K_{yy}\frac{\partial^2 C}{\partial y^2} + K_{zz}\frac{\partial^2 C}{\partial z^2}\]</span></p>
+<p>This is the 2-D <strong>diffusion (heat) equation</strong>: each downwind slice is a puff that has been spreading for time <span class="math inline">\(x/u\)</span>. Its point-source solution is a Gaussian.</p>
+<aside class="notes">
+<p>This is the key trick. Imagine riding downwind on a thin slice of air, moving at the wind speed. From your seat there is no wind, since you are moving with it; all you see is the pollutant in your slice spreading sideways and up and down. Distance downwind is just how long your slice has been travelling. So the steady plume is a procession of puffs, each a little older than the one behind it. That turns a steady three-dimensional problem into a two-dimensional spreading problem in time, which is the ordinary diffusion equation. It only works because the wind is uniform and because we dropped along-wind spreading; otherwise neighbouring slices would leak into each other.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="solving-the-pde" class="slide level2">
 <h2>Solving the PDE</h2>
 <p><span class="math display">\[C(x,y,z) = \frac{Q}{4\pi x\sqrt{K_{yy}K_{zz}}}\exp\left[-\frac{u}{4x}\left(\frac{y^2}{K_{yy}} + \frac{(z-H)^2}{K_{zz}}\right)\right]\]</span></p>
 <div class="fragment fade-in">
-<p>Substitute <span class="math inline">\(\sigma_y^2 = 2K_{yy}\dfrac{x}{u}\)</span>, <span class="math inline">\(\sigma_z^2 = 2K_{zz}\dfrac{x}{u}\)</span> — the distance a diffusing parcel has spread by the time it reaches <span class="math inline">\(x\)</span>:</p>
+<p>Substitute <span class="math inline">\(\sigma_y^2 = 2K_{yy}\dfrac{x}{u}\)</span>, <span class="math inline">\(\sigma_z^2 = 2K_{zz}\dfrac{x}{u}\)</span> — the distance a diffusing parcel has spread by the time it reaches <span class="math inline">\(x\)</span>.</p>
 </div>
+<aside class="notes">
+<p>The diffusion equation starting from a single point has a well-known solution: a bell curve that gets wider and flatter over time while keeping the same total mass. One way to see why: each bit of pollutant has been kicked around by many random eddies, and the sum of many small random kicks is normally distributed, by the central limit theorem. The width grows like the square root of the travel time, the same result as a random walk. Crosswind and vertical spreading happen independently, so the answer is a bell curve across the wind times a bell curve in the vertical. The formula blows up at the stack itself; it describes the plume away from the source.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="the-gaussian-plume" class="slide level2">
 <h2>The Gaussian Plume</h2>
 <p><span class="math display">\[C(x,y,z) = \frac{Q}{2\pi u\sigma_y\sigma_z}\exp\left[-\frac{1}{2}\left(\frac{y^2}{\sigma_y^2} + \frac{(z-H)^2}{\sigma_z^2}\right)\right]\]</span></p>
-<p>A Gaussian distribution in <span class="math inline">\(y\)</span> and in <span class="math inline">\(z\)</span> — which is where the name comes from, and why <span class="math inline">\(\sigma_y,\sigma_z\)</span> read exactly like standard deviations.</p>
+<p>A Gaussian distribution in <span class="math inline">\(y\)</span> and in <span class="math inline">\(z\)</span> — which is where the name of the model comes from, and why we use the <span class="math inline">\(\sigma_y,\sigma_z\)</span> notation.</p>
+<aside class="notes">
+<p>Rewriting with sigma makes the shape readable: it is two normal distributions, and sigma y and sigma z are their standard deviations, literally how spread out the plume is at that distance. The factor in front is exactly what makes every cross-section carry the full emission rate Q. In theory sigma grows like the square root of distance, but in practice we do not know K well, so we read sigma off empirical curves for each stability class, which comes shortly.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section></section>
 <section>
 <section id="the-ground-is-a-boundary-condition" class="title-slide slide level1 center">
@@ -638,10 +886,13 @@ Figure&nbsp;1: Péclet number for along-wind transport, u = 2.5 m/s, Dx = 50 m²
 </section>
 <section id="final-model-elevated-source-with-reflection" class="slide level2">
 <h2>Final Model: Elevated Source With Reflection</h2>
-<p><span class="math display">\[C(x,y,z) = \frac{Q}{2\pi u\sigma_y\sigma_z}\exp\left(\frac{-y^2}{2\sigma_y^2}\right)\left[\exp\left(\frac{-(z-H)^2}{2\sigma_z^2}\right) + \exp\left(\frac{-(z+H)^2}{2\sigma_z^2}\right)\right]\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+C(x,y,z) &amp;= \frac{Q}{2\pi u\sigma_y\sigma_z}\exp\left(\frac{-y^2}{2\sigma_y^2}\right) \times \\
+&amp;\left[\exp\left(\frac{-(z-H)^2}{2\sigma_z^2}\right) + \exp\left(\frac{-(z+H)^2}{2\sigma_z^2}\right)\right]
+\end{aligned}\]</span></p>
 </section>
-<section id="does-the-image-term-actually-work" class="slide level2">
-<h2>Does the Image Term Actually Work?</h2>
+<section id="impact-of-the-image-term" class="slide level2">
+<h2>Impact of the Image Term</h2>
 <div id="8" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
@@ -676,13 +927,14 @@ Figure&nbsp;1: Péclet number for along-wind transport, u = 2.5 m/s, Dx = 50 m²
 <span id="cb2-29"><a></a>flux_without <span class="op">=</span> (<span class="fu">plume</span>(<span class="fl">3.0</span>, <span class="fl">0.0</span>, dz, plume_params; reflect<span class="op">=</span><span class="cn">false</span>) <span class="op">-</span> <span class="fu">plume</span>(<span class="fl">3.0</span>, <span class="fl">0.0</span>, <span class="fl">0.0</span>, plume_params; reflect<span class="op">=</span><span class="cn">false</span>)) <span class="op">/</span> dz</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p><span class="math inline">\(\partial C/\partial z\)</span> at the ground, 3 km downwind: <strong>with</strong> the image term, 1.3e-9; <strong>without</strong> it, 4.5e-5 — about <span class="math inline">\(3\times 10^4\)</span> times larger. The second exponential is not decoration; it is the boundary condition.</p>
+<p><span class="math inline">\(\partial C/\partial z\)</span> at the ground, 3 km downwind: <strong>with</strong> the image term, 1.3e-9; <strong>without</strong> it, 4.5e-5 — about <span class="math inline">\(3\times 10^4\)</span> times larger.</p>
 </section>
 <section id="final-model-assumptions" class="slide level2">
 <h2>Final Model Assumptions</h2>
 <ol type="1">
 <li>Steady-state</li>
 <li>Constant wind velocity and direction</li>
+<li>Turbulent mixing <span class="math inline">\(\gg\)</span> molecular diffusion</li>
 <li>Wind <span class="math inline">\(\gg\)</span> dispersion in the <span class="math inline">\(x\)</span>-direction</li>
 <li>No reactions</li>
 <li>Smooth ground (no extra turbulent eddies or reflections)</li>
@@ -697,7 +949,7 @@ Figure&nbsp;1: Péclet number for along-wind transport, u = 2.5 m/s, Dx = 50 m²
 <h2>Estimating Dispersion “Spread”</h2>
 <p><span class="math inline">\(\sigma_y,\sigma_z\)</span> matter enormously for the plume’s footprint. What sets them?</p>
 <p><strong>Main driver</strong>: atmospheric stability — greater stability means less vertical/cross-wind spreading.</p>
-<p>Pasquill (1961): six stability classes.</p>
+<p><span class="citation" data-cites="Pasquill1961-ew">Pasquill (<a href="#/references-1" role="doc-biblioref" onclick="">1961</a>)</span>: six stability classes.</p>
 </section>
 <section id="atmospheric-stability-classes" class="slide level2">
 <h2>Atmospheric Stability Classes</h2>
@@ -797,10 +1049,8 @@ C(3 km, 0, 0) = 1692.2 µg/m³</code></pre>
 <section id="key-takeaways-1" class="slide level2">
 <h2>Key Takeaways</h2>
 <ul>
-<li class="fragment">A violation probability is a <strong>hazard</strong> statistic. Risk needs exposure, vulnerability, and response as well — and none of those is in the model.</li>
-<li class="fragment">The plume equation is the same advective-diffusion family as the airshed and DO models — here the spatial structure is kept rather than simplified away.</li>
-<li class="fragment">Dropping along-wind dispersion is a <strong>Péclet number</strong> argument: <span class="math inline">\(Pe \gg 1\)</span> for atmospheric transport at any distance of interest.</li>
-<li class="fragment">The ground is a <strong>Neumann boundary condition</strong>, enforced with an image source — verified numerically to kill the vertical flux at <span class="math inline">\(z=0\)</span>.</li>
+<li class="fragment">The plume equation is based on the advective-diffusion equation.</li>
+<li class="fragment">Number of key assumptions: when do they hold and when don’t they?</li>
 <li class="fragment"><span class="math inline">\(\sigma_y,\sigma_z\)</span> are empirical, tied to atmospheric stability class — not derived from first principles.</li>
 </ul>
 </section></section>
@@ -811,24 +1061,137 @@ C(3 km, 0, 0) = 1692.2 µg/m³</code></pre>
 </section>
 <section id="next-classes" class="slide level2">
 <h2>Next Classes</h2>
-<p><strong>Monday</strong>: Quiz 2, then where the plume actually lands — the footprint on the ground and a vertical section that makes the reflection visible.</p>
-<p><strong>Wednesday</strong>: Model validation. How we decide whether to believe any of this.</p>
+<p><strong>Monday</strong>: Quiz 2, then simulating the plume model</p>
+<p><strong>Wednesday</strong>: Model calibration and validation.</p>
 </section>
 <section id="assessments" class="slide level2">
 <h2>Assessments</h2>
-<p><strong>Homework 4</strong>: Assigned today, due Thursday, October 8.</p>
 <p><strong>Mini-Project 1</strong>: Due Thursday, October 22.</p>
 <p><strong>Quiz 2</strong>: Monday, October 5, covering discretization, convergence, Streeter-Phelps, and Monte Carlo.</p>
+</section></section>
+<section>
+<section id="appendix" class="title-slide slide level1 center">
+<h1>Appendix</h1>
+
+</section>
+<section id="plume-derivation" class="slide level2">
+<h2>Deriving the Plume: Mass Balance</h2>
+<p>The same bookkeeping as the box and DO models, on a small cube of air <span class="math inline">\(dx\,dy\,dz\)</span>:</p>
+<p><span class="math display">\[\frac{\partial C}{\partial t} = -\nabla\cdot\vec F + S\]</span></p>
+<ul>
+<li><span class="math inline">\(\vec F\)</span>: flux of pollutant through the cube’s faces [mass/(area·time)]</li>
+<li><span class="math inline">\(S\)</span>: reactions or sources inside the cube</li>
+</ul>
+<p>As the cube shrinks, “outflow minus inflow” per unit volume becomes the divergence <span class="math inline">\(\nabla\cdot\vec F\)</span>.</p>
+</section>
+<section id="three-fluxes" class="slide level2">
+<h2>Three Fluxes</h2>
+<p><span class="math display">\[\vec F = \underbrace{\vec u\,C}_{\text{advection}} + \underbrace{\vec F_{\text{mol}}}_{\text{molecular diffusion}} + \underbrace{\vec F_{\text{turb}}}_{\text{turbulent mixing}}\]</span></p>
+<p>Advection is the wind carrying pollutant along. The other two are spreading, and both are driven by concentration gradients.</p>
+</section>
+<section id="molecular-diffusion-ficks-law" class="slide level2">
+<h2>Molecular Diffusion: Fick’s Law</h2>
+<p><strong>Fick’s law</strong> <span class="citation" data-cites="Fick1855-ud">(<a href="#/references-1" role="doc-biblioref" onclick="">Fick, 1855</a>)</span>, modelled on Fourier’s law of heat conduction:</p>
+<p><span class="math display">\[\vec F_{\text{mol}} = -D\,\nabla C\]</span></p>
+<p>Molecules random-walk, and more of them step out of the crowded side than into it, so the flux runs <strong>down</strong> the gradient. <span class="math inline">\(D \approx 10^{-5}\)</span> m²/s for a gas in air: a property of the gases.</p>
+</section>
+<section id="where-the-turbulent-flux-comes-from" class="slide level2">
+<h2>Where the Turbulent Flux Comes From</h2>
+<p>The model predicts the <strong>time-averaged</strong> concentration. Split each quantity into mean and fluctuation:</p>
+<p><span class="math display">\[u = \bar u + u', \qquad C = \bar C + c', \qquad \overline{u'} = \overline{c'} = 0\]</span></p>
+<p>Averaging the advective flux leaves an extra term, pollutant carried by eddies:</p>
+<p><span class="math display">\[\overline{uC} = \bar u\,\bar C + \overline{u'c'}\]</span></p>
+</section>
+<section id="closing-the-turbulent-term" class="slide level2">
+<h2>Closing the Turbulent Term</h2>
+<p><span class="math inline">\(\overline{u'c'}\)</span> cannot be computed from mean quantities. <strong>K-theory</strong>, by analogy with Boussinesq’s eddy viscosity <span class="citation" data-cites="Boussinesq1877-es">(<a href="#/references-1" role="doc-biblioref" onclick="">Boussinesq, 1877</a>)</span>, treats eddies like large, fast molecules:</p>
+<p><span class="math display">\[\overline{u_i'c'} = -K_{ii}\,\frac{\partial \bar C}{\partial x_i}\]</span></p>
+<ul>
+<li><span class="math inline">\(K\)</span> is a property of the <strong>flow</strong>, not the air: roughly 1–100 m²/s.</li>
+<li>Vertical mixing <span class="math inline">\(K_{zz}\)</span> depends on stability.</li>
+</ul>
+</section>
+<section id="the-advection-diffusion-equation" class="slide level2">
+<h2>The Advection-Diffusion Equation</h2>
+<p>Substitute the three fluxes (with <span class="math inline">\(C\)</span> now meaning <span class="math inline">\(\bar C\)</span>), assuming</p>
+<ul>
+<li>no reactions (<span class="math inline">\(S = 0\)</span>);</li>
+<li>incompressible flow (<span class="math inline">\(\nabla\cdot\vec u = 0\)</span>, so <span class="math inline">\(\nabla\cdot(\vec u C) = \vec u\cdot\nabla C\)</span>);</li>
+<li>constant coefficients.</li>
+</ul>
+<div class="small-math">
+<p><span class="math display">\[\frac{\partial C}{\partial t} + \vec u\cdot\nabla C = (D + K_{xx})\frac{\partial^2 C}{\partial x^2} + (D + K_{yy})\frac{\partial^2 C}{\partial y^2} + (D + K_{zz})\frac{\partial^2 C}{\partial z^2}\]</span></p>
+</div>
+</section>
+<section id="applying-the-assumptions" class="slide level2">
+<h2>Applying the Assumptions</h2>
+<p><strong>Steady state</strong>: constant emissions and weather over the averaging period, so <span class="math inline">\(\partial C/\partial t = 0\)</span>.</p>
+<p><strong>Wind along <span class="math inline">\(x\)</span></strong>: align the axes with the mean wind, and assume it is uniform, <span class="math inline">\(\vec u = (u, 0, 0)\)</span>. Then <span class="math inline">\(\vec u\cdot\nabla C = u\,\partial C/\partial x\)</span>.</p>
+<p><strong>Turbulence dominates molecular diffusion</strong>: <span class="math inline">\(D \sim 10^{-5}\)</span> m²/s against <span class="math inline">\(K \sim 1\)</span>–<span class="math inline">\(100\)</span> m²/s, five or more orders of magnitude apart. Drop <span class="math inline">\(D\)</span>.</p>
+</section>
+<section id="along-wind-dispersion" class="slide level2">
+<h2>Along-Wind Dispersion</h2>
+<p>Compare the two along-wind terms over a distance <span class="math inline">\(L\)</span>:</p>
+<p><span class="math display">\[\frac{u\,\partial C/\partial x}{K_{xx}\,\partial^2 C/\partial x^2} \sim \frac{u\,C/L}{K_{xx}\,C/L^2} = \frac{uL}{K_{xx}} = Pe\]</span></p>
+<p>With <span class="math inline">\(u = 2.5\)</span> m/s, <span class="math inline">\(K_{xx} = 50\)</span> m²/s, <span class="math inline">\(L = 1\)</span> km: <span class="math inline">\(Pe = 50\)</span>. Drop <span class="math inline">\(K_{xx}\)</span>.</p>
+<p>The crosswind terms stay: with no wind in <span class="math inline">\(y\)</span> or <span class="math inline">\(z\)</span>, mixing is the only transport there, across sharp gradients (over <span class="math inline">\(\sigma\)</span>, not <span class="math inline">\(L\)</span>).</p>
+</section>
+<section id="distance-becomes-travel-time-1" class="slide level2">
+<h2>Distance Becomes Travel Time</h2>
+<p><span class="math display">\[u\frac{\partial C}{\partial x} = K_{yy}\frac{\partial^2 C}{\partial y^2} + K_{zz}\frac{\partial^2 C}{\partial z^2}\]</span></p>
+<p>Let <span class="math inline">\(\tau = x/u\)</span>, the travel time to <span class="math inline">\(x\)</span>, so <span class="math inline">\(u\,\partial C/\partial x = \partial C/\partial \tau\)</span>. This is the 2-D <strong>diffusion (heat) equation</strong>:</p>
+<p><span class="math display">\[\frac{\partial C}{\partial \tau} = K_{yy}\frac{\partial^2 C}{\partial y^2} + K_{zz}\frac{\partial^2 C}{\partial z^2}\]</span></p>
+<p>Each slice is a puff that has spread for time <span class="math inline">\(x/u\)</span>.</p>
+</section>
+<section id="the-solution-is-a-random-walk" class="slide level2">
+<h2>The Solution Is a Random Walk</h2>
+<p>For a point release, the diffusion equation’s solution is a Gaussian whose variance grows linearly in time. For a random walk, <span class="math inline">\(\langle \Delta y^2\rangle = 2Kt\)</span> <span class="citation" data-cites="Einstein1905-ub">(<a href="#/references-1" role="doc-biblioref" onclick="">Einstein, 1905</a>)</span>:</p>
+<div class="small-math">
+<p><span class="math display">\[C \propto \exp\left[-\frac{y^2}{2\sigma_y^2} - \frac{(z-H)^2}{2\sigma_z^2}\right], \qquad \sigma_y^2 = 2K_{yy}\frac{x}{u}, \quad \sigma_z^2 = 2K_{zz}\frac{x}{u}\]</span></p>
+</div>
+<p>So <span class="math inline">\(\sigma_y\)</span> and <span class="math inline">\(\sigma_z\)</span> <strong>are</strong> the spread of a random walk after travel time <span class="math inline">\(x/u\)</span>.</p>
+</section>
+<section id="fixing-the-constant-mass-conservation" class="slide level2">
+<h2>Fixing the Constant: Mass Conservation</h2>
+<p>With steady state and no reactions, every downwind cross-section carries the full emission rate, <span class="math inline">\(\iint u\,C\,dy\,dz = Q\)</span>. Each Gaussian integrates to <span class="math inline">\(\sqrt{2\pi}\,\sigma\)</span>, so:</p>
+<p><span class="math display">\[C(x,y,z) = \frac{Q}{2\pi u\sigma_y\sigma_z}\exp\left[-\frac{y^2}{2\sigma_y^2} - \frac{(z-H)^2}{2\sigma_z^2}\right]\]</span></p>
+<p>Units: <span class="math inline">\(\dfrac{\text{g/s}}{(\text{m/s})\,\text{m}^2} = \text{g/m}^3\)</span>.</p>
+</section>
+<section id="from-theory-to-the-sigma-curves" class="slide level2">
+<h2>From Theory to the <span class="math inline">\(\sigma\)</span> Curves</h2>
+<p>Real turbulence has eddies of every size: there is no single constant <span class="math inline">\(K\)</span>.</p>
+<ul>
+<li>Near the source <span class="math inline">\(\sigma \propto t\)</span>; far from it, <span class="math inline">\(\sigma \propto \sqrt{t}\)</span> <span class="citation" data-cites="Taylor1922-dc">(<a href="#/references-1" role="doc-biblioref" onclick="">Taylor, 1922</a>)</span>.</li>
+<li>In practice, <span class="math inline">\(\sigma_y(x)\)</span> and <span class="math inline">\(\sigma_z(x)\)</span> are fitted per stability class: e.g.&nbsp;<span class="math inline">\(\sigma_y = 34\,x^{0.894}\)</span> (class F, <span class="math inline">\(x\)</span> in km).</li>
+</ul>
+<p>The derivation fixes the Gaussian <strong>shape</strong>; the data fix the <strong>widths</strong>.</p>
 </section></section>
 <section>
 <section id="references" class="title-slide slide level1 center">
 <h1>References</h1>
 
 </section>
-<section id="references-1" class="slide level2">
+<section id="references-1" class="slide level2 smaller scrollable">
 <h2>References</h2>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-Boussinesq1877-es" class="csl-entry" role="listitem">
+Boussinesq, J. (1877). <span class="nocase">Essai sur la th<span class="nocase">é</span>orie des eaux courantes</span>. <em><span class="nocase">M<span class="nocase">é</span>moires pr<span class="nocase">é</span>sent<span class="nocase">é</span>s par divers savants <span class="nocase">à</span> l’Acad<span class="nocase">é</span>mie des Sciences</span></em>, <em>23</em>, 1–680.
+</div>
+<div id="ref-Einstein1905-ub" class="csl-entry" role="listitem">
+Einstein, A. (1905). <span class="nocase"><span>Ü</span>ber die von der molekularkinetischen Theorie der W<span class="nocase">ä</span>rme geforderte Bewegung von in ruhenden Fl<span class="nocase">ü</span>ssigkeiten suspendierten Teilchen</span>. <em><span class="nocase">Annalen der Physik</span></em>, <em>322</em>(8), 549–560. <a href="https://doi.org/10.1002/andp.19053220806">https://doi.org/10.1002/andp.19053220806</a>
+</div>
+<div id="ref-Fick1855-ud" class="csl-entry" role="listitem">
+Fick, A. (1855). <span>Ueber Diffusion</span>. <em><span class="nocase">Annalen der Physik</span></em>, <em>170</em>(1), 59–86. <a href="https://doi.org/10.1002/andp.18551700105">https://doi.org/10.1002/andp.18551700105</a>
+</div>
+<div id="ref-Pasquill1961-ew" class="csl-entry" role="listitem">
+Pasquill, F. (1961). The estimation of the dispersion of windborne material. <em><span>Meteorological Magazine</span></em>, <em>90</em>(1063), 33–49.
+</div>
+<div id="ref-Taylor1922-dc" class="csl-entry" role="listitem">
+Taylor, G. I. (1922). Diffusion by continuous movements. <em>Proceedings of the London Mathematical Society</em>, <em>s2-20</em>(1), 196–212. <a href="https://doi.org/10.1112/plms/s2-20.1.196">https://doi.org/10.1112/plms/s2-20.1.196</a>
+</div>
+</div>
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">

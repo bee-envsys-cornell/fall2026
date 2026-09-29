@@ -2340,6 +2340,13 @@
     "text": "Assessments\nHW3: Due next Thursday (10/16) at 9pm."
   },
   {
+    "objectID": "slides/lecture06-2-plume-derivation.html#monte-carlo-vs.-discretization-error",
+    "href": "slides/lecture06-2-plume-derivation.html#monte-carlo-vs.-discretization-error",
+    "title": "Gaussian Plumes: Deriving the Model",
+    "section": "Monte Carlo vs. Discretization Error",
+    "text": "Monte Carlo vs. Discretization Error\n\n\nDiscretization\n\npick \\(\\Delta t\\) from a characteristic timescale\nhalve it; see if the answer moves\nerror scales linearly with \\(\\Delta t\\)\n\n\nMonte Carlo\n\npick \\(n\\) from a target CI half-width\ndouble it; see if the estimate moves\nerror scales as \\(\\sim 1/\\sqrt{n}\\)"
+  },
+  {
     "objectID": "slides/lecture06-2-plume-derivation.html#questions",
     "href": "slides/lecture06-2-plume-derivation.html#questions",
     "title": "Gaussian Plumes: Deriving the Model",
@@ -2347,18 +2354,11 @@
     "text": "Questions?\n\n\n\n\n\n\n\n\nText: VSRIKRISH to 22333\nURL: https://pollev.com/vsrikrish  See Results"
   },
   {
-    "objectID": "slides/lecture06-2-plume-derivation.html#from-a-line-to-a-point",
-    "href": "slides/lecture06-2-plume-derivation.html#from-a-line-to-a-point",
-    "title": "Gaussian Plumes: Deriving the Model",
-    "section": "From a Line to a Point",
-    "text": "From a Line to a Point\nThe airshed was a well-mixed box. Streeter-Phelps marched along one line downstream.\nAir pollution downwind of a stack spreads across the wind as well as along it — a genuinely spatial problem."
-  },
-  {
     "objectID": "slides/lecture06-2-plume-derivation.html#some-approaches-for-modeling-air-pollution",
     "href": "slides/lecture06-2-plume-derivation.html#some-approaches-for-modeling-air-pollution",
     "title": "Gaussian Plumes: Deriving the Model",
     "section": "Some Approaches for Modeling Air Pollution",
-    "text": "Some Approaches for Modeling Air Pollution\nSo far: box (airshed) models — overall mass balance across a whole region.\nToday: point sources and receptors — plume models, which track concentration as a continuous function of position."
+    "text": "Some Approaches for Modeling Air Pollution\nSo far: box (airshed) models — overall mass balance across a whole region.\nToday: point sources and receptors — plume models, which track concentration as a continuous function of position relative to a source."
   },
   {
     "objectID": "slides/lecture06-2-plume-derivation.html#point-sources-and-receptors-1",
@@ -2368,11 +2368,11 @@
     "text": "Point Sources and Receptors\n\nPoint Source/Receptor Schematic"
   },
   {
-    "objectID": "slides/lecture06-2-plume-derivation.html#emissions-follow-instantaneous-paths",
-    "href": "slides/lecture06-2-plume-derivation.html#emissions-follow-instantaneous-paths",
+    "objectID": "slides/lecture06-2-plume-derivation.html#individual-paths-of-emissions",
+    "href": "slides/lecture06-2-plume-derivation.html#individual-paths-of-emissions",
     "title": "Gaussian Plumes: Deriving the Model",
-    "section": "Emissions Follow Instantaneous Paths",
-    "text": "Emissions Follow Instantaneous Paths\n\nPoint Source Flow Traces"
+    "section": "Individual Paths of Emissions",
+    "text": "Individual Paths of Emissions\n\nPoint Source Flow Traces"
   },
   {
     "objectID": "slides/lecture06-2-plume-derivation.html#plume-time-averaged-positions",
@@ -2400,63 +2400,98 @@
     "href": "slides/lecture06-2-plume-derivation.html#the-advective-diffusion-equation",
     "title": "Gaussian Plumes: Deriving the Model",
     "section": "The Advective-Diffusion Equation",
-    "text": "The Advective-Diffusion Equation\nThe mass balance of a small air parcel:\n\\[\\frac{\\partial C}{\\partial t} - \\underbrace{[D+K]\\nabla^2 C}_{\\text{diffusion}} + \\underbrace{\\vec{u}\\cdot\\vec{\\nabla}C}_{\\text{advection}} = 0\\]\n\n\\(D\\): molecular diffusion coefficient\n\\(K\\): dispersion coefficient (turbulent mixing)\n\n\nThis is the same equation family as the airshed and DO models — just with the spatial term kept instead of dropped or reduced to one line."
+    "text": "The Advective-Diffusion Equation\nThe mass balance of a small air control volume:\n\\[\\frac{\\partial C}{\\partial t} = \\underbrace{\\sum_{i=x,y,z}(D+K_{ii})\\frac{\\partial^2 C}{\\partial x_i^2}}_{\\text{diffusion}} - \\underbrace{\\vec{u}\\cdot\\vec{\\nabla}C}_{\\text{advection}} + \\underbrace{S}_{\\text{reactions}}\\]\n\\(D\\): molecular diffusion; \\(K_{ii}\\): turbulent mixing in direction \\(i\\); \\(S\\): reactions (none here).\nFull derivation, step by step: appendix.\n\nThis is the same mass balance as the box and DO models, applied to a tiny cube of air instead of a whole airshed or river reach. Pollutant in the cube changes because the wind carries it in or out (advection), because it spreads from crowded places to less crowded ones (diffusion, molecular and turbulent), or because it reacts. Everything that follows is deciding which of these terms we can ignore for a smokestack plume. The appendix has every step with the math."
   },
   {
     "objectID": "slides/lecture06-2-plume-derivation.html#diffusive-flux",
     "href": "slides/lecture06-2-plume-derivation.html#diffusive-flux",
     "title": "Gaussian Plumes: Deriving the Model",
     "section": "Diffusive Flux",
-    "text": "Diffusive Flux\n\n\n\n\n\nDiffusive Flux\n\n\n\nConcentration gradient + diffusion \\(\\Rightarrow\\) flux.\nFick’s law: \\[F_x = D\\frac{dC}{dx}\\]"
+    "text": "Diffusive Flux\n\n\n\n\n\nDiffusive Flux\n\n\n\nConcentration gradient + diffusion \\(\\Rightarrow\\) flux.\nFick’s law: \\[F_x = -D\\frac{dC}{dx}\\]\n\n\nFick’s law comes from random molecular motion. Molecules jiggle in every direction, and wherever there are more of them, more wander out than wander in. The net result is a flow from high to low concentration, proportional to how steep the difference is, which is why there is a minus sign. Fick found it in 1855 by analogy with Fourier’s law for heat. D is a property of the gases themselves, and it is tiny: about a hundred-thousandth of a square metre per second for a gas in air."
+  },
+  {
+    "objectID": "slides/lecture06-2-plume-derivation.html#where-turbulent-flux-comes-from",
+    "href": "slides/lecture06-2-plume-derivation.html#where-turbulent-flux-comes-from",
+    "title": "Gaussian Plumes: Deriving the Model",
+    "section": "Where Turbulent Flux Comes From",
+    "text": "Where Turbulent Flux Comes From\nThe plume is the time average of the individual puffs. Split wind and concentration into mean and fluctuation, \\(u = \\bar u + u'\\) and \\(C = \\bar C + c'\\). Averaging the advective flux leaves an extra term:\n\\[\\overline{uC} = \\bar u\\,\\bar C + \\overline{u'c'}\\]\n\\(\\overline{u'c'}\\) is pollutant carried by eddies. K-theory closes it by analogy with Fick’s law: \\(\\overline{u'c'} = -K_{xx}\\,\\partial \\bar C/\\partial x\\).\n\nWe are not predicting where the smoke is at one instant; that is the wiggly puffs in the earlier figure. We are predicting the average concentration over roughly an hour. When you average the wind carrying the pollutant, most of the cross terms average to zero, but one survives: the correlation between gusts and concentration. Below the plume centreline, for example, updrafts bring up cleaner air and downdrafts bring down dirtier air, so on average pollutant moves downward, from high to low concentration, just like diffusion. K-theory says to treat this like Fick’s law, with eddies playing the role of molecules."
   },
   {
     "objectID": "slides/lecture06-2-plume-derivation.html#turbulent-flux",
     "href": "slides/lecture06-2-plume-derivation.html#turbulent-flux",
     "title": "Gaussian Plumes: Deriving the Model",
     "section": "Turbulent Flux",
-    "text": "Turbulent Flux\n\n\n\n\n\nTurbulent Flux\n\n\n\nConcentration gradient + turbulent mixing \\(\\Rightarrow\\) flux.\n\\[F_x = K_{xx}\\frac{dC}{dx}\\]\n\\(K_{xx}\\) depends on flow/eddy characteristics — not a material property like \\(D\\)."
+    "text": "Turbulent Flux\n\n\n\n\n\nTurbulent Flux\n\n\n\nConcentration gradient + turbulent mixing \\(\\Rightarrow\\) flux.\n\\[F_x = -K_{xx}\\frac{dC}{dx}\\]\n\\(K_{xx}\\) depends on flow/eddy characteristics.\n\n\nSame form as Fick’s law, but K describes the eddies, not the air. A rough way to think about it: K is an eddy’s speed times the distance it carries a parcel before mixing in. That is about half a metre per second times tens of metres, so tens of square metres per second. Molecules follow the same recipe with a tiny step, which is why D is about a million times smaller. K also differs by direction: vertical mixing is suppressed when the atmosphere is stable, which is where stability classes come in later."
   },
   {
     "objectID": "slides/lecture06-2-plume-derivation.html#assumption-1-steady-state",
     "href": "slides/lecture06-2-plume-derivation.html#assumption-1-steady-state",
     "title": "Gaussian Plumes: Deriving the Model",
     "section": "Assumption 1: Steady State",
-    "text": "Assumption 1: Steady State\n\\[\\frac{\\partial C}{\\partial t} + \\vec{u}\\cdot\\vec\\nabla C - [D+K]\\nabla^2C = 0\\]\n\\[\\frac{\\partial C}{\\partial t} = 0\\]"
+    "text": "Assumption 1: Steady State\n\\[\\cancel{\\frac{\\partial C}{\\partial t}} = \\sum_{i=x,y,z}(D+K_{ii})\\frac{\\partial^2 C}{\\partial x_i^2} - \\vec{u}\\cdot\\vec{\\nabla}C\\]\nConstant emissions and weather over the averaging period.\n\nSteady state means we describe the plume averaged over a period when the stack emits at a constant rate and the weather holds steady, typically about an hour. It does not mean nothing moves; the air is moving the whole time. It means the averaged picture is not changing. If emissions or the wind shift during the hour, the model describes a blend of conditions, and the real footprint wanders around."
   },
   {
     "objectID": "slides/lecture06-2-plume-derivation.html#assumption-2-wind-only-along-x",
     "href": "slides/lecture06-2-plume-derivation.html#assumption-2-wind-only-along-x",
     "title": "Gaussian Plumes: Deriving the Model",
     "section": "Assumption 2: Wind Only Along \\(x\\)",
-    "text": "Assumption 2: Wind Only Along \\(x\\)\n\\[\\vec{u}\\cdot\\vec\\nabla C = u_x\\frac{\\partial C}{\\partial x} + \\cancel{u_y\\frac{\\partial C}{\\partial y}} + \\cancel{u_z\\frac{\\partial C}{\\partial z}}\\]"
+    "text": "Assumption 2: Wind Only Along \\(x\\)\n\\[\\vec{u}\\cdot\\vec\\nabla C = u_x\\frac{\\partial C}{\\partial x} + \\cancel{u_y\\frac{\\partial C}{\\partial y}} + \\cancel{u_z\\frac{\\partial C}{\\partial z}}\\]\n\nPart of this is just a choice: we point the x axis along the average wind, so by definition there is no mean wind across it. The real assumption is that the wind is uniform, with the same speed and direction everywhere, including at every height. Real wind speeds up with height, and that is one of the first things more advanced models relax. This is only about the mean wind; the gusts are still there, hiding inside K."
   },
   {
-    "objectID": "slides/lecture06-2-plume-derivation.html#assumption-3-turbulence-dominates-molecular-diffusion-and-along-wind-dispersion-is-negligible",
-    "href": "slides/lecture06-2-plume-derivation.html#assumption-3-turbulence-dominates-molecular-diffusion-and-along-wind-dispersion-is-negligible",
+    "objectID": "slides/lecture06-2-plume-derivation.html#assumption-3-turbulence-dominates-molecular-diffusion",
+    "href": "slides/lecture06-2-plume-derivation.html#assumption-3-turbulence-dominates-molecular-diffusion",
     "title": "Gaussian Plumes: Deriving the Model",
-    "section": "Assumption 3: Turbulence Dominates Molecular Diffusion, and Along-Wind Dispersion Is Negligible",
-    "text": "Assumption 3: Turbulence Dominates Molecular Diffusion, and Along-Wind Dispersion Is Negligible\n\\[-[\\cancel{D}+K]\\nabla^2C = \\cancel{K_{xx}}\\frac{\\partial^2C}{\\partial x^2} + K_{yy}\\frac{\\partial^2C}{\\partial y^2} + K_{zz}\\frac{\\partial^2C}{\\partial z^2}\\]\n\nThis isn’t an arbitrary simplification — it’s a Péclet number argument, exactly like the one from Week 6: \\(Pe = uL/D_x \\gg 1\\) for atmospheric transport at any distance you’d care about.\n\n\nCode\nu_wind, Dx = 2.5, 50.0\nLvals = 100:50:10000\nPe = u_wind .* Lvals ./ Dx\nplot(Lvals ./ 1000, Pe, xlabel=\"Distance  [km]\", ylabel=L\"Pe = uL/D_x\",\n    color=cb_vermillion, linewidth=4, legend=false, yscale=:log10)\nhline!([1], color=:black, linestyle=:dash, linewidth=2)\nplot!(size=(950, 400), left_margin=12mm, right_margin=8mm,\n    bottom_margin=12mm, top_margin=5mm)\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n0.0\n\n\n2.5\n\n\n5.0\n\n\n7.5\n\n\n10.0\n\n\nDistance  [km]\n\n\n\n\n\n\n\n\n\n\n10\n\n\n0\n\n\n10\n\n\n1\n\n\n10\n\n\n2\n\n\n\n\n\n\n\n\n\nFigure 1: Péclet number for along-wind transport, u = 2.5 m/s, Dx = 50 m²/s."
+    "section": "Assumption 3: Turbulence Dominates Molecular Diffusion",
+    "text": "Assumption 3: Turbulence Dominates Molecular Diffusion\n\\(D \\sim 10^{-5}\\) m²/s for a gas in air; \\(K \\sim 1\\)–\\(100\\) m²/s. Five or more orders of magnitude apart:\n\\[(\\cancel{D}+K_{ii})\\frac{\\partial^2 C}{\\partial x_i^2} \\approx K_{ii}\\frac{\\partial^2 C}{\\partial x_i^2}\\]\n\nThis one is just a size comparison. In the atmosphere, molecular diffusion is roughly a million times weaker than turbulent mixing, so dropping it changes nothing you could measure. It is the same reason stirring coffee mixes the milk in seconds, while waiting for diffusion alone would take hours."
+  },
+  {
+    "objectID": "slides/lecture06-2-plume-derivation.html#assumption-4-negligible-along-wind-dispersion",
+    "href": "slides/lecture06-2-plume-derivation.html#assumption-4-negligible-along-wind-dispersion",
+    "title": "Gaussian Plumes: Deriving the Model",
+    "section": "Assumption 4: Negligible Along-Wind Dispersion",
+    "text": "Assumption 4: Negligible Along-Wind Dispersion\nAlong-wind advection against dispersion, over a distance \\(L\\):\n\\[\\frac{u\\,\\partial C/\\partial x}{K_{xx}\\,\\partial^2 C/\\partial x^2} \\sim \\frac{u\\,C/L}{K_{xx}\\,C/L^2} = \\frac{uL}{K_{xx}} = Pe\\]\nA Péclet number argument: \\(Pe \\gg 1\\) at any distance you’d care about, so drop \\(K_{xx}\\). The crosswind terms stay: with no wind in \\(y\\) or \\(z\\), mixing is the only transport there.\n\nCompare how fast the wind carries pollutant downwind with how fast turbulence spreads it along the wind. The wind covers a kilometre in a few minutes; along-wind mixing would take hours to spread pollutant over the same distance. That ratio is the Péclet number, and at a kilometre it is around 50, so along-wind spreading is a correction of a few percent. Why not drop the crosswind terms the same way? Because there is no wind across the plume to compete with: mixing is the only thing moving pollutant sideways. The plume is also narrow, so concentration changes sharply across it, which makes the crosswind terms as large as the advection term. They are what balance it."
+  },
+  {
+    "objectID": "slides/lecture06-2-plume-derivation.html#peclet-number",
+    "href": "slides/lecture06-2-plume-derivation.html#peclet-number",
+    "title": "Gaussian Plumes: Deriving the Model",
+    "section": "Peclet number",
+    "text": "Peclet number\n\n\nCode\nu_wind, Kxx = 2.5, 50\nLvals = 100:50:10000\nPe = u_wind .* Lvals ./ Kxx\nplot(Lvals ./ 1000, Pe, xlabel=\"Distance  [km]\", ylabel=L\"Pe = uL/K_{xx}\",\n    color=cb_vermillion, linewidth=4, legend=false, yscale=:log10)\nhline!([1], color=:black, linestyle=:dash, linewidth=2)\nplot!(size=(950, 400), left_margin=12mm, right_margin=8mm,\n    bottom_margin=12mm, top_margin=5mm)\n\n\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n0.0\n\n\n2.5\n\n\n5.0\n\n\n7.5\n\n\n10.0\n\n\nDistance  [km]\n\n\n\n\n\n\n\n\n\n\n10\n\n\n0\n\n\n10\n\n\n1\n\n\n10\n\n\n2\n\n\n\n\n\n\n\n\n\nFigure 1: Péclet number for along-wind transport, u = 2.5 m/s, Kxx = 50 m²/s.\n\n\n\n\n\nPe grows linearly with distance. With these numbers it passes 1 at about 20 metres and 10 at about 200 metres, so beyond a few hundred metres along-wind dispersion really is negligible. The assumption fails right next to the stack, which is also where the plume formula blows up, and in very light winds, where u is small. That is one reason Gaussian plume models are not used in calm conditions."
   },
   {
     "objectID": "slides/lecture06-2-plume-derivation.html#whats-left",
     "href": "slides/lecture06-2-plume-derivation.html#whats-left",
     "title": "Gaussian Plumes: Deriving the Model",
     "section": "What’s Left",
-    "text": "What’s Left\nWith these three assumptions:\n\\[\\bbox[5pt, border: 3px solid red]{u\\frac{\\partial C}{\\partial x} = K_{yy}\\frac{\\partial^2 C}{\\partial y^2} + K_{zz}\\frac{\\partial^2 C}{\\partial z^2}}\\]\n\n\n\nPlus a boundary condition: mass flowing through any downwind cross-section must equal the emission rate \\(Q\\):\n\\[Q = \\iint u\\,C\\,dy\\,dz\\]\n\n\n\n\nBoundary Condition for the A-D Equation"
+    "text": "What’s Left\nWith these four assumptions:\n\\[\\bbox[5pt, border: 3px solid red]{u\\frac{\\partial C}{\\partial x} = K_{yy}\\frac{\\partial^2 C}{\\partial y^2} + K_{zz}\\frac{\\partial^2 C}{\\partial z^2}}\\]\n\nRead this equation as a balance between two things: the wind carrying pollutant downwind on the left, and turbulence spreading it sideways and vertically on the right. There is no time derivative, no along-wind spreading, and no molecular diffusion left. The next move is to see that this is a diffusion equation in disguise."
+  },
+  {
+    "objectID": "slides/lecture06-2-plume-derivation.html#boundary-condition",
+    "href": "slides/lecture06-2-plume-derivation.html#boundary-condition",
+    "title": "Gaussian Plumes: Deriving the Model",
+    "section": "Boundary Condition",
+    "text": "Boundary Condition\n\n\nPlus a boundary condition: mass flowing through any downwind cross-section must equal the emission rate \\(Q\\):\n\\[Q = \\iint u\\,C\\,dy\\,dz\\]\n\n\n\n\nBoundary Condition for the A-D Equation\n\n\n\n\nThe stack is where the pollutant comes from, and this says none of it disappears. Take any slice across the plume downwind: the wind pushes pollutant through it at some rate, and with steady state and no reactions that rate must equal what the stack emits. Another way to see it: in one second the stack emits Q, and the wind stretches that over u metres of plume, so every metre of plume carries Q divided by u. This is what fixes the overall size of the concentration."
+  },
+  {
+    "objectID": "slides/lecture06-2-plume-derivation.html#distance-becomes-travel-time",
+    "href": "slides/lecture06-2-plume-derivation.html#distance-becomes-travel-time",
+    "title": "Gaussian Plumes: Deriving the Model",
+    "section": "Distance Becomes Travel Time",
+    "text": "Distance Becomes Travel Time\nLet \\(\\tau = x/u\\), the time the air takes to reach \\(x\\). Then \\(u\\,\\partial C/\\partial x = \\partial C/\\partial \\tau\\):\n\\[\\frac{\\partial C}{\\partial \\tau} = K_{yy}\\frac{\\partial^2 C}{\\partial y^2} + K_{zz}\\frac{\\partial^2 C}{\\partial z^2}\\]\nThis is the 2-D diffusion (heat) equation: each downwind slice is a puff that has been spreading for time \\(x/u\\). Its point-source solution is a Gaussian.\n\nThis is the key trick. Imagine riding downwind on a thin slice of air, moving at the wind speed. From your seat there is no wind, since you are moving with it; all you see is the pollutant in your slice spreading sideways and up and down. Distance downwind is just how long your slice has been travelling. So the steady plume is a procession of puffs, each a little older than the one behind it. That turns a steady three-dimensional problem into a two-dimensional spreading problem in time, which is the ordinary diffusion equation. It only works because the wind is uniform and because we dropped along-wind spreading; otherwise neighbouring slices would leak into each other."
   },
   {
     "objectID": "slides/lecture06-2-plume-derivation.html#solving-the-pde",
     "href": "slides/lecture06-2-plume-derivation.html#solving-the-pde",
     "title": "Gaussian Plumes: Deriving the Model",
     "section": "Solving the PDE",
-    "text": "Solving the PDE\n\\[C(x,y,z) = \\frac{Q}{4\\pi x\\sqrt{K_{yy}K_{zz}}}\\exp\\left[-\\frac{u}{4x}\\left(\\frac{y^2}{K_{yy}} + \\frac{(z-H)^2}{K_{zz}}\\right)\\right]\\]\n\nSubstitute \\(\\sigma_y^2 = 2K_{yy}\\dfrac{x}{u}\\), \\(\\sigma_z^2 = 2K_{zz}\\dfrac{x}{u}\\) — the distance a diffusing parcel has spread by the time it reaches \\(x\\):"
+    "text": "Solving the PDE\n\\[C(x,y,z) = \\frac{Q}{4\\pi x\\sqrt{K_{yy}K_{zz}}}\\exp\\left[-\\frac{u}{4x}\\left(\\frac{y^2}{K_{yy}} + \\frac{(z-H)^2}{K_{zz}}\\right)\\right]\\]\n\nSubstitute \\(\\sigma_y^2 = 2K_{yy}\\dfrac{x}{u}\\), \\(\\sigma_z^2 = 2K_{zz}\\dfrac{x}{u}\\) — the distance a diffusing parcel has spread by the time it reaches \\(x\\).\n\n\nThe diffusion equation starting from a single point has a well-known solution: a bell curve that gets wider and flatter over time while keeping the same total mass. One way to see why: each bit of pollutant has been kicked around by many random eddies, and the sum of many small random kicks is normally distributed, by the central limit theorem. The width grows like the square root of the travel time, the same result as a random walk. Crosswind and vertical spreading happen independently, so the answer is a bell curve across the wind times a bell curve in the vertical. The formula blows up at the stack itself; it describes the plume away from the source."
   },
   {
     "objectID": "slides/lecture06-2-plume-derivation.html#the-gaussian-plume",
     "href": "slides/lecture06-2-plume-derivation.html#the-gaussian-plume",
     "title": "Gaussian Plumes: Deriving the Model",
     "section": "The Gaussian Plume",
-    "text": "The Gaussian Plume\n\\[C(x,y,z) = \\frac{Q}{2\\pi u\\sigma_y\\sigma_z}\\exp\\left[-\\frac{1}{2}\\left(\\frac{y^2}{\\sigma_y^2} + \\frac{(z-H)^2}{\\sigma_z^2}\\right)\\right]\\]\nA Gaussian distribution in \\(y\\) and in \\(z\\) — which is where the name comes from, and why \\(\\sigma_y,\\sigma_z\\) read exactly like standard deviations."
+    "text": "The Gaussian Plume\n\\[C(x,y,z) = \\frac{Q}{2\\pi u\\sigma_y\\sigma_z}\\exp\\left[-\\frac{1}{2}\\left(\\frac{y^2}{\\sigma_y^2} + \\frac{(z-H)^2}{\\sigma_z^2}\\right)\\right]\\]\nA Gaussian distribution in \\(y\\) and in \\(z\\) — which is where the name of the model comes from, and why we use the \\(\\sigma_y,\\sigma_z\\) notation.\n\nRewriting with sigma makes the shape readable: it is two normal distributions, and sigma y and sigma z are their standard deviations, literally how spread out the plume is at that distance. The factor in front is exactly what makes every cross-section carry the full emission rate Q. In theory sigma grows like the square root of distance, but in practice we do not know K well, so we read sigma off empirical curves for each stability class, which comes shortly."
   },
   {
     "objectID": "slides/lecture06-2-plume-derivation.html#reflection",
@@ -2477,21 +2512,21 @@
     "href": "slides/lecture06-2-plume-derivation.html#final-model-elevated-source-with-reflection",
     "title": "Gaussian Plumes: Deriving the Model",
     "section": "Final Model: Elevated Source With Reflection",
-    "text": "Final Model: Elevated Source With Reflection\n\\[C(x,y,z) = \\frac{Q}{2\\pi u\\sigma_y\\sigma_z}\\exp\\left(\\frac{-y^2}{2\\sigma_y^2}\\right)\\left[\\exp\\left(\\frac{-(z-H)^2}{2\\sigma_z^2}\\right) + \\exp\\left(\\frac{-(z+H)^2}{2\\sigma_z^2}\\right)\\right]\\]"
+    "text": "Final Model: Elevated Source With Reflection\n\\[\\begin{aligned}\nC(x,y,z) &= \\frac{Q}{2\\pi u\\sigma_y\\sigma_z}\\exp\\left(\\frac{-y^2}{2\\sigma_y^2}\\right) \\times \\\\\n&\\left[\\exp\\left(\\frac{-(z-H)^2}{2\\sigma_z^2}\\right) + \\exp\\left(\\frac{-(z+H)^2}{2\\sigma_z^2}\\right)\\right]\n\\end{aligned}\\]"
   },
   {
-    "objectID": "slides/lecture06-2-plume-derivation.html#does-the-image-term-actually-work",
-    "href": "slides/lecture06-2-plume-derivation.html#does-the-image-term-actually-work",
+    "objectID": "slides/lecture06-2-plume-derivation.html#impact-of-the-image-term",
+    "href": "slides/lecture06-2-plume-derivation.html#impact-of-the-image-term",
     "title": "Gaussian Plumes: Deriving the Model",
-    "section": "Does the Image Term Actually Work?",
-    "text": "Does the Image Term Actually Work?\n\n\nCode\nplume_params = let\n    Q, H, u_wind = 100.0, 41.0, 2.5\n    (; Q, H, u_wind)\nend\n\nsig_y(xk) = 34.0 * xk^0.894\nfunction sig_z(xk)\n    if xk &lt; 1\n        return 14.35 * xk^0.740 - 0.35\n    else\n        return 62.6 * xk^0.180 - 48.6\n    end\nend\n\nfunction plume(xk, y, z, params; reflect=true)\n    sy, sz = sig_y(xk), sig_z(xk)\n    base = (params.Q / (2π * params.u_wind * sy * sz)) * exp(-y^2 / (2sy^2))\n    real_source = exp(-(z - params.H)^2 / (2sz^2))\n    if reflect\n        image_source = exp(-(z + params.H)^2 / (2sz^2))\n    else\n        image_source = 0.0\n    end\n    return base * (real_source + image_source)\nend\n\ndz = 0.001\nflux_with = (plume(3.0, 0.0, dz, plume_params) - plume(3.0, 0.0, 0.0, plume_params)) / dz\nflux_without = (plume(3.0, 0.0, dz, plume_params; reflect=false) - plume(3.0, 0.0, 0.0, plume_params; reflect=false)) / dz\n\n\n\\(\\partial C/\\partial z\\) at the ground, 3 km downwind: with the image term, 1.3e-9; without it, 4.5e-5 — about \\(3\\times 10^4\\) times larger. The second exponential is not decoration; it is the boundary condition."
+    "section": "Impact of the Image Term",
+    "text": "Impact of the Image Term\n\n\nCode\nplume_params = let\n    Q, H, u_wind = 100.0, 41.0, 2.5\n    (; Q, H, u_wind)\nend\n\nsig_y(xk) = 34.0 * xk^0.894\nfunction sig_z(xk)\n    if xk &lt; 1\n        return 14.35 * xk^0.740 - 0.35\n    else\n        return 62.6 * xk^0.180 - 48.6\n    end\nend\n\nfunction plume(xk, y, z, params; reflect=true)\n    sy, sz = sig_y(xk), sig_z(xk)\n    base = (params.Q / (2π * params.u_wind * sy * sz)) * exp(-y^2 / (2sy^2))\n    real_source = exp(-(z - params.H)^2 / (2sz^2))\n    if reflect\n        image_source = exp(-(z + params.H)^2 / (2sz^2))\n    else\n        image_source = 0.0\n    end\n    return base * (real_source + image_source)\nend\n\ndz = 0.001\nflux_with = (plume(3.0, 0.0, dz, plume_params) - plume(3.0, 0.0, 0.0, plume_params)) / dz\nflux_without = (plume(3.0, 0.0, dz, plume_params; reflect=false) - plume(3.0, 0.0, 0.0, plume_params; reflect=false)) / dz\n\n\n\\(\\partial C/\\partial z\\) at the ground, 3 km downwind: with the image term, 1.3e-9; without it, 4.5e-5 — about \\(3\\times 10^4\\) times larger."
   },
   {
     "objectID": "slides/lecture06-2-plume-derivation.html#final-model-assumptions",
     "href": "slides/lecture06-2-plume-derivation.html#final-model-assumptions",
     "title": "Gaussian Plumes: Deriving the Model",
     "section": "Final Model Assumptions",
-    "text": "Final Model Assumptions\n\nSteady-state\nConstant wind velocity and direction\nWind \\(\\gg\\) dispersion in the \\(x\\)-direction\nNo reactions\nSmooth ground (no extra turbulent eddies or reflections)"
+    "text": "Final Model Assumptions\n\nSteady-state\nConstant wind velocity and direction\nTurbulent mixing \\(\\gg\\) molecular diffusion\nWind \\(\\gg\\) dispersion in the \\(x\\)-direction\nNo reactions\nSmooth ground (no extra turbulent eddies or reflections)"
   },
   {
     "objectID": "slides/lecture06-2-plume-derivation.html#estimating-dispersion-spread",
@@ -2533,28 +2568,112 @@
     "href": "slides/lecture06-2-plume-derivation.html#key-takeaways-1",
     "title": "Gaussian Plumes: Deriving the Model",
     "section": "Key Takeaways",
-    "text": "Key Takeaways\n\nA violation probability is a hazard statistic. Risk needs exposure, vulnerability, and response as well — and none of those is in the model.\nThe plume equation is the same advective-diffusion family as the airshed and DO models — here the spatial structure is kept rather than simplified away.\nDropping along-wind dispersion is a Péclet number argument: \\(Pe \\gg 1\\) for atmospheric transport at any distance of interest.\nThe ground is a Neumann boundary condition, enforced with an image source — verified numerically to kill the vertical flux at \\(z=0\\).\n\\(\\sigma_y,\\sigma_z\\) are empirical, tied to atmospheric stability class — not derived from first principles."
+    "text": "Key Takeaways\n\nThe plume equation is based on the advective-diffusion equation.\nNumber of key assumptions: when do they hold and when don’t they?\n\\(\\sigma_y,\\sigma_z\\) are empirical, tied to atmospheric stability class — not derived from first principles."
   },
   {
     "objectID": "slides/lecture06-2-plume-derivation.html#next-classes",
     "href": "slides/lecture06-2-plume-derivation.html#next-classes",
     "title": "Gaussian Plumes: Deriving the Model",
     "section": "Next Classes",
-    "text": "Next Classes\nMonday: Quiz 2, then where the plume actually lands — the footprint on the ground and a vertical section that makes the reflection visible.\nWednesday: Model validation. How we decide whether to believe any of this."
+    "text": "Next Classes\nMonday: Quiz 2, then simulating the plume model\nWednesday: Model calibration and validation."
   },
   {
     "objectID": "slides/lecture06-2-plume-derivation.html#assessments",
     "href": "slides/lecture06-2-plume-derivation.html#assessments",
     "title": "Gaussian Plumes: Deriving the Model",
     "section": "Assessments",
-    "text": "Assessments\nHomework 4: Assigned today, due Thursday, October 8.\nMini-Project 1: Due Thursday, October 22.\nQuiz 2: Monday, October 5, covering discretization, convergence, Streeter-Phelps, and Monte Carlo."
+    "text": "Assessments\nMini-Project 1: Due Thursday, October 22.\nQuiz 2: Monday, October 5, covering discretization, convergence, Streeter-Phelps, and Monte Carlo."
+  },
+  {
+    "objectID": "slides/lecture06-2-plume-derivation.html#plume-derivation",
+    "href": "slides/lecture06-2-plume-derivation.html#plume-derivation",
+    "title": "Gaussian Plumes: Deriving the Model",
+    "section": "Deriving the Plume: Mass Balance",
+    "text": "Deriving the Plume: Mass Balance\nThe same bookkeeping as the box and DO models, on a small cube of air \\(dx\\,dy\\,dz\\):\n\\[\\frac{\\partial C}{\\partial t} = -\\nabla\\cdot\\vec F + S\\]\n\n\\(\\vec F\\): flux of pollutant through the cube’s faces [mass/(area·time)]\n\\(S\\): reactions or sources inside the cube\n\nAs the cube shrinks, “outflow minus inflow” per unit volume becomes the divergence \\(\\nabla\\cdot\\vec F\\)."
+  },
+  {
+    "objectID": "slides/lecture06-2-plume-derivation.html#three-fluxes",
+    "href": "slides/lecture06-2-plume-derivation.html#three-fluxes",
+    "title": "Gaussian Plumes: Deriving the Model",
+    "section": "Three Fluxes",
+    "text": "Three Fluxes\n\\[\\vec F = \\underbrace{\\vec u\\,C}_{\\text{advection}} + \\underbrace{\\vec F_{\\text{mol}}}_{\\text{molecular diffusion}} + \\underbrace{\\vec F_{\\text{turb}}}_{\\text{turbulent mixing}}\\]\nAdvection is the wind carrying pollutant along. The other two are spreading, and both are driven by concentration gradients."
+  },
+  {
+    "objectID": "slides/lecture06-2-plume-derivation.html#molecular-diffusion-ficks-law",
+    "href": "slides/lecture06-2-plume-derivation.html#molecular-diffusion-ficks-law",
+    "title": "Gaussian Plumes: Deriving the Model",
+    "section": "Molecular Diffusion: Fick’s Law",
+    "text": "Molecular Diffusion: Fick’s Law\nFick’s law (Fick, 1855), modelled on Fourier’s law of heat conduction:\n\\[\\vec F_{\\text{mol}} = -D\\,\\nabla C\\]\nMolecules random-walk, and more of them step out of the crowded side than into it, so the flux runs down the gradient. \\(D \\approx 10^{-5}\\) m²/s for a gas in air: a property of the gases."
+  },
+  {
+    "objectID": "slides/lecture06-2-plume-derivation.html#where-the-turbulent-flux-comes-from",
+    "href": "slides/lecture06-2-plume-derivation.html#where-the-turbulent-flux-comes-from",
+    "title": "Gaussian Plumes: Deriving the Model",
+    "section": "Where the Turbulent Flux Comes From",
+    "text": "Where the Turbulent Flux Comes From\nThe model predicts the time-averaged concentration. Split each quantity into mean and fluctuation:\n\\[u = \\bar u + u', \\qquad C = \\bar C + c', \\qquad \\overline{u'} = \\overline{c'} = 0\\]\nAveraging the advective flux leaves an extra term, pollutant carried by eddies:\n\\[\\overline{uC} = \\bar u\\,\\bar C + \\overline{u'c'}\\]"
+  },
+  {
+    "objectID": "slides/lecture06-2-plume-derivation.html#closing-the-turbulent-term",
+    "href": "slides/lecture06-2-plume-derivation.html#closing-the-turbulent-term",
+    "title": "Gaussian Plumes: Deriving the Model",
+    "section": "Closing the Turbulent Term",
+    "text": "Closing the Turbulent Term\n\\(\\overline{u'c'}\\) cannot be computed from mean quantities. K-theory, by analogy with Boussinesq’s eddy viscosity (Boussinesq, 1877), treats eddies like large, fast molecules:\n\\[\\overline{u_i'c'} = -K_{ii}\\,\\frac{\\partial \\bar C}{\\partial x_i}\\]\n\n\\(K\\) is a property of the flow, not the air: roughly 1–100 m²/s.\nVertical mixing \\(K_{zz}\\) depends on stability."
+  },
+  {
+    "objectID": "slides/lecture06-2-plume-derivation.html#the-advection-diffusion-equation",
+    "href": "slides/lecture06-2-plume-derivation.html#the-advection-diffusion-equation",
+    "title": "Gaussian Plumes: Deriving the Model",
+    "section": "The Advection-Diffusion Equation",
+    "text": "The Advection-Diffusion Equation\nSubstitute the three fluxes (with \\(C\\) now meaning \\(\\bar C\\)), assuming\n\nno reactions (\\(S = 0\\));\nincompressible flow (\\(\\nabla\\cdot\\vec u = 0\\), so \\(\\nabla\\cdot(\\vec u C) = \\vec u\\cdot\\nabla C\\));\nconstant coefficients.\n\n\n\\[\\frac{\\partial C}{\\partial t} + \\vec u\\cdot\\nabla C = (D + K_{xx})\\frac{\\partial^2 C}{\\partial x^2} + (D + K_{yy})\\frac{\\partial^2 C}{\\partial y^2} + (D + K_{zz})\\frac{\\partial^2 C}{\\partial z^2}\\]"
+  },
+  {
+    "objectID": "slides/lecture06-2-plume-derivation.html#applying-the-assumptions",
+    "href": "slides/lecture06-2-plume-derivation.html#applying-the-assumptions",
+    "title": "Gaussian Plumes: Deriving the Model",
+    "section": "Applying the Assumptions",
+    "text": "Applying the Assumptions\nSteady state: constant emissions and weather over the averaging period, so \\(\\partial C/\\partial t = 0\\).\nWind along \\(x\\): align the axes with the mean wind, and assume it is uniform, \\(\\vec u = (u, 0, 0)\\). Then \\(\\vec u\\cdot\\nabla C = u\\,\\partial C/\\partial x\\).\nTurbulence dominates molecular diffusion: \\(D \\sim 10^{-5}\\) m²/s against \\(K \\sim 1\\)–\\(100\\) m²/s, five or more orders of magnitude apart. Drop \\(D\\)."
+  },
+  {
+    "objectID": "slides/lecture06-2-plume-derivation.html#along-wind-dispersion",
+    "href": "slides/lecture06-2-plume-derivation.html#along-wind-dispersion",
+    "title": "Gaussian Plumes: Deriving the Model",
+    "section": "Along-Wind Dispersion",
+    "text": "Along-Wind Dispersion\nCompare the two along-wind terms over a distance \\(L\\):\n\\[\\frac{u\\,\\partial C/\\partial x}{K_{xx}\\,\\partial^2 C/\\partial x^2} \\sim \\frac{u\\,C/L}{K_{xx}\\,C/L^2} = \\frac{uL}{K_{xx}} = Pe\\]\nWith \\(u = 2.5\\) m/s, \\(K_{xx} = 50\\) m²/s, \\(L = 1\\) km: \\(Pe = 50\\). Drop \\(K_{xx}\\).\nThe crosswind terms stay: with no wind in \\(y\\) or \\(z\\), mixing is the only transport there, across sharp gradients (over \\(\\sigma\\), not \\(L\\))."
+  },
+  {
+    "objectID": "slides/lecture06-2-plume-derivation.html#distance-becomes-travel-time-1",
+    "href": "slides/lecture06-2-plume-derivation.html#distance-becomes-travel-time-1",
+    "title": "Gaussian Plumes: Deriving the Model",
+    "section": "Distance Becomes Travel Time",
+    "text": "Distance Becomes Travel Time\n\\[u\\frac{\\partial C}{\\partial x} = K_{yy}\\frac{\\partial^2 C}{\\partial y^2} + K_{zz}\\frac{\\partial^2 C}{\\partial z^2}\\]\nLet \\(\\tau = x/u\\), the travel time to \\(x\\), so \\(u\\,\\partial C/\\partial x = \\partial C/\\partial \\tau\\). This is the 2-D diffusion (heat) equation:\n\\[\\frac{\\partial C}{\\partial \\tau} = K_{yy}\\frac{\\partial^2 C}{\\partial y^2} + K_{zz}\\frac{\\partial^2 C}{\\partial z^2}\\]\nEach slice is a puff that has spread for time \\(x/u\\)."
+  },
+  {
+    "objectID": "slides/lecture06-2-plume-derivation.html#the-solution-is-a-random-walk",
+    "href": "slides/lecture06-2-plume-derivation.html#the-solution-is-a-random-walk",
+    "title": "Gaussian Plumes: Deriving the Model",
+    "section": "The Solution Is a Random Walk",
+    "text": "The Solution Is a Random Walk\nFor a point release, the diffusion equation’s solution is a Gaussian whose variance grows linearly in time. For a random walk, \\(\\langle \\Delta y^2\\rangle = 2Kt\\) (Einstein, 1905):\n\n\\[C \\propto \\exp\\left[-\\frac{y^2}{2\\sigma_y^2} - \\frac{(z-H)^2}{2\\sigma_z^2}\\right], \\qquad \\sigma_y^2 = 2K_{yy}\\frac{x}{u}, \\quad \\sigma_z^2 = 2K_{zz}\\frac{x}{u}\\]\n\nSo \\(\\sigma_y\\) and \\(\\sigma_z\\) are the spread of a random walk after travel time \\(x/u\\)."
+  },
+  {
+    "objectID": "slides/lecture06-2-plume-derivation.html#fixing-the-constant-mass-conservation",
+    "href": "slides/lecture06-2-plume-derivation.html#fixing-the-constant-mass-conservation",
+    "title": "Gaussian Plumes: Deriving the Model",
+    "section": "Fixing the Constant: Mass Conservation",
+    "text": "Fixing the Constant: Mass Conservation\nWith steady state and no reactions, every downwind cross-section carries the full emission rate, \\(\\iint u\\,C\\,dy\\,dz = Q\\). Each Gaussian integrates to \\(\\sqrt{2\\pi}\\,\\sigma\\), so:\n\\[C(x,y,z) = \\frac{Q}{2\\pi u\\sigma_y\\sigma_z}\\exp\\left[-\\frac{y^2}{2\\sigma_y^2} - \\frac{(z-H)^2}{2\\sigma_z^2}\\right]\\]\nUnits: \\(\\dfrac{\\text{g/s}}{(\\text{m/s})\\,\\text{m}^2} = \\text{g/m}^3\\)."
+  },
+  {
+    "objectID": "slides/lecture06-2-plume-derivation.html#from-theory-to-the-sigma-curves",
+    "href": "slides/lecture06-2-plume-derivation.html#from-theory-to-the-sigma-curves",
+    "title": "Gaussian Plumes: Deriving the Model",
+    "section": "From Theory to the \\(\\sigma\\) Curves",
+    "text": "From Theory to the \\(\\sigma\\) Curves\nReal turbulence has eddies of every size: there is no single constant \\(K\\).\n\nNear the source \\(\\sigma \\propto t\\); far from it, \\(\\sigma \\propto \\sqrt{t}\\) (Taylor, 1922).\nIn practice, \\(\\sigma_y(x)\\) and \\(\\sigma_z(x)\\) are fitted per stability class: e.g. \\(\\sigma_y = 34\\,x^{0.894}\\) (class F, \\(x\\) in km).\n\nThe derivation fixes the Gaussian shape; the data fix the widths."
   },
   {
     "objectID": "slides/lecture06-2-plume-derivation.html#references-1",
     "href": "slides/lecture06-2-plume-derivation.html#references-1",
     "title": "Gaussian Plumes: Deriving the Model",
     "section": "References",
-    "text": "References"
+    "text": "References\n\n\n\n\nBoussinesq, J. (1877). Essai sur la théorie des eaux courantes. Mémoires présentés par divers savants à l’Académie des Sciences, 23, 1–680.\n\n\nEinstein, A. (1905). Über die von der molekularkinetischen Theorie der Wärme geforderte Bewegung von in ruhenden Flüssigkeiten suspendierten Teilchen. Annalen der Physik, 322(8), 549–560. https://doi.org/10.1002/andp.19053220806\n\n\nFick, A. (1855). Ueber Diffusion. Annalen der Physik, 170(1), 59–86. https://doi.org/10.1002/andp.18551700105\n\n\nPasquill, F. (1961). The estimation of the dispersion of windborne material. Meteorological Magazine, 90(1063), 33–49.\n\n\nTaylor, G. I. (1922). Diffusion by continuous movements. Proceedings of the London Mathematical Society, s2-20(1), 196–212. https://doi.org/10.1112/plms/s2-20.1.196"
   },
   {
     "objectID": "slides/lecture05-2-monte-carlo-foundations.html#dissolved-oxygen-and-streeter-phelps",
@@ -3737,7 +3856,7 @@
     "href": "schedule.html",
     "title": "Course Schedule",
     "section": "",
-    "text": "This page contains a schedule of the topics, content, and assignments for the semester. Note that this schedule will be updated as necessary the semester progresses, with all changes documented here. Readings requiring institutional subscriptions can be accessed through the Cornell Library.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nSlides\nLab\nHW\nMP\nQuiz\nReading\n\n\n\n\n1\nAug 24\nCourse Overview\n\n\n\n\n\n\n\n\n\nAug 26\nIntro to Systems\n\n\n\n\n\n\n\n\n2\nAug 31\nFeedbacks & Equilibria\n\n\n\n\n\n\n\n\n\nSep 2\nStability & Examples\n\n\n\n\n\n\n\n\n3\nSep 7\nNo Class: Labor Day\n\n\n\n\n\n\n\n\n\nSep 9\nBifurcations and Hysteresis\n\n\n\n\nQuiz 1\nCarpenter et al. (1999)\n\n\n4\nSep 14\nSimulation and Discretization\n\n\n\n\n\n\n\n\n\nSep 16\nDissolved Oxygen and Streeter-Phelps\n\n\n\n\n\n\n\n\n5\nSep 21\nDiscretization & Convergence Lab\n\n\n\n\n\n\n\n\n\nSep 23\nMonte Carlo Foundations\n\n\n\n\n\n\n\n\n6\nSep 28\nMonte Carlo Error and Risk\n\n\n\n\n\n\n\n\n\nSep 30\nGaussian Plume Model\n\n\n\n\n\n\n\n\n7\nOct 5\nGaussian Plume Simulation\n\n\n\n\nQuiz 2\n\n\n\n\n\n\n\n\nReferences\n\nCarpenter, S. R., Ludwig, D., & Brock, W. A. (1999). Management of eutrophication for lakes subject to potentially irreversible change. Ecol. Appl., 9(3), 751–771. https://doi.org/10.2307/2641327"
+    "text": "This page contains a schedule of the topics, content, and assignments for the semester. Note that this schedule will be updated as necessary the semester progresses, with all changes documented here. Readings requiring institutional subscriptions can be accessed through the Cornell Library.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nSlides\nLab\nHW\nMP\nQuiz\nReading\n\n\n\n\n1\nAug 24\nCourse Overview\n\n\n\n\n\n\n\n\n\nAug 26\nIntro to Systems\n\n\n\n\n\n\n\n\n2\nAug 31\nFeedbacks & Equilibria\n\n\n\n\n\n\n\n\n\nSep 2\nStability & Examples\n\n\n\n\n\n\n\n\n3\nSep 7\nNo Class: Labor Day\n\n\n\n\n\n\n\n\n\nSep 9\nBifurcations and Hysteresis\n\n\n\n\nQuiz 1\nCarpenter et al. (1999)\n\n\n4\nSep 14\nSimulation and Discretization\n\n\n\n\n\n\n\n\n\nSep 16\nDissolved Oxygen and Streeter-Phelps\n\n\n\n\n\n\n\n\n5\nSep 21\nDiscretization & Convergence Lab\n\n\n\n\n\n\n\n\n\nSep 23\nMonte Carlo Foundations\n\n\n\n\n\n\n\n\n6\nSep 28\nMonte Carlo Error and Risk\n\n\n\n\n\n\n\n\n\nSep 30\nGaussian Plume Derivation\n\n\n\n\n\n\n\n\n7\nOct 5\nGaussian Plume Simulation\n\n\n\n\nQuiz 2\n\n\n\n\n\n\n\n\nReferences\n\nCarpenter, S. R., Ludwig, D., & Brock, W. A. (1999). Management of eutrophication for lakes subject to potentially irreversible change. Ecol. Appl., 9(3), 751–771. https://doi.org/10.2307/2641327"
   },
   {
     "objectID": "resources/markdown.html",
