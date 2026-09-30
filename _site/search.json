@@ -2361,8 +2361,8 @@
     "text": "Some Approaches for Modeling Air Pollution\nSo far: box (airshed) models — overall mass balance across a whole region.\nToday: point sources and receptors — plume models, which track concentration as a continuous function of position relative to a source."
   },
   {
-    "objectID": "slides/lecture06-2-plume-derivation.html#point-sources-and-receptors-1",
-    "href": "slides/lecture06-2-plume-derivation.html#point-sources-and-receptors-1",
+    "objectID": "slides/lecture06-2-plume-derivation.html#point-sources-and-receptors",
+    "href": "slides/lecture06-2-plume-derivation.html#point-sources-and-receptors",
     "title": "Gaussian Plumes: Deriving the Model",
     "section": "Point Sources and Receptors",
     "text": "Point Sources and Receptors\n\nPoint Source/Receptor Schematic"
@@ -2557,11 +2557,11 @@
     "text": "Example\nThe emission rate of SO\\(_2\\) from a smokestack is 100 g/s. At 3 km downwind on a clear fall evening (class F), what is the centerline ground-level concentration of SO\\(_2\\)? Effective plume height is 41 m; wind speed at that height is 2.5 m/s.\n\\[\\sigma_y = 34x^{0.894} \\qquad \\sigma_z = \\begin{cases}14.35x^{0.740}-0.35 & x&lt;1\\text{ km} \\\\ 62.6x^{0.180}-48.6 & x&gt;1\\text{ km}\\end{cases}\\]"
   },
   {
-    "objectID": "slides/lecture06-2-plume-derivation.html#working-it-through",
-    "href": "slides/lecture06-2-plume-derivation.html#working-it-through",
+    "objectID": "slides/lecture06-2-plume-derivation.html#plugging-in-the-numbers",
+    "href": "slides/lecture06-2-plume-derivation.html#plugging-in-the-numbers",
     "title": "Gaussian Plumes: Deriving the Model",
-    "section": "Working It Through",
-    "text": "Working It Through\n\n\nCode\nxk = 3.0\nsy, sz = sig_y(xk), sig_z(xk)\nCground = plume(xk, 0.0, 0.0, plume_params)\nprintln(\"σ_y = \", round(sy, digits=1), \" m\")\nprintln(\"σ_z = \", round(sz, digits=1), \" m\")\nprintln(\"C(3 km, 0, 0) = \", round(Cground * 1e6, digits=1), \" µg/m³\")\n\n\nσ_y = 90.8 m\nσ_z = 27.7 m\nC(3 km, 0, 0) = 1692.2 µg/m³\n\n\n\nCenterline, ground level: \\(y=0,\\ z=0\\)\n\\(\\sigma_y \\approx\\) 91.0 m, \\(\\sigma_z \\approx\\) 28.0 m\n\\(C \\approx\\) 1692.0 µg/m\\(^3\\)"
+    "section": "Plugging in The Numbers",
+    "text": "Plugging in The Numbers\n\n\nCode\nxk = 3.0\nsy, sz = sig_y(xk), sig_z(xk)\nCground = plume(xk, 0.0, 0.0, plume_params)\nprintln(\"σ_y = \", round(sy, digits=1), \" m\")\nprintln(\"σ_z = \", round(sz, digits=1), \" m\")\nprintln(\"C(3 km, 0, 0) = \", round(Cground * 1e6, digits=1), \" µg/m³\")\n\n\nσ_y = 90.8 m\nσ_z = 27.7 m\nC(3 km, 0, 0) = 1692.2 µg/m³\n\n\n\nCenterline, ground level: \\(y=0,\\ z=0\\)\n\\(\\sigma_y \\approx\\) 91.0 m, \\(\\sigma_z \\approx\\) 28.0 m\n\\(C \\approx\\) 1692.0 µg/m\\(^3\\)"
   },
   {
     "objectID": "slides/lecture06-2-plume-derivation.html#key-takeaways-1",
@@ -2592,11 +2592,11 @@
     "text": "Deriving the Plume: Mass Balance\nThe same bookkeeping as the box and DO models, on a small cube of air \\(dx\\,dy\\,dz\\):\n\\[\\frac{\\partial C}{\\partial t} = -\\nabla\\cdot\\vec F + S\\]\n\n\\(\\vec F\\): flux of pollutant through the cube’s faces [mass/(area·time)]\n\\(S\\): reactions or sources inside the cube\n\nAs the cube shrinks, “outflow minus inflow” per unit volume becomes the divergence \\(\\nabla\\cdot\\vec F\\)."
   },
   {
-    "objectID": "slides/lecture06-2-plume-derivation.html#three-fluxes",
-    "href": "slides/lecture06-2-plume-derivation.html#three-fluxes",
+    "objectID": "slides/lecture06-2-plume-derivation.html#contributions-to-flux",
+    "href": "slides/lecture06-2-plume-derivation.html#contributions-to-flux",
     "title": "Gaussian Plumes: Deriving the Model",
-    "section": "Three Fluxes",
-    "text": "Three Fluxes\n\\[\\vec F = \\underbrace{\\vec u\\,C}_{\\text{advection}} + \\underbrace{\\vec F_{\\text{mol}}}_{\\text{molecular diffusion}} + \\underbrace{\\vec F_{\\text{turb}}}_{\\text{turbulent mixing}}\\]\nAdvection is the wind carrying pollutant along. The other two are spreading, and both are driven by concentration gradients."
+    "section": "Contributions to Flux",
+    "text": "Contributions to Flux\n\\[\\vec F = \\underbrace{\\vec u\\,C}_{\\text{advection}} + \\underbrace{\\vec F_{\\text{mol}}}_{\\text{molecular diffusion}} + \\underbrace{\\vec F_{\\text{turb}}}_{\\text{turbulent mixing}}\\]\nAdvection is the wind carrying pollutant along. The other two are spreading, and both are driven by concentration gradients."
   },
   {
     "objectID": "slides/lecture06-2-plume-derivation.html#molecular-diffusion-ficks-law",

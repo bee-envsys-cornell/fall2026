@@ -105,7 +105,7 @@ cb_purple = "#CC79A7"
 {{< include _poll-prompt.qmd >}}
 
 
-# Point Sources and Receptors
+# The Gaussian Plume Model
 
 ## Some Approaches for Modeling Air Pollution
 
@@ -132,8 +132,6 @@ cb_purple = "#CC79A7"
 ## "Gaussian Plume"
 
 ![Gaussian Plume Distribution](figures/air-pollution-plume-dist.png){width=75%}
-
-# Deriving the Model
 
 ## The Advective-Diffusion Equation
 
@@ -320,8 +318,6 @@ A Gaussian distribution in $y$ and in $z$ --- which is where the name of the mod
 Rewriting with sigma makes the shape readable: it is two normal distributions, and sigma y and sigma z are their standard deviations, literally how spread out the plume is at that distance. The factor in front is exactly what makes every cross-section carry the full emission rate Q. In theory sigma grows like the square root of distance, but in practice we do not know K well, so we read sigma off empirical curves for each stability class, which comes shortly.
 :::
 
-# The Ground Is a Boundary Condition
-
 ## Reflection
 
 ![Reflected Mass Off Ground](figures/reflection.png){width=65%}
@@ -432,15 +428,13 @@ Source: <https://courses.washington.edu/cee490/DISPCOEF4WP.htm>
 
 **Note**: here $x$ is in km, while $y,z$ in the plume equation are in m.
 
-# Worked Example
-
 ## Example
 
 The emission rate of SO$_2$ from a smokestack is 100 g/s. At **3 km downwind** on a clear fall evening (class F), **what is the centerline ground-level concentration of SO$_2$**? Effective plume height is 41 m; wind speed at that height is 2.5 m/s.
 
 $$\sigma_y = 34x^{0.894} \qquad \sigma_z = \begin{cases}14.35x^{0.740}-0.35 & x<1\text{ km} \\ 62.6x^{0.180}-48.6 & x>1\text{ km}\end{cases}$$
 
-## Working It Through
+## Plugging in The Numbers
 
 ```{julia}
 #| echo: true
@@ -495,7 +489,7 @@ $$\frac{\partial C}{\partial t} = -\nabla\cdot\vec F + S$$
 
 As the cube shrinks, "outflow minus inflow" per unit volume becomes the divergence $\nabla\cdot\vec F$.
 
-## Three Fluxes
+## Contributions to Flux
 
 $$\vec F = \underbrace{\vec u\,C}_{\text{advection}} + \underbrace{\vec F_{\text{mol}}}_{\text{molecular diffusion}} + \underbrace{\vec F_{\text{turb}}}_{\text{turbulent mixing}}$$
 
