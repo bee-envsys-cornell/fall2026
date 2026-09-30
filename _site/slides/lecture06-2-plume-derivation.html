@@ -341,8 +341,8 @@
 <h2>“Gaussian Plume”</h2>
 
 <img data-src="figures/air-pollution-plume-dist.png" style="width:75.0%" class="r-stretch quarto-figure-center"><p class="caption">Gaussian Plume Distribution</p></section>
-<section id="the-advective-diffusion-equation" class="slide level2">
-<h2>The Advective-Diffusion Equation</h2>
+<section id="the-advection-diffusion-equation" class="slide level2">
+<h2>The Advection-Diffusion Equation</h2>
 <p>The mass balance of a small air control volume:</p>
 <p><span class="math display">\[\frac{\partial C}{\partial t} = \underbrace{\sum_{i=x,y,z}(D+K_{ii})\frac{\partial^2 C}{\partial x_i^2}}_{\text{diffusion}} - \underbrace{\vec{u}\cdot\vec{\nabla}C}_{\text{advection}} + \underbrace{S}_{\text{reactions}}\]</span></p>
 <p><span class="math inline">\(D\)</span>: molecular diffusion; <span class="math inline">\(K_{ii}\)</span>: turbulent mixing in direction <span class="math inline">\(i\)</span>; <span class="math inline">\(S\)</span>: reactions (none here).</p>
@@ -492,11 +492,11 @@
 </section>
 <section id="assumption-4-negligible-along-wind-dispersion" class="slide level2">
 <h2>Assumption 4: Negligible Along-Wind Dispersion</h2>
-<p>Along-wind advection against dispersion, over a distance <span class="math inline">\(L\)</span>:</p>
-<p><span class="math display">\[\frac{u\,\partial C/\partial x}{K_{xx}\,\partial^2 C/\partial x^2} \sim \frac{u\,C/L}{K_{xx}\,C/L^2} = \frac{uL}{K_{xx}} = Pe\]</span></p>
-<p>A <strong>Péclet number</strong> argument: <span class="math inline">\(Pe \gg 1\)</span> at any distance you’d care about, so drop <span class="math inline">\(K_{xx}\)</span>. The crosswind terms stay: with no wind in <span class="math inline">\(y\)</span> or <span class="math inline">\(z\)</span>, mixing is the only transport there.</p>
+<p><span class="math inline">\(\Delta C\)</span> is how much <span class="math inline">\(C\)</span> changes over a distance <span class="math inline">\(L\)</span>:</p>
+<p><span class="math display">\[\frac{u\,\partial C/\partial x}{K_{xx}\,\partial^2 C/\partial x^2} \sim \frac{u\,\Delta C/L}{K_{xx}\,\Delta C/L^2} = \frac{uL}{K_{xx}} = Pe\]</span></p>
+<p>A <strong>Péclet number</strong> argument: <span class="math inline">\(Pe \gg 1\)</span> at meaningful distances downwind, so drop <span class="math inline">\(K_{xx}\)</span>. The crosswind terms stay: mixing is the only transport in <span class="math inline">\(y\)</span> and <span class="math inline">\(z\)</span>.</p>
 <aside class="notes">
-<p>Compare how fast the wind carries pollutant downwind with how fast turbulence spreads it along the wind. The wind covers a kilometre in a few minutes; along-wind mixing would take hours to spread pollutant over the same distance. That ratio is the Péclet number, and at a kilometre it is around 50, so along-wind spreading is a correction of a few percent. Why not drop the crosswind terms the same way? Because there is no wind across the plume to compete with: mixing is the only thing moving pollutant sideways. The plume is also narrow, so concentration changes sharply across it, which makes the crosswind terms as large as the advection term. They are what balance it.</p>
+<p>Compare how fast the wind carries pollutant downwind with how fast turbulence spreads it along the wind. The wind covers a kilometre in a few minutes; along-wind mixing would take hours to spread pollutant over the same distance. That ratio is the Péclet number, and at a kilometre it is around 50, so along-wind spreading is a correction of a few percent. The estimate only needs rough sizes: the slope is about the change in concentration divided by the distance, and the curvature is that slope divided by the distance again. The size of the change cancels in the ratio, so only the distance matters. Why not drop the crosswind terms the same way? Because there is no wind across the plume to compete with: mixing is the only thing moving pollutant sideways. The plume is also narrow, so concentration changes sharply across it, which makes the crosswind terms as large as the advection term. They are what balance it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -509,8 +509,8 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="peclet-number" class="slide level2">
-<h2>Peclet number</h2>
+<section id="péclet-number-downwind" class="slide level2">
+<h2>Péclet Number Downwind</h2>
 <div id="cell-fig-peclet" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
@@ -529,79 +529,79 @@
 <!--?xml version="1.0" encoding="utf-8"?-->
 <svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="950" height="400" viewbox="0 0 3800 1600">
 <defs>
-  <clippath id="clip450">
+  <clippath id="clip740">
     <rect x="0" y="0" width="3800" height="1600"></rect>
   </clippath>
 </defs>
-<path clip-path="url(#clip450)" d="M0 1600 L3800 1600 L3800 8.88178e-14 L0 8.88178e-14  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<path clip-path="url(#clip740)" d="M0 1600 L3800 1600 L3800 8.88178e-14 L0 8.88178e-14  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
 <defs>
-  <clippath id="clip451">
+  <clippath id="clip741">
     <rect x="760" y="0" width="2661" height="1600"></rect>
   </clippath>
 </defs>
-<path clip-path="url(#clip450)" d="M482.145 1234.35 L3642.52 1234.35 L3642.52 110.236 L482.145 110.236  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<path clip-path="url(#clip740)" d="M482.145 1234.35 L3642.52 1234.35 L3642.52 110.236 L482.145 110.236  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
 <defs>
-  <clippath id="clip452">
+  <clippath id="clip742">
     <rect x="482" y="110" width="3161" height="1125"></rect>
   </clippath>
 </defs>
-<polyline clip-path="url(#clip450)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,1234.35 3642.52,1234.35 "></polyline>
-<polyline clip-path="url(#clip450)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,110.236 3642.52,110.236 "></polyline>
-<polyline clip-path="url(#clip450)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="541.473,1234.35 541.473,1215.45 "></polyline>
-<polyline clip-path="url(#clip450)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1294.37,1234.35 1294.37,1215.45 "></polyline>
-<polyline clip-path="url(#clip450)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2047.27,1234.35 2047.27,1215.45 "></polyline>
-<polyline clip-path="url(#clip450)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2800.17,1234.35 2800.17,1215.45 "></polyline>
-<polyline clip-path="url(#clip450)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3553.08,1234.35 3553.08,1215.45 "></polyline>
-<polyline clip-path="url(#clip450)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="541.473,110.236 541.473,129.134 "></polyline>
-<polyline clip-path="url(#clip450)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1294.37,110.236 1294.37,129.134 "></polyline>
-<polyline clip-path="url(#clip450)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2047.27,110.236 2047.27,129.134 "></polyline>
-<polyline clip-path="url(#clip450)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2800.17,110.236 2800.17,129.134 "></polyline>
-<polyline clip-path="url(#clip450)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3553.08,110.236 3553.08,129.134 "></polyline>
-<g clip-path="url(#clip450)">
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,1234.35 3642.52,1234.35 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,110.236 3642.52,110.236 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="541.473,1234.35 541.473,1215.45 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1294.37,1234.35 1294.37,1215.45 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2047.27,1234.35 2047.27,1215.45 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2800.17,1234.35 2800.17,1215.45 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3553.08,1234.35 3553.08,1215.45 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="541.473,110.236 541.473,129.134 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1294.37,110.236 1294.37,129.134 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2047.27,110.236 2047.27,129.134 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2800.17,110.236 2800.17,129.134 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3553.08,110.236 3553.08,129.134 "></polyline>
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 541.473, 1353.84)" x="541.473" y="1353.84">0.0</text>
 </g>
-<g clip-path="url(#clip450)">
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 1294.37, 1353.84)" x="1294.37" y="1353.84">2.5</text>
 </g>
-<g clip-path="url(#clip450)">
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 2047.27, 1353.84)" x="2047.27" y="1353.84">5.0</text>
 </g>
-<g clip-path="url(#clip450)">
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 2800.17, 1353.84)" x="2800.17" y="1353.84">7.5</text>
 </g>
-<g clip-path="url(#clip450)">
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 3553.08, 1353.84)" x="3553.08" y="1353.84">10.0</text>
 </g>
-<g clip-path="url(#clip450)">
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:112px; text-anchor:middle;" transform="rotate(0, 2062.33, 1507.74)" x="2062.33" y="1507.74">Distance  [km]</text>
 </g>
-<polyline clip-path="url(#clip450)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,1234.35 482.145,110.236 "></polyline>
-<polyline clip-path="url(#clip450)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3642.52,1234.35 3642.52,110.236 "></polyline>
-<polyline clip-path="url(#clip450)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,1202.54 501.042,1202.54 "></polyline>
-<polyline clip-path="url(#clip450)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,809.613 501.042,809.613 "></polyline>
-<polyline clip-path="url(#clip450)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,416.691 501.042,416.691 "></polyline>
-<polyline clip-path="url(#clip450)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3642.52,1202.54 3623.62,1202.54 "></polyline>
-<polyline clip-path="url(#clip450)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3642.52,809.613 3623.62,809.613 "></polyline>
-<polyline clip-path="url(#clip450)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3642.52,416.691 3623.62,416.691 "></polyline>
-<g clip-path="url(#clip450)">
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,1234.35 482.145,110.236 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3642.52,1234.35 3642.52,110.236 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,1202.54 501.042,1202.54 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,809.613 501.042,809.613 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="482.145,416.691 501.042,416.691 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3642.52,1202.54 3623.62,1202.54 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3642.52,809.613 3623.62,809.613 "></polyline>
+<polyline clip-path="url(#clip740)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3642.52,416.691 3623.62,416.691 "></polyline>
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:start;" transform="rotate(0, 284.682, 1249.99)" x="284.682" y="1249.99">10</text>
 </g>
-<g clip-path="url(#clip450)">
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:81px; text-anchor:start;" transform="rotate(0, 384.567, 1195.17)" x="384.567" y="1195.17">0</text>
 </g>
-<g clip-path="url(#clip450)">
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:start;" transform="rotate(0, 284.682, 857.069)" x="284.682" y="857.069">10</text>
 </g>
-<g clip-path="url(#clip450)">
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:81px; text-anchor:start;" transform="rotate(0, 384.567, 802.248)" x="384.567" y="802.248">1</text>
 </g>
-<g clip-path="url(#clip450)">
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:start;" transform="rotate(0, 284.682, 464.147)" x="284.682" y="464.147">10</text>
 </g>
-<g clip-path="url(#clip450)">
+<g clip-path="url(#clip740)">
 <text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:81px; text-anchor:start;" transform="rotate(0, 384.567, 409.326)" x="384.567" y="409.326">2</text>
 </g>
-<g clip-path="url(#clip450)">
+<g clip-path="url(#clip740)">
 <image width="108" height="644" href="data:image/png;base64,
 iVBORw0KGgoAAAANSUhEUgAAAGwAAAKECAYAAADi7t8LAAAaWklEQVR4nO2d7VXbShOAZ++5/y0q
 iKgAUQGigogKYjowFVylgtepIHYFOBVEVICoALkC5Arm/UHWWQtha1fSzo41zzlzDjcX0LKP90P7
@@ -725,8 +725,8 @@ J0SYA5QHlQW3poMDeZ6TPVtKmAPNS4OkSmQA1RFKUiUyQ4QxQ4QxQ4QxQ4QxQ4QxQ4Q5QnWc7f8B
 NsTVZDO4yPMAAAAASUVORK5CYII=
 " transform="translate(125, 350)"></image>
 </g>
-<polyline clip-path="url(#clip452)" style="stroke:#d55e00; stroke-linecap:round; stroke-linejoin:round; stroke-width:16; stroke-opacity:1; fill:none" points="571.589,927.895 586.647,858.705 601.705,809.613 616.763,771.535 631.821,740.423 646.879,714.118 661.937,691.332 676.995,671.233 692.053,653.254 707.111,636.99 722.169,622.142 737.227,608.483 752.285,595.837 767.343,584.064 782.401,573.051 797.459,562.706 812.517,552.952 827.575,543.726 842.633,534.973 857.692,526.647 872.75,518.709 887.808,511.123 902.866,503.861 917.924,496.895 932.982,490.202 948.04,483.762 963.098,477.556 978.156,471.568 993.214,465.783 1008.27,460.187 1023.33,454.769 1038.39,449.518 1053.45,444.424 1068.5,439.478 1083.56,434.671 1098.62,429.995 1113.68,425.444 1128.74,421.012 1143.79,416.691 1158.85,412.478 1173.91,408.366 1188.97,404.35 1204.03,400.427 1219.08,396.592 1234.14,392.842 1249.2,389.172 1264.26,385.579 1279.32,382.061 1294.37,378.613 1309.43,375.234 1324.49,371.921 1339.55,368.67 1354.61,365.48 1369.66,362.349 1384.72,359.274 1399.78,356.254 1414.84,353.286 1429.9,350.369 1444.95,347.501 1460.01,344.681 1475.07,341.906 1490.13,339.176 1505.19,336.488 1520.24,333.842 1535.3,331.237 1550.36,328.671 1565.42,326.143 1580.48,323.652 1595.53,321.196 1610.59,318.776 1625.65,316.389 1640.71,314.035 1655.77,311.714 1670.82,309.423 1685.88,307.163 1700.94,304.932 1716,302.73 1731.06,300.557 1746.11,298.41 1761.17,296.29 1776.23,294.196 1791.29,292.128 1806.35,290.084 1821.4,288.065 1836.46,286.069 1851.52,284.096 1866.58,282.146 1881.64,280.218 1896.69,278.311 1911.75,276.426 1926.81,274.561 1941.87,272.716 1956.93,270.891 1971.98,269.085 1987.04,267.298 2002.1,265.53 2017.16,263.78 2032.22,262.047 2047.27,260.332 2062.33,258.634 2077.39,256.953 2092.45,255.288 2107.51,253.639 2122.56,252.006 2137.62,250.389 2152.68,248.787 2167.74,247.199 2182.8,245.626 2197.85,244.068 2212.91,242.524 2227.97,240.993 2243.03,239.476 2258.09,237.973 2273.14,236.483 2288.2,235.005 2303.26,233.54 2318.32,232.088 2333.38,230.648 2348.43,229.22 2363.49,227.804 2378.55,226.399 2393.61,225.006 2408.67,223.625 2423.72,222.254 2438.78,220.894 2453.84,219.545 2468.9,218.207 2483.96,216.879 2499.01,215.561 2514.07,214.254 2529.13,212.956 2544.19,211.668 2559.25,210.39 2574.3,209.121 2589.36,207.862 2604.42,206.612 2619.48,205.37 2634.54,204.138 2649.59,202.915 2664.65,201.701 2679.71,200.495 2694.77,199.297 2709.83,198.108 2724.88,196.927 2739.94,195.754 2755,194.589 2770.06,193.432 2785.12,192.283 2800.17,191.142 2815.23,190.008 2830.29,188.882 2845.35,187.763 2860.41,186.651 2875.46,185.547 2890.52,184.449 2905.58,183.359 2920.64,182.275 2935.7,181.199 2950.75,180.129 2965.81,179.066 2980.87,178.009 2995.93,176.959 3010.99,175.915 3026.04,174.878 3041.1,173.847 3056.16,172.822 3071.22,171.803 3086.28,170.79 3101.33,169.784 3116.39,168.783 3131.45,167.788 3146.51,166.799 3161.57,165.815 3176.62,164.837 3191.68,163.865 3206.74,162.898 3221.8,161.937 3236.86,160.981 3251.91,160.03 3266.97,159.084 3282.03,158.144 3297.09,157.209 3312.15,156.279 3327.2,155.354 3342.26,154.434 3357.32,153.52 3372.38,152.609 3387.44,151.704 3402.5,150.804 3417.55,149.908 3432.61,149.017 3447.67,148.13 3462.73,147.248 3477.79,146.371 3492.84,145.498 3507.9,144.63 3522.96,143.766 3538.02,142.906 3553.08,142.051 "></polyline>
-<polyline clip-path="url(#clip452)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:8; stroke-opacity:1; fill:none" stroke-dasharray="32, 20" points="-2678.23,1202.54 6802.89,1202.54 "></polyline>
+<polyline clip-path="url(#clip742)" style="stroke:#d55e00; stroke-linecap:round; stroke-linejoin:round; stroke-width:16; stroke-opacity:1; fill:none" points="571.589,927.895 586.647,858.705 601.705,809.613 616.763,771.535 631.821,740.423 646.879,714.118 661.937,691.332 676.995,671.233 692.053,653.254 707.111,636.99 722.169,622.142 737.227,608.483 752.285,595.837 767.343,584.064 782.401,573.051 797.459,562.706 812.517,552.952 827.575,543.726 842.633,534.973 857.692,526.647 872.75,518.709 887.808,511.123 902.866,503.861 917.924,496.895 932.982,490.202 948.04,483.762 963.098,477.556 978.156,471.568 993.214,465.783 1008.27,460.187 1023.33,454.769 1038.39,449.518 1053.45,444.424 1068.5,439.478 1083.56,434.671 1098.62,429.995 1113.68,425.444 1128.74,421.012 1143.79,416.691 1158.85,412.478 1173.91,408.366 1188.97,404.35 1204.03,400.427 1219.08,396.592 1234.14,392.842 1249.2,389.172 1264.26,385.579 1279.32,382.061 1294.37,378.613 1309.43,375.234 1324.49,371.921 1339.55,368.67 1354.61,365.48 1369.66,362.349 1384.72,359.274 1399.78,356.254 1414.84,353.286 1429.9,350.369 1444.95,347.501 1460.01,344.681 1475.07,341.906 1490.13,339.176 1505.19,336.488 1520.24,333.842 1535.3,331.237 1550.36,328.671 1565.42,326.143 1580.48,323.652 1595.53,321.196 1610.59,318.776 1625.65,316.389 1640.71,314.035 1655.77,311.714 1670.82,309.423 1685.88,307.163 1700.94,304.932 1716,302.73 1731.06,300.557 1746.11,298.41 1761.17,296.29 1776.23,294.196 1791.29,292.128 1806.35,290.084 1821.4,288.065 1836.46,286.069 1851.52,284.096 1866.58,282.146 1881.64,280.218 1896.69,278.311 1911.75,276.426 1926.81,274.561 1941.87,272.716 1956.93,270.891 1971.98,269.085 1987.04,267.298 2002.1,265.53 2017.16,263.78 2032.22,262.047 2047.27,260.332 2062.33,258.634 2077.39,256.953 2092.45,255.288 2107.51,253.639 2122.56,252.006 2137.62,250.389 2152.68,248.787 2167.74,247.199 2182.8,245.626 2197.85,244.068 2212.91,242.524 2227.97,240.993 2243.03,239.476 2258.09,237.973 2273.14,236.483 2288.2,235.005 2303.26,233.54 2318.32,232.088 2333.38,230.648 2348.43,229.22 2363.49,227.804 2378.55,226.399 2393.61,225.006 2408.67,223.625 2423.72,222.254 2438.78,220.894 2453.84,219.545 2468.9,218.207 2483.96,216.879 2499.01,215.561 2514.07,214.254 2529.13,212.956 2544.19,211.668 2559.25,210.39 2574.3,209.121 2589.36,207.862 2604.42,206.612 2619.48,205.37 2634.54,204.138 2649.59,202.915 2664.65,201.701 2679.71,200.495 2694.77,199.297 2709.83,198.108 2724.88,196.927 2739.94,195.754 2755,194.589 2770.06,193.432 2785.12,192.283 2800.17,191.142 2815.23,190.008 2830.29,188.882 2845.35,187.763 2860.41,186.651 2875.46,185.547 2890.52,184.449 2905.58,183.359 2920.64,182.275 2935.7,181.199 2950.75,180.129 2965.81,179.066 2980.87,178.009 2995.93,176.959 3010.99,175.915 3026.04,174.878 3041.1,173.847 3056.16,172.822 3071.22,171.803 3086.28,170.79 3101.33,169.784 3116.39,168.783 3131.45,167.788 3146.51,166.799 3161.57,165.815 3176.62,164.837 3191.68,163.865 3206.74,162.898 3221.8,161.937 3236.86,160.981 3251.91,160.03 3266.97,159.084 3282.03,158.144 3297.09,157.209 3312.15,156.279 3327.2,155.354 3342.26,154.434 3357.32,153.52 3372.38,152.609 3387.44,151.704 3402.5,150.804 3417.55,149.908 3432.61,149.017 3447.67,148.13 3462.73,147.248 3477.79,146.371 3492.84,145.498 3507.9,144.63 3522.96,143.766 3538.02,142.906 3553.08,142.051 "></polyline>
+<polyline clip-path="url(#clip742)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:8; stroke-opacity:1; fill:none" stroke-dasharray="32, 20" points="-2678.23,1202.54 6802.89,1202.54 "></polyline>
 </svg>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-peclet-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -856,6 +856,19 @@ Figure&nbsp;1: Péclet number for along-wind transport, u = 2.5 m/s, Kxx = 50 m�
 <h2>Reflection</h2>
 
 <img data-src="figures/reflection.png" style="width:65.0%" class="r-stretch quarto-figure-center"><p class="caption">Reflected Mass Off Ground</p><p>Pollutant doesn’t vanish into the ground: <span class="math inline">\(\partial C/\partial z = 0\)</span> at <span class="math inline">\(z=0\)</span> — a <strong>Neumann</strong> condition.</p>
+<aside class="notes">
+<p>Without the ground, the Gaussian from the last slide would let pollutant keep spreading downward, into the earth. For most gases the ground absorbs very little, so pollutant that reaches the surface has nowhere to go but back up. No net flow through the ground means the vertical concentration profile has to arrive at the surface flat, with zero slope. That is a Neumann condition, because it fixes the slope rather than the value. Physically, this is why ground-level concentrations are higher than the no-ground formula predicts: pollutant piles up against the surface instead of passing through it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="enforcing-it-with-an-image-source" class="slide level2">
 <h2>Enforcing It With an Image Source</h2>
@@ -870,6 +883,19 @@ Figure&nbsp;1: Péclet number for along-wind transport, u = 2.5 m/s, Kxx = 50 m�
 </figure>
 </div>
 </div></div>
+<aside class="notes">
+<p>Think of the ground as a mirror. Put an imaginary second stack the same distance below ground as the real one is above it, emitting the same amount. At the ground the two plumes are exactly symmetric: whatever the real plume would push down through the surface, the imaginary one pushes up by the same amount, so nothing crosses. Above ground, the imaginary plume’s contribution is exactly the pollutant that bounced off the surface. This works because the equation is linear, so solutions can simply be added, and because a mirror-image setup automatically has zero slope at the ground. It is the same method of images used for heat conduction next to an insulated wall. For a ground that absorbed everything, you would give the image the opposite sign instead.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="final-model-elevated-source-with-reflection" class="slide level2">
 <h2>Final Model: Elevated Source With Reflection</h2>
@@ -877,6 +903,19 @@ Figure&nbsp;1: Péclet number for along-wind transport, u = 2.5 m/s, Kxx = 50 m�
 C(x,y,z) &amp;= \frac{Q}{2\pi u\sigma_y\sigma_z}\exp\left(\frac{-y^2}{2\sigma_y^2}\right) \times \\
 &amp;\left[\exp\left(\frac{-(z-H)^2}{2\sigma_z^2}\right) + \exp\left(\frac{-(z+H)^2}{2\sigma_z^2}\right)\right]
 \end{aligned}\]</span></p>
+<aside class="notes">
+<p>This is the plume you will actually use: the crosswind bell curve, times a vertical profile made of the real plume plus its mirror image. Two things to point out. At ground level the two vertical terms are equal, so the ground-level concentration is exactly twice what the no-ground formula gives. And the stack height only enters through those two terms: a taller stack pushes both bells further from the ground, which lowers concentrations near the stack and pushes the touchdown point further downwind. In practice H is the effective stack height, the physical stack plus how far the hot, fast exhaust rises before levelling off.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="impact-of-the-image-term" class="slide level2">
 <h2>Impact of the Image Term</h2>
@@ -915,6 +954,19 @@ C(x,y,z) &amp;= \frac{Q}{2\pi u\sigma_y\sigma_z}\exp\left(\frac{-y^2}{2\sigma_y^
 </details>
 </div>
 <p><span class="math inline">\(\partial C/\partial z\)</span> at the ground, 3 km downwind: <strong>with</strong> the image term, 1.3e-9; <strong>without</strong> it, 4.5e-5 — about <span class="math inline">\(3\times 10^4\)</span> times larger.</p>
+<aside class="notes">
+<p>This checks the boundary condition numerically. We estimate the vertical slope of the concentration right at the ground, 3 km downwind, with a tiny finite difference. With the image term the slope is essentially zero, so nothing leaks through the ground. Without it, the slope is tens of thousands of times larger, meaning pollutant is flowing down into the earth. The second exponential is not decoration; it is the boundary condition. Note what this does and does not show: it confirms we solved the equation we wrote down, not that the equation describes real terrain.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="final-model-assumptions" class="slide level2">
 <h2>Final Model Assumptions</h2>
@@ -926,6 +978,19 @@ C(x,y,z) &amp;= \frac{Q}{2\pi u\sigma_y\sigma_z}\exp\left(\frac{-y^2}{2\sigma_y^
 <li>No reactions</li>
 <li>Smooth ground (no extra turbulent eddies or reflections)</li>
 </ol>
+<aside class="notes">
+<p>Each item comes from a specific step. Steady state and a uniform wind removed the time derivative and the crosswind wind; the size comparison removed molecular diffusion; the Péclet argument removed along-wind dispersion; no reactions removed the source term; and a flat ground that neither absorbs nor adds turbulence gave us the image source. Each is also a place the model can fail: winds that shift during the hour, near-calm conditions, receptors very close to the stack, pollutants that react or deposit over long distances, and hills or buildings. When you use the model, ask which of these your situation strains most. That question is where model validation picks up.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section></section>
 <section>
 <section id="dispersion-and-atmospheric-stability" class="title-slide slide level1 center">
@@ -1093,7 +1158,7 @@ C(3 km, 0, 0) = 1692.2 µg/m³</code></pre>
 <li>Vertical mixing <span class="math inline">\(K_{zz}\)</span> depends on stability.</li>
 </ul>
 </section>
-<section id="the-advection-diffusion-equation" class="slide level2">
+<section id="the-advection-diffusion-equation-1" class="slide level2">
 <h2>The Advection-Diffusion Equation</h2>
 <p>Substitute the three fluxes (with <span class="math inline">\(C\)</span> now meaning <span class="math inline">\(\bar C\)</span>), assuming</p>
 <ul>
@@ -1113,10 +1178,10 @@ C(3 km, 0, 0) = 1692.2 µg/m³</code></pre>
 </section>
 <section id="along-wind-dispersion" class="slide level2">
 <h2>Along-Wind Dispersion</h2>
-<p>Compare the two along-wind terms over a distance <span class="math inline">\(L\)</span>:</p>
-<p><span class="math display">\[\frac{u\,\partial C/\partial x}{K_{xx}\,\partial^2 C/\partial x^2} \sim \frac{u\,C/L}{K_{xx}\,C/L^2} = \frac{uL}{K_{xx}} = Pe\]</span></p>
+<p><span class="math inline">\(\Delta C\)</span> is how much <span class="math inline">\(C\)</span> changes over a distance <span class="math inline">\(L\)</span>:</p>
+<p><span class="math display">\[\frac{u\,\partial C/\partial x}{K_{xx}\,\partial^2 C/\partial x^2} \sim \frac{u\,\Delta C/L}{K_{xx}\,\Delta C/L^2} = \frac{uL}{K_{xx}} = Pe\]</span></p>
 <p>With <span class="math inline">\(u = 2.5\)</span> m/s, <span class="math inline">\(K_{xx} = 50\)</span> m²/s, <span class="math inline">\(L = 1\)</span> km: <span class="math inline">\(Pe = 50\)</span>. Drop <span class="math inline">\(K_{xx}\)</span>.</p>
-<p>The crosswind terms stay: with no wind in <span class="math inline">\(y\)</span> or <span class="math inline">\(z\)</span>, mixing is the only transport there, across sharp gradients (over <span class="math inline">\(\sigma\)</span>, not <span class="math inline">\(L\)</span>).</p>
+<p>The crosswind terms stay: mixing is the only transport in <span class="math inline">\(y\)</span> and <span class="math inline">\(z\)</span>, across sharp gradients (over <span class="math inline">\(\sigma\)</span>, not <span class="math inline">\(L\)</span>).</p>
 </section>
 <section id="distance-becomes-travel-time-1" class="slide level2">
 <h2>Distance Becomes Travel Time</h2>

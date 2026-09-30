@@ -133,7 +133,7 @@ cb_purple = "#CC79A7"
 
 ![Gaussian Plume Distribution](figures/air-pollution-plume-dist.png){width=75%}
 
-## The Advective-Diffusion Equation
+## The Advection-Diffusion Equation
 
 The mass balance of a small air control volume:
 
@@ -225,17 +225,17 @@ This one is just a size comparison. In the atmosphere, molecular diffusion is ro
 
 ## Assumption 4: Negligible Along-Wind Dispersion
 
-Along-wind advection against dispersion, over a distance $L$:
+$\Delta C$ is how much $C$ changes over a distance $L$:
 
-$$\frac{u\,\partial C/\partial x}{K_{xx}\,\partial^2 C/\partial x^2} \sim \frac{u\,C/L}{K_{xx}\,C/L^2} = \frac{uL}{K_{xx}} = Pe$$
+$$\frac{u\,\partial C/\partial x}{K_{xx}\,\partial^2 C/\partial x^2} \sim \frac{u\,\Delta C/L}{K_{xx}\,\Delta C/L^2} = \frac{uL}{K_{xx}} = Pe$$
 
-A **Péclet number** argument: $Pe \gg 1$ at any distance you'd care about, so drop $K_{xx}$. The crosswind terms stay: with no wind in $y$ or $z$, mixing is the only transport there.
+A **Péclet number** argument: $Pe \gg 1$ at meaningful distances downwind, so drop $K_{xx}$. The crosswind terms stay: mixing is the only transport in $y$ and $z$.
 
 ::: {.notes}
-Compare how fast the wind carries pollutant downwind with how fast turbulence spreads it along the wind. The wind covers a kilometre in a few minutes; along-wind mixing would take hours to spread pollutant over the same distance. That ratio is the Péclet number, and at a kilometre it is around 50, so along-wind spreading is a correction of a few percent. Why not drop the crosswind terms the same way? Because there is no wind across the plume to compete with: mixing is the only thing moving pollutant sideways. The plume is also narrow, so concentration changes sharply across it, which makes the crosswind terms as large as the advection term. They are what balance it.
+Compare how fast the wind carries pollutant downwind with how fast turbulence spreads it along the wind. The wind covers a kilometre in a few minutes; along-wind mixing would take hours to spread pollutant over the same distance. That ratio is the Péclet number, and at a kilometre it is around 50, so along-wind spreading is a correction of a few percent. The estimate only needs rough sizes: the slope is about the change in concentration divided by the distance, and the curvature is that slope divided by the distance again. The size of the change cancels in the ratio, so only the distance matters. Why not drop the crosswind terms the same way? Because there is no wind across the plume to compete with: mixing is the only thing moving pollutant sideways. The plume is also narrow, so concentration changes sharply across it, which makes the crosswind terms as large as the advection term. They are what balance it.
 :::
 
-## Peclet number
+## Péclet Number Downwind
 
 ```{julia}
 #| label: fig-peclet
@@ -324,6 +324,10 @@ Rewriting with sigma makes the shape readable: it is two normal distributions, a
 
 Pollutant doesn't vanish into the ground: $\partial C/\partial z = 0$ at $z=0$ --- a **Neumann** condition.
 
+::: {.notes}
+Without the ground, the Gaussian from the last slide would let pollutant keep spreading downward, into the earth. For most gases the ground absorbs very little, so pollutant that reaches the surface has nowhere to go but back up. No net flow through the ground means the vertical concentration profile has to arrive at the surface flat, with zero slope. That is a Neumann condition, because it fixes the slope rather than the value. Physically, this is why ground-level concentrations are higher than the no-ground formula predicts: pollutant piles up against the surface instead of passing through it.
+:::
+
 ## Enforcing It With an Image Source
 
 :::: {.columns}
@@ -335,12 +339,20 @@ Add a second, "reflected" source below ground, the mirror image of the real one.
 :::
 ::::
 
+::: {.notes}
+Think of the ground as a mirror. Put an imaginary second stack the same distance below ground as the real one is above it, emitting the same amount. At the ground the two plumes are exactly symmetric: whatever the real plume would push down through the surface, the imaginary one pushes up by the same amount, so nothing crosses. Above ground, the imaginary plume's contribution is exactly the pollutant that bounced off the surface. This works because the equation is linear, so solutions can simply be added, and because a mirror-image setup automatically has zero slope at the ground. It is the same method of images used for heat conduction next to an insulated wall. For a ground that absorbed everything, you would give the image the opposite sign instead.
+:::
+
 ## Final Model: Elevated Source With Reflection
 
 $$\begin{aligned}
 C(x,y,z) &= \frac{Q}{2\pi u\sigma_y\sigma_z}\exp\left(\frac{-y^2}{2\sigma_y^2}\right) \times \\
 &\left[\exp\left(\frac{-(z-H)^2}{2\sigma_z^2}\right) + \exp\left(\frac{-(z+H)^2}{2\sigma_z^2}\right)\right]
 \end{aligned}$$
+
+::: {.notes}
+This is the plume you will actually use: the crosswind bell curve, times a vertical profile made of the real plume plus its mirror image. Two things to point out. At ground level the two vertical terms are equal, so the ground-level concentration is exactly twice what the no-ground formula gives. And the stack height only enters through those two terms: a taller stack pushes both bells further from the ground, which lowers concentrations near the stack and pushes the touchdown point further downwind. In practice H is the effective stack height, the physical stack plus how far the hot, fast exhaust rises before levelling off.
+:::
 
 ## Impact of the Image Term
 
@@ -382,6 +394,10 @@ flux_without = (plume(3.0, 0.0, dz, plume_params; reflect=false) - plume(3.0, 0.
 
 $\partial C/\partial z$ at the ground, 3 km downwind: **with** the image term, `{julia} round(flux_with, sigdigits=2)`; **without** it, `{julia} round(flux_without, sigdigits=2)` --- about $3\times 10^4$ times larger. 
 
+::: {.notes}
+This checks the boundary condition numerically. We estimate the vertical slope of the concentration right at the ground, 3 km downwind, with a tiny finite difference. With the image term the slope is essentially zero, so nothing leaks through the ground. Without it, the slope is tens of thousands of times larger, meaning pollutant is flowing down into the earth. The second exponential is not decoration; it is the boundary condition. Note what this does and does not show: it confirms we solved the equation we wrote down, not that the equation describes real terrain.
+:::
+
 ## Final Model Assumptions
 
 1. Steady-state
@@ -390,6 +406,10 @@ $\partial C/\partial z$ at the ground, 3 km downwind: **with** the image term, `
 4. Wind $\gg$ dispersion in the $x$-direction
 5. No reactions
 6. Smooth ground (no extra turbulent eddies or reflections)
+
+::: {.notes}
+Each item comes from a specific step. Steady state and a uniform wind removed the time derivative and the crosswind wind; the size comparison removed molecular diffusion; the Péclet argument removed along-wind dispersion; no reactions removed the source term; and a flat ground that neither absorbs nor adds turbulence gave us the image source. Each is also a place the model can fail: winds that shift during the hour, near-calm conditions, receptors very close to the stack, pollutants that react or deposit over long distances, and hills or buildings. When you use the model, ask which of these your situation strains most. That question is where model validation picks up.
+:::
 
 # Dispersion and Atmospheric Stability
 
@@ -544,13 +564,13 @@ $$\frac{\partial C}{\partial t} + \vec u\cdot\nabla C = (D + K_{xx})\frac{\parti
 
 ## Along-Wind Dispersion
 
-Compare the two along-wind terms over a distance $L$:
+$\Delta C$ is how much $C$ changes over a distance $L$:
 
-$$\frac{u\,\partial C/\partial x}{K_{xx}\,\partial^2 C/\partial x^2} \sim \frac{u\,C/L}{K_{xx}\,C/L^2} = \frac{uL}{K_{xx}} = Pe$$
+$$\frac{u\,\partial C/\partial x}{K_{xx}\,\partial^2 C/\partial x^2} \sim \frac{u\,\Delta C/L}{K_{xx}\,\Delta C/L^2} = \frac{uL}{K_{xx}} = Pe$$
 
 With $u = 2.5$ m/s, $K_{xx} = 50$ m²/s, $L = 1$ km: $Pe = 50$. Drop $K_{xx}$.
 
-The crosswind terms stay: with no wind in $y$ or $z$, mixing is the only transport there, across sharp gradients (over $\sigma$, not $L$).
+The crosswind terms stay: mixing is the only transport in $y$ and $z$, across sharp gradients (over $\sigma$, not $L$).
 
 ## Distance Becomes Travel Time
 
