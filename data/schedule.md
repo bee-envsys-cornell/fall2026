@@ -42,7 +42,7 @@ change named · **New** — nothing exists, build from scratch.
 | 5 | Wed Sep 23 | Uncertainty, Probability, and Monte Carlo | `lecture05-2-monte-carlo-foundations` | Ready | MP1 assigned |
 | 6 | Mon Sep 28 | Monte Carlo: Applying It, Justifying It | `lecture06-1-monte-carlo-inference` | Ready | |
 | 6 | Wed Sep 30 | Gaussian Plumes: Deriving the Model | `lecture06-2-plume-derivation` | Ready | HW4 |
-| 7 | Mon Oct 5 | Gaussian Plumes: Footprints and Flexibility | `lecture07-1-plume-analytics` | Revise — add the three views and a light grid introduction; move the puff material to Oct 7 | **Quiz 2** |
+| 7 | Mon Oct 5 | Gaussian Plumes: Footprints and Flexibility | `lecture07-1-plume-analytics` | Revised Oct 2 — rebuilt around a permit's three questions (where and why, how much, over what area): stack height, the standard, area above it, grid sensitivity of peak vs area, superposition | **Quiz 2** |
 | 7 | Wed Oct 7 | **Model Validation** | `lecture07-2-model-validation` | **Written** — ported from the FA25 validation section of `lecture05-1-dissolved-oxygen-2`, extended | HW5 |
 | 8 | Mon Oct 12 | *No class — Fall Break* | | | |
 | 8 | Wed Oct 14 | Decision Models and Linear Programming | `lecture07-1-prescriptive-modeling` + `lecture08-2-optimization` | Revise — compress 2→1 | HW6 |
@@ -80,7 +80,7 @@ from-scratch or already-compressed material.
 | Quiz | Date | Gap | Covers | Host absorbs it? |
 |:--|:--|:--:|:--|:--|
 | 1 | Wed Sep 9 | — | — | — |
-| 2 | Mon Oct 5 | 26 d | Discretization, convergence, Streeter-Phelps, and all of Monte Carlo (foundations, confidence intervals, sample size, risk) | Plume analytics — trimmed to 16 slides; plume is the lowest-value material |
+| 2 | Mon Oct 5 | 26 d | Discretization, convergence, Streeter-Phelps, and all of Monte Carlo (foundations, confidence intervals, sample size, risk) | Plume analytics — rebuilt Oct 2 around the regulator's questions; about 15 content slides after the quiz |
 | 3 | Wed Oct 21 | 16 d | Both plume sessions and model validation. **Stops short of week 8**, leaving LP to anchor Quiz 4 | Peer review — activity session |
 | 4 | Wed Nov 4 | 14 d | LP, shadow prices, economic dispatch (including multi-period and ramping) | MIP — reuse deck |
 | 5 | Mon Nov 16 | 12 d | Capacity expansion, MIP, waste/networks, unit commitment | Stochastic optimization — reuse deck |

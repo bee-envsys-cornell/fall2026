@@ -140,6 +140,10 @@ Quarto → notebook → PDF pipeline.)*
   Put the code first (right under the slide title); its output and any discussion can go below it,
   or on the next slide. **Folded code counts** (`code-fold: true`): it expands in place, so text
   above a folded cell breaks the rule too.
+- **Pre-allocate arrays in every code sample.** Students are taught to create an array at its final
+  size (`zeros(n)`, `Vector{Float64}(undef, n)`) and fill it by index, so slides, assignments, keys,
+  and tutorials must do the same: never start empty (`x = Float64[]`) and `push!` in a loop. The one
+  exception is code whose point is to show why appending is slow.
 - **Callout syntax.** Use `::: {.callout-note}` — hyphenated. The space-separated `::: {.callout .note}`
   is invalid, renders a callout titled literally "None" rather than failing, and currently appears in
   `~/Teaching/BEE4750/hw/solutions/hw02/hw02.qmd`.
@@ -174,6 +178,21 @@ Quarto → notebook → PDF pipeline.)*
   ```
 
   `qlmanage -t` crops the same way and cannot be fixed by flags; use `rsvg-convert`.
+
+- **Unicode superscripts and subscripts in Plots.jl labels render as boxes** in Computer Modern
+  (`m³`, `x₁`, `R²`). Write the label as LaTeX (`"\$\\mathrm{m}^3\$"`, `"\$x_1\$"`) and check the
+  rendered figure. *(Found in BEE 4850's decks, 2026-10-03; same toolchain.)*
+- **Auto-stretch can shrink a figure that shares its slide with long folded code** to thumbnail size.
+  Put the figure in a column, mark the slide `{.nostretch}`, or set `auto-stretch: false` for the
+  deck and size figures explicitly; then screenshot the slide.
+- **Indented text after a figure renders as verbatim code.** In a quiz or assignment, a sub-part
+  indented under a numbered question becomes a code block once a figure chunk sits between them.
+  Write sub-parts after a figure unindented (`**(a)** …`) and look at the rendered PDF.
+- **A manifest resolved under one Julia version fails under another.** Quarto's Julia runner refuses
+  to run when a file's `exeflags` pins a different version from the one its `Manifest.toml` was
+  resolved with ("Julia version mismatch in notebook file"). Re-resolve with that version's
+  `Pkg.resolve()`; if a pinned build has since been removed from the registry, copy a freshly resolved
+  environment with the same packages.
 
 ## Known stale artifacts
 

@@ -1,5 +1,5 @@
 ---
-title: "Gaussian Plumes: Footprints on a Grid"
+title: "Gaussian Plumes: Simulation"
 subtitle: "Lecture 11"
 author: "Vivek Srikrishnan"
 course: "BEE 4750"
@@ -114,32 +114,29 @@ plume_ugm3(xk, y, z, params) = plume(xk, y, z, params) * 1e6
 
 # Review of Last Class
 
-## The Model, Recapped
+## The Gaussian Plume Model
 
-$$C(x,y,z) = \frac{Q}{2\pi u\sigma_y\sigma_z}\exp\left(\frac{-y^2}{2\sigma_y^2}\right)\left[\exp\left(\frac{-(z-H)^2}{2\sigma_z^2}\right) + \exp\left(\frac{-(z+H)^2}{2\sigma_z^2}\right)\right]$$
+$$\begin{aligned}
+C(x,y,z) &= \frac{Q}{2\pi u\sigma_y\sigma_z}\exp\left(\frac{-y^2}{2\sigma_y^2}\right) \times \\
+&\left[\exp\left(\frac{-(z-H)^2}{2\sigma_z^2}\right) + \exp\left(\frac{-(z+H)^2}{2\sigma_z^2}\right)\right]
+\end{aligned}$$
 
-Built from a real Péclet argument (drop along-wind dispersion) and a real boundary condition (ground reflection, verified numerically to cancel the vertical flux).
-
-## What Wednesday Left Open
-
-We computed **one number**: the centreline concentration at 3 km.
-
-A permit does not ask for one number. It asks *where* the worst point is, *how much* is there, and *how large* the region above the limit is.
+$\sigma_y$, $\sigma_z$ are functions of the atmospheric turbulence class and the downwind distance $x$.
 
 ## Questions?
 
 {{< include _poll-prompt.qmd >}}
 
-# Three Views of One Plume
+# Gaussian Model Behavior
 
-## Three Slices, One Function
+## Visualizing a 3D Model
 
-$C(x,y,z)$ is defined everywhere. We can only ever look at slices of it:
+3D visualization is challenging. We can only ever look at 2D slices of $C(x, y, z)$, such as:
 
 ::: {.incremental}
-- **Plan view**, $z = 0$: the footprint on the ground, which is what a standard applies to.
-- **Vertical section**, $y = 0$: how the plume gets from the stack down to the ground.
-- **Crosswind profile**, fixed $x$: how wide it is where you are standing.
+- **Ground-level view**, $z = 0$.
+- **Vertical section**, $y = 0$.
+- **Crosswind profile**, fixed $x$.
 :::
 
 ## The Ground-Level Footprint
@@ -155,31 +152,15 @@ crosswind_positions = -700:5:700
 footprint = [plume_ugm3(x, y, 0.0, plume_params) for y in crosswind_positions, x in downwind_positions]
 
 p_foot = contourf(downwind_positions, crosswind_positions, footprint,
-    color=:viridis, linewidth=0, clims=(0, 2000),
-    xlabel="Distance downwind  [km]", ylabel="Crosswind distance  [m]")
-plot!(p_foot, size=(1050, 450), left_margin=12mm, right_margin=10mm,
+    color=:viridis, linewidth=0, colorbar_title="\nC  [µg/m³]", colorbar_titlefontsize=18, clims=(0, 2000),
+    xlabel="Distance downwind  [km]", ylabel="Crosswind  [m]")
+plot!(p_foot, size=(1050, 340), left_margin=12mm, right_margin=22mm,
     bottom_margin=12mm, top_margin=5mm)
 ```
 
-## Reading the Footprint
+Stability class F: moderately stable, a clear night.
 
-The axes are not to scale. The plume is **kilometres long and a few hundred metres wide**.
-
-::: {.fragment .fade-in}
-Nothing reaches the ground for the first few hundred metres --- the plume is still aloft at 41 m and has not spread down to $z = 0$ yet.
-:::
-
-## Sigma Sets the Width
-
-$\sigma_y$ at 1 km: `{julia} Int(round(sig_y(1.0)))` m. At 8 km: `{julia} Int(round(sig_y(8.0)))` m.
-
-Close to the stack it is smaller still --- `{julia} round(sig_y(0.1); digits=1)` m at 100 m downwind.
-
-::: {.fragment .fade-in}
-**The plume spans two orders of magnitude in width across one domain.** Remember that number.
-:::
-
-## The Plume in Section
+## Vertical Section
 
 ```{julia}
 #| label: fig-section
@@ -194,15 +175,52 @@ section = [plume_ugm3(x, 0.0, z, plume_params) for z in heights, x in section_po
 # Immediately above the stack the plume is a few metres across and the
 # concentration there is enormous. Cap the scale at the ground-level range so
 # the descent to the ground stays visible instead of being washed out.
-p_section = contourf(section_positions, heights, section, color=:viridis, linewidth=0,
+p_section = contourf(section_positions, heights, section, color=:viridis, linewidth=0, colorbar_title="\nC  [µg/m³]", colorbar_titlefontsize=18,
     clims=(0, 2000), xlabel="Distance downwind  [km]", ylabel="Height  [m]")
-hline!(p_section, [plume_params.H], color=:white, linewidth=2, linestyle=:dash,
-    label="stack height", legend=:topright)
-plot!(p_section, size=(1050, 430), left_margin=12mm, right_margin=10mm,
+
+# Height of the highest concentration at each distance, on a finer vertical grid
+fine_heights = 0:0.5:200
+max_heights = [fine_heights[argmax([plume_ugm3(x, 0.0, z, plume_params) for z in fine_heights])]
+    for x in section_positions]
+plot!(p_section, section_positions, max_heights, color=cb_vermillion, linewidth=3,
+    label="height of maximum")
+hline!(p_section, [plume_params.H], color=:black, linewidth=2, linestyle=:dash,
+    label="stack height", legend=:topright, xlims=(0.2, 8), ylims=(0, 200))
+plot!(p_section, size=(1050, 430), left_margin=12mm, right_margin=22mm,
     bottom_margin=12mm, top_margin=5mm)
 ```
 
-## The Peak Isn't at the Stack
+## Crosswind Profiles
+
+```{julia}
+#| label: fig-crosswind
+#| fig-cap: "Ground-level concentration across the plume at three distances downwind."
+#| echo: true
+#| code-fold: true
+
+profile_distances = [1, 3, 8]                  # [km]
+profile_colours = [cb_vermillion, cb_blue, cb_green]
+profile_styles = [:solid, :dash, :dot]
+crosswind = -600:2:600                          # [m]
+
+p_cross = plot(xlabel="Ground-Level Crosswind Distance  [m]", ylabel="C  [µg/m³]",
+    legend=:topright)
+for i in 1:length(profile_distances)
+    xk = profile_distances[i]
+    plot!(p_cross, crosswind, [plume_ugm3(xk, y, 0.0, plume_params) for y in crosswind],
+        color=profile_colours[i], linestyle=profile_styles[i], label="$(xk) km")
+end
+plot!(p_cross, size=(1050, 330), left_margin=12mm, right_margin=8mm,
+    bottom_margin=12mm, top_margin=5mm)
+```
+
+$\sigma_y$: `{julia} round(sig_y(0.1); digits=1)` m at 100 m, `{julia} Int(round(sig_y(1)))` m at 1 km, `{julia} Int(round(sig_y(8)))` m at 8 km (about `{julia} Int(round(sig_y(8) / sig_y(0.1)))`-fold).
+
+::: {.notes}
+Each curve is a slice across the plume at one distance. Close to the stack the plume is narrow and has barely reached the ground; further out it is wider and flatter, because the same amount of pollutant is spread across more air. The width is sigma y, and it changes by a factor of about fifty across this domain. Keep that in mind for later: any grid fine enough to see the plume far away is too coarse to see it near the stack.
+:::
+
+## Where Is The Worst Pollution?
 
 ```{julia}
 #| label: fig-centerline
@@ -216,83 +234,251 @@ peak_value, peak_index = findmax(centerline)
 peak_distance = centerline_positions[peak_index]
 
 p_line = plot(centerline_positions, centerline, color=:black, linewidth=4,
-    xlabel="Distance downwind  [km]", ylabel="Ground-level centreline C  [µg/m³]",
+    xlabel="Distance downwind  [km]", ylabel="C  [µg/m³]",
     legend=false)
 scatter!(p_line, [peak_distance], [peak_value], color=cb_vermillion, markersize=9)
-plot!(p_line, size=(1050, 420), left_margin=12mm, right_margin=8mm,
+plot!(p_line, size=(1050, 230), left_margin=12mm, right_margin=8mm,
     bottom_margin=12mm, top_margin=5mm)
 ```
 
-Peak of `{julia} round(peak_value; digits=0)` µg/m³ at `{julia} round(peak_distance; digits=2)` km.
+Ground-level peak of `{julia} Int(round(peak_value))` µg/m³ at `{julia} round(peak_distance; digits=2)` km.
 
-::: {.fragment .fade-in}
-The same lesson as the DO sag curve: **the worst point is downstream of the source, not at it.**
-:::
-
-# The Grid Is a Choice
-
-## The Samples Are Exact
-
-Every number in those figures is the **exact** solution of the plume equation at that point. There is no truncation error here at all.
-
-::: {.fragment .fade-in}
-And yet the answer you report still depends on the grid. Not because the samples are wrong --- because of **where they fall.**
-:::
-
-## A Grid Can Step Over the Plume
+## Why Downwind?
 
 ```{julia}
 #| output: false
 
-# A grid whose cells are centred rather than edge-aligned does not land on y = 0.
-function sampled_peak(spacing)
-    largest = 0.0
-    y = -700.0 + spacing / 2
-    while y <= 700.0
-        value = plume_ugm3(peak_distance, y, 0.0, plume_params)
-        if value > largest
-            largest = value
-        end
-        y += spacing
-    end
-    return largest
-end
-
-coarse_peak = sampled_peak(400.0)
-fine_peak = sampled_peak(10.0)
+# Distance at which sigma_z reaches H / sqrt(2), the rough location of the peak
+rule_sigma = plume_params.H / sqrt(2)
+rule_distance = (0.05:0.01:20)[findfirst(x -> sig_z(x) >= rule_sigma, 0.05:0.01:20)]
 ```
 
-At the peak distance the plume is only `{julia} Int(round(sig_y(peak_distance)))` m wide.
+On the ground and the centreline:
 
-- Crosswind spacing of 400 m reports `{julia} round(coarse_peak; digits=0)` µg/m³
-- Crosswind spacing of 10 m reports `{julia} round(fine_peak; digits=0)` µg/m³
+$$C(x, 0, 0) = \frac{Q}{\pi u\,\sigma_y\sigma_z}\exp\left(-\frac{H^2}{2\sigma_z^2}\right)$$
 
-::: {.fragment .fade-in}
-The coarse grid is not slightly wrong. It is `{julia} Int(round(100 * coarse_peak / fine_peak))`% of the right answer, because **no sample landed near the centreline.**
-:::
-
-## Sigma Sets the Spacing
-
-In Week 4 the step size had to sit well inside the **shortest characteristic timescale** in the system.
-
-Here the spacing has to sit well inside the **smallest $\sigma_y$ over the region you care about** --- and $\sigma_y$ varies a hundredfold across this domain.
+Near the stack, which factor controls $C$? Far downwind?
 
 ::: {.fragment .fade-in}
-A grid that comfortably resolves the plume at 8 km steps straight over it at 100 m.
+They balance roughly where $\sigma_z \approx H/\sqrt{2} =$ `{julia} Int(round(rule_sigma))` m, about `{julia} round(rule_distance; digits=1)` km here; the actual peak is at `{julia} round(peak_distance; digits=1)` km, since $\sigma_y$ grows faster than $\sigma_z$.
 :::
 
-## What You Should Report
-
-Same recipe as the sag curve:
-
-::: {.incremental}
-1. Name the quantity you actually care about --- peak, location, area above a limit.
-2. Halve the spacing until that quantity stops moving.
-3. **Say what you did and what it changed.**
+::: {.notes}
+Board item. Near the stack sigma z is small compared with H, so the exponential is tiny: the plume has not yet spread down to the ground. Far downwind the exponential is close to 1, and the one over sigma y sigma z factor takes over: the plume is diluted into more and more air. The peak sits where these two effects balance. Derivation for the board: assume sigma y is a fixed multiple of sigma z. Then C is proportional to one over sigma z squared, times the exponential. Take the log, differentiate with respect to sigma z and set it to zero: minus two over sigma z plus H squared over sigma z cubed equals zero, so sigma z squared equals H squared over two. Here sigma y grows faster than sigma z, so dilution starts winning a little earlier and the real peak comes before the rule's distance.
 :::
 
-::: {.fragment .fade-in}
-The grid you chose changed the number you report to the regulator. That belongs in the report.
+## Stack Height Changes The Ground-Level $C$
+
+```{julia}
+#| label: fig-stack-height
+#| fig-cap: "Ground-level centreline concentration for three effective stack heights, with the same emissions. Dash-dot: the 1-hour SO₂ standard."
+#| echo: true
+#| code-fold: true
+
+standard = 196                                  # 1-hour SO₂ standard, 75 ppb  [µg/m³]
+stack_heights = [41, 60, 100]                   # effective stack height  [m]
+height_colours = [cb_vermillion, cb_blue, cb_green]
+height_styles = [:solid, :dash, :dot]
+far_positions = 0.05:0.01:20                    # [km]
+
+height_peaks = zeros(length(stack_heights))
+height_peak_distances = zeros(length(stack_heights))
+p_height = plot(xlabel="Distance downwind  [km]", ylabel="Centreline C  [µg/m³]",
+    legend=:topright)
+for i in 1:length(stack_heights)
+    params_h = (; plume_params..., H=stack_heights[i])
+    centreline_h = [plume_ugm3(x, 0.0, 0.0, params_h) for x in far_positions]
+    height_peaks[i], j = findmax(centreline_h)
+    height_peak_distances[i] = far_positions[j]
+    plot!(p_height, far_positions, centreline_h, color=height_colours[i],
+        linestyle=height_styles[i], label="H = $(stack_heights[i]) m")
+end
+hline!(p_height, [standard], color=:black, linestyle=:dashdot, linewidth=2, label="standard")
+plot!(p_height, size=(1050, 330), left_margin=12mm, right_margin=8mm,
+    bottom_margin=12mm, top_margin=5mm)
+```
+
+A taller stack height means there is more cross-wind dispersion before the pollutant reaches the ground.
+
+::: {.notes}
+Stack height enters through the exponential, so it has an enormous effect on the ground-level peak: going from 41 to 100 metres cuts it by a factor of about sixteen. But the emissions are unchanged. The pollution has not gone away; it comes down further downwind, more dilute, over a larger area. That is the tall-stacks trade-off, and part of how acid rain became a regional problem rather than a local one. H here is the effective height, which includes how far the hot exhaust rises above the physical stack. One caution: the 100 m peak is at nearly 15 km, and the fitted sigma curves are not reliable much beyond 10 km, so treat that number as rough.
+:::
+
+## Stability Changes The Profile Too
+
+```{julia}
+#| label: fig-stability
+#| fig-cap: "Ground-level centreline concentration for the same stack under three stability classes. Dash-dot: the 1-hour SO₂ standard."
+#| echo: true
+#| code-fold: true
+
+# Martin (1976) coefficients: sigma_y = a x^0.894, sigma_z = c x^d + f, with x in km
+stability_coefs = Dict(
+    "B" => (; a=156, c_near=106.6, d_near=1.149, f_near=3.3, c_far=108.2, d_far=1.098, f_far=2),
+    "D" => (; a=68, c_near=33.2, d_near=0.725, f_near=-1.7, c_far=44.5, d_far=0.516, f_far=-13),
+    "F" => (; a=34, c_near=14.35, d_near=0.740, f_near=-0.35, c_far=62.6, d_far=0.180, f_far=-48.6))
+
+# Ground-level centreline concentration [µg/m³] under a given stability class
+function centreline_class(xk, coef, params)
+    if xk <= 0.05
+        return 0.0
+    end
+    sy = coef.a * xk^0.894
+    if xk < 1
+        sz = coef.c_near * xk^coef.d_near + coef.f_near
+    else
+        sz = coef.c_far * xk^coef.d_far + coef.f_far
+    end
+    return params.Q / (π * params.u_wind * sy * sz) * exp(-params.H^2 / (2sz^2)) * 1e6
+end
+
+class_names = ["B", "D", "F"]
+class_labels = ["B (sunny afternoon)", "D (overcast)", "F (clear night)"]
+class_colours = [cb_orange, cb_purple, cb_blue]
+class_styles = [:solid, :dash, :dot]
+near_positions = 0.05:0.005:10                  # [km]
+
+class_peaks = zeros(length(class_names))
+class_peak_distances = zeros(length(class_names))
+p_class = plot(xlabel="Distance downwind  [km]", ylabel="C  [µg/m³]", legend=:topright)
+for i in 1:length(class_names)
+    c = [centreline_class(x, stability_coefs[class_names[i]], plume_params) for x in near_positions]
+    class_peaks[i], j = findmax(c)
+    class_peak_distances[i] = near_positions[j]
+    plot!(p_class, near_positions, c, color=class_colours[i], linestyle=class_styles[i],
+        label=class_labels[i])
+end
+hline!(p_class, [standard], color=:black, linestyle=:dashdot, linewidth=2, label="standard")
+plot!(p_class, size=(1050, 330), left_margin=12mm, right_margin=8mm,
+    bottom_margin=12mm, top_margin=5mm)
+```
+
+A sunny afternoon peaks higher and closer: `{julia} Int(round(class_peaks[1]))` µg/m³ at `{julia} round(class_peak_distances[1]; digits=1)` km, against `{julia} Int(round(class_peaks[3]))` at `{julia} round(class_peak_distances[3]; digits=1)` km on a clear night.
+
+::: {.notes}
+Same stack, same emissions, same wind; only the stability changes. On a sunny afternoon the ground heats the air and strong vertical eddies drag the plume down within a few hundred metres, so the peak is high and close to the stack. On a clear night the air is stable, the plume stays aloft as a thin ribbon and comes down slowly, so the peak is lower but much further out, and the plume stays above the standard for many kilometres. So which class is the worst case depends on the question: the highest peak, or the most ground above the standard, or a particular receptor. You will work through that on HW5. Holding the wind at 2.5 m/s for all three is a simplification, but that speed is plausible for both a sunny afternoon and a clear night.
+:::
+
+## The Area Above the Standard
+
+```{julia}
+#| label: fig-area
+#| fig-cap: "Ground-level footprint, with the region above the standard shaded and outlined in black. The exceedance continues past the 10 km edge of the domain."
+#| echo: true
+#| code-fold: true
+
+area_dx, area_dy = 0.02, 2                      # grid spacing: [km] downwind, [m] crosswind
+area_x = (area_dx/2):area_dx:10
+area_y = (-1000 + area_dy/2):area_dy:1000
+area_C = [plume_ugm3(x, y, 0.0, plume_params) for y in area_y, x in area_x]
+# Each grid cell above the standard contributes its own area, dx × dy.
+area_above = count(area_C .> standard) * (area_dx * 1000) * area_dy / 1e6   # [km²]
+
+p_area = contourf(area_x, area_y, area_C, color=:viridis, linewidth=0, colorbar_title="\nC  [µg/m³]", colorbar_titlefontsize=18, clims=(0, 2000),
+    xlabel="Distance downwind  [km]", ylabel="Crosswind  [m]")
+# Shade the cells above the standard; NaN cells are left transparent
+above_standard = [c > standard ? 1.0 : NaN for c in area_C]
+heatmap!(p_area, area_x, area_y, above_standard, color=cgrad([cb_vermillion, cb_vermillion]),
+    alpha=0.45, colorbar_entry=false)
+contour!(p_area, area_x, area_y, area_C, levels=[standard], color=:black, linewidth=3,
+    colorbar_entry=false)
+plot!(p_area, size=(1050, 310), left_margin=12mm, right_margin=22mm,
+    bottom_margin=12mm, top_margin=5mm)
+```
+
+About `{julia} round(area_above; digits=1)` km² (shaded) is above the standard within 10 km; the plume is still above it at the edge.
+
+::: {.notes}
+This is the third question a permit asks: not just how bad the worst point is, but how much ground is exposed above the limit. We count the grid cells above the standard and add up their areas. On a stable night like this one the plume stays thin and travels a long way, so the exceedance runs right off the edge of our domain. The honest answer to "how large is the area" is "at least five square kilometres, and we cannot say how much more from these sigma curves", because they are not reliable much beyond 10 km.
+:::
+
+## Impact of the Spatial Grid
+
+```{julia}
+#| echo: true
+#| code-fold: true
+#| output: asis
+
+# Crosswind samples offset by half a cell, so none sits exactly on the centreline.
+# The plume is symmetric, so sample one side and double the area.
+function grid_summary(crosswind_spacing; downwind_spacing=0.05)
+    xs = (downwind_spacing/2):downwind_spacing:10
+    ys = (crosswind_spacing/2):crosswind_spacing:1000
+    samples = [plume_ugm3(x, y, 0.0, plume_params) for y in ys, x in xs]
+    area = 2 * count(samples .> standard) * (downwind_spacing * 1000) * crosswind_spacing / 1e6
+    return maximum(samples), area
+end
+
+println("| Crosswind spacing (m) | Peak (µg/m³) | Area above standard (km²) |")
+println("|---:|---:|---:|")
+for spacing in [400, 100, 20, 2]
+    grid_peak, grid_area = grid_summary(spacing)
+    println("| $(spacing) | $(Int(round(grid_peak))) | $(round(grid_area; digits=2)) |")
+end
+```
+
+Only the **peak** needs a sample near the centreline.
+
+::: {.notes}
+The samples themselves are exact; what changes with the grid is what we compute from them. The peak is a single point, so a coarse grid simply misses it: at 400 metres no sample comes close enough to the centreline, and we report about a third of the true peak. The area is an integral, and a coarse grid's errors at the edges of the footprint partly cancel, so it is within a few percent even at 400 metres. This is the same recipe as Week 4: decide what number you need to report, then halve the spacing until that number stops moving. Refine for the quantity you report, not for everything.
+:::
+
+
+## How To Reduce Pollution?
+
+```{julia}
+#| output: false
+
+times_standard = Int(round(peak_value / standard))
+```
+
+The 1-hour SO$_2$ standard is 75 ppb, about `{julia} standard` µg/m³. At $H = 41$ m the peak is `{julia} Int(round(peak_value))` µg/m³: about **`{julia} times_standard` times** the standard.
+
+Two ways to comply:
+
+- **Raise the stack**: 100 m is enough here.
+- **Cut emissions** by a factor of about `{julia} times_standard`, since $C$ is proportional to $Q$.
+
+::: {.notes}
+Some caveats to say out loud. The standard is not a single-hour cap: a site complies if the 99th percentile of each day's highest one-hour value, averaged over three years, is at or below 75 ppb. Our sigma curves correspond to roughly ten-minute to one-hour averages, so the comparison is about right in averaging time but not in form. And a real permit analysis adds the background concentration already in the air, and models every hour of several years of weather. So this says the source would be a problem on a stable night with this wind, not that it violates the standard as defined.
+:::
+
+
+## Impact of Multiple Sources
+
+```{julia}
+#| label: fig-superposition
+#| fig-cap: "Ground-level footprint from three facilities like ours (white markers), each cut to 10 g/s. Black: the standard's contour."
+#| echo: true
+#| code-fold: true
+
+stacks = [(0, -150), (1, 0), (2, 150)]          # (downwind [km], crosswind [m]) of each stack
+stack_params = (; plume_params..., Q=10)        # our stack, with emissions cut tenfold
+
+# The plume equation is linear in Q, so concentrations from separate stacks add.
+combined(x, y) = sum(plume_ugm3(x - s[1], y - s[2], 0.0, stack_params) for s in stacks)
+
+super_x = -0.5:0.02:12
+super_y = -700:5:700
+super_C = [combined(x, y) for y in super_y, x in super_x]
+combined_peak, k = findmax(super_C)
+combined_peak_distance = super_x[k[2]]
+single_peak = maximum(plume_ugm3(x, 0.0, 0.0, stack_params) for x in super_x)
+
+p_super = contourf(super_x, super_y, super_C, color=:viridis, linewidth=0, colorbar_title="\nC  [µg/m³]", colorbar_titlefontsize=18,
+    xlabel="Distance downwind  [km]", ylabel="Crosswind  [m]")
+contour!(p_super, super_x, super_y, super_C, levels=[standard], color=:black, linewidth=3,
+    colorbar_entry=false)
+scatter!(p_super, [s[1] for s in stacks], [s[2] for s in stacks], color=:white,
+    markerstrokecolor=:black, markersize=9, label=false)
+plot!(p_super, size=(1050, 270), left_margin=12mm, right_margin=22mm,
+    bottom_margin=12mm, top_margin=5mm)
+```
+
+Each facility cuts to 10 g/s and complies alone (`{julia} Int(round(single_peak))` µg/m³). Together: `{julia} Int(round(combined_peak))` µg/m³ at `{julia} round(combined_peak_distance; digits=1)` km, where no single plume peaks.
+
+::: {.notes}
+This picks up the emissions-cutting option from the previous slides. Suppose three facilities like ours (41 m, class F, 2.5 m/s) each cut emissions tenfold, to 10 g/s, so each one complies when checked on its own. The point is that compliance source by source does not add up to compliance overall. The plume equation is linear in the emission rate, so the concentration from several sources is just the sum of their individual plumes. Each of these three stacks would pass a single-source check. But downwind their plumes have spread wide enough to overlap, and the combined maximum lands further downwind than any one stack's own peak, between their centrelines. This is why permit modelling includes every nearby source plus the background, not each stack on its own.
 :::
 
 # Key Takeaways and Upcoming Schedule
@@ -300,10 +486,11 @@ The grid you chose changed the number you report to the regulator. That belongs 
 ## Key Takeaways
 
 ::: {.incremental}
-- The ground-level footprint peaks **downwind** of the stack --- the DO sag curve in a new geometry.
-- The vertical section shows the image term working: the plume piles up against the ground rather than passing through it.
-- **The samples are exact; what you compute from them is not.** A grid that misses the centreline reports a small fraction of the true peak.
-- $\sigma_y$ sets the spacing, exactly as the characteristic timescale set $\Delta t$.
+- The peak is **downwind**: the plume must spread down to the ground first.
+- A **taller stack** lowers the peak and moves it out; the pollution goes further, not away.
+- A permit asks **where**, **how much**, and **over what area**.
+- Whether the **grid** matters depends on what you report.
+- Concentrations **add**: compliant sources can jointly violate.
 :::
 
 ## Next Classes
