@@ -1,0 +1,2218 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<link href="../_assets/logos/favicon.png" rel="icon" type="image/png">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e44360b8a8db1e130c7792fece1c8032.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.3">
+
+  <meta name="author" content="Vivek Srikrishnan">
+  <meta name="dcterms.date" content="2026-10-19">
+  <title>Environmental Systems Analysis – The Simplex Method and Shadow Prices</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-d52ba59528acaf0ac8c09f3308d87e37.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <!-- MathJax 3 -->
+  <script>
+  window.MathJax = {
+      tex: {
+        tags: 'ams'
+      }
+    };
+  </script>
+  <!-- Mathjax 3 config -->
+  <script>
+  window.MathJax = {
+      {
+        minScale: 0.5
+        loader: {load: ['[tex]/tagformat']},
+        tex: {packages: {'[+]': ['tagformat']}}
+      }
+    };
+    MathJax = {
+    options: {
+      menuOptions: {
+        settings: {
+          assistiveMml: false,   // true to enable assitive MathML
+          collapsible: false,   // true to enable collapsible math
+          explorer: false      // true to enable the expression explorer
+        }
+      }
+    }
+  };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+  
+  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<meta property="og:title" content="The Simplex Method and Shadow Prices – Environmental Systems Analysis">
+<meta property="og:description" content="Lecture 14">
+<meta property="og:site_name" content="Environmental Systems Analysis">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="center">
+    <h1 class="title">The Simplex Method and Shadow Prices</h1>
+  <hr>
+<p class="subtitle">Lecture 14</p>
+<p class="date">October 19, 2026</p>
+</section><section id="TOC">
+<nav role="doc-toc"> 
+<h2 id="toc-title">Overview</h2>
+<ul>
+<li><a href="#/review-of-last-class" id="/toc-review-of-last-class">Review of Last Class</a></li>
+<li><a href="#/the-simplex-method" id="/toc-the-simplex-method">The Simplex Method</a></li>
+<li><a href="#/shadow-prices" id="/toc-shadow-prices">Shadow Prices</a></li>
+<li><a href="#/solving-lps-in-jump" id="/toc-solving-lps-in-jump">Solving LPs in JuMP</a></li>
+<li><a href="#/key-takeaways-and-upcoming-schedule" id="/toc-key-takeaways-and-upcoming-schedule">Key Takeaways and Upcoming Schedule</a></li>
+<li><a href="#/appendix" id="/toc-appendix">Appendix</a></li>
+<li><a href="#/references" id="/toc-references">References</a></li>
+</ul>
+</nav>
+</section>
+<section>
+<section id="review-of-last-class" class="title-slide slide level1 center">
+<h1>Review of Last Class</h1>
+
+</section>
+<section id="the-emissions-problem" class="slide level2">
+<h2>The Emissions Problem</h2>
+<div id="8" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a>line_style <span class="op">=</span> [<span class="op">:</span>solid, <span class="op">:</span>dash, <span class="op">:</span>dashdot]</span>
+<span id="cb1-2"><a></a><span class="kw">function</span> <span class="fu">draw_region</span>()</span>
+<span id="cb1-3"><a></a>    p <span class="op">=</span> <span class="fu">plot</span>(<span class="fu">Shape</span>(<span class="fu">first</span>.(corners), <span class="fu">last</span>.(corners)), color<span class="op">=</span>cb_blue, alpha<span class="op">=</span><span class="fl">0.25</span>,</span>
+<span id="cb1-4"><a></a>        linewidth<span class="op">=</span><span class="fl">0</span>, xlims<span class="op">=</span>(<span class="fl">25</span>, <span class="fl">52</span>), ylims<span class="op">=</span>(<span class="fl">15</span>, <span class="fl">42</span>), xlabel<span class="op">=</span>L<span class="st">"R_1 \; \mathrm{[g/s]}"</span>,</span>
+<span id="cb1-5"><a></a>        ylabel<span class="op">=</span>L<span class="st">"R_2 \; \mathrm{[g/s]}"</span>)</span>
+<span id="cb1-6"><a></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_receptors</span>
+<span id="cb1-7"><a></a>        a1, a2, rhs <span class="op">=</span> boundaries[j]</span>
+<span id="cb1-8"><a></a>        <span class="co"># Label each line at a point where it is inside the axes</span></span>
+<span id="cb1-9"><a></a>        <span class="cf">if</span> <span class="fu">abs</span>(a2) <span class="op">&lt;</span> <span class="fl">1e-6</span></span>
+<span id="cb1-10"><a></a>            <span class="fu">vline!</span>(p, [rhs <span class="op">/</span> a1], color<span class="op">=:</span>gray30, linestyle<span class="op">=</span>line_style[j], linewidth<span class="op">=</span><span class="fl">2.5</span>)</span>
+<span id="cb1-11"><a></a>            label_at <span class="op">=</span> (rhs <span class="op">/</span> a1 <span class="op">-</span> <span class="fl">1.2</span>, <span class="fl">17</span>)</span>
+<span id="cb1-12"><a></a>        <span class="cf">else</span></span>
+<span id="cb1-13"><a></a>            r1 <span class="op">=</span> <span class="fl">25</span><span class="op">:</span><span class="fl">0.5</span><span class="op">:</span><span class="fl">52</span></span>
+<span id="cb1-14"><a></a>            <span class="fu">plot!</span>(p, r1, (rhs <span class="op">.-</span> a1 <span class="op">.*</span> r1) <span class="op">./</span> a2, color<span class="op">=:</span>gray30, linestyle<span class="op">=</span>line_style[j],</span>
+<span id="cb1-15"><a></a>                linewidth<span class="op">=</span><span class="fl">2.5</span>)</span>
+<span id="cb1-16"><a></a>            r1_at_36 <span class="op">=</span> (rhs <span class="op">-</span> a2 <span class="op">*</span> <span class="fl">36</span>) <span class="op">/</span> a1</span>
+<span id="cb1-17"><a></a>            label_at <span class="op">=</span> <span class="fl">27</span> <span class="op">&lt;=</span> r1_at_36 <span class="op">&lt;=</span> <span class="fl">48</span> ? (r1_at_36 <span class="op">+</span> <span class="fl">2</span>, <span class="fl">36</span>) <span class="op">:</span> (<span class="fl">27</span>, (rhs <span class="op">-</span> a1 <span class="op">*</span> <span class="fl">27</span>) <span class="op">/</span> a2 <span class="op">+</span> <span class="fl">1.5</span>)</span>
+<span id="cb1-18"><a></a>        <span class="cf">end</span></span>
+<span id="cb1-19"><a></a>        <span class="fu">annotate!</span>(p, label_at<span class="op">...</span>, <span class="fu">text</span>(receptor_name[j], <span class="fl">20</span>, <span class="op">:</span>gray20, plot_font))</span>
+<span id="cb1-20"><a></a>    <span class="cf">end</span></span>
+<span id="cb1-21"><a></a>    <span class="fu">plot!</span>(p, [<span class="fl">0</span>, emission[<span class="fl">1</span>], emission[<span class="fl">1</span>]], [emission[<span class="fl">2</span>], emission[<span class="fl">2</span>], <span class="fl">0</span>], color<span class="op">=:</span>black,</span>
+<span id="cb1-22"><a></a>        linewidth<span class="op">=</span><span class="fl">2</span>)</span>
+<span id="cb1-23"><a></a>    <span class="cf">return</span> p</span>
+<span id="cb1-24"><a></a><span class="kw">end</span></span>
+<span id="cb1-25"><a></a></span>
+<span id="cb1-26"><a></a>optimal_cost, best <span class="op">=</span> <span class="fu">findmin</span>(corner_cost)</span>
+<span id="cb1-27"><a></a>optimum <span class="op">=</span> corners[best]</span>
+<span id="cb1-28"><a></a>p_review <span class="op">=</span> <span class="fu">draw_region</span>()</span>
+<span id="cb1-29"><a></a><span class="fu">scatter!</span>(p_review, [optimum[<span class="fl">1</span>]], [optimum[<span class="fl">2</span>]], markershape<span class="op">=:</span>star5, markersize<span class="op">=</span><span class="fl">16</span>,</span>
+<span id="cb1-30"><a></a>    color<span class="op">=</span>cb_vermillion, markerstrokecolor<span class="op">=:</span>black)</span>
+<span id="cb1-31"><a></a><span class="fu">plot!</span>(p_review, size<span class="op">=</span>(<span class="fl">900</span>, <span class="fl">380</span>), left_margin<span class="op">=</span><span class="fl">12</span>mm, bottom_margin<span class="op">=</span><span class="fl">12</span>mm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<!--?xml version="1.0" encoding="utf-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="900" height="380" viewbox="0 0 3600 1520">
+<defs>
+  <clippath id="clip810">
+    <rect x="0" y="0" width="3600" height="1520"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip810)" d="M0 1520 L3600 1520 L3600 4.44089e-15 L0 4.44089e-15  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip811">
+    <rect x="720" y="0" width="2521" height="1520"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip810)" d="M439.71 1154.88 L3552.76 1154.88 L3552.76 47.2441 L439.71 47.2441  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip812">
+    <rect x="439" y="47" width="3114" height="1109"></rect>
+  </clippath>
+</defs>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="439.71,1154.88 3552.76,1154.88 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="439.71,47.2441 3552.76,47.2441 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="439.71,1154.88 439.71,1135.98 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1016.2,1154.88 1016.2,1135.98 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1592.69,1154.88 1592.69,1135.98 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2169.18,1154.88 2169.18,1135.98 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2745.67,1154.88 2745.67,1135.98 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3322.16,1154.88 3322.16,1135.98 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="439.71,47.2441 439.71,66.1417 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1016.2,47.2441 1016.2,66.1417 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1592.69,47.2441 1592.69,66.1417 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2169.18,47.2441 2169.18,66.1417 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2745.67,47.2441 2745.67,66.1417 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3322.16,47.2441 3322.16,66.1417 "></polyline>
+<g clip-path="url(#clip810)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 439.71, 1272.77)" x="439.71" y="1272.77">25</text>
+</g>
+<g clip-path="url(#clip810)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 1016.2, 1272.77)" x="1016.2" y="1272.77">30</text>
+</g>
+<g clip-path="url(#clip810)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 1592.69, 1272.77)" x="1592.69" y="1272.77">35</text>
+</g>
+<g clip-path="url(#clip810)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 2169.18, 1272.77)" x="2169.18" y="1272.77">40</text>
+</g>
+<g clip-path="url(#clip810)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 2745.67, 1272.77)" x="2745.67" y="1272.77">45</text>
+</g>
+<g clip-path="url(#clip810)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 3322.16, 1272.77)" x="3322.16" y="1272.77">50</text>
+</g>
+<g clip-path="url(#clip810)">
+<image width="354" height="108" href="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAWIAAABsCAYAAABQIbi+AAAQ9klEQVR4nO2d73WjOhOHpffc78EV
+mFRgtgLjCpZUELuCOBUEVxCngpAK4q3ApIKQCkIqCKlg3g9Z53ixAAH6h/k95+jDvbuLZEkMo5nR
+DCciBoDLLBaLTps0CAJ2f3/PVY8H9GO1WlFRFOz5+fms1qbrPmWMsf9UDgQAHaRpansIQBFPT0+U
+JAlj7FsgPz4+no0w7rNPOTRi4Dqc806bNAxDtt/vz+ZFPwfKa0lEZ7M+XfcpY4z9T+VAAACgij9/
+/kDrqwCCGABghCiKbA/BWSCIweAgIi7TYJZwmziObQ9BKbL7UvS7IYgBANrZbDYnZom7uzt8KP8C
+QQwA0M65ab+qURq+1sdrqJMgCFgURSwMQzafz/EVBsAyu93O9hCcQpkgfnt7c1IIM8ZYlmUsy7LD
+fxJj38J5t9ux6XQKwQyARlar1Yls+P37N967I0ZrmsiyjPm+zzjnJNooAAA1HC5wHPB938o4XEaZ
+IJ7NZkIPYZqmLE1TFscx8zxP+nme57EkSVhRFNLeSCLieZ7/9BeGoVRfSZIwzjn1uaIIADjl4+Pj
+5J3CTUkBRGS0xXFM7Ns8UNtU95vnOfm+L9V3mqbK+0fr3nTvDTR9LQgC7e/20JpIBho3TchoxToM
++dPplL+/v3Mi4k2achiGvRJ4AAC+OfLNMMZwqaMK44JY5lii25C/3+95nue1fydNUzaZTCCMAeiI
+6Epz2V4MvjEuiF0JW5lOp5waEo4URQFhDEBHlsvlyf+7uLhAtIQA56ImTB9dmjTjoiiE4TcAgHqK
+ovjnv9frtaWRuI9RQSwTa2z6Bs50OuVNduskSdjX1xeEMQCSPDw8nLwvSNJfjVFBLCNkZ7OZ8cWS
+sVu3Cb0DYOxA+22HUUHsin24jKzwh1YMQDfgpKvHKRux66EtIucDAOBfRD6V6+trmCVqMCaIXbQP
+t8VVjR4AlyhrvzDrNWNMELtqHwYAqENkvsOV5maMCWJokwCcP6Jbq1CwmnHGRuy6fRgA0Ez5SnMQ
+BJZGMiyMCOJzsA8DAOoRvecwS8hhRBC7bh9+enpCWBoAPRGZJXClWQ4jgth1+7CsNo6E1gBUU77S
+jHBPeZywEdu2Dzflmziw3W71DgSAgSI6VT4+PkIblkS7IHbdPtzmthzqbAEgBtpvP7QLYtftw7Ll
+lOBMBEAenB7boV0Qu24fLofbVHF3dwdtGAABt7e3J6fKm5sbvC8tsG4jtmkf3mw2UmYJWRsyAGOk
+rP3iSnN7tApi1+3DMn0vl0s2nU7xdQdAgMjHgkxr7dEqiF22D8sUBw2CAJ5fIOTj44M2mw1dXV3R
+YrGgxWJBV1dXtNlsSFRCXvaZi8WCOOfCdnl56Vy8u8hJZ9OpfViXy8vLynk8tNVqRXXO+o+Pj5+/
+q33gOstGM4nS9TbKWWdZ1jiuIAhGX/bblebCniEitt1uG/dNuW2328bxisqru/bOyK6Njfcmz3Py
+PK/12hy35XL5z7h3u522OReut8lFKrcoiowvWlEUEMIDa7YFURiGvV5yxhiFYXgy7iqFYL1eU5qm
+VPV3PM8zPgeiluf5ydjyPDc2NlH/ojkUtSRJKAiCk3+32+1ovV5r/fgZFcQyWmeWZcY3lAoNBs3u
+mpnqt04DLmtQx225XDburyiKpJ5X9Rzba0JEzPd9a+MSfRy7vrtJkjTKKpVjNyqIyxvN9maS+TAU
+RWF0TGhyzca+EQmZttqozHG56fTlwrsjO7a6j5PKVp5XVSdYkYY8eEHctAFtfz2Pmw0TCVr3vWS6
+vz4vfN3LXXd0bhqL7TURaZEm+i1/IFWbEavWS2UfTgliE8KvyQniiq0Nrd1e0tlXlRbbZ6/0eabo
+JGdK82yzJiYEcdmBpqtP0XqpfL4xQWzbPtxkFvE8D2aIATVTL3zdyUn1bzg0kRNP1KIoojAMjTrD
+2vweE74Vk32ehSA2bR9O05RkPNswQQyzmRDEddE0vu/37rPK5szY8HwTIkGiu0/TppCyiUL3/HEi
+YqqRCYCWTbZTJsuyk7yndfi+z3a7HepmDZjyfiIi5WtZt2ezLOu9f97e3qiubJCO36QL0VzpHr/p
+Pr++vuj4qrbKvjabDZUvu/2n6uFt0VlCJY5jJOkB0jTdhFPxEf/7jMp+Pj4+aKhX6V1P7NWFv5VF
+1GupFSi/4iyTX0I32+22VZ5hMG66ns7ObQwyXF1dnbxXyNPdH+WCWCa/BBFxFa0q52lRFMzzPDaZ
+TCCMQSMuZNdzYQwylLVfm+XDVquV1vfb5MdRuSA2eUy5ubnhRMSr+iyKgnHO6c+fPxDIoBMqUzoO
+PT2kyIRjs0pzkiRaT76DFsRN6Mg//Pv3b15nTI+iSPvXUxVvb28/GZ+6ZvEC8jSZ0uocbG1pepYL
+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
+AABJRU5ErkJggg==
+" transform="translate(1819, 1313)"></image>
+</g>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="439.71,1154.88 439.71,47.2441 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,1154.88 3552.76,47.2441 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="439.71,1154.88 458.608,1154.88 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="439.71,949.761 458.608,949.761 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="439.71,744.644 458.608,744.644 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="439.71,539.526 458.608,539.526 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="439.71,334.409 458.608,334.409 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="439.71,129.291 458.608,129.291 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,1154.88 3533.86,1154.88 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,949.761 3533.86,949.761 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,744.644 3533.86,744.644 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,539.526 3533.86,539.526 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,334.409 3533.86,334.409 "></polyline>
+<polyline clip-path="url(#clip810)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,129.291 3533.86,129.291 "></polyline>
+<g clip-path="url(#clip810)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 335.768, 1189.38)" x="335.768" y="1189.38">15</text>
+</g>
+<g clip-path="url(#clip810)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 335.768, 984.261)" x="335.768" y="984.261">20</text>
+</g>
+<g clip-path="url(#clip810)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 335.768, 779.144)" x="335.768" y="779.144">25</text>
+</g>
+<g clip-path="url(#clip810)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 335.768, 574.026)" x="335.768" y="574.026">30</text>
+</g>
+<g clip-path="url(#clip810)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 335.768, 368.909)" x="335.768" y="368.909">35</text>
+</g>
+<g clip-path="url(#clip810)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 335.768, 163.791)" x="335.768" y="163.791">40</text>
+</g>
+<g clip-path="url(#clip810)">
+<image width="108" height="354" href="data:image/png;base64,
+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
+kLOP3jJQAAAAAElFTkSuQmCC
+" transform="translate(129, 424)"></image>
+</g>
+<path clip-path="url(#clip812)" d="M2028.25 468.075 L2772.06 676.048 L3322.16 697.307 L3322.16 129.291 L2028.25 129.291 L2028.25 468.075  Z" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.25"></path>
+<polyline clip-path="url(#clip812)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:0; stroke-opacity:0.25; fill:none" points="2028.25,468.075 2772.06,676.048 3322.16,697.307 3322.16,129.291 2028.25,129.291 2028.25,468.075 "></polyline>
+<polyline clip-path="url(#clip812)" style="stroke:#4d4d4d; stroke-linecap:round; stroke-linejoin:round; stroke-width:10; stroke-opacity:1; fill:none" points="2028.25,2262.51 2028.25,-1060.39 "></polyline>
+<polyline clip-path="url(#clip812)" style="stroke:#4d4d4d; stroke-linecap:round; stroke-linejoin:round; stroke-width:10; stroke-opacity:1; fill:none" stroke-dasharray="40, 25" points="439.71,23.907 497.359,40.0261 555.008,56.1451 612.657,72.2642 670.306,88.3832 727.955,104.502 785.604,120.621 843.253,136.74 900.902,152.859 958.551,168.978 1016.2,185.097 1073.85,201.217 1131.5,217.336 1189.15,233.455 1246.8,249.574 1304.45,265.693 1362.09,281.812 1419.74,297.931 1477.39,314.05 1535.04,330.169 1592.69,346.288 1650.34,362.407 1707.99,378.526 1765.64,394.645 1823.29,410.764 1880.94,426.883 1938.58,443.002 1996.23,459.121 2053.88,475.24 2111.53,491.359 2169.18,507.478 2226.83,523.597 2284.48,539.717 2342.13,555.836 2399.78,571.955 2457.43,588.074 2515.07,604.193 2572.72,620.312 2630.37,636.431 2688.02,652.55 2745.67,668.669 2803.32,684.788 2860.97,700.907 2918.62,717.026 2976.27,733.145 3033.91,749.264 3091.56,765.383 3149.21,781.502 3206.86,797.621 3264.51,813.74 3322.16,829.859 3379.81,845.978 3437.46,862.097 3495.11,878.217 3552.76,894.336 "></polyline>
+<polyline clip-path="url(#clip812)" style="stroke:#4d4d4d; stroke-linecap:round; stroke-linejoin:round; stroke-width:10; stroke-opacity:1; fill:none" stroke-dasharray="40, 20, 5, 20" points="439.71,585.912 497.359,588.14 555.008,590.368 612.657,592.596 670.306,594.823 727.955,597.051 785.604,599.279 843.253,601.507 900.902,603.735 958.551,605.963 1016.2,608.191 1073.85,610.419 1131.5,612.647 1189.15,614.875 1246.8,617.103 1304.45,619.33 1362.09,621.558 1419.74,623.786 1477.39,626.014 1535.04,628.242 1592.69,630.47 1650.34,632.698 1707.99,634.926 1765.64,637.154 1823.29,639.382 1880.94,641.61 1938.58,643.837 1996.23,646.065 2053.88,648.293 2111.53,650.521 2169.18,652.749 2226.83,654.977 2284.48,657.205 2342.13,659.433 2399.78,661.661 2457.43,663.889 2515.07,666.117 2572.72,668.344 2630.37,670.572 2688.02,672.8 2745.67,675.028 2803.32,677.256 2860.97,679.484 2918.62,681.712 2976.27,683.94 3033.91,686.168 3091.56,688.396 3149.21,690.624 3206.86,692.851 3264.51,695.079 3322.16,697.307 3379.81,699.535 3437.46,701.763 3495.11,703.991 3552.76,706.219 "></polyline>
+<polyline clip-path="url(#clip812)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:8; stroke-opacity:1; fill:none" points="-2442.74,129.291 3322.16,129.291 3322.16,1770.23 "></polyline>
+<path clip-path="url(#clip812)" d="M2772.06 612.048 L2757.02 655.312 L2711.2 656.272 L2747.74 683.984 L2734.43 727.824 L2772.06 701.648 L2809.69 727.824 L2796.38 683.984 L2832.93 656.272 L2787.1 655.312 L2772.06 612.048 Z" fill="#d55e00" fill-rule="evenodd" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="3.04"></path>
+<g clip-path="url(#clip810)">
+<text style="fill:#333333; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:124px; text-anchor:middle;" transform="rotate(0, 1889.9, 1115.83)" x="1889.9" y="1115.83">A</text>
+</g>
+<g clip-path="url(#clip810)">
+<text style="fill:#333333; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:124px; text-anchor:middle;" transform="rotate(0, 1634.08, 336.385)" x="1634.08" y="336.385">B</text>
+</g>
+<g clip-path="url(#clip810)">
+<text style="fill:#333333; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:124px; text-anchor:middle;" transform="rotate(0, 670.306, 576.288)" x="670.306" y="576.288">C</text>
+</g>
+</svg>
+</div>
+</div>
+<p>The cheapest plan is a <strong>corner</strong> of the feasible region.</p>
+</section>
+<section id="questions" class="slide level2">
+<h2>Questions?</h2>
+<div class="columns center">
+<div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/vsrikrish-poll.png" class="quarto-figure quarto-figure-center" style="width:100.0%" alt="Poll Everywhere QR Code"></p>
+</figure>
+</div>
+</div><div class="column" style="width:60%;">
+<p><strong>Text</strong>: VSRIKRISH to 22333</p>
+<p><strong>URL</strong>: <a href="https://pollev.com/vsrikrish">https://pollev.com/vsrikrish</a> <br><br> <a href="https://www.polleverywhere.com/multiple_choice_polls/qKeig0hHShZYHAOmvZtZm?preview=true&amp;controls=none" data-preview-link="true">See Results</a></p>
+</div></div>
+</section></section>
+<section>
+<section id="the-simplex-method" class="title-slide slide level1 center">
+<h1>The Simplex Method</h1>
+
+</section>
+<section id="walking-the-corners" class="slide level2">
+<h2>Walking the Corners</h2>
+<p>Ours has five corners. An LP with thousands of variables can have astronomically many.</p>
+<div class="fragment fade-in">
+<p>The <strong>simplex method</strong> <span class="citation" data-cites="Dantzig1963-li">(<a href="#/references-1" role="doc-biblioref" onclick="">Dantzig, 1963</a>)</span> never lists them. It walks:</p>
+<ol type="1">
+<li>Start at any corner.</li>
+<li>Look along each edge leaving it. If one goes downhill (lower cost), move to the corner at its end.</li>
+<li>Stop when every edge goes uphill.</li>
+</ol>
+</div>
+</section>
+<section id="step-1-start-at-a-corner" class="slide level2">
+<h2>Step 1: Start at a Corner</h2>
+<div id="10" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a></a><span class="co"># Corners next to corner k are its neighbours in order around the region</span></span>
+<span id="cb2-2"><a></a><span class="fu">neighbours</span>(k) <span class="op">=</span> [<span class="fu">mod1</span>(k <span class="op">-</span> <span class="fl">1</span>, <span class="fu">length</span>(corners)), <span class="fu">mod1</span>(k <span class="op">+</span> <span class="fl">1</span>, <span class="fu">length</span>(corners))]</span>
+<span id="cb2-3"><a></a></span>
+<span id="cb2-4"><a></a><span class="co"># The walk: from the corner that removes the most, move to a cheaper neighbour</span></span>
+<span id="cb2-5"><a></a>start <span class="op">=</span> <span class="fu">argmax</span>([<span class="fu">sum</span>(c) for c <span class="kw">in</span> corners])</span>
+<span id="cb2-6"><a></a>path <span class="op">=</span> <span class="fu">zeros</span>(<span class="dt">Int</span>, <span class="fu">length</span>(corners))              <span class="co"># at most one visit per corner</span></span>
+<span id="cb2-7"><a></a>path[<span class="fl">1</span>] <span class="op">=</span> start</span>
+<span id="cb2-8"><a></a>n_steps <span class="op">=</span> <span class="fl">1</span></span>
+<span id="cb2-9"><a></a><span class="cf">while</span> <span class="cn">true</span></span>
+<span id="cb2-10"><a></a>    here <span class="op">=</span> path[n_steps]</span>
+<span id="cb2-11"><a></a>    cheapest <span class="op">=</span> <span class="fu">neighbours</span>(here)[<span class="fu">argmin</span>(corner_cost[<span class="fu">neighbours</span>(here)])]</span>
+<span id="cb2-12"><a></a>    <span class="cf">if</span> corner_cost[cheapest] <span class="op">&gt;=</span> corner_cost[here]</span>
+<span id="cb2-13"><a></a>        <span class="cf">break</span>                                   <span class="co"># every edge goes uphill</span></span>
+<span id="cb2-14"><a></a>    <span class="cf">end</span></span>
+<span id="cb2-15"><a></a>    <span class="kw">global</span> n_steps <span class="op">+=</span> <span class="fl">1</span></span>
+<span id="cb2-16"><a></a>    path[n_steps] <span class="op">=</span> cheapest</span>
+<span id="cb2-17"><a></a><span class="cf">end</span></span>
+<span id="cb2-18"><a></a>path <span class="op">=</span> path[<span class="fl">1</span><span class="op">:</span>n_steps]</span>
+<span id="cb2-19"><a></a></span>
+<span id="cb2-20"><a></a><span class="co"># Draw the walk after `step` moves, with the costs of the corners in view</span></span>
+<span id="cb2-21"><a></a><span class="kw">function</span> <span class="fu">draw_walk</span>(step)</span>
+<span id="cb2-22"><a></a>    p <span class="op">=</span> <span class="fu">draw_region</span>()</span>
+<span id="cb2-23"><a></a>    <span class="fu">scatter!</span>(p, <span class="fu">first</span>.(corners), <span class="fu">last</span>.(corners), color<span class="op">=:</span>gray60, markersize<span class="op">=</span><span class="fl">7</span>,</span>
+<span id="cb2-24"><a></a>        markerstrokecolor<span class="op">=:</span>gray30)</span>
+<span id="cb2-25"><a></a>    visited <span class="op">=</span> path[<span class="fl">1</span><span class="op">:</span>(step <span class="op">+</span> <span class="fl">1</span>)]</span>
+<span id="cb2-26"><a></a>    <span class="fu">plot!</span>(p, [corners[k][<span class="fl">1</span>] for k <span class="kw">in</span> visited], [corners[k][<span class="fl">2</span>] for k <span class="kw">in</span> visited],</span>
+<span id="cb2-27"><a></a>        color<span class="op">=</span>cb_vermillion, linewidth<span class="op">=</span><span class="fl">4</span>, arrow<span class="op">=</span><span class="cn">true</span>)</span>
+<span id="cb2-28"><a></a>    here <span class="op">=</span> visited[<span class="kw">end</span>]</span>
+<span id="cb2-29"><a></a>    <span class="cf">for</span> k <span class="kw">in</span> [here; <span class="fu">neighbours</span>(here)]</span>
+<span id="cb2-30"><a></a>        <span class="fu">annotate!</span>(p, corners[k][<span class="fl">1</span>] <span class="op">+</span> <span class="fl">1.2</span>, corners[k][<span class="fl">2</span>] <span class="op">+</span> <span class="fl">1.4</span>,</span>
+<span id="cb2-31"><a></a>            <span class="fu">text</span>(<span class="fu">string</span>(<span class="fu">Int</span>(<span class="fu">round</span>(corner_cost[k]))), <span class="fl">16</span>, <span class="op">:</span>black, plot_font))</span>
+<span id="cb2-32"><a></a>    <span class="cf">end</span></span>
+<span id="cb2-33"><a></a>    <span class="fu">scatter!</span>(p, [corners[here][<span class="fl">1</span>]], [corners[here][<span class="fl">2</span>]], color<span class="op">=</span>cb_vermillion,</span>
+<span id="cb2-34"><a></a>        markersize<span class="op">=</span><span class="fl">12</span>, markerstrokecolor<span class="op">=:</span>black)</span>
+<span id="cb2-35"><a></a>    <span class="fu">plot!</span>(p, size<span class="op">=</span>(<span class="fl">900</span>, <span class="fl">360</span>), left_margin<span class="op">=</span><span class="fl">12</span>mm, bottom_margin<span class="op">=</span><span class="fl">12</span>mm)</span>
+<span id="cb2-36"><a></a>    <span class="cf">return</span> p</span>
+<span id="cb2-37"><a></a><span class="kw">end</span></span>
+<span id="cb2-38"><a></a></span>
+<span id="cb2-39"><a></a><span class="fu">draw_walk</span>(<span class="fl">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<!--?xml version="1.0" encoding="utf-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="900" height="360" viewbox="0 0 3600 1440">
+<defs>
+  <clippath id="clip870">
+    <rect x="0" y="0" width="3600" height="1440"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip870)" d="M0 1440 L3600 1440 L3600 -7.99361e-14 L0 -7.99361e-14  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip871">
+    <rect x="720" y="0" width="2521" height="1440"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip870)" d="M436.981 1080.83 L3552.76 1080.83 L3552.76 47.2441 L436.981 47.2441  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip872">
+    <rect x="436" y="47" width="3117" height="1035"></rect>
+  </clippath>
+</defs>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,1080.83 3552.76,1080.83 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,47.2441 3552.76,47.2441 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,1080.83 436.981,1061.94 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1013.98,1080.83 1013.98,1061.94 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1590.97,1080.83 1590.97,1061.94 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2167.97,1080.83 2167.97,1061.94 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2744.96,1080.83 2744.96,1061.94 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3321.96,1080.83 3321.96,1061.94 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,47.2441 436.981,66.1417 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1013.98,47.2441 1013.98,66.1417 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1590.97,47.2441 1590.97,66.1417 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2167.97,47.2441 2167.97,66.1417 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2744.96,47.2441 2744.96,66.1417 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3321.96,47.2441 3321.96,66.1417 "></polyline>
+<g clip-path="url(#clip870)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 436.981, 1198.72)" x="436.981" y="1198.72">25</text>
+</g>
+<g clip-path="url(#clip870)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 1013.98, 1198.72)" x="1013.98" y="1198.72">30</text>
+</g>
+<g clip-path="url(#clip870)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 1590.97, 1198.72)" x="1590.97" y="1198.72">35</text>
+</g>
+<g clip-path="url(#clip870)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 2167.97, 1198.72)" x="2167.97" y="1198.72">40</text>
+</g>
+<g clip-path="url(#clip870)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 2744.96, 1198.72)" x="2744.96" y="1198.72">45</text>
+</g>
+<g clip-path="url(#clip870)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 3321.96, 1198.72)" x="3321.96" y="1198.72">50</text>
+</g>
+<g clip-path="url(#clip870)">
+<image width="354" height="108" href="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAWIAAABsCAYAAABQIbi+AAAQ9klEQVR4nO2d73WjOhOHpffc78EV
+mFRgtgLjCpZUELuCOBUEVxCngpAK4q3ApIKQCkIqCKlg3g9Z53ixAAH6h/k95+jDvbuLZEkMo5nR
+DCciBoDLLBaLTps0CAJ2f3/PVY8H9GO1WlFRFOz5+fms1qbrPmWMsf9UDgQAHaRpansIQBFPT0+U
+JAlj7FsgPz4+no0w7rNPOTRi4Dqc806bNAxDtt/vz+ZFPwfKa0lEZ7M+XfcpY4z9T+VAAACgij9/
+/kDrqwCCGABghCiKbA/BWSCIweAgIi7TYJZwmziObQ9BKbL7UvS7IYgBANrZbDYnZom7uzt8KP8C
+QQwA0M65ab+qURq+1sdrqJMgCFgURSwMQzafz/EVBsAyu93O9hCcQpkgfnt7c1IIM8ZYlmUsy7LD
+fxJj38J5t9ux6XQKwQyARlar1Yls+P37N967I0ZrmsiyjPm+zzjnJNooAAA1HC5wHPB938o4XEaZ
+IJ7NZkIPYZqmLE1TFscx8zxP+nme57EkSVhRFNLeSCLieZ7/9BeGoVRfSZIwzjn1uaIIADjl4+Pj
+5J3CTUkBRGS0xXFM7Ns8UNtU95vnOfm+L9V3mqbK+0fr3nTvDTR9LQgC7e/20JpIBho3TchoxToM
++dPplL+/v3Mi4k2achiGvRJ4AAC+OfLNMMZwqaMK44JY5lii25C/3+95nue1fydNUzaZTCCMAeiI
+6Epz2V4MvjEuiF0JW5lOp5waEo4URQFhDEBHlsvlyf+7uLhAtIQA56ImTB9dmjTjoiiE4TcAgHqK
+ovjnv9frtaWRuI9RQSwTa2z6Bs50OuVNduskSdjX1xeEMQCSPDw8nLwvSNJfjVFBLCNkZ7OZ8cWS
+sVu3Cb0DYOxA+22HUUHsin24jKzwh1YMQDfgpKvHKRux66EtIucDAOBfRD6V6+trmCVqMCaIXbQP
+t8VVjR4AlyhrvzDrNWNMELtqHwYAqENkvsOV5maMCWJokwCcP6Jbq1CwmnHGRuy6fRgA0Ez5SnMQ
+BJZGMiyMCOJzsA8DAOoRvecwS8hhRBC7bh9+enpCWBoAPRGZJXClWQ4jgth1+7CsNo6E1gBUU77S
+jHBPeZywEdu2Dzflmziw3W71DgSAgSI6VT4+PkIblkS7IHbdPtzmthzqbAEgBtpvP7QLYtftw7Ll
+lOBMBEAenB7boV0Qu24fLofbVHF3dwdtGAABt7e3J6fKm5sbvC8tsG4jtmkf3mw2UmYJWRsyAGOk
+rP3iSnN7tApi1+3DMn0vl0s2nU7xdQdAgMjHgkxr7dEqiF22D8sUBw2CAJ5fIOTj44M2mw1dXV3R
+YrGgxWJBV1dXtNlsSFRCXvaZi8WCOOfCdnl56Vy8u8hJZ9OpfViXy8vLynk8tNVqRXXO+o+Pj5+/
+q33gOstGM4nS9TbKWWdZ1jiuIAhGX/bblebCniEitt1uG/dNuW2328bxisqru/bOyK6Njfcmz3Py
+PK/12hy35XL5z7h3u522OReut8lFKrcoiowvWlEUEMIDa7YFURiGvV5yxhiFYXgy7iqFYL1eU5qm
+VPV3PM8zPgeiluf5ydjyPDc2NlH/ojkUtSRJKAiCk3+32+1ovV5r/fgZFcQyWmeWZcY3lAoNBs3u
+mpnqt04DLmtQx225XDburyiKpJ5X9Rzba0JEzPd9a+MSfRy7vrtJkjTKKpVjNyqIyxvN9maS+TAU
+RWF0TGhyzca+EQmZttqozHG56fTlwrsjO7a6j5PKVp5XVSdYkYY8eEHctAFtfz2Pmw0TCVr3vWS6
+vz4vfN3LXXd0bhqL7TURaZEm+i1/IFWbEavWS2UfTgliE8KvyQniiq0Nrd1e0tlXlRbbZ6/0eabo
+JGdK82yzJiYEcdmBpqtP0XqpfL4xQWzbPtxkFvE8D2aIATVTL3zdyUn1bzg0kRNP1KIoojAMjTrD
+2vweE74Vk32ehSA2bR9O05RkPNswQQyzmRDEddE0vu/37rPK5szY8HwTIkGiu0/TppCyiUL3/HEi
+YqqRCYCWTbZTJsuyk7yndfi+z3a7HepmDZjyfiIi5WtZt2ezLOu9f97e3qiubJCO36QL0VzpHr/p
+Pr++vuj4qrbKvjabDZUvu/2n6uFt0VlCJY5jJOkB0jTdhFPxEf/7jMp+Pj4+aKhX6V1P7NWFv5VF
+1GupFSi/4iyTX0I32+22VZ5hMG66ns7ObQwyXF1dnbxXyNPdH+WCWCa/BBFxFa0q52lRFMzzPDaZ
+TCCMQSMuZNdzYQwylLVfm+XDVquV1vfb5MdRuSA2eUy5ubnhRMSr+iyKgnHO6c+fPxDIoBMqUzoO
+PT2kyIRjs0pzkiRaT76DFsRN6Mg//Pv3b15nTI+iSPvXUxVvb28/GZ+6ZvEC8jSZ0uocbG1pepYL
+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
+AABJRU5ErkJggg==
+" transform="translate(1818, 1239)"></image>
+</g>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,1080.83 436.981,47.2441 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,1080.83 3552.76,47.2441 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,1080.83 455.879,1080.83 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,889.428 455.879,889.428 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,698.023 455.879,698.023 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,506.617 455.879,506.617 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,315.212 455.879,315.212 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,123.806 455.879,123.806 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,1080.83 3533.86,1080.83 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,889.428 3533.86,889.428 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,698.023 3533.86,698.023 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,506.617 3533.86,506.617 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,315.212 3533.86,315.212 "></polyline>
+<polyline clip-path="url(#clip870)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,123.806 3533.86,123.806 "></polyline>
+<g clip-path="url(#clip870)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 333.039, 1115.33)" x="333.039" y="1115.33">15</text>
+</g>
+<g clip-path="url(#clip870)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 333.039, 923.928)" x="333.039" y="923.928">20</text>
+</g>
+<g clip-path="url(#clip870)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 333.039, 732.523)" x="333.039" y="732.523">25</text>
+</g>
+<g clip-path="url(#clip870)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 333.039, 541.117)" x="333.039" y="541.117">30</text>
+</g>
+<g clip-path="url(#clip870)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 333.039, 349.712)" x="333.039" y="349.712">35</text>
+</g>
+<g clip-path="url(#clip870)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 333.039, 158.306)" x="333.039" y="158.306">40</text>
+</g>
+<g clip-path="url(#clip870)">
+<image width="108" height="354" href="data:image/png;base64,
+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
+kLOP3jJQAAAAAElFTkSuQmCC
+" transform="translate(126, 387)"></image>
+</g>
+<path clip-path="url(#clip872)" d="M2026.92 439.942 L2771.38 634.013 L3321.96 653.851 L3321.96 123.806 L2026.92 123.806 L2026.92 439.942  Z" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.25"></path>
+<polyline clip-path="url(#clip872)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:0; stroke-opacity:0.25; fill:none" points="2026.92,439.942 2771.38,634.013 3321.96,653.851 3321.96,123.806 2026.92,123.806 2026.92,439.942 "></polyline>
+<polyline clip-path="url(#clip872)" style="stroke:#4d4d4d; stroke-linecap:round; stroke-linejoin:round; stroke-width:10; stroke-opacity:1; fill:none" points="2026.92,2114.42 2026.92,-986.346 "></polyline>
+<polyline clip-path="url(#clip872)" style="stroke:#4d4d4d; stroke-linecap:round; stroke-linejoin:round; stroke-width:10; stroke-opacity:1; fill:none" stroke-dasharray="40, 25" points="436.981,25.4671 494.681,40.5086 552.38,55.5501 610.08,70.5916 667.779,85.6331 725.479,100.675 783.178,115.716 840.878,130.758 898.577,145.799 956.277,160.841 1013.98,175.882 1071.68,190.924 1129.38,205.965 1187.07,221.007 1244.77,236.048 1302.47,251.09 1360.17,266.131 1417.87,281.173 1475.57,296.214 1533.27,311.256 1590.97,326.297 1648.67,341.339 1706.37,356.38 1764.07,371.422 1821.77,386.463 1879.47,401.505 1937.17,416.546 1994.87,431.588 2052.57,446.629 2110.27,461.671 2167.97,476.712 2225.67,491.754 2283.37,506.795 2341.07,521.837 2398.77,536.878 2456.46,551.92 2514.16,566.961 2571.86,582.003 2629.56,597.044 2687.26,612.086 2744.96,627.127 2802.66,642.169 2860.36,657.21 2918.06,672.252 2975.76,687.293 3033.46,702.335 3091.16,717.376 3148.86,732.418 3206.56,747.459 3264.26,762.501 3321.96,777.542 3379.66,792.584 3437.36,807.625 3495.06,822.667 3552.76,837.708 "></polyline>
+<polyline clip-path="url(#clip872)" style="stroke:#4d4d4d; stroke-linecap:round; stroke-linejoin:round; stroke-width:10; stroke-opacity:1; fill:none" stroke-dasharray="40, 20, 5, 20" points="436.981,549.902 494.681,551.981 552.38,554.06 610.08,556.139 667.779,558.218 725.479,560.297 783.178,562.376 840.878,564.455 898.577,566.534 956.277,568.613 1013.98,570.692 1071.68,572.771 1129.38,574.85 1187.07,576.929 1244.77,579.008 1302.47,581.087 1360.17,583.166 1417.87,585.245 1475.57,587.324 1533.27,589.403 1590.97,591.482 1648.67,593.561 1706.37,595.64 1764.07,597.719 1821.77,599.798 1879.47,601.877 1937.17,603.956 1994.87,606.035 2052.57,608.114 2110.27,610.193 2167.97,612.271 2225.67,614.35 2283.37,616.429 2341.07,618.508 2398.77,620.587 2456.46,622.666 2514.16,624.745 2571.86,626.824 2629.56,628.903 2687.26,630.982 2744.96,633.061 2802.66,635.14 2860.36,637.219 2918.06,639.298 2975.76,641.377 3033.46,643.456 3091.16,645.535 3148.86,647.614 3206.56,649.693 3264.26,651.772 3321.96,653.851 3379.66,655.93 3437.36,658.009 3495.06,660.088 3552.76,662.167 "></polyline>
+<polyline clip-path="url(#clip872)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:8; stroke-opacity:1; fill:none" points="-2448,123.806 3321.96,123.806 3321.96,1655.05 "></polyline>
+<circle clip-path="url(#clip872)" cx="2026.92" cy="439.942" r="25.2" fill="#999999" fill-rule="evenodd" fill-opacity="1" stroke="#4d4d4d" stroke-opacity="1" stroke-width="2.88"></circle>
+<circle clip-path="url(#clip872)" cx="2771.38" cy="634.013" r="25.2" fill="#999999" fill-rule="evenodd" fill-opacity="1" stroke="#4d4d4d" stroke-opacity="1" stroke-width="2.88"></circle>
+<circle clip-path="url(#clip872)" cx="3321.96" cy="653.851" r="25.2" fill="#999999" fill-rule="evenodd" fill-opacity="1" stroke="#4d4d4d" stroke-opacity="1" stroke-width="2.88"></circle>
+<circle clip-path="url(#clip872)" cx="3321.96" cy="123.806" r="25.2" fill="#999999" fill-rule="evenodd" fill-opacity="1" stroke="#4d4d4d" stroke-opacity="1" stroke-width="2.88"></circle>
+<circle clip-path="url(#clip872)" cx="2026.92" cy="123.806" r="25.2" fill="#999999" fill-rule="evenodd" fill-opacity="1" stroke="#4d4d4d" stroke-opacity="1" stroke-width="2.88"></circle>
+<circle clip-path="url(#clip872)" cx="3321.96" cy="123.806" r="43.2" fill="#d55e00" fill-rule="evenodd" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="2.88"></circle>
+<g clip-path="url(#clip870)">
+<text style="fill:#333333; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:124px; text-anchor:middle;" transform="rotate(0, 1888.44, 1047.27)" x="1888.44" y="1047.27">A</text>
+</g>
+<g clip-path="url(#clip870)">
+<text style="fill:#333333; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:124px; text-anchor:middle;" transform="rotate(0, 1632.4, 319.931)" x="1632.4" y="319.931">B</text>
+</g>
+<g clip-path="url(#clip870)">
+<text style="fill:#333333; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:124px; text-anchor:middle;" transform="rotate(0, 667.779, 543.796)" x="667.779" y="543.796">C</text>
+</g>
+<g clip-path="url(#clip870)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 3460.44, 104.713)" x="3460.44" y="104.713">2200</text>
+</g>
+<g clip-path="url(#clip870)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 3460.44, 634.757)" x="3460.44" y="634.757">1785</text>
+</g>
+<g clip-path="url(#clip870)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 2165.4, 104.713)" x="2165.4" y="104.713">1976</text>
+</g>
+</svg>
+</div>
+</div>
+<p>Start where both stacks remove all they can. Costs in $1000/yr.</p>
+</section>
+<section id="step-2-go-downhill" class="slide level2">
+<h2>Step 2: Go Downhill</h2>
+<div id="12" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a></a><span class="fu">draw_walk</span>(<span class="fl">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<!--?xml version="1.0" encoding="utf-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="900" height="360" viewbox="0 0 3600 1440">
+<defs>
+  <clippath id="clip930">
+    <rect x="0" y="0" width="3600" height="1440"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip930)" d="M0 1440 L3600 1440 L3600 -7.99361e-14 L0 -7.99361e-14  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip931">
+    <rect x="720" y="0" width="2521" height="1440"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip930)" d="M436.981 1080.83 L3552.76 1080.83 L3552.76 47.2441 L436.981 47.2441  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip932">
+    <rect x="436" y="47" width="3117" height="1035"></rect>
+  </clippath>
+</defs>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,1080.83 3552.76,1080.83 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,47.2441 3552.76,47.2441 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,1080.83 436.981,1061.94 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1013.98,1080.83 1013.98,1061.94 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1590.97,1080.83 1590.97,1061.94 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2167.97,1080.83 2167.97,1061.94 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2744.96,1080.83 2744.96,1061.94 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3321.96,1080.83 3321.96,1061.94 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,47.2441 436.981,66.1417 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1013.98,47.2441 1013.98,66.1417 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1590.97,47.2441 1590.97,66.1417 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2167.97,47.2441 2167.97,66.1417 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2744.96,47.2441 2744.96,66.1417 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3321.96,47.2441 3321.96,66.1417 "></polyline>
+<g clip-path="url(#clip930)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 436.981, 1198.72)" x="436.981" y="1198.72">25</text>
+</g>
+<g clip-path="url(#clip930)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 1013.98, 1198.72)" x="1013.98" y="1198.72">30</text>
+</g>
+<g clip-path="url(#clip930)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 1590.97, 1198.72)" x="1590.97" y="1198.72">35</text>
+</g>
+<g clip-path="url(#clip930)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 2167.97, 1198.72)" x="2167.97" y="1198.72">40</text>
+</g>
+<g clip-path="url(#clip930)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 2744.96, 1198.72)" x="2744.96" y="1198.72">45</text>
+</g>
+<g clip-path="url(#clip930)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 3321.96, 1198.72)" x="3321.96" y="1198.72">50</text>
+</g>
+<g clip-path="url(#clip930)">
+<image width="354" height="108" href="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAWIAAABsCAYAAABQIbi+AAAQ9klEQVR4nO2d73WjOhOHpffc78EV
+mFRgtgLjCpZUELuCOBUEVxCngpAK4q3ApIKQCkIqCKlg3g9Z53ixAAH6h/k95+jDvbuLZEkMo5nR
+DCciBoDLLBaLTps0CAJ2f3/PVY8H9GO1WlFRFOz5+fms1qbrPmWMsf9UDgQAHaRpansIQBFPT0+U
+JAlj7FsgPz4+no0w7rNPOTRi4Dqc806bNAxDtt/vz+ZFPwfKa0lEZ7M+XfcpY4z9T+VAAACgij9/
+/kDrqwCCGABghCiKbA/BWSCIweAgIi7TYJZwmziObQ9BKbL7UvS7IYgBANrZbDYnZom7uzt8KP8C
+QQwA0M65ab+qURq+1sdrqJMgCFgURSwMQzafz/EVBsAyu93O9hCcQpkgfnt7c1IIM8ZYlmUsy7LD
+fxJj38J5t9ux6XQKwQyARlar1Yls+P37N967I0ZrmsiyjPm+zzjnJNooAAA1HC5wHPB938o4XEaZ
+IJ7NZkIPYZqmLE1TFscx8zxP+nme57EkSVhRFNLeSCLieZ7/9BeGoVRfSZIwzjn1uaIIADjl4+Pj
+5J3CTUkBRGS0xXFM7Ns8UNtU95vnOfm+L9V3mqbK+0fr3nTvDTR9LQgC7e/20JpIBho3TchoxToM
++dPplL+/v3Mi4k2achiGvRJ4AAC+OfLNMMZwqaMK44JY5lii25C/3+95nue1fydNUzaZTCCMAeiI
+6Epz2V4MvjEuiF0JW5lOp5waEo4URQFhDEBHlsvlyf+7uLhAtIQA56ImTB9dmjTjoiiE4TcAgHqK
+ovjnv9frtaWRuI9RQSwTa2z6Bs50OuVNduskSdjX1xeEMQCSPDw8nLwvSNJfjVFBLCNkZ7OZ8cWS
+sVu3Cb0DYOxA+22HUUHsin24jKzwh1YMQDfgpKvHKRux66EtIucDAOBfRD6V6+trmCVqMCaIXbQP
+t8VVjR4AlyhrvzDrNWNMELtqHwYAqENkvsOV5maMCWJokwCcP6Jbq1CwmnHGRuy6fRgA0Ez5SnMQ
+BJZGMiyMCOJzsA8DAOoRvecwS8hhRBC7bh9+enpCWBoAPRGZJXClWQ4jgth1+7CsNo6E1gBUU77S
+jHBPeZywEdu2Dzflmziw3W71DgSAgSI6VT4+PkIblkS7IHbdPtzmthzqbAEgBtpvP7QLYtftw7Ll
+lOBMBEAenB7boV0Qu24fLofbVHF3dwdtGAABt7e3J6fKm5sbvC8tsG4jtmkf3mw2UmYJWRsyAGOk
+rP3iSnN7tApi1+3DMn0vl0s2nU7xdQdAgMjHgkxr7dEqiF22D8sUBw2CAJ5fIOTj44M2mw1dXV3R
+YrGgxWJBV1dXtNlsSFRCXvaZi8WCOOfCdnl56Vy8u8hJZ9OpfViXy8vLynk8tNVqRXXO+o+Pj5+/
+q33gOstGM4nS9TbKWWdZ1jiuIAhGX/bblebCniEitt1uG/dNuW2328bxisqru/bOyK6Njfcmz3Py
+PK/12hy35XL5z7h3u522OReut8lFKrcoiowvWlEUEMIDa7YFURiGvV5yxhiFYXgy7iqFYL1eU5qm
+VPV3PM8zPgeiluf5ydjyPDc2NlH/ojkUtSRJKAiCk3+32+1ovV5r/fgZFcQyWmeWZcY3lAoNBs3u
+mpnqt04DLmtQx225XDburyiKpJ5X9Rzba0JEzPd9a+MSfRy7vrtJkjTKKpVjNyqIyxvN9maS+TAU
+RWF0TGhyzca+EQmZttqozHG56fTlwrsjO7a6j5PKVp5XVSdYkYY8eEHctAFtfz2Pmw0TCVr3vWS6
+vz4vfN3LXXd0bhqL7TURaZEm+i1/IFWbEavWS2UfTgliE8KvyQniiq0Nrd1e0tlXlRbbZ6/0eabo
+JGdK82yzJiYEcdmBpqtP0XqpfL4xQWzbPtxkFvE8D2aIATVTL3zdyUn1bzg0kRNP1KIoojAMjTrD
+2vweE74Vk32ehSA2bR9O05RkPNswQQyzmRDEddE0vu/37rPK5szY8HwTIkGiu0/TppCyiUL3/HEi
+YqqRCYCWTbZTJsuyk7yndfi+z3a7HepmDZjyfiIi5WtZt2ezLOu9f97e3qiubJCO36QL0VzpHr/p
+Pr++vuj4qrbKvjabDZUvu/2n6uFt0VlCJY5jJOkB0jTdhFPxEf/7jMp+Pj4+aKhX6V1P7NWFv5VF
+1GupFSi/4iyTX0I32+22VZ5hMG66ns7ObQwyXF1dnbxXyNPdH+WCWCa/BBFxFa0q52lRFMzzPDaZ
+TCCMQSMuZNdzYQwylLVfm+XDVquV1vfb5MdRuSA2eUy5ubnhRMSr+iyKgnHO6c+fPxDIoBMqUzoO
+PT2kyIRjs0pzkiRaT76DFsRN6Mg//Pv3b15nTI+iSPvXUxVvb28/GZ+6ZvEC8jSZ0uocbG1pepYL
+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
+AABJRU5ErkJggg==
+" transform="translate(1818, 1239)"></image>
+</g>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,1080.83 436.981,47.2441 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,1080.83 3552.76,47.2441 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,1080.83 455.879,1080.83 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,889.428 455.879,889.428 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,698.023 455.879,698.023 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,506.617 455.879,506.617 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,315.212 455.879,315.212 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,123.806 455.879,123.806 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,1080.83 3533.86,1080.83 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,889.428 3533.86,889.428 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,698.023 3533.86,698.023 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,506.617 3533.86,506.617 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,315.212 3533.86,315.212 "></polyline>
+<polyline clip-path="url(#clip930)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,123.806 3533.86,123.806 "></polyline>
+<g clip-path="url(#clip930)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 333.039, 1115.33)" x="333.039" y="1115.33">15</text>
+</g>
+<g clip-path="url(#clip930)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 333.039, 923.928)" x="333.039" y="923.928">20</text>
+</g>
+<g clip-path="url(#clip930)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 333.039, 732.523)" x="333.039" y="732.523">25</text>
+</g>
+<g clip-path="url(#clip930)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 333.039, 541.117)" x="333.039" y="541.117">30</text>
+</g>
+<g clip-path="url(#clip930)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 333.039, 349.712)" x="333.039" y="349.712">35</text>
+</g>
+<g clip-path="url(#clip930)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 333.039, 158.306)" x="333.039" y="158.306">40</text>
+</g>
+<g clip-path="url(#clip930)">
+<image width="108" height="354" href="data:image/png;base64,
+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
+kLOP3jJQAAAAAElFTkSuQmCC
+" transform="translate(126, 387)"></image>
+</g>
+<path clip-path="url(#clip932)" d="M2026.92 439.942 L2771.38 634.013 L3321.96 653.851 L3321.96 123.806 L2026.92 123.806 L2026.92 439.942  Z" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.25"></path>
+<polyline clip-path="url(#clip932)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:0; stroke-opacity:0.25; fill:none" points="2026.92,439.942 2771.38,634.013 3321.96,653.851 3321.96,123.806 2026.92,123.806 2026.92,439.942 "></polyline>
+<polyline clip-path="url(#clip932)" style="stroke:#4d4d4d; stroke-linecap:round; stroke-linejoin:round; stroke-width:10; stroke-opacity:1; fill:none" points="2026.92,2114.42 2026.92,-986.346 "></polyline>
+<polyline clip-path="url(#clip932)" style="stroke:#4d4d4d; stroke-linecap:round; stroke-linejoin:round; stroke-width:10; stroke-opacity:1; fill:none" stroke-dasharray="40, 25" points="436.981,25.4671 494.681,40.5086 552.38,55.5501 610.08,70.5916 667.779,85.6331 725.479,100.675 783.178,115.716 840.878,130.758 898.577,145.799 956.277,160.841 1013.98,175.882 1071.68,190.924 1129.38,205.965 1187.07,221.007 1244.77,236.048 1302.47,251.09 1360.17,266.131 1417.87,281.173 1475.57,296.214 1533.27,311.256 1590.97,326.297 1648.67,341.339 1706.37,356.38 1764.07,371.422 1821.77,386.463 1879.47,401.505 1937.17,416.546 1994.87,431.588 2052.57,446.629 2110.27,461.671 2167.97,476.712 2225.67,491.754 2283.37,506.795 2341.07,521.837 2398.77,536.878 2456.46,551.92 2514.16,566.961 2571.86,582.003 2629.56,597.044 2687.26,612.086 2744.96,627.127 2802.66,642.169 2860.36,657.21 2918.06,672.252 2975.76,687.293 3033.46,702.335 3091.16,717.376 3148.86,732.418 3206.56,747.459 3264.26,762.501 3321.96,777.542 3379.66,792.584 3437.36,807.625 3495.06,822.667 3552.76,837.708 "></polyline>
+<polyline clip-path="url(#clip932)" style="stroke:#4d4d4d; stroke-linecap:round; stroke-linejoin:round; stroke-width:10; stroke-opacity:1; fill:none" stroke-dasharray="40, 20, 5, 20" points="436.981,549.902 494.681,551.981 552.38,554.06 610.08,556.139 667.779,558.218 725.479,560.297 783.178,562.376 840.878,564.455 898.577,566.534 956.277,568.613 1013.98,570.692 1071.68,572.771 1129.38,574.85 1187.07,576.929 1244.77,579.008 1302.47,581.087 1360.17,583.166 1417.87,585.245 1475.57,587.324 1533.27,589.403 1590.97,591.482 1648.67,593.561 1706.37,595.64 1764.07,597.719 1821.77,599.798 1879.47,601.877 1937.17,603.956 1994.87,606.035 2052.57,608.114 2110.27,610.193 2167.97,612.271 2225.67,614.35 2283.37,616.429 2341.07,618.508 2398.77,620.587 2456.46,622.666 2514.16,624.745 2571.86,626.824 2629.56,628.903 2687.26,630.982 2744.96,633.061 2802.66,635.14 2860.36,637.219 2918.06,639.298 2975.76,641.377 3033.46,643.456 3091.16,645.535 3148.86,647.614 3206.56,649.693 3264.26,651.772 3321.96,653.851 3379.66,655.93 3437.36,658.009 3495.06,660.088 3552.76,662.167 "></polyline>
+<polyline clip-path="url(#clip932)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:8; stroke-opacity:1; fill:none" points="-2448,123.806 3321.96,123.806 3321.96,1655.05 "></polyline>
+<circle clip-path="url(#clip932)" cx="2026.92" cy="439.942" r="25.2" fill="#999999" fill-rule="evenodd" fill-opacity="1" stroke="#4d4d4d" stroke-opacity="1" stroke-width="2.88"></circle>
+<circle clip-path="url(#clip932)" cx="2771.38" cy="634.013" r="25.2" fill="#999999" fill-rule="evenodd" fill-opacity="1" stroke="#4d4d4d" stroke-opacity="1" stroke-width="2.88"></circle>
+<circle clip-path="url(#clip932)" cx="3321.96" cy="653.851" r="25.2" fill="#999999" fill-rule="evenodd" fill-opacity="1" stroke="#4d4d4d" stroke-opacity="1" stroke-width="2.88"></circle>
+<circle clip-path="url(#clip932)" cx="3321.96" cy="123.806" r="25.2" fill="#999999" fill-rule="evenodd" fill-opacity="1" stroke="#4d4d4d" stroke-opacity="1" stroke-width="2.88"></circle>
+<circle clip-path="url(#clip932)" cx="2026.92" cy="123.806" r="25.2" fill="#999999" fill-rule="evenodd" fill-opacity="1" stroke="#4d4d4d" stroke-opacity="1" stroke-width="2.88"></circle>
+<polyline clip-path="url(#clip932)" style="stroke:#d55e00; stroke-linecap:round; stroke-linejoin:round; stroke-width:16; stroke-opacity:1; fill:none" points="3321.96,123.806 3321.96,653.851 "></polyline>
+<polyline clip-path="url(#clip932)" style="stroke:#d55e00; stroke-linecap:round; stroke-linejoin:round; stroke-width:16; stroke-opacity:1; fill:none" points="3348.96,599.851 3321.96,653.851 3294.96,599.851 "></polyline>
+<polyline clip-path="url(#clip932)" style="stroke:#d55e00; stroke-linecap:round; stroke-linejoin:round; stroke-width:16; stroke-opacity:1; fill:none" points="3321.96,653.851 3321.96,123.806 "></polyline>
+<circle clip-path="url(#clip932)" cx="3321.96" cy="653.851" r="43.2" fill="#d55e00" fill-rule="evenodd" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="2.88"></circle>
+<g clip-path="url(#clip930)">
+<text style="fill:#333333; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:124px; text-anchor:middle;" transform="rotate(0, 1888.44, 1047.27)" x="1888.44" y="1047.27">A</text>
+</g>
+<g clip-path="url(#clip930)">
+<text style="fill:#333333; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:124px; text-anchor:middle;" transform="rotate(0, 1632.4, 319.931)" x="1632.4" y="319.931">B</text>
+</g>
+<g clip-path="url(#clip930)">
+<text style="fill:#333333; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:124px; text-anchor:middle;" transform="rotate(0, 667.779, 543.796)" x="667.779" y="543.796">C</text>
+</g>
+<g clip-path="url(#clip930)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 3460.44, 634.757)" x="3460.44" y="634.757">1785</text>
+</g>
+<g clip-path="url(#clip930)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 2909.86, 614.919)" x="2909.86" y="614.919">1705</text>
+</g>
+<g clip-path="url(#clip930)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 3460.44, 104.713)" x="3460.44" y="104.713">2200</text>
+</g>
+</svg>
+</div>
+</div>
+<p>One edge lowers cost faster; simplex moves along it.</p>
+<aside class="notes">
+<p>From the start, cost falls 20 per g/s moving left (less removal at stack 1) and 30 per g/s moving down (less at stack 2). The classic rule takes the steepest edge, down, which also reaches the cheaper neighbour here.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="step-3-keep-walking" class="slide level2">
+<h2>Step 3: Keep Walking</h2>
+<div id="14" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a></a><span class="fu">draw_walk</span>(<span class="fl">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<!--?xml version="1.0" encoding="utf-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="900" height="360" viewbox="0 0 3600 1440">
+<defs>
+  <clippath id="clip990">
+    <rect x="0" y="0" width="3600" height="1440"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip990)" d="M0 1440 L3600 1440 L3600 -7.99361e-14 L0 -7.99361e-14  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip991">
+    <rect x="720" y="0" width="2521" height="1440"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip990)" d="M436.981 1080.83 L3552.76 1080.83 L3552.76 47.2441 L436.981 47.2441  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip992">
+    <rect x="436" y="47" width="3117" height="1035"></rect>
+  </clippath>
+</defs>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,1080.83 3552.76,1080.83 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,47.2441 3552.76,47.2441 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,1080.83 436.981,1061.94 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1013.98,1080.83 1013.98,1061.94 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1590.97,1080.83 1590.97,1061.94 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2167.97,1080.83 2167.97,1061.94 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2744.96,1080.83 2744.96,1061.94 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3321.96,1080.83 3321.96,1061.94 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,47.2441 436.981,66.1417 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1013.98,47.2441 1013.98,66.1417 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1590.97,47.2441 1590.97,66.1417 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2167.97,47.2441 2167.97,66.1417 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2744.96,47.2441 2744.96,66.1417 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3321.96,47.2441 3321.96,66.1417 "></polyline>
+<g clip-path="url(#clip990)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 436.981, 1198.72)" x="436.981" y="1198.72">25</text>
+</g>
+<g clip-path="url(#clip990)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 1013.98, 1198.72)" x="1013.98" y="1198.72">30</text>
+</g>
+<g clip-path="url(#clip990)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 1590.97, 1198.72)" x="1590.97" y="1198.72">35</text>
+</g>
+<g clip-path="url(#clip990)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 2167.97, 1198.72)" x="2167.97" y="1198.72">40</text>
+</g>
+<g clip-path="url(#clip990)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 2744.96, 1198.72)" x="2744.96" y="1198.72">45</text>
+</g>
+<g clip-path="url(#clip990)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 3321.96, 1198.72)" x="3321.96" y="1198.72">50</text>
+</g>
+<g clip-path="url(#clip990)">
+<image width="354" height="108" href="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAWIAAABsCAYAAABQIbi+AAAQ9klEQVR4nO2d73WjOhOHpffc78EV
+mFRgtgLjCpZUELuCOBUEVxCngpAK4q3ApIKQCkIqCKlg3g9Z53ixAAH6h/k95+jDvbuLZEkMo5nR
+DCciBoDLLBaLTps0CAJ2f3/PVY8H9GO1WlFRFOz5+fms1qbrPmWMsf9UDgQAHaRpansIQBFPT0+U
+JAlj7FsgPz4+no0w7rNPOTRi4Dqc806bNAxDtt/vz+ZFPwfKa0lEZ7M+XfcpY4z9T+VAAACgij9/
+/kDrqwCCGABghCiKbA/BWSCIweAgIi7TYJZwmziObQ9BKbL7UvS7IYgBANrZbDYnZom7uzt8KP8C
+QQwA0M65ab+qURq+1sdrqJMgCFgURSwMQzafz/EVBsAyu93O9hCcQpkgfnt7c1IIM8ZYlmUsy7LD
+fxJj38J5t9ux6XQKwQyARlar1Yls+P37N967I0ZrmsiyjPm+zzjnJNooAAA1HC5wHPB938o4XEaZ
+IJ7NZkIPYZqmLE1TFscx8zxP+nme57EkSVhRFNLeSCLieZ7/9BeGoVRfSZIwzjn1uaIIADjl4+Pj
+5J3CTUkBRGS0xXFM7Ns8UNtU95vnOfm+L9V3mqbK+0fr3nTvDTR9LQgC7e/20JpIBho3TchoxToM
++dPplL+/v3Mi4k2achiGvRJ4AAC+OfLNMMZwqaMK44JY5lii25C/3+95nue1fydNUzaZTCCMAeiI
+6Epz2V4MvjEuiF0JW5lOp5waEo4URQFhDEBHlsvlyf+7uLhAtIQA56ImTB9dmjTjoiiE4TcAgHqK
+ovjnv9frtaWRuI9RQSwTa2z6Bs50OuVNduskSdjX1xeEMQCSPDw8nLwvSNJfjVFBLCNkZ7OZ8cWS
+sVu3Cb0DYOxA+22HUUHsin24jKzwh1YMQDfgpKvHKRux66EtIucDAOBfRD6V6+trmCVqMCaIXbQP
+t8VVjR4AlyhrvzDrNWNMELtqHwYAqENkvsOV5maMCWJokwCcP6Jbq1CwmnHGRuy6fRgA0Ez5SnMQ
+BJZGMiyMCOJzsA8DAOoRvecwS8hhRBC7bh9+enpCWBoAPRGZJXClWQ4jgth1+7CsNo6E1gBUU77S
+jHBPeZywEdu2Dzflmziw3W71DgSAgSI6VT4+PkIblkS7IHbdPtzmthzqbAEgBtpvP7QLYtftw7Ll
+lOBMBEAenB7boV0Qu24fLofbVHF3dwdtGAABt7e3J6fKm5sbvC8tsG4jtmkf3mw2UmYJWRsyAGOk
+rP3iSnN7tApi1+3DMn0vl0s2nU7xdQdAgMjHgkxr7dEqiF22D8sUBw2CAJ5fIOTj44M2mw1dXV3R
+YrGgxWJBV1dXtNlsSFRCXvaZi8WCOOfCdnl56Vy8u8hJZ9OpfViXy8vLynk8tNVqRXXO+o+Pj5+/
+q33gOstGM4nS9TbKWWdZ1jiuIAhGX/bblebCniEitt1uG/dNuW2328bxisqru/bOyK6Njfcmz3Py
+PK/12hy35XL5z7h3u522OReut8lFKrcoiowvWlEUEMIDa7YFURiGvV5yxhiFYXgy7iqFYL1eU5qm
+VPV3PM8zPgeiluf5ydjyPDc2NlH/ojkUtSRJKAiCk3+32+1ovV5r/fgZFcQyWmeWZcY3lAoNBs3u
+mpnqt04DLmtQx225XDburyiKpJ5X9Rzba0JEzPd9a+MSfRy7vrtJkjTKKpVjNyqIyxvN9maS+TAU
+RWF0TGhyzca+EQmZttqozHG56fTlwrsjO7a6j5PKVp5XVSdYkYY8eEHctAFtfz2Pmw0TCVr3vWS6
+vz4vfN3LXXd0bhqL7TURaZEm+i1/IFWbEavWS2UfTgliE8KvyQniiq0Nrd1e0tlXlRbbZ6/0eabo
+JGdK82yzJiYEcdmBpqtP0XqpfL4xQWzbPtxkFvE8D2aIATVTL3zdyUn1bzg0kRNP1KIoojAMjTrD
+2vweE74Vk32ehSA2bR9O05RkPNswQQyzmRDEddE0vu/37rPK5szY8HwTIkGiu0/TppCyiUL3/HEi
+YqqRCYCWTbZTJsuyk7yndfi+z3a7HepmDZjyfiIi5WtZt2ezLOu9f97e3qiubJCO36QL0VzpHr/p
+Pr++vuj4qrbKvjabDZUvu/2n6uFt0VlCJY5jJOkB0jTdhFPxEf/7jMp+Pj4+aKhX6V1P7NWFv5VF
+1GupFSi/4iyTX0I32+22VZ5hMG66ns7ObQwyXF1dnbxXyNPdH+WCWCa/BBFxFa0q52lRFMzzPDaZ
+TCCMQSMuZNdzYQwylLVfm+XDVquV1vfb5MdRuSA2eUy5ubnhRMSr+iyKgnHO6c+fPxDIoBMqUzoO
+PT2kyIRjs0pzkiRaT76DFsRN6Mg//Pv3b15nTI+iSPvXUxVvb28/GZ+6ZvEC8jSZ0uocbG1pepYL
+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
+AABJRU5ErkJggg==
+" transform="translate(1818, 1239)"></image>
+</g>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,1080.83 436.981,47.2441 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,1080.83 3552.76,47.2441 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,1080.83 455.879,1080.83 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,889.428 455.879,889.428 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,698.023 455.879,698.023 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,506.617 455.879,506.617 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,315.212 455.879,315.212 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="436.981,123.806 455.879,123.806 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,1080.83 3533.86,1080.83 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,889.428 3533.86,889.428 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,698.023 3533.86,698.023 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,506.617 3533.86,506.617 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,315.212 3533.86,315.212 "></polyline>
+<polyline clip-path="url(#clip990)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3552.76,123.806 3533.86,123.806 "></polyline>
+<g clip-path="url(#clip990)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 333.039, 1115.33)" x="333.039" y="1115.33">15</text>
+</g>
+<g clip-path="url(#clip990)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 333.039, 923.928)" x="333.039" y="923.928">20</text>
+</g>
+<g clip-path="url(#clip990)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 333.039, 732.523)" x="333.039" y="732.523">25</text>
+</g>
+<g clip-path="url(#clip990)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 333.039, 541.117)" x="333.039" y="541.117">30</text>
+</g>
+<g clip-path="url(#clip990)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 333.039, 349.712)" x="333.039" y="349.712">35</text>
+</g>
+<g clip-path="url(#clip990)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 333.039, 158.306)" x="333.039" y="158.306">40</text>
+</g>
+<g clip-path="url(#clip990)">
+<image width="108" height="354" href="data:image/png;base64,
+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
+kLOP3jJQAAAAAElFTkSuQmCC
+" transform="translate(126, 387)"></image>
+</g>
+<path clip-path="url(#clip992)" d="M2026.92 439.942 L2771.38 634.013 L3321.96 653.851 L3321.96 123.806 L2026.92 123.806 L2026.92 439.942  Z" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.25"></path>
+<polyline clip-path="url(#clip992)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:0; stroke-opacity:0.25; fill:none" points="2026.92,439.942 2771.38,634.013 3321.96,653.851 3321.96,123.806 2026.92,123.806 2026.92,439.942 "></polyline>
+<polyline clip-path="url(#clip992)" style="stroke:#4d4d4d; stroke-linecap:round; stroke-linejoin:round; stroke-width:10; stroke-opacity:1; fill:none" points="2026.92,2114.42 2026.92,-986.346 "></polyline>
+<polyline clip-path="url(#clip992)" style="stroke:#4d4d4d; stroke-linecap:round; stroke-linejoin:round; stroke-width:10; stroke-opacity:1; fill:none" stroke-dasharray="40, 25" points="436.981,25.4671 494.681,40.5086 552.38,55.5501 610.08,70.5916 667.779,85.6331 725.479,100.675 783.178,115.716 840.878,130.758 898.577,145.799 956.277,160.841 1013.98,175.882 1071.68,190.924 1129.38,205.965 1187.07,221.007 1244.77,236.048 1302.47,251.09 1360.17,266.131 1417.87,281.173 1475.57,296.214 1533.27,311.256 1590.97,326.297 1648.67,341.339 1706.37,356.38 1764.07,371.422 1821.77,386.463 1879.47,401.505 1937.17,416.546 1994.87,431.588 2052.57,446.629 2110.27,461.671 2167.97,476.712 2225.67,491.754 2283.37,506.795 2341.07,521.837 2398.77,536.878 2456.46,551.92 2514.16,566.961 2571.86,582.003 2629.56,597.044 2687.26,612.086 2744.96,627.127 2802.66,642.169 2860.36,657.21 2918.06,672.252 2975.76,687.293 3033.46,702.335 3091.16,717.376 3148.86,732.418 3206.56,747.459 3264.26,762.501 3321.96,777.542 3379.66,792.584 3437.36,807.625 3495.06,822.667 3552.76,837.708 "></polyline>
+<polyline clip-path="url(#clip992)" style="stroke:#4d4d4d; stroke-linecap:round; stroke-linejoin:round; stroke-width:10; stroke-opacity:1; fill:none" stroke-dasharray="40, 20, 5, 20" points="436.981,549.902 494.681,551.981 552.38,554.06 610.08,556.139 667.779,558.218 725.479,560.297 783.178,562.376 840.878,564.455 898.577,566.534 956.277,568.613 1013.98,570.692 1071.68,572.771 1129.38,574.85 1187.07,576.929 1244.77,579.008 1302.47,581.087 1360.17,583.166 1417.87,585.245 1475.57,587.324 1533.27,589.403 1590.97,591.482 1648.67,593.561 1706.37,595.64 1764.07,597.719 1821.77,599.798 1879.47,601.877 1937.17,603.956 1994.87,606.035 2052.57,608.114 2110.27,610.193 2167.97,612.271 2225.67,614.35 2283.37,616.429 2341.07,618.508 2398.77,620.587 2456.46,622.666 2514.16,624.745 2571.86,626.824 2629.56,628.903 2687.26,630.982 2744.96,633.061 2802.66,635.14 2860.36,637.219 2918.06,639.298 2975.76,641.377 3033.46,643.456 3091.16,645.535 3148.86,647.614 3206.56,649.693 3264.26,651.772 3321.96,653.851 3379.66,655.93 3437.36,658.009 3495.06,660.088 3552.76,662.167 "></polyline>
+<polyline clip-path="url(#clip992)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:8; stroke-opacity:1; fill:none" points="-2448,123.806 3321.96,123.806 3321.96,1655.05 "></polyline>
+<circle clip-path="url(#clip992)" cx="2026.92" cy="439.942" r="25.2" fill="#999999" fill-rule="evenodd" fill-opacity="1" stroke="#4d4d4d" stroke-opacity="1" stroke-width="2.88"></circle>
+<circle clip-path="url(#clip992)" cx="2771.38" cy="634.013" r="25.2" fill="#999999" fill-rule="evenodd" fill-opacity="1" stroke="#4d4d4d" stroke-opacity="1" stroke-width="2.88"></circle>
+<circle clip-path="url(#clip992)" cx="3321.96" cy="653.851" r="25.2" fill="#999999" fill-rule="evenodd" fill-opacity="1" stroke="#4d4d4d" stroke-opacity="1" stroke-width="2.88"></circle>
+<circle clip-path="url(#clip992)" cx="3321.96" cy="123.806" r="25.2" fill="#999999" fill-rule="evenodd" fill-opacity="1" stroke="#4d4d4d" stroke-opacity="1" stroke-width="2.88"></circle>
+<circle clip-path="url(#clip992)" cx="2026.92" cy="123.806" r="25.2" fill="#999999" fill-rule="evenodd" fill-opacity="1" stroke="#4d4d4d" stroke-opacity="1" stroke-width="2.88"></circle>
+<polyline clip-path="url(#clip992)" style="stroke:#d55e00; stroke-linecap:round; stroke-linejoin:round; stroke-width:16; stroke-opacity:1; fill:none" points="3321.96,123.806 3321.96,653.851 2771.38,634.013 "></polyline>
+<polyline clip-path="url(#clip992)" style="stroke:#d55e00; stroke-linecap:round; stroke-linejoin:round; stroke-width:16; stroke-opacity:1; fill:none" points="2824.37,662.94 2771.38,634.013 2826.31,608.975 "></polyline>
+<polyline clip-path="url(#clip992)" style="stroke:#d55e00; stroke-linecap:round; stroke-linejoin:round; stroke-width:16; stroke-opacity:1; fill:none" points="2771.38,634.013 3321.96,653.851 "></polyline>
+<circle clip-path="url(#clip992)" cx="2771.38" cy="634.013" r="43.2" fill="#d55e00" fill-rule="evenodd" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="2.88"></circle>
+<g clip-path="url(#clip990)">
+<text style="fill:#333333; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:124px; text-anchor:middle;" transform="rotate(0, 1888.44, 1047.27)" x="1888.44" y="1047.27">A</text>
+</g>
+<g clip-path="url(#clip990)">
+<text style="fill:#333333; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:124px; text-anchor:middle;" transform="rotate(0, 1632.4, 319.931)" x="1632.4" y="319.931">B</text>
+</g>
+<g clip-path="url(#clip990)">
+<text style="fill:#333333; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:124px; text-anchor:middle;" transform="rotate(0, 667.779, 543.796)" x="667.779" y="543.796">C</text>
+</g>
+<g clip-path="url(#clip990)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 2909.86, 614.919)" x="2909.86" y="614.919">1705</text>
+</g>
+<g clip-path="url(#clip990)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 2165.4, 420.849)" x="2165.4" y="420.849">1728</text>
+</g>
+<g clip-path="url(#clip990)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 3460.44, 634.757)" x="3460.44" y="634.757">1785</text>
+</g>
+</svg>
+</div>
+</div>
+<p>Another edge goes downhill, along C’s limit.</p>
+</section>
+<section id="step-4-stop" class="slide level2">
+<h2>Step 4: Stop</h2>
+<p>Both edges leaving this corner go <strong>uphill</strong>: to 1728 and 1785, from 1705.</p>
+<div class="fragment fade-in">
+<p>For a linear objective, a corner with no downhill edge is the <strong>optimum</strong>: no further walking can help. Simplex took 2 steps and never looked at most of the corners.</p>
+</div>
+<aside class="notes">
+<p>Why is a local stop global? The feasible region is convex and the cost is linear, so if every edge out of a corner goes uphill, every direction into the region does too. That is the same argument as Wednesday’s “why a corner”, run in reverse.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-the-algorithm-tracks" class="slide level2">
+<h2>What the Algorithm Tracks</h2>
+<ul>
+<li><strong>Slack</strong> variables turn inequalities into equations: <span class="math inline">\(9.0R_1 + 11.5R_2 - s_B = 714\)</span>.</li>
+<li>At a corner, two of the variables are zero.</li>
+<li>A <strong>pivot</strong> swaps which variables are zero: one step along an edge.</li>
+<li>Stop when no pivot lowers the cost. (<a href="#/simplex-tableau">A tableau by hand</a>.)</li>
+</ul>
+</section></section>
+<section>
+<section id="shadow-prices" class="title-slide slide level1 center">
+<h1>Shadow Prices</h1>
+
+</section>
+<section id="binding-constraints" class="slide level2">
+<h2>Binding Constraints</h2>
+<p>A solution is found at a corner of the feasible region. At that corner, one or more constraints are <strong>binding</strong>: if we <em>relaxed</em> one by weakening it, we could improve the solution.</p>
+<div class="fragment fade-in">
+<p>At our optimum, <strong>B and C bind</strong>; A is slack, with room to spare.</p>
+</div>
+</section>
+<section id="shadow-prices-1" class="slide level2">
+<h2>Shadow Prices</h2>
+<p>The <strong>marginal cost</strong> of a constraint is the amount by which the solution would improve if the constraint capacity was relaxed by one unit.</p>
+<p>This is also referred to as the <strong>shadow price</strong> (these are also called the <em>dual variables</em> of the constraint).</p>
+<p>Non-zero shadow prices tell us that the constraint is binding, and their values rank which constraints are most influential.</p>
+</section>
+<section id="computing-the-shadow-prices" class="slide level2">
+<h2>Computing the Shadow Prices</h2>
+<p>At the optimal corner, the cost’s direction of steepest increase is a combination of the two binding constraints’ directions. Solve for the weights <span class="math inline">\(\lambda_B\)</span>, <span class="math inline">\(\lambda_C\)</span>:</p>
+<div class="fragment fade-in">
+<p><span class="math display">\[\begin{aligned}
+20 &amp;= 9.0\,\lambda_B + 1.5\,\lambda_C \\
+30 &amp;= 11.5\,\lambda_B + 14.2\,\lambda_C
+\end{aligned} \quad \Rightarrow \quad \lambda_B = 2.15, \quad \lambda_C = 0.37\]</span></p>
+</div>
+<aside class="notes">
+<p>Board item. At the optimum, moving along either binding edge must not lower the cost, which happens exactly when the cost gradient (20, 30) is a non-negative combination of the binding constraints’ gradients: B’s (9.0, 11.5) and C’s (1.5, 14.2). Write the two equations, one per coordinate, and solve the 2-by-2 system. Both weights come out positive, which is the optimality check. Receptor A is not binding, so its weight is zero.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reading-the-shadow-prices" class="slide level2">
+<h2>Reading the Shadow Prices</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Receptor</th>
+<th style="text-align: right;">Shadow price</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">A</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">slack: relaxing it saves nothing</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">B</td>
+<td style="text-align: right;">$2,150/yr</td>
+<td style="text-align: left;">per µg/m³ the standard at B is relaxed</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">C</td>
+<td style="text-align: right;">$370/yr</td>
+<td style="text-align: left;">per µg/m³ the standard at C is relaxed</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment fade-in">
+<p>If mitigation near receptor B (rerouting a school bus stop, say) lets regulators relax the limit there by 5 µg/m³, it is worth up to about $10,800 per year in avoided treatment.</p>
+</div>
+<aside class="notes">
+<p>Units matter: a shadow price is the objective’s units per unit of the constraint’s right-hand side, here dollars per year per microgram per cubic metre. It is a marginal value: it holds for small changes, until a different set of constraints binds and the corner changes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="shadow-prices-are-lagrange-multipliers" class="slide level2">
+<h2>Shadow Prices Are Lagrange Multipliers</h2>
+<p>For <span class="math inline">\(\min f(x)\)</span> subject to <span class="math inline">\(g_j(x) \geq b_j\)</span>: <span class="math display">\[\mathcal{L}(x, \lambda) = f(x) - \sum_j \lambda_j \left(g_j(x) - b_j\right) \quad \Rightarrow \quad \frac{\partial \mathcal{L}}{\partial b_j} = \lambda_j.\]</span></p>
+<p>Each multiplier is the shadow price (<a href="#/lagrange">derivation</a>).</p>
+</section></section>
+<section>
+<section id="solving-lps-in-jump" class="title-slide slide level1 center">
+<h1>Solving LPs in JuMP</h1>
+
+</section>
+<section id="the-same-problem-in-jump" class="slide level2">
+<h2>The Same Problem in JuMP</h2>
+<div id="18" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a></a>emissions_model <span class="op">=</span> <span class="fu">Model</span>(HiGHS.Optimizer)</span>
+<span id="cb5-2"><a></a><span class="pp">@variable</span>(emissions_model, <span class="fl">0</span> <span class="op">&lt;=</span> removal[i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_stacks] <span class="op">&lt;=</span> emission[i])</span>
+<span id="cb5-3"><a></a><span class="pp">@objective</span>(emissions_model, Min, <span class="fu">sum</span>(cost[i] <span class="op">*</span> removal[i] <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_stacks))</span>
+<span id="cb5-4"><a></a><span class="pp">@constraint</span>(emissions_model, limit[j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_receptors],</span>
+<span id="cb5-5"><a></a>    <span class="fu">sum</span>(t[j, i] <span class="op">*</span> (emission[i] <span class="op">-</span> removal[i]) <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_stacks) <span class="op">&lt;=</span> standard)</span>
+<span id="cb5-6"><a></a><span class="fu">set_silent</span>(emissions_model)</span>
+<span id="cb5-7"><a></a><span class="fu">optimize!</span>(emissions_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Removals: 45.2 and 26.7 g/s, the corner we walked to. Cost: about $1.7 million per year.</p>
+</section>
+<section id="reading-the-duals" class="slide level2">
+<h2>Reading the Duals</h2>
+<div id="20" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a></a>limit_prices <span class="op">=</span> <span class="fu">shadow_price</span>.(limit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Receptor</th>
+<th style="text-align: right;"><code>shadow_price</code></th>
+<th style="text-align: right;">By hand</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">A</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">B</td>
+<td style="text-align: right;">-2.15</td>
+<td style="text-align: right;">2.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">C</td>
+<td style="text-align: right;">-0.37</td>
+<td style="text-align: right;">0.37</td>
+</tr>
+</tbody>
+</table>
+<p>Same size, <strong>opposite sign</strong>: JuMP reports how the <em>objective</em> changes when a constraint is <strong>relaxed</strong> by one unit. Relaxing the standard lowers the cost.</p>
+</section>
+<section id="check-it-re-solve" class="slide level2">
+<h2>Check It: Re-solve</h2>
+<div id="22" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a></a><span class="co"># Relax the standard at B by 1 µg/m³ and solve again</span></span>
+<span id="cb7-2"><a></a><span class="fu">set_normalized_rhs</span>(limit[<span class="fl">2</span>], <span class="fu">normalized_rhs</span>(limit[<span class="fl">2</span>]) <span class="op">+</span> <span class="fl">1</span>)</span>
+<span id="cb7-3"><a></a><span class="fu">optimize!</span>(emissions_model)</span>
+<span id="cb7-4"><a></a>relaxed_cost <span class="op">=</span> <span class="fu">objective_value</span>(emissions_model)</span>
+<span id="cb7-5"><a></a><span class="fu">set_normalized_rhs</span>(limit[<span class="fl">2</span>], <span class="fu">normalized_rhs</span>(limit[<span class="fl">2</span>]) <span class="op">-</span> <span class="fl">1</span>)   <span class="co"># restore</span></span>
+<span id="cb7-6"><a></a><span class="fu">optimize!</span>(emissions_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Relaxing B by 1 µg/m³ changes the cost by -2.15 ($1000/yr): the shadow price, as promised.</p>
+<aside class="notes">
+<p>This is the verification step: the shadow price is a prediction about re-solving, so re-solve and check. It matches to the digits shown because a 1 µg/m³ change does not change which constraints bind. A large enough change would, and then the shadow price would stop predicting the new cost.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="key-takeaways-and-upcoming-schedule" class="title-slide slide level1 center">
+<h1>Key Takeaways and Upcoming Schedule</h1>
+
+</section>
+<section id="key-takeaways" class="slide level2">
+<h2>Key Takeaways</h2>
+<ul>
+<li class="fragment"><strong>Simplex</strong> walks downhill from corner to corner and stops when no edge improves.</li>
+<li class="fragment">At the optimum, <strong>binding</strong> constraints hold exactly; <strong>slack</strong> ones have room to spare.</li>
+<li class="fragment">A <strong>shadow price</strong> is how much the objective improves per unit a constraint is relaxed. Zero means slack.</li>
+<li class="fragment">Read shadow prices <strong>with units</strong>, and check the solver’s <strong>sign convention</strong>.</li>
+</ul>
+</section>
+<section id="next-classes" class="slide level2">
+<h2>Next Classes</h2>
+<p><strong>Wednesday</strong>: Quiz 3, then the project proposal peer review.</p>
+<p><strong>Next Monday</strong>: Lab: linear programming with <code>JuMP.jl</code> (with the TAs).</p>
+</section>
+<section id="assessments" class="slide level2">
+<h2>Assessments</h2>
+<p><strong>Homework 6</strong>: Due Thursday, October 22.</p>
+<p><strong>Mini-Project 1</strong>: Due Thursday, October 22.</p>
+<p><strong>Homework 7</strong>: Assigned Wednesday, due Thursday, October 29.</p>
+</section></section>
+<section>
+<section id="appendix" class="title-slide slide level1 center">
+<h1>Appendix</h1>
+
+</section>
+<section id="simplex-tableau" class="slide level2">
+<h2>A Simplex Tableau by Hand</h2>
+<p>Easiest when the origin is a feasible corner:</p>
+<p><span class="math display">\[\begin{aligned}
+\max_{x_1, x_2} \quad &amp; 230x_1 + 120x_2 \\
+\text{s.t.} \quad &amp; 0.9x_1 + 0.5x_2 + s_1 = 600, \quad x_1 + x_2 + s_2 = 1000
+\end{aligned}\]</span></p>
+<p>At the origin, <span class="math inline">\(s_1 = 600\)</span> and <span class="math inline">\(s_2 = 1000\)</span>.</p>
+<ul>
+<li><strong>Entering</strong>: <span class="math inline">\(x_1\)</span>, the largest objective coefficient (230).</li>
+<li><strong>Leaving</strong>: <span class="math inline">\(s_1\)</span>, by the ratio test <span class="math inline">\(\min(600/0.9,\ 1000)\)</span>.</li>
+</ul>
+</section>
+<section id="a-simplex-tableau-by-hand" class="slide level2">
+<h2>A Simplex Tableau by Hand</h2>
+<p><span class="math display">\[z = 153333 - 7.8\,x_2 - 255.6\,s_1\]</span></p>
+<p>Every coefficient is negative, so no pivot can raise <span class="math inline">\(z\)</span>: optimal at <span class="math inline">\(x_1 =\)</span> 666.7 and <span class="math inline">\(x_2 = 0\)</span>.</p>
+<p>The coefficient of each slack is that constraint’s <strong>shadow price</strong>: about 255.6 for the first, 0 for the second (its slack is still positive).</p>
+</section>
+<section id="lagrange" class="slide level2">
+<h2>Lagrange Multipliers</h2>
+<p><strong>Lagrange multipliers</strong> incorporate equality constraints into an “unconstrained” form. For <span class="math display">\[\max_{x,y} f(x,y) \quad \text{subject to} \quad g(x,y) = 0,\]</span> <span class="math display">\[\mathcal{L}(x, y, \lambda) = f(x,y) - \lambda g(x,y).\]</span></p>
+<p>Inequalities become equalities with squared slack variables: <span class="math inline">\(x_1 \geq A\)</span> becomes <span class="math inline">\(x_1 - S_1^2 = A\)</span>, and <span class="math inline">\(x_2 \leq B\)</span> becomes <span class="math inline">\(x_2 + S_2^2 = B\)</span>.</p>
+</section>
+<section id="lagrange-multipliers" class="slide level2">
+<h2>Lagrange Multipliers</h2>
+<div class="small-math">
+<p><span class="math display">\[\mathcal{L}(\mathbf{x}, S_1, S_2, \lambda_1, \lambda_2) = f(\mathbf{x}) - \lambda_1(x_1 - S_1^2 - A) - \lambda_2(x_2 + S_2^2 - B)\]</span></p>
+</div>
+<p>Optima are where every partial derivative of <span class="math inline">\(\mathcal{L}\)</span> is zero, and</p>
+<p><span class="math display">\[\frac{\partial \mathcal{L}}{\partial A} = \lambda_1, \qquad \frac{\partial \mathcal{L}}{\partial B} = \lambda_2:\]</span></p>
+<p>each multiplier is the rate at which the optimum changes as its constraint moves, the shadow price.</p>
+</section></section>
+<section>
+<section id="references" class="title-slide slide level1 center">
+<h1>References</h1>
+
+</section>
+<section id="references-1" class="slide level2 smaller scrollable">
+<h2>References</h2>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-Dantzig1963-li" class="csl-entry" role="listitem">
+Dantzig, G. B. (1963). <em><span class="nocase">Linear Programming and Extensions</span></em>. Princeton, NJ: Princeton University Press.
+</div>
+</div>
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true,"numbers":true},
+'chalkboard': {"buttons":true,"theme":"whiteboard"},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp("https:\/\/envsys\.viveks\.me\/fall2025");
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+                // target, if specified
+                link.setAttribute("target", "_blank");
+                if (link.getAttribute("rel") === null) {
+                  link.setAttribute("rel", "noopener");
+                }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

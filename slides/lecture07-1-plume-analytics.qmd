@@ -127,7 +127,7 @@ $\sigma_y$, $\sigma_z$ are functions of the atmospheric turbulence class and the
 
 {{< include _poll-prompt.qmd >}}
 
-# Gaussian Model Behavior
+# Gaussian Plume Model Behavior
 
 ## Visualizing a 3D Model
 
@@ -210,11 +210,9 @@ for i in 1:length(profile_distances)
     plot!(p_cross, crosswind, [plume_ugm3(xk, y, 0.0, plume_params) for y in crosswind],
         color=profile_colours[i], linestyle=profile_styles[i], label="$(xk) km")
 end
-plot!(p_cross, size=(1050, 330), left_margin=12mm, right_margin=8mm,
+plot!(p_cross, size=(1200, 450), left_margin=12mm, right_margin=8mm,
     bottom_margin=12mm, top_margin=5mm)
 ```
-
-$\sigma_y$: `{julia} round(sig_y(0.1); digits=1)` m at 100 m, `{julia} Int(round(sig_y(1)))` m at 1 km, `{julia} Int(round(sig_y(8)))` m at 8 km (about `{julia} Int(round(sig_y(8) / sig_y(0.1)))`-fold).
 
 ::: {.notes}
 Each curve is a slice across the plume at one distance. Close to the stack the plume is narrow and has barely reached the ground; further out it is wider and flatter, because the same amount of pollutant is spread across more air. The width is sigma y, and it changes by a factor of about fifty across this domain. Keep that in mind for later: any grid fine enough to see the plume far away is too coarse to see it near the stack.
@@ -237,13 +235,12 @@ p_line = plot(centerline_positions, centerline, color=:black, linewidth=4,
     xlabel="Distance downwind  [km]", ylabel="C  [µg/m³]",
     legend=false)
 scatter!(p_line, [peak_distance], [peak_value], color=cb_vermillion, markersize=9)
-plot!(p_line, size=(1050, 230), left_margin=12mm, right_margin=8mm,
+plot!(p_line, size=(1050, 330), left_margin=12mm, right_margin=8mm,
     bottom_margin=12mm, top_margin=5mm)
 ```
 
-Ground-level peak of `{julia} Int(round(peak_value))` µg/m³ at `{julia} round(peak_distance; digits=2)` km.
 
-## Why Downwind?
+## Why Does This Occur Downwind?
 
 ```{julia}
 #| output: false
@@ -251,20 +248,26 @@ Ground-level peak of `{julia} Int(round(peak_value))` µg/m³ at `{julia} round(
 # Distance at which sigma_z reaches H / sqrt(2), the rough location of the peak
 rule_sigma = plume_params.H / sqrt(2)
 rule_distance = (0.05:0.01:20)[findfirst(x -> sig_z(x) >= rule_sigma, 0.05:0.01:20)]
-```
 
-On the ground and the centreline:
+# At the actual peak: how fast sigma_y grows relative to sigma_z (finite difference),
+# the exponent that rate predicts, and the exponent the model actually has there
+fd_step = 0.01
+growth_ratio = log(sig_y(peak_distance + fd_step) / sig_y(peak_distance - fd_step)) /
+               log(sig_z(peak_distance + fd_step) / sig_z(peak_distance - fd_step))
+predicted_exponent = (1 + growth_ratio) / 2
+peak_exponent = plume_params.H^2 / (2 * sig_z(peak_distance)^2)
+```
 
 $$C(x, 0, 0) = \frac{Q}{\pi u\,\sigma_y\sigma_z}\exp\left(-\frac{H^2}{2\sigma_z^2}\right)$$
 
 Near the stack, which factor controls $C$? Far downwind?
 
 ::: {.fragment .fade-in}
-They balance roughly where $\sigma_z \approx H/\sqrt{2} =$ `{julia} Int(round(rule_sigma))` m, about `{julia} round(rule_distance; digits=1)` km here; the actual peak is at `{julia} round(peak_distance; digits=1)` km, since $\sigma_y$ grows faster than $\sigma_z$.
+$C$ peaks where **arrival** (the exponential) rises as fast as **dilution** falls, in percentage terms: $\sigma_z \approx H/\sqrt{2} =$ `{julia} Int(round(rule_sigma))` m, about `{julia} round(rule_distance; digits=1)` km, where the exponential is $e^{-1}$. The actual peak is at `{julia} round(peak_distance; digits=1)` km: $\sigma_y$ grows faster than $\sigma_z$.
 :::
 
 ::: {.notes}
-Board item. Near the stack sigma z is small compared with H, so the exponential is tiny: the plume has not yet spread down to the ground. Far downwind the exponential is close to 1, and the one over sigma y sigma z factor takes over: the plume is diluted into more and more air. The peak sits where these two effects balance. Derivation for the board: assume sigma y is a fixed multiple of sigma z. Then C is proportional to one over sigma z squared, times the exponential. Take the log, differentiate with respect to sigma z and set it to zero: minus two over sigma z plus H squared over sigma z cubed equals zero, so sigma z squared equals H squared over two. Here sigma y grows faster than sigma z, so dilution starts winning a little earlier and the real peak comes before the rule's distance.
+Board item. Near the stack sigma z is small compared with H, so the exponential is tiny: the plume has not yet spread down to the ground. Far downwind the exponential is close to 1, and the one over sigma y sigma z factor takes over: the plume is diluted into more and more air. Call these arrival, the exponential, and dilution, the one over sigma y sigma z factor. The peak sits where the two effects balance in rate, not in size. Moving downwind, each 1% growth in sigma z cuts the dilution factor by 2%, if sigma y grows in step with sigma z, and raises the exponential by H squared over sigma z squared percent, which is large near the stack and shrinks with distance. They match when H squared over sigma z squared is 2, which is exactly where the exponential equals e to the minus 1. So the e to the minus 1 comes from the 2 in the dilution factor, not from anything special about the exponential. Derivation for the board: assume sigma y is a fixed multiple of sigma z. Then C is proportional to one over sigma z squared, times the exponential. Take the log, differentiate with respect to sigma z and set it to zero: minus two over sigma z plus H squared over sigma z cubed equals zero, so sigma z squared equals H squared over two. Here sigma y grows faster than sigma z: at the peak, a 1% increase in sigma z comes with a `{julia} round(growth_ratio; digits=2)`% increase in sigma y, so dilution falls by `{julia} round(1 + growth_ratio; digits=2)`% and the exponential has to be climbing that fast too, which happens closer to the stack. The same argument predicts the exponent at the peak is half of that, `{julia} round(predicted_exponent; digits=2)`, and the model's exponent there is `{julia} round(peak_exponent; digits=2)`: the exponential is at about `{julia} round(exp(-peak_exponent); digits=2)` rather than 0.37.
 :::
 
 ## Stack Height Changes The Ground-Level $C$
@@ -293,12 +296,11 @@ for i in 1:length(stack_heights)
     plot!(p_height, far_positions, centreline_h, color=height_colours[i],
         linestyle=height_styles[i], label="H = $(stack_heights[i]) m")
 end
-hline!(p_height, [standard], color=:black, linestyle=:dashdot, linewidth=2, label="standard")
-plot!(p_height, size=(1050, 330), left_margin=12mm, right_margin=8mm,
+hline!(p_height, [standard], color=:black, linestyle=:dashdot, linewidth=2, label="1-hour SO₂ standard, $(standard) µg/m³")
+plot!(p_height, size=(1200, 450), left_margin=12mm, right_margin=8mm,
     bottom_margin=12mm, top_margin=5mm)
 ```
 
-A taller stack height means there is more cross-wind dispersion before the pollutant reaches the ground.
 
 ::: {.notes}
 Stack height enters through the exponential, so it has an enormous effect on the ground-level peak: going from 41 to 100 metres cuts it by a factor of about sixteen. But the emissions are unchanged. The pollution has not gone away; it comes down further downwind, more dilute, over a larger area. That is the tall-stacks trade-off, and part of how acid rain became a regional problem rather than a local one. H here is the effective height, which includes how far the hot exhaust rises above the physical stack. One caution: the 100 m peak is at nearly 15 km, and the fitted sigma curves are not reliable much beyond 10 km, so treat that number as rough.
@@ -348,12 +350,11 @@ for i in 1:length(class_names)
     plot!(p_class, near_positions, c, color=class_colours[i], linestyle=class_styles[i],
         label=class_labels[i])
 end
-hline!(p_class, [standard], color=:black, linestyle=:dashdot, linewidth=2, label="standard")
-plot!(p_class, size=(1050, 330), left_margin=12mm, right_margin=8mm,
+hline!(p_class, [standard], color=:black, linestyle=:dashdot, linewidth=2, label="1-hour SO₂ standard, $(standard) µg/m³")
+plot!(p_class, size=(1200, 450), left_margin=12mm, right_margin=8mm,
     bottom_margin=12mm, top_margin=5mm)
 ```
 
-A sunny afternoon peaks higher and closer: `{julia} Int(round(class_peaks[1]))` µg/m³ at `{julia} round(class_peak_distances[1]; digits=1)` km, against `{julia} Int(round(class_peaks[3]))` at `{julia} round(class_peak_distances[3]; digits=1)` km on a clear night.
 
 ::: {.notes}
 Same stack, same emissions, same wind; only the stability changes. On a sunny afternoon the ground heats the air and strong vertical eddies drag the plume down within a few hundred metres, so the peak is high and close to the stack. On a clear night the air is stable, the plume stays aloft as a thin ribbon and comes down slowly, so the peak is lower but much further out, and the plume stays above the standard for many kilometres. So which class is the worst case depends on the question: the highest peak, or the most ground above the standard, or a particular receptor. You will work through that on HW5. Holding the wind at 2.5 m/s for all three is a simplification, but that speed is plausible for both a sunny afternoon and a clear night.
@@ -363,7 +364,7 @@ Same stack, same emissions, same wind; only the stability changes. On a sunny af
 
 ```{julia}
 #| label: fig-area
-#| fig-cap: "Ground-level footprint, with the region above the standard shaded and outlined in black. The exceedance continues past the 10 km edge of the domain."
+#| fig-cap: "Ground-level footprint with the standard's contour (black). The exceedance continues past the 10 km edge of the domain."
 #| echo: true
 #| code-fold: true
 
@@ -376,17 +377,13 @@ area_above = count(area_C .> standard) * (area_dx * 1000) * area_dy / 1e6   # [k
 
 p_area = contourf(area_x, area_y, area_C, color=:viridis, linewidth=0, colorbar_title="\nC  [µg/m³]", colorbar_titlefontsize=18, clims=(0, 2000),
     xlabel="Distance downwind  [km]", ylabel="Crosswind  [m]")
-# Shade the cells above the standard; NaN cells are left transparent
-above_standard = [c > standard ? 1.0 : NaN for c in area_C]
-heatmap!(p_area, area_x, area_y, above_standard, color=cgrad([cb_vermillion, cb_vermillion]),
-    alpha=0.45, colorbar_entry=false)
 contour!(p_area, area_x, area_y, area_C, levels=[standard], color=:black, linewidth=3,
     colorbar_entry=false)
 plot!(p_area, size=(1050, 310), left_margin=12mm, right_margin=22mm,
     bottom_margin=12mm, top_margin=5mm)
 ```
 
-About `{julia} round(area_above; digits=1)` km² (shaded) is above the standard within 10 km; the plume is still above it at the edge.
+About `{julia} round(area_above; digits=1)` km² is above the 1-hour SO$_2$ standard (`{julia} standard` µg/m³) within 10 km; the plume is still above it at the edge.
 
 ::: {.notes}
 This is the third question a permit asks: not just how bad the worst point is, but how much ground is exposed above the limit. We count the grid cells above the standard and add up their areas. On a stable night like this one the plume stays thin and travels a long way, so the exceedance runs right off the edge of our domain. The honest answer to "how large is the area" is "at least five square kilometres, and we cannot say how much more from these sigma curves", because they are not reliable much beyond 10 km.
@@ -471,7 +468,7 @@ contour!(p_super, super_x, super_y, super_C, levels=[standard], color=:black, li
     colorbar_entry=false)
 scatter!(p_super, [s[1] for s in stacks], [s[2] for s in stacks], color=:white,
     markerstrokecolor=:black, markersize=9, label=false)
-plot!(p_super, size=(1050, 270), left_margin=12mm, right_margin=22mm,
+plot!(p_super, size=(1050, 330), left_margin=12mm, right_margin=22mm,
     bottom_margin=12mm, top_margin=5mm)
 ```
 
@@ -486,20 +483,17 @@ This picks up the emissions-cutting option from the previous slides. Suppose thr
 ## Key Takeaways
 
 ::: {.incremental}
-- The peak is **downwind**: the plume must spread down to the ground first.
-- A **taller stack** lowers the peak and moves it out; the pollution goes further, not away.
-- A permit asks **where**, **how much**, and **over what area**.
-- Whether the **grid** matters depends on what you report.
-- Concentrations **add**: compliant sources can jointly violate.
+- The ground-level peak is downwind of the stack: the plume must spread down to the ground first.
+- A taller stack lowers the peak and moves it out.
+- Whether the grid resolution matters depends on what you report.
+- Concentrations add and can change the area as well as peak level.
 :::
 
 ## Next Classes
 
-**Wednesday**: Model validation. Every figure today rested on assumptions we chose. How would we find out if one of them were wrong?
+**Wednesday**: Model calibration and validation.
 
 ## Assessments
-
-**Quiz 2**: Today.
 
 **Mini-Project 1**: Due Thursday, October 22.
 

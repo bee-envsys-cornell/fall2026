@@ -1,0 +1,507 @@
+---
+title: "The Simplex Method and Shadow Prices"
+subtitle: "Lecture 14"
+author: "Vivek Srikrishnan"
+course: "BEE 4750"
+institution: "Cornell University"
+date: "October 19, 2026"
+format:
+    revealjs:
+        slide-number: c/t
+        show-slide-number: all
+        center-title-slide: true
+        width: 1280
+        height: 720
+        transition: none
+        toc: true
+        toc-depth: 1
+        toc-title: "Overview"
+        history: false
+        link-external-newwindow: true
+        theme: ../sass/slides.scss
+        template-partials:
+            - title-slide.html
+        menu:
+            numbers: true
+        html-math-method: mathjax
+        include-in-header: mathjax-config.html
+        date-format: long
+        email-obfuscation: javascript
+        chalkboard:
+            theme: whiteboard
+            buttons: true
+        controls: true
+engine: julia
+julia:
+  exeflags: ["+1.11.5"]
+execute:
+    freeze: auto
+    daemon: 600
+---
+
+```{julia}
+#| output: false
+import Pkg
+Pkg.activate(@__DIR__)
+Pkg.instantiate()
+```
+
+```{julia}
+#| output: false
+using Plots
+using Measures
+using LaTeXStrings
+using JuMP
+using HiGHS
+
+plot_font = "Palatino Roman"
+default(
+    fontfamily=plot_font,
+    linewidth=3,
+    framestyle=:box,
+    label=nothing,
+    grid=false,
+    guidefontsize=18,
+    legendfontsize=16,
+    tickfontsize=16,
+    titlefontsize=20,
+    bottom_margin=10mm,
+    left_margin=5mm
+)
+
+# Okabe-Ito palette: distinguishable under all common types of colour
+# blindness, and every pair also differs in line style so the figures
+# still read in greyscale.
+cb_orange = "#E69F00"
+cb_green = "#009E73"
+cb_yellow = "#F0E442"
+cb_blue = "#0072B2"
+cb_vermillion = "#D55E00"
+cb_purple = "#CC79A7"
+
+# Whole numbers with thousands separators, for dollar amounts in text
+commas(n) = replace(string(Int(n)), r"(?<=\d)(?=(\d{3})+$)" => ",")
+```
+
+```{julia}
+#| output: false
+
+# Carried over from Wednesday: the two-stack emissions problem.
+sig_y(xk) = 34.0 * xk^0.894
+
+function sig_z(xk)
+    if xk < 1
+        return 14.35 * xk^0.740 - 0.35
+    else
+        return 62.6 * xk^0.180 - 48.6
+    end
+end
+
+function plume(xk, y, z, params)
+    if xk <= 0.05
+        return 0.0
+    end
+    sy, sz = sig_y(xk), sig_z(xk)
+    return (params.Q / (2π * params.u_wind * sy * sz)) * exp(-y^2 / (2sy^2)) * (
+        exp(-(z - params.H)^2 / (2sz^2)) + exp(-(z + params.H)^2 / (2sz^2)))
+end
+plume_ugm3(xk, y, z, params) = plume(xk, y, z, params) * 1e6
+
+standard = 196                                  # 1-hour SO₂ standard  [µg/m³]
+stack_location = [(0, 0), (1.5, 200)]           # (downwind [km], crosswind [m])
+emission = [50, 40]                             # uncontrolled emissions  [g/s]
+receptor_name = ["A", "B", "C"]
+receptor_location = [(2.5, 0), (4.5, 120), (4.0, 250)]
+stack_design = (; H=41, u_wind=2.5)
+cost = [20, 30]                                 # [$1000/yr per g/s removed]
+
+function transmission(stack, receptor)
+    sx, sy = stack_location[stack]
+    rx, ry = receptor_location[receptor]
+    return plume_ugm3(rx - sx, ry - sy, 0.0, (; stack_design..., Q=1))
+end
+
+n_stacks, n_receptors = length(emission), length(receptor_name)
+t = [transmission(i, j) for j in 1:n_receptors, i in 1:n_stacks]   # rows: receptors
+required = t * emission .- standard              # removal each receptor needs  [µg/m³]
+
+is_feasible(r) = all(t * r .>= required .- 1e-6) &&
+    all(-1e-9 .<= r .<= emission .+ 1e-9)
+
+# Corners of the feasible region, in order around it
+boundaries = [[(t[j, 1], t[j, 2], required[j]) for j in 1:n_receptors];
+              [(1, 0, 0), (1, 0, emission[1]), (0, 1, 0), (0, 1, emission[2])]]
+
+function crossing(l1, l2)
+    determinant = l1[1] * l2[2] - l1[2] * l2[1]
+    if abs(determinant) < 1e-9
+        return [NaN, NaN]
+    end
+    return [(l1[3] * l2[2] - l1[2] * l2[3]) / determinant,
+            (l1[1] * l2[3] - l1[3] * l2[1]) / determinant]
+end
+
+n_boundaries = length(boundaries)
+crossings = [crossing(boundaries[i], boundaries[k]) for i in 1:n_boundaries for k in (i+1):n_boundaries]
+corners = unique(p -> round.(p; digits=6), filter(p -> !any(isnan, p) && is_feasible(p), crossings))
+centre = sum(corners) / length(corners)
+corners = sort(corners, by=p -> atan(p[2] - centre[2], p[1] - centre[1]))
+corner_cost = [sum(cost .* c) for c in corners]
+```
+
+# Review of Last Class
+
+## The Emissions Problem
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+line_style = [:solid, :dash, :dashdot]
+function draw_region()
+    p = plot(Shape(first.(corners), last.(corners)), color=cb_blue, alpha=0.25,
+        linewidth=0, xlims=(25, 52), ylims=(15, 42), xlabel=L"R_1 \; \mathrm{[g/s]}",
+        ylabel=L"R_2 \; \mathrm{[g/s]}")
+    for j in 1:n_receptors
+        a1, a2, rhs = boundaries[j]
+        # Label each line at a point where it is inside the axes
+        if abs(a2) < 1e-6
+            vline!(p, [rhs / a1], color=:gray30, linestyle=line_style[j], linewidth=2.5)
+            label_at = (rhs / a1 - 1.2, 17)
+        else
+            r1 = 25:0.5:52
+            plot!(p, r1, (rhs .- a1 .* r1) ./ a2, color=:gray30, linestyle=line_style[j],
+                linewidth=2.5)
+            r1_at_36 = (rhs - a2 * 36) / a1
+            label_at = 27 <= r1_at_36 <= 48 ? (r1_at_36 + 2, 36) : (27, (rhs - a1 * 27) / a2 + 1.5)
+        end
+        annotate!(p, label_at..., text(receptor_name[j], 20, :gray20, plot_font))
+    end
+    plot!(p, [0, emission[1], emission[1]], [emission[2], emission[2], 0], color=:black,
+        linewidth=2)
+    return p
+end
+
+optimal_cost, best = findmin(corner_cost)
+optimum = corners[best]
+p_review = draw_region()
+scatter!(p_review, [optimum[1]], [optimum[2]], markershape=:star5, markersize=16,
+    color=cb_vermillion, markerstrokecolor=:black)
+plot!(p_review, size=(900, 380), left_margin=12mm, bottom_margin=12mm)
+```
+
+The cheapest plan is a **corner** of the feasible region.
+
+## Questions?
+
+{{< include _poll-prompt.qmd >}}
+
+# The Simplex Method
+
+## Walking the Corners
+
+Ours has five corners. An LP with thousands of variables can have astronomically many.
+
+::: {.fragment .fade-in}
+The **simplex method** [@Dantzig1963-li] never lists them. It walks:
+
+1. Start at any corner.
+2. Look along each edge leaving it. If one goes downhill (lower cost), move to the corner at its end.
+3. Stop when every edge goes uphill.
+:::
+
+## Step 1: Start at a Corner
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+# Corners next to corner k are its neighbours in order around the region
+neighbours(k) = [mod1(k - 1, length(corners)), mod1(k + 1, length(corners))]
+
+# The walk: from the corner that removes the most, move to a cheaper neighbour
+start = argmax([sum(c) for c in corners])
+path = zeros(Int, length(corners))              # at most one visit per corner
+path[1] = start
+n_steps = 1
+while true
+    here = path[n_steps]
+    cheapest = neighbours(here)[argmin(corner_cost[neighbours(here)])]
+    if corner_cost[cheapest] >= corner_cost[here]
+        break                                   # every edge goes uphill
+    end
+    global n_steps += 1
+    path[n_steps] = cheapest
+end
+path = path[1:n_steps]
+
+# Draw the walk after `step` moves, with the costs of the corners in view
+function draw_walk(step)
+    p = draw_region()
+    scatter!(p, first.(corners), last.(corners), color=:gray60, markersize=7,
+        markerstrokecolor=:gray30)
+    visited = path[1:(step + 1)]
+    plot!(p, [corners[k][1] for k in visited], [corners[k][2] for k in visited],
+        color=cb_vermillion, linewidth=4, arrow=true)
+    here = visited[end]
+    for k in [here; neighbours(here)]
+        annotate!(p, corners[k][1] + 1.2, corners[k][2] + 1.4,
+            text(string(Int(round(corner_cost[k]))), 16, :black, plot_font))
+    end
+    scatter!(p, [corners[here][1]], [corners[here][2]], color=cb_vermillion,
+        markersize=12, markerstrokecolor=:black)
+    plot!(p, size=(900, 360), left_margin=12mm, bottom_margin=12mm)
+    return p
+end
+
+draw_walk(0)
+```
+
+Start where both stacks remove all they can. Costs in \$1000/yr.
+
+## Step 2: Go Downhill
+
+```{julia}
+#| echo: true
+#| code-fold: true
+draw_walk(1)
+```
+
+One edge lowers cost faster; simplex moves along it.
+
+::: {.notes}
+From the start, cost falls 20 per g/s moving left (less removal at stack 1) and 30 per g/s moving down (less at stack 2). The classic rule takes the steepest edge, down, which also reaches the cheaper neighbour here.
+:::
+
+## Step 3: Keep Walking
+
+```{julia}
+#| echo: true
+#| code-fold: true
+draw_walk(2)
+```
+
+Another edge goes downhill, along C's limit.
+
+## Step 4: Stop
+
+Both edges leaving this corner go **uphill**: to `{julia} Int(round(corner_cost[neighbours(path[end])[1]]))` and `{julia} Int(round(corner_cost[neighbours(path[end])[2]]))`, from `{julia} Int(round(corner_cost[path[end]]))`.
+
+::: {.fragment .fade-in}
+For a linear objective, a corner with no downhill edge is the **optimum**: no further walking can help. Simplex took `{julia} n_steps - 1` steps and never looked at most of the corners.
+:::
+
+::: {.notes}
+Why is a local stop global? The feasible region is convex and the cost is linear, so if every edge out of a corner goes uphill, every direction into the region does too. That is the same argument as Wednesday's "why a corner", run in reverse.
+:::
+
+## What the Algorithm Tracks
+
+- **Slack** variables turn inequalities into equations: $9.0R_1 + 11.5R_2 - s_B = 714$.
+- At a corner, two of the variables are zero.
+- A **pivot** swaps which variables are zero: one step along an edge.
+- Stop when no pivot lowers the cost. ([A tableau by hand](#simplex-tableau).)
+
+# Shadow Prices
+
+## Binding Constraints
+
+A solution is found at a corner of the feasible region. At that corner, one or more constraints are **binding**: if we *relaxed* one by weakening it, we could improve the solution.
+
+::: {.fragment .fade-in}
+At our optimum, **B and C bind**; A is slack, with room to spare.
+:::
+
+## Shadow Prices
+
+The **marginal cost** of a constraint is the amount by which the solution would improve if the constraint capacity was relaxed by one unit.
+
+This is also referred to as the **shadow price** (these are also called the *dual variables* of the constraint).
+
+Non-zero shadow prices tell us that the constraint is binding, and their values rank which constraints are most influential.
+
+## Computing the Shadow Prices
+
+At the optimal corner, the cost's direction of steepest increase is a combination of the two binding constraints' directions. Solve for the weights $\lambda_B$, $\lambda_C$:
+
+::: {.fragment .fade-in}
+```{julia}
+#| echo: false
+#| output: asis
+
+# Cost gradient = λ_B × (B's coefficients) + λ_C × (C's coefficients)
+λ_BC = [t[2, 1] t[3, 1]; t[2, 2] t[3, 2]] \ cost
+println("\$\$\\begin{aligned}")
+println("20 &= $(round(t[2, 1]; digits=1))\\,\\lambda_B + $(round(t[3, 1]; digits=1))\\,\\lambda_C \\\\")
+println("30 &= $(round(t[2, 2]; digits=1))\\,\\lambda_B + $(round(t[3, 2]; digits=1))\\,\\lambda_C")
+println("\\end{aligned} \\quad \\Rightarrow \\quad \\lambda_B = $(round(λ_BC[1]; digits=2)), \\quad \\lambda_C = $(round(λ_BC[2]; digits=2))\$\$")
+```
+:::
+
+::: {.notes}
+Board item. At the optimum, moving along either binding edge must not lower the cost, which happens exactly when the cost gradient (20, 30) is a non-negative combination of the binding constraints' gradients: B's (9.0, 11.5) and C's (1.5, 14.2). Write the two equations, one per coordinate, and solve the 2-by-2 system. Both weights come out positive, which is the optimality check. Receptor A is not binding, so its weight is zero.
+:::
+
+## Reading the Shadow Prices
+
+| Receptor | Shadow price | Meaning |
+|:--|--:|:--|
+| A | 0 | slack: relaxing it saves nothing |
+| B | \$`{julia} commas(round(1000 * λ_BC[1]; digits=-1))`/yr | per µg/m³ the standard at B is relaxed |
+| C | \$`{julia} commas(round(1000 * λ_BC[2]; digits=-1))`/yr | per µg/m³ the standard at C is relaxed |
+
+::: {.fragment .fade-in}
+If mitigation near receptor B (rerouting a school bus stop, say) lets regulators relax the limit there by 5 µg/m³, it is worth up to about \$`{julia} commas(round(5000 * λ_BC[1]; digits=-2))` per year in avoided treatment.
+:::
+
+::: {.notes}
+Units matter: a shadow price is the objective's units per unit of the constraint's right-hand side, here dollars per year per microgram per cubic metre. It is a marginal value: it holds for small changes, until a different set of constraints binds and the corner changes.
+:::
+
+## Shadow Prices Are Lagrange Multipliers
+
+For $\min f(x)$ subject to $g_j(x) \geq b_j$:
+$$\mathcal{L}(x, \lambda) = f(x) - \sum_j \lambda_j \left(g_j(x) - b_j\right) \quad \Rightarrow \quad \frac{\partial \mathcal{L}}{\partial b_j} = \lambda_j.$$
+
+Each multiplier is the shadow price ([derivation](#lagrange)).
+
+# Solving LPs in JuMP
+
+## The Same Problem in JuMP
+
+```{julia}
+#| echo: true
+#| code-fold: false
+#| output: false
+
+emissions_model = Model(HiGHS.Optimizer)
+@variable(emissions_model, 0 <= removal[i in 1:n_stacks] <= emission[i])
+@objective(emissions_model, Min, sum(cost[i] * removal[i] for i in 1:n_stacks))
+@constraint(emissions_model, limit[j in 1:n_receptors],
+    sum(t[j, i] * (emission[i] - removal[i]) for i in 1:n_stacks) <= standard)
+set_silent(emissions_model)
+optimize!(emissions_model)
+```
+
+Removals: `{julia} round(value(removal[1]); digits=1)` and `{julia} round(value(removal[2]); digits=1)` g/s, the corner we walked to. Cost: about \$`{julia} round(objective_value(emissions_model) / 1000; digits=1)` million per year.
+
+## Reading the Duals
+
+```{julia}
+#| echo: true
+#| code-fold: false
+#| output: false
+
+limit_prices = shadow_price.(limit)
+```
+
+| Receptor | `shadow_price` | By hand |
+|:--|--:|--:|
+| A | `{julia} round(limit_prices[1]; digits=2)` | 0 |
+| B | `{julia} round(limit_prices[2]; digits=2)` | `{julia} round(λ_BC[1]; digits=2)` |
+| C | `{julia} round(limit_prices[3]; digits=2)` | `{julia} round(λ_BC[2]; digits=2)` |
+
+Same size, **opposite sign**: JuMP reports how the *objective* changes when a constraint is **relaxed** by one unit. Relaxing the standard lowers the cost.
+
+## Check It: Re-solve
+
+```{julia}
+#| echo: true
+#| code-fold: true
+#| output: false
+
+# Relax the standard at B by 1 µg/m³ and solve again
+set_normalized_rhs(limit[2], normalized_rhs(limit[2]) + 1)
+optimize!(emissions_model)
+relaxed_cost = objective_value(emissions_model)
+set_normalized_rhs(limit[2], normalized_rhs(limit[2]) - 1)   # restore
+optimize!(emissions_model)
+```
+
+Relaxing B by 1 µg/m³ changes the cost by `{julia} round(relaxed_cost - objective_value(emissions_model); digits=2)` (\$1000/yr): the shadow price, as promised.
+
+::: {.notes}
+This is the verification step: the shadow price is a prediction about re-solving, so re-solve and check. It matches to the digits shown because a 1 µg/m³ change does not change which constraints bind. A large enough change would, and then the shadow price would stop predicting the new cost.
+:::
+
+# Key Takeaways and Upcoming Schedule
+
+## Key Takeaways
+
+::: {.incremental}
+- **Simplex** walks downhill from corner to corner and stops when no edge improves.
+- At the optimum, **binding** constraints hold exactly; **slack** ones have room to spare.
+- A **shadow price** is how much the objective improves per unit a constraint is relaxed. Zero means slack.
+- Read shadow prices **with units**, and check the solver's **sign convention**.
+:::
+
+## Next Classes
+
+**Wednesday**: Quiz 3, then the project proposal peer review.
+
+**Next Monday**: Lab: linear programming with `JuMP.jl` (with the TAs).
+
+## Assessments
+
+**Homework 6**: Due Thursday, October 22.
+
+**Mini-Project 1**: Due Thursday, October 22.
+
+**Homework 7**: Assigned Wednesday, due Thursday, October 29.
+
+# Appendix
+
+## A Simplex Tableau by Hand {#simplex-tableau}
+
+Easiest when the origin is a feasible corner:
+
+$$\begin{aligned}
+\max_{x_1, x_2} \quad & 230x_1 + 120x_2 \\
+\text{s.t.} \quad & 0.9x_1 + 0.5x_2 + s_1 = 600, \quad x_1 + x_2 + s_2 = 1000
+\end{aligned}$$
+
+At the origin, $s_1 = 600$ and $s_2 = 1000$.
+
+- **Entering**: $x_1$, the largest objective coefficient (230).
+- **Leaving**: $s_1$, by the ratio test $\min(600/0.9,\ 1000)$.
+
+## A Simplex Tableau by Hand
+
+```{julia}
+#| echo: false
+#| output: asis
+
+# After one pivot: x1 = (600 - 0.5 x2 - s1) / 0.9; substitute into the objective.
+x1_value = 600 / 0.9
+x2_coefficient = 120 - 230 * 0.5 / 0.9
+s1_coefficient = -230 / 0.9
+println("\$\$z = $(Int(round(230 * x1_value))) $(x2_coefficient < 0 ? "-" : "+") $(round(abs(x2_coefficient); digits=1))\\,x_2 - $(round(abs(s1_coefficient); digits=1))\\,s_1\$\$")
+```
+
+Every coefficient is negative, so no pivot can raise $z$: optimal at $x_1 =$ `{julia} round(x1_value; digits=1)` and $x_2 = 0$.
+
+The coefficient of each slack is that constraint's **shadow price**: about `{julia} round(abs(s1_coefficient); digits=1)` for the first, 0 for the second (its slack is still positive).
+
+## Lagrange Multipliers {#lagrange}
+
+**Lagrange multipliers** incorporate equality constraints into an "unconstrained" form. For
+$$\max_{x,y} f(x,y) \quad \text{subject to} \quad g(x,y) = 0,$$
+$$\mathcal{L}(x, y, \lambda) = f(x,y) - \lambda g(x,y).$$
+
+Inequalities become equalities with squared slack variables: $x_1 \geq A$ becomes $x_1 - S_1^2 = A$, and $x_2 \leq B$ becomes $x_2 + S_2^2 = B$.
+
+## Lagrange Multipliers
+
+::: {.small-math}
+$$\mathcal{L}(\mathbf{x}, S_1, S_2, \lambda_1, \lambda_2) = f(\mathbf{x}) - \lambda_1(x_1 - S_1^2 - A) - \lambda_2(x_2 + S_2^2 - B)$$
+:::
+
+Optima are where every partial derivative of $\mathcal{L}$ is zero, and
+
+$$\frac{\partial \mathcal{L}}{\partial A} = \lambda_1, \qquad \frac{\partial \mathcal{L}}{\partial B} = \lambda_2:$$
+
+each multiplier is the rate at which the optimum changes as its constraint moves, the shadow price.
+
+# References
+
+## References

@@ -45,8 +45,8 @@ change named · **New** — nothing exists, build from scratch.
 | 7 | Mon Oct 5 | Gaussian Plumes: Footprints and Flexibility | `lecture07-1-plume-analytics` | Revised Oct 2 — rebuilt around a permit's three questions (where and why, how much, over what area): stack height, the standard, area above it, grid sensitivity of peak vs area, superposition | **Quiz 2** |
 | 7 | Wed Oct 7 | **Model Validation** | `lecture07-2-model-validation` | **Written** — ported from the FA25 validation section of `lecture05-1-dissolved-oxygen-2`, extended | HW5 |
 | 8 | Mon Oct 12 | *No class — Fall Break* | | | |
-| 8 | Wed Oct 14 | Decision Models and Linear Programming | `lecture07-1-prescriptive-modeling` + `lecture08-2-optimization` | Revise — compress 2→1 | HW6 |
-| 9 | Mon Oct 19 | Shadow Prices and Duality | `lecture09-1-capacity-expansion` (shadow-price half) | Revise — split; carries first JuMP | |
+| 8 | Wed Oct 14 | Decision Models and Linear Programming | `lecture08-2-optimization` (rewritten) | Drafted Oct 5 | HW6 |
+| 9 | Mon Oct 19 | The Simplex Method and Shadow Prices | `lecture09-1-simplex-shadow-prices` (new) | Drafted Oct 5 — carries first JuMP | |
 | 9 | Wed Oct 21 | Project Proposal Peer Review | `activity-proposal-peer-review` + `project/proposal-review.qmd` | Drafted | HW7 · **Quiz 3** |
 | 10 | Mon Oct 26 | **Lab: Linear Programming with JuMP** — *TA* | `labs/lab03` | Revise — re-theme to power systems | Lab 2 |
 | 10 | Wed Oct 28 | Economic Dispatch — *sub (power systems expert)* | `lecture10-2-economic-dispatch` | Revise — FA25 to FA26; **keep** multi-period dispatch and the renewables/duck-curve material | MP2 assigned |
@@ -160,9 +160,9 @@ homework — the term project fills them: update (Nov 13), presentations (Dec 8)
 - **Every homework from HW4 on**, and both mini-projects (MP1 is drafted in `mini-project/mp01`; MP2 does not exist yet)
 
 **Major revision**
-- Split `lecture09-1-capacity-expansion.qmd`: shadow-price half + JuMP intro → Oct 21; capacity half
-  merges with `lecture10-1-capacity-expansion-2.qmd` → Nov 2. This is what puts prices before the
-  applications.
+- Split `lecture09-1-capacity-expansion.qmd`: shadow-price half + JuMP intro → Oct 19 (done Oct 5, as
+  the new `lecture09-1-simplex-shadow-prices.qmd`); capacity half merges with
+  `lecture10-1-capacity-expansion-2.qmd` → Nov 2. This is what puts prices before the applications.
 - Split `lecture13-2-limits-optimization.qmd` (filename says limits, title says Multiple Objectives,
   it holds both): MOO half → Nov 30; limits half → Dec 2, absorbing gradient-descent material from
   `lecture15-2-simulation-optimization.qmd`.
@@ -171,7 +171,35 @@ homework — the term project fills them: update (Nov 13), presentations (Dec 8)
   Oct 28 keeps its multi-period and renewables material and Nov 11 becomes unit commitment instead.
 - Nov 30 three-way merge (sensitivity + robustness + MOO) is the most over-subscribed session: keep
   the conceptual thread, push formal Morris/Sobol' to a reading.
-- Compress `lecture07-1-prescriptive-modeling` + `lecture08-2-optimization` into Oct 14.
+- ~~Compress `lecture07-1-prescriptive-modeling` + `lecture08-2-optimization` into Oct 14~~ — done Oct 5.
+  Decisions (Oct 5): the anchor is a two-stack, three-receptor **plume emissions LP** (transmission
+  factors from the 07-1 plume; removals R₁, R₂; costs 20/30 \$1000/yr per g/s), replacing FA25's
+  wastewater example, which had a quadratic objective and an infeasible stated optimum (E₂ = 0.85; the
+  correct value is 0.8675). Oct 14 covers formulation, standard form (new), and light corner geometry
+  with a rising-cost contrast; no corner tables. Simplex is walked through geometrically at the start
+  of Oct 19 (tableau in its appendix), then shadow prices (B $2,150/yr per µg/m³, C $370, A $0) and
+  the first JuMP solve of the same LP. HW6 is LP-centred (formulation ~50%, standard form, a light
+  graphical question in Quiz 4's format, a nonlinear-cost contrast); HW7 re-solves the same LP.
+  The B–C corner holds for cost ratios c₂/c₁ between about 1.27 and 9.2; the contrast needs
+  1.24–1.73, which is why the costs are 20 and 30.
+  `lecture07-1-prescriptive-modeling.qmd` and the `crud-*` figures are now unused.
+- **HW6, HW7, and Quiz 4 drafted (Oct 5)**, with keys; new local folders `hw/hw06`, `hw/hw07`,
+  `hw/solutions/hw06`, `hw/solutions/hw07`, `quizzes/quiz04` (no GitHub repos yet). Both homeworks
+  use one **stormwater LP**, deliberately not the lecture's plume LP: bioretention $B$ and permeable
+  pavement $P$ (acres), min $50B + 30P$ (\$1000/yr) s.t. runoff $5B + 2P \geq 40$, phosphorus
+  $5B + P \geq 30$, $B \leq 6$, $P \leq 15$. Optimum $(6, 5)$ at \$450k/yr; runoff and the site limit
+  bind (shadow prices \$15k per million gal/yr and \$25k per acre); phosphorus is slack by 5 kg/yr.
+  HW6: formulate it, standard form, a graphical LP in Quiz 4's format, and a rising-cost contrast
+  ($25B + 5B^2$ puts the optimum mid-edge at $(5, 7.5)$). HW7 states the LP outright so HW6 errors
+  don't carry over: binding constraints, shadow prices by hand, buy-an-acre decision, then `JuMP`,
+  where a 4-acre lease the shadow price says to take (4 × 25 > 60) is not worth it (actual saving
+  50), because the site limit stops binding at 8 acres. Quiz 4 (10 pts): graphical LP (4), a
+  one-hour dispatch with `JuMP` shadow prices (4), ramping constraints and the duck curve (2). The
+  farmer shadow-price item was **not** reused: its pesticide-relaxation key looks wrong (changing a
+  pesticide limit changes coefficients, not a right-hand side, and the corn relaxation is worth more
+  to first order), its stem's demand limit disagrees with the model, and the FA25 key is out of sync
+  with the FA25 exam's sub-parts. `lecture09-1` now says `shadow_price` is the objective change when a
+  constraint is *relaxed* (the earlier "right-hand side increases" was wrong for ≥ constraints).
 
 **Reuse** — Monte Carlo (both), both plume decks, economic dispatch, MIP, waste/networks, stochastic
 optimization, `lab03` as Lab 2.
