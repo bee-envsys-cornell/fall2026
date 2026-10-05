@@ -6675,7 +6675,7 @@
     "href": "slides/lecture07-1-plume-analytics.html#the-gaussian-plume-model",
     "title": "Gaussian Plumes: Simulation",
     "section": "The Gaussian Plume Model",
-    "text": "The Gaussian Plume Model\n\\[\\begin{aligned}\nC(x,y,z) &= \\frac{Q}{2\\pi u\\sigma_y\\sigma_z}\\exp\\left(\\frac{-y^2}{2\\sigma_y^2}\\right) \\times \\\\\n&\\left[\\exp\\left(\\frac{-(z-H)^2}{2\\sigma_z^2}\\right) + \\exp\\left(\\frac{-(z+H)^2}{2\\sigma_z^2}\\right)\\right]\n\\end{aligned}\\]\n\\(\\sigma_y\\), \\(\\sigma_z\\) are functions of the atmospheric turbulence class and the downwind distance \\(x\\)."
+    "text": "The Gaussian Plume Model\n\\[\\begin{aligned}\nC(x,y,z) &= \\frac{Q}{2\\pi u\\sigma_y\\sigma_z}\\exp\\left(\\frac{-y^2}{2\\sigma_y^2}\\right) \\times \\\\\n&\\left[\\exp\\left(\\frac{-(z-H)^2}{2\\sigma_z^2}\\right) + \\exp\\left(\\frac{-(z+H)^2}{2\\sigma_z^2}\\right)\\right]\n\\end{aligned}\\]\nNumber of key assumptions: each was used in converting the advection-diffusion equation to a 2D heat equation and obtaining this solution. Without these holding, this formula does not work."
   },
   {
     "objectID": "slides/lecture07-1-plume-analytics.html#questions",
