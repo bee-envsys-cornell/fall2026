@@ -268,7 +268,7 @@
 <p>Today’s four takeaways: (1) In a network model the decisions are the flows along the arcs, and the constraints are conservation at each node: what arrives equals what leaves, transformed (a recycler passes on 60% as residual, a combustor leaves 20% as ash). (2) A facility that might not operate needs a binary. It appears twice: fixed cost times Y in the objective, and in the capacity constraint, flow in at most capacity times Y, so a closed facility takes nothing. (3) Facilities can open for non-obvious reasons: here the waste-to-energy plant runs only because the landfill is full. Make the landfill 20 Mg/day larger and it closes. (4) The network alone is not a model: you also need what happens at each node, costs, and the rules.</p>
 <p>Key numbers (all computed in the deck): optimal cost about $26,881 per day with all three facilities open; with a 220 Mg/day landfill the WTE closes and the cost drops to about $24,539 per day.</p>
 <p>Likely questions. Why is the WTE open if it is expensive? Because the landfill is exactly full, and the recycler’s residual has to go somewhere. Why is the binary in the capacity constraint? So that a closed facility cannot receive anything: one constraint does the job of “if Y is zero, no flow”. What is “residual”? What a facility passes on after processing: the recycler sends 60% of what it receives onward, and the combustor leaves 20% as ash.</p>
-<p>Logistics: HW9 is assigned today and is due Thursday, November 19 (network models and waste allocation). Quiz 5 is Monday, November 16. The TA runs this week’s lab (Lab 3, facility siting in JuMP). Every question on a slide has its answer as the next fragment, so no board work is needed. If the poll does not work on your account, skip it.</p>
+<p>Logistics: HW8 is assigned today and is due Thursday, November 19 (network models and waste allocation). Quiz 5 is Monday, November 16. The TA runs this week’s lab (Lab 3, facility siting in JuMP). Every question on a slide has its answer as the next fragment, so no board work is needed. If the poll does not work on your account, skip it.</p>
 <p>Timing: be on “Solid Waste Management” by minute 4, the example system by minute 22, the costs by minute 28, the mass balances by minute 38, solving by minute 52, and the takeaways by minute 64. If short, cut in this order: the discussion on the what-if slide (show the table only), the transfer-station check, the “Network Models Elsewhere” slide, the worked cost coefficient.</p>
 <p>On this slide: one minute. Recall from the mixed integer programming lecture that a binary variable turns an on/off decision into linear constraints. Today that idea meets a network.</p>
 <style type="text/css">
@@ -778,7 +778,7 @@
 \]</span></p>
 <p>The constraints cover the cities, fate and transport, capacity linked to on/off, and signs.</p>
 <aside class="notes">
-<p>About two minutes. The same problem in general form, which is what HW9 asks for on a different network. It is a mixed integer linear program: linear in everything, with three binary variables.</p>
+<p>About two minutes. The same problem in general form, which is what HW8 asks for on a different network. It is a mixed integer linear program: linear in everything, with three binary variables.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -829,7 +829,7 @@
 </div>
 <p>The optimal cost is <strong>$26,881/day</strong>, and all 3 facilities operate.</p>
 <aside class="notes">
-<p>About three minutes. You do not need to walk through the code line by line: open the fold to show that every constraint on the previous slides appears once, with the binaries declared as Bin and the capacity constraints multiplied by Y. The point is that the formulation goes into JuMP almost word for word. HW9 uses a different network, so this is a pattern to adapt, not an answer to copy.</p>
+<p>About three minutes. You do not need to walk through the code line by line: open the fold to show that every constraint on the previous slides appears once, with the binaries declared as Bin and the capacity constraints multiplied by Y. The point is that the formulation goes into JuMP almost word for word. HW8 uses a different network, so this is a pattern to adapt, not an answer to copy.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -965,7 +965,7 @@
 </table>
 <p>With 20 Mg/day more landfill, the <strong>WTE closes</strong> and the system saves $2,342/day. City 2 now sends 25 Mg/day to the MRF, and all 75 Mg/day of the MRF’s residual goes to the landfill.</p>
 <aside class="notes">
-<p>About three minutes (you should be on the takeaways by about minute 64). This confirms the explanation on the previous slide: as soon as the landfill has room for the recycler’s residual, the incinerator is no longer worth its fixed cost, so the binary switches it off. This is what “interpret which facilities open” means on HW9: say which constraint makes each facility worth opening. If short on time, show the table and skip the discussion.</p>
+<p>About three minutes (you should be on the takeaways by about minute 64). This confirms the explanation on the previous slide: as soon as the landfill has room for the recycler’s residual, the incinerator is no longer worth its fixed cost, so the binary switches it off. This is what “interpret which facilities open” means on HW8: say which constraint makes each facility worth opening. If short on time, show the table and skip the discussion.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1056,11 +1056,11 @@
 </section>
 <section id="assessments" class="slide level2">
 <h2>Assessments</h2>
-<p><strong>HW9</strong>: assigned today, due Thursday, November 19 (network models and waste allocation).</p>
+<p><strong>HW8</strong>: assigned today, due Thursday, November 19 (network models and waste allocation).</p>
 <p><strong>Project update</strong>: due Friday, November 13.</p>
 <p><strong>Quiz 5</strong>: Monday, November 16 (capacity expansion, mixed integer programming, and waste and network models).</p>
 <aside class="notes">
-<p>About one minute. Remind students that HW9 asks them to set up a different, small network themselves.</p>
+<p>About one minute. Remind students that HW8 asks them to set up a different, small network themselves.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

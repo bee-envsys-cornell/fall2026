@@ -493,6 +493,38 @@ Wind speed is uncertain, and the whole field scales as $1/u$: the obvious knob. 
 That's a decent fit. But the true wind speed was **2.5 m/s**. The wind speed calibration is compensating for a mixing component in the model structure.
 :::
 
+## The Calibrated Plume
+
+```{julia}
+#| label: fig-plume-fit
+#| fig-cap: "The calibrated plume against the monitors on the plume centreline."
+#| echo: true
+#| code-fold: true
+
+calibrated_plume = (; plume_params..., wind=fitted_wind)
+centreline_km = 0.3:0.05:7.5
+true_centreline = [ground_concentration(x, 0, class_F, plume_params; loss=so2_loss)
+    for x in centreline_km]
+calibrated_centreline = [ground_concentration(x, 0, class_F, calibrated_plume)
+    for x in centreline_km]
+on_centreline = monitor_crosswind .== 0       # the other monitors sit off to the side
+
+p_plume_fit = scatter(monitor_downwind[on_centreline], monitor_observed[on_centreline],
+    color=cb_vermillion, markersize=7,
+    xlabel="Distance downwind  [km]", ylabel="Concentration  [µg/m³]",
+    label="monitors on the centreline", legend=:topright, ylims=(0, 2000))
+plot!(p_plume_fit, centreline_km, true_centreline, color=:black, linestyle=:dash,
+    linewidth=4, label="true model")
+plot!(p_plume_fit, centreline_km, calibrated_centreline, color=cb_blue, linewidth=3,
+    label="calibrated model")
+plot!(p_plume_fit, size=(1100, 430), left_margin=12mm, right_margin=8mm,
+    bottom_margin=12mm, top_margin=5mm)
+```
+
+::: {.notes}
+Only the `{julia} count(on_centreline)` centreline monitors are plotted: the model's curve is different at each crosswind offset, so the other `{julia} n_monitors - count(on_centreline)` would not sit on it. At plot scale the calibrated plume looks close. Look at the two ends: it is below the true plume near the stack (`{julia} Int(round(ground_concentration(1.5, 0, class_F, calibrated_plume)))` against `{julia} Int(round(ground_concentration(1.5, 0, class_F, plume_params; loss=so2_loss)))` µg/m³ at 1.5 km) and above it far out (`{julia} Int(round(ground_concentration(7, 0, class_F, calibrated_plume)))` against `{julia} Int(round(ground_concentration(7, 0, class_F, plume_params; loss=so2_loss)))` at 7 km). The residuals on the next slide show that tilt directly.
+:::
+
 ## The Residuals Reveal The Problem
 
 ```{julia}
@@ -567,11 +599,11 @@ Calibration made the fit good (as measured by the score) and left the model wron
 
 **Monday**: Fall Break --- no class.
 
-**Wednesday, Oct 14**: Decision models and linear programming. The second half of the course moves from *describing* systems to *prescribing* what to do about them.
+**Wednesday, Oct 14**: Decision models and linear programming. 
 
 ## Assessments
 
-**HW5**: assigned today, due Thursday Oct 15. Gaussian plumes and model validation.
+**HW5**: assigned Wednesday Oct 14, after Fall Break, due Thursday Oct 22.
 
 **Quiz 3**: Wednesday Oct 21.
 

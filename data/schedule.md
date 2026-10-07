@@ -43,16 +43,16 @@ change named · **New** — nothing exists, build from scratch.
 | 6 | Mon Sep 28 | Monte Carlo: Applying It, Justifying It | `lecture06-1-monte-carlo-inference` | Ready | |
 | 6 | Wed Sep 30 | Gaussian Plumes: Deriving the Model | `lecture06-2-plume-derivation` | Ready | HW4 |
 | 7 | Mon Oct 5 | Gaussian Plumes: Footprints and Flexibility | `lecture07-1-plume-analytics` | Revised Oct 2 — rebuilt around a permit's three questions (where and why, how much, over what area): stack height, the standard, area above it, grid sensitivity of peak vs area, superposition | **Quiz 2** |
-| 7 | Wed Oct 7 | **Model Validation** | `lecture07-2-model-validation` | **Written** — ported from the FA25 validation section of `lecture05-1-dissolved-oxygen-2`, extended | HW5 |
+| 7 | Wed Oct 7 | **Model Validation** | `lecture07-2-model-validation` | **Written** — ported from the FA25 validation section of `lecture05-1-dissolved-oxygen-2`, extended | — (HW5 held for Fall Break) |
 | 8 | Mon Oct 12 | *No class — Fall Break* | | | |
-| 8 | Wed Oct 14 | Decision Models and Linear Programming | `lecture08-2-optimization` (rewritten) | Drafted Oct 5 | HW6 |
+| 8 | Wed Oct 14 | Decision Models and Linear Programming | `lecture08-2-optimization` (rewritten) | Drafted Oct 5 | HW5 |
 | 9 | Mon Oct 19 | The Simplex Method and Shadow Prices | `lecture09-1-simplex-shadow-prices` (new) | Drafted Oct 5 — carries first JuMP | |
-| 9 | Wed Oct 21 | Project Proposal Peer Review | `activity-proposal-peer-review` + `project/proposal-review.qmd` | Drafted | HW7 · **Quiz 3** |
+| 9 | Wed Oct 21 | Project Proposal Peer Review | `activity-proposal-peer-review` + `project/proposal-review.qmd` | Drafted | HW6 · **Quiz 3** |
 | 10 | Mon Oct 26 | **Lab: Linear Programming with JuMP** — *TA* | `labs/lab03` | Revise — re-theme to power systems | Lab 2 |
 | 10 | Wed Oct 28 | Economic Dispatch — *sub (power systems expert)* | `lecture10-2-economic-dispatch` | **Drafted Oct 6** — sub-ready (full notes); keeps multi-period dispatch and the duck curve; adds JuMP shadow-price output, hourly prices, a twice-solar case | MP2 assigned |
 | 11 | Mon Nov 2 | Capacity Expansion | `lecture11-1-capacity-expansion` (new, from the capacity half of `lecture09-1` + `lecture10-1-capacity-expansion-2`) | **Drafted Oct 6** — screening curves; CO₂ cap and its shadow price | |
-| 11 | Wed Nov 4 | Mixed Integer Programming | `lecture11-2-mixed-integer` (renamed from `lecture11-1`) | **Drafted Oct 6** — coded three-plant anchor; branch and bound trimmed | HW8 · **Quiz 4** |
-| 12 | Mon Nov 9 | Solid Waste and Network Models — *sub* | `lecture12-1-waste-management` | **Drafted Oct 6** — sub-ready (full notes, no board work); moves to Wed if that is the only day the sub can come | HW9 |
+| 11 | Wed Nov 4 | Mixed Integer Programming | `lecture11-2-mixed-integer` (renamed from `lecture11-1`) | **Drafted Oct 6** — coded three-plant anchor; branch and bound trimmed | HW7 · **Quiz 4** |
+| 12 | Mon Nov 9 | Solid Waste and Network Models — *sub* | `lecture12-1-waste-management` | **Drafted Oct 6** — sub-ready (full notes, no board work); moves to Wed if that is the only day the sub can come | HW8 |
 | 12 | Wed Nov 11 | **Lab: Fixed Costs and Facility Siting in JuMP** — *TA* | *nothing exists* | **New** — siting MIP with the formulation given; works before or after the waste lecture, so it can swap to Mon | Lab 3 |
 | 13 | Mon Nov 16 | Stochastic Optimization and Scenario Trees | `lecture13-1-stochastic-optimization` | **Drafted Oct 6** — farmer corrected; tables from one JuMP cell | **Quiz 5** |
 | 13 | Wed Nov 18 | Sequential Decisions and Dynamic Programming | `lecture13-2-dynamic-programming` (new) | **Drafted Oct 6** — reservoir anchor; Lab 4 builds on it | |
@@ -137,21 +137,32 @@ Reusable questions live in `exams/midterm1` and `exams/midterm2`, across branche
 
 Weekly cadence; every homework pairs a by-hand component with a *light* computational one. Anything
 needing scale — many effluents, real data, full capacity expansion — goes to a mini-project. Due
-Thursdays 9pm. Nine homeworks total, inside the syllabus's 8–10, one dropped.
+Thursdays 9pm. Eight homeworks total since Oct 7 (nine before), inside the syllabus's 8–10, one dropped.
 
 | HW | Assign | Due | Topic | By-hand | Computational (light) |
 |:--|:--|:--|:--|:--|:--|
 | 4 | Wed Sep 30 | Thu Oct 8 | Monte Carlo, uncertainty & risk | Expectation/variance of a function of a random variable; why MC error scales as σ/√n and the samples a target precision needs; exceedance probability and return periods; aleatory vs. epistemic | Propagate parameter uncertainty through the HW3 model; CI on one decision-relevant quantity plus an *n*-convergence plot |
-| 5 | Wed Oct 7 | Thu Oct 15 | Gaussian plumes & model validation | Evaluate the plume equation at a receptor; stability class and wind speed effects; where the max ground-level concentration occurs; what a goodness-of-fit metric is blind to | Evaluate the plume on a coarse grid, locate the max, and score it against observations |
-| 6 | Wed Oct 14 | Thu Oct 22 | Decision models & linear programming | Formulate from a word problem: decision variables with units and bounds, objective, constraints; standard form; solve a 2-variable LP graphically | None required |
-| 7 | Wed Oct 21 | Thu Oct 29 | Duality, shadow prices & first JuMP | Identify binding constraints; interpret shadow prices with units; decide whether to buy capacity given a shadow price; what a zero shadow price implies | Solve the *same* LP in JuMP, extract duals, confirm they match the hand answer |
-| 8 | Wed Nov 4 | Thu Nov 12 | Mixed integer programming | Model a fixed cost, an either/or, and an indicator with binaries; why the LP relaxation bounds; trace 2–3 branch-and-bound nodes | Solve a small MIP; compare to its LP relaxation |
-| 9 | Mon Nov 9 (Wed Nov 11 if the lecture moves) | Thu Nov 19 | Network models & waste allocation | Set up a small facility-allocation network; flow-conservation and capacity constraints; siting indicators | Solve the instance; interpret which facilities open |
+| 5 | Wed Oct 14 | Thu Oct 22 | Gaussian plumes & model validation | Evaluate the plume equation at a receptor; stability class and wind speed effects; where the max ground-level concentration occurs; what a goodness-of-fit metric is blind to | Evaluate the plume on a coarse grid, locate the max, and score it against observations |
+| 6 | Wed Oct 21 | Thu Oct 29 | Linear programs & shadow prices | Formulate a word problem with a blending constraint; standard form; read a 2-variable LP graphically; binding constraints, shadow prices with units, a buy-capacity decision, a zero shadow price | Solve the stormwater LP in JuMP, check its shadow prices against the hand answer, and re-solve a change too large for them |
+| 7 | Wed Nov 4 | Thu Nov 12 | Mixed integer programming | Model a fixed cost, an either/or, and an indicator with binaries; why the LP relaxation bounds; trace 2–3 branch-and-bound nodes | Solve a small MIP; compare to its LP relaxation |
+| 8 | Mon Nov 9 (Wed Nov 11 if the lecture moves) | Thu Nov 19 | Network models & waste allocation | Set up a small facility-allocation network; flow-conservation and capacity constraints; siting indicators | Solve the instance; interpret which facilities open |
 
 **Design notes.** HW4 deliberately echoes HW3, putting deterministic truncation error in Δt beside
-statistical error in *n*. HW6's graphical-LP question should match Quiz 4's format so the homework is
-real practice. HW7 asks for the hand answer *before* the JuMP check. Weeks 13–16 carry no new
+statistical error in *n*. HW6's graphical-LP question matches Quiz 4's format so the homework is
+real practice, and HW6 asks for the hand answer *before* the JuMP check. Weeks 13–16 carry no new
 homework — the term project fills them: update (Nov 13), presentations (Dec 8), report (Dec 20).
+
+**HW5 held a week; HW6 and HW7 merged** (decided Oct 7). With Fall Break, HW5 was not handed out
+Oct 7: it goes out Wed Oct 14 and is due Thu Oct 22. Students have it for a week, including a
+weekend, before Quiz 3 (Oct 21), the same pattern as HW4 before Quiz 2. To keep one homework a week,
+the two LP homeworks became one HW6 (Oct 21–29, 50 points): a new water-supply formulation with a
+nitrate blending constraint and standard form (14), the graphical LP in Quiz 4's format (8), the
+stormwater LP stated outright for binding constraints and shadow prices by hand (15), and the `JuMP`
+check ending with the 4-acre lease (13). The formulation uses a different problem from the
+shadow-price part so that stating the stormwater LP does not give Problem 1 away. Cut: the
+LP-assumptions question, the rising-cost contrast, the regulator comparison, the 41-million-gallon
+re-solve and the site-limit sweep. Later homeworks move down one: MIP is HW7, networks HW8. The
+Oct 5 drafts of HW6 and HW7 and their keys are kept in `hw/.drafts/2026-10-05/`.
 
 **Two mini-projects, not three** (decided Sep 23), each worth 10% and scoped to a short report so it reads as a project rather than a heavier homework. MP1 runs four weeks because Fall Break and the proposal fall inside it; MP2 runs three, opening with the dispatch lecture it depends on. MP3 is dropped; the scenario-tree lab (Lab 4) stands on its own.
 
@@ -172,7 +183,7 @@ homework — the term project fills them: update (Nov 13), presentations (Dec 8)
   supervised work time; about 6 slides with full notes for the TA
 - **Lab 3**, fixed costs and facility siting in JuMP (Nov 11): a TA-supervised siting MIP with the formulation
   given (all sites open, then binaries and fixed costs, the LP relaxation, one logical constraint, a
-  fixed-cost sweep); its own data, not HW8's or the waste lecture's; needs a TA guide
+  fixed-cost sweep); its own data, not HW7's or the waste lecture's; needs a TA guide
 - **Lab 4**, scenario trees + sequential decisions / reservoir operations (Nov 23)
 - Quiz questions for plumes, validation, MIP, networks, scenario trees, DP — none have exam precedent
 - **Every homework from HW4 on**, and both mini-projects (MP1 is drafted in `mini-project/mp01`; MP2 does not exist yet)
@@ -201,10 +212,11 @@ homework — the term project fills them: update (Nov 13), presentations (Dec 8)
   of Oct 19 (tableau in its appendix), then shadow prices (B $2,150/yr per µg/m³, C $370, A $0) and
   the first JuMP solve of the same LP. HW6 is LP-centred (formulation ~50%, standard form, a light
   graphical question in Quiz 4's format, a nonlinear-cost contrast); HW7 re-solves the same LP.
+  (The two were merged into one HW6 on Oct 7; see the homework section.)
   The B–C corner holds for cost ratios c₂/c₁ between about 1.27 and 9.2; the contrast needs
   1.24–1.73, which is why the costs are 20 and 30.
   `lecture07-1-prescriptive-modeling.qmd` and the `crud-*` figures are now unused.
-- **HW6, HW7, and Quiz 4 drafted (Oct 5)**, with keys; new local folders `hw/hw06`, `hw/hw07`,
+- **HW6, HW7, and Quiz 4 drafted (Oct 5)**, with keys (HW6 and HW7 merged Oct 7); new local folders `hw/hw06`, `hw/hw07`,
   `hw/solutions/hw06`, `hw/solutions/hw07`, `quizzes/quiz04` (no GitHub repos yet). Both homeworks
   use one **stormwater LP**, deliberately not the lecture's plume LP: bioretention $B$ and permeable
   pavement $P$ (acres), min $50B + 30P$ (\$1000/yr) s.t. runoff $5B + 2P \geq 40$, phosphorus

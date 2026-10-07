@@ -112,6 +112,13 @@ website:
         - href: labs/index.qmd
           text: "Lab Overview"
         - href: labs/lab01/lab01.qmd
+          text: "Lab 1"
+        - href: labs/index.qmd#schedule
+          text: "Lab 2 (Oct. 26)"
+        - href: labs/index.qmd#schedule
+          text: "Lab 3 (Nov. 11)"
+        - href: labs/index.qmd#schedule
+          text: "Lab 4 (Nov. 23)"
     - title: "Homework"
       style: docked
       search: false
@@ -124,7 +131,17 @@ website:
         - href: hw/hw02/hw02.qmd
           text: "Homework 2"      
         - href: hw/hw03/hw03.qmd
-          text: "Homework 3"       
+          text: "Homework 3"    
+        - href: hw/hw04/hw04.qmd
+          text: "Homework 4"
+        - href: hw/index.qmd#schedule
+          text: "Homework 5 (Oct. 14)"
+        - href: hw/index.qmd#schedule
+          text: "Homework 6 (Oct. 21)"
+        - href: hw/index.qmd#schedule
+          text: "Homework 7 (Nov. 4)"
+        - href: hw/index.qmd#schedule
+          text: "Homework 8 (Nov. 9)"
     - title: "Mini-Projects"
       style: docked
       search: false
@@ -134,6 +151,8 @@ website:
           text: "Mini-Project Overview"
         - href: mini-project/mp01/mp01.qmd
           text: Mini-Project 1
+        - href: mini-project/index.qmd#schedule
+          text: "Mini-Project 2 (Oct. 28)"
     - title: "Project"
       style: docked
       search: false

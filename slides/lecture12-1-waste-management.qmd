@@ -142,7 +142,7 @@ Key numbers (all computed in the deck): optimal cost about $26,881 per day with 
 
 Likely questions. Why is the WTE open if it is expensive? Because the landfill is exactly full, and the recycler's residual has to go somewhere. Why is the binary in the capacity constraint? So that a closed facility cannot receive anything: one constraint does the job of "if Y is zero, no flow". What is "residual"? What a facility passes on after processing: the recycler sends 60% of what it receives onward, and the combustor leaves 20% as ash.
 
-Logistics: HW9 is assigned today and is due Thursday, November 19 (network models and waste allocation). Quiz 5 is Monday, November 16. The TA runs this week's lab (Lab 3, facility siting in JuMP). Every question on a slide has its answer as the next fragment, so no board work is needed. If the poll does not work on your account, skip it.
+Logistics: HW8 is assigned today and is due Thursday, November 19 (network models and waste allocation). Quiz 5 is Monday, November 16. The TA runs this week's lab (Lab 3, facility siting in JuMP). Every question on a slide has its answer as the next fragment, so no board work is needed. If the poll does not work on your account, skip it.
 
 Timing: be on "Solid Waste Management" by minute 4, the example system by minute 22, the costs by minute 28, the mass balances by minute 38, solving by minute 52, and the takeaways by minute 64. If short, cut in this order: the discussion on the what-if slide (show the table only), the transfer-station check, the "Network Models Elsewhere" slide, the worked cost coefficient.
 
@@ -429,7 +429,7 @@ $$
 The constraints cover the cities, fate and transport, capacity linked to on/off, and signs.
 
 ::: {.notes}
-About two minutes. The same problem in general form, which is what HW9 asks for on a different network. It is a mixed integer linear program: linear in everything, with three binary variables.
+About two minutes. The same problem in general form, which is what HW8 asks for on a different network. It is a mixed integer linear program: linear in everything, with three binary variables.
 :::
 
 # Solving It
@@ -470,7 +470,7 @@ base = solve_waste()
 The optimal cost is **\$`{julia} commas(base.cost)`/day**, and all `{julia} sum(base.Y)` facilities operate.
 
 ::: {.notes}
-About three minutes. You do not need to walk through the code line by line: open the fold to show that every constraint on the previous slides appears once, with the binaries declared as Bin and the capacity constraints multiplied by Y. The point is that the formulation goes into JuMP almost word for word. HW9 uses a different network, so this is a pattern to adapt, not an answer to copy.
+About three minutes. You do not need to walk through the code line by line: open the fold to show that every constraint on the previous slides appears once, with the binaries declared as Bin and the capacity constraints multiplied by Y. The point is that the formulation goes into JuMP almost word for word. HW8 uses a different network, so this is a pattern to adapt, not an answer to copy.
 :::
 
 ## The Solution
@@ -532,7 +532,7 @@ end
 With `{julia} bigger.cap[3] - base.cap[3]` Mg/day more landfill, the **WTE closes** and the system saves \$`{julia} commas(base.cost - bigger.cost)`/day. City 2 now sends `{julia} fmt(bigger.W[2, 2])` Mg/day to the MRF, and all `{julia} fmt(bigger.R23)` Mg/day of the MRF's residual goes to the landfill.
 
 ::: {.notes}
-About three minutes (you should be on the takeaways by about minute 64). This confirms the explanation on the previous slide: as soon as the landfill has room for the recycler's residual, the incinerator is no longer worth its fixed cost, so the binary switches it off. This is what "interpret which facilities open" means on HW9: say which constraint makes each facility worth opening. If short on time, show the table and skip the discussion.
+About three minutes (you should be on the takeaways by about minute 64). This confirms the explanation on the previous slide: as soon as the landfill has room for the recycler's residual, the incinerator is no longer worth its fixed cost, so the binary switches it off. This is what "interpret which facilities open" means on HW8: say which constraint makes each facility worth opening. If short on time, show the table and skip the discussion.
 :::
 
 # Key Takeaways
@@ -575,14 +575,14 @@ About one minute. Do not say which day the lab is on: depending on scheduling it
 
 ## Assessments
 
-**HW9**: assigned today, due Thursday, November 19 (network models and waste allocation).
+**HW8**: assigned today, due Thursday, November 19 (network models and waste allocation).
 
 **Project update**: due Friday, November 13.
 
 **Quiz 5**: Monday, November 16 (capacity expansion, mixed integer programming, and waste and network models).
 
 ::: {.notes}
-About one minute. Remind students that HW9 asks them to set up a different, small network themselves.
+About one minute. Remind students that HW8 asks them to set up a different, small network themselves.
 :::
 
 # Appendix

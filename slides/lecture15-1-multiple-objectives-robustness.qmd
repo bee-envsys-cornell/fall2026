@@ -671,7 +671,7 @@ Same lake, same plan, same method; only the assumed range for q changed. The ran
 #| code-fold: true
 #| output: false
 
-# HW7's stormwater LP: minimum cost against the bioretention site limit
+# HW6's stormwater LP: minimum cost against the bioretention site limit
 function stormwater_cost(site_limit)
     model = Model(HiGHS.Optimizer)
     set_silent(model)
@@ -689,7 +689,7 @@ base_cost, site_price = stormwater_cost(6)
 lease_saving = base_cost - first(stormwater_cost(10))
 ```
 
-A shadow price is a **local, one-at-a-time** sensitivity. In HW7 the site limit was worth \$`{julia} Int(round(-site_price))`k per acre, so four acres "should" save \$`{julia} Int(round(-4 * site_price))`k; they saved \$`{julia} Int(round(lease_saving))`k.
+A shadow price is a **local, one-at-a-time** sensitivity. In HW6 the site limit was worth \$`{julia} Int(round(-site_price))`k per acre, so four acres "should" save \$`{julia} Int(round(-4 * site_price))`k; they saved \$`{julia} Int(round(lease_saving))`k.
 
 Global, all-at-a-time methods (Morris, Sobol') vary everything over its whole range: see the reading.
 

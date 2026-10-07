@@ -36,9 +36,9 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
 9. Archive `slides/lecture10-1-gaussian-plumes.qmd`: its first 271 lines are `capacity-expansion-2` with a different title; the rest is the superseded FA25 plume lecture.
 
 **Nov 4 — MIP (after Quiz 4)**
-10. Add an applied, coded anchor: three plants with min/max output and fixed costs, `Bin` variables, linking constraints y ≤ Pmax·u and y ≥ Pmin·u. At 150 MW the CCGT alone (\$5,500) beats cheaper-per-MWh coal (\$6,000); the switch is 200 MW by hand; `relax_integrality` gives coal "60% on" at \$4,800 (12.7% gap). The Nov 11 lab and HW8 both assume students have seen this once.
-11. Trim branch and bound from 17 slides to nodes 1–3 plus the final annotated tree; nodes 4–9 to the appendix. HW8 traces only 2–3 nodes; every node value checked.
-12. State the relaxation bound for both senses (the example maximizes; the lab and HW8 minimize).
+10. Add an applied, coded anchor: three plants with min/max output and fixed costs, `Bin` variables, linking constraints y ≤ Pmax·u and y ≥ Pmin·u. At 150 MW the CCGT alone (\$5,500) beats cheaper-per-MWh coal (\$6,000); the switch is 200 MW by hand; `relax_integrality` gives coal "60% on" at \$4,800 (12.7% gap). The Nov 11 lab and HW7 both assume students have seen this once.
+11. Trim branch and bound from 17 slides to nodes 1–3 plus the final annotated tree; nodes 4–9 to the appendix. HW7 traces only 2–3 nodes; every node value checked.
+12. State the relaxation bound for both senses (the example maximizes; the lab and HW7 minimize).
 
 **Nov 9 — Waste and Network Models (sub)**
 13. Solve the model in the deck (folded JuMP) and add one what-if: a 220 Mg/day landfill closes the WTE (\$24,539/day). As given, **no binary ever changes** in the example (the WTE is open because the landfill is full), so it can't show "which facilities open" without it.
@@ -177,7 +177,7 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
 
 ## 7. Code level
 
-- Everything is handed over; students don't write code here (Lab 2 on Oct 26 and HW7 did that).
+- Everything is handed over; students don't write code here (Lab 2 on Oct 26 and HW6 did that).
 - The new shadow-price cell is code-first on its slide, with output below. It names the constraints:
   ```julia
   @constraint(single_ed, load, sum(y) == d)
@@ -291,7 +291,7 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
 | 17 | **Reading the answer**: the load-duration curve; **new** screening curves (cost per MW-year against hours run, with crossovers); load-duration curve with the crossover hours marked; read the build off it (2017, 733 and 31 MW); "Why any unserved energy?" answered | 2, 3 | interpretation after the result; a concrete anchoring number (7.25 h ≈ 7 hours of shortage) | crossovers as a board item (prompt slide; result fragment 1700 h and 7.25 h; working in notes); reading the build off the curve on a tablet |
 | 8 | **Renewables**: what changes (capacity factor); the changed constraint; where capacity factors come from (TMY/AMY); JuMP vector snippet (code first) | 4 | explicit scope: screening no longer suffices | slide |
 | 12 | **Carbon limits** (new): the cap constraint Σ e_g y_{g,t} ≤ E with emission factors (coal 1, CCGT 0.43, CT 0.55 t/MWh, as in FA25 HW4); its shadow price is −$39.29/t at both 75% and 50% caps (computed); *why* it is flat: geothermal at $51.2/MWh against CCGT at $34.3/MWh, a $16.9 difference for 0.43 t, gives $39.3/t; reading it as a carbon price; what would make it rise (more expensive abatement steps) | 5 | self-questioning ("why the same price at two caps?") opens MP2's question | $39.3/t as a board item (prompt, result, notes) |
-| 5 | **Takeaways, Next Classes** (Wed MIP; Quiz 4 Wed), **Assessments** (MP2 final part now possible; HW7 graded) | — | — | slide |
+| 5 | **Takeaways, Next Classes** (Wed MIP; Quiz 4 Wed), **Assessments** (MP2 final part now possible; HW6 graded) | — | — | slide |
 
 **Slide target: about 30** — the 26 deduplicated slides, minus the 3 overview slides now given on Oct 28, plus about 7 new (screening ×2, read-off, why unserved energy, CO₂ ×3). That fits the house rate.
 
@@ -364,7 +364,7 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
 - **Date:** Wed Nov 4, 2026. 75 minutes: **Quiz 4 first (25 minutes), then about 50 minutes of content.**
 - **Who:** the instructor.
 - **Source:** `slides/lecture11-1-mixed-integer.qmd` (FA25). Rename it to `lecture11-2-mixed-integer.qmd` if Nov 2 takes `lecture11-1`.
-- **Status:** Reuse, with branch and bound trimmed. This outline also adds a coded MIP example, which the TA lab and HW8 depend on.
+- **Status:** Reuse, with branch and bound trimmed. This outline also adds a coded MIP example, which the TA lab and HW7 depend on.
 
 ## 2. Measurement of the source
 
@@ -387,8 +387,8 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
   1. The subtitle says "Lecture 15"; FA26 needs 17. The date says Nov 3, 2025.
   2. Upcoming Schedule and Assessments are FA25: "Wednesday: No class", "Prelim 2 (11/12)".
   3. The review slide is a generic list of LP assumptions.
-  4. **There is no coded or applied MIP.** The deck has no JuMP, no `Bin`, no linking constraint, and no LP relaxation of a real model. The Nov 11 TA lab and HW8's computational part both assume students have seen these once.
-  5. "Solution to linear relaxation … is an *upper bound*" is right for this maximisation. The lab and HW8 minimise, so the deck must state both directions.
+  4. **There is no coded or applied MIP.** The deck has no JuMP, no `Bin`, no linking constraint, and no LP relaxation of a real model. The Nov 11 TA lab and HW7's computational part both assume students have seen these once.
+  5. "Solution to linear relaxation … is an *upper bound*" is right for this maximisation. The lab and HW7 minimise, so the deck must state both directions.
   6. The style is not FA26's (Computer Modern, ad hoc colours).
 
 ## 3. Takeaways (claims)
@@ -404,13 +404,13 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
 
 ## 4. What it feeds and what assesses it
 
-- **HW8** (assigned today, due Thu Nov 12), which asks for:
+- **HW7** (assigned today, due Thu Nov 12), which asks for:
   - a fixed cost, an either/or, and an indicator, each modelled with binaries;
   - why the LP relaxation bounds;
   - tracing 2–3 branch-and-bound nodes;
   - solving a small MIP and comparing it with its relaxation.
   
-  The lecture must show each modelling pattern once and the relaxation in JuMP once. HW8's own example must differ from the lecture anchor and from the lab.
+  The lecture must show each modelling pattern once and the relaxation in JuMP once. HW7's own example must differ from the lecture anchor and from the lab.
 - **Nov 9 (waste, substitute):** facility indicator variables reuse the linking pattern.
 - **Nov 11 (Lab 3, TA, facility siting in JuMP, formulation given):** needs `Bin`, the linking constraint (x ≤ C·y), `relax_integrality`, and the bound reading.
 - **Quiz 5 (Nov 16):** covers MIP.
@@ -426,7 +426,7 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
 | 14 | **Modelling with binaries** (new anchor): three plants, each with a minimum, maximum, marginal cost and fixed cost; the linking constraints y ≤ Pmax·u and y ≥ Pmin·u; the objective; the either/or pattern (u_B + u_C ≤ 1) and the general big-M disjunction; JuMP with `Bin` (code first); the result at 150 MW (CCGT alone, $5,500); the 200 MW switch by hand | 1, 2 | derivation in small named steps; do it once by hand, then in code; a concrete anchoring number (200 MW) | constraints as a board item (prompt slide, result fragment, working in notes); 200 MW by hand on the board |
 | 8 | **The LP relaxation**: `relax_integrality` gives coal 60% on, $4,800, 12.7% below the MIP; why it is a bound (larger feasible set), with the direction for min and max; divisibility violated (the 2 slides merged into 1) | 3 | verification as a named step; a named trap (fractional "on") | slide |
 | 12 | **Branch and bound**: the simple MILP; node 1 (bound 27.06, incumbent 23); branch on x₂ gives nodes 2/3 (25, 25.5; both plots on one slide); the final tree (drawn from the node solutions since Oct 7, replacing `bb-89.png`) with the pruning rules (5 and 7 infeasible; 6 integer at 23, the first incumbent; 8 integer at 24, the optimum; 9 pruned since 20.5 < 24); "why it's still expensive" (the tree can grow exponentially) | 4 | interpretation after the result | node 1 → 2/3 as a board item; tree annotation on a tablet |
-| 4 | **Takeaways, Next Classes** (Mon waste with a substitute; Wed Lab 3 with the TA; Quiz 5 Mon Nov 16), **Assessments** (HW8 assigned) | — | — | slide |
+| 4 | **Takeaways, Next Classes** (Mon waste with a substitute; Wed Lab 3 with the TA; Quiz 5 Mon Nov 16), **Assessments** (HW7 assigned) | — | — | slide |
 
 **Slide target: about 21** (now about 33). Branch and bound goes from 17 slides to 5, with nodes 4–9 in the appendix. Add about 6 for the anchor and the relaxation. That matches about 50 minutes at the house rate.
 
@@ -454,7 +454,7 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
 - **The relaxation's "effective cost"** is marginal cost plus fixed cost over maximum output: coal 32, CCGT 35, CT 51 $/MWh. That explains why the relaxation always fills coal first. It's a good line for the notes.
 - **Robustness:** the gap shrinks as demand grows (12.7% → 1.1%). Say "the bound can be loose or tight", not one number.
 - **The either/or (u_B + u_C ≤ 1) doesn't bind** at any demand tested (280 and 350 MW are unchanged). Present it as a modelling pattern, not as a result.
-- **Distinct from:** the lab's siting data (its own data), HW8 (undrafted; choose a non-power context there), and the waste lecture.
+- **Distinct from:** the lab's siting data (its own data), HW7 (undrafted; choose a non-power context there), and the waste lecture.
 
 ## 7. Code level
 
@@ -480,7 +480,7 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
 ## 10. Cut list (in order)
 
 1. The second divisibility slide.
-2. The either/or slide (keep the pattern in the notes; HW8 can carry it).
+2. The either/or slide (keep the pattern in the notes; HW7 can carry it).
 3. The nodes 2/3 plots (keep the tree figure only).
 
 ## 11. Not a substitute session
@@ -490,11 +490,11 @@ The deck must still stand alone for the Nov 11 TA lab: the TA guide will point b
 ## 12. Decisions for the instructor (recommendation first)
 
 1. **Use a three-plant commitment problem as the applied anchor**, and show it once in JuMP. *Evidence:*
-   - the deck has no coded MIP, and the lab and HW8 both need one;
+   - the deck has no coded MIP, and the lab and HW7 both need one;
    - the 150 MW result (CCGT beats cheaper coal) and the 200 MW hand threshold are clean;
    - it recovers part of the dropped unit commitment, and it differs from the lab's siting problem.
-2. **Trim branch and bound to nodes 1–3 plus the final annotated tree, with nodes 4–9 in the appendix.** *Evidence:* the current 17 slides take about 34 of the 50 minutes. HW8 asks students to trace only 2–3 nodes, and every node value is verified.
-3. **State the bound for both senses** ("upper for max, lower for min"). *Evidence:* the deck's example maximises, while the lab and HW8 minimise.
+2. **Trim branch and bound to nodes 1–3 plus the final annotated tree, with nodes 4–9 in the appendix.** *Evidence:* the current 17 slides take about 34 of the 50 minutes. HW7 asks students to trace only 2–3 nodes, and every node value is verified.
+3. **State the bound for both senses** ("upper for max, lower for min"). *Evidence:* the deck's example maximises, while the lab and HW7 minimise.
 4. Rename the file to `lecture11-2-mixed-integer.qmd` (with `git mv` of `_freeze/`) if Nov 2 becomes `lecture11-1-capacity-expansion`.
 
 ---
@@ -506,7 +506,7 @@ The deck must still stand alone for the Nov 11 TA lab: the TA guide will point b
 - **Date / length:** Mon Nov 9, 75 minutes. It moves to Wed Nov 11 if that is the only day the substitute can come; then Lab 3 (TA facility siting) runs first.
 - **Taught by:** a general substitute, not the power-systems expert. The instructor is away Nov 9–13.
 - **Source:** `slides/lecture12-1-waste-management.qmd` (FA24-dated). Status: Reuse, make sub-ready.
-- **Assessment it feeds:** HW9, assigned on the lecture day, due Thu Nov 19. Quiz 5 (Mon Nov 16) covers waste and networks.
+- **Assessment it feeds:** HW8, assigned on the lecture day, due Thu Nov 19. Quiz 5 (Mon Nov 16) covers waste and networks.
 
 ## 2. The source deck, measured and checked
 
@@ -533,7 +533,7 @@ The deck must still stand alone for the Nov 11 TA lab: the TA guide will point b
 - **A weakness, not an error: in the example as given, no binary ever bites.**
   - The WTE stays open even at a \$50,000/day fixed cost: without it the problem is infeasible, because the 200 Mg/day landfill is full.
   - Forcing $Y_3 = 1$ changes nothing; the solution is identical without it.
-  - So the example never shows a facility *closing*, which is what HW9 ("interpret which facilities open") and Quiz 5 ("which constraints need a binary, and why") are about.
+  - So the example never shows a facility *closing*, which is what HW8 ("interpret which facilities open") and Quiz 5 ("which constraints need a binary, and why") are about.
   - Computed fix, a "what if" on one slide: raise the landfill to **220 Mg/day** and the **WTE closes**, cutting cost from \$26,881 to **\$24,539/day**. At 270 Mg/day the MRF closes too (\$23,593/day). The MRF and WTE open *because the landfill is full*, not because they are cheap. Separately, raising the MRF's fixed cost to \$3,000/day closes the MRF (\$27,013/day).
 
 ## 3. Takeaways (claims)
@@ -545,7 +545,7 @@ The deck must still stand alone for the Nov 11 TA lab: the TA guide will point b
 
 ## 4. What it feeds and what assesses it
 
-- **HW9** (by hand: a small facility-allocation network with flow-conservation and capacity constraints and siting indicators; computationally: solve it and interpret which facilities open). The lecture must teach all four. HW9 should use a *different* network so that the lecture's worked example and folded JuMP code are a model to adapt, not a verbatim answer.
+- **HW8** (by hand: a small facility-allocation network with flow-conservation and capacity constraints and siting indicators; computationally: solve it and interpret which facilities open). The lecture must teach all four. HW8 should use a *different* network so that the lecture's worked example and folded JuMP code are a model to adapt, not a verbatim answer.
 - **Quiz 5** (Nov 16): waste and networks, including "which constraints need a binary, and why", which takeaway 2 answers. No timed-exam precedent exists.
 - **Lab 3** (TA, facility siting in JuMP) is never assessed. If it runs first (the swap case), it previews $Y_j$ and the linking constraint; if after, it practises them. The review slide is written to work either way.
 - **Builds on:** Nov 4 (MIP: fixed costs need binaries) and Nov 2 (capacity expansion: LP with capacity limits).
@@ -561,7 +561,7 @@ The deck must still stand alone for the Nov 11 TA lab: the TA guide will point b
 | 10 | Objective | 2 | Transport plus disposal; "is this disposal cost right?" leads to fixed cost × $Y_j$; one coefficient worked out ($82.5 = 1.5 \times 15 + 60$) | slide fragments; the coefficient as a worked line |
 | 14 | Constraints | 1, 2 | City mass balance; residual mass balance (**fate and transport**: 60% residual, 20% ash); capacity **linked** to $Y_j$; check: "which constraints need a binary, and why?" | slide; poll check |
 | 12 | Solve and interpret | 3 | JuMP model (folded code, first on its slide) → \$26,881/day, all open; **interpretation slide**: why the WTE runs; "what if the landfill were 220?" → WTE closes, \$24,539/day | slide (figure from the deck's solution SVG) |
-| 5 | Takeaways and next | all | Takeaways; next classes; HW9 assigned | slide |
+| 5 | Takeaways and next | all | Takeaways; next classes; HW8 assigned | slide |
 | 6 | Buffer for the sub | — | Questions; or the cut list in reverse | — |
 | **75** | | | | |
 
@@ -616,14 +616,14 @@ The deck must still stand alone for the Nov 11 TA lab: the TA guide will point b
 - **A one-page sub sheet** (also in the first slide's notes):
   - the four takeaways and the key numbers (\$26,881/day; the 220 Mg/day what-if);
   - three likely questions with answers: why the WTE is open; why the binary appears in the capacity constraint; what "residual" means;
-  - that HW9 is assigned today and the TA holds office hours.
+  - that HW8 is assigned today and the TA holds office hours.
 - **No board dependence:** every board item is a slide with its answer as a fragment.
 - **Swap-proof wording:** the review slide does not mention Monday's or Wednesday's lab, and "Next classes" lists Lab 3 by name, not by weekday.
 - The poll link (`_poll-prompt.qmd`) works for the sub's account, or the sub skips the poll. Instructor to confirm.
 
 ## 12. Decisions for the instructor (recommendation first)
 
-1. **Show the solved model in the deck (folded JuMP code plus the 220 Mg/day what-if)** — *recommended*. Evidence: the deck's printed optimum was wrong by \$2, and in the example as given no binary ever changes, so the "which facilities open" lesson needs the what-if, which needs code. HW9 uses a different network, so this is a worked example, not the answer.
+1. **Show the solved model in the deck (folded JuMP code plus the 220 Mg/day what-if)** — *recommended*. Evidence: the deck's printed optimum was wrong by \$2, and in the example as given no binary ever changes, so the "which facilities open" lesson needs the what-if, which needs code. HW8 uses a different network, so this is a worked example, not the answer.
 2. **Make the capacity-linking constraint ($\sum \text{flow into } j \le K_j Y_j$) the main way to switch a facility on and off; move the piecewise $Y_j$ definition, JuMP `=>` syntax and big-M to the appendix** — *recommended*. Evidence: it is one constraint instead of three. It fixes the deck's three index errors at once. It matches Lab 3's $x_{ij} \le C_j y_j$ and Quiz 5's planned item.
 3. **Drop $Y_3 = 1$** (the landfill forced on) — *recommended*. Evidence: the optimum is identical without it, and it invites a "why?" a sub can't answer.
 4. **Whether a sub should do any board work** — *recommend none*; fragments carry the answers.
@@ -902,7 +902,7 @@ That is roughly 60 content slides of material for one 75-minute session. FA26 de
    - It uses a log y-axis with `ylimits=(0, 1)`.
    - Every bar has +0.01 added.
 6. **14-1's `lake_sens` can find the wrong root.** `find_zero(crit, 0.5)` lands on the wrong root at 1 of 121 (q, b) grid points across its own SA ranges. Minor.
-7. **14-1's shadow-price slide uses FA25's product-mix LP.** FA26's LP anchors are the plume-emissions LP (Oct 14/19) and HW7's stormwater LP. Swap, so the callback is to work students did. HW7 Problem 2.4 already showed that a shadow price holds only for the first 2 acres.
+7. **14-1's shadow-price slide uses FA25's product-mix LP.** FA26's LP anchors are the plume-emissions LP (Oct 14/19) and HW6's stormwater LP. Swap, so the callback is to work students did. HW6 Problem 4.3 already showed that a shadow price holds only for the first 2 acres.
 8. **Old house style.** FA25 font (Computer Modern) and `Pkg.activate(".")`. Copy the FA26 front matter and setup from `lecture07-2-model-validation.qmd`: Palatino, `cb_*` palette, `@__DIR__`.
 9. **FA25 lake setting is a cliff, not a tradeoff.** At σ = 0.25 (15-2) or 0.15 (13-2), the baseline lake's tradeoff is a cliff (see §6). That doesn't show a front well.
 
@@ -960,7 +960,7 @@ That is roughly 60 content slides of material for one 75-minute session. FA26 de
 - **Factor map**: the aggressive plan's successes and failures by q and b.
 - **Prioritization**: the spread in success across each factor's range (q 0.81, b 0.32, median inflow 0.31, σ 0.22).
 - **Trap**: halve q's range and b becomes the most important factor (0.54 vs 0.48). SA results depend on the ranges chosen.
-- **Callback**: a shadow price is a *local, one-at-a-time* sensitivity. HW7's 4-acre lease showed where that breaks.
+- **Callback**: a shadow price is a *local, one-at-a-time* sensitivity. HW6's 4-acre lease showed where that breaks.
 - One slide on one-at-a-time vs all-at-a-time and local vs global. Morris/Sobol' go to a reading.
 
 **Slide budget** (section titles count as slides):
@@ -983,7 +983,7 @@ That is roughly 60 content slides of material for one 75-minute session. FA26 de
 - **Non-dominated: {A, B, D}.**
 - **C** is dominated by B: cheaper, more phosphorus removed, fewer overflows.
 - **E** is dominated by B: it ties on phosphorus and overflows and costs more. FA25's strict-on-every-objective definition would wrongly keep E.
-- Stormwater ties back to HW6 and HW7.
+- Stormwater ties back to HW6.
 
 ### b) The shallow lake (students know it from Weeks 2–3 and HW3; Dec 2 reuses it)
 
@@ -1170,7 +1170,7 @@ Robustness: F's plan on a D night 57 / 129 / 156 µg/m³ and on a B night 46 / 1
 
 | Method (when) | Answers | Characteristic error | Check |
 |:--|:--|:--|:--|
-| LP (Oct 14–19) | Least-cost plan | Exact *given* the model | Shadow prices, valid only locally (HW7: 4 × 25 ≠ actual 50) |
+| LP (Oct 14–19) | Least-cost plan | Exact *given* the model | Shadow prices, valid only locally (HW6: 4 × 25 ≠ actual 50) |
 | MIP (Nov 4) | Discrete choices | Optimality gap | LP relaxation bound |
 | Stochastic programming (Nov 16) | A plan when probabilities are known | Which scenarios and probabilities represent the uncertainty | VSS and EVPI |
 | Dynamic programming (Nov 18) | A policy for sequential decisions | End-of-horizon value; state grid; curse of dimensionality | Brute force or the tree on a small case; vary the terminal value |

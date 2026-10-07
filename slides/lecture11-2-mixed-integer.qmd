@@ -94,7 +94,7 @@ commas(n) = replace(string(Int(round(n))), r"(?<=\d)(?=(\d{3})+$)" => ",")
 Today: decisions that are **on or off**.
 
 ::: {.notes}
-Quiz 4 takes the first 25 minutes, leaving about 50 for this. Timing: discrete decisions by minute 10 after the quiz, the three-plant example by 24, the LP relaxation by 32, branch and bound by 44, wrap-up by 48. If short, cut in this order: the logical-constraints slide (Homework 8 carries the pattern), the nodes 2 and 3 plots (keep the tree), and the divisibility figure.
+Quiz 4 takes the first 25 minutes, leaving about 50 for this. Timing: discrete decisions by minute 10 after the quiz, the three-plant example by 24, the LP relaxation by 32, branch and bound by 44, wrap-up by 48. If short, cut in this order: the logical-constraints slide (Homework 7 carries the pattern), the nodes 2 and 3 plots (keep the tree), and the divisibility figure.
 :::
 
 # Discrete Decisions
@@ -260,7 +260,7 @@ Binaries also encode rules between decisions:
 $z$ is binary; $M$ is big enough to switch one off ("big-$M$").
 
 ::: {.notes}
-These are patterns, not results: in this example the at-most-one rule doesn't change the answer at any demand we tried. The either/or (disjunctive) form uses one binary to choose which of two constraints holds; M has to be big enough to make the other constraint non-binding, and no bigger than necessary, because a huge M makes the LP relaxation weak. Homework 8 asks you to use each of these.
+These are patterns, not results: in this example the at-most-one rule doesn't change the answer at any demand we tried. The either/or (disjunctive) form uses one binary to choose which of two constraints holds; M has to be big enough to make the other constraint non-binding, and no bigger than necessary, because a huge M makes the LP relaxation weak. Homework 7 asks you to use each of these.
 :::
 
 # The LP Relaxation
@@ -326,7 +326,7 @@ The integer points are a **subset** of the LP's region, so the relaxed optimum i
 ::::
 
 ::: {.notes}
-The shaded region is an LP's feasible region; the dots are the integer points inside it. Dropping integrality can only add options, so the relaxed optimum is never worse than the integer optimum. For a minimization (our plants, Lab 3, Homework 8) that makes it a lower bound on cost; for a maximization (the next example) an upper bound. LP corners land on integer points only by luck, which is why we can't just solve the LP and round.
+The shaded region is an LP's feasible region; the dots are the integer points inside it. Dropping integrality can only add options, so the relaxed optimum is never worse than the integer optimum. For a minimization (our plants, Lab 3, Homework 7) that makes it a lower bound on cost; for a maximization (the next example) an upper bound. LP corners land on integer points only by luck, which is why we can't just solve the LP and round.
 :::
 
 # Branch and Bound
@@ -517,7 +517,7 @@ p_tree
 ```
 
 ::: {.notes}
-Green boxes are integer solutions; grey boxes end a branch. Prune a branch when it is infeasible, when it gives an integer solution (nothing below can do better), or when its bound is worse than the incumbent. Node 6 is the first incumbent; node 8 beats it; node 9's bound is below node 8's value. Nodes 4 through 9 are worked in the appendix, solved by the same function. In the worst case the tree grows exponentially with the number of integer variables, which is why commercial solvers add cutting planes and heuristics (branch and cut). Homework 8 asks you to trace two or three nodes by hand.
+Green boxes are integer solutions; grey boxes end a branch. Prune a branch when it is infeasible, when it gives an integer solution (nothing below can do better), or when its bound is worse than the incumbent. Node 6 is the first incumbent; node 8 beats it; node 9's bound is below node 8's value. Nodes 4 through 9 are worked in the appendix, solved by the same function. In the worst case the tree grows exponentially with the number of integer variables, which is why commercial solvers add cutting planes and heuristics (branch and cut). Homework 7 asks you to trace two or three nodes by hand.
 :::
 
 # Key Takeaways and Upcoming Schedule
@@ -537,7 +537,7 @@ Green boxes are integer solutions; grey boxes end a branch. Prune a branch when 
 
 **Wednesday, November 11**: Lab 3, fixed costs and facility siting in `JuMP` (with the TA). Bring a laptop.
 
-**Homework 8**: Assigned today, due Thursday, November 12.
+**Homework 7**: Assigned today, due Thursday, November 12.
 
 **Quiz 5**: Monday, November 16.
 
