@@ -1,0 +1,723 @@
+---
+title: "Multiple Objectives, Robustness, and Sensitivity"
+subtitle: "Lecture 21"
+author: "Vivek Srikrishnan"
+course: "BEE 4750"
+institution: "Cornell University"
+date: "November 30, 2026"
+format:
+    revealjs:
+        slide-number: c/t
+        show-slide-number: all
+        center-title-slide: true
+        width: 1280
+        height: 720
+        transition: none
+        toc: true
+        toc-depth: 1
+        toc-title: "Overview"
+        history: false
+        link-external-newwindow: true
+        theme: ../sass/slides.scss
+        template-partials:
+            - title-slide.html
+        menu:
+            numbers: true
+        html-math-method: mathjax
+        include-in-header: mathjax-config.html
+        date-format: long
+        email-obfuscation: javascript
+        chalkboard:
+            theme: whiteboard
+            buttons: true
+        controls: true
+engine: julia
+julia:
+  exeflags: ["+1.11.5"]
+execute:
+    freeze: auto
+    daemon: 600
+---
+
+```{julia}
+#| output: false
+import Pkg
+Pkg.activate(@__DIR__)
+Pkg.instantiate()
+```
+
+```{julia}
+#| output: false
+using Plots
+using Measures
+using LaTeXStrings
+using Random
+using Distributions
+using Roots
+using Statistics
+using DataFrames
+using XLSX
+using JuMP
+using HiGHS
+using Printf
+
+plot_font = "Palatino Roman"
+default(
+    fontfamily=plot_font,
+    linewidth=3,
+    framestyle=:box,
+    label=nothing,
+    grid=false,
+    guidefontsize=18,
+    legendfontsize=16,
+    tickfontsize=16,
+    titlefontsize=20,
+    bottom_margin=10mm,
+    left_margin=5mm
+)
+
+# Okabe-Ito palette: distinguishable under all common types of colour
+# blindness, and every pair also differs in line style so the figures
+# still read in greyscale.
+cb_orange = "#E69F00"
+cb_green = "#009E73"
+cb_yellow = "#F0E442"
+cb_blue = "#0072B2"
+cb_vermillion = "#D55E00"
+cb_purple = "#CC79A7"
+
+# Two decimals for reliabilities and shares, so 0 prints as 0.00
+two(x) = @sprintf("%.2f", x)
+three(x) = @sprintf("%.3f", x)
+```
+
+# Review of Last Class
+
+## Decisions With Known Probabilities
+
+Scenario trees and dynamic programming made decisions under uncertainty when we could **list the outcomes and their probabilities**.
+
+Today: what if the **objectives compete**, and nobody agrees on the **probabilities**?
+
+## Questions?
+
+{{< include _poll-prompt.qmd >}}
+
+# Multiple Objectives
+
+## Multiple Objectives and Environmental Systems
+
+Often several objectives at once: **cost**, **environmental quality**, **reliability**.
+
+**Power systems**: generation cost, CO~2~ emissions, resource adequacy, reliability, other environmental impacts.
+
+**Reservoir operations**: municipal demand, irrigation, recreation, hydropower, flood management, streamflow for ecosystems.
+
+::: {.notes}
+Most environmental systems are managed for several things at once, usually some version of cost, environmental quality, and reliability. Ask the room which of these objectives pull against each other: cheap generation against emissions, storing water for irrigation against keeping space free for floods.
+:::
+
+## What Does It Mean to "Optimize" Two Objectives?
+
+One answer: **weight** them into a single objective, $\sum_i w_i Z_i$ with $\sum_i w_i = 1$, or turn all but one into constraints.
+
+::: {.fragment .fade-in}
+Both need *a priori* judgments: the weights, or the acceptable limits.
+
+***What if we leave the objectives unaggregated?***
+:::
+
+::: {.notes}
+Weighting is straightforward once you have the weights, but it needs the objectives normalized, and the weights are hard to interpret ("what does 0.3 on reliability mean?"). Constraints need an acceptable limit chosen before you know what it costs. The alternative is to keep the objectives separate and look at the tradeoffs directly.
+:::
+
+## Dominance
+
+Plan $\mathbf{y}$ **dominates** plan $\mathbf{x}$ if $\mathbf{y}$ is **at least as good on every objective** and **strictly better on at least one**.
+
+A plan is **non-dominated** if no other plan dominates it.
+
+The non-dominated plans form the **Pareto front**. Each is a different tradeoff between the objectives.
+
+::: {.notes}
+"At least as good" depends on direction: lower cost is better, more phosphorus removed is better. Two things to stress. First, a plan that ties on some objectives and is worse on one is still dominated. Second, nothing on the front is better than anything else on the front without a judgment about how much of one objective is worth how much of another.
+:::
+
+## Which Plans Are Non-Dominated?
+
+| Plan | Cost (\$M/yr) ↓ | P removed (kg/yr) ↑ | Overflows (/yr) ↓ |
+|:--:|--:|--:|--:|
+| A | 2.0 | 30 | 6 |
+| B | 2.5 | 40 | 4 |
+| C | 2.6 | 35 | 5 |
+| D | 1.8 | 25 | 6 |
+| E | 3.0 | 40 | 4 |
+
+::: {.fragment .fade-in}
+```{julia}
+#| echo: false
+#| output: asis
+
+# Stormwater plans: minimize cost, maximize phosphorus removed, minimize overflows
+plan_names = ["A", "B", "C", "D", "E"]
+plan_cost = [2, 2.5, 2.6, 1.8, 3]
+plan_phosphorus = [30, 40, 35, 25, 40]
+plan_overflow = [6, 4, 5, 6, 4]
+n_plans = length(plan_names)
+
+# Plan j dominates plan k: at least as good on every objective, strictly better on one
+function dominates(j, k)
+    no_worse = plan_cost[j] <= plan_cost[k] && plan_phosphorus[j] >= plan_phosphorus[k] &&
+        plan_overflow[j] <= plan_overflow[k]
+    better = plan_cost[j] < plan_cost[k] || plan_phosphorus[j] > plan_phosphorus[k] ||
+        plan_overflow[j] < plan_overflow[k]
+    return no_worse && better
+end
+
+# A plan is non-dominated unless some other plan dominates it
+non_dominated = trues(n_plans)
+for k in 1:n_plans
+    for j in 1:n_plans
+        if j != k && dominates(j, k)
+            non_dominated[k] = false
+        end
+    end
+end
+non_dominated_names = join(plan_names[non_dominated], ", ")
+println("Plans **", non_dominated_names, "** are non-dominated; B dominates C and E.")
+```
+:::
+
+::: {.notes}
+Board item. Arrows in the header: lower is better for cost and overflows, higher is better for phosphorus removed. Give the room two minutes. Working: compare each plan against the others. C against B: B is cheaper (2.5 vs 2.6), removes more (40 vs 35) and overflows less (4 vs 5), so B dominates C. E against B: same phosphorus, same overflows, but E costs more, so B dominates E. This is the case a "strictly better on every objective" definition gets wrong: it would keep E. A, B and D survive: D is cheapest, B removes the most for its cost, and A sits between them. None of A, B, D is better than the others without saying how much a dollar is worth in phosphorus.
+:::
+
+## The Shallow Lake Model
+
+$$X_{t+1} = X_t + a_t + y_t + \frac{X_t^q}{1 + X_t^q} - bX_t$$
+
+- $a_t$: point-source release (**the decision**); $q = 2.5$, $b = 0.4$.
+- $y_t \sim \text{LogNormal}(\log 0.03,\ 0.5)$: inflow (**uncertain**).
+
+**Reliability**: share of 1,000 100-year inflow sequences never crossing $X_\text{crit}$.
+
+::: {.notes}
+This is the lake from weeks 2 and 3: recycling from the sediment feeds back on itself, so above a threshold the lake tips into a eutrophic state and does not come back easily. The town wants to release as much phosphorus as possible (a proxy for economic activity) while keeping the lake clear. The plans here are simple: release one amount for years 1 to 50 and another for years 51 to 100, each from 0 to 0.05 in steps of 0.0025, which gives 441 plans.
+:::
+
+## Release Against Reliability
+
+```{julia}
+#| label: fig-lake-front
+#| fig-cap: "Mean release and reliability for 441 two-period release plans; the non-dominated plans form the front."
+#| echo: true
+#| code-fold: true
+
+q_base = 2.5
+b_base = 0.4
+n_years = 100
+lake_flux(x, q, b) = x^q / (1 + x^q) - b * x
+
+# Tipping threshold: the unstable equilibrium of the lake with no releases.
+# Find the first grid interval where the flux turns from negative to non-negative,
+# then solve for the root inside it.
+function threshold(q, b)
+    grid = range(0.01, 3; length=3000)
+    flux = lake_flux.(grid, q, b)
+    for k in 1:length(grid) - 1
+        if flux[k] < 0 && flux[k+1] >= 0
+            return find_zero(x -> lake_flux(x, q, b), (grid[k], grid[k+1]))
+        end
+    end
+    return NaN
+end
+
+# Share of inflow sequences in which the lake never crosses the threshold
+function reliability(release, inflow, q, b, x_crit)
+    n_sequences = size(inflow, 2)
+    n_clear = 0
+    for j in 1:n_sequences
+        x = 0
+        crossed = false
+        for t in 1:n_years
+            x = x + release[t] + inflow[t, j] + x^q / (1 + x^q) - b * x
+            if x > x_crit
+                crossed = true
+            end
+        end
+        if !crossed
+            n_clear += 1
+        end
+    end
+    return n_clear / n_sequences
+end
+
+x_crit_base = threshold(q_base, b_base)
+Random.seed!(1)
+inflows = rand(LogNormal(log(0.03), 0.5), n_years, 1000)
+
+# Two-period plans: one release level for years 1-50, another for years 51-100
+release_levels = 0:0.0025:0.05
+n_levels = length(release_levels)
+n_lake_plans = n_levels * n_levels
+early_release = zeros(n_lake_plans)
+late_release = zeros(n_lake_plans)
+for i in 1:n_levels
+    for j in 1:n_levels
+        k = (i - 1) * n_levels + j    # plan number
+        early_release[k] = release_levels[i]
+        late_release[k] = release_levels[j]
+    end
+end
+
+# Release in each year: the early level up to year 50, the late level after
+function release_schedule(early, late)
+    release = zeros(n_years)
+    for t in 1:n_years
+        if t <= 50
+            release[t] = early
+        else
+            release[t] = late
+        end
+    end
+    return release
+end
+
+mean_release = zeros(n_lake_plans)
+plan_reliability = zeros(n_lake_plans)
+for k in 1:n_lake_plans
+    mean_release[k] = (early_release[k] + late_release[k]) / 2
+    release = release_schedule(early_release[k], late_release[k])
+    plan_reliability[k] = reliability(release, inflows, q_base, b_base, x_crit_base)
+end
+
+# Non-dominated: no other plan releases at least as much, is at least as reliable,
+# and is better on one of the two
+on_front = trues(n_lake_plans)
+for k in 1:n_lake_plans
+    for j in 1:n_lake_plans
+        no_worse = mean_release[j] >= mean_release[k] &&
+            plan_reliability[j] >= plan_reliability[k]
+        better = mean_release[j] > mean_release[k] ||
+            plan_reliability[j] > plan_reliability[k]
+        if no_worse && better
+            on_front[k] = false
+        end
+    end
+end
+# The front's plans in order of release, to draw the front as a line
+front_plans = findall(on_front)
+front_order = front_plans[sortperm(mean_release[front_plans])]
+
+# The most release among plans with reliability of at least 0.9
+meets_target = findall(plan_reliability .>= 0.9)
+best_plan = meets_target[argmax(mean_release[meets_target])]
+same_mean = findall(abs.(mean_release .- mean_release[best_plan]) .< 1e-9)
+
+p_front = scatter(mean_release, plan_reliability, color=:gray70, markersize=4,
+    markerstrokewidth=0, label="release plans", xlabel="Mean P release",
+    ylabel="Reliability", legend=:bottomleft)
+plot!(p_front, mean_release[front_order], plan_reliability[front_order],
+    color=cb_vermillion, linewidth=3, marker=:circle, markersize=6, label="non-dominated")
+hline!(p_front, [0.9], color=:black, linestyle=:dot, linewidth=2, label="reliability 0.9")
+scatter!(p_front, [mean_release[best_plan]], [plan_reliability[best_plan]], color=cb_blue,
+    markersize=11, markershape=:star5, label="most release at 0.9")
+plot!(p_front, size=(1100, 300), xlims=(0, 0.051), ylims=(-0.03, 1.05),
+    left_margin=12mm, right_margin=8mm, bottom_margin=12mm, top_margin=5mm)
+```
+
+`{julia} count(on_front)` of `{julia} n_lake_plans` plans are non-dominated. At the star's release (`{julia} round(mean_release[best_plan]; digits=4)`), timing alone moves reliability from `{julia} two(minimum(plan_reliability[same_mean]))` to `{julia} two(maximum(plan_reliability[same_mean]))`.
+
+::: {.notes}
+Each grey column is a set of plans with the same mean release but different timing; the front is the upper envelope. Reading it left to right: reliability is essentially 1 at low releases, then falls quickly near a mean release of 0.035 to 0.04, and is near zero by 0.045. The starred plan is the most release you can get while keeping reliability at 0.9. The vertical spread at the star's release is the point to make: how much you release matters, but so does when. Releasing the same total late in the horizon is much riskier, because the lake has more time to accumulate phosphorus.
+:::
+
+## Choosing From the Front
+
+Two positions on **when** the value judgment is made:
+
+- ***A priori***: agree on weights or limits first, then optimize. Fast and repeatable, but the weights are chosen before anyone has seen what they cost.
+- ***A posteriori***: find the front first, then decide which tradeoff is tolerable. The cost of each choice is visible, but the front can be expensive to find, and hard to read beyond three objectives.
+
+***Is the starred plan the optimum?***
+
+::: {.notes}
+Think-pair for a minute. The answer to aim for: it is the optimum only for someone who has already decided that 0.9 reliability is the right target. A town that values the lake more would pick a plan to the left; one that values release more would accept less reliability. Both positions are used in practice. A priori weighting is common when a single agency decides and its preferences are stable; a posteriori exploration is common when several stakeholders disagree, because the front shows what each of them is asking the others to give up. Neither removes the value judgment; they move it.
+:::
+
+# Deep Uncertainty
+
+## What Will CO~2~ Emissions Be in 2100?
+
+```{julia}
+#| label: fig-co2
+#| fig-cap: "Global CO₂ emissions from fossil fuels and land use (Global Carbon Budget 2025)."
+#| echo: true
+#| code-fold: true
+
+budget_file = joinpath("data", "climate", "Global_Carbon_Budget_2025_v0.6-2.xlsx")
+budget_sheet = XLSX.readtable(budget_file, "Global Carbon Budget", first_row=22)
+carbon_budget = DataFrame(budget_sheet)
+# Columns 2 and 3: fossil-fuel and land-use emissions, in Gt carbon per year
+fossil_emissions = carbon_budget[:, 2]
+land_use_emissions = carbon_budget[:, 3]
+co2_emissions = (fossil_emissions .+ land_use_emissions) .* 3.67    # Gt carbon to Gt CO₂
+p_co2 = plot(carbon_budget.Year, co2_emissions, color=:black,
+    xlabel="Year", ylabel="CO₂ emissions (Gt CO₂/yr)")
+plot!(p_co2, size=(1100, 360), left_margin=12mm, right_margin=8mm, bottom_margin=12mm,
+    top_margin=5mm)
+```
+
+How high will CO~2~ emissions be in 2100? Answer in the poll.
+
+::: {.notes}
+Take the poll now (the poll link is on the Questions slide). Expect answers from near zero to more than double today's emissions. That spread is the point of the next slide.
+:::
+
+## Why Can't We Agree?
+
+Future emissions depend on things that are hard to forecast: **economic output**, **technological change**, and **policy**.
+
+When there is no consensus probability for an uncertainty, it is a **deep uncertainty**.
+
+::: {.fragment .fade-in}
+Contrast with Nov 16: the farmer's scenarios came **with** probabilities. Here, the probabilities are what we cannot agree on.
+:::
+
+::: {.notes}
+The poll answers were not careless; they come from different, defensible beliefs about the economy and policy. Deep uncertainty is not the same as "very uncertain": it means experts disagree about the distribution itself. For the lake, the recycling exponent and loss rate have been estimated for some lakes but not for this one, and the inflow distribution depends on land use decades from now.
+:::
+
+## What We Don't Know We Don't Know
+
+::: {.quote}
+> It ain't what you don't know that gets you into trouble. It's what you know for sure that just ain't so.
+
+::: {.cite}
+-- Often attributed to Mark Twain (apocryphal)
+:::
+:::
+
+Rumsfeld's (2002) categories, translated: **known knowns** are certainty; **known unknowns** are "shallow" uncertainty, with agreed probabilities; **unknown unknowns** are "deep" uncertainty.
+
+::: {.notes}
+The categories come from Donald Rumsfeld's 2002 remark about known knowns, known unknowns and unknown unknowns; the translation is what matters here. Optimization quietly assumes the first two: the model, the parameters and the probabilities are treated as known. The question for the rest of today is how to check what happens when they are not.
+:::
+
+# Robustness
+
+## Testing Plans Across Futures
+
+A plan is **robust** if it performs acceptably across many plausible futures, not only the one it was optimized for.
+
+:::: {.columns}
+::: {.column width=45%}
+Draw 500 plausible lakes ("states of the world") from wide ranges.
+
+**Robustness**: share of futures with reliability ≥ 0.9.
+:::
+::: {.column width=55%}
+| Factor | Range |
+|:--|:--|
+| Recycling exponent $q$ | 2–3 |
+| Loss rate $b$ | 0.35–0.45 |
+| Median inflow | 0.02–0.04 |
+| Inflow variability $\sigma$ | 0.25–0.75 |
+:::
+::::
+
+::: {.notes}
+This is a satisficing measure: a plan "works" in a future if it meets the reliability target there, and robustness counts the futures in which it works. The other common position is regret: how much worse a plan does in each future than the best plan for that future would have done. Satisficing is easier to explain and needs only a target; regret needs the best plan for every future, which is more computation, but it does not need a target. The ranges are judgments too, and we will see shortly that they matter.
+:::
+
+## How Robust Are Plans on the Front?
+
+```{julia}
+#| label: fig-robustness
+#| fig-cap: "Robustness of plans from the baseline front across 500 plausible lakes."
+#| echo: true
+#| code-fold: true
+
+# Four plans: release in years 1-50 and in years 51-100
+robust_labels = ["aggressive", "middle", "cautious", "zero release"]
+robust_early = [0.035, 0.03, 0.025, 0]
+robust_late = [0.0325, 0.03, 0.0275, 0]
+n_robust = length(robust_labels)
+
+# Each factor is drawn uniformly from its range
+q_range = Uniform(2, 3)
+b_range = Uniform(0.35, 0.45)
+median_range = Uniform(0.02, 0.04)
+variability_range = Uniform(0.25, 0.75)
+
+# Draw the futures, one row per future. The seed is fixed, so every call
+# starts from the same random numbers.
+function draw_futures(n_futures, q_range, b_range, median_range, variability_range)
+    Random.seed!(1)
+    futures = DataFrame(q=zeros(n_futures), b=zeros(n_futures),
+        median_inflow=zeros(n_futures), variability=zeros(n_futures))
+    for i in 1:n_futures
+        futures.q[i] = rand(q_range)
+        futures.b[i] = rand(b_range)
+        futures.median_inflow[i] = rand(median_range)
+        futures.variability[i] = rand(variability_range)
+    end
+    return futures
+end
+
+# Reuse one set of standard normal draws for every future and plan,
+# so differences between plans are not sampling noise
+Random.seed!(11)
+standard_draws = randn(n_years, 1000)
+
+# Reliability of each plan (columns) in each future (rows)
+function future_reliability(futures, early, late)
+    reliabilities = zeros(nrow(futures), length(early))
+    for i in 1:nrow(futures)
+        q = futures.q[i]
+        b = futures.b[i]
+        median_inflow = futures.median_inflow[i]
+        variability = futures.variability[i]
+        inflow = exp.(log(median_inflow) .+ variability .* standard_draws)
+        x_crit = threshold(q, b)
+        for k in 1:length(early)
+            if isnan(x_crit)
+                reliabilities[i, k] = 0
+            else
+                release = release_schedule(early[k], late[k])
+                reliabilities[i, k] = reliability(release, inflow, q, b, x_crit)
+            end
+        end
+    end
+    return reliabilities
+end
+
+futures = draw_futures(500, q_range, b_range, median_range, variability_range)
+reliability_by_future = future_reliability(futures, robust_early, robust_late)
+
+# Robustness: the share of futures in which each plan meets the 0.9 target
+robustness = zeros(n_robust)
+for k in 1:n_robust
+    robustness[k] = mean(reliability_by_future[:, k] .>= 0.9)
+end
+robust_release = (robust_early .+ robust_late) ./ 2
+
+robust_colors = [cb_vermillion, cb_orange, cb_blue, :black]
+p_robust = scatter(robust_release, robustness, color=robust_colors, markersize=10,
+    xlabel="Mean P release", ylabel="Robustness", xlims=(-0.002, 0.04), ylims=(0.3, 1))
+# Label placement: right of the zero-release point, above or below the others
+# so labels don't collide
+label_shift_x = [0, 0, 0, 0.0008]
+label_shift_y = [-0.06, -0.06, 0.06, 0]
+label_align = [:center, :center, :center, :left]
+for k in 1:n_robust
+    label_x = robust_release[k] + label_shift_x[k]
+    label_y = robustness[k] + label_shift_y[k]
+    label_text = text(robust_labels[k], 16, label_align[k], plot_font)
+    annotate!(p_robust, label_x, label_y, label_text)
+end
+plot!(p_robust, size=(1100, 350), left_margin=12mm, right_margin=8mm, bottom_margin=12mm,
+    top_margin=5mm)
+```
+
+The aggressive plan meets the target in only `{julia} two(robustness[1])` of futures.
+
+::: {.notes}
+The aggressive plan is the starred plan from the front. The cautious plan gives up about `{julia} Int(round(100 * (1 - robust_release[3] / robust_release[1])))` percent of the release for about `{julia} Int(round(100 * (robustness[3] - robustness[1])))` points of robustness; the zero-release plan is the most robust of all but releases nothing. So robustness is another objective, with its own tradeoff against release. Even releasing nothing does not keep every plausible lake clear: in some futures the non-point inflows alone are enough. One technical note: every future and plan uses the same underlying random inflow draws, scaled to that future's median and variability, so the differences between plans are not noise.
+:::
+
+## Robustness Is Another Objective
+
+- The plan that was best for the **baseline** lake is the **least robust** of the three.
+- Each step toward caution **costs release** and **buys robustness**, so choosing among them is another tradeoff and another value judgment.
+- Robustness says how often a plan works across futures; it does **not** say which future we are in.
+
+::: {.notes}
+Two things to leave the room with. First, optimizing for one set of assumptions tends to push a plan right up against that set's limits, which is exactly where it is fragile when the assumptions are wrong. Second, the robustness number depends on the futures we chose to test. That leads straight into sensitivity analysis: which of those assumptions actually drive the result?
+:::
+
+# Sensitivity Analysis
+
+## Sensitivity Analysis
+
+::: {.quote}
+> the study of **how uncertainty in the output of a model** (numerical or otherwise) can be **apportioned to different sources of uncertainty in the model input**
+
+::: {.cite}
+--- Saltelli et al. (2004), *Sensitivity Analysis in Practice*
+:::
+:::
+
+::: {.notes}
+Sensitivity analysis is the general version of a question we have asked all term: which assumptions matter for the answer?
+:::
+
+## Why Perform Sensitivity Analysis?
+
+:::: {.columns}
+::: {.column width=40%}
+- **Prioritization**: which factors drive the output?
+- **Fixing**: which can be fixed at a nominal value?
+- **Mapping**: which values lead to failure?
+:::
+::: {.column width=60%}
+![](https://uc-ebook.org/docs/html/_images/figure3_2_factor_mapping.png){height=440px}
+
+::: {.caption}
+Source: @Reed2022-uc
+:::
+:::
+::::
+
+::: {.notes}
+The three modes come from @Reed2022-uc, chapter 3, which is also the reading for the formal methods. Prioritization asks which inputs the output is most sensitive to, so you know where better data would help most. Fixing asks which inputs barely matter, so you can stop treating them as uncertain and save computation. Mapping asks which regions of the input space lead to an outcome you care about, here, the lake tipping.
+:::
+
+## Where Does the Aggressive Plan Fail?
+
+```{julia}
+#| label: fig-factor-map
+#| fig-cap: "Futures in which the aggressive plan meets (blue) or misses (vermillion) the reliability target, by recycling exponent and loss rate."
+#| echo: true
+#| code-fold: true
+
+aggressive_ok = reliability_by_future[:, 1] .>= 0.9
+aggressive_misses = .!aggressive_ok
+
+p_map = scatter(futures.q[aggressive_ok], futures.b[aggressive_ok], color=cb_blue,
+    markersize=5, markerstrokewidth=0, label="reliability ≥ 0.9",
+    xlabel=L"Recycling exponent $q$", ylabel=L"Loss rate $b$", legend=:outertopright)
+scatter!(p_map, futures.q[aggressive_misses], futures.b[aggressive_misses],
+    color=cb_vermillion, markersize=5, markershape=:xcross, label="misses the target")
+plot!(p_map, size=(1100, 300), left_margin=12mm, right_margin=8mm, bottom_margin=12mm,
+    top_margin=5mm)
+```
+
+Failures cluster at **low** $q$, where the threshold is lower: $X_\text{crit}$ is `{julia} three(threshold(2, 0.4))` at $q = 2$ and `{julia} three(threshold(3, 0.4))` at $q = 3$.
+
+::: {.notes}
+Read the map: the vermillion crosses fill the left of the plot, and higher loss rates rescue some of them. The mechanism is visible in the model: a lower recycling exponent makes the sediment feedback kick in at a lower concentration, so the tipping threshold is lower and the same releases cross it. In the lowest third of q, even releasing nothing keeps the lake clear in fewer futures; some futures cannot be managed by releases alone.
+:::
+
+## Which Factor Matters Most?
+
+```{julia}
+#| echo: false
+#| output: asis
+
+# Spread in a plan's success rate between the low and high thirds of one factor's range
+function success_spread(succeeded, factor)
+    low_cutoff = quantile(factor, 1 / 3)
+    high_cutoff = quantile(factor, 2 / 3)
+    low_rate = mean(succeeded[factor .<= low_cutoff])
+    high_rate = mean(succeeded[factor .>= high_cutoff])
+    return abs(high_rate - low_rate)
+end
+factor_names = ["Recycling exponent q", "Loss rate b", "Median inflow",
+    "Inflow variability σ"]
+# Each factor's value in every future, in the same order as factor_names
+function factor_values(futures)
+    return [futures.q, futures.b, futures.median_inflow, futures.variability]
+end
+spreads = [success_spread(aggressive_ok, factor) for factor in factor_values(futures)]
+
+println("| Factor | Change in success rate, low to high third |")
+println("|:--|--:|")
+for i in sortperm(spreads, rev=true)
+    println("| $(factor_names[i]) | $(two(spreads[i])) |")
+end
+```
+
+$q$ matters most: measure the **recycling exponent** first.
+
+::: {.notes}
+This is a simple global, all-at-a-time measure: sort the 500 futures by one factor at a time and compare the success rate in the bottom and top thirds of its range, with all the other factors varying. It ranks q first by a wide margin. That is a statement about where better information is worth the most: a field study of sediment recycling would narrow the biggest uncertainty in whether the plan works.
+:::
+
+## The Answer Depends on the Ranges
+
+```{julia}
+#| echo: false
+#| output: asis
+
+# Same analysis with q's range narrowed to (2.25, 2.75)
+narrow_q_range = Uniform(2.25, 2.75)
+narrow_futures = draw_futures(500, narrow_q_range, b_range, median_range,
+    variability_range)
+# Only the aggressive plan
+narrow_reliability = future_reliability(narrow_futures, [robust_early[1]],
+    [robust_late[1]])
+narrow_ok = narrow_reliability[:, 1] .>= 0.9
+narrow_values = factor_values(narrow_futures)
+narrow_spreads = [success_spread(narrow_ok, factor) for factor in narrow_values]
+
+println("| Factor | q from 2 to 3 | q from 2.25 to 2.75 |")
+println("|:--|--:|--:|")
+for i in 1:4
+    println("| $(factor_names[i]) | $(two(spreads[i])) | $(two(narrow_spreads[i])) |")
+end
+```
+
+Narrow $q$'s range and the **loss rate becomes the most important factor**. A sensitivity ranking depends on the ranges assumed for each factor, so report those ranges with it.
+
+::: {.notes}
+Same lake, same plan, same method; only the assumed range for q changed. The ranking flips because a factor can only matter as much as it is allowed to vary. So the ranges in a sensitivity analysis are themselves assumptions to report and defend, and a ranking from one study does not transfer to another with different ranges.
+:::
+
+## Shadow Prices Are Local Sensitivities
+
+```{julia}
+#| echo: true
+#| code-fold: true
+#| output: false
+
+# HW7's stormwater LP: minimum cost against the bioretention site limit
+function stormwater_cost(site_limit)
+    model = Model(HiGHS.Optimizer)
+    set_silent(model)
+    @variable(model, B >= 0)    # bioretention [acres]
+    @variable(model, P >= 0)    # permeable pavement [acres]
+    @objective(model, Min, 50B + 30P)
+    @constraint(model, 5B + 2P >= 40)
+    @constraint(model, 5B + P >= 30)
+    @constraint(model, sites, B <= site_limit)
+    @constraint(model, P <= 15)
+    optimize!(model)
+    return objective_value(model), shadow_price(sites)
+end
+base_cost, site_price = stormwater_cost(6)
+lease_saving = base_cost - first(stormwater_cost(10))
+```
+
+A shadow price is a **local, one-at-a-time** sensitivity. In HW7 the site limit was worth \$`{julia} Int(round(-site_price))`k per acre, so four acres "should" save \$`{julia} Int(round(-4 * site_price))`k; they saved \$`{julia} Int(round(lease_saving))`k.
+
+Global, all-at-a-time methods (Morris, Sobol') vary everything over its whole range: see the reading.
+
+::: {.notes}
+This ties the new idea back to something students computed. A shadow price is a derivative at one point, holding everything else fixed. It was exact for the first two acres and then wrong, because the binding constraints changed. Global methods sample the whole input space and can capture interactions between factors, at the cost of many more model runs. The formal methods, the method of Morris and Sobol' indices, are in the reading: @Reed2022-uc, chapter 3, and @Saltelli2019-sa on how often published sensitivity analyses get this wrong by varying one factor at a time.
+:::
+
+# Key Takeaways and Upcoming Schedule
+
+## Key Takeaways
+
+::: {.incremental}
+- **With competing objectives there is no single optimum**: only non-dominated plans, each a different tradeoff.
+- **Choosing among them is a value judgment**, made before (weights) or after (the front).
+- **A plan optimal under one set of assumptions can fail under others**; robustness tests plans across futures.
+- **Sensitivity analysis asks what drives the outcome**, and its answer depends on the ranges assumed.
+:::
+
+## Next Classes
+
+**Wednesday**: Limits of Optimization and Course Synthesis.
+
+**Monday, Dec 7**: Quiz 6, then a project session with the TA.
+
+## Assessments
+
+**Quiz 6**: Monday, Dec 7. Covers stochastic optimization, dynamic programming, today, and Wednesday.
+
+**Project**: presentation video due Tuesday, Dec 8, 9pm; report and evaluations due Dec 20.
+
+## References

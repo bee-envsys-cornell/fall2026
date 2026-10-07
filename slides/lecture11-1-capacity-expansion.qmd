@@ -1,0 +1,550 @@
+---
+title: "Capacity Expansion"
+subtitle: "Lecture 16"
+author: "Vivek Srikrishnan"
+course: "BEE 4750"
+institution: "Cornell University"
+date: "November 2, 2026"
+format:
+    revealjs:
+        slide-number: c/t
+        show-slide-number: all
+        center-title-slide: true
+        width: 1280
+        height: 720
+        transition: none
+        toc: true
+        toc-depth: 1
+        toc-title: "Overview"
+        history: false
+        link-external-newwindow: true
+        theme: ../sass/slides.scss
+        template-partials:
+            - title-slide.html
+        menu:
+            numbers: true
+        html-math-method: mathjax
+        include-in-header: mathjax-config.html
+        date-format: long
+        email-obfuscation: javascript
+        chalkboard:
+            theme: whiteboard
+            buttons: true
+        controls: true
+engine: julia
+julia:
+  exeflags: ["+1.11.5"]
+execute:
+    freeze: auto
+    daemon: 600
+---
+
+```{julia}
+#| output: false
+import Pkg
+Pkg.activate(@__DIR__)
+Pkg.instantiate()
+```
+
+```{julia}
+#| output: false
+using Plots
+using StatsPlots
+using Measures
+using LaTeXStrings
+using JuMP
+using HiGHS
+using CSV
+using DataFrames
+
+plot_font = "Palatino Roman"
+default(
+    fontfamily=plot_font,
+    linewidth=3,
+    framestyle=:box,
+    label=nothing,
+    grid=false,
+    guidefontsize=18,
+    legendfontsize=16,
+    tickfontsize=16,
+    titlefontsize=20,
+    bottom_margin=10mm,
+    left_margin=5mm
+)
+
+# Okabe-Ito palette: distinguishable under all common types of colour
+# blindness, and every pair also differs in line style so the figures
+# still read in greyscale.
+cb_orange = "#E69F00"
+cb_green = "#009E73"
+cb_yellow = "#F0E442"
+cb_blue = "#0072B2"
+cb_vermillion = "#D55E00"
+cb_purple = "#CC79A7"
+cb_sky = "#56B4E9"
+
+# Whole numbers with thousands separators, for dollar amounts in text
+commas(n) = replace(string(Int(round(n))), r"(?<=\d)(?=(\d{3})+$)" => ",")
+```
+
+# Review and Questions
+
+## Last Class: Economic Dispatch
+
+- Dispatch runs the plants we **already have** at least cost: the merit order, bent by minimum outputs and ramping.
+- **The price of electricity is the demand constraint's shadow price**: the cost of the plant that would serve the next MWh (\$38/MWh at 1600 MW).
+
+Today: deciding what to **build**.
+
+::: {.notes}
+Budget a couple of minutes to re-sync after last week. The Wednesday dispatch lecture was taught by a substitute; ask whether anything from it was unclear, especially the sign of the shadow price (relaxing demand means serving one less MWh, so JuMP reports a negative number).
+:::
+
+## Questions?
+
+{{< include _poll-prompt.qmd >}}
+
+# The Capacity Expansion Problem
+
+## Capacity Expansion
+
+**Capacity expansion**: which generating resources to build, and how much, to meet future demand (*load*).
+
+- Typical objective: minimize cost.
+- Other goals may enter as constraints: reducing CO~2~ emissions, fuel diversity, reliability.
+
+We'll look at a **greenfield** problem: no existing plants.
+
+::: {.notes}
+This sits at the long end of the decision time scales from last week: years, not hours. The dispatch decision is nested inside it: whatever we build has to be run every hour, and the running costs are part of the case for building it.
+:::
+
+## Plant Types
+
+- natural gas: **combined cycle** (CCGT) or **combustion turbines** (CT);
+- coal and nuclear;
+- renewables: wind, solar, hydro, geothermal.
+
+They differ in **what they cost to build** and **what they cost to run**, and the model has to weigh one against the other.
+
+::: {.notes}
+Preview the result: cheap-to-build plants that are expensive to run (CTs) suit loads that occur only a few hours a year; expensive-to-build plants that are cheap to run suit loads that are there all year. The rest of the lecture makes that precise.
+:::
+
+# Formulating the Problem
+
+## Data: Generators and Demand
+
+```{julia}
+#| echo: true
+#| code-fold: true
+#| output: asis
+
+gens = DataFrame(CSV.File("data/capacity_expansion/generators.csv"))
+n_types = nrow(gens) - 2                   # leave out wind and solar for now
+println("| Generator | Fixed cost (\\\$/MW-yr) | Variable cost (\\\$/MWh) |")
+println("|:--|--:|--:|")
+for g in 1:n_types
+    println("| $(gens[g, :Plant]) | $(commas(gens[g, :FixedCost])) | $(gens[g, :VarCost]) |")
+end
+```
+
+```{julia}
+#| output: false
+
+NY_demand = DataFrame(CSV.File("data/capacity_expansion/2020_hourly_load_NY.csv"))
+demand = NY_demand[:, :C]                  # NYISO Zone C, every hour of 2020 [MW]
+n_hours = length(demand)
+peak_demand = maximum(demand)
+```
+
+Demand: NYISO Zone C, every hour of 2020 (peak `{julia} commas(peak_demand)` MW).
+
+::: {.notes}
+Fixed costs are annualized: the cost of building one MW of capacity, spread over the plant's life, per year. Variable costs are per MWh generated. Geothermal is expensive to build and free to run; combustion turbines are the reverse. Wind and solar return later.
+:::
+
+## Load Duration Curve
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+sorted_demand = sort(demand, rev=true)
+p_ldc = plot(1:n_hours, sorted_demand, color=:black, xlabel="Hours of the year with at least this load",
+    ylabel="Load  [MW]", xlims=(0, n_hours), ylims=(0, 3000))
+plot!(p_ldc, size=(1200, 360), left_margin=12mm)
+```
+
+The year's hourly loads, sorted from highest to lowest, show **how many hours** each load level is reached.
+
+::: {.notes}
+The chronological demand curve (one point per hour through the year) makes it hard to see how often each level occurs. Sorting turns it into a load duration curve: read any point as "the load is at least this high for this many hours". The top few hundred MW are needed only a handful of hours a year; the bottom 1,000 MW or so are needed every hour.
+:::
+
+## Decision Variables
+
+What are our variables?
+
+::: {.fragment .fade-in}
+| Variable | Meaning |
+|:--:|:-------------------|
+| $x_g$ | installed capacity (MW) of generator type $g \in \mathcal{G}$ |
+| $y_{g,t}$ | production (MWh) of type $g$ in hour $t \in \mathcal{T}$ |
+| $NSE_t$ | non-served energy (MWh) in hour $t$ |
+:::
+
+::: {.fragment .fade-in}
+Must we meet the very highest hour? Price **non-served energy** at \$9,000/MWh and let the model decide.
+:::
+
+::: {.notes}
+Two kinds of decisions: how much to build (x, one per technology) and how to run it each hour (y, one per technology per hour). Non-served energy is load we choose not to serve; its cost stands in for the damage of a shortfall. 9,000 dollars per MWh is in the range of real market price caps.
+:::
+
+## The Formulation
+
+Write the objective and constraints.
+
+::: {.fragment .fade-in}
+::: {.small-math}
+$$
+\begin{aligned}
+\min_{x, y, NSE} \quad & \sum_{g \in \mathcal{G}} \text{FixedCost}_g \, x_g + \sum_{t \in \mathcal{T}} \sum_{g \in \mathcal{G}} \text{VarCost}_g \, y_{g,t} \\
+& \quad + \sum_{t \in \mathcal{T}} \text{NSECost} \, NSE_t \\[0.3em]
+\text{subject to:} \quad & \sum_{g \in \mathcal{G}} y_{g,t} + NSE_t \geq d_t \qquad \forall t \in \mathcal{T} \\[0.3em]
+& y_{g,t} \leq x_g \qquad \forall g \in \mathcal{G}, t \in \mathcal{T} \\[0.3em]
+& x_g, \, y_{g,t}, \, NSE_t \geq 0
+\end{aligned}
+$$
+:::
+:::
+
+::: {.notes}
+Board item; the fragment is the answer. Build the objective in two pieces: investment (fixed cost times capacity) and operation (variable cost times generation, plus the penalty on unserved energy). Constraints: each hour, generation plus unserved energy covers demand; no plant produces more than its installed capacity; everything is non-negative. Ask: is this an LP? Yes: it's linear in every variable, capacity is divisible (we model total MW, not individual units), and demand is treated as known. Each of those three is an assumption we'll revisit: discrete units (Wednesday), uncertainty (in two weeks).
+:::
+
+# Solving and Reading the Answer
+
+## Implementation in `JuMP`
+
+```{julia}
+#| echo: true
+#| output: false
+#| code-fold: false
+#| code-line-numbers: "|1|3-7|8-9|10-11|12"
+
+NSECost = 9000
+gencap = Model(HiGHS.Optimizer)
+@variables(gencap, begin
+    x[g in 1:n_types] >= 0                  # capacity [MW]
+    y[g in 1:n_types, t in 1:n_hours] >= 0  # generation [MWh]
+    NSE[t in 1:n_hours] >= 0                # non-served energy [MWh]
+end)
+@objective(gencap, Min, sum(gens[g, :FixedCost] * x[g] for g in 1:n_types) +
+    sum(gens[g, :VarCost] * y[g, t] for g in 1:n_types, t in 1:n_hours) + NSECost * sum(NSE))
+@constraint(gencap, load[t in 1:n_hours], sum(y[:, t]) + NSE[t] >= demand[t])
+@constraint(gencap, availability[g in 1:n_types, t in 1:n_hours], y[g, t] <= x[g])
+set_silent(gencap); optimize!(gencap)
+```
+
+::: {.notes}
+`{julia} commas(n_hours)` hours times four technologies is about 35,000 generation variables; HiGHS solves it in a few seconds. Name the load and availability constraints so we can ask for their shadow prices later.
+:::
+
+## Results
+
+```{julia}
+#| echo: true
+#| code-fold: true
+#| output: asis
+
+capacity = value.(x)
+generation = [sum(value.(y[g, :])) for g in 1:n_types]
+unserved = value.(NSE)
+nse_hours = count(unserved .> 1e-6)
+# One decimal place, and plain 0 rather than -0.0 for technologies that aren't built
+function share(v)
+    rounded_v = round(v; digits=1)
+    if rounded_v == 0
+        return "0"
+    end
+    return string(rounded_v)
+end
+println("| Resource | Installed (MW) | % of peak | % of energy |")
+println("|:--|--:|--:|--:|")
+for g in 1:n_types
+    println("| $(gens[g, :Plant]) | $(commas(capacity[g])) | $(share(100 * capacity[g] / peak_demand)) | ",
+        "$(share(100 * generation[g] / sum(demand))) |")
+end
+```
+
+Up to **`{julia} commas(maximum(unserved))` MW** goes unserved, in **`{julia} nse_hours` hours** of the year.
+
+::: {.notes}
+No geothermal and no coal: neither is worth building at these costs. Combined-cycle gas carries almost all of the energy; combustion turbines provide about a quarter of the capacity but only about 2% of the energy: they're for the peaks. And there is some unserved energy, despite the 9,000 dollar penalty: `{julia} commas(sum(unserved))` MWh over `{julia} nse_hours` hours. The next slides explain all three facts from the cost data alone. The total cost is \$`{julia} round(Int, objective_value(gencap) / 1e6)`M a year.
+:::
+
+## When Do Generators Run?
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+# The week around the year's peak hour
+peak_hour = argmax(demand)
+week = max(1, peak_hour - 84):min(n_hours, peak_hour + 83)
+run_by_type = zeros(length(week), n_types + 1)
+for g in 1:n_types
+    run_by_type[:, g] = value.(y[g, week])
+end
+run_by_type[:, end] = unserved[week]
+areaplot(1:length(week), run_by_type, label=permutedims([gens[1:n_types, :Plant]; "Unserved"]),
+    color=permutedims([cb_green, :gray40, cb_orange, cb_vermillion, :black]),
+    xlabel="Hour of the peak week", ylabel="Generation  [MW]", legend=:outerright,
+    size=(1200, 440), left_margin=12mm)
+```
+
+::: {.notes}
+One week, centred on the year's peak hour (a full year of hours is unreadable). The CCGTs run nearly all the time; the CTs come on only for the daily peaks; and in the highest hour or two, a thin sliver of demand goes unserved.
+:::
+
+## Screening Curves
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+# Annual cost of one MW of each technology, as a function of how many hours it runs
+hours_run = 0:n_hours
+annual_cost = zeros(length(hours_run), n_types + 1)
+for g in 1:n_types
+    annual_cost[:, g] = gens[g, :FixedCost] .+ gens[g, :VarCost] .* hours_run
+end
+annual_cost[:, end] = NSECost .* hours_run          # not serving: no build cost
+
+ct_vs_ccgt = (gens[3, :FixedCost] - gens[4, :FixedCost]) / (gens[4, :VarCost] - gens[3, :VarCost])
+nse_vs_ct = gens[4, :FixedCost] / (NSECost - gens[4, :VarCost])
+p_screen = plot(xlabel="Hours run per year", ylabel="Cost per MW  [\$1000/yr]",
+    xlims=(0, n_hours), ylims=(0, 600), legend=:outerright)
+for (j, (name, color, style)) in enumerate(zip([gens[1:n_types, :Plant]; "Unserved"],
+        [cb_green, :gray40, cb_orange, cb_vermillion, :black], [:solid, :dash, :solid, :dashdot, :dot]))
+    plot!(p_screen, hours_run, annual_cost[:, j] ./ 1000, color=color, linestyle=style, label=name)
+end
+vline!(p_screen, [ct_vs_ccgt], color=:black, linewidth=1, linestyle=:dash, label=false)
+annotate!(p_screen, ct_vs_ccgt + 150, 560, text("$(commas(ct_vs_ccgt)) h", 16, :left, plot_font))
+plot!(p_screen, size=(1200, 440), left_margin=12mm)
+```
+
+::: {.notes}
+Each line is what one MW of a technology costs per year if it runs for a given number of hours: fixed cost at zero hours, rising at the variable cost. The cheapest technology for a load that lasts h hours is the lowest line at h. Geothermal and coal are never lowest within a year. CTs are cheapest below the crossover with CCGT; CCGTs above. Unserved energy (the dotted line, steepest of all) is cheapest only for loads that last a few hours: its crossover with CTs is too close to zero to see at this scale.
+:::
+
+## Where the Lines Cross
+
+Find the crossovers: below how many hours a year is a CT cheaper than a CCGT? Not serving cheaper than a CT?
+
+::: {.fragment .fade-in}
+$$
+\begin{aligned}
+\text{CT vs. CCGT:} \quad & 65{,}000 + 35h = 82{,}000 + 25h \\
+\text{Unserved vs. CT:} \quad & 9{,}000h = 65{,}000 + 35h
+\end{aligned}
+$$
+
+A CT is cheaper below **`{julia} commas(ct_vs_ccgt)` hours**; not serving is cheaper below **`{julia} round(nse_vs_ct; digits=2)` hours**.
+:::
+
+::: {.notes}
+Board item; the fragment is the answer. Set the two annual costs equal and solve. CCGT costs 17,000 dollars a year more to build and 10 dollars per MWh less to run, so it pays back after 1,700 hours. A CT costs 65,000 dollars a year to build; not serving costs 8,965 dollars more per MWh than running the CT, so a CT pays for itself only if it would run more than about seven hours a year. Coal never beats CCGT: the crossover is at 34,500 hours, longer than a year.
+:::
+
+## Reading the Build Off the Curve
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+ccgt_level = sorted_demand[ceil(Int, ct_vs_ccgt)]
+ct_top = sorted_demand[ceil(Int, nse_vs_ct)]
+p_full = plot(1:n_hours, sorted_demand, color=:black, xlabel="Hours", ylabel="Load  [MW]",
+    xlims=(0, n_hours), ylims=(0, 3000), title="Whole year")
+hline!(p_full, [ccgt_level], color=cb_orange, linestyle=:dash)
+vline!(p_full, [ct_vs_ccgt], color=:gray50, linewidth=1)
+annotate!(p_full, 2300, ccgt_level + 200, text("CCGT below $(commas(ccgt_level)) MW", 15, :left, plot_font))
+p_top = plot(1:24, sorted_demand[1:24], color=:black, marker=:circle, xlabel="Hours", ylabel="Load  [MW]",
+    title="Top 24 hours", ylims=(2600, 2800))
+hline!(p_top, [ct_top], color=cb_vermillion, linestyle=:dash)
+vline!(p_top, [nse_vs_ct], color=:gray50, linewidth=1)
+annotate!(p_top, 11, ct_top + 22, text("CT up to $(commas(ct_top)) MW", 15, :left, plot_font))
+plot(p_full, p_top, layout=(1, 2), size=(1200, 350), left_margin=12mm)
+```
+
+CCGT **`{julia} commas(ccgt_level)` MW**, CT **`{julia} commas(ct_top - ccgt_level)` MW**, **`{julia} round(Int, peak_demand - ct_top)` MW** unserved, which is exactly what the LP builds.
+
+::: {.notes}
+Read the crossovers off the load duration curve. Load that lasts more than 1,700 hours is cheapest served by CCGT: that's the curve's height at 1,700 hours, `{julia} commas(ccgt_level)` MW. Load lasting between about 7 and 1,700 hours is cheapest served by CTs: up to the curve's height at 8 hours. Load lasting fewer hours isn't worth building for at all. This reproduces the LP's build to the megawatt, and it answers why there's unserved energy despite the 9,000 dollar penalty: the last `{julia} round(Int, peak_demand - ct_top)` MW are needed for only `{julia} nse_hours` hours a year, and building capacity for them would cost more than the penalty. The 7.25-hour threshold depends on the penalty: at 10,000 dollars per MWh it's 6.5 hours.
+:::
+
+# Renewables
+
+## What Changes With Renewables?
+
+Wind and solar can't produce at full capacity every hour: their **capacity factor** $c_{g,t}$ depends on the weather.
+
+::: {.fragment .fade-in}
+The capacity constraint changes from
+$$y_{g,t} \leq x_g \qquad \text{to} \qquad y_{g,t} \leq x_g \times c_{g,t}$$
+:::
+
+::: {.fragment .fade-in}
+So a renewable's value depends on **when** it produces, and screening curves alone no longer give the answer.
+:::
+
+::: {.notes}
+For thermal plants, c is 1 in every hour. A MW of solar that produces at midday when load is low is worth less than one that produces at the evening peak. That's why the screening-curve shortcut breaks: the cost of a renewable MW depends on the hours it produces, not just on how many. Mini-Project 2's final part adds renewables to the capacity expansion, so the full answer is yours to find there.
+:::
+
+## Where Capacity Factors Come From
+
+- Resource data: wind, sun, water or heat available each hour.
+- Often a **typical meteorological year (TMY)** or a few **actual meteorological years (AMY)**, sometimes only selected periods.
+- Both **underrepresent** variability, but keep the problem tractable.
+
+Always check what weather data a study used.
+
+::: {.notes}
+A typical meteorological year stitches together typical months from many years, which smooths out the extremes: the windless week, the cloudy month. Planning for a typical year can under-build for the bad ones. That's a structural choice in the model, in the sense of October 7.
+:::
+
+## In `JuMP`
+
+```julia
+c = ...                          # types × hours matrix of capacity factors
+@variable(model, x[g in 1:n_types] >= 0)
+@variable(model, y[g in 1:n_types, t in 1:n_hours] >= 0)
+@constraint(model, availability[g in 1:n_types, t in 1:n_hours],
+    y[g, t] <= x[g] * c[g, t])
+```
+
+Only the availability constraint changes; everything else is as before.
+
+::: {.notes}
+Not run here. For thermal plants, set their rows of c to 1. Writing the constraint with indexed sets keeps it one line however many technologies there are.
+:::
+
+# Carbon Limits
+
+## Capping Emissions
+
+```{julia}
+#| echo: true
+#| code-fold: true
+#| output: asis
+
+emission_factor = [0, 1, 0.43, 0.55]     # t CO₂/MWh: geothermal, coal, CCGT, CT
+uncapped_emissions = sum(emission_factor[g] * generation[g] for g in 1:n_types)
+
+function solve_with_cap(cap)
+    model = Model(HiGHS.Optimizer)
+    @variable(model, xc[g in 1:n_types] >= 0)
+    @variable(model, yc[g in 1:n_types, t in 1:n_hours] >= 0)
+    @variable(model, nse[t in 1:n_hours] >= 0)
+    @objective(model, Min, sum(gens[g, :FixedCost] * xc[g] for g in 1:n_types) +
+        sum(gens[g, :VarCost] * yc[g, t] for g in 1:n_types, t in 1:n_hours) + NSECost * sum(nse))
+    @constraint(model, [t in 1:n_hours], sum(yc[:, t]) + nse[t] >= demand[t])
+    @constraint(model, [g in 1:n_types, t in 1:n_hours], yc[g, t] <= xc[g])
+    @constraint(model, emissions, sum(emission_factor[g] * yc[g, t] for g in 1:n_types, t in 1:n_hours) <= cap)
+    set_silent(model); optimize!(model)
+    return (build=value.(xc), cost=objective_value(model), carbon_price=shadow_price(emissions))
+end
+
+caps = [0.75, 0.5]
+capped = [solve_with_cap(f * uncapped_emissions) for f in caps]
+println("| Cap | Geo / CCGT / CT (MW) | Cost (\\\$M/yr) | Shadow price (\\\$/t) |")
+println("|:--|:--|--:|--:|")
+for (f, r) in zip(caps, capped)
+    println("| $(round(Int, 100 * f))% ($(commas(f * uncapped_emissions / 1000)) kt) | ",
+        "$(commas(r.build[1])) / $(commas(r.build[3])) / $(commas(r.build[4])) | $(round(r.cost / 1e6; digits=1)) | ",
+        "−$(round(-r.carbon_price; digits=2)) |")
+end
+```
+
+New constraint: $\sum_{g,t} e_g \, y_{g,t} \leq E$ ($e_g$ in t/MWh).
+
+::: {.notes}
+Emissions factors as in last year's capacity-expansion homework: coal 1 t/MWh, CCGT 0.43, CT 0.55, geothermal zero. Without a cap this system emits `{julia} commas(uncapped_emissions / 1000)` thousand tonnes a year. Capping at 75% or 50% builds geothermal in place of some CCGT, and costs more. Look at the last column: the same shadow price at both caps.
+:::
+
+## Why \$39 a Tonne?
+
+Both caps have the same shadow price, −\$`{julia} round(-capped[1].carbon_price; digits=2)`/t. Where does it come from?
+
+::: {.fragment .fade-in}
+Swap a MW of CCGT for geothermal, both running all year:
+
+$$
+\frac{\overbrace{450{,}000 / 8{,}784}^{\text{geothermal, \$/MWh}} - \overbrace{(82{,}000 / 8{,}784 + 25)}^{\text{CCGT, \$/MWh}}}{0.43 \text{ t/MWh}}
+$$
+
+That is **\$`{julia} round((gens[1, :FixedCost] / n_hours - gens[3, :FixedCost] / n_hours - gens[3, :VarCost]) / emission_factor[3]; digits=1)` per tonne** of CO~2~ avoided.
+:::
+
+::: {.fragment .fade-in}
+This is the **carbon price**, the cost of abating the last tonne. It is the same at both caps because the model has only one way to abate: replacing CCGT with geothermal.
+:::
+
+::: {.notes}
+Board item; the fragments carry the answer. The shadow price tells a utility what one more tonne of allowed emissions is worth, or what the last tonne of abatement costs: about 39 dollars. It's flat because the only abatement option in this system is replacing CCGT with geothermal, tonne for tonne at the same cost, so tightening the cap just does more of the same swap. In a system with many abatement options at different costs (renewables, coal-to-gas, demand response), the cheap ones go first and the shadow price rises as the cap tightens. Mini-Project 2's final part works with exactly that: a cap and its shadow price on a system with renewables.
+:::
+
+# Key Takeaways and Upcoming Schedule
+
+## Key Takeaways
+
+::: {.incremental}
+- Capacity expansion chooses **what to build** and **how to run it** together, at least total cost.
+- **Screening curves** read the build off the load duration curve: CT below `{julia} commas(ct_vs_ccgt)` h, unserved below `{julia} round(nse_vs_ct; digits=2)` h.
+- At any finite penalty, some unserved energy is optimal.
+- Renewables enter through capacity factors: their value depends on *when* they produce.
+- A **CO~2~ cap's shadow price is a carbon price**: here \$`{julia} round(Int, -capped[1].carbon_price)`/t.
+:::
+
+## Next Classes
+
+**Wednesday, November 4**: Quiz 4, then mixed integer programming.
+
+**Monday, November 9**: Solid waste and network models (with a substitute).
+
+**Wednesday, November 11**: Lab 3, fixed costs and facility siting in `JuMP` (with the TA).
+
+## Assessments
+
+**Mini-Project 2**: Due Thursday, November 19. Its final part (build decisions and a CO~2~ cap) is now possible.
+
+**Homework 8**: Assigned Wednesday, due Thursday, November 12.
+
+**Quiz 4**: Wednesday, November 4.
+
+# Appendix
+
+## Hourly Prices
+
+```{julia}
+#| echo: true
+#| code-fold: true
+#| output: asis
+
+hourly_price = round.(Int, [-shadow_price(load[t]) for t in 1:n_hours])
+println("| Price (\\\$/MWh) | Hours |")
+println("|--:|--:|")
+for p in sort(unique(hourly_price))
+    println("| $(commas(p)) | $(commas(count(==(p), hourly_price))) |")
+end
+```
+
+**Scarcity hours** (\$`{julia} commas(NSECost)`) pay back the CTs' fixed costs.
+
+::: {.notes}
+The price each hour is the load constraint's shadow price, as in dispatch. Most hours the CCGT or CT is marginal. In the unserved hours the price is the penalty itself. One hour sits in between: it's degenerate (the peaking capacity exactly meets demand), so the shadow price there isn't unique. A CT earns its fixed cost back only in the scarcity hours: 7.25 hours times about 8,965 dollars of margin is about 65,000 dollars, its annual fixed cost.
+:::

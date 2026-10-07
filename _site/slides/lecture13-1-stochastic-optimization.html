@@ -11,8 +11,8 @@
   <meta name="generator" content="quarto-1.10.3">
 
   <meta name="author" content="Vivek Srikrishnan">
-  <meta name="dcterms.date" content="2025-11-17">
-  <title>Environmental Systems Analysis – Stochastic Optimization</title>
+  <meta name="dcterms.date" content="2026-11-16">
+  <title>Environmental Systems Analysis – Stochastic Optimization and Scenario Trees</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -33,6 +33,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     /* CSS for citations */
     div.csl-bib-body { }
     div.csl-entry {
@@ -177,8 +243,8 @@
     }
   };
   </script>
-<meta property="og:title" content="Stochastic Optimization – Environmental Systems Analysis">
-<meta property="og:description" content="Lecture 17">
+<meta property="og:title" content="Stochastic Optimization and Scenario Trees – Environmental Systems Analysis">
+<meta property="og:description" content="Lecture 19">
 <meta property="og:site_name" content="Environmental Systems Analysis">
 </head>
 <body class="quarto-light">
@@ -186,38 +252,53 @@
     <div class="slides">
 
 <section id="title-slide" class="center">
-    <h1 class="title">Stochastic Optimization</h1>
+    <h1 class="title">Stochastic Optimization and Scenario Trees</h1>
   <hr>
-<p class="subtitle">Lecture 17</p>
-<p class="date">November 17, 2025</p>
+<p class="subtitle">Lecture 19</p>
+<p class="date">November 16, 2026</p>
 </section><section id="TOC">
 <nav role="doc-toc"> 
 <h2 id="toc-title">Overview</h2>
 <ul>
-<li><a href="#/review-and-questions" id="/toc-review-and-questions">Review and Questions</a></li>
-<li><a href="#/stochastic-optimization" id="/toc-stochastic-optimization">Stochastic Optimization</a></li>
-<li><a href="#/example-land-allocation" id="/toc-example-land-allocation">Example: Land Allocation</a></li>
-<li><a href="#/value-of-the-stochastic-solution" id="/toc-value-of-the-stochastic-solution">Value of the Stochastic Solution</a></li>
+<li><a href="#/review-of-last-class" id="/toc-review-of-last-class">Review of Last Class</a></li>
+<li><a href="#/decisions-under-uncertainty" id="/toc-decisions-under-uncertainty">Decisions Under Uncertainty</a></li>
+<li><a href="#/the-farmers-problem" id="/toc-the-farmers-problem">The Farmer’s Problem</a></li>
+<li><a href="#/comparing-plans" id="/toc-comparing-plans">Comparing Plans</a></li>
 <li><a href="#/key-takeaways" id="/toc-key-takeaways">Key Takeaways</a></li>
 <li><a href="#/upcoming-schedule" id="/toc-upcoming-schedule">Upcoming Schedule</a></li>
+<li><a href="#/appendix" id="/toc-appendix">Appendix</a></li>
+<li><a href="#/references" id="/toc-references">References</a></li>
 </ul>
 </nav>
 </section>
 <section>
-<section id="review-and-questions" class="title-slide slide level1 center">
-<h1>Review and Questions</h1>
+<section id="review-of-last-class" class="title-slide slide level1 center">
+<h1>Review of Last Class</h1>
 
 </section>
-<section id="example-solid-waste-management" class="slide level2">
-<h2>Example: Solid Waste Management</h2>
+<section id="waste-allocation-as-a-network" class="slide level2">
+<h2>Waste Allocation as a Network</h2>
 <ul>
-<li>Hierarchy of solid waste management (reduce -&gt; recycle -&gt; WTE -&gt; landfill)</li>
-<li>Example of a network model: need to represent flows between sources and sinks, constrained by existence of network connections.</li>
-<li>Residual material flows can result in need to operate additional facilities.</li>
+<li>A network model’s decisions are <strong>flows</strong>; its constraints are <strong>conservation</strong> at each node.</li>
+<li>An optional facility gets a <strong>binary</strong>: fixed cost <span class="math inline">\(\times\, Y_j\)</span>, and flow in <span class="math inline">\(\leq K_j Y_j\)</span>.</li>
+<li>In the waste example, the incinerator ran only because the <strong>landfill was full</strong>: a limit at one node set the decision at another.</li>
 </ul>
+<aside class="notes">
+<p>Two minutes (budget a minute more to re-sync after the travel week). Everything we have optimized so far assumed we know every number in the model. Today drops that assumption.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="questions" class="slide level2">
-<h2>Questions</h2>
+<h2>Questions?</h2>
 <div class="columns center">
 <div class="column" style="width:40%;">
 <div class="quarto-figure quarto-figure-center">
@@ -229,499 +310,524 @@
 <p><strong>Text</strong>: VSRIKRISH to 22333</p>
 <p><strong>URL</strong>: <a href="https://pollev.com/vsrikrish">https://pollev.com/vsrikrish</a> <br><br> <a href="https://www.polleverywhere.com/multiple_choice_polls/qKeig0hHShZYHAOmvZtZm?preview=true&amp;controls=none" data-preview-link="true">See Results</a></p>
 </div></div>
+<aside class="notes">
+<p>Brief: the quiz has taken the first 25 minutes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section></section>
 <section>
-<section id="stochastic-optimization" class="title-slide slide level1 center">
-<h1>Stochastic Optimization</h1>
+<section id="decisions-under-uncertainty" class="title-slide slide level1 center">
+<h1>Decisions Under Uncertainty</h1>
 
 </section>
-<section id="conditions-for-lp" class="slide level2">
-<h2>Conditions for LP</h2>
+<section id="decisions-made-in-advance" class="slide level2">
+<h2>Decisions Made in Advance</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
 <ul>
-<li><strong>Linearity</strong></li>
-<li><strong>Divisibility</strong> (when not present: mixed integer LP)</li>
-<li><strong>Certainty</strong></li>
+<li><strong>Reservoir</strong>: summer release targets are set in spring, before the summer’s inflow is known.</li>
+<li><strong>Grid</strong>: plants are committed the day before, before tomorrow’s wind is known (Oct 28).</li>
 </ul>
+<p>In both, the decision comes first and <strong>adjusting afterwards costs money</strong>.</p>
+</div><div class="column" style="width:40%;">
+<p><img data-src="figures/reservoir-system.png" style="width:100.0%"></p>
+</div></div>
+<aside class="notes">
+<p>About five minutes. The reservoir schematic is the one from the first week of the course. The manager has to commit to a release plan before knowing the inflow; once the inflow arrives, there is some room to adjust (cut releases, buy water elsewhere, spill), but adjustments cost something. The grid operator is the same: plants are committed a day ahead, and if the wind is lower than expected, expensive peaking plants make up the difference. Today is about choosing the first decision knowing that the later adjustments will happen. Wednesday’s lecture and Monday’s lab use the reservoir.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="certainty-and-lp" class="slide level2">
-<h2>Certainty and LP</h2>
-<p><strong>Certainty</strong> (<em>e.g.</em> all parameters and relationships between decision variables and outcomes are known) is a key assumption of linear programming.</p>
-<p>But most systems problems aren’t <strong><em>truly</em></strong> deterministic.</p>
-</section>
-<section id="motivating-example" class="slide level2">
-<h2>Motivating Example</h2>
-<ul>
-<li></li>
-</ul>
-</section>
-<section id="approaches-to-decision-making-under-uncertainty" class="slide level2">
-<h2>Approaches to Decision-Making Under Uncertainty</h2>
+<section id="certainty-and-linear-programming" class="slide level2">
+<h2>Certainty and Linear Programming</h2>
+<p><strong>Certainty</strong> was the third assumption of linear programming (with linearity and divisibility): every number in the model is known.</p>
+<p><strong>Common practice</strong>: solve with best estimates, then stress-test the plan (Monte Carlo, safety margins).</p>
 <div class="fragment fade-in">
-<p><strong>A Common Approach</strong>:</p>
-<ol type="1">
-<li>Solve deterministic problem using best estimates.</li>
-<li>Stress-test solution with Monte Carlo or include additional safety margins.</li>
-</ol>
+<p><strong>Alternative</strong>: put the uncertainty <em>in</em> the model, as a set of scenarios with probabilities, and optimize the expected outcome.</p>
 </div>
+<aside class="notes">
+<p>About three minutes. We relaxed divisibility with mixed integer programming; today we relax certainty. The common approach treats uncertainty after the fact: optimize for the average, then check how the plan does. The alternative builds the scenarios into the optimization itself, so the plan already accounts for having to adjust later.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="representing-uncertainty-in-mathematical-programs" class="slide level2">
-<h2>Representing Uncertainty in Mathematical Programs</h2>
-<p><strong>Alternative</strong>:</p>
+<section id="act-learn-act" class="slide level2">
+<h2>Act, Learn, Act</h2>
 <ol type="1">
-<li>Solve a <em>stochastic</em> problem for best expected performance (or similar summary statistic).</li>
+<li>Make a decision <span class="math inline">\(x\)</span> under uncertainty (<strong>here and now</strong>).</li>
+<li>Observe which scenario happens.</li>
+<li>Make a <strong>recourse</strong> decision that compensates for <span class="math inline">\(x\)</span> in that scenario.</li>
 </ol>
-<div class="fragment fade-in">
-<p>We can represent uncertainty through scenarios and (conditional) sequential events, then rewrite the decision problem.</p>
-</div>
-</section>
-<section id="act-learn-act-two-stage" class="slide level2">
-<h2>Act-Learn-Act (Two-Stage)</h2>
-<ol type="1">
-<li>Make a decision <span class="math inline">\(x\)</span> under uncertainty;</li>
-<li>Observe uncertainty <span class="math inline">\(\xi \in \Xi\)</span>;</li>
-<li>Make a <strong>recourse</strong> decision <span class="math inline">\(q(x; \xi)\)</span> which compensates for suboptimality of <span class="math inline">\(x\)</span> under realization <span class="math inline">\(\xi\)</span>.</li>
-</ol>
-</section>
-<section id="example-economic-dispatch" class="slide level2">
-<h2>Example (Economic Dispatch)</h2>
-<p>Consider a two-stage economic dispatch with uncertainty about demand and renewables.</p>
-<p>Need to ensure we can meet the second-stage demand but put ourselves in a position to obey ramping constraints while minimizing cost.</p>
-<ol type="1">
-<li>Dispatch generation in hour 1;</li>
-<li>Get better forecasts of demand and renewables;</li>
-<li>Re-dispatch (possibly using expensive peaking generators to compensate if lower-cost generation is not possible).</li>
-</ol>
-</section>
-<section id="general-objective-for-stochastic-lp" class="slide level2">
-<h2>General Objective for Stochastic LP</h2>
-<p><span class="math display">\[\min_x \mathbb{E}_\xi \left[f(x; \xi)\right]\]</span></p>
-<div class="fragment fade-in">
-<p><strong>Two-Stage</strong>:</p>
-<p><span class="math display">\[\min_x \underbrace{f(x)}_{\text{first-stage objective}} + \mathbb{E}_\xi[\underbrace{Q(x; \xi)}_{\substack{\text{recourse objective} \\ \text{after realization} \\ \text{of } \xi}}]\]</span></p>
-</div>
-</section>
-<section id="representation-of-uncertainties" class="slide level2">
-<h2>Representation of Uncertainties</h2>
-<p>This framework can work for:</p>
-<ul>
-<li>discrete scenarios (<em>scenario trees</em>)</li>
-<li>continuous uncertainties (Monte Carlo)</li>
-</ul>
+<p><strong>Dispatch version</strong>: dispatch hour 1, get better forecasts of demand and wind, re-dispatch (possibly with expensive peakers) to meet hour 2.</p>
+<aside class="notes">
+<p>About three minutes. This is the two-stage structure. The first-stage decision is made once. The recourse decision is made after learning which scenario occurred, so there is one recourse decision per scenario. The goal is a first decision that leaves good options for every scenario, weighted by how likely each is.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section></section>
 <section>
-<section id="example-land-allocation" class="title-slide slide level1 center">
-<h1>Example: Land Allocation</h1>
+<section id="the-farmers-problem" class="title-slide slide level1 center">
+<h1>The Farmer’s Problem</h1>
 
 </section>
-<section id="land-allocationfarmer-problem" class="slide level2">
-<h2>Land Allocation/Farmer Problem</h2>
-<p>A farmer can grow wheat, corn, and sugar beets on 500 ha of land. How much land should they allocate to each crop?</p>
-</section>
-<section id="key-information-for-problem" class="slide level2">
-<h2>Key information For Problem</h2>
+<section id="the-farmers-problem-1" class="slide level2">
+<h2>The Farmer’s Problem</h2>
+<p>A farmer has 500 acres for wheat, corn, and sugar beets. <strong>How much of each should they plant?</strong> <span class="citation" data-cites="Birge2011-ip">(<a href="#/references-1" role="doc-biblioref" onclick="">Birge &amp; Louveaux, 2011</a>)</span></p>
 <ul>
-<li>Planting costs are $150, $230, and $260 per acre for wheat, corn, and sugar beets, respectively.</li>
-<li>The farmer requires 200T of wheat and 240T kg of corn for feed, and excess can be sold for $170 and $150 per T, respectively.</li>
-<li>Purchasing crops costs $40 more than the selling prices.</li>
-<li>Sugar beets are sold at $36/T up to 6000T, at which point the price drops to $10 per T.</li>
+<li>Planting: $150, $230, $260 per acre.</li>
+<li>Feed: 200 T wheat, 240 T corn; extra sells for $170, $150/T; buying costs 40% more.</li>
+<li>Beets: $36/T up to 6,000 T, then $10/T.</li>
+<li>Yields: 2.5, 3, 20 T/acre on average; ±20% in good and bad years, each with probability 1/3.</li>
 </ul>
+<aside class="notes">
+<p>About two minutes. This is a classic example from Birge and Louveaux’s textbook on stochastic programming. Planting happens before the yield is known; buying and selling happen after the harvest. The beet quota matters: beets are very profitable up to 6,000 tonnes and barely worth growing beyond.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="farm-yields" class="slide level2">
-<h2>Farm Yields</h2>
-<p>From prior experience, the farmer knows that in an average year, yields are:</p>
-<ul>
-<li>2.5 T/acre for wheat;</li>
-<li>3 T/acre per corn;<br>
-</li>
-<li>20T/acre for beets.</li>
-</ul>
-</section>
-<section id="decision-variables" class="slide level2">
-<h2>Decision Variables</h2>
-<p><strong><em>What are the decision variables?</em></strong></p>
-<div class="fragment fade-in">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: center;">Variable</th>
-<th style="text-align: left;">Definition</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(x_i\)</span></td>
-<td style="text-align: left;">acres of crop <span class="math inline">\(i\)</span> planted</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;"><span class="math inline">\(y_i\)</span></td>
-<td style="text-align: left;">T of crop <span class="math inline">\(i\)</span> purchased</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(z_i\)</span></td>
-<td style="text-align: left;">T of crop <span class="math inline">\(i\)</span> sold</td>
-</tr>
-</tbody>
-</table>
-<p>One twist: sold beets will be represented by two different <span class="math inline">\(z\)</span>-variables (<span class="math inline">\(z_3\)</span> and <span class="math inline">\(z_4\)</span>), based on whether we exceed 6000T.</p>
-</div>
-</section>
-<section id="deterministic-problem-formulation" class="slide level2">
-<h2>Deterministic Problem Formulation</h2>
+<section id="formulation-for-one-known-year" class="slide level2">
+<h2>Formulation for One Known Year</h2>
+<p><span class="math inline">\(x_i\)</span>: acres planted; <span class="math inline">\(y_i\)</span>: T bought; <span class="math inline">\(z_i\)</span>: T sold (<span class="math inline">\(z_3\)</span> beets at the quota price, <span class="math inline">\(z_4\)</span> above it).</p>
 <p><span class="math display">\[
-\begin{align}
-\min_{x, y, z} &amp; \quad 150x_1 + 230 x_2 + 260 x_3 + 238 y_1 + 210 y_2 - 170 z_1 \\
-&amp; \qquad -150z_2 - 36z_3 - 10z_4 \\[1ex]
-\text{subject to:} \quad &amp; x_1 + x_2 + x_3 \leq 500 \\[0.5ex]
-&amp; 2.5 x_1 + y_1 - z_1 \geq 200 \\[0.5ex]
-&amp; 3 x_2 + y_2 - z_2 \geq 240 \\[0.5ex]
-&amp; z_3 + z_4 \leq 20 x_3 \\[0.5ex]
-&amp; z_3 \leq 6000 \\[0.5ex]
-&amp; x_i, y_i, z_i \geq 0
-\end{align}
+\begin{aligned}
+\max_{x, y, z} \quad &amp; -150x_1 - 230x_2 - 260x_3 - 238y_1 - 210y_2 \\
+&amp; \quad + 170z_1 + 150z_2 + 36z_3 + 10z_4 \\
+\text{subject to:} \quad &amp; x_1 + x_2 + x_3 \leq 500 \\
+&amp; 2.5x_1 + y_1 - z_1 \geq 200, \qquad 3x_2 + y_2 - z_2 \geq 240 \\
+&amp; z_3 + z_4 \leq 20x_3, \qquad z_3 \leq 6000, \qquad x, y, z \geq 0
+\end{aligned}
 \]</span></p>
+<aside class="notes">
+<p>About two minutes. Profit is sales minus purchases minus planting. The feed constraints say what you grow plus what you buy, minus what you sell, must cover the feed. With known yields, this is an ordinary LP.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="deterministic-solution-with-average-yields" class="slide level2">
-<h2>Deterministic Solution With Average Yields</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: left;">Variable</th>
-<th style="text-align: center;">Wheat</th>
-<th style="text-align: center;">Corn</th>
-<th style="text-align: center;">Beets</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Area (acres)</td>
-<td style="text-align: center;">120</td>
-<td style="text-align: center;">80</td>
-<td style="text-align: center;">300</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Yield (T)</td>
-<td style="text-align: center;">300</td>
-<td style="text-align: center;">240</td>
-<td style="text-align: center;">6000</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sales (T)</td>
-<td style="text-align: center;">100</td>
-<td style="text-align: center;">–</td>
-<td style="text-align: center;">6000</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Purchased (T)</td>
-<td style="text-align: center;">–</td>
-<td style="text-align: center;">–</td>
-<td style="text-align: center;">–</td>
-</tr>
-</tbody>
-</table>
-<p>This solution yields a profit of $118,600.</p>
-</section>
-<section id="what-about-uncertainty" class="slide level2">
-<h2>What About Uncertainty?</h2>
-<p>But yields tend to vary from year to year. From prior experience, the historical variability is:</p>
-<ul>
-<li>in a good year, yields can be 20% above average;</li>
-<li>in a bad year, yields can be 20% below average.</li>
-</ul>
-<div class="fragment fade-in">
-<p>To simplify things, let’s assume these yields vary consistently across crops and that each scenario (average, good, bad) has an equal probability of occurrence.</p>
+<section id="if-we-knew-the-year" class="slide level2">
+<h2>If We Knew the Year</h2>
+<div id="8" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a><span class="co"># Two-stage farm model: one planting plan x, a copy of the purchases y and</span></span>
+<span id="cb1-2"><a></a><span class="co"># sales z for each scenario. With one scenario it is the ordinary LP.</span></span>
+<span id="cb1-3"><a></a><span class="co"># Passing `plan` fixes the planting and evaluates it.</span></span>
+<span id="cb1-4"><a></a><span class="kw">function</span> <span class="fu">farm_model</span>(factors, probs; plan<span class="op">=</span><span class="cn">nothing</span>)</span>
+<span id="cb1-5"><a></a>    n <span class="op">=</span> <span class="fu">length</span>(factors)</span>
+<span id="cb1-6"><a></a>    model <span class="op">=</span> <span class="fu">Model</span>(HiGHS.Optimizer)</span>
+<span id="cb1-7"><a></a>    <span class="fu">set_silent</span>(model)</span>
+<span id="cb1-8"><a></a>    <span class="pp">@variable</span>(model, x[<span class="fl">1</span><span class="op">:</span><span class="fl">3</span>] <span class="op">&gt;=</span> <span class="fl">0</span>)             <span class="co"># acres planted</span></span>
+<span id="cb1-9"><a></a>    <span class="pp">@variable</span>(model, y[<span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">:</span>n] <span class="op">&gt;=</span> <span class="fl">0</span>)        <span class="co"># T bought, per scenario</span></span>
+<span id="cb1-10"><a></a>    <span class="pp">@variable</span>(model, z[<span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">1</span><span class="op">:</span>n] <span class="op">&gt;=</span> <span class="fl">0</span>)        <span class="co"># T sold, per scenario</span></span>
+<span id="cb1-11"><a></a>    <span class="cf">if</span> plan <span class="op">!==</span> <span class="cn">nothing</span></span>
+<span id="cb1-12"><a></a>        <span class="pp">@constraint</span>(model, x <span class="op">.==</span> plan)</span>
+<span id="cb1-13"><a></a>    <span class="cf">end</span></span>
+<span id="cb1-14"><a></a>    <span class="pp">@constraint</span>(model, <span class="fu">sum</span>(x) <span class="op">&lt;=</span> land)</span>
+<span id="cb1-15"><a></a>    <span class="cf">for</span> s <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n</span>
+<span id="cb1-16"><a></a>        crop_yield <span class="op">=</span> avg_yield <span class="op">.*</span> factors[s]</span>
+<span id="cb1-17"><a></a>        <span class="pp">@constraint</span>(model, crop_yield[<span class="fl">1</span>] <span class="op">*</span> x[<span class="fl">1</span>] <span class="op">+</span> y[<span class="fl">1</span>, s] <span class="op">-</span> z[<span class="fl">1</span>, s] <span class="op">&gt;=</span> feed_need[<span class="fl">1</span>])</span>
+<span id="cb1-18"><a></a>        <span class="pp">@constraint</span>(model, crop_yield[<span class="fl">2</span>] <span class="op">*</span> x[<span class="fl">2</span>] <span class="op">+</span> y[<span class="fl">2</span>, s] <span class="op">-</span> z[<span class="fl">2</span>, s] <span class="op">&gt;=</span> feed_need[<span class="fl">2</span>])</span>
+<span id="cb1-19"><a></a>        <span class="pp">@constraint</span>(model, z[<span class="fl">3</span>, s] <span class="op">+</span> z[<span class="fl">4</span>, s] <span class="op">&lt;=</span> crop_yield[<span class="fl">3</span>] <span class="op">*</span> x[<span class="fl">3</span>])</span>
+<span id="cb1-20"><a></a>        <span class="pp">@constraint</span>(model, z[<span class="fl">3</span>, s] <span class="op">&lt;=</span> beet_quota)</span>
+<span id="cb1-21"><a></a>    <span class="cf">end</span></span>
+<span id="cb1-22"><a></a>    <span class="pp">@objective</span>(model, Max, <span class="fu">-sum</span>(plant_cost <span class="op">.*</span> x) <span class="op">+</span> <span class="fu">sum</span>(probs[s] <span class="op">*</span> (</span>
+<span id="cb1-23"><a></a>        sell_price[<span class="fl">1</span>] <span class="op">*</span> z[<span class="fl">1</span>, s] <span class="op">+</span> sell_price[<span class="fl">2</span>] <span class="op">*</span> z[<span class="fl">2</span>, s] <span class="op">+</span> beet_price <span class="op">*</span> z[<span class="fl">3</span>, s] <span class="op">+</span></span>
+<span id="cb1-24"><a></a>        beet_excess_price <span class="op">*</span> z[<span class="fl">4</span>, s] <span class="op">-</span> buy_price[<span class="fl">1</span>] <span class="op">*</span> y[<span class="fl">1</span>, s] <span class="op">-</span> buy_price[<span class="fl">2</span>] <span class="op">*</span> y[<span class="fl">2</span>, s])</span>
+<span id="cb1-25"><a></a>        <span class="cf">for</span> s <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n))</span>
+<span id="cb1-26"><a></a>    <span class="fu">optimize!</span>(model)</span>
+<span id="cb1-27"><a></a>    <span class="cf">return</span> <span class="fu">value</span>.(x), <span class="fu">objective_value</span>(model)</span>
+<span id="cb1-28"><a></a><span class="cf">end</span></span>
+<span id="cb1-29"><a></a></span>
+<span id="cb1-30"><a></a><span class="co"># The best plan for each year type, if that year were known in advance</span></span>
+<span id="cb1-31"><a></a>known_plan <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>, <span class="fl">3</span>)</span>
+<span id="cb1-32"><a></a>known_profit <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
+<span id="cb1-33"><a></a><span class="cf">for</span> s <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
+<span id="cb1-34"><a></a>    known_plan[s, <span class="op">:</span>], known_profit[s] <span class="op">=</span> <span class="fu">farm_model</span>([yield_factor[s]], [<span class="fl">1</span>])</span>
+<span id="cb1-35"><a></a><span class="cf">end</span></span>
+<span id="cb1-36"><a></a>average_plan <span class="op">=</span> known_plan[<span class="fl">2</span>, <span class="op">:</span>]</span>
+<span id="cb1-37"><a></a></span>
+<span id="cb1-38"><a></a><span class="co"># The two-stage plan: one planting for all three year types</span></span>
+<span id="cb1-39"><a></a>stochastic_plan, stochastic_profit <span class="op">=</span> <span class="fu">farm_model</span>(yield_factor, prob)</span>
+<span id="cb1-40"><a></a></span>
+<span id="cb1-41"><a></a><span class="co"># Each plan's profit in each year type, with the best purchases and sales</span></span>
+<span id="cb1-42"><a></a>average_plan_by_year <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
+<span id="cb1-43"><a></a>stochastic_plan_by_year <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
+<span id="cb1-44"><a></a><span class="cf">for</span> s <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
+<span id="cb1-45"><a></a>    average_plan_by_year[s] <span class="op">=</span> <span class="fu">farm_model</span>([yield_factor[s]], [<span class="fl">1</span>]; plan<span class="op">=</span>average_plan)[<span class="fl">2</span>]</span>
+<span id="cb1-46"><a></a>    stochastic_plan_by_year[s] <span class="op">=</span> <span class="fu">farm_model</span>([yield_factor[s]], [<span class="fl">1</span>]; plan<span class="op">=</span>stochastic_plan)[<span class="fl">2</span>]</span>
+<span id="cb1-47"><a></a><span class="cf">end</span></span>
+<span id="cb1-48"><a></a>eev <span class="op">=</span> <span class="fu">sum</span>(prob <span class="op">.*</span> average_plan_by_year)       <span class="co"># average plan, judged under uncertainty</span></span>
+<span id="cb1-49"><a></a>wait_and_see <span class="op">=</span> <span class="fu">sum</span>(prob <span class="op">.*</span> known_profit)      <span class="co"># perfect information</span></span>
+<span id="cb1-50"><a></a>vss <span class="op">=</span> stochastic_profit <span class="op">-</span> eev</span>
+<span id="cb1-51"><a></a>evpi <span class="op">=</span> wait_and_see <span class="op">-</span> stochastic_profit</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
-</section>
-<section id="optimal-solution-with-high-yields" class="slide level2">
-<h2>Optimal Solution With High Yields</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Variable</th>
-<th style="text-align: center;">Wheat</th>
-<th style="text-align: center;">Corn</th>
-<th style="text-align: center;">Beets</th>
+<th style="text-align: left;">Known year</th>
+<th style="text-align: right;">Wheat (acres)</th>
+<th style="text-align: right;">Corn (acres)</th>
+<th style="text-align: right;">Beets (acres)</th>
+<th style="text-align: right;">Profit</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Area (acres)</td>
-<td style="text-align: center;">183.33</td>
-<td style="text-align: center;">66.67</td>
-<td style="text-align: center;">250</td>
+<td style="text-align: left;">Average</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">300</td>
+<td style="text-align: right;">$118,600</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Yield (T)</td>
-<td style="text-align: center;">550</td>
-<td style="text-align: center;">240</td>
-<td style="text-align: center;">6000</td>
+<td style="text-align: left;">Good</td>
+<td style="text-align: right;">183.3</td>
+<td style="text-align: right;">66.7</td>
+<td style="text-align: right;">250</td>
+<td style="text-align: right;">$167,667</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Sales (T)</td>
-<td style="text-align: center;">350</td>
-<td style="text-align: center;">–</td>
-<td style="text-align: center;">6000</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Purchased (T)</td>
-<td style="text-align: center;">–</td>
-<td style="text-align: center;">–</td>
-<td style="text-align: center;">–</td>
+<td style="text-align: left;">Bad</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">375</td>
+<td style="text-align: right;">$59,950</td>
 </tr>
 </tbody>
 </table>
-<p>This solution yields a profit of $167,667.</p>
+<p>The best plan depends on the year, and planting happens before the year is known.</p>
+<aside class="notes">
+<p>About three minutes. The folded cell is the whole lecture’s computation: one function that solves the farm problem for any set of scenarios, and can also evaluate a fixed plan. With one scenario it is the ordinary LP. Read the table: in a good year plant less beet land (the quota fills sooner) and more wheat; in a bad year plant more beets to reach the quota and buy corn. The average-year plan earns $118,600, but only if the year is average.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="optimal-solution-with-low-yields" class="slide level2">
-<h2>Optimal Solution With Low Yields</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: left;">Variable</th>
-<th style="text-align: center;">Wheat</th>
-<th style="text-align: center;">Corn</th>
-<th style="text-align: center;">Beets</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Area (acres)</td>
-<td style="text-align: center;">100</td>
-<td style="text-align: center;">25</td>
-<td style="text-align: center;">375</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Yield (T)</td>
-<td style="text-align: center;">200</td>
-<td style="text-align: center;">60</td>
-<td style="text-align: center;">6000</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sales (T)</td>
-<td style="text-align: center;">–</td>
-<td style="text-align: center;">–</td>
-<td style="text-align: center;">6000</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Purchased (T)</td>
-<td style="text-align: center;">–</td>
-<td style="text-align: center;">180</td>
-<td style="text-align: center;">–</td>
-</tr>
-</tbody>
-</table>
-<p>This solution yields a profit of $59,950.</p>
-</section>
-<section id="framing-this-as-a-two-stage-problem" class="slide level2">
-<h2>Framing This As A Two-Stage Problem</h2>
-<ul>
-<li>Make some initial planting decision;</li>
-<li>See what the yields look like;</li>
-<li>Purchase as needed to offset any shortfall.</li>
-</ul>
-</section>
-<section id="stochastic-decision-variables" class="slide level2">
-<h2>Stochastic Decision Variables</h2>
+<section id="what-changes-about-the-variables" class="slide level2">
+<h2>What Changes About the Variables?</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
 <p><strong><em>What should change about our decision variables?</em></strong></p>
 <div class="fragment fade-in">
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th style="text-align: center;">Variable</th>
-<th style="text-align: left;">Definition</th>
+<th style="text-align: left;">Copies</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(x_i\)</span></td>
-<td style="text-align: left;">acres of crop <span class="math inline">\(i\)</span> planted</td>
+<td style="text-align: center;"><span class="math inline">\(x_i\)</span>, acres planted</td>
+<td style="text-align: left;"><strong>one</strong> (decided before the yield)</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(y_{ij}\)</span></td>
-<td style="text-align: left;">T of crop <span class="math inline">\(i\)</span> purchased in scenario <span class="math inline">\(j\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(y_{is}\)</span>, T bought</td>
+<td style="text-align: left;">one per scenario <span class="math inline">\(s\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(z_{ij}\)</span></td>
-<td style="text-align: left;">T of crop <span class="math inline">\(i\)</span> sold in scenario <span class="math inline">\(j\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(z_{is}\)</span>, T sold</td>
+<td style="text-align: left;">one per scenario <span class="math inline">\(s\)</span></td>
 </tr>
 </tbody>
 </table>
 </div>
-</section>
-<section id="stochastic-objective" class="slide level2">
-<h2>Stochastic Objective</h2>
-<p><strong><em>How can we formulate an objective?</em></strong></p>
-<div class="fragment fade-in">
-<p><strong>First choice: what statistic are we trying to optimize?</strong></p>
-<div class="fragment fade-in">
-<p>Let’s choose the expected value <span class="math inline">\(\mathbb{E}\left[\text{Profit}\right]\)</span>.</p>
-<p>Other possible choices: quantiles (<em>robust optimization</em>) to hedge against worst-case outcomes, variance (to minimize year-on-year fluctuations).</p>
-</div>
-</div>
-</section>
-<section id="probabilities-and-scenario-trees" class="slide level2">
-<h2>Probabilities and Scenario Trees</h2>
-<div class="columns">
-<div class="column" style="width:55%;">
-<p>Since we have a discrete (and small) set of possible outcomes, we can use a <strong>scenario tree</strong> to write out the possible outcomes.</p>
-<p>This is a simple (one-layer) tree, but if we had additional uncertainties (e.g.&nbsp;demand) we could compute the joint probabilities of each realization.</p>
 </div><div class="column" style="width:45%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figures/farm-scen-tree.svg"></p>
-<figcaption>Scenario Tree for Farmer Problem</figcaption>
+<figcaption>Scenario tree</figcaption>
 </figure>
 </div>
 </div></div>
+<aside class="notes">
+<p>About three minutes. Ask the question first. Planting happens once, so it has one copy. Buying and selling happen after the harvest, so there is a separate copy for each year type. The scenario tree is the bookkeeping: one branch per scenario with its probability. With more uncertainties or more stages, the tree branches again at each one.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="stochastic-objective-1" class="slide level2">
-<h2>Stochastic Objective</h2>
-<p>Our new objective becomes:</p>
-<p><span class="math display">\[\begin{alignedat}{2}
-&amp;\min_{x, y, z} &amp; &amp; \quad 150x_1 + 230x_2 + 260x_3 \\[0.5ex]
-&amp; &amp;&amp;\qquad -\frac{1}{3} \left(170z_{11} + 150z_{21} + 36z_{31} + 10z_{41} - 238y_{11} - 210 y_{21}\right) \\[0.5ex]
-&amp; &amp;&amp;\qquad -\frac{1}{3} \left(170z_{12} + 150z_{22} + 36z_{32} + 10z_{42} - 238y_{12} - 210 y_{22}\right) \\[0.5ex]
-&amp; &amp;&amp;\qquad -\frac{1}{3} \left(170z_{13} + 150z_{23} + 36z_{33} + 10z_{43} - 238y_{13} - 210 y_{23}\right)
-\end{alignedat}\]</span></p>
+<section id="one-scenarios-constraints" class="slide level2">
+<h2>One Scenario’s Constraints</h2>
+<p><strong>Write the good-year constraints</strong> (yields <span class="math inline">\(\times\)</span> 1.2).</p>
+<div class="fragment fade-in">
+<p><span class="math display">\[
+\begin{aligned}
+&amp; 3x_1 + y_{1,\text{good}} - z_{1,\text{good}} \geq 200, \qquad 3.6x_2 + y_{2,\text{good}} - z_{2,\text{good}} \geq 240 \\
+&amp; z_{3,\text{good}} + z_{4,\text{good}} \leq 24x_3, \qquad z_{3,\text{good}} \leq 6000
+\end{aligned}
+\]</span></p>
+<p>The average and bad years are the same with yields <span class="math inline">\(\times\)</span> 1 and <span class="math inline">\(\times\)</span> 0.8. There is <strong>one</strong> land constraint, <span class="math inline">\(x_1 + x_2 + x_3 \leq 500\)</span>, shared by all three.</p>
+</div>
+<aside class="notes">
+<p>Board item, about four minutes. Give students a minute to write the good-year block from the one-year formulation: every yield is multiplied by 1.2 (2.5 becomes 3, 3 becomes 3.6, 20 becomes 24), and the purchase and sale variables get a good-year subscript. Then point out that the planting variables appear in every scenario’s block unchanged: that is what ties the scenarios together. The full set of constraints is in the appendix.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="stochastic-contraints" class="slide level2">
-<h2>Stochastic Contraints</h2>
-<p><span class="math display">\[\begin{alignedat}{2}
-&amp;x_1 + x_2 + x_3 \leq 500 \\[0.5ex]
-&amp;\color{blue}3x_1 + y_{11} - z_{11} \geq 200, &amp;&amp; \qquad  \color{blue}3.6x_2 + y_{21} - z_{21} \geq 240 \\[0.5ex]
-&amp;\color{blue}z_{31} + z_{41} \leq 24x_3, &amp;&amp; \qquad \color{blue}z_{31} \leq 6000 \\[0.5ex]
-&amp;\color{purple}2.5x_1 + y_{12} - z_{12} \geq 200, &amp;&amp; \qquad \color{purple}3x_2 + y_{22} - z_{22} \geq 240 \\[0.5ex]
-&amp;\color{purple}z_{32} + z_{42} \leq 20x_3, &amp;&amp; \qquad \color{purple}z_{32} \leq 6000 \\[0.5ex]
-&amp;\color{red}2x_1 + y_{13} - z_{13} \geq 200, &amp;&amp; \qquad \color{red}2.4x_2 + y_{23} - z_{23} \geq 240 \\[0.5ex]
-&amp;\color{red}z_{33} + z_{43} \leq 16x_3, &amp;&amp; \qquad \color{red}z_{33} \leq 6000 \\[0.5ex]
-&amp;x_i, y_i, z_i \geq 0
-\end{alignedat}\]</span></p>
+<section id="the-two-stage-objective" class="slide level2">
+<h2>The Two-Stage Objective</h2>
+<p>Maximize <strong>expected</strong> profit: planting cost once, plus each scenario’s sales minus purchases, weighted by its probability.</p>
+<p><span class="math display">\[\max_{x, y, z} \quad -\sum_i c_i x_i + \sum_s p_s \left(\text{sales}_s - \text{purchases}_s\right)\]</span></p>
+<div class="fragment fade-in">
+<p>Other choices are possible: a quantile to hedge against bad years, or the variance of profit to smooth year-to-year swings.</p>
+</div>
+<aside class="notes">
+<p>About two minutes. The expected value is one summary of performance across scenarios; it is not the only defensible one. A farmer who cannot survive a bad year might instead maximize the bad-year profit or a low quantile. That choice is a value judgment about risk, and it changes the plan.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="stochastic-solution" class="slide level2">
-<h2>Stochastic Solution</h2>
+<section id="the-stochastic-plan" class="slide level2">
+<h2>The Stochastic Plan</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Variable</th>
-<th style="text-align: center;">Wheat</th>
-<th style="text-align: center;">Corn</th>
-<th style="text-align: center;">Beets</th>
+<th style="text-align: left;">Plan</th>
+<th style="text-align: right;">Wheat (acres)</th>
+<th style="text-align: right;">Corn (acres)</th>
+<th style="text-align: right;">Beets (acres)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Deterministic Area (acres)</td>
-<td style="text-align: center;">120</td>
-<td style="text-align: center;">80</td>
-<td style="text-align: center;">300</td>
+<td style="text-align: left;">Average-year plan</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">300</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Stochastic Area (acres)</td>
-<td style="text-align: center;">170</td>
-<td style="text-align: center;">80</td>
-<td style="text-align: center;">250</td>
+<td style="text-align: left;">Two-stage plan</td>
+<td style="text-align: right;">170</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">250</td>
 </tr>
 </tbody>
 </table>
-<p>How do we interpret the differences?</p>
+<p>Expected profit of the two-stage plan: <strong>$108,390</strong>.</p>
 <div class="fragment fade-in">
 <ul>
-<li><strong>Good year</strong>: Won’t waste acreage on extra beets (6000T yield in stochastic solution, 7200T for deterministic)</li>
-<li><strong>Bad year</strong>: Will make less off beets, profits from wheat should help cover extra corn purchase.</li>
+<li><strong>Good year</strong>: no beet land wasted above the quota.</li>
+<li><strong>Bad year</strong>: extra wheat profit helps pay for the corn it has to buy.</li>
 </ul>
 </div>
+<aside class="notes">
+<p>About three minutes. The two-stage plan moves land from beets to wheat. In a good year the average-year plan would grow more beets than the quota allows, which earns only $10 a tonne; the two-stage plan avoids that. In a bad year both plans fall short on corn, and the extra wheat helps cover the purchase. The plan hedges.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section></section>
 <section>
-<section id="value-of-the-stochastic-solution" class="title-slide slide level1 center">
-<h1>Value of the Stochastic Solution</h1>
+<section id="comparing-plans" class="title-slide slide level1 center">
+<h1>Comparing Plans</h1>
 
 </section>
-<section id="comparing-deterministic-and-stochastic-solution" class="slide level2">
-<h2>Comparing Deterministic and Stochastic Solution</h2>
+<section id="can-we-compare-these-numbers" class="slide level2">
+<h2>Can We Compare These Numbers?</h2>
 <ul>
-<li><strong>Deterministic Solution</strong>: “Expected” Profit (no uncertainty) = $118,600</li>
-<li><strong>Stochastic Solution</strong>: <span class="math inline">\(\mathbb{E}[\text{Profit}]\)</span> = $108,390.</li>
+<li>Average-year plan: <strong>$118,600</strong> profit</li>
+<li>Two-stage plan: <strong>$108,390</strong> expected profit</li>
 </ul>
+<p>Is the average-year plan better?</p>
 <div class="fragment fade-in">
-<p><strong><em>Can we directly compare the deterministic and stochastic solution values that we have obtained so far?</em></strong></p>
+<p><strong>No.</strong> $118,600 is what that plan earns <em>if the year is average</em>. To compare fairly, judge both plans across the same three year types.</p>
 </div>
+<aside class="notes">
+<p>About two minutes. This is the question that names the issue. The two numbers answer different questions: one is a single-scenario profit on paper, the other is an expected value under uncertainty. Ask before revealing.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="expected-performance-of-deterministic-solution" class="slide level2">
-<h2>Expected Performance of Deterministic Solution</h2>
+<section id="each-plan-year-by-year" class="slide level2">
+<h2>Each Plan, Year by Year</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Year</th>
-<th style="text-align: center;">Deterministic Profit</th>
-<th style="text-align: center;">Stochastic Profit</th>
+<th style="text-align: right;">Average-year plan</th>
+<th style="text-align: right;">Two-stage plan</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Good</td>
-<td style="text-align: center;">$148,000</td>
-<td style="text-align: center;">$167,000</td>
+<td style="text-align: right;">$148,000</td>
+<td style="text-align: right;">$167,000</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Average</td>
-<td style="text-align: center;">$118,600</td>
-<td style="text-align: center;">$109,350</td>
+<td style="text-align: right;">$118,600</td>
+<td style="text-align: right;">$109,350</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Bad</td>
-<td style="text-align: center;">$56,800</td>
-<td style="text-align: center;">$48,820</td>
+<td style="text-align: right;">$55,120</td>
+<td style="text-align: right;">$48,820</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Expected</strong></td>
+<td style="text-align: right;"><strong>$107,240</strong></td>
+<td style="text-align: right;"><strong>$108,390</strong></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Expected Profit from Deterministic Solution <em>under uncertainty</em></strong>: $107,240</p>
+<p><strong>Value of the stochastic solution (VSS)</strong>: $108,390 − $107,240 = <strong>$1,150</strong> per year.</p>
+<aside class="notes">
+<p>Board item for the VSS subtraction, about five minutes. Each plan is evaluated in each year with the best purchases and sales for that year. The average-year plan does well in average and good years but badly in a bad year. Its expected profit under uncertainty is $107,240, less than the two-stage plan’s $108,390. The difference is the value of the stochastic solution: what building the uncertainty into the model is worth. Note the two-stage plan is worse than the average-year plan in the average year itself; it trades some average-year profit for protection in bad years.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="value-of-the-stochastic-solution-1" class="slide level2">
-<h2>Value of the Stochastic Solution</h2>
-<p>We can now compare the difference in expected profits <em>under uncertainty</em>, which is the fair comparison.</p>
-<p>This is called the <strong>value of the stochastic solution (VSS)</strong>, or sometimes the <strong>expected value of including uncertainty (EVIU)</strong>.</p>
-<p><span class="math display">\[\begin{aligned}
-VSS &amp;= \mathbb{E}[\text{Stochastic Profit}] - \mathbb{E}[\text{Deterministic Profit}] \\[0.5ex]
-&amp;= \$108,390 - \$107,240 \\[0.5ex]
-&amp;= \$1,150.
-\end{aligned}\]</span></p>
-</section>
-<section id="expected-value-of-perfect-information" class="slide level2">
-<h2>Expected Value of Perfect Information</h2>
-<p>Another relevant quantity, the <strong>expected value of perfect information (EVPI)</strong>, concerns the value associated with better forecasts.</p>
-</section>
-<section id="expected-value-of-perfect-information-1" class="slide level2">
-<h2>Expected Value of Perfect Information</h2>
-<p>If the farmer had perfect foresight and could allocate acreage <span class="math inline">\(x\)</span> accordingly and sell/purchase <span class="math inline">\(z\)</span> and <span class="math inline">\(y\)</span> optimally (versus taking the 1/3-probability stochastic solution),</p>
-<p><span class="math display">\[\mathbb{E}[\text{Profits} | \text{perfect information}] = \sum_j p_j \times \text{Profits}_j = \$115,405.\]</span></p>
+<section id="what-is-a-perfect-forecast-worth" class="slide level2">
+<h2>What Is a Perfect Forecast Worth?</h2>
+<p>With perfect foresight the farmer plants the best plan for each year: expected profit $115,406.</p>
+<p><strong>Expected value of perfect information (EVPI)</strong>: $115,406 − $108,390 = <strong>$7,016</strong> per year.</p>
 <div class="fragment fade-in">
-<p><span class="math display">\[\text{EVPI} = \$115,405 - \$108,390 = \$7,015\]</span></p>
-<p>The EVPI can be interpreted as the amount <em>the farmer might be willing to pay</em> for an improved forecast.</p>
+<p>Here modelling the uncertainty is worth $1,150 a year, but a perfect forecast would be worth about <strong>6 times</strong> as much. The EVPI is the most the farmer should pay for better forecasts.</p>
 </div>
+<aside class="notes">
+<p>About four minutes. With perfect information the farmer would know the year before planting and use the best plan for it: the expected profit is the average of the three known-year profits. The gap between that and the two-stage plan is the EVPI. Here it is much larger than the VSS: hedging buys a little, but information would buy a lot more. That is not always the case; it depends on the problem.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section></section>
 <section>
 <section id="key-takeaways" class="title-slide slide level1 center">
 <h1>Key Takeaways</h1>
 
 </section>
-<section id="decision-making-and-uncertainty" class="slide level2">
-<h2>Decision-Making and Uncertainty</h2>
+<section id="key-takeaways-1" class="slide level2">
+<h2>Key Takeaways</h2>
 <ul>
-<li>A solution obtained assuming deterministic outcomes might “on paper” yield better anticipated outcomes.</li>
-<li>Common approach is a two-stage optimization framework:
-<ul>
-<li>Make an initial decision;</li>
-<li>Recourse based on which scenario is realized.</li>
-</ul></li>
-<li>Scenario trees help build out the representation of outcomes and probabilities.</li>
+<li><strong>The best plan for the average year is not the best plan across years.</strong></li>
+<li>Two stages: <strong>one</strong> here-and-now decision, <strong>one recourse decision per scenario</strong>, weighted by probability.</li>
+<li><strong>Compare plans under uncertainty</strong>: VSS is what modelling uncertainty is worth; EVPI, what a perfect forecast is worth.</li>
+<li><strong>Scenario trees grow multiplicatively</strong>: 3 outcomes a year for 10 years is 59,049 leaves.</li>
 </ul>
-</section>
-<section id="value-of-the-stochastic-solution-2" class="slide level2">
-<h2>Value of the Stochastic Solution</h2>
-<ul>
-<li>Solutions to stochastic problems can produce a better expected outcome than the deterministic solution, but will perform better/worse in any given scenario.</li>
-<li>Value of the stochastic solution quantifies expected improvement in performance.</li>
-<li>Expected value of perfect information: amount you might be willing to pay for improved forecasts.</li>
-</ul>
+<aside class="notes">
+<p>About two minutes. The last takeaway sets up Wednesday: with decisions every year and uncertainty every year, the tree explodes, and dynamic programming avoids writing it out.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section></section>
 <section>
 <section id="upcoming-schedule" class="title-slide slide level1 center">
@@ -730,18 +836,53 @@ VSS &amp;= \mathbb{E}[\text{Stochastic Profit}] - \mathbb{E}[\text{Deterministic
 </section>
 <section id="next-classes" class="slide level2">
 <h2>Next Classes</h2>
-<p><strong>Wednesday</strong>: Handling Multiple Objectives</p>
-<p><strong>Monday</strong>: Sensitivity Analysis and Robustness</p>
+<p><strong>Wednesday</strong>: Sequential decisions and dynamic programming.</p>
+<p><strong>Monday, November 23</strong>: Lab 4, scenario trees and sequential decisions for reservoir operations (bring a laptop).</p>
+<p><strong>Wednesday, November 25</strong>: No class (Thanksgiving).</p>
 </section>
-<section id="assessments" class="slide level2 smaller scrollable">
+<section id="assessments" class="slide level2">
 <h2>Assessments</h2>
-<p><strong>HW5</strong>: Assigned; Will be due last week of class (12/4).</p>
-<p><strong>Reading</strong>: <span class="citation" data-cites="Ackoff1979-ix">Ackoff (<a href="#/assessments" role="doc-biblioref" onclick="">1979</a>)</span></p>
+<p><strong>HW9</strong> and <strong>MP2</strong>: due Thursday, November 19.</p>
+<p><strong>Quiz 6</strong>: Monday, December 7.</p>
+</section></section>
+<section>
+<section id="appendix" class="title-slide slide level1 center">
+<h1>Appendix</h1>
+
+</section>
+<section id="the-full-two-stage-constraints" class="slide level2">
+<h2>The Full Two-Stage Constraints</h2>
+<p><span class="math display">\[
+\begin{alignedat}{2}
+&amp;x_1 + x_2 + x_3 \leq 500 \\[0.5ex]
+&amp;\color{blue}3x_1 + y_{11} - z_{11} \geq 200, &amp;&amp; \qquad \color{blue}3.6x_2 + y_{21} - z_{21} \geq 240 \\[0.5ex]
+&amp;\color{blue}z_{31} + z_{41} \leq 24x_3, &amp;&amp; \qquad \color{blue}z_{31} \leq 6000 \\[0.5ex]
+&amp;\color{purple}2.5x_1 + y_{12} - z_{12} \geq 200, &amp;&amp; \qquad \color{purple}3x_2 + y_{22} - z_{22} \geq 240 \\[0.5ex]
+&amp;\color{purple}z_{32} + z_{42} \leq 20x_3, &amp;&amp; \qquad \color{purple}z_{32} \leq 6000 \\[0.5ex]
+&amp;\color{red}2x_1 + y_{13} - z_{13} \geq 200, &amp;&amp; \qquad \color{red}2.4x_2 + y_{23} - z_{23} \geq 240 \\[0.5ex]
+&amp;\color{red}z_{33} + z_{43} \leq 16x_3, &amp;&amp; \qquad \color{red}z_{33} \leq 6000 \\[0.5ex]
+&amp;x_i, y_{is}, z_{is} \geq 0
+\end{alignedat}
+\]</span></p>
+<p>Scenarios: good (blue), average (purple), bad (red).</p>
+</section>
+<section id="general-two-stage-notation" class="slide level2">
+<h2>General Two-Stage Notation</h2>
+<p><span class="math display">\[\max_x \; \underbrace{f(x)}_{\text{first stage}} + \mathbb{E}_\xi\left[\underbrace{Q(x; \xi)}_{\substack{\text{best recourse after} \\ \text{seeing } \xi}}\right]\]</span></p>
+<p>With discrete scenarios <span class="math inline">\(\xi_s\)</span> and probabilities <span class="math inline">\(p_s\)</span>, the expectation is <span class="math inline">\(\sum_s p_s\, Q(x; \xi_s)\)</span>, which is what the farmer model maximizes.</p>
+</section></section>
+<section>
+<section id="references" class="title-slide slide level1 center">
+<h1>References</h1>
+
+</section>
+<section id="references-1" class="slide level2 smaller scrollable">
+<h2>References</h2>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
-<div id="ref-Ackoff1979-ix" class="csl-entry" role="listitem">
-Ackoff, R. L. (1979). <span class="nocase">The Future of Operational Research is Past</span>. <em>J. Oper. Res. Soc.</em>, <em>30</em>, 93–104. <a href="https://doi.org/10.1057/jors.1979.22">https://doi.org/10.1057/jors.1979.22</a>
+<div id="ref-Birge2011-ip" class="csl-entry" role="listitem">
+Birge, J. R., &amp; Louveaux, F. (2011). <em>Introduction to stochastic programming</em> (2nd ed.). Springer New York. <a href="https://doi.org/10.1007/978-1-4614-0237-4">https://doi.org/10.1007/978-1-4614-0237-4</a>
 </div>
 </div>
 </section></section>

@@ -1,0 +1,95 @@
+---
+title: "Quiz 6 and Project Session"
+subtitle: "In-Class Activity"
+author: "Vivek Srikrishnan"
+course: "BEE 4750"
+institution: "Cornell University"
+date: "December 7, 2026"
+format:
+    revealjs:
+        slide-number: c/t
+        show-slide-number: all
+        center-title-slide: true
+        width: 1280
+        height: 720
+        transition: none
+        toc: false
+        history: false
+        link-external-newwindow: true
+        theme: ../sass/slides.scss
+        template-partials:
+            - title-slide.html
+        menu:
+            numbers: true
+        date-format: long
+        email-obfuscation: javascript
+        chalkboard:
+            theme: whiteboard
+            buttons: true
+        controls: true
+---
+
+## Today
+
+1. **Quiz 6** (25 minutes)
+2. **Project session** (remaining time): one short activity with your project group, then work time.
+
+::: {.notes}
+For the TA. Quiz 6 first, 25 minutes; collect the quizzes before starting the activity. Then about 50 minutes: 5 for deadlines, 15 for the activity and share-out, and about 30 of supervised work time. Students should sit with their project groups after the quiz.
+:::
+
+## Deadlines
+
+- **Presentation video** (at most 10 minutes; every member participates): to Canvas by **9:00 PM Tuesday, Dec 8**.
+- **Presentation peer reviews**: two videos each, in Canvas **from Dec 10**.
+- **Final report** (at most 5 pages) and **team and self evaluations**: **Dec 20**.
+
+Instructions: [presentation](../project/presentation.qmd), [peer review](../project/peer-review.qmd), [report](../project/report.qmd), [evaluations](../project/evaluations.qmd).
+
+::: {.notes}
+About 5 minutes. The video deadline is tomorrow night, and peer reviews cannot be submitted after their own due date. The evaluation quiz opens in Canvas today, the last day of class; students can fill it in any time before the end of finals, and probably should wait until the report is done.
+:::
+
+## Checking Your Own Project
+
+On your own for 2 minutes, then as a group for 8:
+
+1. What is your **descriptive model**, and your **method**?
+2. Which **single assumption** would most change your recommendation?
+3. Which **check** would reveal it: refining, validating, sensitivity, robustness?
+4. **Who is affected** if it's wrong?
+
+::: {.notes}
+About 10 minutes. Circulate and push for specifics. An example answer, for a multi-objective water management project: (1) a reservoir mass balance driven by historical inflows, searched for release rules that trade off supply against environmental flows; (2) that future inflows look like the historical record; (3) robustness: test the chosen rules across drier inflow scenarios, or a sensitivity analysis on the inflow distribution; (4) the downstream ecosystem and the irrigators who would be cut first. If a group says "no assumption would change our answer", ask what they held fixed that they could not measure.
+:::
+
+## Your Report's Discussion Section
+
+> [Discussion and Conclusions] ... including how assumptions made in your project may have influenced the results or their interpretation as well as reflections on how your project connected to or extended the course material.
+
+Answers to questions 2–4 are a **first draft of that paragraph**: write it down before you leave.
+
+::: {.notes}
+Point at the quote: this is word for word from the report instructions. The activity is ungraded; its purpose is a paragraph the group can build on. Posting to Ed is optional and ungraded, but it gets them feedback before the deadline.
+:::
+
+## Share Out
+
+Two or three groups, one minute each:
+
+- The **assumption** that would most change your recommendation.
+- The **check** that would reveal it.
+
+::: {.notes}
+About 5 minutes. Pick groups with different kinds of projects. Patterns worth pointing out: many projects rest on an input distribution taken from history, or on a cost or efficiency number from one source; the matching checks are robustness across other futures and a sensitivity analysis over a defensible range.
+:::
+
+## Work Time
+
+The rest of class: work with your group on the **video** and the **report**. Ask the TA as you go.
+
+Optional: post your draft Discussion paragraph to Ed (ungraded) for comments before Dec 20.
+
+::: {.notes}
+About 30 minutes. Circulate; most groups will be editing videos or drafting the report. If course evaluations are open, take 5 minutes for them at the start of this block. End a few minutes early with a reminder that the video is due tomorrow at 9:00 PM.
+:::

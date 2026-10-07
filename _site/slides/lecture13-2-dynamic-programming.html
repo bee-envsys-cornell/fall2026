@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<link href="../_assets/logos/favicon.png" rel="icon" type="image/png">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e44360b8a8db1e130c7792fece1c8032.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.3">
+
+  <meta name="author" content="Vivek Srikrishnan">
+  <meta name="dcterms.date" content="2026-11-18">
+  <title>Environmental Systems Analysis – Sequential Decisions and Dynamic Programming</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-d52ba59528acaf0ac8c09f3308d87e37.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <!-- MathJax 3 -->
+  <script>
+  window.MathJax = {
+      tex: {
+        tags: 'ams'
+      }
+    };
+  </script>
+  <!-- Mathjax 3 config -->
+  <script>
+  window.MathJax = {
+      {
+        minScale: 0.5
+        loader: {load: ['[tex]/tagformat']},
+        tex: {packages: {'[+]': ['tagformat']}}
+      }
+    };
+    MathJax = {
+    options: {
+      menuOptions: {
+        settings: {
+          assistiveMml: false,   // true to enable assitive MathML
+          collapsible: false,   // true to enable collapsible math
+          explorer: false      // true to enable the expression explorer
+        }
+      }
+    }
+  };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+  
+  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<meta property="og:title" content="Sequential Decisions and Dynamic Programming – Environmental Systems Analysis">
+<meta property="og:description" content="Lecture 20">
+<meta property="og:site_name" content="Environmental Systems Analysis">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="center">
+    <h1 class="title">Sequential Decisions and Dynamic Programming</h1>
+  <hr>
+<p class="subtitle">Lecture 20</p>
+<p class="date">November 18, 2026</p>
+</section><section id="TOC">
+<nav role="doc-toc"> 
+<h2 id="toc-title">Overview</h2>
+<ul>
+<li><a href="#/review-of-last-class" id="/toc-review-of-last-class">Review of Last Class</a></li>
+<li><a href="#/sequential-decisions" id="/toc-sequential-decisions">Sequential Decisions</a></li>
+<li><a href="#/backward-induction" id="/toc-backward-induction">Backward Induction</a></li>
+<li><a href="#/uncertain-inflows" id="/toc-uncertain-inflows">Uncertain Inflows</a></li>
+<li><a href="#/key-takeaways" id="/toc-key-takeaways">Key Takeaways</a></li>
+<li><a href="#/upcoming-schedule" id="/toc-upcoming-schedule">Upcoming Schedule</a></li>
+<li><a href="#/appendix" id="/toc-appendix">Appendix</a></li>
+</ul>
+</nav>
+</section>
+<section>
+<section id="review-of-last-class" class="title-slide slide level1 center">
+<h1>Review of Last Class</h1>
+
+</section>
+<section id="scenario-trees-grow-fast" class="slide level2">
+<h2>Scenario Trees Grow Fast</h2>
+<ul>
+<li>Two-stage problems: <strong>one</strong> here-and-now decision, <strong>one recourse decision per scenario</strong>.</li>
+<li>With a decision <strong>every</strong> period and uncertainty <strong>every</strong> period, the tree branches again each time: 3 outcomes a year for 10 years is 59,049 leaves.</li>
+</ul>
+<p>Today: decisions in a <strong>sequence</strong>, and a way to solve them without writing out the tree.</p>
+<aside class="notes">
+<p>Two minutes. Monday’s farmer made one decision, learned the yield, and adjusted. Most environmental decisions repeat: release water every month, set a loading every year, harvest every season. Writing out every path through the future quickly becomes impossible. Dynamic programming is the standard way around it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="questions" class="slide level2">
+<h2>Questions?</h2>
+<div class="columns center">
+<div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/vsrikrish-poll.png" class="quarto-figure quarto-figure-center" style="width:100.0%" alt="Poll Everywhere QR Code"></p>
+</figure>
+</div>
+</div><div class="column" style="width:60%;">
+<p><strong>Text</strong>: VSRIKRISH to 22333</p>
+<p><strong>URL</strong>: <a href="https://pollev.com/vsrikrish">https://pollev.com/vsrikrish</a> <br><br> <a href="https://www.polleverywhere.com/multiple_choice_polls/qKeig0hHShZYHAOmvZtZm?preview=true&amp;controls=none" data-preview-link="true">See Results</a></p>
+</div></div>
+</section></section>
+<section>
+<section id="sequential-decisions" class="title-slide slide level1 center">
+<h1>Sequential Decisions</h1>
+
+</section>
+<section id="decisions-linked-over-time" class="slide level2">
+<h2>Decisions Linked Over Time</h2>
+<ul>
+<li><strong>Reservoir</strong>: water released this month is not there next month.</li>
+<li><strong>Lake</strong> (week 3): <span class="math inline">\(P_{t+1} = P_t + L_t - sP_t + R(P_t)\)</span>. This year’s loading <span class="math inline">\(L_t\)</span> sets next year’s lake.</li>
+<li><strong>Fishery</strong>: this season’s harvest sets next season’s stock.</li>
+</ul>
+<p><strong>Why not just optimize each month on its own?</strong></p>
+<aside class="notes">
+<p>About five minutes. Each example has a stock that carries the past into the future, so today’s decision changes tomorrow’s options. The lake equation is the one from week 3: students have already seen a state that evolves from year to year; today the loading becomes a decision. Pose the question and take answers; the reservoir example answers it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-reservoir-in-a-dry-season" class="slide level2">
+<h2>A Reservoir in a Dry Season</h2>
+<ul>
+<li>Storage holds up to <strong>4 units</strong>, and starts <strong>full</strong>.</li>
+<li>Each month: <strong>release</strong> <span class="math inline">\(r\)</span> (at most what is stored), then the month’s <strong>inflow</strong> arrives; anything above 4 spills.</li>
+<li>Inflows over the season: 1, 1, 0.</li>
+<li>Benefit of a month’s release:</li>
+</ul>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Release</th>
+<th style="text-align: right;">0</th>
+<th style="text-align: right;">1</th>
+<th style="text-align: right;">2</th>
+<th style="text-align: right;">3</th>
+<th style="text-align: right;">4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Benefit</strong></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">13</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>About three minutes. Small numbers on purpose: everything today can be done by hand. The benefits have diminishing returns: the first unit released in a month is worth 6, the second only 4 more, the third 2, the fourth 1. Think of water for irrigation or a city during a dry season.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-greedy-plan" class="slide level2">
+<h2>The Greedy Plan</h2>
+<p><strong>Greedy</strong>: release everything available, every month.</p>
+<p>It releases 4, 1, 1, for a total benefit of <strong>25</strong>.</p>
+<p><strong>Can you beat 25?</strong></p>
+<div class="fragment fade-in">
+<p>Releasing 2, 2, 2 gives a total of <strong>30</strong>. Spreading the water out wins, because the second unit in a month is worth less than the first unit in another month.</p>
+</div>
+<aside class="notes">
+<p>About four minutes, with a poll or a minute of pair work. Greedy maximizes each month’s benefit separately: it empties the reservoir in month 1, then only has the inflow. Most students find 2, 2, 2 quickly. The harder question is how to find the best plan when there are more months, more storage levels, or uncertain inflows: trial and error does not scale.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-ingredients" class="slide level2">
+<h2>The Ingredients</h2>
+<ul>
+<li><strong>Stage</strong> <span class="math inline">\(t\)</span>: the month.</li>
+<li><strong>State</strong> <span class="math inline">\(s_t\)</span>: storage at the start of the month; it carries the past forward.</li>
+<li><strong>Decision</strong> <span class="math inline">\(r_t\)</span>: the release, with <span class="math inline">\(0 \leq r_t \leq s_t\)</span>.</li>
+<li><strong>Transition</strong>: <span class="math inline">\(s_{t+1} = \min(s_t - r_t + I_t,\ 4)\)</span>.</li>
+<li><strong>Value function</strong> <span class="math inline">\(V_t(s)\)</span>: the best total benefit from month <span class="math inline">\(t\)</span> to the end, starting with storage <span class="math inline">\(s\)</span>.</li>
+<li><strong>Policy</strong>: the best release for each month and storage level.</li>
+</ul>
+<aside class="notes">
+<p>About four minutes. These names are the vocabulary for the rest of the lecture and for Monday’s lab. The value function is the key idea: it answers “how good is it to be here?” for every state, not only the one we start in. Once we know next month’s value function, choosing this month’s release is a one-step problem.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="backward-induction" class="title-slide slide level1 center">
+<h1>Backward Induction</h1>
+
+</section>
+<section id="start-at-the-end" class="slide level2">
+<h2>Start at the End</h2>
+<p>In the <strong>last month</strong>, nothing comes after, so release everything:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Storage</th>
+<th style="text-align: right;">0</th>
+<th style="text-align: right;">1</th>
+<th style="text-align: right;">2</th>
+<th style="text-align: right;">3</th>
+<th style="text-align: right;">4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Best release</strong></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Value</strong> <span class="math inline">\(V_3(s)\)</span></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">13</td>
+</tr>
+</tbody>
+</table>
+<p>Now step <strong>backwards</strong>: knowing <span class="math inline">\(V_3\)</span>, month 2 is a one-step problem.</p>
+<aside class="notes">
+<p>About two minutes. The last stage is the easy one, because there is no future to protect. That is why we start there.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="month-2-by-hand" class="slide level2">
+<h2>Month 2, by Hand</h2>
+<p>For each storage <span class="math inline">\(s\)</span>, try every release <span class="math inline">\(r \leq s\)</span> (month 2’s inflow is <span class="math inline">\(I_2 =\)</span> 1):</p>
+<p><span class="math display">\[V_2(s) = \max_{r \leq s} \left[\, \text{benefit}(r) + V_3\big(\min(s - r + I_2,\ 4)\big) \right]\]</span></p>
+<p><strong>Your turn: compute <span class="math inline">\(V_2(3)\)</span>.</strong></p>
+<div class="fragment fade-in">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Storage</th>
+<th style="text-align: right;">0</th>
+<th style="text-align: right;">1</th>
+<th style="text-align: right;">2</th>
+<th style="text-align: right;">3</th>
+<th style="text-align: right;">4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Best release</strong></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Value</strong> <span class="math inline">\(V_2(s)\)</span></td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">22</td>
+</tr>
+</tbody>
+</table>
+</div>
+<aside class="notes">
+<p>Board item, about ten minutes. Work V2(0) and V2(1) together on the board, then let students compute V2(3). For s = 3 the options are: release 0, benefit 0 plus V3 of min(3 + 1, 4) = 13, so 13; release 1, 6 plus V3(3) = 12, so 18; release 2, 10 plus V3(2) = 10, so 20; release 3, 12 plus V3(1) = 6, so 18. The best is 20, releasing 2. Fill in the rest of the table. At storage 2 and storage 4 two releases tie (1 or 2, and 2 or 3); the table reports the smaller one.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="backward-induction-in-code" class="slide level2">
+<h2>Backward Induction in Code</h2>
+<div id="14" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a><span class="kw">function</span> <span class="fu">backward_induction</span>(inflow; end_value<span class="op">=</span><span class="fu">zeros</span>(capacity <span class="op">+</span> <span class="fl">1</span>))</span>
+<span id="cb1-2"><a></a>    value <span class="op">=</span> <span class="fu">fill</span>(<span class="op">-</span><span class="cn">Inf</span>, capacity <span class="op">+</span> <span class="fl">1</span>, n_months <span class="op">+</span> <span class="fl">1</span>)  <span class="co"># best total from month t</span></span>
+<span id="cb1-3"><a></a>    policy <span class="op">=</span> <span class="fu">zeros</span>(<span class="dt">Int</span>, capacity <span class="op">+</span> <span class="fl">1</span>, n_months)     <span class="co"># best release</span></span>
+<span id="cb1-4"><a></a>    value[<span class="op">:</span>, n_months <span class="op">+</span> <span class="fl">1</span>] <span class="op">=</span> end_value              <span class="co"># water left at the end</span></span>
+<span id="cb1-5"><a></a>    <span class="cf">for</span> t <span class="kw">in</span> n_months<span class="op">:-</span><span class="fl">1</span><span class="op">:</span><span class="fl">1</span>, s <span class="kw">in</span> levels</span>
+<span id="cb1-6"><a></a>        <span class="cf">for</span> r <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>s                                <span class="co"># at most what is stored</span></span>
+<span id="cb1-7"><a></a>            total <span class="op">=</span> <span class="fu">benefit</span>(r) <span class="op">+</span> value[<span class="fu">next_storage</span>(s, r, inflow[t]) <span class="op">+</span> <span class="fl">1</span>, t <span class="op">+</span> <span class="fl">1</span>]</span>
+<span id="cb1-8"><a></a>            <span class="cf">if</span> total <span class="op">&gt;</span> value[s <span class="op">+</span> <span class="fl">1</span>, t]              <span class="co"># ties keep the smaller r</span></span>
+<span id="cb1-9"><a></a>                value[s <span class="op">+</span> <span class="fl">1</span>, t] <span class="op">=</span> total</span>
+<span id="cb1-10"><a></a>                policy[s <span class="op">+</span> <span class="fl">1</span>, t] <span class="op">=</span> r</span>
+<span id="cb1-11"><a></a>            <span class="cf">end</span></span>
+<span id="cb1-12"><a></a>        <span class="cf">end</span></span>
+<span id="cb1-13"><a></a>    <span class="cf">end</span></span>
+<span id="cb1-14"><a></a>    <span class="cf">return</span> value, policy</span>
+<span id="cb1-15"><a></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<aside class="notes">
+<p>About four minutes. The code is the hand calculation in a loop: months backwards, every storage level, every allowed release (no more than is stored). It keeps one table of values and one table of best releases, both allocated at full size before the loop. A release replaces the best so far only if it is strictly better, so ties keep the smaller release, as on the board.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="month-1-and-the-plan" class="slide level2">
+<h2>Month 1, and the Plan</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Storage</th>
+<th style="text-align: right;">0</th>
+<th style="text-align: right;">1</th>
+<th style="text-align: right;">2</th>
+<th style="text-align: right;">3</th>
+<th style="text-align: right;">4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Best release</strong></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Value</strong> <span class="math inline">\(V_1(s)\)</span></td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">30</td>
+</tr>
+</tbody>
+</table>
+<p>From a full reservoir, <span class="math inline">\(V_1(4) =\)</span> <strong>30</strong>. Following the policy forward gives releases <strong>2, 2, 2</strong>.</p>
+<aside class="notes">
+<p>About three minutes. The value function at the start answers the whole problem: 30, against greedy’s 25. To get the plan, follow the policy forward: release 2, see the storage, look up the next month’s best release, and so on.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="checking-by-brute-force" class="slide level2">
+<h2>Checking by Brute Force</h2>
+<div id="20" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a></a><span class="co"># Try every release sequence (only feasible because the problem is tiny)</span></span>
+<span id="cb2-2"><a></a><span class="kw">function</span> <span class="fu">brute_force</span>()</span>
+<span id="cb2-3"><a></a>    best_total <span class="op">=</span> <span class="op">-</span><span class="fl">1</span></span>
+<span id="cb2-4"><a></a>    n_best <span class="op">=</span> <span class="fl">0</span>                  <span class="co"># how many sequences reach the best total</span></span>
+<span id="cb2-5"><a></a>    <span class="cf">for</span> r1 <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>start_storage</span>
+<span id="cb2-6"><a></a>        s2 <span class="op">=</span> <span class="fu">next_storage</span>(start_storage, r1, inflow[<span class="fl">1</span>])</span>
+<span id="cb2-7"><a></a>        <span class="cf">for</span> r2 <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>s2</span>
+<span id="cb2-8"><a></a>            s3 <span class="op">=</span> <span class="fu">next_storage</span>(s2, r2, inflow[<span class="fl">2</span>])</span>
+<span id="cb2-9"><a></a>            <span class="cf">for</span> r3 <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>s3</span>
+<span id="cb2-10"><a></a>                total <span class="op">=</span> <span class="fu">benefit</span>(r1) <span class="op">+</span> <span class="fu">benefit</span>(r2) <span class="op">+</span> <span class="fu">benefit</span>(r3)</span>
+<span id="cb2-11"><a></a>                <span class="cf">if</span> total <span class="op">&gt;</span> best_total</span>
+<span id="cb2-12"><a></a>                    best_total <span class="op">=</span> total</span>
+<span id="cb2-13"><a></a>                    n_best <span class="op">=</span> <span class="fl">1</span></span>
+<span id="cb2-14"><a></a>                <span class="cf">elseif</span> total <span class="op">==</span> best_total</span>
+<span id="cb2-15"><a></a>                    n_best <span class="op">+=</span> <span class="fl">1</span></span>
+<span id="cb2-16"><a></a>                <span class="cf">end</span></span>
+<span id="cb2-17"><a></a>            <span class="cf">end</span></span>
+<span id="cb2-18"><a></a>        <span class="cf">end</span></span>
+<span id="cb2-19"><a></a>    <span class="cf">end</span></span>
+<span id="cb2-20"><a></a>    <span class="cf">return</span> best_total, n_best</span>
+<span id="cb2-21"><a></a><span class="kw">end</span></span>
+<span id="cb2-22"><a></a>best_total, n_best <span class="op">=</span> <span class="fu">brute_force</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Checking every release sequence directly, the best total is <strong>30</strong>, and <strong>1</strong> sequence reaches it. Backward induction found it.</p>
+<aside class="notes">
+<p>About two minutes. Verification as a named step: on a problem this small we can try every sequence and confirm the answer. On a realistic problem we cannot, which is exactly why we need a method we have checked on cases where we can.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="why-spread-the-water" class="slide level2">
+<h2>Why Spread the Water?</h2>
+<div id="cell-fig-releases" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a></a>months <span class="op">=</span> <span class="fl">1</span><span class="op">:</span>n_months</span>
+<span id="cb3-2"><a></a>p_releases <span class="op">=</span> <span class="fu">bar</span>(months <span class="op">.-</span> <span class="fl">0.18</span>, greedy_release, bar_width<span class="op">=</span><span class="fl">0.35</span>, color<span class="op">=</span>cb_vermillion, linecolor<span class="op">=:</span>black,</span>
+<span id="cb3-3"><a></a>    label<span class="op">=</span><span class="st">"Greedy (total </span><span class="sc">$</span>(greedy_total)<span class="st">)"</span>, xlabel<span class="op">=</span><span class="st">"Month"</span>, ylabel<span class="op">=</span><span class="st">"Release  [units]"</span>,</span>
+<span id="cb3-4"><a></a>    legend<span class="op">=:</span>topright, ylims<span class="op">=</span>(<span class="fl">0</span>, <span class="fl">5</span>), xticks<span class="op">=</span>months)</span>
+<span id="cb3-5"><a></a><span class="fu">bar!</span>(p_releases, months <span class="op">.+</span> <span class="fl">0.18</span>, dp_release, bar_width<span class="op">=</span><span class="fl">0.35</span>, color<span class="op">=</span>cb_blue, linecolor<span class="op">=:</span>black,</span>
+<span id="cb3-6"><a></a>    fillstyle<span class="op">=:/</span>, label<span class="op">=</span><span class="st">"DP (total </span><span class="sc">$</span>(dp_total)<span class="st">)"</span>)</span>
+<span id="cb3-7"><a></a><span class="fu">plot!</span>(p_releases, size<span class="op">=</span>(<span class="fl">1050</span>, <span class="fl">330</span>), left_margin<span class="op">=</span><span class="fl">10</span>mm, bottom_margin<span class="op">=</span><span class="fl">10</span>mm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="fig-releases" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center" data-execution_count="1">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-releases-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<!--?xml version="1.0" encoding="utf-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="1050" height="330" viewbox="0 0 4200 1320">
+<defs>
+  <clippath id="clip240">
+    <rect x="0" y="0" width="4200" height="1320"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip240)" d="M0 1320 L4200 1320 L4200 2.66454e-14 L0 2.66454e-14  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip241">
+    <rect x="840" y="0" width="2941" height="1320"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip240)" d="M351.015 1013.42 L4152.76 1013.42 L4152.76 47.2441 L351.015 47.2441  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip242">
+    <rect x="351" y="47" width="3803" height="967"></rect>
+  </clippath>
+</defs>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="351.015,1013.42 4152.76,1013.42 "></polyline>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="351.015,47.2441 4152.76,47.2441 "></polyline>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="993.889,1013.42 993.889,994.518 "></polyline>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2251.89,1013.42 2251.89,994.518 "></polyline>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3509.88,1013.42 3509.88,994.518 "></polyline>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="993.889,47.2441 993.889,66.1417 "></polyline>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2251.89,47.2441 2251.89,66.1417 "></polyline>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3509.88,47.2441 3509.88,66.1417 "></polyline>
+<g clip-path="url(#clip240)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 993.889, 1136.1)" x="993.889" y="1136.1">1</text>
+</g>
+<g clip-path="url(#clip240)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 2251.89, 1136.1)" x="2251.89" y="1136.1">2</text>
+</g>
+<g clip-path="url(#clip240)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 3509.88, 1136.1)" x="3509.88" y="1136.1">3</text>
+</g>
+<g clip-path="url(#clip240)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:112px; text-anchor:middle;" transform="rotate(0, 2251.89, 1292.81)" x="2251.89" y="1292.81">Month</text>
+</g>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="351.015,1013.42 351.015,47.2441 "></polyline>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4152.76,1013.42 4152.76,47.2441 "></polyline>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="351.015,1013.42 369.913,1013.42 "></polyline>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="351.015,820.181 369.913,820.181 "></polyline>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="351.015,626.947 369.913,626.947 "></polyline>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="351.015,433.713 369.913,433.713 "></polyline>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="351.015,240.478 369.913,240.478 "></polyline>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="351.015,47.2441 369.913,47.2441 "></polyline>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4152.76,1013.42 4133.86,1013.42 "></polyline>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4152.76,820.181 4133.86,820.181 "></polyline>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4152.76,626.947 4133.86,626.947 "></polyline>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4152.76,433.713 4133.86,433.713 "></polyline>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4152.76,240.478 4133.86,240.478 "></polyline>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4152.76,47.2441 4133.86,47.2441 "></polyline>
+<g clip-path="url(#clip240)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 263.044, 1047.92)" x="263.044" y="1047.92">0</text>
+</g>
+<g clip-path="url(#clip240)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 263.044, 854.681)" x="263.044" y="854.681">1</text>
+</g>
+<g clip-path="url(#clip240)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 263.044, 661.447)" x="263.044" y="661.447">2</text>
+</g>
+<g clip-path="url(#clip240)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 263.044, 468.213)" x="263.044" y="468.213">3</text>
+</g>
+<g clip-path="url(#clip240)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 263.044, 274.978)" x="263.044" y="274.978">4</text>
+</g>
+<g clip-path="url(#clip240)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 263.044, 81.7441)" x="263.044" y="81.7441">5</text>
+</g>
+<g clip-path="url(#clip240)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:112px; text-anchor:middle;" transform="rotate(-90, 145.853, 530.33)" x="145.853" y="530.33">Release  [units]</text>
+</g>
+<path clip-path="url(#clip242)" d="M547.3 240.478 L547.3 1013.42 L987.599 1013.42 L987.599 240.478 L547.3 240.478 L547.3 240.478  Z" fill="#d55e00" fill-rule="evenodd" fill-opacity="1"></path>
+<polyline clip-path="url(#clip242)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:12; stroke-opacity:1; fill:none" points="547.3,240.478 547.3,1013.42 987.599,1013.42 987.599,240.478 547.3,240.478 "></polyline>
+<path clip-path="url(#clip242)" d="M1805.3 820.181 L1805.3 1013.42 L2245.6 1013.42 L2245.6 820.181 L1805.3 820.181 L1805.3 820.181  Z" fill="#d55e00" fill-rule="evenodd" fill-opacity="1"></path>
+<polyline clip-path="url(#clip242)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:12; stroke-opacity:1; fill:none" points="1805.3,820.181 1805.3,1013.42 2245.6,1013.42 2245.6,820.181 1805.3,820.181 "></polyline>
+<path clip-path="url(#clip242)" d="M3063.29 820.181 L3063.29 1013.42 L3503.59 1013.42 L3503.59 820.181 L3063.29 820.181 L3063.29 820.181  Z" fill="#d55e00" fill-rule="evenodd" fill-opacity="1"></path>
+<polyline clip-path="url(#clip242)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:12; stroke-opacity:1; fill:none" points="3063.29,820.181 3063.29,1013.42 3503.59,1013.42 3503.59,820.181 3063.29,820.181 "></polyline>
+<circle clip-path="url(#clip242)" style="fill:#d55e00; stroke:none; fill-opacity:0" cx="767.45" cy="240.478" r="2"></circle>
+<circle clip-path="url(#clip242)" style="fill:#d55e00; stroke:none; fill-opacity:0" cx="2025.45" cy="820.181" r="2"></circle>
+<circle clip-path="url(#clip242)" style="fill:#d55e00; stroke:none; fill-opacity:0" cx="3283.44" cy="820.181" r="2"></circle>
+<defs>
+  <pattern id="pattern1" patternunits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+<g transform="scale(4)"><path d="M-4,4 l8,-8 M4,12 l8,-8 M-4,12 l16,-16" style="stroke:#0072b2; stroke-width:1; stroke-opacity:1"></path></g></pattern>
+</defs>
+<path clip-path="url(#clip242)" d="M1000.18 626.947 L1000.18 1013.42 L1440.48 1013.42 L1440.48 626.947 L1000.18 626.947 L1000.18 626.947  Z" fill="url(#pattern1)"></path>
+<polyline clip-path="url(#clip242)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:12; stroke-opacity:1; fill:none" points="1000.18,626.947 1000.18,1013.42 1440.48,1013.42 1440.48,626.947 1000.18,626.947 "></polyline>
+<defs>
+  <pattern id="pattern2" patternunits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+<g transform="scale(4)"><path d="M-4,4 l8,-8 M4,12 l8,-8 M-4,12 l16,-16" style="stroke:#0072b2; stroke-width:1; stroke-opacity:1"></path></g></pattern>
+</defs>
+<path clip-path="url(#clip242)" d="M2258.18 626.947 L2258.18 1013.42 L2698.47 1013.42 L2698.47 626.947 L2258.18 626.947 L2258.18 626.947  Z" fill="url(#pattern2)"></path>
+<polyline clip-path="url(#clip242)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:12; stroke-opacity:1; fill:none" points="2258.18,626.947 2258.18,1013.42 2698.47,1013.42 2698.47,626.947 2258.18,626.947 "></polyline>
+<defs>
+  <pattern id="pattern3" patternunits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+<g transform="scale(4)"><path d="M-4,4 l8,-8 M4,12 l8,-8 M-4,12 l16,-16" style="stroke:#0072b2; stroke-width:1; stroke-opacity:1"></path></g></pattern>
+</defs>
+<path clip-path="url(#clip242)" d="M3516.17 626.947 L3516.17 1013.42 L3956.47 1013.42 L3956.47 626.947 L3516.17 626.947 L3516.17 626.947  Z" fill="url(#pattern3)"></path>
+<polyline clip-path="url(#clip242)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:12; stroke-opacity:1; fill:none" points="3516.17,626.947 3516.17,1013.42 3956.47,1013.42 3956.47,626.947 3516.17,626.947 "></polyline>
+<circle clip-path="url(#clip242)" style="fill:#0072b2; stroke:none; fill-opacity:0" cx="1220.33" cy="626.947" r="2"></circle>
+<circle clip-path="url(#clip242)" style="fill:#0072b2; stroke:none; fill-opacity:0" cx="2478.32" cy="626.947" r="2"></circle>
+<circle clip-path="url(#clip242)" style="fill:#0072b2; stroke:none; fill-opacity:0" cx="3736.32" cy="626.947" r="2"></circle>
+<path clip-path="url(#clip240)" d="M2902.92 406.971 L4026.03 406.971 L4026.03 79.4498 L2902.92 79.4498  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2902.92,406.971 4026.03,406.971 4026.03,79.4498 2902.92,79.4498 2902.92,406.971 "></polyline>
+<path clip-path="url(#clip240)" d="M2945.16 232.293 L3198.61 232.293 L3198.61 144.954 L2945.16 144.954 L2945.16 232.293  Z" fill="#d55e00" fill-rule="evenodd" fill-opacity="1"></path>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:24; stroke-opacity:1; fill:none" points="2945.16,232.293 3198.61,232.293 3198.61,144.954 2945.16,144.954 2945.16,232.293 "></polyline>
+<g clip-path="url(#clip240)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:start;" transform="rotate(0, 3240.85, 223.123)" x="3240.85" y="223.123">Greedy (total 25)</text>
+</g>
+<defs>
+  <pattern id="pattern4" patternunits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+<g transform="scale(4)"><path d="M-4,4 l8,-8 M4,12 l8,-8 M-4,12 l16,-16" style="stroke:#0072b2; stroke-width:1; stroke-opacity:1"></path></g></pattern>
+</defs>
+<path clip-path="url(#clip240)" d="M2945.16 341.467 L3198.61 341.467 L3198.61 254.128 L2945.16 254.128 L2945.16 341.467  Z" fill="url(#pattern4)"></path>
+<polyline clip-path="url(#clip240)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:24; stroke-opacity:1; fill:none" points="2945.16,341.467 3198.61,341.467 3198.61,254.128 2945.16,254.128 2945.16,341.467 "></polyline>
+<g clip-path="url(#clip240)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:start;" transform="rotate(0, 3240.85, 332.297)" x="3240.85" y="332.297">DP (total 30)</text>
+</g>
+</svg>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-releases-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Monthly releases under the greedy plan and the dynamic programming plan.
+</figcaption>
+</figure>
+</div>
+</div>
+<p>With diminishing returns, the best plan <strong>equalizes</strong> the releases.</p>
+<aside class="notes">
+<p>About three minutes. Interpretation after the result. With diminishing returns, moving a unit from a month with a big release to a month with a small one always gains, until the releases are equal. Greedy ignores that the water could have been used later.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="uncertain-inflows" class="title-slide slide level1 center">
+<h1>Uncertain Inflows</h1>
+
+</section>
+<section id="releasing-before-the-inflow-is-known" class="slide level2">
+<h2>Releasing Before the Inflow Is Known</h2>
+<p>Inflow is <strong>0 or 2 units</strong>, equally likely, and is unknown when we release, so we use the <strong>expected</strong> next value:</p>
+<p><span class="math display">\[
+\begin{aligned}
+V_t(s) = \max_{r \leq s} \Big[\, \text{benefit}(r) &amp;+ \tfrac{1}{2} V_{t+1}\big(\min(s - r, 4)\big) \\
+&amp;+ \tfrac{1}{2} V_{t+1}\big(\min(s - r + 2, 4)\big) \Big]
+\end{aligned}
+\]</span></p>
+<p>The backward pass is the same, and the answer is a <strong>policy</strong>: the best release for each storage level.</p>
+<aside class="notes">
+<p>About three minutes. The only change from the deterministic case is that the next storage depends on an inflow we do not know yet, so we average the next month’s value over the two possibilities. Because we cannot know the future storage, the useful answer is a rule: what to release for any storage we might find ourselves in.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="hedging" class="slide level2">
+<h2>Hedging</h2>
+<div id="24" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a></a>inflow_outcomes <span class="op">=</span> [<span class="fl">0</span>, <span class="fl">2</span>]</span>
+<span id="cb4-2"><a></a>inflow_probs <span class="op">=</span> [<span class="fl">0.5</span>, <span class="fl">0.5</span>]</span>
+<span id="cb4-3"><a></a></span>
+<span id="cb4-4"><a></a><span class="kw">function</span> <span class="fu">backward_induction_uncertain</span>(n_periods)</span>
+<span id="cb4-5"><a></a>    value <span class="op">=</span> <span class="fu">fill</span>(<span class="op">-</span><span class="cn">Inf</span>, capacity <span class="op">+</span> <span class="fl">1</span>, n_periods <span class="op">+</span> <span class="fl">1</span>)</span>
+<span id="cb4-6"><a></a>    value[<span class="op">:</span>, n_periods <span class="op">+</span> <span class="fl">1</span>] <span class="op">.=</span> <span class="fl">0</span></span>
+<span id="cb4-7"><a></a>    policy <span class="op">=</span> <span class="fu">zeros</span>(<span class="dt">Int</span>, capacity <span class="op">+</span> <span class="fl">1</span>, n_periods)</span>
+<span id="cb4-8"><a></a>    <span class="cf">for</span> t <span class="kw">in</span> n_periods<span class="op">:-</span><span class="fl">1</span><span class="op">:</span><span class="fl">1</span></span>
+<span id="cb4-9"><a></a>        <span class="cf">for</span> s <span class="kw">in</span> levels</span>
+<span id="cb4-10"><a></a>            <span class="cf">for</span> r <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>s</span>
+<span id="cb4-11"><a></a>                <span class="co"># average next month's value over the possible inflows</span></span>
+<span id="cb4-12"><a></a>                expected_next <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb4-13"><a></a>                <span class="cf">for</span> k <span class="kw">in</span> <span class="fu">eachindex</span>(inflow_outcomes)</span>
+<span id="cb4-14"><a></a>                    next_s <span class="op">=</span> <span class="fu">next_storage</span>(s, r, inflow_outcomes[k])</span>
+<span id="cb4-15"><a></a>                    expected_next <span class="op">=</span> expected_next <span class="op">+</span> inflow_probs[k] <span class="op">*</span> value[next_s <span class="op">+</span> <span class="fl">1</span>, t <span class="op">+</span> <span class="fl">1</span>]</span>
+<span id="cb4-16"><a></a>                <span class="cf">end</span></span>
+<span id="cb4-17"><a></a>                total <span class="op">=</span> <span class="fu">benefit</span>(r) <span class="op">+</span> expected_next</span>
+<span id="cb4-18"><a></a>                <span class="cf">if</span> total <span class="op">&gt;</span> value[s <span class="op">+</span> <span class="fl">1</span>, t]</span>
+<span id="cb4-19"><a></a>                    value[s <span class="op">+</span> <span class="fl">1</span>, t] <span class="op">=</span> total</span>
+<span id="cb4-20"><a></a>                    policy[s <span class="op">+</span> <span class="fl">1</span>, t] <span class="op">=</span> r</span>
+<span id="cb4-21"><a></a>                <span class="cf">end</span></span>
+<span id="cb4-22"><a></a>            <span class="cf">end</span></span>
+<span id="cb4-23"><a></a>        <span class="cf">end</span></span>
+<span id="cb4-24"><a></a>    <span class="cf">end</span></span>
+<span id="cb4-25"><a></a>    <span class="cf">return</span> value, policy</span>
+<span id="cb4-26"><a></a><span class="kw">end</span></span>
+<span id="cb4-27"><a></a></span>
+<span id="cb4-28"><a></a>value_u, policy_u <span class="op">=</span> <span class="fu">backward_induction_uncertain</span>(n_months)</span>
+<span id="cb4-29"><a></a></span>
+<span id="cb4-30"><a></a><span class="co"># Expected benefit of releasing everything every month, from storage s in month t</span></span>
+<span id="cb4-31"><a></a><span class="kw">function</span> <span class="fu">release_all_expected</span>(s, t)</span>
+<span id="cb4-32"><a></a>    <span class="cf">if</span> t <span class="op">&gt;</span> n_months</span>
+<span id="cb4-33"><a></a>        <span class="cf">return</span> <span class="fl">0.0</span></span>
+<span id="cb4-34"><a></a>    <span class="cf">end</span></span>
+<span id="cb4-35"><a></a>    expected_next <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb4-36"><a></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="fu">eachindex</span>(inflow_outcomes)</span>
+<span id="cb4-37"><a></a>        next_s <span class="op">=</span> <span class="fu">next_storage</span>(s, s, inflow_outcomes[k])</span>
+<span id="cb4-38"><a></a>        expected_next <span class="op">=</span> expected_next <span class="op">+</span> inflow_probs[k] <span class="op">*</span> <span class="fu">release_all_expected</span>(next_s, t <span class="op">+</span> <span class="fl">1</span>)</span>
+<span id="cb4-39"><a></a>    <span class="cf">end</span></span>
+<span id="cb4-40"><a></a>    <span class="cf">return</span> <span class="fu">benefit</span>(s) <span class="op">+</span> expected_next</span>
+<span id="cb4-41"><a></a><span class="kw">end</span></span>
+<span id="cb4-42"><a></a>release_all_value <span class="op">=</span> <span class="fu">release_all_expected</span>(start_storage, <span class="fl">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>From a full reservoir the policy releases <strong>2</strong> and holds 2 in case it doesn’t rain. Its expected benefit is <strong>28.25</strong>; releasing everything gets 23.</p>
+<aside class="notes">
+<p>About four minutes. Even though the reservoir is full and rain might come, the policy releases only 2 in the first month: holding water is insurance against a dry month. That is hedging. Releasing everything immediately does much worse in expectation. If asked, the full policy table is in the value_u and policy_u arrays; at low storage the policy releases less.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="check-it-against-the-scenario-tree" class="slide level2">
+<h2>Check It Against the Scenario Tree</h2>
+<div id="26" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a></a><span class="co"># Monday's method: a decision at every node of the tree, then the best</span></span>
+<span id="cb5-2"><a></a><span class="co"># expected value, by brute-force recursion over all branches</span></span>
+<span id="cb5-3"><a></a><span class="kw">function</span> <span class="fu">tree_value</span>(s, t)</span>
+<span id="cb5-4"><a></a>    <span class="cf">if</span> t <span class="op">&gt;</span> n_months</span>
+<span id="cb5-5"><a></a>        <span class="cf">return</span> <span class="fl">0.0</span></span>
+<span id="cb5-6"><a></a>    <span class="cf">end</span></span>
+<span id="cb5-7"><a></a>    best <span class="op">=</span> <span class="op">-</span><span class="cn">Inf</span></span>
+<span id="cb5-8"><a></a>    <span class="cf">for</span> r <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>s</span>
+<span id="cb5-9"><a></a>        expected <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb5-10"><a></a>        <span class="cf">for</span> k <span class="kw">in</span> <span class="fu">eachindex</span>(inflow_outcomes)</span>
+<span id="cb5-11"><a></a>            next_s <span class="op">=</span> <span class="fu">next_storage</span>(s, r, inflow_outcomes[k])</span>
+<span id="cb5-12"><a></a>            expected <span class="op">=</span> expected <span class="op">+</span> inflow_probs[k] <span class="op">*</span> <span class="fu">tree_value</span>(next_s, t <span class="op">+</span> <span class="fl">1</span>)</span>
+<span id="cb5-13"><a></a>        <span class="cf">end</span></span>
+<span id="cb5-14"><a></a>        best <span class="op">=</span> <span class="fu">max</span>(best, <span class="fu">benefit</span>(r) <span class="op">+</span> expected)</span>
+<span id="cb5-15"><a></a>    <span class="cf">end</span></span>
+<span id="cb5-16"><a></a>    <span class="cf">return</span> best</span>
+<span id="cb5-17"><a></a><span class="kw">end</span></span>
+<span id="cb5-18"><a></a>tree_best <span class="op">=</span> <span class="fu">tree_value</span>(start_storage, <span class="fl">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Enumerating every branch of the scenario tree gives <strong>28.25</strong>, and dynamic programming gives the same <strong>28.25</strong>.</p>
+<aside class="notes">
+<p>About two minutes. Verification against Monday’s method. The tree allows a different decision at every node; dynamic programming gets the same optimum because the best decision at a node depends only on the storage there, not on how we got there. That property is what lets the table replace the tree.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="trees-versus-tables" class="slide level2">
+<h2>Trees Versus Tables</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Months</th>
+<th style="text-align: right;">Tree leaves</th>
+<th style="text-align: right;">DP table entries</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">3</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">6</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">12</td>
+<td style="text-align: right;">4,096</td>
+<td style="text-align: right;">60</td>
+</tr>
+</tbody>
+</table>
+<p>With 2 inflow outcomes a month and 5 storage levels, the tree grows <strong>exponentially</strong> with the number of months; the table grows <strong>linearly</strong>.</p>
+<aside class="notes">
+<p>About three minutes. The tree records every possible history; the table records only the states that matter for the future. That is the whole trick of dynamic programming. The catch, in the appendix, is that the table grows exponentially with the number of state variables instead: the curse of dimensionality.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-is-water-worth-at-the-end" class="slide level2">
+<h2>What Is Water Worth at the End?</h2>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a></a>carryover_values <span class="op">=</span> [<span class="fl">0</span>, <span class="fl">3</span>, <span class="fl">6</span>]          <span class="co"># value of each unit left in storage at the end</span></span>
+<span id="cb6-2"><a></a><span class="fu">println</span>(<span class="st">"| Value per unit left at the end | Releases | Storage left |"</span>)</span>
+<span id="cb6-3"><a></a><span class="fu">println</span>(<span class="st">"|:--|:--|--:|"</span>)</span>
+<span id="cb6-4"><a></a><span class="cf">for</span> c <span class="kw">in</span> carryover_values</span>
+<span id="cb6-5"><a></a>    v, pol <span class="op">=</span> <span class="fu">backward_induction</span>(inflow; end_value<span class="op">=</span>c <span class="op">.*</span> levels)</span>
+<span id="cb6-6"><a></a>    rel <span class="op">=</span> <span class="fu">zeros</span>(<span class="dt">Int</span>, n_months)</span>
+<span id="cb6-7"><a></a>    s <span class="op">=</span> start_storage</span>
+<span id="cb6-8"><a></a>    <span class="cf">for</span> t <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_months</span>
+<span id="cb6-9"><a></a>        rel[t] <span class="op">=</span> pol[s <span class="op">+</span> <span class="fl">1</span>, t]</span>
+<span id="cb6-10"><a></a>        s <span class="op">=</span> <span class="fu">next_storage</span>(s, rel[t], inflow[t])</span>
+<span id="cb6-11"><a></a>    <span class="cf">end</span></span>
+<span id="cb6-12"><a></a>    <span class="fu">println</span>(<span class="st">"| "</span>, c, <span class="st">" | "</span>, <span class="fu">join</span>(rel, <span class="st">", "</span>), <span class="st">" | "</span>, s, <span class="st">" |"</span>)</span>
+<span id="cb6-13"><a></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Value per unit left at the end</th>
+<th style="text-align: left;">Releases</th>
+<th style="text-align: right;">Storage left</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">2, 2, 2</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">2, 2, 2</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">1, 1, 0</td>
+<td style="text-align: right;">4</td>
+</tr>
+</tbody>
+</table>
+<p>The <strong>end-of-horizon value</strong> is a modelling choice that can flip the plan: what is water worth in October?</p>
+<aside class="notes">
+<p>About four minutes. With no value on leftover water, the plan empties the reservoir by the end of the season. Value leftover water at 6 per unit and the plan holds most of it back. Neither is wrong: it depends on whether the reservoir refills in winter. The default today, zero, assumes it does. This is the dynamic programming version of the horizon problem we will see again in the limits-of-optimization lecture.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="key-takeaways" class="title-slide slide level1 center">
+<h1>Key Takeaways</h1>
+
+</section>
+<section id="key-takeaways-1" class="slide level2">
+<h2>Key Takeaways</h2>
+<ul>
+<li>A <strong>sequential decision</strong> has stages, a <strong>state</strong> that carries the past forward, and a <strong>transition</strong>; deciding each month on its own (greedy) can be badly wrong (25 vs.&nbsp;30).</li>
+<li><strong>Backward induction</strong>: start at the end, keep one <strong>value function</strong> per stage, step backwards.</li>
+<li>Under uncertainty, DP returns a <strong>policy</strong> and matches the scenario tree’s answer, with a table that grows linearly instead of exponentially.</li>
+<li><strong>Trap</strong>: the end-of-horizon value can flip the plan.</li>
+</ul>
+<aside class="notes">
+<p>About two minutes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="upcoming-schedule" class="title-slide slide level1 center">
+<h1>Upcoming Schedule</h1>
+
+</section>
+<section id="next-classes" class="slide level2">
+<h2>Next Classes</h2>
+<p><strong>Monday, November 23</strong>: Lab 4, scenario trees and sequential decisions for reservoir operations. It builds on today’s model (bring a laptop).</p>
+<p><strong>Wednesday, November 25</strong>: No class (Thanksgiving).</p>
+<p><strong>Monday, November 30</strong>: Multiple objectives, robustness, and sensitivity.</p>
+</section>
+<section id="assessments" class="slide level2">
+<h2>Assessments</h2>
+<p><strong>HW9</strong> and <strong>MP2</strong>: due Thursday, November 19.</p>
+<p><strong>Quiz 6</strong>: Monday, December 7.</p>
+</section></section>
+<section>
+<section id="appendix" class="title-slide slide level1 center">
+<h1>Appendix</h1>
+
+</section>
+<section id="the-bellman-recursion" class="slide level2">
+<h2>The Bellman Recursion</h2>
+<p>In general notation, with state <span class="math inline">\(s\)</span>, decision <span class="math inline">\(r\)</span>, benefit <span class="math inline">\(b\)</span>, and random inflow <span class="math inline">\(q\)</span>:</p>
+<p><span class="math display">\[V_t(s) = \max_{r} \left\{ b(r) + \mathbb{E}_q\left[V_{t+1}\big(f(s, r, q)\big)\right] \right\}\]</span></p>
+<p><span class="math display">\[V_{T+1}(s) = \text{terminal value}\]</span></p>
+<p>where <span class="math inline">\(f\)</span> is the transition. Everything in the lecture is this equation with small numbers.</p>
+</section>
+<section id="the-curse-of-dimensionality" class="slide level2">
+<h2>The Curse of Dimensionality</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Reservoirs</th>
+<th style="text-align: right;">Storage states (5 levels each)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">25</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">10</td>
+<td style="text-align: right;">9,765,625</td>
+</tr>
+</tbody>
+</table>
+<p>The table is small for one state variable, but it grows exponentially with the <strong>number</strong> of state variables. Dynamic programming avoids the tree’s growth over time, but its table grows exponentially with the number of state variables instead.</p>
+</section>
+<section id="does-the-storage-grid-matter" class="slide level2">
+<h2>Does the Storage Grid Matter?</h2>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a></a><span class="co"># Finer storage grids, with the benefit interpolated linearly between table points</span></span>
+<span id="cb7-2"><a></a><span class="kw">function</span> <span class="fu">benefit_interp</span>(r)</span>
+<span id="cb7-3"><a></a>    <span class="cf">if</span> r <span class="op">&gt;=</span> capacity</span>
+<span id="cb7-4"><a></a>        <span class="cf">return</span> <span class="fu">Float64</span>(benefit_table[<span class="kw">end</span>])</span>
+<span id="cb7-5"><a></a>    <span class="cf">end</span></span>
+<span id="cb7-6"><a></a>    k <span class="op">=</span> <span class="fu">floor</span>(<span class="dt">Int</span>, r)</span>
+<span id="cb7-7"><a></a>    fraction <span class="op">=</span> r <span class="op">-</span> k</span>
+<span id="cb7-8"><a></a>    <span class="cf">return</span> (<span class="fl">1</span> <span class="op">-</span> fraction) <span class="op">*</span> benefit_table[k <span class="op">+</span> <span class="fl">1</span>] <span class="op">+</span> fraction <span class="op">*</span> benefit_table[k <span class="op">+</span> <span class="fl">2</span>]</span>
+<span id="cb7-9"><a></a><span class="kw">end</span></span>
+<span id="cb7-10"><a></a></span>
+<span id="cb7-11"><a></a><span class="kw">function</span> <span class="fu">best_from_full</span>(spacing)</span>
+<span id="cb7-12"><a></a>    grid <span class="op">=</span> <span class="fl">0</span><span class="op">:</span>spacing<span class="op">:</span>capacity</span>
+<span id="cb7-13"><a></a>    n <span class="op">=</span> <span class="fu">length</span>(grid)</span>
+<span id="cb7-14"><a></a>    value <span class="op">=</span> <span class="fu">zeros</span>(n, n_months <span class="op">+</span> <span class="fl">1</span>)</span>
+<span id="cb7-15"><a></a>    <span class="cf">for</span> t <span class="kw">in</span> n_months<span class="op">:-</span><span class="fl">1</span><span class="op">:</span><span class="fl">1</span></span>
+<span id="cb7-16"><a></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n</span>
+<span id="cb7-17"><a></a>            s <span class="op">=</span> grid[i]</span>
+<span id="cb7-18"><a></a>            best <span class="op">=</span> <span class="op">-</span><span class="cn">Inf</span></span>
+<span id="cb7-19"><a></a>            <span class="cf">for</span> r <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>spacing<span class="op">:</span>s</span>
+<span id="cb7-20"><a></a>                j <span class="op">=</span> <span class="fu">round</span>(<span class="dt">Int</span>, <span class="fu">min</span>(s <span class="op">-</span> r <span class="op">+</span> inflow[t], capacity) <span class="op">/</span> spacing) <span class="op">+</span> <span class="fl">1</span></span>
+<span id="cb7-21"><a></a>                best <span class="op">=</span> <span class="fu">max</span>(best, <span class="fu">benefit_interp</span>(r) <span class="op">+</span> value[j, t <span class="op">+</span> <span class="fl">1</span>])</span>
+<span id="cb7-22"><a></a>            <span class="cf">end</span></span>
+<span id="cb7-23"><a></a>            value[i, t] <span class="op">=</span> best</span>
+<span id="cb7-24"><a></a>        <span class="cf">end</span></span>
+<span id="cb7-25"><a></a>    <span class="cf">end</span></span>
+<span id="cb7-26"><a></a>    <span class="cf">return</span> value[<span class="kw">end</span>, <span class="fl">1</span>]</span>
+<span id="cb7-27"><a></a><span class="kw">end</span></span>
+<span id="cb7-28"><a></a></span>
+<span id="cb7-29"><a></a><span class="fu">println</span>(<span class="st">"| Grid spacing (units) | Best total from a full reservoir |"</span>)</span>
+<span id="cb7-30"><a></a><span class="fu">println</span>(<span class="st">"|:--|--:|"</span>)</span>
+<span id="cb7-31"><a></a><span class="cf">for</span> spacing <span class="kw">in</span> [<span class="fl">1</span>, <span class="fl">0.5</span>, <span class="fl">0.25</span>]</span>
+<span id="cb7-32"><a></a>    <span class="fu">println</span>(<span class="st">"| "</span>, <span class="fu">fmt</span>(spacing), <span class="st">" | "</span>, <span class="fu">fmt</span>(<span class="fu">best_from_full</span>(spacing)), <span class="st">" |"</span>)</span>
+<span id="cb7-33"><a></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Grid spacing (units)</th>
+<th style="text-align: right;">Best total from a full reservoir</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0.5</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0.25</td>
+<td style="text-align: right;">30</td>
+</tr>
+</tbody>
+</table>
+<p>The answer does not change as the storage grid is refined.</p>
+</section>
+<section id="the-lake-as-a-dynamic-program" class="slide level2">
+<h2>The Lake as a Dynamic Program</h2>
+<ul>
+<li><strong>State</strong>: phosphorus <span class="math inline">\(P_t\)</span> in the lake.</li>
+<li><strong>Decision</strong>: loading <span class="math inline">\(L_t\)</span> each year.</li>
+<li><strong>Transition</strong>: <span class="math inline">\(P_{t+1} = P_t + L_t - sP_t + R(P_t)\)</span> (week 3).</li>
+<li><strong>Benefit</strong>: the value of the loading (farm output, wastewater), minus damages when the lake is eutrophic.</li>
+</ul>
+<p>A continuous state with a threshold needs a fine grid in <span class="math inline">\(P\)</span>.</p>
+
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true,"numbers":true},
+'chalkboard': {"buttons":true,"theme":"whiteboard"},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp("https:\/\/envsys\.viveks\.me\/fall2025");
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+                // target, if specified
+                link.setAttribute("target", "_blank");
+                if (link.getAttribute("rel") === null) {
+                  link.setAttribute("rel", "noopener");
+                }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

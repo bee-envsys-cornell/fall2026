@@ -1,10 +1,10 @@
 ---
-title: "Stochastic Optimization"
-subtitle: "Lecture 17"
+title: "Stochastic Optimization and Scenario Trees"
+subtitle: "Lecture 19"
 author: "Vivek Srikrishnan"
 course: "BEE 4750"
 institution: "Cornell University"
-date: "November 17, 2025"
+date: "November 16, 2026"
 format:
     revealjs:
         slide-number: c/t
@@ -30,11 +30,10 @@ format:
         chalkboard:
             theme: whiteboard
             buttons: true
-        auto-stretch: false
         controls: true
 engine: julia
 julia:
-    exeflags: ["+1.11.5"]
+  exeflags: ["+1.11.5"]
 execute:
     freeze: auto
     daemon: 600
@@ -43,379 +42,443 @@ execute:
 ```{julia}
 #| output: false
 import Pkg
-Pkg.activate(".")
+Pkg.activate(@__DIR__)
 Pkg.instantiate()
 ```
 
 ```{julia}
-using DataFrames
-using CSV
+#| output: false
 using Plots
-using StatsPlots
-using LaTeXStrings
 using Measures
+using LaTeXStrings
 using JuMP
 using HiGHS
-using MarkdownTables
 
-
-plot_font = "Computer Modern"
+plot_font = "Palatino Roman"
 default(
     fontfamily=plot_font,
-    linewidth=2, 
-    framestyle=:box, 
-    label=nothing, 
+    linewidth=3,
+    framestyle=:box,
+    label=nothing,
     grid=false,
-    tickfontsize=18,
     guidefontsize=18,
-    legendfontsize=18,
+    legendfontsize=16,
+    tickfontsize=16,
+    titlefontsize=20,
     bottom_margin=10mm,
-    left_margin=10mm
+    left_margin=5mm
 )
+
+# Okabe-Ito palette: distinguishable under all common types of colour
+# blindness, and every pair also differs in line style so the figures
+# still read in greyscale.
+cb_orange = "#E69F00"
+cb_green = "#009E73"
+cb_yellow = "#F0E442"
+cb_blue = "#0072B2"
+cb_vermillion = "#D55E00"
+cb_purple = "#CC79A7"
 ```
 
-# Review and Questions
+```{julia}
+#| output: false
 
-## Example: Solid Waste Management
+# The farmer problem (Birge and Louveaux): wheat, corn, sugar beets
+crops = ["Wheat", "Corn", "Beets"]
+land = 500                         # [acres]
+plant_cost = [150, 230, 260]       # [$/acre]
+avg_yield = [2.5, 3, 20]           # [T/acre] in an average year
+feed_need = [200, 240]             # [T] of wheat and corn needed for feed
+sell_price = [170, 150]            # [$/T] wheat and corn
+buy_markup = 0.4                   # buying costs 40% more than selling
+buy_price = (1 + buy_markup) .* sell_price
+beet_price = 36                    # [$/T] up to the quota
+beet_quota = 6000                  # [T]
+beet_excess_price = 10             # [$/T] above the quota
+scenarios = ["Good", "Average", "Bad"]
+yield_factor = [1.2, 1, 0.8]       # yields relative to average
+prob = fill(1 / 3, 3)
 
-- Hierarchy of solid waste management (reduce -> recycle -> WTE -> landfill)
-- Example of a network model: need to represent flows between sources and sinks, constrained by existence of network connections.
-- Residual material flows can result in need to operate additional facilities.
+# Print whole numbers without a decimal point
+function fmt(x)
+    rounded_x = round(x; digits=1)
+    if isinteger(rounded_x)
+        return string(Int(rounded_x))
+    end
+    return string(rounded_x)
+end
+commas(n) = replace(string(round(Int, n)), r"(?<=\d)(?=(\d{3})+$)" => ",")
+```
 
-## Questions
+# Review of Last Class
+
+## Waste Allocation as a Network
+
+- A network model's decisions are **flows**; its constraints are **conservation** at each node.
+- An optional facility gets a **binary**: fixed cost $\times\, Y_j$, and flow in $\leq K_j Y_j$.
+- In the waste example, the incinerator ran only because the **landfill was full**: a limit at one node set the decision at another.
+
+::: {.notes}
+Two minutes (budget a minute more to re-sync after the travel week). Everything we have optimized so far assumed we know every number in the model. Today drops that assumption.
+:::
+
+## Questions?
 
 {{< include _poll-prompt.qmd >}}
 
-# Stochastic Optimization
-
-## Conditions for LP
-
-- **Linearity** 
-- **Divisibility** (when not present: mixed integer LP)
-- **Certainty**
-
-## Certainty and LP
-
-**Certainty** (*e.g.* all parameters and relationships between decision variables and outcomes are known) is a key assumption of linear programming.
-
-But most systems problems aren't ***truly*** deterministic.
-
-## Motivating Example
-
-- 
-
-## Approaches to Decision-Making Under Uncertainty
-
-::: {.fragment .fade-in}
-**A Common Approach**:
-
-1. Solve deterministic problem using best estimates.
-2. Stress-test solution with Monte Carlo or include additional safety margins.
+::: {.notes}
+Brief: the quiz has taken the first 25 minutes.
 :::
 
-## Representing Uncertainty in Mathematical Programs
+# Decisions Under Uncertainty
 
-**Alternative**: 
-
-1. Solve a *stochastic* problem for best expected performance (or similar summary statistic).
-
-::: {.fragment .fade-in}
-We can represent uncertainty through scenarios and (conditional) sequential events, then rewrite the decision problem.
-:::
-
-## Act-Learn-Act (Two-Stage)
-
-1. Make a decision $x$ under uncertainty;
-2. Observe uncertainty $\xi \in \Xi$;
-3. Make a **recourse** decision $q(x; \xi)$ which compensates for suboptimality of $x$ under realization $\xi$.
-
-## Example (Economic Dispatch)
-
-Consider a two-stage economic dispatch with uncertainty about demand and renewables.
-
-Need to ensure we can meet the second-stage demand but put ourselves in a position to obey ramping constraints while minimizing cost.
-
-1. Dispatch generation in hour 1;
-2. Get better forecasts of demand and renewables;
-3. Re-dispatch (possibly using expensive peaking generators to compensate if lower-cost generation is not possible).
-
-## General Objective for Stochastic LP
-
-$$\min_x \mathbb{E}_\xi \left[f(x; \xi)\right]$$
-
-::: {.fragment .fade-in}
-**Two-Stage**:
-
-$$\min_x \underbrace{f(x)}_{\text{first-stage objective}} + \mathbb{E}_\xi[\underbrace{Q(x; \xi)}_{\substack{\text{recourse objective} \\ \text{after realization} \\ \text{of } \xi}}]$$
-
-:::
-
-## Representation of Uncertainties
-
-This framework can work for:
-
-- discrete scenarios (*scenario trees*)
-- continuous uncertainties (Monte Carlo)
-
-
-# Example: Land Allocation 
-
-## Land Allocation/Farmer Problem
-
-A farmer can grow wheat, corn, and sugar beets on 500 ha of land. How much land should they allocate to each crop?
-
-## Key information For Problem
-
-- Planting costs are \$150, \$230, and \$260 per acre for wheat, corn, and sugar beets, respectively.
-- The farmer requires 200T of wheat and 240T kg of corn for feed, and excess can be sold for \$170 and \$150 per T, respectively.
-- Purchasing crops costs \$40 more than the selling prices.
-- Sugar beets are sold at \$36/T up to 6000T, at which point the price drops to \$10 per T.
-
-## Farm Yields
-
-From prior experience, the farmer knows that in an average year, yields are:
-
-- 2.5 T/acre for wheat;
-- 3 T/acre per corn;  
-- 20T/acre for beets.
-
-## Decision Variables 
-
-***What are the decision variables?***
-
-::: {.fragment .fade-in}
-Variable | Definition
-:----: | :-----
-$x_i$ | acres of crop $i$ planted
-$y_i$ | T of crop $i$ purchased
-$z_i$ | T of crop $i$ sold
-
-One twist: sold beets will be represented by two different $z$-variables ($z_3$ and $z_4$), based on whether we exceed 6000T.
-
-:::
-
-## Deterministic Problem Formulation
-
-$$
-\begin{align}
-\min_{x, y, z} & \quad 150x_1 + 230 x_2 + 260 x_3 + 238 y_1 + 210 y_2 - 170 z_1 \\
-& \qquad -150z_2 - 36z_3 - 10z_4 \\[1ex]
-\text{subject to:} \quad & x_1 + x_2 + x_3 \leq 500 \\[0.5ex]
-& 2.5 x_1 + y_1 - z_1 \geq 200 \\[0.5ex]
-& 3 x_2 + y_2 - z_2 \geq 240 \\[0.5ex]
-& z_3 + z_4 \leq 20 x_3 \\[0.5ex]
-& z_3 \leq 6000 \\[0.5ex]
-& x_i, y_i, z_i \geq 0
-\end{align}
-$$
-
-## Deterministic Solution With Average Yields
-
-
-Variable | Wheat | Corn | Beets
-:----- | :-----: | :----: | :-----:
-Area (acres) | 120 | 80 | 300
-Yield (T) | 300 | 240 | 6000 
-Sales (T) | 100 | -- | 6000 
-Purchased (T) | -- | -- | --
-
-This solution yields a profit of \$118,600.
-
-## What About Uncertainty?
-
-But yields tend to vary from year to year. From prior experience, the historical variability is:
-
-- in a good year, yields can be 20% above average;
-- in a bad year, yields can be 20% below average.
-
-::: {.fragment .fade-in}
-To simplify things, let's assume these yields vary consistently across crops and that each scenario (average, good, bad) has an equal probability of occurrence.
-:::
-
-## Optimal Solution With High Yields
-
-Variable | Wheat | Corn | Beets
-:----- | :-----: | :----: | :-----:
-Area (acres) | 183.33 | 66.67 | 250
-Yield (T) | 550 | 240 | 6000 
-Sales (T) | 350 | -- | 6000 
-Purchased (T) | -- | -- | --
-
-This solution yields a profit of \$167,667.
-
-## Optimal Solution With Low Yields
-
-Variable | Wheat | Corn | Beets
-:----- | :-----: | :----: | :-----:
-Area (acres) | 100 | 25 | 375
-Yield (T) | 200 | 60 | 6000 
-Sales (T) | -- | -- | 6000 
-Purchased (T) | -- | 180 | --
-
-This solution yields a profit of \$59,950.
-
-## Framing This As A Two-Stage Problem
-
-- Make some initial planting decision;
-- See what the yields look like;
-- Purchase as needed to offset any shortfall.
-
-## Stochastic Decision Variables
-
-***What should change about our decision variables?***
-
-::: {.fragment .fade-in}
-Variable | Definition
-:----: | :-----
-$x_i$ | acres of crop $i$ planted
-$y_{ij}$ | T of crop $i$ purchased in scenario $j$
-$z_{ij}$ | T of crop $i$ sold in scenario $j$
-
-:::
-
-## Stochastic Objective
-
-***How can we formulate an objective?***
-
-::: {.fragment .fade-in}
-**First choice: what statistic are we trying to optimize?**
-
-::: {.fragment .fade-in}
-Let's choose the expected value $\mathbb{E}\left[\text{Profit}\right]$.
-
-Other possible choices: quantiles (*robust optimization*) to hedge against worst-case outcomes, variance (to minimize year-on-year fluctuations).
-:::
-:::
-
-
-## Probabilities and Scenario Trees
+## Decisions Made in Advance
 
 :::: {.columns}
-::: {.column width=55%}
-Since we have a discrete (and small) set of possible outcomes, we can use a **scenario tree** to write out the possible outcomes.
+::: {.column width=60%}
+- **Reservoir**: summer release targets are set in spring, before the summer's inflow is known.
+- **Grid**: plants are committed the day before, before tomorrow's wind is known (Oct 28).
 
-This is a simple (one-layer) tree, but if we had additional uncertainties (e.g. demand) we could compute the joint probabilities of each realization.
+In both, the decision comes first and **adjusting afterwards costs money**.
 :::
-::: {.column width=45%}
-![Scenario Tree for Farmer Problem](figures/farm-scen-tree.svg)
+::: {.column width=40%}
+![](figures/reservoir-system.png){width=100%}
 :::
 ::::
 
-## Stochastic Objective
-
-Our new objective becomes:
-
-$$\begin{alignedat}{2}
-&\min_{x, y, z} & & \quad 150x_1 + 230x_2 + 260x_3 \\[0.5ex]
-& &&\qquad -\frac{1}{3} \left(170z_{11} + 150z_{21} + 36z_{31} + 10z_{41} - 238y_{11} - 210 y_{21}\right) \\[0.5ex]
-& &&\qquad -\frac{1}{3} \left(170z_{12} + 150z_{22} + 36z_{32} + 10z_{42} - 238y_{12} - 210 y_{22}\right) \\[0.5ex]
-& &&\qquad -\frac{1}{3} \left(170z_{13} + 150z_{23} + 36z_{33} + 10z_{43} - 238y_{13} - 210 y_{23}\right)
-\end{alignedat}$$
-
-## Stochastic Contraints
-
-$$\begin{alignedat}{2}
-&x_1 + x_2 + x_3 \leq 500 \\[0.5ex]
-&\color{blue}3x_1 + y_{11} - z_{11} \geq 200, && \qquad  \color{blue}3.6x_2 + y_{21} - z_{21} \geq 240 \\[0.5ex]
-&\color{blue}z_{31} + z_{41} \leq 24x_3, && \qquad \color{blue}z_{31} \leq 6000 \\[0.5ex]
-&\color{purple}2.5x_1 + y_{12} - z_{12} \geq 200, && \qquad \color{purple}3x_2 + y_{22} - z_{22} \geq 240 \\[0.5ex]
-&\color{purple}z_{32} + z_{42} \leq 20x_3, && \qquad \color{purple}z_{32} \leq 6000 \\[0.5ex]
-&\color{red}2x_1 + y_{13} - z_{13} \geq 200, && \qquad \color{red}2.4x_2 + y_{23} - z_{23} \geq 240 \\[0.5ex]
-&\color{red}z_{33} + z_{43} \leq 16x_3, && \qquad \color{red}z_{33} \leq 6000 \\[0.5ex]
-&x_i, y_i, z_i \geq 0
-\end{alignedat}$$
-
-
-## Stochastic Solution
-
-Variable | Wheat | Corn | Beets
-:----- | :-----: | :----: | :-----:
-Deterministic Area (acres) | 120 | 80 | 300
-Stochastic Area (acres) | 170 | 80 | 250 
-
-How do we interpret the differences?
-
-::: {.fragment .fade-in}
-- **Good year**: Won't waste acreage on extra beets (6000T yield in stochastic solution, 7200T for deterministic)
-- **Bad year**: Will make less off beets, profits from wheat should help cover extra corn purchase.
+::: {.notes}
+About five minutes. The reservoir schematic is the one from the first week of the course. The manager has to commit to a release plan before knowing the inflow; once the inflow arrives, there is some room to adjust (cut releases, buy water elsewhere, spill), but adjustments cost something. The grid operator is the same: plants are committed a day ahead, and if the wind is lower than expected, expensive peaking plants make up the difference. Today is about choosing the first decision knowing that the later adjustments will happen. Wednesday's lecture and Monday's lab use the reservoir.
 :::
 
-# Value of the Stochastic Solution
+## Certainty and Linear Programming
 
-## Comparing Deterministic and Stochastic Solution
+**Certainty** was the third assumption of linear programming (with linearity and divisibility): every number in the model is known.
 
-- **Deterministic Solution**: "Expected" Profit (no uncertainty) = \$118,600
-- **Stochastic Solution**: $\mathbb{E}[\text{Profit}]$ = \$108,390.
+**Common practice**: solve with best estimates, then stress-test the plan (Monte Carlo, safety margins).
 
 ::: {.fragment .fade-in}
-***Can we directly compare the deterministic and stochastic solution values that we have obtained so far?***
+**Alternative**: put the uncertainty *in* the model, as a set of scenarios with probabilities, and optimize the expected outcome.
 :::
 
-## Expected Performance of Deterministic Solution
+::: {.notes}
+About three minutes. We relaxed divisibility with mixed integer programming; today we relax certainty. The common approach treats uncertainty after the fact: optimize for the average, then check how the plan does. The alternative builds the scenarios into the optimization itself, so the plan already accounts for having to adjust later.
+:::
 
-Year | Deterministic Profit | Stochastic Profit
-:--- | :----: | :----:
-Good | \$148,000 | \$167,000
-Average | \$118,600 | \$109,350
-Bad | \$56,800 | \$48,820
+## Act, Learn, Act
 
-**Expected Profit from Deterministic Solution *under uncertainty***: \$107,240
+1. Make a decision $x$ under uncertainty (**here and now**).
+2. Observe which scenario happens.
+3. Make a **recourse** decision that compensates for $x$ in that scenario.
 
-## Value of the Stochastic Solution
+**Dispatch version**: dispatch hour 1, get better forecasts of demand and wind, re-dispatch (possibly with expensive peakers) to meet hour 2.
 
-We can now compare the difference in expected profits *under uncertainty*, which is the fair comparison. 
+::: {.notes}
+About three minutes. This is the two-stage structure. The first-stage decision is made once. The recourse decision is made after learning which scenario occurred, so there is one recourse decision per scenario. The goal is a first decision that leaves good options for every scenario, weighted by how likely each is.
+:::
 
-This is called the **value of the stochastic solution (VSS)**, or sometimes the **expected value of including uncertainty (EVIU)**.
+# The Farmer's Problem
 
-$$\begin{aligned}
-VSS &= \mathbb{E}[\text{Stochastic Profit}] - \mathbb{E}[\text{Deterministic Profit}] \\[0.5ex]
-&= \$108,390 - \$107,240 \\[0.5ex]
-&= \$1,150.
-\end{aligned}$$
+## The Farmer's Problem
 
-## Expected Value of Perfect Information
+A farmer has `{julia} land` acres for wheat, corn, and sugar beets. **How much of each should they plant?** [@Birge2011-ip]
 
-Another relevant quantity, the **expected value of perfect information (EVPI)**, concerns the value associated with better forecasts.
+- Planting: \$`{julia} plant_cost[1]`, \$`{julia} plant_cost[2]`, \$`{julia} plant_cost[3]` per acre.
+- Feed: `{julia} feed_need[1]` T wheat, `{julia} feed_need[2]` T corn; extra sells for \$`{julia} sell_price[1]`, \$`{julia} sell_price[2]`/T; buying costs `{julia} round(Int, 100 * buy_markup)`% more.
+- Beets: \$`{julia} beet_price`/T up to `{julia} commas(beet_quota)` T, then \$`{julia} beet_excess_price`/T.
+- Yields: `{julia} avg_yield[1]`, `{julia} fmt(avg_yield[2])`, `{julia} fmt(avg_yield[3])` T/acre on average; ±`{julia} round(Int, 100 * (yield_factor[1] - 1))`% in good and bad years, each with probability 1/3.
 
-## Expected Value of Perfect Information
+::: {.notes}
+About two minutes. This is a classic example from Birge and Louveaux's textbook on stochastic programming. Planting happens before the yield is known; buying and selling happen after the harvest. The beet quota matters: beets are very profitable up to 6,000 tonnes and barely worth growing beyond.
+:::
 
-If the farmer had perfect foresight and could allocate acreage $x$ accordingly and sell/purchase $z$ and $y$ optimally (versus taking the 1/3-probability stochastic solution),
+## Formulation for One Known Year
 
-$$\mathbb{E}[\text{Profits} | \text{perfect information}] = \sum_j p_j \times \text{Profits}_j = \$115,405.$$
+$x_i$: acres planted; $y_i$: T bought; $z_i$: T sold ($z_3$ beets at the quota price, $z_4$ above it).
+
+$$
+\begin{aligned}
+\max_{x, y, z} \quad & -150x_1 - 230x_2 - 260x_3 - 238y_1 - 210y_2 \\
+& \quad + 170z_1 + 150z_2 + 36z_3 + 10z_4 \\
+\text{subject to:} \quad & x_1 + x_2 + x_3 \leq 500 \\
+& 2.5x_1 + y_1 - z_1 \geq 200, \qquad 3x_2 + y_2 - z_2 \geq 240 \\
+& z_3 + z_4 \leq 20x_3, \qquad z_3 \leq 6000, \qquad x, y, z \geq 0
+\end{aligned}
+$$
+
+::: {.notes}
+About two minutes. Profit is sales minus purchases minus planting. The feed constraints say what you grow plus what you buy, minus what you sell, must cover the feed. With known yields, this is an ordinary LP.
+:::
+
+## If We Knew the Year
+
+```{julia}
+#| echo: true
+#| code-fold: true
+#| output: false
+
+# Two-stage farm model: one planting plan x, a copy of the purchases y and
+# sales z for each scenario. With one scenario it is the ordinary LP.
+# Passing `plan` fixes the planting and evaluates it.
+function farm_model(factors, probs; plan=nothing)
+    n = length(factors)
+    model = Model(HiGHS.Optimizer)
+    set_silent(model)
+    @variable(model, x[1:3] >= 0)             # acres planted
+    @variable(model, y[1:2, 1:n] >= 0)        # T bought, per scenario
+    @variable(model, z[1:4, 1:n] >= 0)        # T sold, per scenario
+    if plan !== nothing
+        @constraint(model, x .== plan)
+    end
+    @constraint(model, sum(x) <= land)
+    for s in 1:n
+        crop_yield = avg_yield .* factors[s]
+        @constraint(model, crop_yield[1] * x[1] + y[1, s] - z[1, s] >= feed_need[1])
+        @constraint(model, crop_yield[2] * x[2] + y[2, s] - z[2, s] >= feed_need[2])
+        @constraint(model, z[3, s] + z[4, s] <= crop_yield[3] * x[3])
+        @constraint(model, z[3, s] <= beet_quota)
+    end
+    @objective(model, Max, -sum(plant_cost .* x) + sum(probs[s] * (
+        sell_price[1] * z[1, s] + sell_price[2] * z[2, s] + beet_price * z[3, s] +
+        beet_excess_price * z[4, s] - buy_price[1] * y[1, s] - buy_price[2] * y[2, s])
+        for s in 1:n))
+    optimize!(model)
+    return value.(x), objective_value(model)
+end
+
+# The best plan for each year type, if that year were known in advance
+known_plan = zeros(3, 3)
+known_profit = zeros(3)
+for s in 1:3
+    known_plan[s, :], known_profit[s] = farm_model([yield_factor[s]], [1])
+end
+average_plan = known_plan[2, :]
+
+# The two-stage plan: one planting for all three year types
+stochastic_plan, stochastic_profit = farm_model(yield_factor, prob)
+
+# Each plan's profit in each year type, with the best purchases and sales
+average_plan_by_year = zeros(3)
+stochastic_plan_by_year = zeros(3)
+for s in 1:3
+    average_plan_by_year[s] = farm_model([yield_factor[s]], [1]; plan=average_plan)[2]
+    stochastic_plan_by_year[s] = farm_model([yield_factor[s]], [1]; plan=stochastic_plan)[2]
+end
+eev = sum(prob .* average_plan_by_year)       # average plan, judged under uncertainty
+wait_and_see = sum(prob .* known_profit)      # perfect information
+vss = stochastic_profit - eev
+evpi = wait_and_see - stochastic_profit
+```
+
+```{julia}
+#| echo: false
+#| output: asis
+
+println("| Known year | Wheat (acres) | Corn (acres) | Beets (acres) | Profit |")
+println("|:--|--:|--:|--:|--:|")
+for s in [2, 1, 3]
+    println("| ", scenarios[s], " | ", join(fmt.(known_plan[s, :]), " | "), " | \\\$", commas(known_profit[s]), " |")
+end
+```
+
+The best plan depends on the year, and planting happens before the year is known.
+
+::: {.notes}
+About three minutes. The folded cell is the whole lecture's computation: one function that solves the farm problem for any set of scenarios, and can also evaluate a fixed plan. With one scenario it is the ordinary LP. Read the table: in a good year plant less beet land (the quota fills sooner) and more wheat; in a bad year plant more beets to reach the quota and buy corn. The average-year plan earns $118,600, but only if the year is average.
+:::
+
+## What Changes About the Variables?
+
+:::: {.columns}
+::: {.column width=55%}
+***What should change about our decision variables?***
 
 ::: {.fragment .fade-in}
-$$\text{EVPI} = \$115,405 - \$108,390 = \$7,015$$
+Variable | Copies
+:----: | :-----
+$x_i$, acres planted | **one** (decided before the yield)
+$y_{is}$, T bought | one per scenario $s$
+$z_{is}$, T sold | one per scenario $s$
+:::
+:::
+::: {.column width=45%}
+![Scenario tree](figures/farm-scen-tree.svg)
+:::
+::::
 
-The EVPI can be interpreted as the amount *the farmer might be willing to pay* for an improved forecast.
+::: {.notes}
+About three minutes. Ask the question first. Planting happens once, so it has one copy. Buying and selling happen after the harvest, so there is a separate copy for each year type. The scenario tree is the bookkeeping: one branch per scenario with its probability. With more uncertainties or more stages, the tree branches again at each one.
+:::
+
+## One Scenario's Constraints
+
+**Write the good-year constraints** (yields $\times$ 1.2).
+
+::: {.fragment .fade-in}
+```{julia}
+#| echo: false
+#| output: asis
+
+good = fmt.(avg_yield .* yield_factor[1])
+println("\$\$\n\\begin{aligned}")
+println("& ", good[1], "x_1 + y_{1,\\text{good}} - z_{1,\\text{good}} \\geq ", feed_need[1], ", \\qquad ",
+    good[2], "x_2 + y_{2,\\text{good}} - z_{2,\\text{good}} \\geq ", feed_need[2], " \\\\")
+println("& z_{3,\\text{good}} + z_{4,\\text{good}} \\leq ", good[3], "x_3, \\qquad z_{3,\\text{good}} \\leq ", beet_quota)
+println("\\end{aligned}\n\$\$")
+```
+
+The average and bad years are the same with yields $\times$ 1 and $\times$ 0.8. There is **one** land constraint, $x_1 + x_2 + x_3 \leq 500$, shared by all three.
+:::
+
+::: {.notes}
+Board item, about four minutes. Give students a minute to write the good-year block from the one-year formulation: every yield is multiplied by 1.2 (2.5 becomes 3, 3 becomes 3.6, 20 becomes 24), and the purchase and sale variables get a good-year subscript. Then point out that the planting variables appear in every scenario's block unchanged: that is what ties the scenarios together. The full set of constraints is in the appendix.
+:::
+
+## The Two-Stage Objective
+
+Maximize **expected** profit: planting cost once, plus each scenario's sales minus purchases, weighted by its probability.
+
+$$\max_{x, y, z} \quad -\sum_i c_i x_i + \sum_s p_s \left(\text{sales}_s - \text{purchases}_s\right)$$
+
+::: {.fragment .fade-in}
+Other choices are possible: a quantile to hedge against bad years, or the variance of profit to smooth year-to-year swings.
+:::
+
+::: {.notes}
+About two minutes. The expected value is one summary of performance across scenarios; it is not the only defensible one. A farmer who cannot survive a bad year might instead maximize the bad-year profit or a low quantile. That choice is a value judgment about risk, and it changes the plan.
+:::
+
+## The Stochastic Plan
+
+```{julia}
+#| echo: false
+#| output: asis
+
+println("| Plan | Wheat (acres) | Corn (acres) | Beets (acres) |")
+println("|:--|--:|--:|--:|")
+println("| Average-year plan | ", join(fmt.(average_plan), " | "), " |")
+println("| Two-stage plan | ", join(fmt.(stochastic_plan), " | "), " |")
+```
+
+Expected profit of the two-stage plan: **\$`{julia} commas(stochastic_profit)`**.
+
+::: {.fragment .fade-in}
+- **Good year**: no beet land wasted above the quota.
+- **Bad year**: extra wheat profit helps pay for the corn it has to buy.
+:::
+
+::: {.notes}
+About three minutes. The two-stage plan moves land from beets to wheat. In a good year the average-year plan would grow more beets than the quota allows, which earns only $10 a tonne; the two-stage plan avoids that. In a bad year both plans fall short on corn, and the extra wheat helps cover the purchase. The plan hedges.
+:::
+
+# Comparing Plans
+
+## Can We Compare These Numbers?
+
+- Average-year plan: **\$`{julia} commas(known_profit[2])`** profit
+- Two-stage plan: **\$`{julia} commas(stochastic_profit)`** expected profit
+
+Is the average-year plan better?
+
+::: {.fragment .fade-in}
+**No.** \$`{julia} commas(known_profit[2])` is what that plan earns *if the year is average*. To compare fairly, judge both plans across the same three year types.
+:::
+
+::: {.notes}
+About two minutes. This is the question that names the issue. The two numbers answer different questions: one is a single-scenario profit on paper, the other is an expected value under uncertainty. Ask before revealing.
+:::
+
+## Each Plan, Year by Year
+
+```{julia}
+#| echo: false
+#| output: asis
+
+println("| Year | Average-year plan | Two-stage plan |")
+println("|:--|--:|--:|")
+for s in 1:3
+    println("| ", scenarios[s], " | \\\$", commas(average_plan_by_year[s]), " | \\\$", commas(stochastic_plan_by_year[s]), " |")
+end
+println("| **Expected** | **\\\$", commas(eev), "** | **\\\$", commas(stochastic_profit), "** |")
+```
+
+**Value of the stochastic solution (VSS)**: \$`{julia} commas(stochastic_profit)` − \$`{julia} commas(eev)` = **\$`{julia} commas(vss)`** per year.
+
+::: {.notes}
+Board item for the VSS subtraction, about five minutes. Each plan is evaluated in each year with the best purchases and sales for that year. The average-year plan does well in average and good years but badly in a bad year. Its expected profit under uncertainty is $107,240, less than the two-stage plan's $108,390. The difference is the value of the stochastic solution: what building the uncertainty into the model is worth. Note the two-stage plan is worse than the average-year plan in the average year itself; it trades some average-year profit for protection in bad years.
+:::
+
+## What Is a Perfect Forecast Worth?
+
+With perfect foresight the farmer plants the best plan for each year: expected profit \$`{julia} commas(wait_and_see)`.
+
+**Expected value of perfect information (EVPI)**: \$`{julia} commas(wait_and_see)` − \$`{julia} commas(stochastic_profit)` = **\$`{julia} commas(evpi)`** per year.
+
+::: {.fragment .fade-in}
+Here modelling the uncertainty is worth \$`{julia} commas(vss)` a year, but a perfect forecast would be worth about **`{julia} round(Int, evpi / vss)` times** as much. The EVPI is the most the farmer should pay for better forecasts.
+:::
+
+::: {.notes}
+About four minutes. With perfect information the farmer would know the year before planting and use the best plan for it: the expected profit is the average of the three known-year profits. The gap between that and the two-stage plan is the EVPI. Here it is much larger than the VSS: hedging buys a little, but information would buy a lot more. That is not always the case; it depends on the problem.
 :::
 
 # Key Takeaways
 
-## Decision-Making and Uncertainty
+## Key Takeaways
 
-- A solution obtained assuming deterministic outcomes might "on paper" yield better anticipated outcomes.
-- Common approach is a two-stage optimization framework:
-    - Make an initial decision;
-    - Recourse based on which scenario is realized.
-- Scenario trees help build out the representation of outcomes and probabilities.
+- **The best plan for the average year is not the best plan across years.**
+- Two stages: **one** here-and-now decision, **one recourse decision per scenario**, weighted by probability.
+- **Compare plans under uncertainty**: VSS is what modelling uncertainty is worth; EVPI, what a perfect forecast is worth.
+- **Scenario trees grow multiplicatively**: 3 outcomes a year for 10 years is `{julia} commas(3^10)` leaves.
 
-## Value of the Stochastic Solution
-
-
-- Solutions to stochastic problems can produce a better expected outcome than the deterministic solution, but will perform better/worse in any given scenario.
-- Value of the stochastic solution quantifies expected improvement in performance.
-- Expected value of perfect information: amount you might be willing to pay for improved forecasts.
+::: {.notes}
+About two minutes. The last takeaway sets up Wednesday: with decisions every year and uncertainty every year, the tree explodes, and dynamic programming avoids writing it out.
+:::
 
 # Upcoming Schedule
 
 ## Next Classes
 
-**Wednesday**: Handling Multiple Objectives
+**Wednesday**: Sequential decisions and dynamic programming.
 
-**Monday**: Sensitivity Analysis and Robustness
+**Monday, November 23**: Lab 4, scenario trees and sequential decisions for reservoir operations (bring a laptop).
+
+**Wednesday, November 25**: No class (Thanksgiving).
 
 ## Assessments
 
-**HW5**: Assigned; Will be due last week of class (12/4).
+**HW9** and **MP2**: due Thursday, November 19.
 
-**Reading**: @Ackoff1979-ix
+**Quiz 6**: Monday, December 7.
+
+# Appendix
+
+## The Full Two-Stage Constraints
+
+```{julia}
+#| echo: false
+#| output: asis
+
+colours = ["blue", "purple", "red"]
+println("\$\$\n\\begin{alignedat}{2}")
+println("&x_1 + x_2 + x_3 \\leq ", land, " \\\\[0.5ex]")
+for s in 1:3
+    y = fmt.(avg_yield .* yield_factor[s]); c = "\\color{" * colours[s] * "}"
+    println("&", c, y[1], "x_1 + y_{1", s, "} - z_{1", s, "} \\geq ", feed_need[1], ", && \\qquad ",
+        c, y[2], "x_2 + y_{2", s, "} - z_{2", s, "} \\geq ", feed_need[2], " \\\\[0.5ex]")
+    println("&", c, "z_{3", s, "} + z_{4", s, "} \\leq ", y[3], "x_3, && \\qquad ", c, "z_{3", s, "} \\leq ", beet_quota, " \\\\[0.5ex]")
+end
+println("&x_i, y_{is}, z_{is} \\geq 0")
+println("\\end{alignedat}\n\$\$")
+```
+
+Scenarios: good (blue), average (purple), bad (red).
+
+## General Two-Stage Notation
+
+$$\max_x \; \underbrace{f(x)}_{\text{first stage}} + \mathbb{E}_\xi\left[\underbrace{Q(x; \xi)}_{\substack{\text{best recourse after} \\ \text{seeing } \xi}}\right]$$
+
+With discrete scenarios $\xi_s$ and probabilities $p_s$, the expectation is $\sum_s p_s\, Q(x; \xi_s)$, which is what the farmer model maximizes.
+
+# References
+
+## References

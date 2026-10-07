@@ -134,6 +134,11 @@ Quarto → notebook → PDF pipeline.)*
 
 ## Known traps
 
+- **Keep the syllabus's meeting count in step with the schedule.** `syllabus.qmd` states the number of
+  class meetings ("28 in total, 75 minutes each" for FA26). Count it from `data/schedule.md`: every
+  Monday/Wednesday from the first class to the last, minus the no-class days. Labs and activities count;
+  breaks don't. Update it in the same pass as any schedule change that adds or removes a meeting. FA26's
+  syllabus had drifted to "27 lectures" against 28 meetings (fixed Oct 6, 2026).
 - **A code block must be the first thing on its slide — never put text above it.** Revealjs slides
   are a fixed 1280×720 and do not scroll. Text above a code block pushes it down, and the code's own
   scroll box is cut off by the slide's bottom edge, so readers cannot scroll to the end of the code.
@@ -199,8 +204,9 @@ Quarto → notebook → PDF pipeline.)*
 - **`data/schedule.csv`** — referenced nowhere, disagrees with `schedule.qmd` on weeks 1–7, and from
   row 14 contains a different course entirely (Bootstrap, Missing Data, GLMs, March–May dates).
   Do not treat it as the schedule.
-- **`slides/lecture10-1-gaussian-plumes.qmd`** — a dead fork duplicating the first half of
-  `lecture10-1-capacity-expansion-2.qmd`. Resolve before editing either.
+- **`slides/archive/lecture10-1-gaussian-plumes.qmd`** — a dead fork (capacity-expansion-2 plus the
+  FA25 plume lecture), moved to `slides/archive/` on Oct 6, 2026; `_quarto.yml` excludes that folder
+  from rendering. Nov 2's deck is `lecture11-1-capacity-expansion.qmd`.
 - **`slides/lecturexx-xx-lake-uncertainty.qmd`** — no lecture number, no date, no schedule slot.
 - **`project/index.qmd`** links `update.qmd`, which does not exist.
 - Most of `slides/` for the optimization half is still a byte-identical copy of the Fall 2025 decks,

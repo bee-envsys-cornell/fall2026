@@ -1,0 +1,583 @@
+---
+title: "Discrete Variables and Mixed Integer Programming"
+subtitle: "Lecture 17"
+author: "Vivek Srikrishnan"
+course: "BEE 4750"
+institution: "Cornell University"
+date: "November 4, 2026"
+format:
+    revealjs:
+        slide-number: c/t
+        show-slide-number: all
+        center-title-slide: true
+        width: 1280
+        height: 720
+        transition: none
+        toc: true
+        toc-depth: 1
+        toc-title: "Overview"
+        history: false
+        link-external-newwindow: true
+        theme: ../sass/slides.scss
+        template-partials:
+            - title-slide.html
+        menu:
+            numbers: true
+        html-math-method: mathjax
+        include-in-header: mathjax-config.html
+        date-format: long
+        email-obfuscation: javascript
+        chalkboard:
+            theme: whiteboard
+            buttons: true
+        controls: true
+engine: julia
+julia:
+  exeflags: ["+1.11.5"]
+execute:
+    freeze: auto
+    daemon: 600
+---
+
+```{julia}
+#| output: false
+import Pkg
+Pkg.activate(@__DIR__)
+Pkg.instantiate()
+```
+
+```{julia}
+#| output: false
+using Plots
+using Measures
+using LaTeXStrings
+using JuMP
+using HiGHS
+
+plot_font = "Palatino Roman"
+default(
+    fontfamily=plot_font,
+    linewidth=3,
+    framestyle=:box,
+    label=nothing,
+    grid=false,
+    guidefontsize=18,
+    legendfontsize=16,
+    tickfontsize=16,
+    titlefontsize=20,
+    bottom_margin=10mm,
+    left_margin=5mm
+)
+
+# Okabe-Ito palette: distinguishable under all common types of colour
+# blindness, and every pair also differs in line style so the figures
+# still read in greyscale.
+cb_orange = "#E69F00"
+cb_green = "#009E73"
+cb_yellow = "#F0E442"
+cb_blue = "#0072B2"
+cb_vermillion = "#D55E00"
+cb_purple = "#CC79A7"
+cb_sky = "#56B4E9"
+
+# Whole numbers with thousands separators, for dollar amounts in text
+commas(n) = replace(string(Int(round(n))), r"(?<=\d)(?=(\d{3})+$)" => ",")
+```
+
+# Review
+
+## What Our LPs Assumed
+
+- **Divisibility**: any fraction of a decision is allowed (Oct 14).
+- Last week's dispatch assumed every plant was **already on** (Oct 28).
+
+Today: decisions that are **on or off**.
+
+::: {.notes}
+Quiz 4 takes the first 25 minutes, leaving about 50 for this. Timing: discrete decisions by minute 10 after the quiz, the three-plant example by 24, the LP relaxation by 32, branch and bound by 44, wrap-up by 48. If short, cut in this order: the logical-constraints slide (Homework 8 carries the pattern), the nodes 2 and 3 plots (keep the tree), and the divisibility figure.
+:::
+
+# Discrete Decisions
+
+## Problems With Discrete Decisions
+
+Some decisions can't be divided into fractions.
+
+- **Which generators to run** this hour, not just how much?
+- Whether to **build** a facility at all?
+- How many **trucks**, pumps, or treatment units?
+
+::: {.notes}
+Economic dispatch took the set of running plants as given. In practice, operators also decide which plants to switch on, and a plant that's on has to produce at least its minimum and costs money just to keep running. Facility siting (next Monday and Lab 3) has the same structure: a site is either built or not.
+:::
+
+## Fixed Costs Cause Discontinuities
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+units = 1:10
+total_cost(x) = 3 + 2x                       # fixed cost 3, variable cost 2 per unit
+p_fixed = plot(units, total_cost.(units), color=:black, marker=:circle, label="total cost",
+    xlabel="Units of operation", ylabel="Cost", xticks=0:10, xlims=(-0.5, 10.5),
+    ylims=(-0.5, 24), legend=:topleft, framestyle=:origin)
+plot!(p_fixed, units, total_cost.(units) ./ units, color=cb_vermillion, linestyle=:dot,
+    label="average cost per unit")
+scatter!(p_fixed, [0], [0], color=:black, markersize=6)
+plot!(p_fixed, size=(1200, 330), left_margin=10mm, bottom_margin=14mm)
+```
+
+A **fixed cost** to operate at all, plus a **variable cost** per unit, makes the cost jump at zero.
+
+::: {.notes}
+Operating costs nothing at zero output, then jumps to the fixed cost as soon as anything is produced. That jump can't be written as a linear function of output alone, and the falling average cost (the dotted line) is why fixed costs push toward running fewer, larger operations.
+:::
+
+## Binary Variables
+
+An **indicator** variable flags whether something is on:
+
+$$u_g = \begin{cases} 0 & \text{off} \\ 1 & \text{on} \end{cases}$$
+
+More generally, **integer** variables $x \in \mathbb{Z}$: numbers of units, trucks, or turbines.
+
+A linear program with some integer variables is a **mixed integer (linear) program**, a MILP.
+
+::: {.notes}
+Binary variables are integer variables restricted to 0 and 1. With them we can write fixed costs and on/off logic as linear expressions, at the price of losing divisibility.
+:::
+
+# Modelling With Binaries
+
+## Which Plants Should Run?
+
+```{julia}
+#| echo: true
+#| code-fold: true
+#| output: asis
+
+plants = ["Coal", "CCGT", "CT"]
+min_output = [100, 50, 0]           # [MW] when on
+max_output = [250, 200, 100]        # [MW]
+marginal_cost = [20, 30, 50]        # [$/MWh]
+fixed_cost = [3000, 1000, 100]      # [$/h] when on
+println("| Plant | Minimum (MW) | Maximum (MW) | Marginal cost (\\\$/MWh) | Fixed cost when on (\\\$/h) |")
+println("|:--|--:|--:|--:|--:|")
+for i in 1:3
+    println("| $(plants[i]) | $(min_output[i]) | $(max_output[i]) | $(marginal_cost[i]) | $(commas(fixed_cost[i])) |")
+end
+```
+
+Demand is **150 MW**. Which plants should run?
+
+::: {.notes}
+Let students guess. The merit-order instinct from dispatch says coal: it has the cheapest energy. But coal has the largest fixed cost, and its minimum output is 100 MW. Hold the answer until the JuMP slide.
+:::
+
+## Linking Output to On/Off
+
+Write the problem with binaries $u_i$ and outputs $y_i$.
+
+::: {.fragment .fade-in}
+$$
+\begin{aligned}
+\min_{y, u} \quad & \sum_i \left(\text{FixedCost}_i \, u_i + \text{MarginalCost}_i \, y_i\right) \\
+\text{subject to:} \quad & \sum_i y_i = d \\[0.3em]
+& y_i \leq P^{\text{max}}_i \, u_i \qquad \text{(no output when off)} \\[0.3em]
+& y_i \geq P^{\text{min}}_i \, u_i \qquad \text{(at least the minimum when on)} \\[0.3em]
+& u_i \in \{0, 1\}, \ y_i \geq 0
+\end{aligned}
+$$
+:::
+
+::: {.notes}
+Board item; the fragment is the answer. The key move is the linking constraint: multiply the capacity by the binary. When u is 0, the plant's output is forced to zero; when u is 1, it can run between its minimum and maximum. The fixed cost is paid only when u is 1. This same pattern (capacity times a binary) is how you'll switch facilities on and off in next Monday's waste networks and in Lab 3.
+:::
+
+## In `JuMP`
+
+```{julia}
+#| echo: true
+#| code-fold: false
+#| output: false
+
+function commit(demand; relax=false)
+    model = Model(HiGHS.Optimizer)
+    @variable(model, y[1:3] >= 0)            # output [MW]
+    @variable(model, u[1:3], Bin)            # on or off
+    @objective(model, Min, sum(fixed_cost .* u) + sum(marginal_cost .* y))
+    @constraint(model, sum(y) == demand)
+    @constraint(model, [i in 1:3], y[i] <= max_output[i] * u[i])
+    @constraint(model, [i in 1:3], y[i] >= min_output[i] * u[i])
+    if relax
+        relax_integrality(model)             # drop integrality: an LP
+    end
+    set_silent(model)
+    optimize!(model)
+    return (output=value.(y), on=value.(u), cost=objective_value(model))
+end
+```
+
+::: {.notes}
+`Bin` declares a binary variable. The rest is an ordinary LP model. The `relax` option is for later in the lecture.
+:::
+
+## Why Not Coal?
+
+```{julia}
+#| output: false
+
+mip_150 = commit(150)
+```
+
+At 150 MW the cheapest plan runs the **`{julia} join(plants[mip_150.on .> 0.5], " and ")` alone**, at \$`{julia} commas(mip_150.cost)`/h, although coal's energy is cheapest. When does coal win?
+
+::: {.fragment .fade-in}
+- Coal alone: $3{,}000 + 20 \times 150 =$ \$`{julia} commas(fixed_cost[1] + marginal_cost[1] * 150)`/h.
+- CCGT alone: $1{,}000 + 30 \times 150 =$ \$`{julia} commas(fixed_cost[2] + marginal_cost[2] * 150)`/h.
+- $3{,}000 + 20d = 1{,}000 + 30d$: coal wins above **`{julia} (fixed_cost[1] - fixed_cost[2]) ÷ (marginal_cost[2] - marginal_cost[1])` MW**.
+:::
+
+::: {.fragment .fade-in}
+**Fixed costs can overturn the merit order.**
+:::
+
+::: {.notes}
+Board item; the fragments carry the working. Coal saves 10 dollars per MWh but costs 2,000 dollars an hour more to switch on, so it pays only above 200 MW. Above 250 MW coal is full and something else has to top it up; at 280 MW the MIP picks the CT, not the CCGT, because the CCGT would have to run at least 50 MW and pay its 1,000 dollar fixed cost: another case where the fixed cost, not the marginal cost, decides.
+:::
+
+## Logical Constraints
+
+Binaries also encode rules between decisions:
+
+| Rule | Constraint |
+|:--|:--|
+| at most one of CCGT and CT | $u_2 + u_3 \leq 1$ |
+| CT only if coal runs | $u_3 \leq u_1$ |
+| either $a^\top y \leq b_1$ or $c^\top y \leq b_2$ | $a^\top y \leq b_1 + M z$, $\ c^\top y \leq b_2 + M(1 - z)$ |
+
+$z$ is binary; $M$ is big enough to switch one off ("big-$M$").
+
+::: {.notes}
+These are patterns, not results: in this example the at-most-one rule doesn't change the answer at any demand we tried. The either/or (disjunctive) form uses one binary to choose which of two constraints holds; M has to be big enough to make the other constraint non-binding, and no bigger than necessary, because a huge M makes the LP relaxation weak. Homework 8 asks you to use each of these.
+:::
+
+# The LP Relaxation
+
+## Relax the Binaries
+
+```{julia}
+#| echo: true
+#| code-fold: true
+#| output: asis
+
+lp_150 = commit(150; relax=true)
+demands = [150, 220, 280, 420]
+mip_cost = zeros(length(demands))
+lp_cost = zeros(length(demands))
+for (k, d) in enumerate(demands)
+    mip_cost[k] = commit(d).cost
+    lp_cost[k] = commit(d; relax=true).cost
+end
+println("| Demand (MW) | MIP (\\\$/h) | LP relaxation (\\\$/h) | Gap |")
+println("|--:|--:|--:|--:|")
+for k in eachindex(demands)
+    println("| $(demands[k]) | $(commas(mip_cost[k])) | $(commas(lp_cost[k])) | $(round(100 * (mip_cost[k] - lp_cost[k]) / mip_cost[k]; digits=1))% |")
+end
+```
+
+At 150 MW the relaxation runs coal **`{julia} round(Int, 100 * lp_150.on[1])`% on**.
+
+::: {.notes}
+relax_integrality turns the binaries into continuous variables between 0 and 1. The relaxed problem pays only 60% of coal's fixed cost for running 60% of its capacity, which no real plant can do. In effect each plant costs its marginal cost plus its fixed cost spread over its maximum output: coal 32, CCGT 35, CT 51 dollars per MWh, so the relaxation always fills coal first. The gap is largest at low demand, where the MIP pays a whole fixed cost for a part-loaded plant, and smallest at 420 MW, where the plants it runs are nearly full; at 280 MW it widens a little because the MIP tops up full coal with the CT.
+:::
+
+## Why the Relaxation Is a Bound
+
+:::: {.columns}
+::: {.column width=50%}
+```{julia}
+#| echo: true
+#| code-fold: true
+
+xs = 2:0.05:10.75
+upper_edge(x) = min(4.5x, 16 - x)
+lower_edge(x) = max(12 - 1.5x, 0.5x)
+p_div = plot(xs, lower_edge.(xs), fillrange=upper_edge.(xs), color=cb_sky, alpha=0.5,
+    linewidth=0, xlabel=L"x_1", ylabel=L"x_2", xlims=(0, 12), ylims=(0, 15), framestyle=:origin)
+# mark the integer points inside the region
+for i in 2:10
+    for j in 0:15
+        if lower_edge(i) <= j <= upper_edge(i)
+            scatter!(p_div, [i], [j], color=:black, markersize=4)
+        end
+    end
+end
+plot!(p_div, size=(600, 500), left_margin=8mm)
+```
+:::
+::: {.column width=50%}
+The integer points are a **subset** of the LP's region, so the relaxed optimum is:
+
+- a **lower bound** when minimizing;
+- an **upper bound** when maximizing.
+:::
+::::
+
+::: {.notes}
+The shaded region is an LP's feasible region; the dots are the integer points inside it. Dropping integrality can only add options, so the relaxed optimum is never worse than the integer optimum. For a minimization (our plants, Lab 3, Homework 8) that makes it a lower bound on cost; for a maximization (the next example) an upper bound. LP corners land on integer points only by luck, which is why we can't just solve the LP and round.
+:::
+
+# Branch and Bound
+
+## A Simple MILP
+
+$$
+\begin{aligned}
+\max \quad & 3x_1 + 4x_2 \\
+\text{subject to:} \quad & 2x_1 + 6x_2 \leq 27 \\
+& x_2 \geq 2 \\
+& 3x_1 + x_2 \leq 19 \\
+& x_1, x_2 \geq 0, \ \text{integer}
+\end{aligned}
+$$
+
+**Branch and bound**: solve LP relaxations, split on a fractional variable, and prune branches that can't beat the best integer solution found so far.
+
+::: {.notes}
+This example maximizes, so the relaxation gives an upper bound. Any integer point we find gives a lower bound. Branch and bound narrows the gap between them.
+:::
+
+## Node 1: The LP Relaxation
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+# Solve the LP relaxation at a node, given extra bounds from branching
+function node_lp(; x1_max=Inf, x1_min=0, x2_max=Inf, x2_min=2)
+    model = Model(HiGHS.Optimizer)
+    @variable(model, x1_min <= x1 <= x1_max)
+    @variable(model, x2_min <= x2 <= x2_max)
+    @objective(model, Max, 3x1 + 4x2)
+    @constraint(model, 2x1 + 6x2 <= 27)
+    @constraint(model, 3x1 + x2 <= 19)
+    set_silent(model)
+    optimize!(model)
+    if !is_solved_and_feasible(model)
+        return nothing                       # the node is infeasible
+    end
+    return (x1=value(x1), x2=value(x2), z=objective_value(model))
+end
+
+# Draw the region allowed at a node, its integer points, and its LP optimum
+function node_plot(; x1_max=Inf, x1_min=0, x2_max=Inf, x2_min=2, title="")
+    p = plot(xlabel=L"x_1", ylabel=L"x_2", xlims=(0, 6), ylims=(0, 5), framestyle=:origin,
+        xticks=0:6, yticks=0:5, title=title)
+    # shade the region allowed at this node
+    xs = range(max(0, x1_min), min(6, x1_max); length=200)
+    top_edge = zeros(length(xs))
+    for k in eachindex(xs)
+        top_edge[k] = min((27 - 2xs[k]) / 6, 19 - 3xs[k], x2_max)
+    end
+    inside = top_edge .>= x2_min
+    if any(inside)
+        plot!(p, xs[inside], fill(x2_min, count(inside)), fillrange=top_edge[inside],
+            color=cb_sky, alpha=0.5, linewidth=0)
+    end
+    plot!(p, 0:0.1:6, (27 .- 2 .* (0:0.1:6)) ./ 6, color=cb_purple)
+    plot!(p, 0:0.1:6, 19 .- 3 .* (0:0.1:6), color=cb_blue, linestyle=:dash)
+    hline!(p, [2], color=cb_vermillion, linestyle=:dashdot)
+    # mark the integer points allowed at this node
+    for i in 0:6
+        for j in 2:5
+            if 2i + 6j <= 27 && 3i + j <= 19 && x1_min <= i <= x1_max && x2_min <= j <= x2_max
+                scatter!(p, [i], [j], color=:black, markersize=6)
+            end
+        end
+    end
+    sol = node_lp(x1_max=x1_max, x1_min=x1_min, x2_max=x2_max, x2_min=x2_min)
+    if !isnothing(sol)
+        scatter!(p, [sol.x1], [sol.x2], color=cb_yellow, markersize=11,
+            markerstrokecolor=:black, markerstrokewidth=2)
+    end
+    return p, sol
+end
+
+# Objective values to two places, with no decimals on whole numbers
+function show_z(z)
+    z_two_places = round(z; digits=2)
+    if isinteger(z_two_places)
+        return string(round(Int, z_two_places))
+    end
+    return string(z_two_places)
+end
+
+# A node's objective, or "infeasible"
+function show_node(sol)
+    if isnothing(sol)
+        return "infeasible"
+    end
+    return show_z(sol.z)
+end
+
+p1, node1 = node_plot()
+rounded = (floor(Int, node1.x1), floor(Int, node1.x2))    # round the LP point down
+rounded_z = 3 * rounded[1] + 4 * rounded[2]
+plot!(p1, size=(1100, 300), left_margin=8mm)
+```
+
+The LP optimum (yellow), $Z =$ `{julia} show_z(node1.z)`, is an **upper bound**. Rounding down to (`{julia} rounded[1]`, `{julia} rounded[2]`) gives $Z =$ `{julia} rounded_z`, a **lower bound**.
+
+::: {.notes}
+Black dots are the integer points; the yellow dot is the LP optimum, at a corner that isn't integer. The best integer answer is somewhere between 23 and 27.06.
+:::
+
+## Nodes 2 and 3: Branch on $x_2$
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+p2, node2 = node_plot(x2_max=2, title=L"x_2 \leq 2")
+p3, node3 = node_plot(x2_min=3, title=L"x_2 \geq 3")
+plot(p2, p3, layout=(1, 2), size=(1100, 320), left_margin=8mm)
+```
+
+Splitting on the fractional $x_2$ gives $Z =$ `{julia} show_z(node2.z)` (node 2) and `{julia} show_z(node3.z)` (node 3). Neither is integer.
+
+::: {.notes}
+Board item: draw the two child problems as branches from node 1, with their bounds. Every integer point lies in one branch or the other, because no integer lies strictly between 2 and 3. The bounds can only get worse as we go down the tree.
+:::
+
+## The Full Tree
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+# Every node of the tree, solved by the same function as the node plots
+tree_nodes = [node_lp(),
+    node_lp(x2_max=2), node_lp(x2_min=3),
+    node_lp(x2_min=3, x1_max=4), node_lp(x2_min=3, x1_min=5),
+    node_lp(x2_max=2, x1_max=5), node_lp(x2_max=2, x1_min=6),
+    node_lp(x2_min=3, x2_max=3, x1_max=4), node_lp(x2_min=4, x1_max=4)]
+parent = [0, 1, 1, 3, 3, 2, 2, 4, 4]              # the node each one branched from
+branch = ["", L"x_2 \leq 2", L"x_2 \geq 3", L"x_1 \leq 4", L"x_1 \geq 5",
+    L"x_1 \leq 5", L"x_1 \geq 6", L"x_2 \leq 3", L"x_2 \geq 4"]
+outcome = ["", "", "", "", "", "incumbent", "", "optimum", "pruned"]
+node_x = [0, -2, 2, 1, 3, -3, -1, 0, 2]           # where each node is drawn
+node_y = [4.1, 2.85, 2.85, 1.6, 1.6, 1.6, 1.6, 0.35, 0.35]
+half_width = 0.9
+half_height = 0.36
+
+p_tree = plot(xlims=(-4, 4), ylims=(-0.05, 4.5), framestyle=:none, size=(1200, 470),
+    bottom_margin=0mm)
+# Edges, from the bottom of each parent's box to the top of its child's
+for k in 2:9
+    j = parent[k]
+    plot!(p_tree, [node_x[j], node_x[k]], [node_y[j] - half_height, node_y[k] + half_height],
+        color=:gray40, linewidth=2)
+    mid_x = (node_x[j] + node_x[k]) / 2
+    mid_y = (node_y[j] + node_y[k]) / 2
+    if node_x[k] < node_x[j]
+        annotate!(p_tree, mid_x - 0.12, mid_y, text(branch[k], 17, :right))
+    else
+        annotate!(p_tree, mid_x + 0.12, mid_y, text(branch[k], 17, :left))
+    end
+end
+# A box for each node: its LP result and what happened to it
+for k in 1:9
+    sol = tree_nodes[k]
+    if isnothing(sol)
+        top_line = "Node $(k)"
+        bottom_line = "infeasible"
+    else
+        top_line = "Node $(k): Z = $(show_z(sol.z))"
+        bottom_line = "($(show_z(sol.x1)), $(show_z(sol.x2)))"
+        if outcome[k] != ""
+            bottom_line = bottom_line * ", " * outcome[k]
+        end
+    end
+    box_color = :white
+    if isnothing(sol) || outcome[k] == "pruned"
+        box_color = :gray70                        # the branch ends here
+    elseif outcome[k] == "incumbent" || outcome[k] == "optimum"
+        box_color = cb_green                       # an integer solution
+    end
+    box_x = node_x[k] .+ [-half_width, half_width, half_width, -half_width]
+    box_y = node_y[k] .+ [-half_height, -half_height, half_height, half_height]
+    plot!(p_tree, Shape(box_x, box_y), fillcolor=box_color, fillalpha=0.35,
+        linecolor=:black, linewidth=1.5)
+    annotate!(p_tree, node_x[k], node_y[k] + 0.14, text(top_line, 17, plot_font))
+    annotate!(p_tree, node_x[k], node_y[k] - 0.15, text(bottom_line, 17, plot_font))
+end
+p_tree
+```
+
+::: {.notes}
+Green boxes are integer solutions; grey boxes end a branch. Prune a branch when it is infeasible, when it gives an integer solution (nothing below can do better), or when its bound is worse than the incumbent. Node 6 is the first incumbent; node 8 beats it; node 9's bound is below node 8's value. Nodes 4 through 9 are worked in the appendix, solved by the same function. In the worst case the tree grows exponentially with the number of integer variables, which is why commercial solvers add cutting planes and heuristics (branch and cut). Homework 8 asks you to trace two or three nodes by hand.
+:::
+
+# Key Takeaways and Upcoming Schedule
+
+## Key Takeaways
+
+::: {.incremental}
+- **Binary variables** turn on/off decisions into linear constraints: fixed cost × $u$, output ≤ capacity × $u$.
+- **Fixed costs can overturn the merit order**: at `{julia} demands[1]` MW the CCGT beats cheaper coal.
+- The **LP relaxation** bounds the MIP (below for min, above for max), but its "solution" can be meaningless.
+- **Branch and bound** solves relaxations, branches on fractional variables, and prunes.
+:::
+
+## Next Classes and Assessments
+
+**Monday, November 9**: Solid waste and network models (with a substitute).
+
+**Wednesday, November 11**: Lab 3, fixed costs and facility siting in `JuMP` (with the TA). Bring a laptop.
+
+**Homework 8**: Assigned today, due Thursday, November 12.
+
+**Quiz 5**: Monday, November 16.
+
+# Appendix
+
+## Nodes 4 and 5 (Under Node 3)
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+p4, node4 = node_plot(x2_min=3, x1_max=4, title=L"x_2 \geq 3,\ x_1 \leq 4")
+p5, node5 = node_plot(x2_min=3, x1_min=5, title=L"x_2 \geq 3,\ x_1 \geq 5")
+plot(p4, p5, layout=(1, 2), size=(1100, 320), left_margin=8mm)
+```
+
+Node 4 has $Z =$ `{julia} show_z(node4.z)` at $x_2 =$ `{julia} round(node4.x2; digits=2)`. Node 5 is `{julia} show_node(node5)`.
+
+## Nodes 6 and 7 (Under Node 2)
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+p6, node6 = node_plot(x2_max=2, x1_max=5, title=L"x_2 \leq 2,\ x_1 \leq 5")
+p7, node7 = node_plot(x2_max=2, x1_min=6, title=L"x_2 \leq 2,\ x_1 \geq 6")
+plot(p6, p7, layout=(1, 2), size=(1100, 320), left_margin=8mm)
+```
+
+Node 6 is integer, with $Z =$ `{julia} round(Int, node6.z)` at (`{julia} round(Int, node6.x1)`, `{julia} round(Int, node6.x2)`). Node 7 is `{julia} show_node(node7)`.
+
+## Nodes 8 and 9 (Under Node 4)
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+p8, node8 = node_plot(x2_min=3, x2_max=3, x1_max=4, title=L"x_1 \leq 4,\ x_2 = 3")
+p9, node9 = node_plot(x2_min=4, x1_max=4, title=L"x_1 \leq 4,\ x_2 \geq 4")
+plot(p8, p9, layout=(1, 2), size=(1100, 320), left_margin=8mm)
+```
+
+Node 8 is integer, with $Z =$ `{julia} round(Int, node8.z)` at (`{julia} round(Int, node8.x1)`, `{julia} round(Int, node8.x2)`), and is the optimum. Node 9 is pruned, because its bound, `{julia} show_z(node9.z)`, is below `{julia} round(Int, node8.z)`.
