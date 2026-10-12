@@ -108,13 +108,12 @@ plume_ugm3(xk, y, z, params) = plume(xk, y, z, params) * 1e6
 
 # Review of Last Class
 
-## Concentrations Add
+## Model Calibration and Validation
 
-Concentrations from several stacks **add**: three facilities that each complied on their own exceeded the standard together.
+Both address **why we should trust a model's results**, but they are distinct:
 
-One way to comply is to **cut emissions**, since concentration is proportional to the emission rate.
-
-**Today**: with several sources, *how much* should each one cut?
+- **Calibration**: selecting model parameters based on matches to observed data;
+- **Validation**: establishing model credibility by comparing model simulations to independent data (**empirical validity**) and/or analyzing processes/structure (**face validity**).
 
 ## Questions?
 
@@ -124,25 +123,25 @@ One way to comply is to **cut emissions**, since concentration is proportional t
 
 ## Prescriptive Modeling
 
-If we want to decide how much each source should cut, we are now in the world of *prescriptive modeling*.
+If we want to make a **decision**, we are now in the world of **prescriptive modeling**.
 
 **Recall**: Prescriptive modeling is intended to specify an action, policy, or decision.
 
 ::: {.fragment .fade-in}
 
-- Descriptive modeling question: "What happens if I do something?"
-- Prescriptive modeling question: "What should I do?"
+- Descriptive question: "What happens if I do something (or something happens)?"
+- Prescriptive question: "What should I do?"
 :::
 
 ## Decision Models
 
-To make a decision, we need certain pieces of information which:
+To make a decision, we need to:
 
 - define decision options (or **alternatives**);
-- provide one or more **objectives** to assess performance;
-- specify **constraints** to tell us what decisions are possible or acceptable.
+- provide one or more **objectives** to assess performance of different alternatives;
+- specify **constraints** to tell us what alternatives are possible or acceptable.
 
-## Be Careful...
+## Be Careful Not To Overinterpret Optimization Results
 
 ::: {.quote}
 The  **optimal  solution  of  a  model  is  not  an  optimal  solution  of  a  problem  unless  the  model  is a  perfect  representation  of the  problem**,  which  it  never  is.
@@ -168,22 +167,65 @@ Typical objectives can include:
 
 Many different metrics can be used to specify an objective function!
 
+## Optimal Solutions
+
+Write the objective function as $Z(\mathbf{x})$, to be maximized.
+
+A solution $\mathbf{x^*}$ is **optimal** if $Z(\mathbf{x^*}) \geq Z(\mathbf{x})$ for all feasible $\mathbf{x}$.
+
+**Note**: an optimum is not necessarily unique!
+
 # Formulating an Emissions Problem
 
-## Two Stacks, Three Receptors
+## Receptors Exposed to Multiple Sources
+
+Concentrations from several stacks add: multiple facilities that individually comply can exceed a standard together and the new combined peak can be hard to predict.
+
+One way to comply is to **cut emissions**, since concentration is proportional to the emission rate.
+
+**Raises the question**: with several sources, *how much* should each one cut?
+
+## Stack and Receptor Information
 
 ```{julia}
-#| label: fig-emissions-map
-#| fig-cap: "Ground-level SO₂ from two uncontrolled stacks, with three receptors. Black: the 1-hour standard."
 #| echo: true
 #| code-fold: true
+#| output: false
 
 standard = 196                                  # 1-hour SO₂ standard  [µg/m³]
 stack_location = [(0, 0), (1.5, 200)]           # (downwind [km], crosswind [m])
 emission = [50, 40]                             # uncontrolled emissions  [g/s]
 receptor_name = ["A", "B", "C"]
-receptor_location = [(2.5, 0), (4.5, 120), (4.0, 250)]
+receptor_location = [(2.5, 0), (4.5, 120), (4, 250)]
 stack_design = (; H=41, u_wind=2.5)             # last week's stack, Class F
+```
+
+| | Downwind | Crosswind | SO$_2$ emitted |
+|:--|--:|--:|--:|
+| Stack 1 | 0 km | 0 m | 50 g/s |
+| Stack 2 | 1.5 km | 200 m | 40 g/s |
+| Receptor A | 2.5 km | 0 m | |
+| Receptor B | 4.5 km | 120 m | |
+| Receptor C | 4 km | 250 m | |
+
+::: {.notes}
+Students last saw this stack before Fall Break, so restate it rather than assume it: same effective height, wind and stability as last week, now with a second, older plant 1.5 km downwind. Locations are measured from stack 1, downwind along the wind and crosswind across it. We design for this one night. A permit analysis would check every hour of several years of weather and add the background SO2 already in the air; that would add a constraint for each receptor in each hour, and it would still be a linear program.
+:::
+
+## Problem Parameters and Settings
+
+- **Both stacks**: effective height 41 m.
+- **Wind**: 2.5 m/s, steady, blowing downwind (left to right on the map).
+- **Stability**: class F, a clear night. 
+- **Limit**: the 1-hour SO$_2$ standard, 75 ppb, about 196 µg/m³ at ground level.
+
+## Visualizing the Problem
+
+```{julia}
+#| label: fig-emissions-map
+#| fig-cap: "Ground-level SO₂ from the two stacks with no removal, on a class F night with a 2.5 m/s wind blowing left to right. Black contour: the 1-hour standard."
+#| echo: true
+#| code-fold: true
 
 # Ground-level concentration from both stacks at their current emissions
 function combined_ugm3(x, y)
@@ -240,19 +282,63 @@ Students often name the concentrations as the decision variables. The concentrat
 
 Removal costs \$20,000 per year for each g/s removed at stack 1, and \$30,000 at stack 2 (an older plant).
 
+::: {.fragment .fade-in}
 $$\min_{R_1, R_2} \quad 20 R_1 + 30 R_2 \qquad [\$1000/\text{yr}]$$
-
-A linear cost is a simplification: in practice each extra g/s costs more than the last. We will come back to that.
+:::
 
 ## Concentrations Are Linear in Emissions
 
-Because concentrations add, the concentration at receptor $j$ is
+Because concentrations sum, the concentration at receptor $j$ is
 
 $$C_j = t_{1j}\,(Q_1 - R_1) + t_{2j}\,(Q_2 - R_2),$$
 
 where $t_{ij}$ is the **transmission factor**: the concentration at receptor $j$ per g/s emitted from stack $i$.
 
-Each $t_{ij}$ is the plume equation evaluated with $Q = 1$ g/s.
+## What Is a Transmission Factor?
+
+At ground level ($z = 0$), the plume equation is the emission rate $Q$ times a factor that does not depend on $Q$:
+
+$$C(x, y) = Q \times \underbrace{\frac{1}{\pi u \sigma_y \sigma_z} \exp\left(-\frac{y^2}{2\sigma_y^2}\right) \exp\left(-\frac{H^2}{2\sigma_z^2}\right)}_{\text{concentration per g/s emitted}}$$
+
+$t_{ij}$ is that factor, with $x$ and $y$ the downwind and crosswind distances from stack $i$ to receptor $j$, in µg/m³ per g/s.
+
+::: {.notes}
+Setting z = 0 makes the two exponentials in the plume equation equal (the plume and its reflection off the ground), and their sum, 2 exp(-H^2 / 2 sigma_z^2), cancels the 2 in 2 pi. The sigmas are evaluated at the downwind distance x from that stack. Because the factor does not involve Q, each receptor's concentration is a weighted sum of the stacks' emissions, which is what makes this problem linear. A different night (another stability class or wind speed) gives different factors, and so a different problem.
+:::
+
+## Example: Stack 1 to Receptor A
+
+```{julia}
+#| echo: true
+#| code-fold: true
+#| output: false
+
+# Transmission factor from stack 1 to receptor A, one piece at a time
+x_1A = receptor_location[1][1] - stack_location[1][1]     # [km]
+sy_1A, sz_1A = sig_y(x_1A), sig_z(x_1A)                    # [m]
+prefactor_1A = 1e6 / (π * stack_design.u_wind * sy_1A * sz_1A)
+height_term_1A = exp(-stack_design.H^2 / (2sz_1A^2))
+t_1A = prefactor_1A * height_term_1A                        # [µg/m³ per g/s]
+```
+
+Receptor A is `{julia} x_1A` km directly downwind of stack 1 ($y = 0$), where $\sigma_y$ = `{julia} round(sy_1A; digits=1)` m and $\sigma_z$ = `{julia} round(sz_1A; digits=1)` m on a class F night:
+
+```{julia}
+#| echo: false
+#| output: asis
+
+println("\$\$\\begin{aligned} t_{1A} &= \\frac{10^6}{\\pi \\times ", stack_design.u_wind, " \\times ",
+    round(sy_1A; digits=1), " \\times ", round(sz_1A; digits=1), "} \\exp\\left(-\\frac{", stack_design.H,
+    "^2}{2 \\times ", round(sz_1A; digits=1), "^2}\\right) \\\\ &= ", round(prefactor_1A; digits=1),
+    " \\times ", round(height_term_1A; digits=3), " = ", round(t_1A; digits=1),
+    "\\ \\text{µg/m}^3 \\text{ per g/s} \\end{aligned}\$\$")
+```
+
+So stack 1's `{julia} emission[1]` g/s put `{julia} emission[1]` × `{julia} round(t_1A; digits=1)` = `{julia} Int(round(emission[1] * t_1A))` µg/m³ at A.
+
+::: {.notes}
+Board item if there is time: work t_1A from the formula two slides back, then show this slide as the check. The height term, about 0.27, is how much lower the ground-level concentration is than if the same plume had been released at ground level: at 2.5 km on a stable night much of it is still aloft.
+:::
 
 ## Transmission Factors
 
@@ -272,7 +358,7 @@ n_stacks, n_receptors = length(emission), length(receptor_name)
 t = [transmission(i, j) for j in 1:n_receptors, i in 1:n_stacks]   # rows: receptors
 uncontrolled = t * emission                                       # [µg/m³]
 
-println("| Receptor | \$t_{1j}\$ | \$t_{2j}\$ | Uncontrolled \$C_j\$ (µg/m³) |")
+println("| Receptor | \$t_{1j}\$ (µg/m³ per g/s) | \$t_{2j}\$ (µg/m³ per g/s) | Uncontrolled \$C_j\$ (µg/m³) |")
 println("|:--|--:|--:|--:|")
 for j in 1:n_receptors
     println("| $(receptor_name[j]) | $(round(t[j, 1]; digits=1)) | $(round(t[j, 2]; digits=1)) | $(Int(round(uncontrolled[j]))) |")
@@ -280,6 +366,50 @@ end
 ```
 
 All three receptors are above the standard before any removal.
+
+## Each Receptor's SO$_2$, by Stack
+
+```{julia}
+#| label: fig-by-stack
+#| fig-cap: "SO₂ at each receptor with no removal, split by the stack it comes from. Dashed: the 1-hour standard, which each receptor must be brought down to."
+#| echo: true
+#| code-fold: true
+
+# Each stack's contribution at each receptor  [µg/m³]
+from_stack = zeros(n_receptors, n_stacks)
+for j in 1:n_receptors
+    for i in 1:n_stacks
+        from_stack[j, i] = t[j, i] * emission[i]
+    end
+end
+
+# Stacked bars: each receptor's total, with stack 1's part drawn over its base
+p_sources = bar(1:n_receptors, uncontrolled, color=cb_orange, bar_width=0.55,
+    label="from stack 2")
+bar!(p_sources, 1:n_receptors, from_stack[:, 1], color=cb_blue, bar_width=0.55,
+    label="from stack 1")
+hline!(p_sources, [standard], color=:black, linestyle=:dash, linewidth=2.5,
+    label="standard")
+for j in 1:n_receptors
+    annotate!(p_sources, j, uncontrolled[j] + 60,
+        text(string(Int(round(uncontrolled[j]))), 16, :black, plot_font))
+end
+plot!(p_sources, xticks=(1:n_receptors, "Receptor " .* receptor_name),
+    ylabel="C  [µg/m³]", ylims=(0, 1050), legend=:outerright,
+    size=(1000, 300), left_margin=12mm, bottom_margin=12mm)
+```
+
+A gets all of its SO$_2$ from stack 1, so its constraint involves $R_1$ alone. B gets `{julia} Int(round(100 * from_stack[2, 1] / uncontrolled[2]))`% from stack 1, and C gets `{julia} Int(round(100 * from_stack[3, 2] / uncontrolled[3]))`% from stack 2.
+
+## Problem Map (Revisited)
+
+```{julia}
+#| label: fig-emissions-map-2
+#| fig-cap: Map of the emissions problem.
+
+p_map
+```
+
 
 ## The Constraint at Receptor B
 
@@ -296,7 +426,6 @@ println("\$\$", round(t[2, 1]; digits=1), " R_1 + ", round(t[2, 2]; digits=1),
     " R_2 \\geq ", Int(round(required[2])), "\$\$")
 ```
 
-The inequality flips: a cap on concentration is a **floor** on removal.
 :::
 
 ::: {.notes}
@@ -312,14 +441,15 @@ Board item. Start from C_B = t_1B (Q_1 - R_1) + t_2B (Q_2 - R_2) <= 196. Expand:
 coef(x) = round(x; digits=1)
 println("\$\$\\begin{alignedat}{3}")
 println("& \\min_{R_1, R_2} &\\quad 20 R_1 + 30 R_2 & \\\\")
-println("& \\text{subject to:} & $(coef(t[1, 1])) R_1 &\\geq $(Int(round(required[1]))) & \\quad \\text{(A)} \\\\")
-println("& & $(coef(t[2, 1])) R_1 + $(coef(t[2, 2])) R_2 &\\geq $(Int(round(required[2]))) & \\quad \\text{(B)} \\\\")
-println("& & $(coef(t[3, 1])) R_1 + $(coef(t[3, 2])) R_2 &\\geq $(Int(round(required[3]))) & \\quad \\text{(C)} \\\\")
+println("& \\text{subject to:} & $(coef(t[1, 1])) R_1 &\\geq $(Int(round(required[1]))) & \\quad \\text{(C1)} \\\\")
+println("& & $(coef(t[2, 1])) R_1 + $(coef(t[2, 2])) R_2 &\\geq $(Int(round(required[2]))) & \\quad \\text{(C2)} \\\\")
+println("& & $(coef(t[3, 1])) R_1 + $(coef(t[3, 2])) R_2 &\\geq $(Int(round(required[3]))) & \\quad \\text{(C3)} \\\\")
 println("& & 0 \\leq R_1 \\leq 50, \\quad 0 \\leq R_2 &\\leq 40 &")
 println("\\end{alignedat}\$\$")
 ```
 
-Receptor A sits almost directly downwind of stack 1, so stack 2's plume barely reaches it: its constraint involves $R_1$ alone.
+C1, C2 and C3 are the limits at receptors A, B and C. 
+
 
 # Linear Programs
 
@@ -335,19 +465,11 @@ A **linear program** (**LP**), or a *linear optimization model*, has the followi
 Ask whether the emissions problem qualifies. It does: concentrations are linear in the removals because plumes add, removals are continuous, and the plume model is deterministic. Each of the three properties is also an assumption we could relax later: integer decisions (MIP), and uncertainty (stochastic programming).
 :::
 
-## Sidebar: Why "Programming"?
-
-"Program" used to refer to military logistics, which is the origin of this field of research. For this historical reason, "mathematical programming" is often used instead of "mathematical optimization."
-
-::: {.fragment .fade-in}
-We typically restrict "program" for optimization problems which are formulated completely mathematically, versus we use a computer model to simulate the relationship between decision variables and outputs.
-:::
-
 ## Standard Form
 
 Every LP can be written the same way:
 
-$$\max_{x} \quad c^\top x \qquad \text{subject to} \quad Ax \leq b, \quad x \geq 0$$
+$$\max_{\mathbf{x}} \quad \mathbf{c}^\top \mathbf{x} \qquad \text{subject to} \quad \mathbf{A}\mathbf{x} \leq \mathbf{b}, \quad \mathbf{x} \geq \mathbf{0}$$
 
 - A minimization becomes maximizing the negative: $\min f = -\max(-f)$.
 - A $\geq$ constraint becomes $\leq$ by multiplying both sides by $-1$.
@@ -355,6 +477,19 @@ $$\max_{x} \quad c^\top x \qquad \text{subject to} \quad Ax \leq b, \quad x \geq
 
 ::: {.notes}
 Solvers and the theory behind them, including Monday's simplex walk, work from this form.
+:::
+
+## What Are $\mathbf{c}$, $\mathbf{A}$, and $\mathbf{b}$?
+
+$$\max_{\mathbf{x}} \quad \mathbf{c}^\top \mathbf{x} \qquad \text{subject to} \quad \mathbf{A}\mathbf{x} \leq \mathbf{b}, \quad \mathbf{x} \geq \mathbf{0}$$
+
+- $\mathbf{x}$: the **decision variables**, stacked in a vector.
+- $\mathbf{c}$: the **objective coefficients**, one for each variable.
+- $\mathbf{A}$: the **constraint coefficients**, with a row for each constraint and a column for each variable.
+- $\mathbf{b}$: the **right-hand sides**, one constant for each constraint.
+
+::: {.notes}
+The compact form is only useful once each symbol has a meaning, and anyone working from the slides alone has no board to fall back on. Count before converting: n decision variables give c n entries and A n columns, and each constraint gives one row of A and one entry of b. Every term with a decision variable goes on the left of its constraint, so b holds constants only. Non-negativity is stated separately as x >= 0 and is not a row of A; upper bounds are rows.
 :::
 
 ## Our Problem in Standard Form
@@ -366,13 +501,13 @@ Convert the emissions problem to standard form.
 #| echo: false
 #| output: asis
 
-println("\$\$\\begin{alignedat}{2}")
+println("\$\$\\begin{alignedat}{3}")
 println("& \\max_{R_1, R_2} &\\quad -20 R_1 - 30 R_2 & \\\\")
-println("& \\text{subject to:} & -$(coef(t[1, 1])) R_1 &\\leq -$(Int(round(required[1]))) \\\\")
-println("& & -$(coef(t[2, 1])) R_1 - $(coef(t[2, 2])) R_2 &\\leq -$(Int(round(required[2]))) \\\\")
-println("& & -$(coef(t[3, 1])) R_1 - $(coef(t[3, 2])) R_2 &\\leq -$(Int(round(required[3]))) \\\\")
-println("& & R_1 \\leq 50, \\quad R_2 &\\leq 40 \\\\")
-println("& & R_1, R_2 &\\geq 0")
+println("& \\text{subject to:} & -$(coef(t[1, 1])) R_1 &\\leq -$(Int(round(required[1]))) & \\quad \\text{(C1)} \\\\")
+println("& & -$(coef(t[2, 1])) R_1 - $(coef(t[2, 2])) R_2 &\\leq -$(Int(round(required[2]))) & \\quad \\text{(C2)} \\\\")
+println("& & -$(coef(t[3, 1])) R_1 - $(coef(t[3, 2])) R_2 &\\leq -$(Int(round(required[3]))) & \\quad \\text{(C3)} \\\\")
+println("& & R_1 \\leq 50, \\quad R_2 &\\leq 40 & \\\\")
+println("& & R_1, R_2 &\\geq 0 &")
 println("\\end{alignedat}\$\$")
 ```
 :::
@@ -381,7 +516,92 @@ println("\\end{alignedat}\$\$")
 Board item. Three moves: negate the objective, multiply each receptor constraint by minus one, and keep the bounds as constraints. Nothing about the solution changes; the optimal removals are the same and the optimal value just changes sign. This is the form Monday's simplex walk starts from.
 :::
 
+## Our $\mathbf{c}$, $\mathbf{A}$, and $\mathbf{b}$
+
+With $\mathbf{x} = (R_1, R_2)^\top$, each row of $\mathbf{A}$ and $\mathbf{b}$ is one constraint:
+
+::: {.small-math}
+```{julia}
+#| echo: false
+#| output: asis
+
+# A matrix entry as text; an entry that rounds to zero is written as 0
+function entry(x)
+    if coef(x) == 0
+        return "0"
+    end
+    return string(coef(x))
+end
+
+# C1 to C3 first (negated), then one row for each upper bound
+println("\$\$\\mathbf{c} = \\begin{pmatrix} -20 \\\\ -30 \\end{pmatrix} \\;\\;")
+println("\\mathbf{A} = \\begin{pmatrix}")
+for j in 1:n_receptors
+    println(entry(-t[j, 1]), " & ", entry(-t[j, 2]), " \\\\")
+end
+println("1 & 0 \\\\ 0 & 1 \\end{pmatrix} \\;\\;")
+println("\\mathbf{b} = \\begin{pmatrix}")
+for j in 1:n_receptors
+    println(-Int(round(required[j])), " \\\\")
+end
+println(emission[1], " \\\\ ", emission[2], " \\end{pmatrix} \\quad")
+println("\\begin{matrix} \\text{(C1)} \\\\ \\text{(C2)} \\\\ \\text{(C3)} \\\\ R_1 \\leq ", emission[1],
+    " \\\\ R_2 \\leq ", emission[2], " \\end{matrix}\$\$")
+```
+:::
+
+$R_1, R_2 \geq 0$ is already $\mathbf{x} \geq \mathbf{0}$, so it adds no rows.
+
+::: {.notes}
+Have students read c, A and b off the previous slide before showing this; it can be done at the board instead. The rows follow the order of the constraints on the previous slide. The 0 in the first row is R_2's coefficient in C1, the constraint at receptor A: a variable that does not appear in a constraint still needs an entry. The two upper bounds were written on one line but are two constraints, so two rows. Row order does not matter as long as A and b use the same one. Homework 6 asks for c, A and b explicitly for its own LP.
+:::
+
 # The Geometry of an LP
+
+## Where Can An Optimum Be?
+
+:::: {.columns}
+::: {.column width=50%}
+```{julia}
+#| label: fig-lp-sketch
+#| fig-cap: "A sketch of a linear program with two decision variables: each line is a constraint, and the shaded region satisfies all of them."
+#| echo: true
+#| code-fold: true
+
+# A made-up LP: four constraint lines, each x2 = slope * x1 + intercept
+sketch_slope = [4.5, -1, -1.5, 0.5]
+sketch_intercept = [0, 16, 12, 0]
+
+# Where constraint lines i and k cross
+function sketch_crossing(i, k)
+    x1 = (sketch_intercept[k] - sketch_intercept[i]) / (sketch_slope[i] - sketch_slope[k])
+    return (x1, sketch_slope[i] * x1 + sketch_intercept[i])
+end
+
+# The feasible region's corners, going around it
+sketch_corners = [sketch_crossing(1, 3), sketch_crossing(1, 2), sketch_crossing(2, 4),
+    sketch_crossing(4, 3)]
+
+p_sketch = plot(Shape(first.(sketch_corners), last.(sketch_corners)), color=cb_blue,
+    alpha=0.25, linewidth=0, xlims=(0, 14), ylims=(0, 16), ticks=false,
+    xlabel=L"x_1", ylabel=L"x_2")
+sketch_x1 = 0:0.5:14
+for i in 1:length(sketch_slope)
+    plot!(p_sketch, sketch_x1, sketch_slope[i] .* sketch_x1 .+ sketch_intercept[i],
+        color=:gray30, linewidth=2.5)
+end
+plot!(p_sketch, size=(580, 480), left_margin=5mm, bottom_margin=5mm)
+```
+:::
+::: {.column width=50%}
+- Can the optimum be in the **interior**?
+- What about along an **edge**, but not at a corner?
+:::
+::::
+
+::: {.notes}
+Board item: redraw the sketch and work on it there, while students annotate their copy. The figure is left bare on purpose: no objective, no level lines, no labels. Pick an objective and draw two or three of its level lines; they are parallel because the objective is linear. From any interior point you can move across the level lines to a better point, so the optimum is on the boundary. Along an edge the objective changes at a constant rate, so one end is better, unless the edge is parallel to the level lines, in which case the whole edge ties and its corners are optimal too. Either way there is an optimum at a corner, which is what the simplex method uses on Monday. The next slides do the same for the emissions problem.
+:::
 
 ## The Feasible Region
 
@@ -396,7 +616,7 @@ is_feasible(r) = all(t * r .>= required .- 1e-6) &&
     all(-1e-9 .<= r .<= emission .+ 1e-9)
 
 # Every boundary as (a1, a2, rhs) for a1 R1 + a2 R2 = rhs:
-# three receptors, then the four bounds
+# the receptor constraints C1 to C3, then the four bounds
 boundaries = [[(t[j, 1], t[j, 2], required[j]) for j in 1:n_receptors];
               [(1, 0, 0), (1, 0, emission[1]), (0, 1, 0), (0, 1, emission[2])]]
 
@@ -417,24 +637,24 @@ centre = sum(corners) / length(corners)
 corners = sort(corners, by=p -> atan(p[2] - centre[2], p[1] - centre[1]))
 
 line_style = [:solid, :dash, :dashdot]
-function draw_region()
+function draw_region(r1_max=52)
     p = plot(Shape(first.(corners), last.(corners)), color=cb_blue, alpha=0.25,
-        linewidth=0, xlims=(25, 52), ylims=(15, 42), xlabel=L"R_1 \; \mathrm{[g/s]}",
+        linewidth=0, xlims=(25, r1_max), ylims=(15, 42), xlabel=L"R_1 \; \mathrm{[g/s]}",
         ylabel=L"R_2 \; \mathrm{[g/s]}")
     for j in 1:n_receptors
         a1, a2, rhs = boundaries[j]
         # Label each line at a point where it is inside the axes
         if abs(a2) < 1e-6
             vline!(p, [rhs / a1], color=:gray30, linestyle=line_style[j], linewidth=2.5)
-            label_at = (rhs / a1 - 1.2, 17)
+            label_at = (rhs / a1 - 1.4, 17)
         else
-            r1 = 25:0.5:52
+            r1 = 25:0.5:r1_max
             plot!(p, r1, (rhs .- a1 .* r1) ./ a2, color=:gray30, linestyle=line_style[j],
                 linewidth=2.5)
             r1_at_36 = (rhs - a2 * 36) / a1
-            label_at = 27 <= r1_at_36 <= 48 ? (r1_at_36 + 2, 36) : (27, (rhs - a1 * 27) / a2 + 1.5)
+            label_at = 27 <= r1_at_36 <= 48 ? (r1_at_36 + 2.4, 36.6) : (27, (rhs - a1 * 27) / a2 + 2.6)
         end
-        annotate!(p, label_at..., text(receptor_name[j], 20, :gray20, plot_font))
+        annotate!(p, label_at..., text("C$(j)", 20, :gray20, plot_font))
     end
     plot!(p, [0, emission[1], emission[1]], [emission[2], emission[2], 0], color=:black,
         linewidth=2)
@@ -445,13 +665,13 @@ p_region = draw_region()
 plot!(p_region, size=(900, 380), left_margin=12mm, bottom_margin=12mm)
 ```
 
-Each receptor cuts away the plans that break its limit.
+Each constraint cuts away plans that break one receptor's limit.
 
 ## Where Is the Cheapest Plan?
 
 ```{julia}
 #| label: fig-level-lines
-#| fig-cap: "Cost level lines (dotted) slide toward lower cost until they last touch the region, at a corner."
+#| fig-cap: "Cost level lines (dotted), labelled with their annual cost, slide toward lower cost until they last touch the region, at a corner."
 #| echo: true
 #| code-fold: true
 
@@ -460,34 +680,28 @@ corner_cost = [sum(cost .* c) for c in corners]
 optimal_cost, best = findmin(corner_cost)
 optimum = corners[best]
 
-p_level = draw_region()
-r1 = 25:0.5:52
-for level in [optimal_cost, optimal_cost + 300, optimal_cost + 600]
-    plot!(p_level, r1, (level .- cost[1] .* r1) ./ cost[2], color=cb_vermillion,
+# Widen the plot a little so each level line can be labelled at its right end
+p_level = draw_region(58)
+r1 = 25:0.5:58
+levels = [optimal_cost, optimal_cost + 200, optimal_cost + 400]
+for k in 1:length(levels)
+    plot!(p_level, r1, (levels[k] .- cost[1] .* r1) ./ cost[2], color=cb_vermillion,
         linestyle=:dot, linewidth=2)
+    label_y = (levels[k] - cost[1] * 55.2) / cost[2] + 1.6
+    annotate!(p_level, 55.2, label_y,
+        text("\$$(round(levels[k] / 1000; digits=1))M/yr", 14, :black, plot_font))
 end
 scatter!(p_level, [optimum[1]], [optimum[2]], markershape=:star5, markersize=16,
     color=cb_vermillion, markerstrokecolor=:black)
-annotate!(p_level, optimum[1] + 3, optimum[2] - 5,
+annotate!(p_level, optimum[1] - 2.5, optimum[2] - 4.5,
     text("cheapest plan", 18, :black, plot_font))
-plot!(p_level, size=(900, 380), left_margin=12mm, bottom_margin=12mm)
+plot!(p_level, ylims=(15, 43), size=(900, 380), left_margin=12mm, bottom_margin=12mm)
 ```
 
 Cheapest: `{julia} round(optimum[1]; digits=1)` and `{julia} round(optimum[2]; digits=1)` g/s, about \$`{julia} round(optimal_cost / 1000; digits=1)` million per year.
 
 ::: {.notes}
-Cost is constant along each dotted line, and the lines are parallel because the cost is linear. Lower cost is toward the origin. Slide the line toward lower cost until it is about to leave the shaded region: the last point it touches is the optimum, and it is a corner. Which corner wins depends on the cost ratio: with these costs, this corner is optimal as long as stack 2's removals cost between about 1.3 and 9 times stack 1's. Below that the corner where A and B meet wins instead. That sensitivity is Monday's topic.
-:::
-
-## Why a Corner?
-
-With a linear objective, cost changes at a constant rate in every direction.
-
-- From any **interior** point you can move to a cheaper plan.
-- Along an **edge** cost changes steadily, so one end is cheapest (or the whole edge ties).
-
-::: {.fragment .fade-in}
-So an LP's optimum is at a **corner**. The **simplex method** walks from corner to corner: Monday.
+Cost is constant along each dotted line, and the lines are parallel because the cost is linear. Lower cost is toward the origin. Slide the line toward lower cost until it is about to leave the shaded region: the last point it touches is the optimum, and it is a corner. Which corner wins depends on the cost ratio: with these costs, this corner is optimal as long as stack 2's removals cost between about 1.3 and 9 times stack 1's. Below that the corner where C1 and C2 meet wins instead. That sensitivity is Monday's topic.
 :::
 
 ## Reading the Solution
@@ -505,11 +719,8 @@ optimal_concentration = t * (emission .- optimum)
 | B | `{julia} Int(round(optimal_concentration[2]))` µg/m³ |
 | C | `{julia} Int(round(optimal_concentration[3]))` µg/m³ |
 
-**B and C bind**: they sit exactly at the standard. A is slack.
+C2 and C3 are **binding constraints**: receptors B and C sit exactly at the standard. C1 is a  **slack constraint**: the optimal solution is not constrained by it.
 
-::: {.fragment .fade-in}
-Monday: what would relaxing the standard at B be worth?
-:::
 
 ## When the Cost Isn't Linear
 
@@ -537,10 +748,14 @@ scatter!(p_curved, [curved_optimum[1]], [curved_optimum[2]], markershape=:star5,
     markersize=16, color=cb_vermillion, markerstrokecolor=:black)
 annotate!(p_curved, curved_optimum[1] + 3, curved_optimum[2] - 5,
     text("on an edge", 18, :black, plot_font))
-plot!(p_curved, size=(900, 380), left_margin=12mm, bottom_margin=12mm)
+plot!(p_curved, size=(900, 320), left_margin=12mm, bottom_margin=12mm)
 ```
 
-Rising costs move the optimum along B's edge, **off the corner**.
+With cost $20 R_1^2/50 + 30 R_2^2/40$ (\$1000/yr), each g/s costs more than the last, and the optimum leaves the **corner**.
+
+::: {.notes}
+The curved cost equals the linear one at full removal (20 x 50 = 20 x 50^2 / 50), so the two are comparable; only the shape differs. Its contours bend, and one of them touches the region partway along C2's edge rather than at a corner.
+:::
 
 # Key Takeaways and Upcoming Schedule
 
@@ -548,15 +763,15 @@ Rising costs move the optimum along B's edge, **off the corner**.
 
 ::: {.incremental}
 - A decision model: **decision variables** (units, bounds), an **objective**, **constraints**.
-- Constraints often come from **models we already have**, like the plume.
-- An LP's optimum is at a **corner**; a nonlinear objective can move it onto an edge.
+- Constraints often come from **fate and transport models** or economic/budget constraints.
+- An LP will always have **an optimum** at a **corner**.
 - Every LP can be written in **standard form**.
 - The optimal plan is only as good as the model behind it.
 :::
 
 ## Next Classes
 
-**Monday**: How a solver walks the corners (the simplex method), what a binding constraint is worth (shadow prices), and our first solve in `JuMP.jl`.
+**Monday**: How a solver walks the corners (the simplex method), what a binding constraint is worth (shadow prices), and using `JuMP.jl` to solve.
 
 **Wednesday**: Quiz 3, then the project proposal peer review.
 

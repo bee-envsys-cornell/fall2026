@@ -137,7 +137,7 @@ cb_purple = "#CC79A7"
 
 The mass balance of a small air control volume:
 
-$$\frac{\partial C}{\partial t} = \underbrace{\sum_{i=x,y,z}(D+K_{ii})\frac{\partial^2 C}{\partial x_i^2}}_{\text{diffusion}} - \underbrace{\vec{u}\cdot\vec{\nabla}C}_{\text{advection}} + \underbrace{S}_{\text{reactions}}$$
+$$\frac{\partial C}{\partial t} = \underbrace{\sum_{i=x,y,z}(D+K_{ii})\frac{\partial^2 C}{\partial x_i^2}}_{\text{diffusion}} - \underbrace{\mathbf{u}\cdot\nabla C}_{\text{advection}} + \underbrace{S}_{\text{reactions}}$$
 
 $D$: molecular diffusion; $K_{ii}$: turbulent mixing in direction $i$; $S$: reactions (none here).
 
@@ -197,7 +197,7 @@ Same form as Fick's law, but K describes the eddies, not the air. A rough way to
 
 ## Assumption 1: Steady State
 
-$$\cancel{\frac{\partial C}{\partial t}} = \sum_{i=x,y,z}(D+K_{ii})\frac{\partial^2 C}{\partial x_i^2} - \vec{u}\cdot\vec{\nabla}C$$
+$$\cancel{\frac{\partial C}{\partial t}} = \sum_{i=x,y,z}(D+K_{ii})\frac{\partial^2 C}{\partial x_i^2} - \mathbf{u}\cdot\nabla C$$
 
 Constant emissions and weather over the averaging period.
 
@@ -207,7 +207,7 @@ Steady state means we describe the plume averaged over a period when the stack e
 
 ## Assumption 2: Wind Only Along $x$
 
-$$\vec{u}\cdot\vec\nabla C = u_x\frac{\partial C}{\partial x} + \cancel{u_y\frac{\partial C}{\partial y}} + \cancel{u_z\frac{\partial C}{\partial z}}$$
+$$\mathbf{u}\cdot\nabla C = u_x\frac{\partial C}{\partial x} + \cancel{u_y\frac{\partial C}{\partial y}} + \cancel{u_z\frac{\partial C}{\partial z}}$$
 
 ::: {.notes}
 Part of this is just a choice: we point the x axis along the average wind, so by definition there is no mean wind across it. The real assumption is that the wind is uniform, with the same speed and direction everywhere, including at every height. Real wind speeds up with height, and that is one of the first things more advanced models relax. This is only about the mean wind; the gusts are still there, hiding inside K.
@@ -502,16 +502,16 @@ println("C(3 km, 0, 0) = ", round(Cground * 1e6, digits=1), " µg/m³")
 
 The same bookkeeping as the box and DO models, on a small cube of air $dx\,dy\,dz$:
 
-$$\frac{\partial C}{\partial t} = -\nabla\cdot\vec F + S$$
+$$\frac{\partial C}{\partial t} = -\nabla\cdot\mathbf{F} + S$$
 
-- $\vec F$: flux of pollutant through the cube's faces [mass/(area·time)]
+- $\mathbf{F}$: flux of pollutant through the cube's faces [mass/(area·time)]
 - $S$: reactions or sources inside the cube
 
-As the cube shrinks, "outflow minus inflow" per unit volume becomes the divergence $\nabla\cdot\vec F$.
+As the cube shrinks, "outflow minus inflow" per unit volume becomes the divergence $\nabla\cdot\mathbf{F}$.
 
 ## Contributions to Flux
 
-$$\vec F = \underbrace{\vec u\,C}_{\text{advection}} + \underbrace{\vec F_{\text{mol}}}_{\text{molecular diffusion}} + \underbrace{\vec F_{\text{turb}}}_{\text{turbulent mixing}}$$
+$$\mathbf{F} = \underbrace{\mathbf{u}\,C}_{\text{advection}} + \underbrace{\mathbf{F}_{\text{mol}}}_{\text{molecular diffusion}} + \underbrace{\mathbf{F}_{\text{turb}}}_{\text{turbulent mixing}}$$
 
 Advection is the wind carrying pollutant along. The other two are spreading, and both are driven by concentration gradients.
 
@@ -519,7 +519,7 @@ Advection is the wind carrying pollutant along. The other two are spreading, and
 
 **Fick's law** [@Fick1855-ud], modelled on Fourier's law of heat conduction:
 
-$$\vec F_{\text{mol}} = -D\,\nabla C$$
+$$\mathbf{F}_{\text{mol}} = -D\,\nabla C$$
 
 Molecules random-walk, and more of them step out of the crowded side than into it, so the flux runs **down** the gradient. $D \approx 10^{-5}$ m²/s for a gas in air: a property of the gases.
 
@@ -547,18 +547,18 @@ $$\overline{u_i'c'} = -K_{ii}\,\frac{\partial \bar C}{\partial x_i}$$
 Substitute the three fluxes (with $C$ now meaning $\bar C$), assuming
 
 - no reactions ($S = 0$);
-- incompressible flow ($\nabla\cdot\vec u = 0$, so $\nabla\cdot(\vec u C) = \vec u\cdot\nabla C$);
+- incompressible flow ($\nabla\cdot\mathbf{u} = 0$, so $\nabla\cdot(\mathbf{u} C) = \mathbf{u}\cdot\nabla C$);
 - constant coefficients.
 
 ::: {.small-math}
-$$\frac{\partial C}{\partial t} + \vec u\cdot\nabla C = (D + K_{xx})\frac{\partial^2 C}{\partial x^2} + (D + K_{yy})\frac{\partial^2 C}{\partial y^2} + (D + K_{zz})\frac{\partial^2 C}{\partial z^2}$$
+$$\frac{\partial C}{\partial t} + \mathbf{u}\cdot\nabla C = (D + K_{xx})\frac{\partial^2 C}{\partial x^2} + (D + K_{yy})\frac{\partial^2 C}{\partial y^2} + (D + K_{zz})\frac{\partial^2 C}{\partial z^2}$$
 :::
 
 ## Applying the Assumptions
 
 **Steady state**: constant emissions and weather over the averaging period, so $\partial C/\partial t = 0$.
 
-**Wind along $x$**: align the axes with the mean wind, and assume it is uniform, $\vec u = (u, 0, 0)$. Then $\vec u\cdot\nabla C = u\,\partial C/\partial x$.
+**Wind along $x$**: align the axes with the mean wind, and assume it is uniform, $\mathbf{u} = (u, 0, 0)$. Then $\mathbf{u}\cdot\nabla C = u\,\partial C/\partial x$.
 
 **Turbulence dominates molecular diffusion**: $D \sim 10^{-5}$ m²/s against $K \sim 1$--$100$ m²/s, five or more orders of magnitude apart. Drop $D$.
 

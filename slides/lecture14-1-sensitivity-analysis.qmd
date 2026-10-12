@@ -509,9 +509,9 @@ plot(p1, p2, layout=(2,1), size=(1200, 600))
 
 The Sobol method is a variance decomposition method, which attributes the variance of the output into contributions from individual parameters or interactions between parameters.
 
-$$S_i^1 = \frac{Var_{x_i}\left[E_{x_{\sim i}}(x_i)\right]}{Var(y)}$$
+$$S_i^1 = \frac{Var_{x_i}\left[E_{\mathbf{x}_{\sim i}}(x_i)\right]}{Var(y)}$$
 
-$$S_{i,j}^2 = \frac{Var_{x_{i,j}}\left[E_{x_{\sim i,j}}(x_i, x_j)\right]}{Var(y)}$$
+$$S_{i,j}^2 = \frac{Var_{\mathbf{x}_{i,j}}\left[E_{\mathbf{x}_{\sim i,j}}(x_i, x_j)\right]}{Var(y)}$$
 
 ## Sobol' Method: First and Total Order
 

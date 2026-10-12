@@ -182,7 +182,7 @@ Write the problem with binaries $u_i$ and outputs $y_i$.
 ::: {.fragment .fade-in}
 $$
 \begin{aligned}
-\min_{y, u} \quad & \sum_i \left(\text{FixedCost}_i \, u_i + \text{MarginalCost}_i \, y_i\right) \\
+\min_{\mathbf{y}, \mathbf{u}} \quad & \sum_i \left(\text{FixedCost}_i \, u_i + \text{MarginalCost}_i \, y_i\right) \\
 \text{subject to:} \quad & \sum_i y_i = d \\[0.3em]
 & y_i \leq P^{\text{max}}_i \, u_i \qquad \text{(no output when off)} \\[0.3em]
 & y_i \geq P^{\text{min}}_i \, u_i \qquad \text{(at least the minimum when on)} \\[0.3em]
@@ -255,12 +255,12 @@ Binaries also encode rules between decisions:
 |:--|:--|
 | at most one of CCGT and CT | $u_2 + u_3 \leq 1$ |
 | CT only if coal runs | $u_3 \leq u_1$ |
-| either $a^\top y \leq b_1$ or $c^\top y \leq b_2$ | $a^\top y \leq b_1 + M z$, $\ c^\top y \leq b_2 + M(1 - z)$ |
+| either $\mathbf{a}^\top \mathbf{y} \leq b_1$ or $\mathbf{c}^\top \mathbf{y} \leq b_2$ | $\mathbf{a}^\top \mathbf{y} \leq b_1 + M z$, $\ \mathbf{c}^\top \mathbf{y} \leq b_2 + M(1 - z)$ |
 
 $z$ is binary; $M$ is big enough to switch one off ("big-$M$").
 
 ::: {.notes}
-These are patterns, not results: in this example the at-most-one rule doesn't change the answer at any demand we tried. The either/or (disjunctive) form uses one binary to choose which of two constraints holds; M has to be big enough to make the other constraint non-binding, and no bigger than necessary, because a huge M makes the LP relaxation weak. Homework 7 asks you to use each of these.
+These are patterns, not results: in this example the at-most-one rule doesn't change the answer at any demand we tried. The either/or (disjunctive) form uses one binary to choose which of two constraints holds; M has to be big enough to make the other constraint non-binding, and no bigger than necessary, because a huge M makes the LP relaxation weak. Homework 7 uses the at-most-one and if-then patterns, each as one linear constraint on the binaries.
 :::
 
 # The LP Relaxation

@@ -184,7 +184,7 @@ C(x) &= C_s(1 - \alpha_1) + C_0 \alpha_1 - B_0 \alpha_2 - N_0 \alpha_3 + \left(\
 #| label: fig-do-sim
 #| fig-cap: "Sag curve for dissolved oxygen"
 
-function do_analytic(x, C0, B0, N0, ka, kn, kc, Cs, U)
+function do_analytic(x, C0, B0, N0, ka, kc, kn, Cs, U)
     B = B0 * exp(-kc * x / U)
     N = N0 * exp(-kn * x / U)
     α1 = exp(-ka * x / U)
@@ -358,7 +358,7 @@ $$
 #| label: do-numerical
 #| code-line-numbers: "|2|3-5|9-13"
 
-function do_numerical(L, Δx, C0, B0, N0, ka, kn, kc, Cs, U)
+function do_numerical(L, Δx, C0, B0, N0, ka, kc, kn, Cs, U)
     n = Int(L / Δx) # number of length steps
     C = zeros(n + 1)
     B = zeros(n + 1)
@@ -417,7 +417,7 @@ Framework from @Oreskes1994-br:
 Typical procedures include:
 
 - Selection of parameters based on experimental results;
-- "Curve-fitting": minimize some error metric, such as root-mean-square-error: $$\text{RMSE} = \sqrt{\frac{1}{n}\sum_{i=1^n} (y_\text{sim} - y_\text{obs})^2}$$
+- "Curve-fitting": minimize some error metric, such as root-mean-square-error: $$\text{RMSE} = \sqrt{\frac{1}{n}\sum_{i=1}^n (y_{\text{sim},i} - y_{\text{obs},i})^2}$$
 
 Curve-fitting can run into problems when systems have multiple compensating processes. 
 

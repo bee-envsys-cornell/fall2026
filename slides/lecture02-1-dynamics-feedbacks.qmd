@@ -291,6 +291,12 @@ $$\begin{aligned}
 - if $g < 0$: dampening feedback
 - if $g > 1$: system instability
 
+## Loop Gain, Not Rate Gain
+
+Here $g$ is the **loop gain** of the fixed-point form $x = F[p(x)]$, not the rate gain $\partial(dx/dt)/\partial x$ used for stability.
+
+The series needs $|g| < 1$, but as the equilibrium shift for a sustained change, $\frac{\text{Direct Effect}}{1-g}$ holds whenever $g < 1$.
+
 
 ## Other Environmental Feedbacks
 

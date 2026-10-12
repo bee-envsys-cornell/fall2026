@@ -166,9 +166,9 @@ About three minutes. We relaxed divisibility with mixed integer programming; tod
 
 ## Act, Learn, Act
 
-1. Make a decision $x$ under uncertainty (**here and now**).
+1. Make a decision $\mathbf{x}$ under uncertainty (**here and now**).
 2. Observe which scenario happens.
-3. Make a **recourse** decision that compensates for $x$ in that scenario.
+3. Make a **recourse** decision that compensates for $\mathbf{x}$ in that scenario.
 
 **Dispatch version**: dispatch hour 1, get better forecasts of demand and wind, re-dispatch (possibly with expensive peakers) to meet hour 2.
 
@@ -197,11 +197,11 @@ $x_i$: acres planted; $y_i$: T bought; $z_i$: T sold ($z_3$ beets at the quota p
 
 $$
 \begin{aligned}
-\max_{x, y, z} \quad & -150x_1 - 230x_2 - 260x_3 - 238y_1 - 210y_2 \\
+\max_{\mathbf{x}, \mathbf{y}, \mathbf{z}} \quad & -150x_1 - 230x_2 - 260x_3 - 238y_1 - 210y_2 \\
 & \quad + 170z_1 + 150z_2 + 36z_3 + 10z_4 \\
 \text{subject to:} \quad & x_1 + x_2 + x_3 \leq 500 \\
 & 2.5x_1 + y_1 - z_1 \geq 200, \qquad 3x_2 + y_2 - z_2 \geq 240 \\
-& z_3 + z_4 \leq 20x_3, \qquad z_3 \leq 6000, \qquad x, y, z \geq 0
+& z_3 + z_4 \leq 20x_3, \qquad z_3 \leq 6000, \qquad \mathbf{x}, \mathbf{y}, \mathbf{z} \geq \mathbf{0}
 \end{aligned}
 $$
 
@@ -337,7 +337,7 @@ Board item, about four minutes. Give students a minute to write the good-year bl
 
 Maximize **expected** profit: planting cost once, plus each scenario's sales minus purchases, weighted by its probability.
 
-$$\max_{x, y, z} \quad -\sum_i c_i x_i + \sum_s p_s \left(\text{sales}_s - \text{purchases}_s\right)$$
+$$\max_{\mathbf{x}, \mathbf{y}, \mathbf{z}} \quad -\sum_i c_i x_i + \sum_s p_s \left(\text{sales}_s - \text{purchases}_s\right)$$
 
 ::: {.fragment .fade-in}
 Other choices are possible: a quantile to hedge against bad years, or the variance of profit to smooth year-to-year swings.
@@ -448,6 +448,8 @@ About two minutes. The last takeaway sets up Wednesday: with decisions every yea
 
 **HW8** and **MP2**: due Thursday, November 19.
 
+**HW9**: assigned Wednesday, due Thursday, December 3.
+
 **Quiz 6**: Monday, December 7.
 
 # Appendix
@@ -475,9 +477,9 @@ Scenarios: good (blue), average (purple), bad (red).
 
 ## General Two-Stage Notation
 
-$$\max_x \; \underbrace{f(x)}_{\text{first stage}} + \mathbb{E}_\xi\left[\underbrace{Q(x; \xi)}_{\substack{\text{best recourse after} \\ \text{seeing } \xi}}\right]$$
+$$\max_{\mathbf{x}} \; \underbrace{f(\mathbf{x})}_{\text{first stage}} + \mathbb{E}_{\boldsymbol{\xi}}\left[\underbrace{Q(\mathbf{x}; \boldsymbol{\xi})}_{\substack{\text{best recourse after} \\ \text{seeing } \boldsymbol{\xi}}}\right]$$
 
-With discrete scenarios $\xi_s$ and probabilities $p_s$, the expectation is $\sum_s p_s\, Q(x; \xi_s)$, which is what the farmer model maximizes.
+With discrete scenarios $\boldsymbol{\xi}_s$ and probabilities $p_s$, the expectation is $\sum_s p_s\, Q(\mathbf{x}; \boldsymbol{\xi}_s)$, which is what the farmer model maximizes.
 
 # References
 

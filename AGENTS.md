@@ -37,6 +37,35 @@ Two repos are not on a year branch: `exams/midterm1` sits on `main` (which holds
 Current branches, as of Fall 2026 setup: `labs/lab01`, `hw/hw01`–`hw03`, `hw/solutions/hw01`–`hw03`,
 and `quizzes/quiz01` are on `Fall26`; `labs/lab02`–`lab03`, `hw/hw04`–`hw05`, and
 `hw/solutions/hw04`–`hw05` are still on `Fall25`.
+*Updated Oct 8:* `hw/hw05` and `hw/solutions/hw05` are on `Fall26`. `labs/lab02`, `labs/lab03`,
+`labs/lab04` (cloned from `bee-envsys-cornell/lab04`), `labs/solutions/lab02-solution` and
+`labs/solutions/lab03-solution` (cloned) have new, uncommitted `Fall26` branches holding the FA26 Labs
+2–4; FA26 Lab N lives in repo `labN`, so Lab 2 (JuMP) replaced the old Monte Carlo lab in `lab02`.
+`quizzes/quiz01`–`quiz04` are repos on `Fall26` (remotes `bee-envsys-cornell/quizNN`). The new
+assignment folders `hw/hw06`–`hw09`, their solutions, `labs/solutions/lab04` and
+`quizzes/quiz05`–`quiz06` are local repos initialised on `Fall26` with no commits and no remote yet,
+like `mini-project/mp02`.
+
+## Homework format
+
+Problem headings give the points as a bare number, to save space: `### Problem 1 (15)`,
+`#### Problem 1.1 (5)`, never "(15 points)" or "(1 point)" (decided Oct 8). The overall line stays
+`## Problems (Total: 50 Points)`. Rubric text inside a key's callouts can still say "points".
+
+The Overview's Instructions list has one bullet per problem, each saying what the problem asks you
+to do: "Problem 3 asks you to find … by hand, then check them in `JuMP`." Add the "Write your answers
+in Markdown cells" bullet when the homework has sketches. Leave out study advice ("do the hand parts
+first"), lecture dates, and commentary on the assignment (from the instructor's HW6 edit, Oct 9).
+
+**Homework keys carry no rubric notes** (decided Oct 9; mini-project and quiz keys keep their grading notes). Grading follows the public standard rubrics in
+`policies/rubric.qmd` (Formulation, Solution, Analysis and Interpretation, Figures), so a key gives the
+model answer and its reasoning, with no per-part point splits, partial-credit fractions, or lists of
+common errors. A note stays only where a correct answer can legitimately vary and the prompt cannot pin it
+(a solver artefact, Monte Carlo noise), in one sentence. If a key would need to list several acceptable
+answers, the problem is not pinned well enough: tighten the prompt instead (state the sign convention, the
+rounding, the form of the constraint). Deliberately open questions are fine in moderation: tradeoffs,
+recommendations, what information would change the answer. When a new kind of problem appears, extend the
+"What this looks like" lists on the rubric page rather than writing a per-assignment rubric.
 
 ## Two GitHub organizations
 
@@ -78,6 +107,15 @@ drifted: **it will usually work when you test it**, so a passing check is not ev
 cell ever loads it either, so it looks unused. Do not remove it when trimming an environment down to
 what an assignment uses, and check for it whenever you create a new year's branch. The
 same rule holds for BEE 4850.
+
+**Check every assignment environment for IJulia when branching** (HW2 and HW3 were missing it; added
+Oct 9). From `~/Teaching/BEE4750`:
+
+```bash
+for p in hw/hw0?/Project.toml labs/lab0?/Project.toml mini-project/mp0?/Project.toml; do
+  grep -q '^IJulia' "$p" || echo "missing IJulia: $p"
+done
+```
 
 ## Structure
 
@@ -132,6 +170,10 @@ error, and both survive a source review. If the PDF has to carry callouts, build
 *(Moved here from the `assignment-authoring` skill on 2026-09-28, since it is specific to this course's
 Quarto → notebook → PDF pipeline.)*
 
+**Thousands separators in math: write `32\text{,}000`** (decided Oct 9). Typst renders both `32{,}000` and
+`32,000` inside math as "32, 000", with a space; `\text{,}` renders correctly in Typst, LaTeX and MathJax.
+Prose and table numbers are unaffected.
+
 ## Known traps
 
 - **Keep the syllabus's meeting count in step with the schedule.** `syllabus.qmd` states the number of
@@ -149,6 +191,15 @@ Quarto → notebook → PDF pipeline.)*
   size (`zeros(n)`, `Vector{Float64}(undef, n)`) and fill it by index, so slides, assignments, keys,
   and tutorials must do the same: never start empty (`x = Float64[]`) and `push!` in a loop. The one
   exception is code whose point is to show why appending is slow.
+- **Every result's setup is on a slide** [instructor, Oct 10, 2026; a recurring miss]. Before a worked
+  example's results, a slide states its scenario and every value and condition the results depend on
+  (for a plume: emission rates, effective stack height, wind speed, stability class, receptor
+  locations, and the standard), and a figure shows the setup itself (a site map, a network, the input
+  series). Folded code and comments ("last week's stack, Class F") don't count, because the room sees
+  slides. Restate an example carried over from an earlier lecture, give a new quantity (a transmission
+  factor) its own slide with its units, what it depends on and one worked instance before any table of
+  it, and label what a figure needs to be read (level-line values, units). When compressing lectures,
+  cut a result before its setup. Lecture 8-2 had lost all of this for the two-stack LP (restored Oct 10).
 - **Callout syntax.** Use `::: {.callout-note}` — hyphenated. The space-separated `::: {.callout .note}`
   is invalid, renders a callout titled literally "None" rather than failing, and currently appears in
   `~/Teaching/BEE4750/hw/solutions/hw02/hw02.qmd`.
@@ -198,6 +249,13 @@ Quarto → notebook → PDF pipeline.)*
   resolved with ("Julia version mismatch in notebook file"). Re-resolve with that version's
   `Pkg.resolve()`; if a pinned build has since been removed from the registry, copy a freshly resolved
   environment with the same packages.
+
+- **An edited deck must be re-rendered.** `freeze: auto` stores the whole executed document, prose
+  included, so a source edit shows up only after that deck is rendered again (one deck at a time).
+- **A deck with no `exeflags` of its own falls back to `_quarto.yml`'s `+1.12`,** a juliaup channel that is
+  not installed here; the render fails in about two seconds. The FA25 source decks
+  `lecture10-1-capacity-expansion-2`, `lecture14-1-sensitivity-analysis` and
+  `lecture15-2-simulation-optimization` are in this state (not on the FA26 schedule).
 
 ## Known stale artifacts
 

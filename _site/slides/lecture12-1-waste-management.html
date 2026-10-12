@@ -260,15 +260,16 @@
 <p>An optional facility needs a <strong>binary</strong> <span class="math inline">\(u \in \{0, 1\}\)</span>:</p>
 <ul>
 <li>fixed cost <span class="math inline">\(\times\, u\)</span> in the objective (paid only if it operates);</li>
-<li>output <span class="math inline">\(\leq\)</span> capacity <span class="math inline">\(\times\, u\)</span> (a closed facility does nothing).</li>
+<li>output <span class="math inline">\(\leq\)</span> capacity <span class="math inline">\(\times\, u\)</span> (a closed facility does nothing);</li>
+<li>output <span class="math inline">\(\geq\)</span> minimum <span class="math inline">\(\times\, u\)</span> (at least the minimum when on).</li>
 </ul>
 <p>Today: the same idea when the decisions are <strong>flows</strong> through a network.</p>
 <aside class="notes">
 <p>SUB SHEET (one page; read this before class).</p>
-<p>Today’s four takeaways: (1) In a network model the decisions are the flows along the arcs, and the constraints are conservation at each node: what arrives equals what leaves, transformed (a recycler passes on 60% as residual, a combustor leaves 20% as ash). (2) A facility that might not operate needs a binary. It appears twice: fixed cost times Y in the objective, and in the capacity constraint, flow in at most capacity times Y, so a closed facility takes nothing. (3) Facilities can open for non-obvious reasons: here the waste-to-energy plant runs only because the landfill is full. Make the landfill 20 Mg/day larger and it closes. (4) The network alone is not a model: you also need what happens at each node, costs, and the rules.</p>
+<p>Today’s four takeaways: (1) In a network model the decisions are the flows along the arcs, and the constraints are conservation at each node: what arrives equals what leaves, transformed (a recycler passes on 60% as residual, a combustor leaves 20% as ash). (2) A facility that might not operate needs a binary. It appears in the objective, fixed cost times Y, and in every constraint that has to change when the facility is closed. Here that is the capacity constraint, flow in at most capacity times Y, so a closed facility takes nothing; a minimum feed would need Y too. (3) Facilities can open for non-obvious reasons: here the waste-to-energy plant runs only because the landfill is full. Make the landfill 20 Mg/day larger and it closes. (4) The network alone is not a model: you also need what happens at each node, costs, and the rules.</p>
 <p>Key numbers (all computed in the deck): optimal cost about $26,881 per day with all three facilities open; with a 220 Mg/day landfill the WTE closes and the cost drops to about $24,539 per day.</p>
 <p>Likely questions. Why is the WTE open if it is expensive? Because the landfill is exactly full, and the recycler’s residual has to go somewhere. Why is the binary in the capacity constraint? So that a closed facility cannot receive anything: one constraint does the job of “if Y is zero, no flow”. What is “residual”? What a facility passes on after processing: the recycler sends 60% of what it receives onward, and the combustor leaves 20% as ash.</p>
-<p>Logistics: HW8 is assigned today and is due Thursday, November 19 (network models and waste allocation). Quiz 5 is Monday, November 16. The TA runs this week’s lab (Lab 3, facility siting in JuMP). Every question on a slide has its answer as the next fragment, so no board work is needed. If the poll does not work on your account, skip it.</p>
+<p>Logistics: HW8 is assigned Wednesday and is due Thursday, November 19 (network models and waste allocation). Quiz 5 is Monday, November 16. The TA runs this week’s lab (Lab 3, facility siting in JuMP). Every question on a slide has its answer as the next fragment, so no board work is needed. If the poll does not work on your account, skip it.</p>
 <p>Timing: be on “Solid Waste Management” by minute 4, the example system by minute 22, the costs by minute 28, the mass balances by minute 38, solving by minute 52, and the takeaways by minute 64. If short, cut in this order: the discussion on the what-if slide (show the table only), the transfer-station check, the “Network Models Elsewhere” slide, the worked cost coefficient.</p>
 <p>On this slide: one minute. Recall from the mixed integer programming lecture that a binary variable turns an on/off decision into linear constraints. Today that idea meets a network.</p>
 <style type="text/css">
@@ -749,10 +750,10 @@
 \]</span></p>
 <p><strong>Check</strong>: Which constraints need a binary, and why?</p>
 <div class="fragment fade-in">
-<p>Only the capacity constraints, because <span class="math inline">\(Y_j = 0\)</span> has to stop anything arriving.</p>
+<p>Any that must change when it closes: here, the capacities (a minimum feed would too).</p>
 </div>
 <aside class="notes">
-<p>About four minutes. This one constraint per facility does two jobs: it is the capacity limit when the facility is open, and it forces every incoming flow to zero when it is closed. That is why Y belongs here and not in the city balances. Make sure the landfill line includes the residual and ash arriving from the other facilities: everything that arrives counts.</p>
+<p>About four minutes. This one constraint per facility does two jobs: it is the capacity limit when the facility is open, and it forces every incoming flow to zero when it is closed. That is why Y belongs here and not in the city balances. The test for any constraint is whether it has to change when the facility is closed. The residual balances don’t: once nothing arrives at a closed facility, its residual is zero anyway. A minimum feed (this model has none) would need Y too, as flow in at least the minimum times Y; otherwise it would force a closed facility to take waste. Make sure the landfill line includes the residual and ash arriving from the other facilities: everything that arrives counts.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -769,7 +770,7 @@
 <h2>The Full Problem</h2>
 <p><span class="math display">\[
 \begin{aligned}
-\min_{W, R, Y} \quad &amp; \sum_{i, j} C_{ij} W_{ij} + \sum_{k, j} C^R_{kj} R_{kj} + \sum_j c_j Y_j \\
+\min_{\mathbf{W}, \mathbf{R}, \mathbf{Y}} \quad &amp; \sum_{i, j} C_{ij} W_{ij} + \sum_{k, j} C^R_{kj} R_{kj} + \sum_j c_j Y_j \\
 \text{subject to:} \quad &amp; \textstyle\sum_j W_{ij} = S_i \\
 &amp; \text{residual out of } k = \text{fraction} \times \text{input to } k \\
 &amp; \textstyle\sum_i W_{ij} + \sum_k R_{kj} \leq K_j\,Y_j \\
@@ -987,7 +988,7 @@
 <h2>Key Takeaways</h2>
 <ul>
 <li>A network model’s decisions are <strong>flows</strong> on arcs, constrained by <strong>conservation</strong> at each node.</li>
-<li>An optional facility needs a <strong>binary</strong>: fixed cost <span class="math inline">\(\times\, Y_j\)</span> in the objective, and flow in <span class="math inline">\(\leq K_j Y_j\)</span>.</li>
+<li>An optional facility needs a <strong>binary</strong>: fixed cost <span class="math inline">\(\times\, Y_j\)</span> in the objective, and in every constraint that changes when it is closed (here, flow in <span class="math inline">\(\leq K_j Y_j\)</span>).</li>
 <li>Facilities can open for <strong>non-obvious reasons</strong>: the WTE runs only because the landfill is full.</li>
 <li>A network graph becomes a model only with fate and transport, costs, and rules.</li>
 </ul>
@@ -1056,7 +1057,7 @@
 </section>
 <section id="assessments" class="slide level2">
 <h2>Assessments</h2>
-<p><strong>HW8</strong>: assigned today, due Thursday, November 19 (network models and waste allocation).</p>
+<p><strong>HW8</strong>: assigned Wednesday, due Thursday, November 19 (network models and waste allocation).</p>
 <p><strong>Project update</strong>: due Friday, November 13.</p>
 <p><strong>Quiz 5</strong>: Monday, November 16 (capacity expansion, mixed integer programming, and waste and network models).</p>
 <aside class="notes">

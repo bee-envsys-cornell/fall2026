@@ -379,9 +379,9 @@
 <section id="act-learn-act" class="slide level2">
 <h2>Act, Learn, Act</h2>
 <ol type="1">
-<li>Make a decision <span class="math inline">\(x\)</span> under uncertainty (<strong>here and now</strong>).</li>
+<li>Make a decision <span class="math inline">\(\mathbf{x}\)</span> under uncertainty (<strong>here and now</strong>).</li>
 <li>Observe which scenario happens.</li>
-<li>Make a <strong>recourse</strong> decision that compensates for <span class="math inline">\(x\)</span> in that scenario.</li>
+<li>Make a <strong>recourse</strong> decision that compensates for <span class="math inline">\(\mathbf{x}\)</span> in that scenario.</li>
 </ol>
 <p><strong>Dispatch version</strong>: dispatch hour 1, get better forecasts of demand and wind, re-dispatch (possibly with expensive peakers) to meet hour 2.</p>
 <aside class="notes">
@@ -431,11 +431,11 @@
 <p><span class="math inline">\(x_i\)</span>: acres planted; <span class="math inline">\(y_i\)</span>: T bought; <span class="math inline">\(z_i\)</span>: T sold (<span class="math inline">\(z_3\)</span> beets at the quota price, <span class="math inline">\(z_4\)</span> above it).</p>
 <p><span class="math display">\[
 \begin{aligned}
-\max_{x, y, z} \quad &amp; -150x_1 - 230x_2 - 260x_3 - 238y_1 - 210y_2 \\
+\max_{\mathbf{x}, \mathbf{y}, \mathbf{z}} \quad &amp; -150x_1 - 230x_2 - 260x_3 - 238y_1 - 210y_2 \\
 &amp; \quad + 170z_1 + 150z_2 + 36z_3 + 10z_4 \\
 \text{subject to:} \quad &amp; x_1 + x_2 + x_3 \leq 500 \\
 &amp; 2.5x_1 + y_1 - z_1 \geq 200, \qquad 3x_2 + y_2 - z_2 \geq 240 \\
-&amp; z_3 + z_4 \leq 20x_3, \qquad z_3 \leq 6000, \qquad x, y, z \geq 0
+&amp; z_3 + z_4 \leq 20x_3, \qquad z_3 \leq 6000, \qquad \mathbf{x}, \mathbf{y}, \mathbf{z} \geq \mathbf{0}
 \end{aligned}
 \]</span></p>
 <aside class="notes">
@@ -639,7 +639,7 @@
 <section id="the-two-stage-objective" class="slide level2">
 <h2>The Two-Stage Objective</h2>
 <p>Maximize <strong>expected</strong> profit: planting cost once, plus each scenario’s sales minus purchases, weighted by its probability.</p>
-<p><span class="math display">\[\max_{x, y, z} \quad -\sum_i c_i x_i + \sum_s p_s \left(\text{sales}_s - \text{purchases}_s\right)\]</span></p>
+<p><span class="math display">\[\max_{\mathbf{x}, \mathbf{y}, \mathbf{z}} \quad -\sum_i c_i x_i + \sum_s p_s \left(\text{sales}_s - \text{purchases}_s\right)\]</span></p>
 <div class="fragment fade-in">
 <p>Other choices are possible: a quantile to hedge against bad years, or the variance of profit to smooth year-to-year swings.</p>
 </div>
@@ -843,6 +843,7 @@
 <section id="assessments" class="slide level2">
 <h2>Assessments</h2>
 <p><strong>HW8</strong> and <strong>MP2</strong>: due Thursday, November 19.</p>
+<p><strong>HW9</strong>: assigned Wednesday, due Thursday, December 3.</p>
 <p><strong>Quiz 6</strong>: Monday, December 7.</p>
 </section></section>
 <section>
@@ -868,8 +869,8 @@
 </section>
 <section id="general-two-stage-notation" class="slide level2">
 <h2>General Two-Stage Notation</h2>
-<p><span class="math display">\[\max_x \; \underbrace{f(x)}_{\text{first stage}} + \mathbb{E}_\xi\left[\underbrace{Q(x; \xi)}_{\substack{\text{best recourse after} \\ \text{seeing } \xi}}\right]\]</span></p>
-<p>With discrete scenarios <span class="math inline">\(\xi_s\)</span> and probabilities <span class="math inline">\(p_s\)</span>, the expectation is <span class="math inline">\(\sum_s p_s\, Q(x; \xi_s)\)</span>, which is what the farmer model maximizes.</p>
+<p><span class="math display">\[\max_{\mathbf{x}} \; \underbrace{f(\mathbf{x})}_{\text{first stage}} + \mathbb{E}_{\boldsymbol{\xi}}\left[\underbrace{Q(\mathbf{x}; \boldsymbol{\xi})}_{\substack{\text{best recourse after} \\ \text{seeing } \boldsymbol{\xi}}}\right]\]</span></p>
+<p>With discrete scenarios <span class="math inline">\(\boldsymbol{\xi}_s\)</span> and probabilities <span class="math inline">\(p_s\)</span>, the expectation is <span class="math inline">\(\sum_s p_s\, Q(\mathbf{x}; \boldsymbol{\xi}_s)\)</span>, which is what the farmer model maximizes.</p>
 </section></section>
 <section>
 <section id="references" class="title-slide slide level1 center">

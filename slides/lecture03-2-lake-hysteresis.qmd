@@ -87,15 +87,14 @@ cb_purple = "#CC79A7"
 
 The **feedback gain** $g$ measures how strongly a change in the state feeds back on itself.
 
-If $x = F[p(x, \ldots)]$, then $$g = \frac{\partial F}{\partial x} = \frac{\partial F}{\partial p}\frac{\partial p}{\partial x}.$$
+If $\frac{dx}{dt} = f[p(x, \ldots)]$, then $$g = \frac{\partial f}{\partial x} = \frac{\partial f}{\partial p}\frac{\partial p}{\partial x}.$$
 
 ## Meanings Of Different Gains
 
 :::: {.columns}
 ::: {.column width=50%}
-- $0 < g < 1$: **amplifying** but total effect converges to a finite value
-- $g \geq 1$: **amplifying** but total effect diverges -- will runaway until hitting some other limit
-- $g < 0$: **dampening**
+- $g < 0$: **dampening**: perturbations shrink (stable)
+- $g > 0$: **amplifying**: perturbations grow (unstable) -- will runaway until hitting some other limit
 :::
 ::: {.column width=50%}
 With several feedback processes acting at once, the gains add:
@@ -115,10 +114,10 @@ For $X_{t+1} = F(X_t)$: $F(\hat{X}) = \hat{X}$.
 - **unstable** if $|F'(\hat{X})| > 1$
 :::
 ::: {.column width=50%}
-For $dX/dt = f(X_t)$: $f(\hat{X}) = 0$.
+For $dX/dt = f(X)$: $f(\hat{X}) = 0$.
 
-- **stable** if $|f'(\hat{X})| < 0$ 
-- **unstable** if $|f'(\hat{X})| > 0$
+- **stable** if $f'(\hat{X}) < 0$
+- **unstable** if $f'(\hat{X}) > 0$
 
 :::
 ::::
@@ -202,7 +201,15 @@ lake_P_change(P, L, q) = L - lake_P_loss(P) + lake_P_release(P, q);
 P_grid = 0:0.1:60
 
 # HW 2's piecewise-linear release: nothing below 25, ramping to the maximum at 35.
-R_hw2(P) = P <= 25 ? 0.0 : (P >= 35 ? 20.0 : 20 * (P - 25) / 10)
+function R_hw2(P)
+    if P <= 25
+        return 0.0
+    elseif P >= 35
+        return 20.0
+    else
+        return 20 * (P - 25) / 10
+    end
+end
 
 p_rec = plot(xlims=(0, 60), ylims=(0, 23), legend=:topleft,
     xticks=[0, 10, 20, 25, 35, 40, 50, 60],
@@ -318,7 +325,7 @@ $$\begin{gathered}
 F'(P) = 1 + \underbrace{R'(P)}_{\substack{\text{amplifying} \\ \text{(sediment)}}} - \underbrace{s}_{\substack{\text{dampening} \\ \text{(loss)}}} = 1 + g(P) \\ R'(P) = \frac{rq}{P}\frac{x}{(1+x)^2},\ x = \left(\frac{P}{m}\right)^q
 \end{gathered}$$
 
-Stablity requires $|F'| < 1$, or: 
+Stability requires $|F'| < 1$, or: 
 $$\bbox[5pt, border: 3px solid red]{g(P) < 0 \quad \Longleftrightarrow \quad R'(P) < s}$$
 
 ## Gain at the Three Equilibria

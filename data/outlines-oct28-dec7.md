@@ -6,8 +6,8 @@ Nine lecture sessions remain after the Oct 21 peer review; the two TA labs (Lab 
 
 | Date | Session (Lecture) | Minutes | Who | Source → deck file | Slides | Anchor |
 |:--|:--|--:|:--|:--|--:|:--|
-| Wed Oct 28 | Economic Dispatch (15) | 75 | Sub (power systems) | `lecture10-2-economic-dispatch` (revise) | ~32 | 13-unit dispatch at 1600 MW: price $38/MWh = −shadow price; NYISO day with hourly prices; 2× solar: midday $0, dusk $45 |
-| Mon Nov 2 | Capacity Expansion (16) | 75 | Instructor | 09-1 capacity half + `10-1-capacity-expansion-2` → `lecture11-1-capacity-expansion` | ~30 | Screening crossovers (1700 h, 7.25 h) reproduce the LP build; CO₂ cap shadow price $39.3/t by hand |
+| Wed Oct 28 | Economic Dispatch (15) | 75 | Sub (power systems) | `lecture10-2-economic-dispatch` (revise) | ~32 | 12-plant dispatch (with a 600 MW nuclear unit) at 2200 MW: price $38/MWh = −shadow price; an illustrative fall day with hourly prices; 3× solar: midday $0, dusk $45 |
+| Mon Nov 2 | Capacity Expansion (16) | 75 | Instructor | 09-1 capacity half + `10-1-capacity-expansion-2` → `lecture11-1-capacity-expansion` | ~30 | Screening crossovers (1700 h, 7.25 h) reproduce the LP build; wind and solar added with a worked example; CO₂ cap shadow price $148/t by hand (thermal only), $15/t with wind and solar (revised Oct 11) |
 | Wed Nov 4 | Mixed Integer Programming (17) | 50 (Quiz 4) | Instructor | `lecture11-1-mixed-integer` → `lecture11-2-mixed-integer` | ~21 | Three plants with fixed costs: at 150 MW the CCGT beats cheaper coal; switch at 200 MW; LP relaxation 12.7% below |
 | Mon Nov 9 | Waste and Network Models (18) | 75 | Sub (general) | `lecture12-1-waste-management` (sub-ready) | ~29 | Deck's own 2-city, 3-facility network (\$26,881/day, all open); landfill 220 Mg/day → WTE closes |
 | Mon Nov 16 | Stochastic Optimization (19) | 50 (Quiz 5) | Instructor | `lecture13-1-stochastic-optimization` | ~21 | Farmer, corrected: VSS \$1,150, EVPI \$7,016 |
@@ -23,15 +23,15 @@ Lecture numbers count from Lecture 14 (Oct 19); the Oct 21 peer review and the D
 Reply with the numbers you'd change; the rest go ahead as recommended.
 
 **Oct 28 — Economic Dispatch (sub)**
-1. Show JuMP's shadow prices: single-period model with `= demand` and named capacity constraints, plus one output slide (demand −38; hydro −38 … CCGT4 −2; off plants 0). Quiz 4 Q2 reads exactly this; the deck never prints a shadow price now, and its sign slide reasons backwards.
+1. Show JuMP's shadow prices: single-period model with `= demand` and named capacity constraints, plus one output slide (demand −38; hydro −38 … CCGT4 −2; off plants 0). Quiz 4 Q2 reads exactly this; the deck never prints a shadow price now, and its sign slide reasons backwards. *(Oct 11: the capacity shadow prices were later cut from the deck and the quiz; only the demand shadow price is shown.)*
 2. Replace the "ramping costs \$323 (0.04%)" slide with hourly prices from the load duals and a twice-solar case (midday \$0, dusk \$45; holds from 2× to 4× solar). Claim that solar and ramping reshape *prices*, not total cost (under 1% even at 3× solar).
 3. A carbon price appears only as one bullet that reorders the merit order; MP2's carbon-tax sweep is the students' job.
 4. Use the local EIA duck-curve image (the quiz's copy); convert to FA26 style.
 
 **Nov 2 — Capacity Expansion**
 5. Add screening curves and read the LP's build off the load-duration curve: CT beats CCGT under 1700 h, not serving beats CT under 7.25 h → CCGT 2017 MW, CT 733 MW, 31 MW unserved for 7 hours. Answers the deck's own unanswered "why any unserved energy?".
-6. Add a CO₂ cap and its shadow price (−\$39.29/t, derivable by hand from geothermal replacing CCGT), **but don't demo the tax equivalence**: on this thermal-only data a tax at the shadow price gives 2229 kt, not the capped 5009 kt (flat, degenerate abatement). It does work on MP2's data (1.5 Mt cap → \$182.77/t → 1.503 Mt), so MP2's key should say "matches within a few kt", not "identical".
-7. Keep renewables conceptual (the capacity-factor constraint and its JuMP pattern); a renewable LP run would pre-solve MP2.
+6. Add a CO₂ cap and its shadow price (−\$39.29/t, derivable by hand from geothermal replacing CCGT), **but don't demo the tax equivalence**: on this thermal-only data a tax at the shadow price gives 2229 kt, not the capped 5009 kt (flat, degenerate abatement). It does work on MP2's data (1.5 Mt cap → \$182.77/t → 1.503 Mt), so MP2's key should say "matches within a few kt", not "identical". *(Oct 11: the firm plant is now nuclear and the price $147.91/t; see the Nov 2 header.)*
+7. Keep renewables conceptual (the capacity-factor constraint and its JuMP pattern); a renewable LP run would pre-solve MP2. *(Reversed Oct 11: the lecture now solves a plan with wind and solar, on a good site so that it does not give MP2's answer.)*
 8. Move the power-system overview slides to Oct 28, the first power-systems session.
 9. Archive `slides/lecture10-1-gaussian-plumes.qmd`: its first 271 lines are `capacity-expansion-2` with a different title; the rest is the superseded FA25 plume lecture.
 
@@ -96,6 +96,18 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
 - **Source:** `slides/lecture10-2-economic-dispatch.qmd`. FA25 content with the date, Next Classes and Assessments already updated for FA26 on Sep 23.
 - **Status:** Revise. Keep multi-period dispatch and the renewables/duck-curve material.
 - **Assessments:** MP2 is assigned today, and Quiz 4 (Nov 4) assesses this session.
+- **Revised Oct 11 (instructor's decisions):**
+  - The capacity shadow-price slide and its takeaway are cut: a generator's own capacity shadow price is not read in practice. Quiz 4 Question 2 (b)–(d) were rewritten to match: the cost of a 20 MW rise in demand from the demand shadow price ($600), the price after a 150 MW rise ($60), and the cost of a 50 MW minimum output on the combustion turbine ($1,500).
+  - Ramp limits are shown for dispatchable plants only. Wind and solar are not described as ramping, and the model no longer puts ramp constraints on them.
+  - The fleet gains a 600 MW nuclear unit (50% minimum output, 25% of capacity per hour, $8/MWh) and loses CT6 and CT7, which never ran. Demand rises 600 MW (the single hour is 2200 MW; the day runs 1,926–2,422 MW) and is presented as an illustrative fall day, with no zone or date, because it is no longer real data.
+  - The solar case moves from twice to three times the solar. With nuclear in the fleet, twice the solar gave prices of $0, $22 and $2 in hours 14–16, which are hard to explain.
+- **Checked against real data, Oct 11:**
+  - The fleet is rounded from real San Diego-area units in the Power Systems Optimization course data (Jenkins and Sepulveda). Gas plant costs reproduce from heat rate × $2.57/MMBtu + variable O&M.
+  - The hourly ramp limits (CCGT 40%, nuclear 25%) are planning-model values. Physical rates are faster: gas and coal plants ramp about 1–8% of capacity per minute (Oxera; the RTS-GMLC benchmark), so a running unit can usually cross its range within an hour. Coal was left out for that reason: its hourly limits are minimum load, start-up time and minimum up and down times, which need on/off decisions.
+  - Hourly ramp limits that do bind in practice: hydropower below a dam with flow-change rules (Glen Canyon Dam: up 4,000 and down 1,500 cfs per hour against a 25,000 cfs maximum) and nuclear late in its fuel cycle (NEA: about 0.2–0.3% of rated power per minute). A flow-change limit on the deck's hydro plant was tested: it never binds unless hydro is given a daily water budget, and the budget changes every price in the day. It would suit a homework better than this lecture.
+  - Nuclear: the smallest U.S. reactors are about 520–580 MW (EIA), and nuclear fuel cost $6.10/MWh in 2020 (EIA Electric Power Annual, Table 8.4).
+  - The wind and solar curves are an October 16 day in the source data (the solar curve matches its Los Angeles utility PV profile exactly), so they are already a fall day.
+  - Model prices ($23–45/MWh) are about twice NYISO Zone C's day-ahead prices on Oct 16, 2020 ($11–23, mean $18), with a similar daily shape. Not changed.
 
 ## 2. Measurement of the source
 
@@ -129,15 +141,15 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
 ## 3. Takeaways (claims)
 
 1. Economic dispatch runs the plants that already exist at least cost. Without other constraints that is the merit order: cheapest marginal cost first.
-2. **The electricity price is the demand constraint's shadow price.** It is the marginal cost of the plant that would serve one more MWh: $38/MWh at 1600 MW. JuMP reports −38, the change from *relaxing* the demand constraint.
-3. A full plant's capacity is worth its price minus its own marginal cost per MW (hydro $38, CCGT4 $2). A plant that isn't running, or isn't at its limit, has a zero capacity shadow price.
+2. **The electricity price is the demand constraint's shadow price.** It is the marginal cost of the plant that would serve one more MWh: $38/MWh at 2200 MW. JuMP reports −38, the change from *relaxing* the demand constraint.
+3. *(Removed Oct 11.)* A full plant's capacity shadow price (the price minus its own marginal cost) is no longer taught: it is not read in practice.
 4. Engineering limits break the simple merit order. Minimum outputs force uneconomic generation, and ramping limits, y_{t+1} − y_t ≤ R and y_t − y_{t+1} ≤ R, couple the hours together.
 5. Solar reshapes *when* other plants are needed. Net load falls at midday and climbs steeply at dusk (the duck curve), so midday prices collapse while dusk needs fast-ramping, expensive plants.
 
 ## 4. What it feeds and what assesses it
 
 - **Quiz 4 (Nov 4):**
-  - Q2 reads a JuMP dispatch output: the price from the demand shadow price, why capacity shadow prices are price minus own cost, and a zero shadow price for a plant that isn't running.
+  - Q2 reads a JuMP dispatch output: the price from the demand shadow price, the cost of a small rise in demand from that shadow price, the price after a rise too large for the marginal plant, and the cost of a minimum output (revised Oct 11; the capacity shadow-price parts are gone).
   - Q3a asks for both ramping constraints; Q3b asks about the EIA duck curve.
   - The deck must teach each of these explicitly, in words matching 09-1's sign convention. No quiz asides on slides or in notes; the notes are visible in the published deck.
 - **MP2** (assigned today, due Nov 19): multi-period dispatch of an existing fleet with ramping limits, hourly prices from demand duals, and a carbon-tax sweep. It uses FA25 HW4 data, different from this deck's (2020 Zone C, 13 thermal units plus wind and solar), so the deck doesn't pre-solve it. The carbon-tax sweep is MP2's core, so the deck mentions a carbon price only as one thing that reorders the merit order, with no computation.
@@ -150,30 +162,28 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
 | 4 | **Review and Questions**: one slide, "A shadow price is the change in the objective when a constraint is relaxed by one unit" (09-1's wording); then the poll | sets up 2 | review carries only what this session uses | slide |
 | 6 | **Power systems decision problems**: schematic; decisions by timescale | context | motivation first (instructor's slides, kept) | slide |
 | 12 | **Single-period ED**: the problem; variables; variable costs and heat rate (two notes merged to one); formulation (fixed: no ∀g, = demand, named capacity constraints); data (fixed: 4 CCGTs) | 1 | small named steps | slide; formulation as a board item (prompt slide, result fragment, working in notes) |
-| 16 | **Results and prices**: dispatch bar chart; dispatch stack; **new** JuMP output slide (`shadow_price(demand)` = −38 and a capacity shadow-price table); "Why −38?" (relaxing = serving 1 MWh less); "Why is hydro's −38 and CCGT4's −2?"; must-run minimums (−1, −2 fragment); "What complicates the merit order?" (minimums, ramping, fuel and carbon prices, network) | 2, 3, 4 | concrete number ($38); interpretation after the result; a named trap (the sign) | price and hydro's shadow price from the stack: board item (prompt, result fragment, notes); stack annotation on a tablet |
-| 22 | **Multi-period dispatch**: ramping constraints, both directions, with the "t = 1…T−1" fix; generator ramp data; demand (Oct 16, 2020, NYISO Zone C, 1326–1822 MW); capacity factors; formulation with renewables; results areaplot by resource; **new** hourly prices from the load duals ($23 most hours, $36–39 in the morning, $45 at the evening peak) | 4 | do it once in code; interpretation slide | slide |
-| 10 | **The duck curve**: (a) ramping raises the price in the dusk hour ($45 with ramp limits against $40 without, hour 19); (b) **new** with twice the solar (1000 MW), midday prices fall to $0 (solar curtailed against must-run minimums) while dusk stays at $45; (c) the EIA figure (local copy) | 5 | a number that anchors memory; self-questioning ("who supplies the 7 pm ramp?") | figure annotation on a tablet |
+| 16 | **Results and prices**: dispatch bar chart; dispatch stack; **new** JuMP output slide (`shadow_price(demand)` = −38); "Why −38?" (relaxing = serving 1 MWh less); must-run minimums (CT2–CT4 run at $39–40, above the $38 price; on the next slide); "What complicates the merit order?" (minimums, ramping, fuel and carbon prices, network) | 2, 4 | concrete number ($38); interpretation after the result; a named trap (the sign) | price from the stack: board item (prompt, result fragment, notes); stack annotation on a tablet |
+| 22 | **Multi-period dispatch**: ramping constraints, both directions, with the "t = 1…T−1" fix; ramp limits for the dispatchable plants (nuclear 25%, CCGT 40%, the rest 100%); demand (an illustrative fall day, 1,926–2,422 MW: an October day's shape raised 600 MW); capacity factors; formulation with renewables; results areaplot by resource; **new** hourly prices from the load duals ($23 most hours, $36–39 in the morning, $45 at the evening peak) | 4 | do it once in code; interpretation slide | slide |
+| 10 | **The duck curve**: (a) ramping raises the price in the dusk hour ($45 with ramp limits against $40 without, hour 19); (b) **new** with three times the solar (1,500 MW), midday prices fall to $0 (about 1,600 MWh of zero-cost energy unused; nuclear at its 300 MW minimum) while dusk stays at $45; (c) the EIA figure (local copy) | 5 | a number that anchors memory; self-questioning ("who supplies the 7 pm ramp?") | figure annotation on a tablet |
 | 5 | **Takeaways, Next Classes, Assessments** (add Quiz 4) | — | — | slide |
 
-**Slide target: about 32** (38 now). Remove the duplicate variable-cost note, merge "Combining Generator Types" into the results slide, and drop the $323 slide. Add three: the JuMP output, hourly prices, and twice the solar. About 32 is slightly above the house rate, which suits a substitute-taught deck that needs cue slides more than a lean one.
+**Slide target: about 32** (38 now). Remove the duplicate variable-cost note, merge "Combining Generator Types" into the results slide, and drop the $323 slide. Add three: the JuMP output, hourly prices, and the high-solar case. About 32 is slightly above the house rate, which suits a substitute-taught deck that needs cue slides more than a lean one.
 
 ## 6. Anchor example (computed)
 
-- **Single period:** the deck's 13 thermal units at 1600 MW (`scripts/dispatch_check.jl`).
-  - Price $38/MWh from CT1; cost $35,034/h.
-  - Capacity shadow prices as listed in §2, equal to $38 minus each unit's own cost.
-  - Robustness: the price is a step function of demand. It is $38 from about 1586 to 1613 MW (CT1's range above its minimum), then $39 (CT2/CT3). Every quoted number is computed in a slide cell, so it follows if the demand changes.
-- **Multi-period:** Oct 16, 2020 (`scripts/multi_check.jl`). Ramping adds $323 (0.04%) to the day and moves the hour-19 price from $40 to $45; all other hours are unchanged.
-- **Solar sweep:**
+- **Single period** (revised Oct 11): the deck's 12 dispatchable plants at 2200 MW.
+  - Price $38/MWh from CT1 (87 of its 100 MW); cost $39,834/h. CT2–CT4 sit at their minimum outputs at $39–40.
+  - Robustness: the price is a step function of demand. It is $38 from about 2186 to 2213 MW (CT1's range above its minimum), then $39 (CT2/CT3). Every quoted number is computed in a slide cell, so it follows if the demand changes.
+- **Multi-period** (an illustrative fall day): ramping adds $323 (0.04%) to the day and moves the hour-19 price from $40 to $45; all other hours are unchanged. The nuclear unit runs at 600 MW all day, so its ramp limit does not bind.
+- **Solar sweep** (the Oct 11 fleet):
 
   | Solar | Midday price | Dusk price | Ramping cost |
   |:--|:--|:--|:--|
   | ×1 (500 MW) | $23 | $45 | 0.04% |
-  | ×2 (1000 MW) | $0 | $45 | 0.06% |
-  | ×3 (1500 MW) | $0 | $45 | 0.76% |
-  | ×4 (2000 MW) | $0 | $45 | 0.56% |
+  | ×2 (1000 MW) | $8, with $0, $22 and $2 in hours 14–16 | $45 | 0.15% |
+  | ×3 (1500 MW) | $0 in hours 10–17 | $45 | 0.49% |
 
-  The price swing holds for every scaling of two or more. The cost of ramping limits stays below 1% throughout, because CTs ramp 100% in an hour and there is plenty of CT capacity. **So the deck should claim ramping and solar reshape hourly prices, not that they add much to total cost.**
+  The deck uses ×3: the midday price is $0, the nuclear unit sits at its 300 MW minimum, and at sunset it climbs at its 150 MW/h limit (hour 19 is $39 with ramp limits and $36 without). About 1,600 MWh of zero-cost energy goes unused. The cost of ramping limits stays below 1% throughout. **So the deck should claim ramping and solar reshape hourly prices, not that they add much to total cost.**
 
 ## 7. Code level
 
@@ -191,8 +201,8 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
 
 ## 8. Checks for understanding
 
-- "Which plant sets the price at 1600 MW, and how do you know from the output?"
-- "Hydro's capacity shadow price is −38 and CCGT4's is −2. Why?"
+- "Which plant sets the price at 2200 MW, and how do you know from the output?"
+- "CT2 to CT4 cost more than the price. Why do they run?"
 - "Write the constraint that stops a plant ramping *down* too fast."
 
 ## 9. Appendix candidates
@@ -202,7 +212,7 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
 
 ## 10. Cut list (in order)
 
-1. The twice-solar scenario (keep the EIA figure alone).
+1. The three-times-solar scenario (keep the EIA figure alone).
 2. The must-run minimum shadow prices (fragment).
 3. "Combining Generator Types" (a resource-level areaplot).
 4. The heat-rate note.
@@ -217,7 +227,7 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
 
 ## 12. Decisions for the instructor (recommendation first)
 
-1. **Show JuMP's shadow prices, not just the merit-order calculation.** Switch the single-period model to "= demand" with named capacity constraints, and add one output slide. *Evidence:* Quiz 4 Q2 reads that exact output, and the current deck never prints a shadow price and reasons backwards about its sign.
+1. **Show JuMP's shadow prices, not just the merit-order calculation.** Switch the single-period model to "= demand" with named capacity constraints, and add one output slide. *Evidence:* Quiz 4 Q2 reads that exact output, and the current deck never prints a shadow price and reasons backwards about its sign. *(Oct 11: the capacity shadow prices were later cut; see the header.)*
 2. **Replace the "$323" slide with hourly prices and a twice-solar case.** *Evidence:* ramping is 0.04% of the day's cost, and under 1% even at three times the solar. The midday $0 against dusk $45 price swing is large and robust from twice the solar up.
 3. **Mention a carbon price only as a merit-order shifter (one bullet), with no calculation.** *Evidence:* MP2's carbon-tax sweep is the student's job.
 4. **Use the local EIA duck-curve image** (the copy in `quizzes/quiz04/figures`). *Evidence:* the same figure as the quiz, and it doesn't depend on a remote URL during a substitute's session.
@@ -236,6 +246,14 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
   - `slides/lecture10-1-capacity-expansion-2.qmd`.
 - **Stale fork:** `slides/lecture10-1-gaussian-plumes.qmd` is **`capacity-expansion-2` plus the FA25 plume lecture**. Its first 271 lines differ from `capacity-expansion-2` only in the title; the plume half is superseded by FA26's `lecture06-2` and `lecture07-1`. Treat `capacity-expansion-2` as the source, and archive or delete the fork (open item 8).
 - **Status:** Revise — compress two decks into one. The new file would be `lecture11-1-capacity-expansion` (week 11, Monday).
+- **Revised Oct 11 (instructor's decisions):** the lecture now steps through three plans, and decision 3 below (keep renewables conceptual) is reversed.
+  - **Step 1, thermal types only:** nuclear, coal, CCGT, CT. Nuclear replaces geothermal as the firm zero-carbon plant, at $790,000/MW-yr and $8/MWh (EIA's AEO2025 capital cost report: $7,861/kW and $156/kW-yr fixed O&M, with the 8.06% capital charge that also reproduces the deck's CCGT cost from the same table). The build is unchanged: CCGT 2,017 MW, CT 733 MW, 31 MW unserved for 7 hours, $603M and 6,679 kt a year.
+  - **Step 2, wind and solar added**, with a worked example: on the screening chart solar beats CCGT at every hour count (and CT beyond 143 hours), which is wrong; its energy costs $23/MWh and wind's $30/MWh against $25 of gas fuel. The LP then builds wind 525 MW and solar 1,506 MW; CCGT falls to 1,574 MW and CT to 726 MW (gas capacity 2,750 → 2,300 MW); $570M and 4,055 kt a year.
+  - **Step 3, an emissions cap at 50% of step 1 (3,339 kt):** thermal types only build 878 MW of nuclear at $1,095M and a shadow price of −$147.91/t, which the hand derivation reproduces ((790,000/8,784 + 8 − 82,000/8,784 − 25)/0.43). With all types the same cap costs $576M at −$14.84/t. Tightening it: 25% gives −$175.85/t with no nuclear (wind 2,717, solar 2,198 MW); 10% gives −$623.02/t with 629 MW of nuclear producing 38% of what it could.
+  - **Wind and solar data:** the Fall 2025 homework 4 profile, as it is (averages 34% and 35%, a good site, not New York), with February 28 repeated for 2020's leap day; costs $91,000 and $70,000/MW-yr, the same as MP2's "today" costs. The origin of the profile is not recorded.
+  - **How far step 2 holds:** with solar at $97,000 (EIA's after-credit $32/MWh) the plan still changes (solar 383 MW, wind 376 MW); with both 25% dearer, solar 421 MW and no wind; at EIA's overnight costs with no credits ($153,000 and $141,000) nothing is built without a cap. The deck's notes say so and compute the last case.
+  - **What separates this from MP2 Part 5:** the lecture is greenfield, one zone, with no ramping or hydro, a good wind and solar site and one cost set; MP2 adds to New York's 2013 fleet at New York's capacity factors, with 2013 and then today's costs, one 40 Mt cap and the tax equivalence. The lecture does not show the New York-averages case (there the model builds no wind or solar without a cap, which is 5.1's answer), the tax equivalence (5.2), or a 2013-versus-today comparison (5.3). The closest overlap is the $148 against $15 comparison, which sits near 5.3's question. The lecture names greenfield and brownfield in words and shows no brownfield formulation, because 5.1 asks for it.
+  - **MP2 stays brownfield in its simplest form** (additions to a fixed fleet, no retirements).
 
 ## 2. Measurement of the sources
 
@@ -268,8 +286,8 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
    
    So CCGT = 2017 MW (the curve at 1700 h), CT = 733 MW, and the top 31 MW goes unserved for 7 hours.
 3. At any finite penalty, some unserved energy is optimal: capacity for the last few hours costs more than not serving them.
-4. Renewables enter through hour-by-hour capacity factors (y ≤ x·c_{g,t}), so their value depends on *when* they produce, and screening curves alone no longer give the answer.
-5. A CO₂ cap's shadow price is a carbon price: the cost of abating the last tonne. Here it is **$39/t**, from swapping CCGT for geothermal, derivable by hand.
+4. Renewables enter through hour-by-hour capacity factors (y ≤ x·c_{g,t}), so their value depends on *when* they produce, and screening curves alone no longer give the answer. *(Oct 11: now shown with a solved plan.)*
+5. A CO₂ cap's shadow price is a carbon price: the cost of abating the last tonne. Here it is **$148/t** with thermal types only, from swapping CCGT for nuclear, derivable by hand, and **$15/t** once wind and solar can be built *(revised Oct 11; was $39/t with geothermal)*.
 
 ## 4. What it feeds and what assesses it
 
@@ -289,8 +307,8 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
 | 15 | **Formulation**: goal and unserved energy; variables (x, y, NSE); objective; constraints; full formulation (fixed ×); "it's an LP" (linear, divisible, certain); data (units fixed) and demand | 1, 3 | derivation in small named steps | formulation as a board item (prompt, result fragment, notes) |
 | 8 | **Solving it**: JuMP with line highlighting (code first); results table (built in one call); "When might generators operate?" (a week, not 8784 hours) | 1 | do it once in code | slide |
 | 17 | **Reading the answer**: the load-duration curve; **new** screening curves (cost per MW-year against hours run, with crossovers); load-duration curve with the crossover hours marked; read the build off it (2017, 733 and 31 MW); "Why any unserved energy?" answered | 2, 3 | interpretation after the result; a concrete anchoring number (7.25 h ≈ 7 hours of shortage) | crossovers as a board item (prompt slide; result fragment 1700 h and 7.25 h; working in notes); reading the build off the curve on a tablet |
-| 8 | **Renewables**: what changes (capacity factor); the changed constraint; where capacity factors come from (TMY/AMY); JuMP vector snippet (code first) | 4 | explicit scope: screening no longer suffices | slide |
-| 12 | **Carbon limits** (new): the cap constraint Σ e_g y_{g,t} ≤ E with emission factors (coal 1, CCGT 0.43, CT 0.55 t/MWh, as in FA25 HW4); its shadow price is −$39.29/t at both 75% and 50% caps (computed); *why* it is flat: geothermal at $51.2/MWh against CCGT at $34.3/MWh, a $16.9 difference for 0.43 t, gives $39.3/t; reading it as a carbon price; what would make it rise (more expensive abatement steps) | 5 | self-questioning ("why the same price at two caps?") opens MP2's question | $39.3/t as a board item (prompt, result, notes) |
+| 15 | **Adding renewables** (revised Oct 11): what changes (capacity factor); where capacity factors come from, and what this example uses; the profile figure; "Do Screening Curves Still Work?" and "The Cost of a Solar MWh" (board items); the JuMP change (run, folded); the plan with wind and solar; the peak week | 4 | worked example; setup before results | board items for the screening check and the cost per MWh |
+| 12 | **Carbon limits** (new): the cap constraint Σ e_g y_{g,t} ≤ E with emission factors (coal 1, CCGT 0.43, CT 0.55 t/MWh, as in FA25 HW4); *(revised Oct 11)* at a 50% cap the shadow price is −$147.91/t with thermal types only and −$14.84/t with all types; *why* $148: nuclear replacing CCGT all year; then tightening the cap to 25% and 10% (−$175.85, −$623.02) | 5 | a hand-derived number, then the comparison | $148/t as a board item (prompt, result, notes) |
 | 5 | **Takeaways, Next Classes** (Wed MIP; Quiz 4 Wed), **Assessments** (MP2 final part now possible; HW6 graded) | — | — | slide |
 
 **Slide target: about 30** — the 26 deduplicated slides, minus the 3 overview slides now given on Oct 28, plus about 7 new (screening ×2, read-off, why unserved energy, CO₂ ×3). That fits the house rate.
@@ -309,6 +327,7 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
   - A 75% cap (5009 kt) builds geothermal 439 MW, CCGT 1650, CT 661, at $668.4M; the shadow price is −$39.29/t.
   - A 50% cap builds geothermal 881 MW, CCGT 1208, CT 661, at $734.0M, and **the same −$39.29/t**: a flat abatement cost, since the only abatement option is geothermal replacing CCGT.
   - The hand derivation gives $39.3/t.
+  - *(Superseded Oct 11: geothermal is no longer in the example. The current results are in the header.)*
   - Robustness: the flat price holds for any cap reachable by that one swap. Don't show a tax run; it is degenerate on this data (above).
 - **Arbitrary choices:**
   - The $9000 penalty moves the 7.25-hour threshold (at $10,000 it is 6.5 h), so state it as a formula.
@@ -350,7 +369,7 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
    - On this thermal-only data a tax at the shadow price does **not** reproduce the cap (2229 kt against 5009 kt; a flat, degenerate abatement cost).
    - On MP2's data with renewables it does (1.503 Mt at $182.77/t).
    - **Consequence for MP2:** the "same result" claim holds only because renewables make the abatement curve fine-grained. MP2's key should check it at its final parameters and say "matches to within a few kt", not "identical".
-3. **Keep renewables conceptual in lecture** (the capacity-factor constraint and its JuMP pattern), with no renewable LP run. *Evidence:* the slides have no full-year renewable capacity-factor series except MP2's FA25 HW4 file, and using that here would pre-solve MP2.
+3. *(Reversed Oct 11; see the header.)* **Keep renewables conceptual in lecture** (the capacity-factor constraint and its JuMP pattern), with no renewable LP run. *Evidence:* the slides have no full-year renewable capacity-factor series except MP2's FA25 HW4 file, and using that here would pre-solve MP2.
 4. **Move the power-system overview slides to Oct 28,** which is now the first power-systems session. Delete them here.
 5. **Archive `lecture10-1-gaussian-plumes.qmd`.** Its first 271 lines match `capacity-expansion-2` except for the title line, and the rest is the superseded FA25 plume lecture.
 6. **File naming:** the merged deck becomes `lecture11-1-capacity-expansion.qmd` (week 11, Monday). The current `lecture11-1-mixed-integer.qmd` then moves to `lecture11-2-…` for Wednesday. `git mv` its `_freeze/` directory with it.
@@ -379,9 +398,10 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
   - Node 1 (the LP relaxation) is (5.44, 2.69), Z = 27.06.
   - Node 2 gives 25 and node 3 gives 25.5.
   - Node 4 gives 24.67; node 5 is infeasible.
-  - Node 6 gives (4, 3), Z = 24, the incumbent.
-  - Node 7 gives 20.5 and is pruned by its bound.
-  - Node 8 gives (5, 2), Z = 23; node 9 is infeasible.
+  - Node 6 gives (5, 2), Z = 23, the first incumbent; node 7 is infeasible.
+  - Node 8 gives (4, 3), Z = 24, the new incumbent; node 9 gives 20.5 and is pruned by its bound.
+  - (Numbering as in the FA26 deck, which draws the tree from its own node solutions. The old
+    `bb-89.png` labelled these nodes differently; corrected Oct 8.)
   - The optimum is (4, 3), Z = 24.
 - **Stale or wrong:**
   1. The subtitle says "Lecture 15"; FA26 needs 17. The date says Nov 3, 2025.
@@ -506,7 +526,7 @@ The deck must still stand alone for the Nov 11 TA lab: the TA guide will point b
 - **Date / length:** Mon Nov 9, 75 minutes. It moves to Wed Nov 11 if that is the only day the substitute can come; then Lab 3 (TA facility siting) runs first.
 - **Taught by:** a general substitute, not the power-systems expert. The instructor is away Nov 9–13.
 - **Source:** `slides/lecture12-1-waste-management.qmd` (FA24-dated). Status: Reuse, make sub-ready.
-- **Assessment it feeds:** HW8, assigned on the lecture day, due Thu Nov 19. Quiz 5 (Mon Nov 16) covers waste and networks.
+- **Assessment it feeds:** HW8, assigned Wed Nov 11 (moved from the lecture day on Oct 7), due Thu Nov 19. Quiz 5 (Mon Nov 16) covers waste and networks.
 
 ## 2. The source deck, measured and checked
 
@@ -561,7 +581,7 @@ The deck must still stand alone for the Nov 11 TA lab: the TA guide will point b
 | 10 | Objective | 2 | Transport plus disposal; "is this disposal cost right?" leads to fixed cost × $Y_j$; one coefficient worked out ($82.5 = 1.5 \times 15 + 60$) | slide fragments; the coefficient as a worked line |
 | 14 | Constraints | 1, 2 | City mass balance; residual mass balance (**fate and transport**: 60% residual, 20% ash); capacity **linked** to $Y_j$; check: "which constraints need a binary, and why?" | slide; poll check |
 | 12 | Solve and interpret | 3 | JuMP model (folded code, first on its slide) → \$26,881/day, all open; **interpretation slide**: why the WTE runs; "what if the landfill were 220?" → WTE closes, \$24,539/day | slide (figure from the deck's solution SVG) |
-| 5 | Takeaways and next | all | Takeaways; next classes; HW8 assigned | slide |
+| 5 | Takeaways and next | all | Takeaways; next classes; HW8 assigned Wednesday | slide |
 | 6 | Buffer for the sub | — | Questions; or the cut list in reverse | — |
 | **75** | | | | |
 
@@ -616,7 +636,7 @@ The deck must still stand alone for the Nov 11 TA lab: the TA guide will point b
 - **A one-page sub sheet** (also in the first slide's notes):
   - the four takeaways and the key numbers (\$26,881/day; the 220 Mg/day what-if);
   - three likely questions with answers: why the WTE is open; why the binary appears in the capacity constraint; what "residual" means;
-  - that HW8 is assigned today and the TA holds office hours.
+  - that HW8 is assigned Wednesday and the TA holds office hours.
 - **No board dependence:** every board item is a slide with its answer as a fragment.
 - **Swap-proof wording:** the review slide does not mention Monday's or Wednesday's lab, and "Next classes" lists Lab 3 by name, not by weekday.
 - The poll link (`_poll-prompt.qmd`) works for the sub's account, or the sub skips the poll. Instructor to confirm.
@@ -902,7 +922,7 @@ That is roughly 60 content slides of material for one 75-minute session. FA26 de
    - It uses a log y-axis with `ylimits=(0, 1)`.
    - Every bar has +0.01 added.
 6. **14-1's `lake_sens` can find the wrong root.** `find_zero(crit, 0.5)` lands on the wrong root at 1 of 121 (q, b) grid points across its own SA ranges. Minor.
-7. **14-1's shadow-price slide uses FA25's product-mix LP.** FA26's LP anchors are the plume-emissions LP (Oct 14/19) and HW6's stormwater LP. Swap, so the callback is to work students did. HW6 Problem 4.3 already showed that a shadow price holds only for the first 2 acres.
+7. **14-1's shadow-price slide uses FA25's product-mix LP.** FA26's LP anchors are the plume-emissions LP (Oct 14/19) and HW6's stormwater LP. Swap, so the callback is to work students did. HW6 Problem 3.7 already showed that a shadow price holds only for the first 2 acres.
 8. **Old house style.** FA25 font (Computer Modern) and `Pkg.activate(".")`. Copy the FA26 front matter and setup from `lecture07-2-model-validation.qmd`: Palatino, `cb_*` palette, `@__DIR__`.
 9. **FA25 lake setting is a cliff, not a tradeoff.** At σ = 0.25 (15-2) or 0.15 (13-2), the baseline lake's tradeoff is a cliff (see §6). That doesn't show a front well.
 
@@ -925,7 +945,7 @@ That is roughly 60 content slides of material for one 75-minute session. FA26 de
   - The lecture's by-hand table uses different numbers, so it rehearses the question without answering it.
   - The pairing with "objective vs metric" can call back to Oct 14's "Objectives and Metrics" slide.
 - **Project final report (Dec 20).** Its Discussion section asks "how assumptions made in your project may have influenced the results". The sensitivity and robustness ideas here are the tools for that.
-- **No homework** in weeks 13–16, by design.
+- **HW9** (Nov 18 – Dec 3, added Oct 7) covers Nov 16 and 18 only; nothing on this session is due before Quiz 6.
 - **ABET:** 4b (tradeoffs) is evaluated on MP2, not here. This session supports that thinking but is not an artifact; no ABET framing on slides.
 
 ## 5. Section plan (75 min)

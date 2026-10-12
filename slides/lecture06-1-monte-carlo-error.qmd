@@ -117,12 +117,12 @@ The **Central Limit Theorem** says that sums of random variables converge to a G
 
 Applying to the mean (which is effectively a sum):
 
-$$\left\|\tilde{\mu}_n - \mu\right\| \to \mathcal{N}\left(0, \frac{\sigma_Y^2}{n}\right)$$
+$$\tilde{\mu}_n - \mu \approx \mathcal{N}\left(0, \frac{\sigma_Y^2}{n}\right) \quad \text{for large } n$$
 
 
 ## Confidence Intervals
 
-We can use this large-$n$ Gaussian approximation to get an $\alpha$-confidence interval.
+We can use this large-$n$ Gaussian approximation to get a $(1-\alpha)$-confidence interval.
 
 $$\tilde\mu_n \pm \Phi^{-1}\left(1-\frac{\alpha}{2}\right)\frac{\sigma_Y}{\sqrt{n}}$$
 
@@ -136,7 +136,7 @@ For any given experiment, the "true value" is either in or out of the constructe
 
 **The idea**: if you repeated this whole experiment many times, about 95% of the intervals you'd construct would contain the true value.
 
-## Example: 95% CIs for N(0.4, 2)
+## Example: 95% CIs for N(0.4, 2²)
 
 ```{julia}
 #| label: fig-cis

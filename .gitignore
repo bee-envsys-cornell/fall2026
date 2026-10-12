@@ -342,3 +342,6 @@ _site/agenda.html
 /.quarto/
 
 **/*.quarto_ipynb
+
+# Hand-off snapshots of decks, for diffing against the delivered versions
+slides/.handoff/

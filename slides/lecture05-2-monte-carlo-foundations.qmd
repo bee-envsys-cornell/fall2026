@@ -199,10 +199,10 @@ plot(p_pdf, p_cdf, layout=(1, 2), size=(1200, 450), left_margin=10mm,
 
 The **quantile function** is the inverse of the CDF:
 
-$$q(\alpha) = F^{-1}_\mathcal{D}(\alpha), \qquad\text{so}\qquad x_0 = q(\alpha) \iff \mathbb{P}(X < x_0) = \alpha.$$
+$$q(\alpha) = F^{-1}_\mathcal{D}(\alpha), \qquad\text{so}\qquad x_0 = q(\alpha) \iff \mathbb{P}(X \leq x_0) = \alpha.$$
 
-- CDF: for a given $x_0$, what is $\mathcal{P}(X \leq x_0)$? 
-- Quantile: for a given $0 \leq \alpha \leq 1$, what value $x_0$ has $\mathcal{P}(X \leq x_0) = \alpha$?
+- CDF: for a given $x_0$, what is $\mathbb{P}(X \leq x_0)$?
+- Quantile: for a given $0 \leq \alpha \leq 1$, what value $x_0$ has $\mathbb{P}(X \leq x_0) = \alpha$?
 
 ## Independence
 
@@ -468,7 +468,7 @@ This raises the question: **on average**, how right or wrong is the estimate?
 **Bias** of a statistic $T$ used to estimate a "true" value $T_0$: $\mathbb{E}[T] - T_0$.
 
 
-## MC Estimates Is Unbiased
+## The MC Estimate Is Unbiased
 
 
 Provided the mean of $Y$ exists and its variance is finite,
@@ -484,7 +484,7 @@ What are the convergence properties of any given MC run?
 ::: {.fragment .fade-in}
 If $Y$ is a random variable whose expectation exists, and $Y_1, \ldots, Y_n$ are independent and identically distributed, then by the **weak law of large numbers**
 
-$$\lim_{n \to \infty} \mathbb{P}\left(\tilde{\mu}_n - \mu \leq \varepsilon\right) = 1$$
+$$\lim_{n \to \infty} \mathbb{P}\left(\left|\tilde{\mu}_n - \mu\right| \leq \varepsilon\right) = 1$$
 
 for any $\varepsilon > 0$.
 
@@ -500,7 +500,7 @@ In practice: replace $\sigma_Y$ with the sample standard deviation $\sqrt{\text{
 
 ## Implications of Monte Carlo Error
 
-**To cut the error by 10×, you need 100× more samples.** Monte Carlo converges at order $\sqrt{n}$.
+**To cut the error by 10×, you need 100× more samples.** Monte Carlo error shrinks at order $1/\sqrt{n}$.
 
 ::: {.fragment .fade-in}
 ::: {.quote}

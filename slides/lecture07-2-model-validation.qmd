@@ -191,7 +191,7 @@ A **scoring rule** scores how closely the model matches the measurements. A comm
 $$\text{RMSE} = \sqrt{\frac{1}{n}\sum_{i=1}^{n}\left(y^\text{sim}_i - y^\text{obs}_i\right)^2}$$
 :::
 
-Lower is better; zero is **impossible in real life**. The true rates score `{julia} round(do_rmse(0.6, 0.4, 0.25); digits=2)`; the model with $k_a=k_n=k_b=0.5$ scores `{julia} round(do_rmse(0.5, 0.5, 0.5); digits=2)`.
+Lower is better; zero is **impossible in real life**. The true rates score `{julia} round(do_rmse(0.6, 0.4, 0.25); digits=2)`; the model with $k_a=k_n=k_c=0.5$ scores `{julia} round(do_rmse(0.5, 0.5, 0.5); digits=2)`.
 
 ## Optimizing RMSE
 
@@ -490,7 +490,7 @@ fitted_wind = first(Optim.minimizer(wind_fit))
 Wind speed is uncertain, and the whole field scales as $1/u$: the obvious knob. Calibrated wind: `{julia} round(fitted_wind; digits=1)` m/s. RMSE falls from `{julia} Int(round(plume_rmse))` to `{julia} Int(round(Optim.minimum(wind_fit)))` µg/m³ (`{julia} Int(round(100 * plume_rmse / mean(monitor_observed)))`% to `{julia} Int(round(100 * Optim.minimum(wind_fit) / mean(monitor_observed)))`% of the mean observation).
 
 ::: {.fragment .fade-in}
-That's a decent fit. But the true wind speed was **2.5 m/s**. The wind speed calibration is compensating for a mixing component in the model structure.
+That's a decent fit. But the true wind speed was **2.5 m/s**. The wind speed calibration is compensating for a missing sink in the model structure.
 :::
 
 ## The Calibrated Plume

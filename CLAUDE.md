@@ -25,14 +25,40 @@ Four things worth knowing before the first edit, because each has already caused
 **Students read this code.** Assume no prior Julia and modest programming background. Clever is worse
 than clear, every time.
 
-- **Plain, descriptive names.** `distance_into_box`, not `Δ`. `DO_in`, not `Cm`. No single letters
-  beyond loop indices, no Unicode subscripts (`α₁`), no abbreviations a reader has to decode.
+- **Plain, descriptive names.** `distance_into_box`, not `Δ`. `DO_in`, not `Cm`. This is a
+  guideline, not a hard rule: single letters are fine for loop indices and where they are the
+  conventional notation (`x` and `y` for a generic input and output, `n` or `k` in a short helper).
+  Avoid Unicode subscripts (`α₁`) and abbreviations a reader has to decode.
 - **Explicit loops over clever constructs.** No `Ref(...)` broadcasting, `searchsortedlast`, returned
   closures, ternaries, or comprehension tricks. A plain `for` loop with an `if` inside is the target.
 - **Structure the code like the physics.** If the prose says "treat each stretch as a box," loop over
   boxes — not over grid points with a state machine inside.
 - **Never shadow Base names** (`last`, `min`, `step`).
 - **Course vocabulary**: *effluent* not outfall; *simulate* not march.
+
+## Math notation
+
+Decks and every assessment (homework, quizzes, labs, mini-projects, and their keys) use one notation
+for vectors and matrices (decided Oct 9):
+
+- **Vectors are bold**: `\mathbf{x}`, `\mathbf{y}`, `\mathbf{c}` for Latin letters and `\boldsymbol{\theta}`,
+  `\boldsymbol{\beta}` for Greek; `\mathbf{0}` for the zero vector. **Matrices are bold uppercase**:
+  `\mathbf{A}`, `\mathbf{X}`, `\boldsymbol{\Sigma}`. Use `\mathbf`/`\boldsymbol`, not `\bm` or `\vec`.
+- **Scalars and components stay plain**: `x_i`, `y_t`, `\theta_j`, `a_{ij}`, and named scalar variables.
+  Bold a symbol only where it is a vector in that context (a single scalar parameter stays plain; the
+  whole dataset is `\mathbf{y}`, one observation `y_i`), and keep the same symbol the same within a file.
+- **Transpose is `^\top`.** Accents go outside the bold: `\hat{\boldsymbol{\beta}}`.
+- Math that code prints (an `output: asis` cell, a LaTeX plot label) follows the same rule.
+- **Gain** (decided Oct 9): the feedback gain $g$ is the derivative of the rate, $\partial(dx/dt)/\partial x$:
+  $g < 0$ dampening (stable), $g > 0$ amplifying (unstable). The amplification formula
+  $\text{Direct}/(1-g)$ uses the *loop* gain of the fixed-point form $x = F(p(x))$; say so wherever it
+  appears, and never apply it to a rate gain.
+- **LP constraints are numbered C1, C2, …** (decided Oct 11): tag them `\text{(C1)}` in the formulation
+  and use the same names for the lines in a figure and in prose ("C2 and C3 bind"), in every LP deck.
+  Do not name a constraint by the letter of the thing it limits (receptor A, B, C): the letters collide
+  with $\mathbf{A}$, $\mathbf{b}$, $\mathbf{c}$ in standard form. Say once which constraint is which
+  ("C1, C2 and C3 are the limits at receptors A, B and C"), and number slack variables and multipliers
+  to match ($s_2$, $\lambda_2$). In lectures 8-2 and 9-1 the plume LP's variable bounds are left untagged.
 
 ## Writing slides
 
@@ -56,6 +82,16 @@ adds real information ("Another Risk: Grid Size"), not as a default shape.
 policy, and similar belong on the lecture's opening slide or the closing schedule slide — never as an
 aside inside content ("this will be on the quiz", "you will be graded on this"). It interrupts the
 argument and dates the deck.
+
+## Power-system examples
+
+Two rules for dispatch and capacity-expansion material, in decks and assessments alike (decided Oct 11):
+
+- **Ramp limits apply to dispatchable plants.** Do not describe wind or solar as ramping, and do not
+  put ramp constraints on them in a model: their output follows the weather through a capacity factor.
+- **Interpret only the shadow prices that are read in practice**: the demand balance (the price of
+  electricity) and a system-wide cap such as emissions (a carbon price). Do not ask students to
+  interpret a generator's own capacity or minimum-output shadow price.
 
 ## Verifying that work
 

@@ -83,6 +83,35 @@ window.MathJax = {
   };
 </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <meta property="og:title" content="Standard Rubrics – Environmental Systems Analysis">
 <meta property="og:description" content="Homepage for the Fall 2026 version of BEE 4750/5750, Environmental Systems Analysis, at Cornell University.">
@@ -307,11 +336,10 @@ window.MathJax = {
   <li><a href="#meta-rubric" id="toc-meta-rubric" class="nav-link active" data-scroll-target="#meta-rubric">Meta-Rubric</a></li>
   <li><a href="#standard-rubrics" id="toc-standard-rubrics" class="nav-link" data-scroll-target="#standard-rubrics">Standard Rubrics</a>
   <ul class="collapse">
-  <li><a href="#optimization-rubric" id="toc-optimization-rubric" class="nav-link" data-scroll-target="#optimization-rubric">Optimization Rubric</a></li>
-  <li><a href="#simulation-rubric" id="toc-simulation-rubric" class="nav-link" data-scroll-target="#simulation-rubric">Simulation Rubric</a></li>
-  <li><a href="#monte-carlo-rubric" id="toc-monte-carlo-rubric" class="nav-link" data-scroll-target="#monte-carlo-rubric">Monte Carlo Rubric</a></li>
-  <li><a href="#figure-rubrics" id="toc-figure-rubrics" class="nav-link" data-scroll-target="#figure-rubrics">Figure Rubrics</a></li>
-  <li><a href="#interpretation-rubrics" id="toc-interpretation-rubrics" class="nav-link" data-scroll-target="#interpretation-rubrics">Interpretation Rubrics</a></li>
+  <li><a href="#formulation-rubric" id="toc-formulation-rubric" class="nav-link" data-scroll-target="#formulation-rubric">Formulation Rubric</a></li>
+  <li><a href="#solution-rubric" id="toc-solution-rubric" class="nav-link" data-scroll-target="#solution-rubric">Solution Rubric</a></li>
+  <li><a href="#analysis-and-interpretation-rubric" id="toc-analysis-and-interpretation-rubric" class="nav-link" data-scroll-target="#analysis-and-interpretation-rubric">Analysis and Interpretation Rubric</a></li>
+  <li><a href="#figure-rubric" id="toc-figure-rubric" class="nav-link" data-scroll-target="#figure-rubric">Figure Rubric</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/policies/rubric.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="rubric.pdf"><i class="bi bi-file-pdf"></i>Typst</a></li></ul></div></nav>
@@ -344,15 +372,17 @@ window.MathJax = {
 <ul>
 <li>Individual problems may vary from these standard rubrics based on the assessed learning outcomes for the problem, but they should provide an overview of what features students ought to be included in a given solution.</li>
 <li>Each bullet point should appear as a separate rubric item in Gradescope. We will use <em>positive</em> grading (points awarded for each component).</li>
-<li>Each standard rubric describes partial credit for a problem with 10 points. Partial credit for (sub)problems worth less than 10 points should be scaled appropriately. Full problems usually combine one of the modeling methods with some interpretation questions, so the rubric will be a combination of the individual components.</li>
+<li>Each standard rubric describes partial credit for a problem with 10 points. Partial credit for (sub)problems worth less than 10 points should be scaled appropriately. Full problems usually combine a formulation, its solution, and some interpretation, so the rubric will be a combination of the standard rubrics below.</li>
 <li>Generally, rubrics for 10 point “entire problems” can be summarized with the following:
 <ul>
 <li>+4 points for an answer with a correct implementation (including model setup).</li>
 <li>+2 points for the correct solution (including details such as labels, units, etc.).</li>
 <li>+4 points for the interpretation. These points may be broken up across subproblems, but the general assignment of points should follow this summary.</li>
 </ul></li>
-<li>Note that the points may not scale with the distribution of work for a given problem. That’s life! It may take more work to derive and implement your model than it does to intrepret your results, but in this class we care a lot about your ability to critically evaluate and interpret modeling results.</li>
-<li>Sometimes problems will be broken up into</li>
+<li>Note that the points may not scale with the distribution of work for a given problem. That’s life! It may take more work to derive and implement your model than it does to interpret your results, but in this class we care a lot about your ability to critically evaluate and interpret modeling results.</li>
+<li>Sometimes problems will be broken up into subproblems. Each subproblem is graded with the parts of these rubrics that apply to it, scaled to its points.</li>
+<li>A few questions ask for your own judgment: a recommendation, a tradeoff, or what information would change your answer. These have no single right answer. They are graded on your reasoning and how it uses your results, not on which option you choose.</li>
+<li>The lists under <em>What this looks like</em> are not separate rubric items. They describe what earns each item for the kinds of problems we work on in this course.</li>
 <li><strong><em>The graders cannot read your mind and will not try to.</em></strong> Submissions that are unclear for any reason, including but not limited to unclear syntax (English or code), uncommented code, lack of reasoning or derivation, too much detail or writing, will not be given credit. The TA has complete discretion here. If something in your solution is ambiguous, the TA has been instructed to interpret it the “wrong” way. Clear responses are a sign of understanding, which is part of what we’re assessing.</li>
 <li>You will not be doubly penalized for getting the “right” solution to the “wrong” setup (you would have been penalized above), but this requires the TA to be able to <em>easily</em> identify that your implementation is correct given the wrong model. If your implementation is unclear, you are likely to lose points here because we have no way of knowing that your answer is “right” without re-coding your problem.</li>
 <li>You will not be given credit for your code (this isn’t a programming class); the code is a means to solving the problem, and we’re more interested in how you set up the problem and interpret the solution. This does mean that code that is sloppy but <em>works</em> is perfectly acceptable. However, your code may get you partial credit if the TA can <strong>easily</strong> find where you made a mistake, so make sure your submitted code is well commented. It’s important to write down the mathematics of what your code is trying to implement, because the TA will only take a cursory look at your code.</li>
@@ -365,29 +395,82 @@ window.MathJax = {
 </section>
 <section id="standard-rubrics" class="level2">
 <h2 class="anchored" data-anchor-id="standard-rubrics">Standard Rubrics</h2>
-<section id="optimization-rubric" class="level3">
-<h3 class="anchored" data-anchor-id="optimization-rubric">Optimization Rubric</h3>
+<section id="formulation-rubric" class="level3">
+<h3 class="anchored" data-anchor-id="formulation-rubric">Formulation Rubric</h3>
 <p>10 points =</p>
 <ul>
-<li>+3 for clear specification of decision variables;
+<li>+3 for clear specification of the variables;
 <ul>
-<li>This includes units and meaning for each variable used.</li>
+<li>This includes units and meaning for each variable used. For decision variables, say whether each is continuous, integer, or binary, and for a binary, what 1 and 0 mean.</li>
 </ul></li>
-<li>+2 for the correct objective;
+<li>+3 for the correct model equations or objective;
 <ul>
-<li>You must write down the derivation for the objective, starting with the quantity being optimized and breaking it into decision-relevant components. Don’t treat any part of this as though it’s obvious; part of technical communication is communicating to people who aren’t as clever as you.</li>
+<li>You must write down the derivation, starting with the principle or the quantity being optimized (a mass balance, a cost built up from its parts) and explaining each term. Don’t treat any part of this as though it’s obvious; part of technical communication is communicating to people who aren’t as clever as you.</li>
 </ul></li>
-<li>+3 for the correct constraints;
+<li>+3 for the correct constraints or conditions;
 <ul>
 <li>Make sure you include derivations for all constraints, starting with the meaning and explanation in intuitive terms for the constraint. Don’t treat any constraints as though they’re obvious.</li>
 <li>-2/-3 for an incomplete set of constraints, even if the constraints that are presented are correct.</li>
 </ul></li>
+<li>+1 for stating the assumptions the formulation relies on.</li>
+</ul>
+<section id="what-this-looks-like" class="level4">
+<h4 class="anchored" data-anchor-id="what-this-looks-like">What this looks like</h4>
+<ul>
+<li><strong>Simulation models</strong>: the state variables; the rates of change, from a mass balance; the initial conditions; and where inputs enter, such as an effluent mixing into a river.</li>
+<li><strong>Systems diagrams</strong>: every stock and flow, named and with units; arrows in the direction of influence; and each feedback loop traced around, with its polarity (amplifying or dampening).</li>
+<li><strong>Optimization models</strong>: the decision variables, an objective built up from its costs or benefits, and a constraint for each requirement or limit, including upper bounds. Common structures:
+<ul>
+<li>linking a continuous decision to a binary one (<span class="math inline">\(x \leq C y\)</span>), and fixed costs (<span class="math inline">\(F y\)</span>);</li>
+<li>logical rules between binaries (at most one, if-then), checked against every combination of the binaries involved;</li>
+<li>flow conservation at every node of a network;</li>
+<li>balances that link one time period to the next, such as storage;</li>
+<li>standard form, when asked: a maximization with every constraint written as <span class="math inline">\(\leq\)</span>, each one a row of <span class="math inline">\(\mathbf{A}\)</span> and an entry of <span class="math inline">\(\mathbf{b}\)</span>.</li>
+</ul></li>
+<li><strong>Decisions under uncertainty</strong>: the first-stage decision, the scenarios and their probabilities, and the recourse decisions in each (a scenario tree, where asked). For a sequential decision: the stages, the state, the decision, and the value function.</li>
+</ul>
+</section>
+<section id="worked-example-optimization" class="level4">
+<h4 class="anchored" data-anchor-id="worked-example-optimization">Worked Example: Optimization</h4>
+<p>An optimization problem that asks for the formulation and its solution is graded as</p>
+<ul>
+<li>+3 for clear specification of decision variables;</li>
+<li>+2 for the correct objective;</li>
+<li>+3 for the correct constraints;</li>
 <li>+2 for the correct solution.</li>
 </ul>
 </section>
-<section id="simulation-rubric" class="level3">
-<h3 class="anchored" data-anchor-id="simulation-rubric">Simulation Rubric</h3>
+</section>
+<section id="solution-rubric" class="level3">
+<h3 class="anchored" data-anchor-id="solution-rubric">Solution Rubric</h3>
 <p>10 points =</p>
+<ul>
+<li>+4 for a method that fits the problem, shown so that it can be followed;
+<ul>
+<li>Show the steps, or give an explicit sketch of what your code does. If the sketch is right, a difference in the result is likely to be a minor bug rather than a misunderstanding.</li>
+</ul></li>
+<li>+4 for the correct result, with labels and units;
+<ul>
+<li>-1 if the error is from a minor bug.</li>
+</ul></li>
+<li>+2 for checking the result.
+<ul>
+<li>For example: refining a step size, comparing a solver’s answer with a hand calculation or a simple case, or giving the Monte Carlo standard error.</li>
+</ul></li>
+</ul>
+<section id="what-this-looks-like-1" class="level4">
+<h4 class="anchored" data-anchor-id="what-this-looks-like-1">What this looks like</h4>
+<ul>
+<li><strong>Equilibria and stability</strong>: set the rate of change to zero and show the algebra, reporting every equilibrium (including trivial ones, such as zero populations). Then apply the criterion that fits the model at each equilibrium: the sign of <span class="math inline">\(f'(\hat{x})\)</span> for a continuous-time model, <span class="math inline">\(|f'(\hat{x})| &lt; 1\)</span> for a discrete map, or the eigenvalues of the Jacobian <span class="math inline">\(\mathbf{J}\)</span> for a system.</li>
+<li><strong>Simulation</strong>: a discretization with a justified step size, and a check that the answer does not change much when the step is refined.</li>
+<li><strong>Graphical solution of a linear program</strong>: every constraint’s boundary drawn and labelled, with the feasible region shaded; every corner, with its coordinates; and the optimum, found from level lines of the objective or by evaluating the objective at each corner, with its value.</li>
+<li><strong>Solving with a solver</strong>: a model that matches your written formulation (with constraints named when you need their shadow prices), the solution and the objective value with units, and a check against a hand answer or a simple case.</li>
+<li><strong>Integer programs</strong>: the LP relaxation, solved and used as a bound on the integer optimum. For branch and bound: each node’s added bound, its LP solution and value, and the rule that prunes it.</li>
+<li><strong>Sequential decisions</strong>: at each stage and state, every feasible decision compared, with its value; then the policy and its value.</li>
+</ul>
+</section>
+<section id="worked-example-simulation" class="level4">
+<h4 class="anchored" data-anchor-id="worked-example-simulation">Worked Example: Simulation</h4>
 <ul>
 <li>+4 for the model derivation.
 <ul>
@@ -399,15 +482,14 @@ window.MathJax = {
 </ul></li>
 <li>+2 points for obtaining the correct solution.
 <ul>
-<li>-1 if the error is from a minor bug. I recommend providing an explicit sketch of your code’s procedure, so if that is correct any differences are likely to be the result of a minor bug, such as a misentered number (not ideal, but you understand what you’re doing!). Otherwise you are relying on the TA to interpret your code.</li>
+<li>-1 if the error is from a minor bug.</li>
 </ul></li>
 </ul>
 </section>
-<section id="monte-carlo-rubric" class="level3">
-<h3 class="anchored" data-anchor-id="monte-carlo-rubric">Monte Carlo Rubric</h3>
-<p>10 points =</p>
+<section id="worked-example-monte-carlo" class="level4">
+<h4 class="anchored" data-anchor-id="worked-example-monte-carlo">Worked Example: Monte Carlo</h4>
 <ul>
-<li>+4 for a clear English explanation of the sampling plan
+<li>+4 for a clear English explanation of the sampling plan.
 <ul>
 <li>You <em>must</em> justify each distribution used, including your choice of mean and standard deviation.</li>
 </ul></li>
@@ -416,31 +498,16 @@ window.MathJax = {
 <li><strong>Deadly Sin</strong>: No points will be given for a Monte Carlo solution with an arbitrary sample size.</li>
 </ul></li>
 <li>+2 for an estimate of the Monte Carlo standard error.</li>
-<li>+1 for setting a seed for reproducibility.</li>
 <li>+2 for correct estimate.
 <ul>
 <li>Deviations from the posted solution are ok if they’re within the Monte Carlo standard error.</li>
+<li>-1 if no seed is set for reproducibility.</li>
 </ul></li>
 </ul>
 </section>
-<section id="figure-rubrics" class="level3">
-<h3 class="anchored" data-anchor-id="figure-rubrics">Figure Rubrics</h3>
-<p>10 points =</p>
-<ul>
-<li>+2 for appropriate choice of axes.
-<ul>
-<li><strong><em>Deadly Sin!</em></strong>: No points will be given for the figure if the axes are not labelled.</li>
-</ul></li>
-<li>+4 for the correct data series.</li>
-<li>+2 for a descriptive legend.</li>
-<li>+2 for a <em>succinct</em> description or caption.
-<ul>
-<li>-1 for a description which is too wordy but contains the relevant information.</li>
-</ul></li>
-</ul>
 </section>
-<section id="interpretation-rubrics" class="level3">
-<h3 class="anchored" data-anchor-id="interpretation-rubrics">Interpretation Rubrics</h3>
+<section id="analysis-and-interpretation-rubric" class="level3">
+<h3 class="anchored" data-anchor-id="analysis-and-interpretation-rubric">Analysis and Interpretation Rubric</h3>
 <p>10 points =</p>
 <ul>
 <li>+4 for specific reference to the modeling results;
@@ -452,6 +519,31 @@ window.MathJax = {
 <li>-4 for not specifically referencing relevant model assumptions;</li>
 <li><strong><em>Deadly Sin</em></strong>: Do not neglect fundamental engineering principles in any of your interpretations. You will be given a zero if you make a recommendation which <em>e.g.</em> violates an engineering code or standard.</li>
 <li><strong><em>Deadly Sin</em></strong>: Completely generic interpretations will result in zero points.</li>
+</ul></li>
+</ul>
+<section id="what-this-looks-like-2" class="level4">
+<h4 class="anchored" data-anchor-id="what-this-looks-like-2">What this looks like</h4>
+<ul>
+<li><strong>Shadow prices and sensitivity</strong>: the binding constraints and the slack in the others, with units; each shadow price with its units (objective units per unit of the constraint) and the sign convention you use; what it is worth in the decision being asked about; and a re-solve when a change is too large for the shadow price to hold, with why the two answers differ.</li>
+<li><strong>Model evaluation</strong>: a measure of fit, with units; the residuals plotted against the variable that matters (distance, time), with any pattern named (a bias, a trend, a structure); whether the pattern points to a wrong parameter value or a missing process, and whether calibration could fix it; and whether the model is fit for the use it is intended for.</li>
+<li><strong>Value of information</strong>: the expected value of perfect information and the value of the stochastic solution, with units, and what each one is worth to the decision-maker.</li>
+<li><strong>Tradeoffs between objectives</strong>: which options are dominated, and by which option; the tradeoffs among the rest, quantified; and a recommendation that says which priorities it reflects.</li>
+</ul>
+</section>
+</section>
+<section id="figure-rubric" class="level3">
+<h3 class="anchored" data-anchor-id="figure-rubric">Figure Rubric</h3>
+<p>10 points =</p>
+<ul>
+<li>+2 for appropriate choice of axes.
+<ul>
+<li><strong><em>Deadly Sin!</em></strong>: No points will be given for the figure if the axes are not labelled.</li>
+</ul></li>
+<li>+4 for the correct data series.</li>
+<li>+2 for a descriptive legend.</li>
+<li>+2 for a <em>succinct</em> description or caption.
+<ul>
+<li>-1 for a description which is too wordy but contains the relevant information.</li>
 </ul></li>
 </ul>
 

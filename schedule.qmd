@@ -27,17 +27,17 @@ Note that this schedule will be updated as necessary the semester progresses, wi
 |  7 |   Oct 5    | Gaussian Plume Simulation | [{{< fa sharp presentation-screen >}}](slides/lecture07-1-plume-analytics.qmd)  | |  |  | Quiz 2 |  |
 |   |   Oct 7    | Model Calibration and Validation | [{{< fa sharp presentation-screen >}}](slides/lecture07-2-model-validation.qmd)  | |  |  |  | @Oreskes1994-br  |
 | 8 |   Oct 12   | **No Class: Fall Break** | | | | | | |
-|   |   Oct 14   | Decision Models and Linear Programming | | | HW5 | | | |
-| 9 |   Oct 19   | The Simplex Method and Shadow Prices | | | | | | |
+|   |   Oct 14   | Decision Models and Linear Programming | [{{< fa sharp presentation-screen >}}](slides/lecture08-2-optimization.qmd) | | HW5 | | | |
+| 9 |   Oct 19   | The Simplex Method and Shadow Prices | [{{< fa sharp presentation-screen >}}](slides/lecture09-1-simplex-shadow-prices.qmd) | | | | | |
 |   |   Oct 21   | Project Proposal Peer Review | | | HW6 | | Quiz 3 | |
 | 10 |   Oct 26   | Linear Programming with JuMP Lab | | Lab 2 | | | | |
 |   |   Oct 28   | Economic Dispatch | | | | MP2 | | |
 | 11 |   Nov 2    | Capacity Expansion | | | | | | |
 |   |   Nov 4    | Discrete Variables and Mixed Integer Programming | | | HW7 | | Quiz 4 | |
-| 12 |   Nov 9    | Solid Waste and Network Models | | | HW8 | | | |
-|   |   Nov 11   | Fixed Costs and Facility Siting Lab | | Lab 3 | | | | |
+| 12 |   Nov 9    | Solid Waste and Network Models | | | | | | |
+|   |   Nov 11   | Fixed Costs and Facility Siting Lab | | Lab 3 | HW8 | | | |
 | 13 |   Nov 16   | Stochastic Optimization and Scenario Trees | | | | | Quiz 5 | |
-|   |   Nov 18   | Sequential Decisions and Dynamic Programming | | | | | | |
+|   |   Nov 18   | Sequential Decisions and Dynamic Programming | | | HW9 | | | |
 | 14 |   Nov 23   | Scenario Trees and Sequential Decisions Lab | | Lab 4 | | | | |
 |   |   Nov 25   | **No Class: Thanksgiving Break** | | | | | | |
 | 15 |   Nov 30   | Multiple Objectives, Robustness, and Sensitivity | | | | | | @Reed2022-uc; @Saltelli2019-sa |
@@ -46,7 +46,7 @@ Note that this schedule will be updated as necessary the semester progresses, wi
 |   |   Dec 8    | **Project Presentations** (final exam period) | | | | | | |
 |   |   Dec 20   | **Project Report and Team Evaluations Due** | | | | | | |
 
-**Due dates.** Homework is due Thursdays at 9pm: HW5 Oct 22, HW6 Oct 29, HW7 Nov 12, and HW8 Nov 19. Mini-Project 1 is due Oct 22 and Mini-Project 2 Nov 19. Lab worksheets are due at 9pm the day after the lab. For the [project](project/index.qmd): proposal Oct 16, proposal peer review Oct 26, project update Nov 13, presentations Dec 8, and the report and team evaluations Dec 20.
+**Due dates.** Homework is due Thursdays at 9pm: HW5 Oct 22, HW6 Oct 29, HW7 Nov 12, HW8 Nov 19, and HW9 Dec 3. Mini-Project 1 is due Oct 22 and Mini-Project 2 Nov 19. Lab worksheets are due at 9pm the day after the lab. For the [project](project/index.qmd): proposal Oct 16, proposal peer review Oct 26, project update Nov 13, presentations Dec 8, and the report and team evaluations Dec 20.
 
 Slides, labs, and assignments are linked here as they are released.
 

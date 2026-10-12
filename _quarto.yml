@@ -141,7 +141,9 @@ website:
         - href: hw/index.qmd#schedule
           text: "Homework 7 (Nov. 4)"
         - href: hw/index.qmd#schedule
-          text: "Homework 8 (Nov. 9)"
+          text: "Homework 8 (Nov. 11)"
+        - href: hw/index.qmd#schedule
+          text: "Homework 9 (Nov. 18)"
     - title: "Mini-Projects"
       style: docked
       search: false
