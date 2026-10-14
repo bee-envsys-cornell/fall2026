@@ -93,6 +93,12 @@ Two rules for dispatch and capacity-expansion material, in decks and assessments
   electricity) and a system-wide cap such as emissions (a carbon price). Do not ask students to
   interpret a generator's own capacity or minimum-output shadow price.
 
+**The lecture examples share one set of fuel prices: 2022's** (decided Oct 12). Natural gas is \$7.21
+and coal \$2.36 per MMBtu, the averages delivered to U.S. power plants that year, in the Oct 28
+dispatch example and the Nov 2 capacity expansion example. The Nov 2 deck then varies the gas price
+(\$3.50 and \$15). A number quoted in both decks, such as the Oct 28 price on the Nov 2 review slide,
+has to match after any change to either. Mini-Project 2 keeps its own costs, for New York in 2013.
+
 ## Verifying that work
 
 - **Every number in prose, a table, or a caption must come from running the deck's own code.** A value

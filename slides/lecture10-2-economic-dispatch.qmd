@@ -103,9 +103,9 @@ demand_mw = 2200                    # one hour's demand [MW]
 
 A **shadow price** is the **marginal** change in the objective for an LP when a constraint is relaxed by one unit.
 
-For example: 
+For example:
 
-- What is the value in mitigation avoided of increasing the maximum allowable emissions by one ton? 
+- What is the value in mitigation avoided of increasing the maximum allowable emissions by one ton?
 - How much more profit could be earned from the purchase or leasing of one more acre of land?
 
 
@@ -216,7 +216,7 @@ n_thermal = nrow(gens) - 2          # every plant except wind and solar
 thermal = 1:n_thermal
 demand_mw = 2200                    # one hour's demand [MW]
 
-println("Demand this hour is **$(demand_mw) MW**. The plants that can serve it:\n")
+println("Demand is **$(demand_mw) MW**. The plants, at 2022 gas prices:\n")
 
 # Summarise the fleet by type: how many plants, their capacity and cost ranges
 for resource in unique(gens[thermal, :Resource])
@@ -239,10 +239,10 @@ end
 ```
 
 ::: {.notes}
-One nuclear plant, `{julia} count(gens.Resource .== "NG CCGT")` combined-cycle gas plants (CCGT) and `{julia} count(gens.Resource .== "NG CT")` combustion turbines (CT), plus a biomass and a hydro plant. Hydro is cheapest to run because the water is free, and nuclear fuel is cheap, so the nuclear plant comes next. CTs are the most expensive per MWh. The nuclear plant and several gas plants have minimum outputs: once on, they must produce at least that much.
+One nuclear plant, `{julia} count(gens.Resource .== "NG CCGT")` combined-cycle gas plants (CCGT) and `{julia} count(gens.Resource .== "NG CT")` combustion turbines (CT), plus a biomass and a hydro plant. Hydro is cheapest to run because the water is free, and nuclear fuel is cheap, so the nuclear plant comes next. CTs are the most expensive per MWh. The gas plants' costs use the average price U.S. power plants paid for gas in 2022, \$7.21 per million Btu, about twice today's; Monday's lecture starts from the same price and then varies it. The nuclear plant and several gas plants have minimum outputs: once on, they must produce at least that much.
 :::
 
-# Prices From the Dispatch
+# Single-Period Dispatch
 
 ## Single-Period Model
 
@@ -312,30 +312,30 @@ marginal = findfirst(left_edges .+ widths .>= demand_mw)
 stack_price = heights[marginal]
 
 rectangle(w, h, x) = Shape(x .+ [0, w, w, 0], [0, 0, h, h])
-p_stack = plot(rectangle(must_run, 1, 0), color=:gray60, linewidth=0.5,
+p_stack = plot(rectangle(must_run, 2.5, 0), color=:gray60, linewidth=0.5,
     xlabel="Cumulative capacity  [MW]", ylabel="Marginal cost  [\$/MWh]",
-    xlims=(0, 2500), ylims=(0, 50), xticks=0:500:2500)
+    xlims=(0, 2500), ylims=(0, 120), xticks=0:500:2500)
 for i in eachindex(order)
     if i == marginal
         bar_color = cb_vermillion        # the plant that sets the price
     else
         bar_color = cb_blue
     end
-    plot!(p_stack, rectangle(widths[i], max(heights[i], 1), left_edges[i]),
+    plot!(p_stack, rectangle(widths[i], max(heights[i], 2.5), left_edges[i]),
         color=bar_color, alpha=0.6, linewidth=0.5)
 end
 vline!(p_stack, [demand_mw], color=:black, linestyle=:dash, linewidth=3)
 hline!(p_stack, [stack_price], color=cb_vermillion, linestyle=:dot, linewidth=3)
-annotate!(p_stack, 300, 4, text("minimum outputs", 14, plot_font))
-annotate!(p_stack, demand_mw + 20, 47, text("demand", 16, :left, plot_font))
-annotate!(p_stack, 200, stack_price + 2.5, text("price: \$$(stack_price)/MWh", 16, :left, plot_font))
+annotate!(p_stack, 300, 9, text("minimum outputs", 14, plot_font))
+annotate!(p_stack, demand_mw + 20, 113, text("demand", 16, :left, plot_font))
+annotate!(p_stack, 200, stack_price + 6, text("price: \$$(stack_price)/MWh", 16, :left, plot_font))
 plot!(p_stack, size=(1200, 370), left_margin=12mm, right_margin=6mm)
 ```
 
 CT1 (red) serves the next MWh, so the price is **\$`{julia} stack_price`/MWh**.
 
 ::: {.notes}
-This is the merit order: plants stacked from cheapest to most expensive, after the minimum outputs that must run anyway (gray). Demand (dashed line) cuts the stack inside CT1, so CT1 is the marginal plant. If demand rose by one MWh, CT1 would produce it at \$38, so \$38/MWh is the price. Ask: "what happens to the price if demand rises past CT1's capacity?" Answer: the next plant in the stack, CT2 or CT3 at \$39, sets it.
+This is the merit order: plants stacked from cheapest to most expensive, after the minimum outputs that must run anyway (gray). Demand (dashed line) cuts the stack inside CT1, so CT1 is the marginal plant. If demand rose by one MWh, CT1 would produce it at \$`{julia} stack_price`, so \$`{julia} stack_price`/MWh is the price. Ask: "what happens to the price if demand rises past CT1's capacity?" Answer: the next plant in the stack, CT2 or CT3 at \$`{julia} heights[marginal + 1]`, sets it.
 :::
 
 ## Shadow Price from JuMP
@@ -350,9 +350,11 @@ price = -shadow_price(load)                 # [$/MWh]
 
 `shadow_price(load)` is **`{julia} round(Int, shadow_price(load))`**: relaxing demand by one unit means serving one less MWh, which saves \$`{julia} round(Int, price)`. This shadow price is the **price of electricity** in wholesale electricity markets: the cost of the plant that served the last MWh.
 
+Generating plants don't lose money when they generate (expensive plants would lose money if the price was an average.)
+
 
 ::: {.notes}
-The model is on the "Single-Period Model" slide: it names the demand constraint `load`, so JuMP can report its shadow price. Say the sign sentence: JuMP reports what relaxing a constraint by one unit does to the cost. For demand, relaxing means serving one less MWh, so the cost falls by \$38 and the shadow price is −38. The price of electricity is the size of that number. This is how wholesale markets set prices: the demand constraint's shadow price in the operator's dispatch model.
+The model is on the "Single-Period Model" slide: it names the demand constraint `load`, so JuMP can report its shadow price. Say the sign sentence: JuMP reports what relaxing a constraint by one unit does to the cost. For demand, relaxing means serving one less MWh, so the cost falls by \$`{julia} round(Int, price)` and the shadow price is −`{julia} round(Int, price)`. The price of electricity is the size of that number. This is how wholesale markets set prices: the demand constraint's shadow price in the operator's dispatch model.
 :::
 
 ## What Complicates the Merit Order?
@@ -360,16 +362,12 @@ The model is on the "Single-Period Model" slide: it names the demand constraint 
 What could make the cheapest-first rule wrong?
 
 ::: {.fragment .fade-in}
-- **Minimum outputs**: some plants must run. Here `{julia} count(at_minimum)` CTs run at \$`{julia} minimum(gens[thermal, :VarCost][at_minimum])`–`{julia} maximum(gens[thermal, :VarCost][at_minimum])`/MWh, above the \$`{julia} round(Int, price)` price.
-- **Ramping limits**: output can change only so fast.
-- **Start-up costs**: turning on costs money (Wednesday).
-- **Transmission**: cheap power may not reach the load.
-- **A carbon price** can reorder the stack (Mini-Project 2).
+- **Minimum generation**: Plants may have to generate a minimum amount to be on.
+- **Ramping limits**: output can change only so fast from hour to hour.
+- **Start-up/shut-down**: starting up a plant costs money, and shutting down can keep a plant offline for hours.
+- **Transmission**: cheap power may not be able to reach the load if lines are congested.
 :::
 
-::: {.notes}
-You should be here by about minute 30. Let students suggest answers for a minute before revealing. The example already shows the first one: CT2, CT3 and CT4 run at their minimum outputs even though each MWh from them costs more than the \$`{julia} round(Int, price)` price, so the hour costs more than the merit order alone would give. The ramping bullet leads into the next section. The carbon-price bullet is the one place today mentions it: Mini-Project 2 asks students to sweep a carbon tax themselves, so don't work an example.
-:::
 
 # Multi-Period Dispatch
 
@@ -387,11 +385,8 @@ $$
 $$
 :::
 
-Output can change by at most $R_g$ MW per hour. **Write this as one or more linear constraints.**
+Output can change by at most $R_g$ MW per hour. **How can we write this as one or more linear constraints?**
 
-::: {.notes}
-You should be here by minute 38. Give students a minute or two to write the constraints before moving on; the next slide has the answer. As written above, the hours are separate single-period problems, and a ramping limit is what links them. Expect some to write |y_{g,t+1} - y_{g,t}| <= R_g: it says the right thing but is not linear, so ask how to turn it into constraints an LP can use (two inequalities, one for ramping up and one for ramping down). This slide adds about two minutes; keep it, because students need to write these once themselves.
-:::
 
 ## Ramping Constraints
 
@@ -409,9 +404,6 @@ $$
 $$
 :::
 
-::: {.notes}
-You should be here by minute 40. Two ramping constraints per plant per pair of hours: one limits ramping up, the other ramping down. They run from the first hour to the second-to-last, because the last hour has no next hour. These constraints are what couple the hours together: without them, each hour would be its own single-period problem.
-:::
 
 ## Ramp Limits by Plant Type
 
@@ -540,7 +532,7 @@ areaplot(day_hours, by_resource, label=permutedims(resources), color=permutedims
 ```
 
 ::: {.notes}
-You should be here by about minute 52. Nuclear, hydro, biomass, wind and solar run whenever available; the CCGTs follow the load; CTs fill in the morning and evening peaks. Solar's midday contribution shows up as a dip in what the gas plants have to provide.
+Nuclear, hydro, biomass, wind and solar run whenever available; the CCGTs follow the load; CTs fill in the morning and evening peaks. Solar's midday contribution shows up as a dip in what the gas plants have to provide.
 :::
 
 ## Hourly Prices
@@ -551,9 +543,18 @@ You should be here by about minute 52. Nuclear, hydro, biomass, wind and solar r
 
 no_ramp_day = solve_day(ramp=false)
 ramp_cost = base_day.cost - no_ramp_day.cost
+
+# What sets the price at hour 19 with ramp limits: CCGT4 supplies the next MWh,
+# and to do it must also run one MWh higher at hour 18, in place of CCGT1
+ccgt1_row = findfirst(gens.Plant .== "NG CCGT1")
+ccgt4_row = findfirst(gens.Plant .== "NG CCGT4")
+head_start_cost = gens[ccgt4_row, :VarCost] - gens[ccgt1_row, :VarCost]
+@assert round(Int, base_day.prices[19]) == gens[ccgt4_row, :VarCost] + head_start_cost
+# The notes say the two solutions' prices differ in one hour only
+@assert count(abs.(base_day.prices .- no_ramp_day.prices) .> 0.01) == 1
 p_prices = plot(day_hours, base_day.prices, seriestype=:steppost, color=cb_blue,
     label="with ramp limits", xlabel="Hour", ylabel="Price  [\$/MWh]", xticks=0:6:24,
-    ylims=(0, 50), legend=:bottomright)
+    ylims=(0, 120), legend=:bottomright)
 plot!(p_prices, day_hours, no_ramp_day.prices, seriestype=:steppost, color=cb_vermillion,
     linestyle=:dash, label="without ramp limits")
 plot!(p_prices, size=(1200, 300), left_margin=10mm)
@@ -562,41 +563,10 @@ plot!(p_prices, size=(1200, 300), left_margin=10mm)
 Each hour's price is its demand shadow price: \$`{julia} round(Int, base_day.prices[1])` most hours, \$`{julia} round(Int, maximum(base_day.prices[7:8]))` in the morning, \$`{julia} round(Int, maximum(base_day.prices))` at the evening peak.
 
 ::: {.notes}
-Prices follow the plant that is marginal each hour. Ramp limits matter in only one hour here: at hour 19 the price is \$`{julia} round(Int, base_day.prices[19])` with ramp limits and \$`{julia} round(Int, no_ramp_day.prices[19])` without, because the CCGTs can't ramp up fast enough and a combustion turbine fills in. The nuclear plant runs at its full `{julia} round(Int, minimum(base_day.generation[nuclear_row, :]))` MW all day, so its ramp limit never comes into play. Over the whole day, ramp limits add only \$`{julia} commas(ramp_cost)` (`{julia} round(100 * ramp_cost / no_ramp_day.cost; digits=2)`% of the cost). So the point is when prices are high, not that ramping is expensive in total.
+Prices follow the plant that is marginal each hour. Ramp limits change the price in only one hour here: at hour 19 it is \$`{julia} round(Int, base_day.prices[19])` with ramp limits and \$`{julia} round(Int, no_ramp_day.prices[19])` without. Two of the CCGTs cannot climb to full output in one hour, so they start climbing an hour early and a combustion turbine covers the rest. With the limits, the next MWh at hour 19 comes from CCGT4 at \$`{julia} gens[ccgt4_row, :VarCost]`, and CCGT4 can supply it only by also running one MWh higher at hour 18, in place of a CCGT that costs \$`{julia} head_start_cost` less. The price counts both, \$`{julia} gens[ccgt4_row, :VarCost]` + \$`{julia} head_start_cost`, so it is not any one plant's cost. The nuclear plant runs at its full `{julia} round(Int, minimum(base_day.generation[nuclear_row, :]))` MW all day, so its ramp limit never comes into play. Over the whole day, ramp limits add only \$`{julia} commas(ramp_cost)` (`{julia} round(100 * ramp_cost / no_ramp_day.cost; digits=2)`% of the cost).
 :::
 
 # Renewables and the Duck Curve
-
-## Tripling the Solar Capacity
-
-```{julia}
-#| echo: true
-#| code-fold: true
-
-triple_solar_day = solve_day(solar_scale=3)
-triple_solar_no_ramp = solve_day(solar_scale=3, ramp=false)
-
-# Zero-cost energy (hydro, wind and solar) that was available but not used [MWh]
-unused = triple_solar_day.available .- triple_solar_day.generation    # plants × hours
-unused_free_energy = sum(unused[gens.VarCost .== 0, :])
-
-p_solar = plot(day_hours, base_day.prices, seriestype=:steppost, color=cb_blue,
-    label="$(gens[end, :Pmax]) MW solar", xlabel="Hour", ylabel="Price  [\$/MWh]", xticks=0:6:24,
-    ylims=(0, 50), legend=:bottomleft)
-plot!(p_solar, day_hours, triple_solar_day.prices, seriestype=:steppost, color=cb_orange,
-    linestyle=:dash, label="$(commas(3 * gens[end, :Pmax])) MW solar")
-plot!(p_solar, size=(1200, 300), left_margin=10mm)
-```
-
-With three times the solar capacity, midday prices fall to **\$`{julia} round(Int, minimum(triple_solar_day.prices))`**; the evening peak stays at **\$`{julia} round(Int, maximum(triple_solar_day.prices[18:22]))`**.
-
-::: {.notes}
-You should be here by about minute 62. At midday the zero-cost plants (hydro, wind and solar) can supply more than is left once every other plant is at its minimum output. About `{julia} commas(unused_free_energy)` MWh of that free energy goes unused over the day, and an extra MWh costs nothing, so the price is zero. Hydro and solar cost the same, so the model does not say which of them is turned down.
-
-The nuclear plant spends the middle of the day at its `{julia} gens[nuclear_row, :Pmin]` MW minimum. As the sun sets it climbs back at its limit of `{julia} gens[nuclear_row, :Ramp]` MW per hour, the CCGTs are at their ramp limits too, and combustion turbines fill the gap: the price at hour 19 is \$`{julia} round(Int, triple_solar_day.prices[19])` with ramp limits and \$`{julia} round(Int, triple_solar_no_ramp.prices[19])` without.
-
-After sunset solar disappears, and the evening peak still needs the same expensive gas plants. Adding solar makes prices swing more within the day; it does not make the evening any cheaper.
-:::
 
 ## The "Duck Curve" {.nostretch}
 
@@ -616,19 +586,47 @@ Fast but expensive gas turbines, or plants kept on all afternoon.
 California's net load on its lowest spring day has dropped close to zero at midday in recent years, then climbs by about 20 GW in four or five hours as the sun sets. That evening rise has to come from plants that can ramp quickly. If ramp limits bind, the operator either keeps slower plants online through the afternoon (running at their minimums, which can force solar curtailment, as in our three-times-solar case) or relies on fast but expensive combustion turbines. Both raise costs, and without enough ramping capability, demand at sunset may not be met.
 :::
 
+## Tripling the Solar Capacity
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+triple_solar_day = solve_day(solar_scale=3)
+triple_solar_no_ramp = solve_day(solar_scale=3, ramp=false)
+
+# Zero-cost energy (hydro, wind and solar) that was available but not used [MWh]
+unused = triple_solar_day.available .- triple_solar_day.generation    # plants × hours
+unused_free_energy = sum(unused[gens.VarCost .== 0, :])
+
+p_solar = plot(day_hours, base_day.prices, seriestype=:steppost, color=cb_blue,
+    label="$(gens[end, :Pmax]) MW solar", xlabel="Hour", ylabel="Price  [\$/MWh]", xticks=0:6:24,
+    ylims=(0, 120), legend=:bottomleft)
+plot!(p_solar, day_hours, triple_solar_day.prices, seriestype=:steppost, color=cb_orange,
+    linestyle=:dash, label="$(commas(3 * gens[end, :Pmax])) MW solar")
+plot!(p_solar, size=(1200, 300), left_margin=10mm)
+```
+
+With three times the solar capacity, midday prices fall to **\$`{julia} round(Int, minimum(triple_solar_day.prices))`**; the evening peak stays at **\$`{julia} round(Int, maximum(triple_solar_day.prices[18:22]))`**.
+
+::: {.notes}
+At midday the zero-cost plants (hydro, wind and solar) can supply more than is left once every other plant is at its minimum output. About `{julia} commas(unused_free_energy)` MWh of that free energy goes unused over the day, and an extra MWh costs nothing, so the price is zero. Hydro and solar cost the same, so the model does not say which of them is turned down.
+
+The nuclear plant spends the middle of the day at its `{julia} gens[nuclear_row, :Pmin]` MW minimum. As the sun sets it climbs back at its limit of `{julia} gens[nuclear_row, :Ramp]` MW per hour, the CCGTs are at their ramp limits too, and combustion turbines fill the gap: the price at hour 19 is \$`{julia} round(Int, triple_solar_day.prices[19])` with ramp limits and \$`{julia} round(Int, triple_solar_no_ramp.prices[19])` without.
+
+After sunset solar disappears, and the evening peak still needs the same expensive gas plants. Adding solar makes prices swing more within the day; it does not make the evening any cheaper.
+:::
+
+
 # Key Takeaways and Upcoming Schedule
 
 ## Key Takeaways
 
 ::: {.incremental}
-- **Economic dispatch**: run existing plants at least cost (merit order).
-- **Price = the demand constraint's shadow price** (\$`{julia} round(Int, price)`/MWh here).
-- **Minimum outputs and ramping** break the merit order.
+- Economic dispatch: run existing, on-line plants at least cost (the merit order).
+- Price of electricity is the demand constraint's shadow price: the **marginal cost of supplying electricity,** not the average cost.
+- **Minimum outputs, ramping, and transmission constraints** can break the merit order.
 - More solar makes midday power cheap and the evening ramp steep (the **duck curve**).
-:::
-
-::: {.notes}
-You should be here by minute 70.
 :::
 
 ## Next Classes
@@ -643,4 +641,4 @@ You should be here by minute 70.
 
 **Mini-Project 2**: Assigned today, due Thursday, November 19.
 
-**Quiz 4**: Wednesday, November 4. Problem 1.1 of Mini-Project 2, which formulates a multi-period dispatch problem with ramping limits, is good practice: try to finish it by Tuesday, November 3.
+**Quiz 4**: Wednesday, November 4. Problem 1.1 of Mini-Project 2, which formulates a multi-period dispatch problem with ramping limits, is good practice.

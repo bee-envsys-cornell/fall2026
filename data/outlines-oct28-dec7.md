@@ -108,6 +108,13 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
   - Nuclear: the smallest U.S. reactors are about 520–580 MW (EIA), and nuclear fuel cost $6.10/MWh in 2020 (EIA Electric Power Annual, Table 8.4).
   - The wind and solar curves are an October 16 day in the source data (the solar curve matches its Los Angeles utility PV profile exactly), so they are already a fall day.
   - Model prices ($23–45/MWh) are about twice NYISO Zone C's day-ahead prices on Oct 16, 2020 ($11–23, mean $18), with a similar daily shape. Not changed.
+- **Revised Oct 12 (instructor's decision):** the example's gas plants are priced at the 2022 U.S. gas price, $7.21/MMBtu delivered to power plants (EIA Electric Power Annual, Table 7.4). The Nov 2 lecture uses the same price as its base.
+  - Each gas plant's cost is its variable O&M plus its heat rate times $7.21, with the heat rates implied by the Oct 11 costs at $2.57: CCGTs cost $56–81/MWh (were $22–36) and CTs $87–107 (were $38–45). Nothing else in the fleet changes and the merit order is the same.
+  - Single hour at 2200 MW: the price is $87 (CT1) and the hour costs $89,752. Three CTs sit at their minimum outputs at $90–93.
+  - The day: $58 most hours, $81–90 in the morning, $107 at the evening peak. Ramp limits change the price in one hour, hour 19: $104 with them and $93 without. The $104 is not a plant's cost. It is CCGT4's $81 plus the $23 it costs to start CCGT4 ramping an hour early in place of CCGT1; the deck's notes explain this and its code checks the sum. Ramp limits add $746 to the day (0.04%).
+  - Three times the solar: midday $0, evening $107, about 1,737 MWh of zero-cost energy unused; hour 19 is $93 with ramp limits and $81 without.
+  - Real prices for comparison: NYISO Zone C day-ahead prices averaged $88/MWh in August 2022 and $42 in October 2022 (NYISO day-ahead zonal price files), so the model's prices are now in the range of that year's.
+  - "Example: The Fleet" says the costs are at 2022 gas prices, and its notes give the price.
 
 ## 2. Measurement of the source
 
@@ -170,6 +177,8 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
 **Slide target: about 32** (38 now). Remove the duplicate variable-cost note, merge "Combining Generator Types" into the results slide, and drop the $323 slide. Add three: the JuMP output, hourly prices, and the high-solar case. About 32 is slightly above the house rate, which suits a substitute-taught deck that needs cue slides more than a lean one.
 
 ## 6. Anchor example (computed)
+
+*(Oct 12: the prices and costs in this section are at the Oct 11 gas costs. The megawatts stand; the current prices, at 2022 gas costs, are in the header.)*
 
 - **Single period** (revised Oct 11): the deck's 12 dispatchable plants at 2200 MW.
   - Price $38/MWh from CT1 (87 of its 100 MW); cost $39,834/h. CT2–CT4 sit at their minimum outputs at $39–40.
@@ -254,6 +263,20 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
   - **How far step 2 holds:** with solar at $97,000 (EIA's after-credit $32/MWh) the plan still changes (solar 383 MW, wind 376 MW); with both 25% dearer, solar 421 MW and no wind; at EIA's overnight costs with no credits ($153,000 and $141,000) nothing is built without a cap. The deck's notes say so and compute the last case.
   - **What separates this from MP2 Part 5:** the lecture is greenfield, one zone, with no ramping or hydro, a good wind and solar site and one cost set; MP2 adds to New York's 2013 fleet at New York's capacity factors, with 2013 and then today's costs, one 40 Mt cap and the tax equivalence. The lecture does not show the New York-averages case (there the model builds no wind or solar without a cap, which is 5.1's answer), the tax equivalence (5.2), or a 2013-versus-today comparison (5.3). The closest overlap is the $148 against $15 comparison, which sits near 5.3's question. The lecture names greenfield and brownfield in words and shows no brownfield formulation, because 5.1 asks for it.
   - **MP2 stays brownfield in its simplest form** (additions to a fixed fleet, no retirements).
+- **Revised Oct 12 (instructor's decisions):** the example moves to 2022 fuel prices as its base, shows how the plan changes with the gas price, and gains utilization and load duration figures. The Oct 11 numbers above are superseded by these.
+  - **Costs.** Gas $7.21 and coal $2.36 per MMBtu, the averages delivered to U.S. power plants in 2022 (EIA Electric Power Annual, Table 7.4). The deck computes variable costs from heat rates and rounds them to the dollar, so the hand calculations match the LP: nuclear $8, coal $27, CCGT $48, CT $69. Coal's fixed cost is now EIA's $392,000/MW-yr (it was the course's $220,000). Geothermal is added at $470,000/MW-yr and $0/MWh (EIA, AEO2025), available every hour and unlimited. That flatters it, since real sites are small, and the notes say so.
+  - **Step 1, thermal types:** CCGT 2,154 MW (utilization 81%), CT 596 MW (2%), 31 MW unserved for 7 hours; $960M and 6,659 kt a year. Crossovers: CT below 810 hours, unserved below 7.28 hours.
+  - **Step 2, renewables (geothermal, wind, solar):** solar's energy costs $23 and wind's $30 per MWh, against $48 of gas fuel. The plan is CCGT 1,579, CT 650, wind 1,842, solar 1,817 MW and no geothermal; $729M and 2,325 kt. If wind and solar could not be built, it would include 1,386 MW of geothermal.
+  - **Step 3, caps (shares of 6,659 kt):** thermal types only at 50% build 880 MW of nuclear at −$94.42/t, which the hand derivation reproduces ((790,000/8,784 + 8 − 82,000/8,784 − 48)/0.43). With all types the 50% cap does not bind; 25% is −$78.46/t (156 MW of geothermal) and 10% is −$109.70/t (1,102 MW). Nuclear is not built where geothermal can be. Without geothermal the 10% cap costs $570/t.
+  - **Step 4, the gas price (new):** a figure of U.S. and European gas prices from January 2019 to July 2026 (FRED series MHHNGSP and PNGASEUUSDM, in `slides/data/capacity_expansion/gas_prices_monthly.csv`), marking Russia's invasion of Ukraine (February 2022) and the halt of tanker traffic through the Strait of Hormuz (from February 28, 2026). The plan is solved again at $3.50 (the U.S. averaged $3.53 in 2025) and $15 (Europe averaged $15.06 over January–July 2026).
+    - At $3.50: thermal CCGT 2,017 and CT 733 MW; all types CCGT 1,574, CT 727, wind 525, solar 1,506.
+    - At $15: thermal coal 1,720 (utilization 95%), CCGT 551 (23%), CT 479 (1%), with 14,794 kt, 2.2 times the base; all types geothermal 1,155, CCGT 707, CT 418, wind 926, solar 978, with 613 kt.
+    - Coal is worth building for all-year load once gas passes about $9.50.
+  - **New figures:** the load duration curve filled by the plant that serves each level of load (after Results, and again for the $15 thermal plan, where coal, CCGT and CT are the base, intermediate and peak bands); the load duration curve net of wind and solar; a stacked bar chart of the six plans at the three gas prices. A definition slide for utilization comes before Results. "When Do Generators Run?" is dropped and the peak-week figure moves to the appendix.
+  - **A claim removed:** the takeaway "at any finite penalty, some unserved energy is optimal". With hourly data it fails once the penalty passes about $65,000/MWh, where the crossover with a CT falls below one hour. The screening takeaway keeps the 7.28-hour number.
+  - **Sections:** the overview slide holds seven, so "Formulating the Problem" folds into "The Capacity Expansion Problem" and the fuel price slides sit under "Carbon Limits and Fuel Prices".
+  - **Against MP2 Part 5:** as on Oct 11. The fuel-price comparison is not in the project, whose own comparison is of technology costs (2013 against today). The project now also offers hydro and combined cycle with carbon capture; neither is in the lecture.
+  - **Time (75 minutes; 32 slides and 2 in the appendix):** review 4, the problem and its formulation 15, solving and reading the answer 17, renewables 17, carbon limits 9, fuel prices 9, takeaways 4. Cut list, in order: "Base, Intermediate and Peak Load" (the bar chart already shows coal at $15), "Load Net of Wind and Solar", then the 25% and 10% rows of the cap table.
 
 ## 2. Measurement of the sources
 
@@ -310,6 +333,8 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
 | 15 | **Adding renewables** (revised Oct 11): what changes (capacity factor); where capacity factors come from, and what this example uses; the profile figure; "Do Screening Curves Still Work?" and "The Cost of a Solar MWh" (board items); the JuMP change (run, folded); the plan with wind and solar; the peak week | 4 | worked example; setup before results | board items for the screening check and the cost per MWh |
 | 12 | **Carbon limits** (new): the cap constraint Σ e_g y_{g,t} ≤ E with emission factors (coal 1, CCGT 0.43, CT 0.55 t/MWh, as in FA25 HW4); *(revised Oct 11)* at a 50% cap the shadow price is −$147.91/t with thermal types only and −$14.84/t with all types; *why* $148: nuclear replacing CCGT all year; then tightening the cap to 25% and 10% (−$175.85, −$623.02) | 5 | a hand-derived number, then the comparison | $148/t as a board item (prompt, result, notes) |
 | 5 | **Takeaways, Next Classes** (Wed MIP; Quiz 4 Wed), **Assessments** (MP2 final part now possible; HW6 graded) | — | — | slide |
+
+*(Oct 12: the sections, minutes and numbers in this table are the Oct 6 and Oct 11 plan. The header's Oct 12 note has the current ones.)*
 
 **Slide target: about 30** — the 26 deduplicated slides, minus the 3 overview slides now given on Oct 28, plus about 7 new (screening ×2, read-off, why unserved energy, CO₂ ×3). That fits the house rate.
 

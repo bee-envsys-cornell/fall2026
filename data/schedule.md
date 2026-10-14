@@ -49,8 +49,8 @@ change named · **New** — nothing exists, build from scratch.
 | 9 | Mon Oct 19 | The Simplex Method and Shadow Prices | `lecture09-1-simplex-shadow-prices` (new) | Drafted Oct 5 — carries first JuMP; constraints renamed C1–C3 with $s_2$, $\lambda_2$, $\lambda_3$ to match (Oct 11); simplex steps now show the edge test $\nabla f \cdot \mathbf{d}$ at each corner (new slide "The Objective Along an Edge"), and the shadow-price section runs squared slack variables (new slide "Lagrange Multipliers Need Equalities") → Lagrangian → stationarity (new slide "Finding the Multipliers") → the two equations; the appendix Lagrange derivation is folded into that sequence; "What the Algorithm Tracks" cut, with its tableau link moved to Step 4; two slides added after "Reading the Shadow Prices" (units and marginal value; Wednesday's sketch LP with one constraint relaxed until it stops binding); the `JuMP` slides print `value.(removal)` and `objective_value`, the Lagrange sequence is done in Wednesday's standard form (maximize, ≤, slack added, $f$ and $g_j$ notation), so the multiplier reads directly as the shadow price, and "Reading the Duals" says the by-hand and `JuMP` signs differ because one maximizes −cost and the other minimizes cost (Oct 11; 35 slides) | |
 | 9 | Wed Oct 21 | Project Proposal Peer Review | `activity-proposal-peer-review` + `project/proposal-review.qmd` | Drafted | HW6 · **Quiz 3** |
 | 10 | Mon Oct 26 | **Lab: Linear Programming with JuMP** — *TA* | `labs/lab02` (`Fall26`, from FA25 `lab03`) | **Drafted Oct 8** — riverside power station in a heat wave; key and TA guide in `labs/solutions/lab02-solution` | Lab 2 |
-| 10 | Wed Oct 28 | Economic Dispatch — *sub (power systems expert)* | `lecture10-2-economic-dispatch` | **Drafted Oct 6** — sub-ready (full notes); keeps multi-period dispatch and the duck curve; adds JuMP shadow-price output, hourly prices, a twice-solar case; Oct 10: students write the ramping constraints before they are shown; Oct 11: the capacity shadow-price slide is cut (Quiz 4 Q2 (b)–(d) rewritten to match), ramp limits are for dispatchable plants only, a 600 MW nuclear unit is added and CT6–CT7 dropped, demand is raised 600 MW and shown as an illustrative fall day, and the high-solar case is three times the solar | MP2 assigned |
-| 11 | Mon Nov 2 | Capacity Expansion | `lecture11-1-capacity-expansion` (new, from the capacity half of `lecture09-1` + `lecture10-1-capacity-expansion-2`) | **Drafted Oct 6** — screening curves; CO₂ cap and its shadow price; Oct 11: stepped through thermal types only (nuclear in place of geothermal), then wind and solar added with a worked example on a good site, then caps at 50%, 25% and 10% (\$148/t thermal only by hand, \$15/t with wind and solar); names brownfield in words for MP2 | |
+| 10 | Wed Oct 28 | Economic Dispatch — *sub (power systems expert)* | `lecture10-2-economic-dispatch` | **Drafted Oct 6** — sub-ready (full notes); keeps multi-period dispatch and the duck curve; adds JuMP shadow-price output, hourly prices, a twice-solar case; Oct 10: students write the ramping constraints before they are shown; Oct 11: the capacity shadow-price slide is cut (Quiz 4 Q2 (b)–(d) rewritten to match), ramp limits are for dispatchable plants only, a 600 MW nuclear unit is added and CT6–CT7 dropped, demand is raised 600 MW and shown as an illustrative fall day, and the high-solar case is three times the solar; Oct 12: gas plants priced at the 2022 U.S. gas price (\$7.21/MMBtu), so the single-hour price is \$87 and the day runs \$58–107, megawatts unchanged | MP2 assigned |
+| 11 | Mon Nov 2 | Capacity Expansion | `lecture11-1-capacity-expansion` (new, from the capacity half of `lecture09-1` + `lecture10-1-capacity-expansion-2`) | **Drafted Oct 6** — screening curves; CO₂ cap and its shadow price; Oct 11: stepped through thermal types only (nuclear in place of geothermal), then wind and solar added with a worked example on a good site, then caps at 50%, 25% and 10% (\$148/t thermal only by hand, \$15/t with wind and solar); names brownfield in words for MP2; Oct 12: moved to 2022 fuel prices as the base (CCGT \$48, CT \$69, coal \$27; EIA coal cost; geothermal added), with a utilization column, the load duration curve filled by plant and net of wind and solar, the cap at \$94/t thermal only, and a new gas-price part (U.S. and European prices 2019–2026; the plan at \$3.50 and \$15, where coal or geothermal takes the base load); 32 slides | |
 | 11 | Wed Nov 4 | Mixed Integer Programming | `lecture11-2-mixed-integer` (renamed from `lecture11-1`) | **Drafted Oct 6** — coded three-plant anchor; branch and bound trimmed | HW7 · **Quiz 4** |
 | 12 | Mon Nov 9 | Solid Waste and Network Models — *sub* | `lecture12-1-waste-management` | **Drafted Oct 6** — sub-ready (full notes, no board work); moves to Wed if that is the only day the sub can come | |
 | 12 | Wed Nov 11 | **Lab: Fixed Costs and Facility Siting in JuMP** — *TA* | `labs/lab03` (`Fall26`) | **Drafted Oct 8** — compost siting, four towns and three sites; key and TA guide in `labs/solutions/lab03-solution`; siting MIP with the formulation given; works before or after the waste lecture, so it can swap to Mon | Lab 3 · HW8 |
@@ -111,7 +111,7 @@ Reusable questions live in `exams/midterm1` and `exams/midterm2`, across branche
   decide, explain). The wording likely invited over-long answers. Its confidence band also did not
   survive printing, so 4a is graded on the estimate only. Calibration for later quizzes: about
   10–12 short, bounded asks.
-- **Quiz 3** — plumes and validation have **no exam precedent**; both need writing.
+- **Quiz 3** — plumes and validation have **no exam precedent**; both need writing. *(Oct 12: Problem 1(b) reworded. It spoke of measurements and "the model that actually generated them" without saying the measurements were simulated; it now sets up the lecture's test, measurements simulated from known parameter values plus noise. A first rewording still asked whether the lower RMSE was evidence the calibrated values were correct, which the setup already answers, as the instructor pointed out. It is now two parts of one point each, at the instructor's request: 1(b) asks how the calibrated values can fit better than the correct ones, and 1(c) what that means for a low RMSE on real measurements. The key has a solution and a rubric line for each. Problem 2(a) asked whether an RMSE of 8% of the mean "fits acceptably", a standard the lecture never gave (its slides only called 15% "a decent fit"). Problem 2 is now three parts of one point each: what the residual pattern shows that the RMSE hides; whether the pattern is more consistent with noise or with an error in the model (the rubric takes "structural" or a wrong rate, as Homework 5's key does); and, replacing the judgment, what data would test the calibrated model's predictions (data it was not calibrated to). Three more changes the same day, all from the instructor's review: "in one sentence" came out of every part, in favour of one line at the top ("Each part can be answered in a sentence or two"); Problem 3 no longer says "image source", a name not used in lecture, and identifies the term by its form, exp(−(z+H)²/2σ_z²); and Problem 4 (the grid that is too coarse near the stack, and hazard against risk) was removed, with its two points moved to 1(a), now 2 points for the two halves of the difference, and to Problem 3, whose "name an assumption and say why it fails" became parts (b) and (c). The instructor then asked for a stability-class question on Problem 3 in place of 2(b) (noise or model error), so 2(b) is gone and 3(d) asks why the ground-level peak is much farther from the stack on a clear night (class F) than on a sunny afternoon (class B); for the lecture's stack the peaks are at 2.46 km and 0.30 km. Last, so that the TA grades one answer and not three, 3(b) and 3(c) changed scenario: a short release on a calm night broke three assumptions at once, and a ten-minute release under a steady wind breaks only steady state, which (b) asks for and (c) asks the reason for (the emission is not constant over the averaging period). 1(c) was then reworded at the instructor's suggestion, as a lab partner who insists on always selecting the model with the lowest RMSE; it is tied to (b) ("Use the result in (b)…") so that it has one answer and "the model" means the two models in (b). The quiz is 4 + 2 + 4 = 10 points: six on the Oct 7 validation lecture and four on the two plume lectures. The version with Problem 4 and the old 2(b) is kept in `quizzes/.drafts/2026-10-12-quiz03-with-problem4/`.)*
   Trimmed Oct 6 to about 11 bounded asks after Quiz 2 ran long.
 - **Quiz 4** — the best-supported quiz. Graphical LP appears on 4/4 optimization-era exams (~8–10 min);
   the "without calculating the objective, which points could be optimal? justify each" variant is the
@@ -155,7 +155,7 @@ is graphical (corners or level lines) on two-variable problems.
 | HW | Assign | Due | Topic | By-hand | Computational (light) |
 |:--|:--|:--|:--|:--|:--|
 | 4 | Wed Sep 30 | Thu Oct 8 | Monte Carlo, uncertainty & risk | Expectation/variance of a function of a random variable; why MC error scales as σ/√n and the samples a target precision needs; exceedance probability and return periods; aleatory vs. epistemic | Propagate parameter uncertainty through the HW3 model; CI on one decision-relevant quantity plus an *n*-convergence plot |
-| 5 | Wed Oct 14 | Thu Oct 22 | Gaussian plumes & model validation | Evaluate the plume equation at a receptor; stability class and wind speed effects; where the max ground-level concentration occurs; what a goodness-of-fit metric is blind to | Evaluate the plume on a coarse grid, locate the max, and score it against observations |
+| 5 | Wed Oct 14 | Thu Oct 22 | Gaussian plumes & model validation | Evaluate the plume equation at a receptor; stability class and wind speed effects; where the max ground-level concentration occurs; what a goodness-of-fit metric is blind to | Calibrate a plume's wind speed and stability class against monitors on a calm valley night, find that neither helps, and say which of the model's assumptions fail |
 | 6 | Wed Oct 21 | Thu Oct 29 | Linear programs & shadow prices | Formulate a word problem with a blending constraint; standard form; read a 2-variable LP graphically; binding constraints, shadow prices with units, a buy-capacity decision, a zero shadow price | Solve the stormwater LP in JuMP, check its shadow prices against the hand answer, and re-solve a change too large for them; a six-source nitrogen LP with three load limits, too large to graph (which limits bind, and each source's shadow-price value against its cost explains the plan and predicts a re-solve) |
 | 7 | Wed Nov 4 | Thu Nov 12 | Mixed integer programming | Model a fixed cost, an either/or, and an indicator with binaries; why the LP relaxation bounds; trace 2–3 branch-and-bound nodes | Solve a small MIP; compare to its LP relaxation |
 | 8 | Wed Nov 11 | Thu Nov 19 | Network models & waste allocation | Set up a small facility-allocation network; flow-conservation and capacity constraints; siting indicators | Solve the instance; interpret which facilities open; a 12-hour combined-sewer storage LP (a storage balance across hours; moved from HW6 Oct 10) |
@@ -191,6 +191,25 @@ LP-assumptions question, the rising-cost contrast, the regulator comparison, the
 re-solve and the site-limit sweep. Later homeworks move down one: MIP is HW7, networks HW8. HW8 goes out Wed Nov 11 rather than on the Nov 9 lecture day, so that it opens a week after HW7, as every other homework does. The
 Oct 5 drafts of HW6 and HW7 and their keys are kept in `hw/.drafts/2026-10-05/`.
 
+**HW5 Problem 3 rebuilt around a setting where the plume model does not apply** (decided Oct 12).
+The instructor found that HW5 leaned on reading residual patterns more than the Oct 7 lecture did (one
+slide and one bullet there; Problem 2 and all of 3.2 here). Problem 3 (35) is now a smelter on a calm,
+clear night in a narrow valley, with twelve monitors east and west of the stack and a consultant's
+class F plume at 1 m/s. Students compute the RMSE (86% of the mean reading), calibrate the wind speed
+(1.3 m/s, 85%), then calibrate the stability class with the wind refitted for each (best is class D,
+72%), and see that the five monitors west of the stack get zero from every wind and class. They say
+whether class F was the wrong choice (it was not: F is a clear calm night, D contradicts the weather),
+and name two of the plume assumptions that fail (steady state, constant wind direction, wind over
+along-wind dispersion, from the Sep 30 list). Points 6 / 9 / 10 / 10. The first draft also had students
+compute a mass balance on the trapped air (2,500 µg/m³, RMSE 10% of the mean) to compare; the
+instructor cut that part the same day and asked for the problem statement to define a temperature
+inversion and say why it makes pollution build up, which it now does. The residual plot and its interpretation are gone from Problem 3;
+Problem 2 (5) stays as the one residual question because Quiz 3 Problem 2 asks the same thing. The
+readings come from the mass balance with 12% noise (`hw/solutions/hw05/data/make_receptors.jl`, seed
+4750). The Oct 8 version (prompt, key and data) is kept in `hw/.drafts/2026-10-12-hw05/`. Its data were a
+class E plume read as class F, so "calibrate the class and find E" would work on it if the simpler
+variant is wanted.
+
 **HW6 Problem 4 replaced** (decided Oct 9). Re-solving Problem 3's LP in `JuMP` repeated a problem
 students had just done by hand, so the `JuMP` solve and the 4-acre lease moved into Problem 3 (3.6
 and 3.7) and Problem 4 became a new, larger problem with a time index: a combined-sewer storage
@@ -221,6 +240,24 @@ coastal plant saves $20/day). Points 3 / 3 / 2 / 4. No homework practises a time
 (Nov 4), so its ramping question gets two other supports: on Oct 28 students write the ramping
 constraints themselves before the slide that shows them, and the Assessments slide points to MP2
 Problem 1.1 (multi-period dispatch with ramping limits) as practice, to finish by Nov 3.
+
+**MP2 Part 5 gains hydro and carbon capture** (decided Oct 12). The instructor asked for both as
+things the state can build. Added plainly they break two of Part 5's three problems: hydro up to its
+full technical potential meets the 2013 cap alone at \$17/t, so the "today" price comes out higher,
+and capture at 2013 costs ties exactly with new combined cycle, so a tax at the cap's price lands
+anywhere from 39 to 42 Mt. The setup that works: new hydro limited to 295 MW (Oak Ridge's 2012
+estimate for New York's dams without turbines) with water in proportion to capacity, and combined
+cycle with capture at \$39/MWh and 0.05 t/MWh, with EIA's 2013 and 2025 capital costs for both
+(\$250,732 and \$604,000 per MW-yr for hydro; \$200,619 and \$215,000 for capture). Capture is a ninth
+row of the fleet file with no capacity, so Parts 1–4 are unchanged (checked value by value against
+the previous key). Answers: 5.1 still builds nothing; 5.2 (cap, 2013 costs) builds hydro 295, combined
+cycle 369 and capture 241 MW at \$57.80/t, which is capture's extra cost over new combined cycle per
+tonne avoided; 5.3 (today's costs) builds wind 2,741 and solar 1,645 MW at \$26.69/t, and carries
+the tax comparison, which holds exactly there. Points 8 / 8 / 9. The 5.2 build does not move when
+the capture, combined cycle or hydro cost is nudged by 2–10%. The prompt's data note says the 2013
+capture cost was an estimate for a plant nobody had built, and that part of hydro's cost increase
+is a change in EIA's reference plant. The Part 5 data-loading code is now a runnable cell in the
+notebook (it had been inside a text cell).
 
 **Two mini-projects, not three** (decided Sep 23), each worth 10% and scoped to a short report so it reads as a project rather than a heavier homework. MP1 runs four weeks because Fall Break and the proposal fall inside it; MP2 runs three, opening with the dispatch lecture it depends on. MP3 is dropped; the scenario-tree lab (Lab 4) stands on its own.
 
@@ -299,7 +336,7 @@ Problem 1.1 (multi-period dispatch with ramping limits) as practice, to finish b
   with the FA25 exam's sub-parts. `lecture09-1` now says `shadow_price` is the objective change when a
   constraint is *relaxed* (the earlier "right-hand side increases" was wrong for ≥ constraints).
 - **`lecture07-2` streamlined (Oct 6).** The residual-pattern idea had dropped out in the Oct 4
-  consolidation, while Quiz 3 Problem 2 and HW5 3.2 assess it. It is back as an in-sample slide,
+  consolidation, while Quiz 3 Problem 2 and HW5 3.2 assess it (since Oct 12, HW5 Problem 2 in place of 3.2). It is back as an in-sample slide,
   "The Residuals Say Otherwise": the calibrated plume's percent residuals run from −17% at 0.5 km
   to +40% at 7 km. It sits before the out-of-sample "Monitors We Did Not Fit", which stays intact as
   the empirical-validity test. "So What Would Have Caught It?" now lists face, residual and empirical

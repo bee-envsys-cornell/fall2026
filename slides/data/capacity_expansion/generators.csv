@@ -1,7 +1,8 @@
-Plant,FixedCost,VarCost,Emissions
-Nuclear,790000,8,0
-Coal,220000,21,1
-NG CCGT,82000,25,0.43
-NG CT,65000,35,0.55
-Wind,91000,0,0
-Solar,70000,0,0
+Plant,FixedCost,VarCost,Emissions,Fuel,HeatRate,OtherVarCost
+Nuclear,790000,8,0,None,0,8
+Coal,392000,27,1,Coal,8.638,6.4
+NG CCGT,82000,48,0.43,Gas,6.27,3
+NG CT,65000,69,0.55,Gas,9.12,3
+Geothermal,470000,0,0,None,0,0
+Wind,91000,0,0,None,0,0
+Solar,70000,0,0,None,0,0

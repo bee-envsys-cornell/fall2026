@@ -92,7 +92,7 @@ commas(n) = replace(string(Int(round(n))), r"(?<=\d)(?=(\d{3})+$)" => ",")
 ## Last Class: Economic Dispatch
 
 - Dispatch runs the plants we **already have** at least cost: the merit order, bent by minimum outputs and ramping.
-- **The price of electricity is the demand constraint's shadow price**: the cost of the plant that would serve the next MWh (\$38/MWh at 2200 MW).
+- **The price of electricity is the demand constraint's shadow price**: the cost of the plant that served the last MWh (\$87/MWh at 2200 MW).
 
 Today: deciding what to **build**.
 
@@ -131,8 +131,6 @@ They differ in **what they cost to build** and **what they cost to run**, and th
 Preview the result: cheap-to-build plants that are expensive to run (CTs) suit loads that occur only a few hours a year; expensive-to-build plants that are cheap to run suit loads that are there all year. The rest of the lecture makes that precise.
 :::
 
-# Formulating the Problem
-
 ## Data: Generators and Demand
 
 ```{julia}
@@ -141,7 +139,28 @@ Preview the result: cheap-to-build plants that are expensive to run (CTs) suit l
 #| output: asis
 
 gens = DataFrame(CSV.File("data/capacity_expansion/generators.csv"))
-n_types = nrow(gens) - 2                   # leave out wind and solar for now
+n_types = 4                                # the thermal types: nuclear, coal, CCGT and CT
+gas_price = 7.21                           # delivered to U.S. power plants in 2022 [$/MMBtu]
+coal_price = 2.36
+
+# Variable cost of each plant type [$/MWh, to the dollar] at given fuel prices:
+# the fuel burned per MWh times its price, plus other running costs
+function variable_costs(gas, coal)
+    costs = zeros(Int, nrow(gens))
+    for g in 1:nrow(gens)
+        fuel_price = 0
+        if gens[g, :Fuel] == "Gas"
+            fuel_price = gas
+        elseif gens[g, :Fuel] == "Coal"
+            fuel_price = coal
+        end
+        costs[g] = round(Int, gens[g, :OtherVarCost] + gens[g, :HeatRate] * fuel_price)
+    end
+    return costs
+end
+# The data file's variable costs are the 2022 ones
+@assert variable_costs(gas_price, coal_price) == gens.VarCost
+
 println("| Generator | Fixed cost (\\\$/MW-yr) | Variable cost (\\\$/MWh) |")
 println("|:--|--:|--:|")
 for g in 1:n_types
@@ -158,10 +177,14 @@ n_hours = length(demand)
 peak_demand = maximum(demand)
 ```
 
+::: {.caption}
+Variable costs at 2022 fuel prices: gas \$`{julia} gas_price`, coal \$`{julia} coal_price` per million Btu (MMBtu).
+:::
+
 Demand: NYISO Zone C, every hour of 2020 (peak `{julia} commas(peak_demand)` MW).
 
 ::: {.notes}
-Fixed costs are annualized: the cost of building one MW of capacity, spread over the plant's life, per year. Variable costs are per MWh generated. Nuclear is very expensive to build and cheap to run; combustion turbines are the reverse. Wind and solar return later.
+Fixed costs are annualized: the cost of building one MW of capacity, spread over the plant's life, per year. Variable costs are per MWh generated, and they are mostly fuel. The fuel prices are what U.S. power plants paid on average in 2022, when natural gas cost about twice what it does now. A CCGT burns about `{julia} gens[3, :HeatRate]` million Btu of gas per MWh and a CT about `{julia} gens[4, :HeatRate]`, so every dollar on the gas price adds about 6 and 9 dollars to their costs per MWh. The last part of the lecture changes that price. Nuclear is very expensive to build and cheap to run; combustion turbines are the reverse. Wind, solar and geothermal return later.
 :::
 
 ## Load Duration Curve
@@ -252,6 +275,19 @@ set_silent(gencap); optimize!(gencap)
 `{julia} commas(n_hours)` hours times four technologies is about 35,000 generation variables; HiGHS solves it in a few seconds. Name the load and availability constraints so we can ask for their shadow prices later.
 :::
 
+## Utilization
+
+How much of the year is a plant's capacity used?
+
+$$\text{utilization} = \frac{\text{energy produced in the year}}{\text{capacity} \times \text{hours in the year}}$$
+
+- A 100 MW plant that produced `{julia} commas(25 * n_hours)` MWh in 2020's `{julia} commas(n_hours)` hours: `{julia} commas(25 * n_hours)` ÷ (100 × `{julia} commas(n_hours)`) = **25%**.
+- It depends on how the plant is **run**, which the model decides hour by hour.
+
+::: {.notes}
+A plant that ran at full output all year would be at 100%, and one that never ran at zero. Many sources call this number the plant's capacity factor. Today we keep the term capacity factor for what the weather allows a wind or solar plant to produce, which comes later, and use utilization for what the model chooses to run.
+:::
+
 ## Results
 
 ```{julia}
@@ -274,42 +310,69 @@ function share(v)
     end
     return string(rounded_v)
 end
-println("| Resource | Installed (MW) | % of peak | % of energy |")
-println("|:--|--:|--:|--:|")
+# Energy produced as a share of what the capacity could produce in a year [%];
+# a dash for a type that isn't built
+function utilization(built, produced)
+    if built < 0.5
+        return "–"
+    end
+    return string(round(Int, 100 * produced / (built * n_hours)))
+end
+println("| Resource | Installed (MW) | % of peak | % of energy | Utilization (%) |")
+println("|:--|--:|--:|--:|--:|")
 for g in 1:n_types
     println("| $(gens[g, :Plant]) | $(commas(capacity[g])) | $(share(100 * capacity[g] / peak_demand)) | ",
-        "$(share(100 * generation[g] / sum(demand))) |")
+        "$(share(100 * generation[g] / sum(demand))) | $(utilization(capacity[g], generation[g])) |")
 end
 ```
 
 Up to **`{julia} commas(maximum(unserved))` MW** goes unserved, in **`{julia} nse_hours` hours** of the year.
 
 ::: {.notes}
-No nuclear and no coal: neither is worth building at these costs. Combined-cycle gas carries almost all of the energy; combustion turbines provide about a quarter of the capacity but only about 2% of the energy: they're for the peaks. And there is some unserved energy, despite the 9,000 dollar penalty: `{julia} commas(sum(unserved))` MWh over `{julia} nse_hours` hours. The next slides explain all three facts from the cost data alone. The total cost is \$`{julia} round(Int, objective_value(gencap) / 1e6)`M a year.
+No nuclear and no coal: neither is worth building at these costs. Combined-cycle gas carries almost all of the energy, and its utilization is `{julia} utilization(capacity[3], generation[3])`%. Combustion turbines are `{julia} round(Int, 100 * capacity[4] / peak_demand)`% of peak demand but supply only `{julia} share(100 * generation[4] / sum(demand))`% of the energy: they're for the peaks. And there is some unserved energy, despite the 9,000 dollar penalty: `{julia} commas(sum(unserved))` MWh over `{julia} nse_hours` hours. The next slides explain all three facts from the cost data alone. The total cost is \$`{julia} round(Int, objective_value(gencap) / 1e6)`M a year.
 :::
 
-## When Do Generators Run?
+## Which Plant Serves Which Load?
 
 ```{julia}
 #| echo: true
 #| code-fold: true
 
-# The week around the year's peak hour
-peak_hour = argmax(demand)
-week = max(1, peak_hour - 84):min(n_hours, peak_hour + 83)
-run_by_type = zeros(length(week), n_types + 1)
-for g in 1:n_types
-    run_by_type[:, g] = value.(y[g, week])
+# One colour per plant type, in the order of the data file
+type_colors = [cb_purple, :gray40, cb_orange, cb_vermillion, cb_blue, cb_sky, cb_yellow]
+
+# The load duration curve, filled by the plant type that serves each level of load.
+# Plants are used in order of running cost (`order`, cheapest first), so each type
+# fills a band as tall as its capacity.
+function band_plot(build, order)
+    p = plot(xlabel="Hours of the year with at least this load", ylabel="Load  [MW]",
+        xlims=(0, n_hours), ylims=(0, 3000), legend=:outerright)
+    lower = zeros(n_hours)
+    served = 0
+    for g in order
+        if build[g] > 0.5
+            served += build[g]
+            upper = min.(sorted_demand, served)
+            plot!(p, 1:n_hours, upper, fillrange=lower, color=type_colors[g], linewidth=0,
+                label=gens[g, :Plant])
+            lower = upper
+        end
+    end
+    plot!(p, 1:n_hours, sorted_demand, fillrange=lower, color=:black, linewidth=0, label="Unserved")
+    plot!(p, 1:n_hours, sorted_demand, color=:black, linewidth=2)
+    return p
 end
-run_by_type[:, end] = unserved[week]
-areaplot(1:length(week), run_by_type, label=permutedims([gens[1:n_types, :Plant]; "Unserved"]),
-    color=permutedims([cb_purple, :gray40, cb_orange, cb_vermillion, :black]),
-    xlabel="Hour of the peak week", ylabel="Generation  [MW]", legend=:outerright,
-    size=(1200, 440), left_margin=12mm)
+
+thermal_build = zeros(nrow(gens))
+thermal_build[1:n_types] = capacity
+p_bands = band_plot(thermal_build, [1, 2, 3, 4])
+plot!(p_bands, size=(1200, 330), left_margin=12mm)
 ```
 
+The CCGT band is full most of the year (utilization **`{julia} utilization(capacity[3], generation[3])`%**). The CT band is used only at the far left (**`{julia} utilization(capacity[4], generation[4])`%**).
+
 ::: {.notes}
-One week, centred on the year's peak hour (a full year of hours is unreadable). The CCGTs run nearly all the time; the CTs come on only for the daily peaks; and in the highest hour or two, a thin sliver of demand goes unserved.
+The load duration curve again, coloured by the plant that serves each MW of load. The plants run in order of cost, so the CCGTs take every MW of load up to their capacity and the CTs take what is above it. The height of a band is that type's capacity and its area is its energy, so utilization is how much of its rectangle the band fills. The CCGT rectangle is mostly full. The CT rectangle is nearly empty: `{julia} commas(capacity[4])` MW that are used `{julia} utilization(capacity[4], generation[4])`% of the time. The load at the far right, which is there in every hour, is called base load; the load at the far left, there for a few hours, is peak load. Here one type serves both the base and the middle. The unserved load is a sliver above the CTs at the left edge, too thin to see at this scale.
 :::
 
 ## Screening Curves
@@ -328,6 +391,9 @@ annual_cost[:, end] = NSECost .* hours_run          # not serving: no build cost
 
 ct_vs_ccgt = (gens[3, :FixedCost] - gens[4, :FixedCost]) / (gens[4, :VarCost] - gens[3, :VarCost])
 nse_vs_ct = gens[4, :FixedCost] / (NSECost - gens[4, :VarCost])
+# The next slide's equations quote these four numbers
+@assert gens[3, :FixedCost] == 82000 && gens[3, :VarCost] == 48
+@assert gens[4, :FixedCost] == 65000 && gens[4, :VarCost] == 69
 p_screen = plot(xlabel="Hours run per year", ylabel="Cost per MW  [\$1000/yr]",
     xlims=(0, n_hours), ylims=(0, 900), legend=:outerright)
 for (j, (name, color, style)) in enumerate(zip([gens[1:n_types, :Plant]; "Unserved"],
@@ -335,12 +401,12 @@ for (j, (name, color, style)) in enumerate(zip([gens[1:n_types, :Plant]; "Unserv
     plot!(p_screen, hours_run, annual_cost[:, j] ./ 1000, color=color, linestyle=style, label=name)
 end
 vline!(p_screen, [ct_vs_ccgt], color=:black, linewidth=1, linestyle=:dash, label=false)
-annotate!(p_screen, ct_vs_ccgt + 150, 680, text("$(commas(ct_vs_ccgt)) h", 16, :left, plot_font))
+annotate!(p_screen, ct_vs_ccgt + 150, 720, text("$(commas(ct_vs_ccgt)) h", 16, :left, plot_font))
 plot!(p_screen, size=(1200, 440), left_margin=12mm)
 ```
 
 ::: {.notes}
-Each line is what one MW of a technology costs per year if it runs for a given number of hours: fixed cost at zero hours, rising at the variable cost. The cheapest technology for a load that lasts h hours is the lowest line at h. Nuclear and coal are never lowest within a year. CTs are cheapest below the crossover with CCGT; CCGTs above. Unserved energy (the dotted line, steepest of all) is cheapest only for loads that last a few hours: its crossover with CTs is too close to zero to see at this scale.
+Each line is what one MW of a technology costs per year if it runs for a given number of hours: fixed cost at zero hours, rising at the variable cost. The cheapest technology for a load that lasts h hours is the lowest line at h. At these prices nuclear and coal are not the lowest at any number of hours in a year. CTs are cheapest below the crossover with CCGT; CCGTs above. Unserved energy (the dotted line, steepest of all) is cheapest only for loads that last a few hours: its crossover with CTs is too close to zero to see at this scale.
 :::
 
 ## Where the Lines Cross
@@ -350,8 +416,8 @@ Find the crossovers: below how many hours a year is a CT cheaper than a CCGT? No
 ::: {.fragment .fade-in}
 $$
 \begin{aligned}
-\text{CT vs. CCGT:} \quad & 65{,}000 + 35h = 82{,}000 + 25h \\
-\text{Unserved vs. CT:} \quad & 9{,}000h = 65{,}000 + 35h
+\text{CT vs. CCGT:} \quad & 65{,}000 + 69h = 82{,}000 + 48h \\
+\text{Unserved vs. CT:} \quad & 9{,}000h = 65{,}000 + 69h
 \end{aligned}
 $$
 
@@ -359,7 +425,7 @@ A CT is cheaper below **`{julia} commas(ct_vs_ccgt)` hours**; not serving is che
 :::
 
 ::: {.notes}
-Board item; the fragment is the answer. Set the two annual costs equal and solve. CCGT costs 17,000 dollars a year more to build and 10 dollars per MWh less to run, so it pays back after 1,700 hours. A CT costs 65,000 dollars a year to build; not serving costs 8,965 dollars more per MWh than running the CT, so a CT pays for itself only if it would run more than about seven hours a year. Coal never beats CCGT: the crossover is at 34,500 hours, longer than a year. Nuclear's crossover with CCGT is at about `{julia} commas(round((gens[1, :FixedCost] - gens[3, :FixedCost]) / (gens[3, :VarCost] - gens[1, :VarCost]); sigdigits=3))` hours.
+Board item; the fragment is the answer. Set the two annual costs equal and solve. CCGT costs \$`{julia} commas(gens[3, :FixedCost] - gens[4, :FixedCost])` a year more to build and \$`{julia} gens[4, :VarCost] - gens[3, :VarCost]` per MWh less to run, so it pays back after about `{julia} commas(ct_vs_ccgt)` hours. A CT costs \$`{julia} commas(gens[4, :FixedCost])` a year to build; not serving costs \$`{julia} commas(NSECost - gens[4, :VarCost])` more per MWh than running the CT, so a CT pays for itself only if it would run more than about seven hours a year. At these prices coal does not beat CCGT within a year: the crossover is at `{julia} commas((gens[2, :FixedCost] - gens[3, :FixedCost]) / (gens[3, :VarCost] - gens[2, :VarCost]))` hours. Nuclear's crossover with CCGT is at about `{julia} commas(round((gens[1, :FixedCost] - gens[3, :FixedCost]) / (gens[3, :VarCost] - gens[1, :VarCost]); sigdigits=3))` hours.
 :::
 
 ## Reading the Build Off the Curve
@@ -386,7 +452,7 @@ plot(p_full, p_top, layout=(1, 2), size=(1200, 350), left_margin=12mm)
 CCGT **`{julia} commas(ccgt_level)` MW**, CT **`{julia} commas(ct_top - ccgt_level)` MW**, **`{julia} round(Int, peak_demand - ct_top)` MW** unserved, which is exactly what the LP builds.
 
 ::: {.notes}
-Read the crossovers off the load duration curve. Load that lasts more than 1,700 hours is cheapest served by CCGT: that's the curve's height at 1,700 hours, `{julia} commas(ccgt_level)` MW. Load lasting between about 7 and 1,700 hours is cheapest served by CTs: up to the curve's height at 8 hours. Load lasting fewer hours isn't worth building for at all. This reproduces the LP's build to the megawatt, and it answers why there's unserved energy despite the 9,000 dollar penalty: the last `{julia} round(Int, peak_demand - ct_top)` MW are needed for only `{julia} nse_hours` hours a year, and building capacity for them would cost more than the penalty. The 7.25-hour threshold depends on the penalty: at 10,000 dollars per MWh it's 6.5 hours.
+Read the crossovers off the load duration curve. Load that lasts more than `{julia} commas(ct_vs_ccgt)` hours is cheapest served by CCGT: that's the curve's height at `{julia} commas(ct_vs_ccgt)` hours, `{julia} commas(ccgt_level)` MW. Load lasting between about 7 and `{julia} commas(ct_vs_ccgt)` hours is cheapest served by CTs: up to the curve's height at 8 hours. Load lasting fewer hours isn't worth building for at all. This reproduces the LP's build to the megawatt, and it answers why there's unserved energy despite the 9,000 dollar penalty: the last `{julia} round(Int, peak_demand - ct_top)` MW are needed for only `{julia} nse_hours` hours a year, and building capacity for them would cost more than the penalty. The `{julia} round(nse_vs_ct; digits=2)`-hour threshold depends on the penalty: at 10,000 dollars per MWh it's `{julia} round(gens[4, :FixedCost] / (10000 - gens[4, :VarCost]); digits=1)` hours.
 :::
 
 # Adding Renewables
@@ -456,6 +522,37 @@ Over the year, wind averages **`{julia} round(Int, 100 * wind_average)`%** and s
 The figure averages each hour of the day over the whole year. Solar produces only in daylight and peaks at midday. Wind is steadier across the day and a little stronger at night. The two annual averages are close, but the hours are very different, and that is what will matter.
 :::
 
+## Geothermal, Wind and Solar
+
+```{julia}
+#| echo: true
+#| code-fold: true
+#| output: asis
+
+geothermal_row = n_types + 1
+wind_row = n_types + 2
+solar_row = n_types + 3
+n_all = nrow(gens)
+# Average share of capacity that is available over the year, by type
+average_available = ones(n_all)
+average_available[wind_row] = wind_average
+average_available[solar_row] = solar_average
+println("::: {.small}\n")
+println("| Generator | Fixed cost (\\\$/MW-yr) | Variable cost (\\\$/MWh) | Average capacity factor (%) |")
+println("|:--|--:|--:|--:|")
+for g in (n_types + 1):n_all
+    println("| $(gens[g, :Plant]) | $(commas(gens[g, :FixedCost])) | $(gens[g, :VarCost]) | ",
+        "$(round(Int, 100 * average_available[g])) |")
+end
+println("\n:::")
+```
+
+These three join the four thermal types. **Geothermal** is available in every hour, but only where the resource exists.
+
+::: {.notes}
+None of the three has a fuel cost. Wind and solar are cheap to build and available only when the weather allows. Geothermal costs more to build than coal and runs whenever it is wanted. Its cost is the Energy Information Administration's estimate for a 50 MW plant. Real sites are small and need the right geology, so letting the model build as much as it wants is generous to geothermal. Because geothermal is always available, the screening rule still applies to it: it beats a CCGT for loads that last more than `{julia} commas((gens[geothermal_row, :FixedCost] - gens[3, :FixedCost]) / gens[3, :VarCost])` hours a year.
+:::
+
 ## Do Screening Curves Still Work?
 
 ```{julia}
@@ -463,16 +560,17 @@ The figure averages each hour of the day over the whole year. Solar produces onl
 #| code-fold: true
 
 # Wind and solar on the screening chart: a fixed cost each year, and nothing per MWh
-wind_row = n_types + 1
-solar_row = n_types + 2
 solar_vs_ct = (gens[solar_row, :FixedCost] - gens[4, :FixedCost]) / gens[4, :VarCost]
 wind_vs_ccgt = (gens[wind_row, :FixedCost] - gens[3, :FixedCost]) / gens[3, :VarCost]
 # What a MWh costs once the capacity factor is counted [$/MWh]
 wind_energy_cost = gens[wind_row, :FixedCost] / (wind_average * n_hours)
 solar_energy_cost = gens[solar_row, :FixedCost] / (solar_average * n_hours)
+geothermal_energy_cost = gens[geothermal_row, :FixedCost] / n_hours
+# A CCGT's whole cost per MWh when it runs all year [$/MWh]
+ccgt_all_year_cost = gens[3, :FixedCost] / n_hours + gens[3, :VarCost]
 
 p_renewable_screen = plot(xlabel="Hours run per year", ylabel="Cost per MW  [\$1000/yr]",
-    xlims=(0, n_hours), ylims=(0, 320), legend=:outerright)
+    xlims=(0, n_hours), ylims=(0, 520), legend=:outerright)
 plot!(p_renewable_screen, hours_run, annual_cost[:, 3] ./ 1000, color=cb_orange, label="NG CCGT")
 plot!(p_renewable_screen, hours_run, annual_cost[:, 4] ./ 1000, color=cb_vermillion, linestyle=:dashdot, label="NG CT")
 hline!(p_renewable_screen, [gens[wind_row, :FixedCost] / 1000], color=cb_sky, linestyle=:dash, label="Wind")
@@ -499,11 +597,13 @@ A MW of solar costs \$`{julia} commas(gens[solar_row, :FixedCost])` a year and a
 :::
 
 ::: {.fragment .fade-in}
-Solar's energy costs less than the gas it saves, so some is worth building. **How much** is a question for the LP.
+Both cost less than the gas they save, so some of each is worth building. **How much** is a question for the LP.
 :::
 
 ::: {.notes}
-Board item; the fragments carry the answer. Divide the annual cost of a MW by the MWh it actually produces. A CCGT that is already built saves \$`{julia} gens[3, :VarCost]` of fuel for every MWh something else supplies. Solar's MWh costs less than that, so replacing gas energy with solar saves money. Wind's costs a little more on average, but wind can still pay in the hours when a CT at \$`{julia} gens[4, :VarCost]` would otherwise run. Neither can be counted on in a given hour, so neither replaces the gas capacity itself. Comparing a new plant's cost per MWh with the fuel it would replace is the comparison to make whenever the capacity it competes with is needed anyway.
+Board item; the fragments carry the answer. Divide the annual cost of a MW by the MWh it actually produces. A CCGT that is already built saves \$`{julia} gens[3, :VarCost]` of fuel for every MWh something else supplies. A MWh from wind or from solar costs less than that, so replacing gas energy with either saves money. Neither can be counted on in a given hour, so neither replaces the gas capacity itself. Comparing a new plant's cost per MWh with the fuel it would replace is the comparison to make whenever the capacity it competes with is needed anyway.
+
+Geothermal is a different case, because it is always available. Its energy costs \$`{julia} round(Int, geothermal_energy_cost)` per MWh, more than a CCGT's fuel. But it can take the place of a CCGT altogether, and a CCGT that runs all year costs \$`{julia} round(Int, ccgt_all_year_cost)` per MWh once its fixed cost is counted.
 :::
 
 ## In `JuMP`
@@ -514,14 +614,14 @@ Board item; the fragments carry the answer. Divide the annual cost of a MW by th
 #| output: false
 
 # Share of each type's capacity that is available each hour: all of it for the
-# thermal types, the capacity factor for wind and solar (the last two types)
-n_all = nrow(gens)
+# thermal types and geothermal, the capacity factor for wind and solar
 available = ones(n_all, n_hours)
 available[wind_row, :] = wind_cf
 available[solar_row, :] = solar_cf
 
-# The least-cost plan for the listed plant types, with an optional cap on annual emissions [t CO₂]
-function solve_plan(types; cap=Inf, fixed_cost=gens.FixedCost)
+# The least-cost plan for the listed plant types, with an optional cap on annual
+# emissions [t CO₂]. Costs default to the data file's; pass others to change them.
+function solve_plan(types; cap=Inf, fixed_cost=gens.FixedCost, var_cost=gens.VarCost)
     model = Model(HiGHS.Optimizer)
     @variables(model, begin
         x[g in types] >= 0                  # capacity [MW]
@@ -530,7 +630,7 @@ function solve_plan(types; cap=Inf, fixed_cost=gens.FixedCost)
     end)
     @expression(model, emitted, sum(gens[g, :Emissions] * y[g, t] for g in types, t in 1:n_hours))
     @objective(model, Min, sum(fixed_cost[g] * x[g] for g in types) +
-        sum(gens[g, :VarCost] * y[g, t] for g in types, t in 1:n_hours) + NSECost * sum(nse))
+        sum(var_cost[g] * y[g, t] for g in types, t in 1:n_hours) + NSECost * sum(nse))
     @constraint(model, [t in 1:n_hours], sum(y[g, t] for g in types) + nse[t] >= demand[t])
     @constraint(model, [g in types, t in 1:n_hours], y[g, t] <= x[g] * available[g, t])
     if isfinite(cap)
@@ -563,13 +663,13 @@ end
     y[g, t] <= x[g] * available[g, t])
 ```
 
-Only the availability constraint changes: `available[g, t]` is 1 for the thermal types and the capacity factor for wind and solar.
+Only the availability constraint changes: `available[g, t]` is 1 for the thermal types and geothermal, and the capacity factor for wind and solar.
 
 ::: {.notes}
-The folded cell holds the whole model as a function, so the same code can be solved for any set of plant types, with or without an emissions cap. Everything in it is the model from earlier except this one line. Writing the constraint with indexed sets keeps it one line however many technologies there are.
+The folded cell holds the whole model as a function, so the same code can be solved for any set of plant types, with or without an emissions cap, and later at other fuel prices. Everything in it is the model from earlier except this one line. Writing the constraint with indexed sets keeps it one line however many technologies there are.
 :::
 
-## The Plan With Wind and Solar
+## The Plan With Renewables
 
 ```{julia}
 #| echo: true
@@ -581,15 +681,19 @@ with_renewables = solve_plan(1:n_all)
 renewables_added = round(with_renewables.build[wind_row]) + round(with_renewables.build[solar_row])
 gas_before = round(capacity[3]) + round(capacity[4])
 gas_after = round(with_renewables.build[3]) + round(with_renewables.build[4])
+# The notes say geothermal is not built
+@assert with_renewables.build[geothermal_row] < 0.5
 
-# The same model at overnight costs with no tax credits (EIA: wind $153,000, solar $141,000 per MW-yr)
+# For the notes: the plan if geothermal were the only addition, and the plan at
+# overnight costs with no tax credits (EIA: wind $153,000, solar $141,000 per MW-yr)
+with_geothermal = solve_plan(1:geothermal_row)
 no_credit_cost = copy(gens.FixedCost)
 no_credit_cost[wind_row] = 153000
 no_credit_cost[solar_row] = 141000
 no_credit = solve_plan(1:n_all; fixed_cost=no_credit_cost)
 
 println("::: {.small}\n")
-println("| | Thermal types only | With wind and solar |")
+println("| | Thermal types only | With renewables |")
 println("|:--|--:|--:|")
 for g in 1:n_all
     if g <= n_types
@@ -599,7 +703,7 @@ for g in 1:n_all
         before = "–"
         built_before = 0
     end
-    if built_before > 0.5 || with_renewables.build[g] > 0.5
+    if built_before > 0.5 || with_renewables.build[g] > 0.5 || g == geothermal_row
         println("| $(gens[g, :Plant]) (MW) | $(before) | $(commas(with_renewables.build[g])) |")
     end
 end
@@ -611,38 +715,44 @@ println("\n:::")
 Wind and solar add **`{julia} commas(renewables_added)` MW**; gas falls by only **`{julia} commas(gas_before - gas_after)` MW**.
 
 ::: {.notes}
-Three things change. Wind and solar are built: `{julia} commas(renewables_added)` MW between them. The gas plants run less: CCGTs supplied `{julia} round(Int, 100 * generation[3] / sum(demand))`% of the energy before and `{julia} round(Int, 100 * with_renewables.energy[3] / sum(demand))`% now, which is where the saving of \$`{julia} round(Int, (thermal_cost - with_renewables.cost) / 1e6)`M a year and the `{julia} round(Int, 100 * (1 - with_renewables.emissions / thermal_emissions))`% cut in emissions come from. And the gas capacity hardly changes, from `{julia} commas(gas_before)` to `{julia} commas(gas_after)` MW, because demand after dark still has to be met. Nuclear and coal are not built in either plan.
+Three things change. Wind and solar are built: `{julia} commas(renewables_added)` MW between them. The gas plants run less: the CCGTs' utilization falls from `{julia} utilization(capacity[3], generation[3])`% to `{julia} utilization(with_renewables.build[3], with_renewables.energy[3])`%, which is where the saving of \$`{julia} round(Int, (thermal_cost - with_renewables.cost) / 1e6)`M a year and the `{julia} round(Int, 100 * (1 - with_renewables.emissions / thermal_emissions))`% cut in emissions come from. And the gas capacity falls much less, from `{julia} commas(gas_before)` to `{julia} commas(gas_after)` MW, because demand after dark still has to be met.
 
-This result depends on the costs. These wind and solar costs give energy at about \$`{julia} round(Int, wind_energy_cost)` and \$`{julia} round(Int, solar_energy_cost)` per MWh at this site, close to recent U.S. estimates that include tax credits. At overnight costs without credits (\$153,000 and \$141,000 per MW-year, from the Energy Information Administration's capital cost estimates), the same model builds `{julia} commas(no_credit.build[wind_row] + no_credit.build[solar_row])` MW of wind and solar.
+Nuclear, coal and geothermal are not built. Geothermal's energy costs more than wind's and solar's, and gas supplies the capacity for the evenings at a lower cost. If wind and solar could not be built, the plan would include `{julia} commas(with_geothermal.build[geothermal_row])` MW of geothermal, running all year.
+
+This result depends on the costs. These wind and solar costs give energy at about \$`{julia} round(Int, wind_energy_cost)` and \$`{julia} round(Int, solar_energy_cost)` per MWh at this site, close to recent U.S. estimates that include tax credits. At overnight costs without credits (\$153,000 and \$141,000 per MW-year, from the Energy Information Administration's capital cost estimates), the same model builds `{julia} commas(no_credit.build[wind_row] + no_credit.build[solar_row])` MW of wind and solar and `{julia} commas(no_credit.build[geothermal_row])` MW of geothermal.
 :::
 
-## A Week With Wind and Solar
+## Load Net of Wind and Solar
 
 ```{julia}
 #| echo: true
 #| code-fold: true
 
-# The same peak week as before, under the plan with wind and solar
-built = findall(with_renewables.build .> 0.5)
-week_mix = zeros(length(week), length(built) + 1)
-for (j, g) in enumerate(built)
-    week_mix[:, j] = with_renewables.hourly[g, week]
-end
-week_mix[:, end] = with_renewables.unserved[week]
-type_colors = [cb_purple, :gray40, cb_orange, cb_vermillion, cb_sky, cb_yellow]
-areaplot(1:length(week), week_mix, label=permutedims([gens[built, :Plant]; "Unserved"]),
-    color=permutedims([type_colors[built]; :black]),
-    xlabel="Hour of the peak week", ylabel="Generation  [MW]", legend=:outerright,
-    size=(1200, 350), left_margin=12mm)
+# What is left for the other plants each hour, once wind and solar have produced
+# all that the weather allows
+net_load = demand .- with_renewables.build[wind_row] .* wind_cf .-
+    with_renewables.build[solar_row] .* solar_cf
+sorted_net = sort(net_load, rev=true)
+surplus_hours = count(net_load .< 0)
+# Share of what wind and solar could have produced that goes unused [%]
+could_produce = with_renewables.build[wind_row] * sum(wind_cf) + with_renewables.build[solar_row] * sum(solar_cf)
+unused_share = 100 * (1 - (with_renewables.energy[wind_row] + with_renewables.energy[solar_row]) / could_produce)
+
+p_net = plot(1:n_hours, sorted_demand, color=:black, label="Load",
+    xlabel="Hours of the year with at least this load", ylabel="Load  [MW]",
+    xlims=(0, n_hours), legend=:outerright)
+plot!(p_net, 1:n_hours, sorted_net, color=cb_orange, linestyle=:dash, label="Net of wind and solar")
+hline!(p_net, [0], color=:gray50, linewidth=1)
+plot!(p_net, size=(1200, 320), left_margin=12mm)
 ```
 
-Gas still covers the evenings, so its capacity barely falls.
+The other plants' peak falls only from **`{julia} commas(peak_demand)`** to **`{julia} commas(maximum(net_load))` MW**. In **`{julia} commas(surplus_hours)` hours**, wind and solar alone could exceed the load.
 
 ::: {.notes}
-The same week as the earlier figure. Solar fills the middle of each day and wind comes and goes. Every evening the gas plants climb back to nearly the output they had without wind and solar. This is last week's duck curve, seen from the planner's side: the capacity is still needed, but it runs fewer hours.
+The load duration curve again, with a second curve for what is left after wind and solar. Each curve is sorted separately, so a position along the axis is not the same hour on both. Read three things. The left end, the highest net load, falls by only about a sixth, because the highest net loads come on evenings with little wind. That is why the gas capacity falls so little. The middle of the curve drops by more than half, so the gas plants that remain are used far less. And the right end goes below zero: in those hours wind and solar could produce more than the whole load, and `{julia} round(Int, unused_share)`% of what they could produce over the year goes unused.
 :::
 
-# Carbon Limits
+# Carbon Limits and Fuel Prices
 
 ## Capping Emissions
 
@@ -654,12 +764,22 @@ The same week as the earlier figure. Solar fills the middle of each day and wind
 half_cap = 0.5 * thermal_emissions          # [t CO₂/yr]
 capped_thermal = solve_plan(1:n_types; cap=half_cap)
 capped_all = solve_plan(1:n_all; cap=half_cap)
-# The next slide's title quotes this number
-@assert round(Int, -capped_thermal.carbon_price) == 148
+capped_quarter = solve_plan(1:n_all; cap=0.25 * thermal_emissions)
+capped_tenth = solve_plan(1:n_all; cap=0.1 * thermal_emissions)
+# For the notes: the tightest cap where there is no geothermal resource
+no_geothermal = [1, 2, 3, 4, wind_row, solar_row]
+capped_tenth_no_geothermal = solve_plan(no_geothermal; cap=0.1 * thermal_emissions)
+
+# The next slide's title and formula quote these numbers
+@assert round(Int, -capped_thermal.carbon_price) == 94
+@assert gens[1, :FixedCost] == 790000 && gens[1, :VarCost] == 8 && gens[3, :Emissions] == 0.43
+# The table leaves coal out, which is right only if no plan builds it
+@assert max(with_renewables.build[2], capped_thermal.build[2], capped_all.build[2],
+    capped_quarter.build[2], capped_tenth.build[2]) < 0.5
 
 # One table row for a plan: MW by type (a dash where the plan could not build that
-# type), then its cost and the cap's shadow price. No plan builds coal, so it is left out.
-shown_types = [1, 3, 4, 5, 6]               # nuclear, CCGT, CT, wind, solar
+# type), then its cost and the cap's shadow price (0 when the cap does not bind)
+shown_types = [1, 3, 4, geothermal_row, wind_row, solar_row]
 function plan_row(label, plan)
     row = "| $(label) |"
     for g in shown_types
@@ -669,79 +789,195 @@ function plan_row(label, plan)
             row *= " – |"
         end
     end
-    return row * " $(commas(plan.cost / 1e6)) | −$(round(-plan.carbon_price; digits=2)) |"
+    price_text = "0"
+    if -plan.carbon_price > 0.005
+        price_text = "−" * string(round(-plan.carbon_price; digits=2))
+    end
+    return row * " $(commas(plan.cost / 1e6)) | $(price_text) |"
 end
-type_columns = "Nuclear (MW) | CCGT (MW) | CT (MW) | Wind (MW) | Solar (MW) | Cost (\\\$M/yr) | Shadow price (\\\$/t) |"
 
 println("::: {.small}\n")
-println("| Plan | ", type_columns)
-println("|:--|--:|--:|--:|--:|--:|--:|--:|")
-println(plan_row("Thermal only", capped_thermal))
-println(plan_row("All types", capped_all))
+println("| Types,\u00a0cap | Nuclear | CCGT | CT | Geothermal | Wind | Solar | Cost | Shadow\u00a0price |")
+println("|:--|--:|--:|--:|--:|--:|--:|--:|--:|")
+println(plan_row("Thermal,\u00a050%", capped_thermal))
+println(plan_row("All,\u00a050%", capped_all))
+println(plan_row("All,\u00a025%", capped_quarter))
+println(plan_row("All,\u00a010%", capped_tenth))
 println("\n:::")
 ```
 
 ::: {.caption}
-Emission factors $e_g$: coal `{julia} round(Int, gens[2, :Emissions])`, CCGT `{julia} gens[3, :Emissions]`, CT `{julia} gens[4, :Emissions]` t/MWh; nuclear, wind and solar 0.
+Capacities in MW, cost in \$M a year, shadow price in \$/t. Emission factors $e_g$: coal `{julia} round(Int, gens[2, :Emissions])`, CCGT `{julia} gens[3, :Emissions]`, CT `{julia} gens[4, :Emissions]` t/MWh; the other types 0.
 :::
 
-The cap is **half** the thermal-only plan's emissions, `{julia} commas(half_cap / 1000)` kt of CO~2~ a year: $\sum_{g,t} e_g \, y_{g,t} \leq E$.
+Each cap is a share of the thermal-only plan's emissions, `{julia} commas(thermal_emissions / 1000)` kt of CO~2~ a year: $\sum_{g,t} e_g \, y_{g,t} \leq E$.
 
 ::: {.notes}
-Without a cap the thermal-only plan emits `{julia} commas(thermal_emissions / 1000)` thousand tonnes a year. Halving that with thermal types only means building `{julia} commas(capped_thermal.build[1])` MW of nuclear in place of CCGT, and the plan's cost goes from \$`{julia} round(Int, thermal_cost / 1e6)`M to \$`{julia} commas(capped_thermal.cost / 1e6)`M a year. With wind and solar available the same cap costs \$`{julia} round(Int, capped_all.cost / 1e6)`M, barely more than the uncapped plan with wind and solar (\$`{julia} round(Int, with_renewables.cost / 1e6)`M), because that plan already emitted only `{julia} round(Int, 100 * with_renewables.emissions / thermal_emissions)`% of the thermal-only total. Look at the last column: the two shadow prices differ by a factor of ten.
+Without a cap the thermal-only plan emits `{julia} commas(thermal_emissions / 1000)` thousand tonnes a year. Halving that with thermal types only means building `{julia} commas(capped_thermal.build[1])` MW of nuclear in place of CCGT, and the plan's cost goes from \$`{julia} round(Int, thermal_cost / 1e6)`M to \$`{julia} commas(capped_thermal.cost / 1e6)`M a year.
+
+With renewables available the same cap changes nothing. The uncapped plan with wind and solar already emits only `{julia} round(Int, 100 * with_renewables.emissions / thermal_emissions)`% of the thermal-only total, so the cap does not bind and its shadow price is zero. Tighter caps do bind. At 25% the plan adds wind, solar and a little geothermal. At 10% geothermal serves the base of the load, and the plan builds less wind and solar than at 25%, because a plant that is always available leaves fewer hours for them to fill.
+
+Nuclear is not built in any plan that can build geothermal, which costs less to build and nothing to run. Where there is no geothermal resource, nuclear is the alternative, and the 10% cap then costs \$`{julia} round(Int, -capped_tenth_no_geothermal.carbon_price)` a tonne against \$`{julia} round(Int, -capped_tenth.carbon_price)`.
 :::
 
-## Why \$148 a Tonne?
+## Why \$94 a Tonne?
 
 Swap a MW of CCGT for nuclear, both running all year:
 
 ::: {.fragment .fade-in}
 $$
-\frac{\overbrace{(790{,}000 / 8{,}784 + 8)}^{\text{nuclear, \$/MWh}} - \overbrace{(82{,}000 / 8{,}784 + 25)}^{\text{CCGT, \$/MWh}}}{0.43 \text{ t/MWh}}
+\frac{\overbrace{(790{,}000 / 8{,}784 + 8)}^{\text{nuclear, \$/MWh}} - \overbrace{(82{,}000 / 8{,}784 + 48)}^{\text{CCGT, \$/MWh}}}{0.43 \text{ t/MWh}}
 $$
 
 That is **\$`{julia} round((gens[1, :FixedCost] / n_hours + gens[1, :VarCost] - gens[3, :FixedCost] / n_hours - gens[3, :VarCost]) / gens[3, :Emissions]; digits=1)` per tonne**, the thermal-only shadow price.
 :::
 
 ::: {.fragment .fade-in}
-This **carbon price** is the cost of abating the last tonne. With wind and solar it is **\$`{julia} round(Int, -capped_all.carbon_price)`**.
+This **carbon price** is the cost of abating the last tonne. With renewables it is **\$0** at this cap, **\$`{julia} round(Int, -capped_quarter.carbon_price)`** at 25% and **\$`{julia} round(Int, -capped_tenth.carbon_price)`** at 10%.
 :::
 
 ::: {.notes}
-Board item; the fragments carry the answer. With thermal types only, the LP reported a shadow price of −\$`{julia} round(-capped_thermal.carbon_price; digits=2)` a tonne on the last slide. The shadow price tells a utility what one more tonne of allowed emissions is worth, or what the last tonne of abatement costs. With thermal types only there is one way to abate: replace a CCGT with a nuclear plant, both running all year, and the arithmetic gives the shadow price. With wind and solar there are cheaper ways to avoid a tonne, so the price of the last tonne is far lower. A cap's shadow price depends on what the system is able to build.
+Board item; the fragments carry the answer. With thermal types only, the LP reported a shadow price of −\$`{julia} round(-capped_thermal.carbon_price; digits=2)` a tonne on the last slide. The shadow price tells a utility what one more tonne of allowed emissions is worth, or what the last tonne of abatement costs. With thermal types only there is one way to abate: replace a CCGT with a nuclear plant, both running all year, and the arithmetic gives the shadow price. With renewables there are cheaper ways to avoid a tonne, and at a 50% cap they are in the plan already, so the price is zero. The price rises as the cap tightens because the cheapest abatement is used first. A cap's shadow price depends on what the system is able to build.
 :::
 
-## Tightening the Cap
+## Natural Gas Prices Since 2019
 
 ```{julia}
 #| echo: true
 #| code-fold: true
-#| output: asis
 
-capped_quarter = solve_plan(1:n_all; cap=0.25 * thermal_emissions)
-capped_tenth = solve_plan(1:n_all; cap=0.1 * thermal_emissions)
-nuclear_use = capped_tenth.energy[1] / (capped_tenth.build[1] * n_hours)
-ccgt_use_quarter = capped_quarter.energy[3] / (capped_quarter.build[3] * n_hours)
+gas_history = DataFrame(CSV.File("data/capacity_expansion/gas_prices_monthly.csv";
+    types=Dict(:Month => String)))
+n_months = nrow(gas_history)
+# Position of each month on the time axis: January 2019 is 2019.0
+month_position = zeros(n_months)
+for i in 1:n_months
+    month_position[i] = 2019 + (i - 1) / 12
+end
+invasion = 2022 + 1 / 12          # February 2022: Russia invades Ukraine
+hormuz = 2026 + 2 / 12            # March 2026: no tankers pass the Strait of Hormuz
 
-# The tables leave coal out, which is right only if no plan builds it
-@assert max(with_renewables.build[2], capped_thermal.build[2], capped_all.build[2],
-    capped_quarter.build[2], capped_tenth.build[2]) < 0.5
+# Averages the next slides' prices are based on [$/MMBtu]
+months_2020 = 13:24
+months_2022 = 37:48
+months_2025 = 73:84
+months_2026 = 85:n_months          # January to July 2026
+@assert gas_history.Month[73] == "2025-01" && gas_history.Month[85] == "2026-01"
+us_2020 = sum(gas_history.UnitedStates[months_2020]) / length(months_2020)
+us_2022 = sum(gas_history.UnitedStates[months_2022]) / length(months_2022)
+us_2025 = sum(gas_history.UnitedStates[months_2025]) / length(months_2025)
+europe_2026 = sum(gas_history.Europe[months_2026]) / length(months_2026)
+europe_peak, europe_peak_index = findmax(gas_history.Europe)
+# The month of that peak in words: the file starts in January 2019
+month_names = ["January", "February", "March", "April", "May", "June", "July", "August",
+    "September", "October", "November", "December"]
+europe_peak_month = month_names[mod(europe_peak_index - 1, 12) + 1] * " " *
+    string(2019 + div(europe_peak_index - 1, 12))
 
-println("::: {.small}\n")
-println("| Cap | ", type_columns)
-println("|:--|--:|--:|--:|--:|--:|--:|--:|")
-println(plan_row("50%", capped_all))
-println(plan_row("25%", capped_quarter))
-println(plan_row("10%", capped_tenth))
-println("\n:::")
+p_gas = plot(month_position, gas_history.Europe, color=cb_vermillion, linestyle=:dash, label="Europe",
+    ylabel="Gas price  [\$/MMBtu]", xticks=2019:2026, xlims=(2019, 2026.75), ylims=(0, 75),
+    legend=:outerright)
+plot!(p_gas, month_position, gas_history.UnitedStates, color=cb_blue, label="United States")
+vline!(p_gas, [invasion, hormuz], color=:gray40, linewidth=1, linestyle=:dot)
+annotate!(p_gas, invasion - 0.08, 66, text("Russia invades\nUkraine", 15, :right, plot_font))
+annotate!(p_gas, hormuz - 0.08, 66, text("Strait of Hormuz\ncloses to tankers", 15, :right, plot_font))
+plot!(p_gas, size=(1200, 300), left_margin=12mm)
 ```
 
-The carbon price rises as the cap tightens. Nuclear is built only at the tightest cap, and produces **`{julia} round(Int, 100 * nuclear_use)`%** of what it could.
+U.S. gas averaged **\$`{julia} round(us_2025; digits=2)`** in 2025 and Europe's **\$`{julia} round(europe_2026; digits=2)`** so far in 2026. Our base is the **\$`{julia} gas_price`** U.S. power plants paid in 2022.
 
 ::: {.notes}
-Each cap is a share of the thermal-only plan's emissions. The price rises because the cheapest abatement is used first. At 50% the plan adds wind and solar. At 25% it adds much more, and some of what they could produce goes unused in sunny or windy hours. At 10% nuclear appears.
+Monthly prices in dollars per million Btu: the Henry Hub spot price for the United States, and the International Monetary Fund's European price. Two shocks are marked. Before 2022 Europe bought much of its gas from Russia by pipeline. After the invasion of Ukraine it had to replace that gas with liquefied gas shipped from elsewhere, and its price reached \$`{julia} round(Int, europe_peak)` in `{julia} europe_peak_month`. The U.S. price rose too, from \$`{julia} round(us_2020; digits=2)` in 2020 to \$`{julia} round(us_2022; digits=2)` in 2022: U.S. gas is exported as LNG, which ties the two markets together loosely. In 2026 tankers stopped passing the Strait of Hormuz at the end of February, which cut off Qatar's LNG, and Europe's price rose from \$`{julia} round(Int, gas_history.Europe[86])` in February to \$`{julia} round(Int, gas_history.Europe[87])` in March. The spike in the U.S. line in January 2026 is a winter storm.
 
-At the 25% cap the price, \$`{julia} round(Int, -capped_quarter.carbon_price)`, is already above the \$148 that nuclear cost on the last slide, yet no nuclear is built. The \$148 assumed a nuclear plant replacing a CCGT that runs all year. With this much wind and solar, the CCGTs produce only `{julia} round(Int, 100 * ccgt_use_quarter)`% of what they could, so a nuclear plant that replaces them avoids far fewer tonnes for the same fixed cost.
+Our base case uses what U.S. power plants paid for delivered gas in 2022, which is a little above that year's Henry Hub average. The next slides solve the plan again at two other prices: \$3.50, about the U.S. price in 2025, and \$15, about Europe's price in 2026.
+:::
+
+## The Plan at Other Gas Prices
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+today_gas = 3.5        # about the U.S. average for 2025 [$/MMBtu]
+europe_gas = 15        # about Europe's average for January to July 2026
+today_costs = variable_costs(today_gas, coal_price)
+europe_costs = variable_costs(europe_gas, coal_price)
+
+thermal_today = solve_plan(1:n_types; var_cost=today_costs)
+all_today = solve_plan(1:n_all; var_cost=today_costs)
+thermal_2022 = solve_plan(1:n_types)
+thermal_europe = solve_plan(1:n_types; var_cost=europe_costs)
+all_europe = solve_plan(1:n_all; var_cost=europe_costs)
+# The figure leaves nuclear out, which is right only if none of these plans builds it
+@assert max(thermal_today.build[1], all_today.build[1], thermal_2022.build[1],
+    thermal_europe.build[1], all_europe.build[1]) < 0.5
+
+# Capacity by type [MW] for the six plans: one row per plan, one column per type.
+# The types are stacked in this order, from the bottom of each bar up.
+plans = [thermal_today, all_today, thermal_2022, with_renewables, thermal_europe, all_europe]
+stack_types = [2, geothermal_row, 3, 4, wind_row, solar_row]
+n_plans = length(plans)
+plan_capacity = zeros(n_plans, length(stack_types))
+for i in 1:n_plans
+    for j in 1:length(stack_types)
+        plan_capacity[i, j] = plans[i].build[stack_types[j]]
+    end
+end
+
+# Two bars for each gas price, with a gap between prices
+bar_positions = [1, 2, 3.5, 4.5, 6, 7]
+p_prices = plot(ylabel="Capacity  [MW]", ylims=(0, 8000), xlims=(0.3, 7.7), legend=:outerright,
+    xticks=(bar_positions, ["thermal", "all", "thermal", "all", "thermal", "all"]))
+bar_bottom = zeros(n_plans)
+for j in 1:length(stack_types)
+    g = stack_types[j]
+    bar_top = bar_bottom .+ plan_capacity[:, j]
+    bar!(p_prices, bar_positions, bar_top, fillrange=bar_bottom, bar_width=0.7, linewidth=0,
+        color=type_colors[g], label=gens[g, :Plant])
+    bar_bottom = bar_top
+end
+# Each plan's emissions above its bar, and the gas price above each pair
+for i in 1:n_plans
+    annotate!(p_prices, bar_positions[i], bar_bottom[i] + 330,
+        text("$(commas(plans[i].emissions / 1000)) kt", 14, plot_font))
+end
+annotate!(p_prices, 1.5, 7250, text("\$3.50 gas", 16, plot_font))
+annotate!(p_prices, 4, 7250, text("\$7.21 gas", 16, plot_font))
+annotate!(p_prices, 6.5, 7250, text("\$15 gas", 16, plot_font))
+plot!(p_prices, size=(1200, 290), left_margin=12mm)
+```
+
+::: {.caption}
+A CCGT and a CT cost \$`{julia} today_costs[3]` and \$`{julia} today_costs[4]` per MWh to run at \$3.50 gas, \$`{julia} europe_costs[3]` and \$`{julia} europe_costs[4]` at \$15.
+:::
+
+With thermal types only, \$15 gas makes **coal** the largest plant and CO~2~ (above each bar) **`{julia} round(thermal_europe.emissions / thermal_emissions; digits=1)` times** the base case.
+
+::: {.notes}
+Each bar is a new solve with only the gas price changed. The six plans cost \$`{julia} commas(thermal_today.cost / 1e6)`M, \$`{julia} commas(all_today.cost / 1e6)`M, \$`{julia} commas(thermal_2022.cost / 1e6)`M, \$`{julia} commas(with_renewables.cost / 1e6)`M, \$`{julia} commas(thermal_europe.cost / 1e6)`M and \$`{julia} commas(all_europe.cost / 1e6)`M a year, left to right. At \$3.50 the plans look like the base case with less wind and solar, because the fuel they save is worth less. At \$15 the thermal-only plan changes character: coal, which no plan has built so far, becomes the largest plant at `{julia} commas(thermal_europe.build[2])` MW, and emissions more than double. A high gas price with no limit on carbon raises emissions here. With renewables the high price does the opposite. Geothermal, which wind and solar kept out at \$7.21, is now built (`{julia} commas(all_europe.build[geothermal_row])` MW), because the gas plants that covered the evenings have become expensive to run, and emissions fall to `{julia} commas(all_europe.emissions / 1000)` thousand tonnes.
+
+Coal is worth building for load that lasts all year once gas costs more than about \$`{julia} round((gens[2, :VarCost] + (gens[2, :FixedCost] - gens[3, :FixedCost]) / n_hours - gens[3, :OtherVarCost]) / gens[3, :HeatRate]; digits=1)` per million Btu. That is the price at which coal's line on the screening chart meets the CCGT's at the end of the year.
+:::
+
+## Base, Intermediate and Peak Load
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+# The thermal-only plan at $15 gas, and the two crossovers of its screening curves [hours]
+coal_vs_ccgt_europe = (gens[2, :FixedCost] - gens[3, :FixedCost]) / (europe_costs[3] - europe_costs[2])
+ct_vs_ccgt_europe = (gens[3, :FixedCost] - gens[4, :FixedCost]) / (europe_costs[4] - europe_costs[3])
+p_three = band_plot(thermal_europe.build, [1, 2, 3, 4])
+plot!(p_three, size=(1200, 280), left_margin=12mm)
+```
+
+- Coal serves the **base load**, lasting over **`{julia} commas(coal_vs_ccgt_europe)` hours**.
+- CCGT serves the **intermediate load**, **`{julia} commas(ct_vs_ccgt_europe)`** to **`{julia} commas(coal_vs_ccgt_europe)` hours**.
+- CT serves the **peak load**, under **`{julia} commas(ct_vs_ccgt_europe)` hours**.
+
+::: {.notes}
+The thermal-only plan at \$15 gas, drawn the same way as the first plan. Now there are three bands, and each crossover of the screening curves marks where one ends: coal costs \$`{julia} commas(gens[2, :FixedCost] - gens[3, :FixedCost])` a year more than a CCGT to build and \$`{julia} europe_costs[3] - europe_costs[2]` less per MWh to run, so it wins for load lasting more than `{julia} commas(coal_vs_ccgt_europe)` hours. Utilization falls from band to band: `{julia} utilization(thermal_europe.build[2], thermal_europe.energy[2])`% for coal, `{julia} utilization(thermal_europe.build[3], thermal_europe.energy[3])`% for CCGT and `{julia} utilization(thermal_europe.build[4], thermal_europe.energy[4])`% for CT. A plant that is expensive to build and cheap to run is worth it only if it runs most of the year; that is a baseload plant. A peaker is the reverse. At the 2022 U.S. price and at today's, a CCGT is both the baseload and the intermediate plant, and coal is not built.
 :::
 
 # Key Takeaways and Upcoming Schedule
@@ -751,9 +987,9 @@ At the 25% cap the price, \$`{julia} round(Int, -capped_quarter.carbon_price)`, 
 ::: {.incremental}
 - Capacity expansion chooses **what to build** and **how to run it** together, at least total cost.
 - **Screening curves** read a thermal build off the load duration curve: CT below `{julia} commas(ct_vs_ccgt)` h, unserved below `{julia} round(nse_vs_ct; digits=2)` h.
-- At any finite penalty, some unserved energy is optimal.
 - The value of wind and solar depends on *when* they produce.
-- A **CO~2~ cap's shadow price is a carbon price**: \$`{julia} round(Int, -capped_thermal.carbon_price)`/t with thermal types only, \$`{julia} round(Int, -capped_all.carbon_price)`/t once wind and solar can be built.
+- A **CO~2~ cap's shadow price is a carbon price**: \$`{julia} round(Int, -capped_thermal.carbon_price)`/t with thermal types only, \$0 with renewables.
+- The plan depends on **fuel prices**: at \$15 gas, coal or geothermal serves the base load.
 :::
 
 ## Next Classes
@@ -766,13 +1002,40 @@ At the 25% cap the price, \$`{julia} round(Int, -capped_quarter.carbon_price)`, 
 
 ## Assessments
 
-**Mini-Project 2**: Due Thursday, November 19. Its final part (build decisions and a CO~2~ cap) is now possible. It starts from New York's existing 2013 fleet, with New York's capacity factors and 2013 costs, so its answers will differ from today's greenfield example.
+**Mini-Project 2**: Due Thursday, November 19. Its final part (build decisions and a CO~2~ cap) is now possible. It starts from New York's existing 2013 fleet, with New York's capacity factors and 2013 costs, and offers more kinds of plant to build, so its answers will differ from today's greenfield example.
 
 **Homework 7**: Assigned Wednesday, due Thursday, November 12.
 
 **Quiz 4**: Wednesday, November 4.
 
 # Appendix
+
+## A Week With Wind and Solar
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+# The week around the year's peak hour, under the plan with renewables
+peak_hour = argmax(demand)
+week = max(1, peak_hour - 84):min(n_hours, peak_hour + 83)
+built = findall(with_renewables.build .> 0.5)
+week_mix = zeros(length(week), length(built) + 1)
+for (j, g) in enumerate(built)
+    week_mix[:, j] = with_renewables.hourly[g, week]
+end
+week_mix[:, end] = with_renewables.unserved[week]
+areaplot(1:length(week), week_mix, label=permutedims([gens[built, :Plant]; "Unserved"]),
+    color=permutedims([type_colors[built]; :black]),
+    xlabel="Hour of the peak week", ylabel="Generation  [MW]", legend=:outerright,
+    size=(1200, 350), left_margin=12mm)
+```
+
+Gas still covers the evenings, so its capacity falls much less than its energy.
+
+::: {.notes}
+One week, centred on the year's peak hour. Solar fills the middle of each day and wind comes and goes. Every evening the gas plants climb back to nearly the output they would have without wind and solar. This is last week's duck curve, seen from the planner's side: the capacity is still needed, but it runs fewer hours.
+:::
 
 ## Hourly Prices
 
@@ -782,6 +1045,9 @@ At the 25% cap the price, \$`{julia} round(Int, -capped_quarter.carbon_price)`, 
 #| output: asis
 
 hourly_price = round.(Int, [-shadow_price(load[t]) for t in 1:n_hours])
+# Hours whose price is not a plant's running cost or the penalty
+between_hours = count((hourly_price .!= gens[3, :VarCost]) .& (hourly_price .!= gens[4, :VarCost]) .&
+    (hourly_price .!= NSECost))
 println("| Price (\\\$/MWh) | Hours |")
 println("|--:|--:|")
 for p in sort(unique(hourly_price))
@@ -792,5 +1058,5 @@ end
 **Scarcity hours** (\$`{julia} commas(NSECost)`) pay back the CTs' fixed costs.
 
 ::: {.notes}
-The price each hour is the load constraint's shadow price, as in dispatch. Most hours the CCGT or CT is marginal. In the unserved hours the price is the penalty itself. One hour sits in between: it's degenerate (the peaking capacity exactly meets demand), so the shadow price there isn't unique. A CT earns its fixed cost back only in the scarcity hours: 7.25 hours times about 8,965 dollars of margin is about 65,000 dollars, its annual fixed cost.
+The price each hour is the load constraint's shadow price, as in dispatch. Most hours the CCGT or CT is marginal. In the unserved hours the price is the penalty itself. In `{julia} between_hours` hours the price sits in between: those hours are degenerate (one type's capacity exactly meets demand), so the shadow price there isn't unique. A CT earns its fixed cost back only in the scarcity hours: `{julia} round(nse_vs_ct; digits=2)` hours times \$`{julia} commas(NSECost - gens[4, :VarCost])` of margin is \$`{julia} commas(gens[4, :FixedCost])`, its annual fixed cost.
 :::
