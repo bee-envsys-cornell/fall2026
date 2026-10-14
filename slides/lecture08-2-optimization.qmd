@@ -782,7 +782,7 @@ The curved cost equals the linear one at full removal (1000 x 1 = 1000 x 1^2), s
 
 ## Next Classes
 
-**Monday**: How a solver walks the corners (the simplex method), what a binding constraint is worth (shadow prices), and using `JuMP.jl` to solve.
+**Monday**: How to solve an LP and shadow prices.
 
 **Wednesday**: Quiz 3, then the project proposal peer review.
 
@@ -792,7 +792,7 @@ The curved cost equals the linear one at full removal (1000 x 1 = 1000 x 1^2), s
 
 **Project Proposal**: Due Friday, October 16.
 
-**Mini-Project 1**: Due Thursday, October 22.
+**Mini-Project 1**: Due Friday, October 23.
 
 # References
 

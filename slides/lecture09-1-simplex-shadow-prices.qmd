@@ -53,6 +53,7 @@ using Measures
 using LaTeXStrings
 using JuMP
 using HiGHS
+using Printf
 
 plot_font = "Palatino Roman"
 default(
@@ -113,7 +114,8 @@ emission = [50, 40]                             # uncontrolled emissions  [g/s]
 receptor_name = ["A", "B", "C"]
 receptor_location = [(2.5, 0), (4.5, 120), (4, 250)]
 stack_design = (; H=41, u_wind=2.5)
-cost = [20, 30]                                 # [$1000/yr per g/s removed]
+# R_1, R_2: the fraction of each stack's SO₂ removed
+cost = [20, 30] .* emission                     # [$1000/yr per unit fraction removed]
 
 function transmission(stack, receptor)
     sx, sy = stack_location[stack]
@@ -122,15 +124,24 @@ function transmission(stack, receptor)
 end
 
 n_stacks, n_receptors = length(emission), length(receptor_name)
-t = [transmission(i, j) for j in 1:n_receptors, i in 1:n_stacks]   # rows: receptors
+# Rounded to the 0.1 shown on Wednesday, as there
+t = [round(transmission(i, j); digits=1) for j in 1:n_receptors, i in 1:n_stacks]   # rows: receptors
+
+# Each stack's contribution at each receptor, the coefficients of R_1 and R_2  [µg/m³]
+from_stack = zeros(n_receptors, n_stacks)
+for j in 1:n_receptors
+    for i in 1:n_stacks
+        from_stack[j, i] = t[j, i] * emission[i]
+    end
+end
 required = t * emission .- standard              # removal each receptor needs  [µg/m³]
 
-is_feasible(r) = all(t * r .>= required .- 1e-6) &&
-    all(-1e-9 .<= r .<= emission .+ 1e-9)
+is_feasible(r) = all(from_stack * r .>= required .- 1e-6) &&
+    all(-1e-9 .<= r .<= 1 + 1e-9)
 
 # Corners of the feasible region, in order around it
-boundaries = [[(t[j, 1], t[j, 2], required[j]) for j in 1:n_receptors];
-              [(1, 0, 0), (1, 0, emission[1]), (0, 1, 0), (0, 1, emission[2])]]
+boundaries = [[(from_stack[j, 1], from_stack[j, 2], required[j]) for j in 1:n_receptors];
+              [(1, 0, 0), (1, 0, 1), (0, 1, 0), (0, 1, 1)]]
 
 function crossing(l1, l2)
     determinant = l1[1] * l2[2] - l1[2] * l2[1]
@@ -160,25 +171,24 @@ corner_cost = [sum(cost .* c) for c in corners]
 line_style = [:solid, :dash, :dashdot]
 function draw_region()
     p = plot(Shape(first.(corners), last.(corners)), color=cb_blue, alpha=0.25,
-        linewidth=0, xlims=(25, 52), ylims=(15, 42), xlabel=L"R_1 \; \mathrm{[g/s]}",
-        ylabel=L"R_2 \; \mathrm{[g/s]}")
+        linewidth=0, xlims=(0.5, 1.04), ylims=(0.375, 1.05), xlabel=L"R_1",
+        ylabel=L"R_2")
     for j in 1:n_receptors
         a1, a2, rhs = boundaries[j]
         # Label each line at a point where it is inside the axes
-        if abs(a2) < 1e-6
+        if abs(a2) < 1e-3
             vline!(p, [rhs / a1], color=:gray30, linestyle=line_style[j], linewidth=2.5)
-            label_at = (rhs / a1 - 1.4, 17)
+            label_at = (rhs / a1 - 0.028, 0.425)
         else
-            r1 = 25:0.5:52
+            r1 = 0.5:0.01:1.04
             plot!(p, r1, (rhs .- a1 .* r1) ./ a2, color=:gray30, linestyle=line_style[j],
                 linewidth=2.5)
-            r1_at_36 = (rhs - a2 * 36) / a1
-            label_at = 27 <= r1_at_36 <= 48 ? (r1_at_36 + 2.4, 36.6) : (27, (rhs - a1 * 27) / a2 + 2.6)
+            r1_at_09 = (rhs - a2 * 0.9) / a1
+            label_at = 0.54 <= r1_at_09 <= 0.96 ? (r1_at_09 + 0.048, 0.915) : (0.54, (rhs - a1 * 0.54) / a2 + 0.065)
         end
         annotate!(p, label_at..., text("C$(j)", 20, :gray20, plot_font))
     end
-    plot!(p, [0, emission[1], emission[1]], [emission[2], emission[2], 0], color=:black,
-        linewidth=2)
+    plot!(p, [0, 1, 1], [1, 1, 0], color=:black, linewidth=2)
     return p
 end
 
@@ -211,22 +221,22 @@ The **simplex method** [@Dantzig1963-li] is the core algorithm for solving LPs (
 
 ## The Objective Along an Edge
 
-The cost $f = 20R_1 + 30R_2$ has gradient $\nabla f = (20, 30)$, in \$1000/yr per g/s removed.
+The cost $f = 1000R_1 + 1200R_2$ has gradient $\nabla f = (1000, 1200)$, in \$1000/yr per unit of removal fraction.
 
 Changing the removals by $\mathbf{d} = (d_1, d_2)$ changes the cost by
 
-$$\nabla f \cdot \mathbf{d} = 20\,d_1 + 30\,d_2.$$
+$$\nabla f \cdot \mathbf{d} = 1000\,d_1 + 1200\,d_2.$$
 
 Along an edge, the objective **decreases** if this is negative and **increases** if it is positive.
 
 ::: {.notes}
-This is what "look along each edge" means in practice. The objective is linear, so its gradient is the same everywhere and the test needs only the edge's direction, never the cost at the far corner. Take d per g/s of removal given up at one stack: (-1, 0) along the top edge, (0, -1) down the right edge. Along a receptor's constraint, giving up 1 g/s at stack 1 has to be made up at stack 2, so d has a positive second entry. In a tableau these numbers are the reduced costs.
+This is what "look along each edge" means in practice. The objective is linear, so its gradient is the same everywhere and the test needs only the edge's direction, never the cost at the far corner. Take d per unit of removal fraction given up at one stack: (-1, 0) along the top edge, (0, -1) down the right edge. Along a receptor's constraint, removal given up at stack 1 has to be made up at stack 2, so d has a positive second entry. In a tableau these numbers are the reduced costs.
 :::
 
 ## Step 1: Start at a Corner
 
 :::: {.columns}
-::: {.column width=50%}
+::: {.column width=45%}
 ```{julia}
 #| echo: true
 #| code-fold: true
@@ -235,7 +245,7 @@ This is what "look along each edge" means in practice. The objective is linear, 
 neighbours(k) = [mod1(k - 1, length(corners)), mod1(k + 1, length(corners))]
 
 # How the removals change along the edge from corner k to corner m,
-# per g/s of removal given up (or added) at one stack
+# per unit of removal fraction given up (or added) at one stack
 function edge_direction(k, m)
     move = corners[m] .- corners[k]
     if abs(move[1]) > 1e-6
@@ -244,7 +254,7 @@ function edge_direction(k, m)
     return move ./ abs(move[2])
 end
 
-# How fast the cost changes along that edge: the cost gradient (20, 30)
+# How fast the cost changes along that edge: the cost gradient (1000, 1200)
 # dotted with the edge's direction
 function edge_rate(k, m)
     return sum(cost .* edge_direction(k, m))
@@ -279,13 +289,13 @@ function draw_walk(step)
     for k in [here; neighbours(here)]
         # Write each corner's cost just inside the region, toward its centre
         inward = centre .- corners[k]
-        inward = 2.6 .* inward ./ sqrt(sum(inward .^ 2))
+        inward = 0.06 .* inward ./ sqrt(sum(inward .^ 2))
         annotate!(p, corners[k][1] + inward[1], corners[k][2] + inward[2],
             text(string(Int(round(corner_cost[k]))), 16, :black, plot_font))
     end
     scatter!(p, [corners[here][1]], [corners[here][2]], color=cb_vermillion,
         markersize=12, markerstrokecolor=:black)
-    annotate!(p, 25.6, 21, text("costs in \$1000/yr", 14, :left, :black, plot_font))
+    annotate!(p, 0.512, 0.525, text("costs in \$1000/yr", 14, :left, :black, plot_font))
     plot!(p, size=(580, 450), left_margin=5mm, bottom_margin=5mm)
     return p
 end
@@ -293,7 +303,7 @@ end
 draw_walk(0)
 ```
 :::
-::: {.column width=50%}
+::: {.column width=55%}
 ```{julia}
 #| echo: false
 #| output: asis
@@ -333,14 +343,14 @@ println("Both edges lower the cost; down is steeper.")
 ## Step 2: Go Towards Steepest Decrease
 
 :::: {.columns}
-::: {.column width=50%}
+::: {.column width=45%}
 ```{julia}
 #| echo: true
 #| code-fold: true
 draw_walk(1)
 ```
 :::
-::: {.column width=50%}
+::: {.column width=55%}
 ```{julia}
 #| echo: false
 #| output: asis
@@ -355,20 +365,20 @@ println("- Along C3: \$\\nabla f \\cdot (-1, ", round(along_C3[2]; digits=3), ")
 ::::
 
 ::: {.notes}
-Simplex moved down because that edge was steeper: the cost falls 30 per g/s there against 20 along the top edge (the classic rule takes the most negative). From the new corner, going back up raises the cost, so the only candidate is the edge along C3. Staying on C3 keeps receptor C exactly at the standard, so each g/s given up at stack 1 has to be made up by about 0.11 g/s at stack 2: that saves 20 and costs about 3.3. The slide's 0.109 comes from the unrounded transmission factors; the rounded coefficients 1.5 and 14.2 give 0.106.
+Simplex moved down because that edge was steeper: the cost falls 1200 per unit of removal fraction there against 1000 along the top edge (the classic rule takes the most negative). From the new corner, going back up raises the cost, so the only candidate is the edge along C3. Staying on C3 keeps receptor C exactly at the standard, so each unit of removal fraction given up at stack 1 has to be made up by 75/568 = 0.132 at stack 2: that saves 1000 and costs about 158.
 :::
 
 ## Step 3: Keep Moving
 
 :::: {.columns}
-::: {.column width=50%}
+::: {.column width=45%}
 ```{julia}
 #| echo: true
 #| code-fold: true
 draw_walk(2)
 ```
 :::
-::: {.column width=50%}
+::: {.column width=55%}
 ```{julia}
 #| echo: false
 #| output: asis
@@ -385,7 +395,7 @@ println("- Along C2: \$\\nabla f \\cdot (-1, ", round(along_C2[2]; digits=3), ")
 ::::
 
 ::: {.notes}
-Along C3 the cost fell, so simplex moved to its far corner. Now test this corner's two edges. Along C2, stack 2 has to make up about 0.79 g/s for each g/s stack 1 gives up, which costs more (about 23.6) than it saves (20). Neither edge lowers the cost.
+Along C3 the cost fell, so simplex moved to its far corner. Now test this corner's two edges. Along C2, stack 2 has to make up 450/460 = 0.978 of removal fraction for each unit stack 1 gives up, which costs more (about 1174) than it saves (1000). Neither edge lowers the cost.
 :::
 
 ## Step 4: Stop
@@ -431,7 +441,7 @@ $$g_j(\mathbf{x}) \leq b_j \qquad \text{becomes} \qquad g_j(\mathbf{x}) + S_j^2 
 - Squaring keeps the slack from going negative.
 
 ::: {.notes}
-We work in Wednesday's standard form: maximize the objective subject to less-than constraints. The Lagrangian is built for equality constraints, so the inequalities are converted first. A less-than constraint has room on its left-hand side, so the slack is added. It is written as a square so that it cannot go negative and no further inequality is needed. For C2 in standard form this reads -9.0 R_1 - 11.5 R_2 + S_2^2 = -714. It is the same slack a simplex tableau carries (s_j in the appendix), with s_j = S_j^2.
+We work in Wednesday's standard form: maximize the objective subject to less-than constraints. The Lagrangian is built for equality constraints, so the inequalities are converted first. A less-than constraint has room on its left-hand side, so the slack is added. It is written as a square so that it cannot go negative and no further inequality is needed. For C2 in standard form this reads -450 R_1 - 460 R_2 + S_2^2 = -714. It is the same slack a simplex tableau carries (s_j in the appendix), with s_j = S_j^2.
 :::
 
 ## Shadow Prices Are Lagrange Multipliers
@@ -467,7 +477,7 @@ Three sets of derivatives. With respect to each decision variable: together they
 
 ## Computing the Shadow Prices
 
-In Wednesday's standard form, $f = -20R_1 - 30R_2$, and each gradient is a row of coefficients. C1 is slack $(S_1 \neq 0)$, so $\lambda_1 = 0$ and $\nabla f = \lambda_2 \nabla g_2 + \lambda_3 \nabla g_3$:
+In Wednesday's standard form, $f = -1000R_1 - 1200R_2$, and each gradient is a row of coefficients. C1 is slack $(S_1 \neq 0)$, so $\lambda_1 = 0$ and $\nabla f = \lambda_2 \nabla g_2 + \lambda_3 \nabla g_3$:
 
 ```{julia}
 #| echo: false
@@ -475,11 +485,13 @@ In Wednesday's standard form, $f = -20R_1 - 30R_2$, and each gradient is a row o
 
 # Wednesday's standard form: maximize f = -cost, with C2 and C3 written as <= constraints
 gradient_f = [-cost[1], -cost[2]]
-gradient_C2 = [-t[2, 1], -t[2, 2]]
-gradient_C3 = [-t[3, 1], -t[3, 2]]
+gradient_C2 = [-from_stack[2, 1], -from_stack[2, 2]]
+gradient_C3 = [-from_stack[3, 1], -from_stack[3, 2]]
 # grad f = λ_2 × (grad g_2) + λ_3 × (grad g_3): one equation for each decision variable
 λ_binding = [gradient_C2 gradient_C3] \ gradient_f
-println("\$\$\\begin{pmatrix} -20 \\\\ -30 \\end{pmatrix} = \\lambda_2 \\begin{pmatrix} $(round(gradient_C2[1]; digits=1)) \\\\ $(round(gradient_C2[2]; digits=1)) \\end{pmatrix} + \\lambda_3 \\begin{pmatrix} $(round(gradient_C3[1]; digits=1)) \\\\ $(round(gradient_C3[2]; digits=1)) \\end{pmatrix}\$\$")
+# Every coefficient is a whole number; print it without a decimal point
+whole(x) = Int(round(x))
+println("\$\$\\begin{pmatrix} $(whole(gradient_f[1])) \\\\ $(whole(gradient_f[2])) \\end{pmatrix} = \\lambda_2 \\begin{pmatrix} $(whole(gradient_C2[1])) \\\\ $(whole(gradient_C2[2])) \\end{pmatrix} + \\lambda_3 \\begin{pmatrix} $(whole(gradient_C3[1])) \\\\ $(whole(gradient_C3[2])) \\end{pmatrix}\$\$")
 ```
 
 ::: {.fragment .fade-in}
@@ -488,14 +500,14 @@ println("\$\$\\begin{pmatrix} -20 \\\\ -30 \\end{pmatrix} = \\lambda_2 \\begin{p
 #| output: asis
 
 println("\$\$\\begin{aligned}")
-println("-20 &= $(round(gradient_C2[1]; digits=1))\\,\\lambda_2 $(round(gradient_C3[1]; digits=1))\\,\\lambda_3 \\\\")
-println("-30 &= $(round(gradient_C2[2]; digits=1))\\,\\lambda_2 $(round(gradient_C3[2]; digits=1))\\,\\lambda_3")
+println("$(whole(gradient_f[1])) &= $(whole(gradient_C2[1]))\\,\\lambda_2 $(whole(gradient_C3[1]))\\,\\lambda_3 \\\\")
+println("$(whole(gradient_f[2])) &= $(whole(gradient_C2[2]))\\,\\lambda_2 $(whole(gradient_C3[2]))\\,\\lambda_3")
 println("\\end{aligned} \\quad \\Rightarrow \\quad \\lambda_2 = $(round(λ_binding[1]; digits=2)), \\quad \\lambda_3 = $(round(λ_binding[2]; digits=2))\$\$")
 ```
 :::
 
 ::: {.notes}
-Board item. Wednesday's lecture wrote this problem in standard form: maximize f = -20 R_1 - 30 R_2, with C2 as g_2 = -9.0 R_1 - 11.5 R_2 <= -714 and C3 as g_3 = -1.5 R_1 - 14.2 R_2 <= -447. The gradients are the coefficient pairs: (-20, -30), (-9.0, -11.5) and (-1.5, -14.2). C1, the two upper bounds and non-negativity are slack at the optimum, so their multipliers are zero. Read the vector equation one row at a time to get the two equations, one for each decision variable, and solve the 2-by-2 system. Both multipliers come out positive, which is the optimality check. Relaxing C2 by one unit raises its right-hand side from -714 to -713, which is the standard at B going up by 1 µg/m³, and raises the objective by 2.15: the cost falls by 2.15.
+Board item. Wednesday's lecture wrote this problem in standard form: maximize f = -1000 R_1 - 1200 R_2, with C2 as g_2 = -450 R_1 - 460 R_2 <= -714 and C3 as g_3 = -75 R_1 - 568 R_2 <= -447. The gradients are the coefficient pairs: (-1000, -1200), (-450, -460) and (-75, -568). C1, the two upper bounds and non-negativity are slack at the optimum, so their multipliers are zero. Read the vector equation one row at a time to get the two equations, one for each decision variable, and solve the 2-by-2 system. Both multipliers come out positive, which is the optimality check. Relaxing C2 by one unit raises its right-hand side from -714 to -713, which is the standard at B going up by 1 µg/m³, and raises the objective by 2.16: the cost falls by 2.16.
 :::
 
 ## Reading the Shadow Prices
@@ -522,9 +534,9 @@ The next slide takes up the two things that matter when reading these numbers: t
 
 # How far C2 can be relaxed before C1 takes over: the optimum slides along C3
 # until stack 1's removal falls to what C1 alone requires
-r1_at_C1 = required[1] / t[1, 1]
-r2_on_C3 = (required[3] - t[3, 1] * r1_at_C1) / t[3, 2]
-c2_range = required[2] - (t[2, 1] * r1_at_C1 + t[2, 2] * r2_on_C3)
+r1_at_C1 = required[1] / from_stack[1, 1]
+r2_on_C3 = (required[3] - from_stack[3, 1] * r1_at_C1) / from_stack[3, 2]
+c2_range = required[2] - (from_stack[2, 1] * r1_at_C1 + from_stack[2, 2] * r2_on_C3)
 ```
 
 - **Units**: objective units per unit of the right-hand side. For C2: \$`{julia} commas(round(1000 * λ_binding[1]; digits=-1))`/yr *per µg/m³*.
@@ -630,22 +642,48 @@ This is Wednesday's sketch with an objective added: minimize a cost that rises w
 #| echo: true
 #| code-fold: false
 
+# Wednesday's formulation, one line for each variable and constraint
+naive_model = Model(HiGHS.Optimizer)
+@variable(naive_model, 0 <= R1 <= 1)
+@variable(naive_model, 0 <= R2 <= 1)
+@objective(naive_model, Min, 1000 * R1 + 1200 * R2)
+@constraint(naive_model, C1, 875 * R1 >= 679)
+@constraint(naive_model, C2, 450 * R1 + 460 * R2 >= 714)
+@constraint(naive_model, C3, 75 * R1 + 568 * R2 >= 447)
+set_silent(naive_model)
+optimize!(naive_model)
+println("R1 = ", value(R1), ", R2 = ", value(R2))
+println("Cost: \$", objective_value(naive_model), " thousand per year")
+```
+
+Same as Wednesday: $R_1$ = `{julia} @sprintf("%.2f", round(value(R1); digits=2))`, $R_2$ = `{julia} @sprintf("%.2f", round(value(R2); digits=2))`, \$`{julia} round(objective_value(naive_model) / 1000; digits=1)`M/yr.
+
+::: {.notes}
+Each line copies one line of Wednesday's formulation: `@variable` declares a decision variable with its bounds, `@objective` takes Min or Max and the expression, and `@constraint` takes a name and the inequality. Naming the constraints C1 to C3 lets us ask for their shadow prices later. value(R1) asks for the optimal value of a variable, and objective_value(model) for the optimal cost. The printed numbers are unrounded, which is what students will see in their own notebooks; round when reporting. set_silent only hides the solver's log. Monday's lab uses the same calls.
+:::
+
+## Writing the Model with Indices
+
+```{julia}
+#| echo: true
+#| code-fold: false
+
 emissions_model = Model(HiGHS.Optimizer)
-@variable(emissions_model, 0 <= removal[i in 1:n_stacks] <= emission[i])
+@variable(emissions_model, 0 <= removal[i in 1:n_stacks] <= 1)
 @objective(emissions_model, Min, sum(cost[i] * removal[i] for i in 1:n_stacks))
 @constraint(emissions_model, limit[j in 1:n_receptors],
-    sum(t[j, i] * (emission[i] - removal[i]) for i in 1:n_stacks) <= standard)
+    sum(t[j, i] * emission[i] * (1 - removal[i])
+        for i in 1:n_stacks) <= standard)
 set_silent(emissions_model)
 optimize!(emissions_model)
-
-println("Removals: ", value.(removal), " g/s")
+println("Removals: ", value.(removal))
 println("Cost: \$", objective_value(emissions_model), " thousand per year")
 ```
 
-Same solution we got earlier: `{julia} round(value(removal[1]); digits=1)` and `{julia} round(value(removal[2]); digits=1)` g/s, at about \$`{julia} round(objective_value(emissions_model) / 1000; digits=1)` million per year.
+One line, `limit[j]`, writes all three constraints. Adding a stack or a receptor changes only the data.
 
 ::: {.notes}
-value.(removal) asks for the optimal value of every removal at once (value(removal[1]) for one of them), and objective_value(model) for the optimal cost. The printed numbers are unrounded, which is what students will see in their own notebooks; round when reporting. set_silent only hides the solver's log. Monday's lab uses the same three calls.
+Same model and same solution as the previous slide. removal[i] replaces R1 and R2, and limit[j] writes the constraint for every receptor j as concentration at or below the standard. The data (cost, t, emission, standard) are Wednesday's, defined once at the top of the notebook, so no coefficient is typed by hand. removal[i in 1:n_stacks] creates one variable per stack; limit[j in 1:n_receptors] creates one constraint per receptor, and sum(... for i in 1:n_stacks) adds up the stacks' contributions. The constraint is written the way it was derived, C_j = sum of t_ij Q_i (1 - R_i) at or below the standard, and JuMP does the rearranging that we did by hand. value.(removal) asks for every removal at once.
 :::
 
 ## Reading the Duals
@@ -680,7 +718,7 @@ println("- **JuMP** *minimized* cost. Relaxing C2 changes it by \$", round(limit
 ::::
 
 ::: {.notes}
-Both numbers answer the same question, what happens to the objective when the constraint is relaxed by one unit, and they differ in sign only because the two objectives do. By hand we used standard form and maximized minus the cost, so relaxing C2 raises the objective by 2.15. The JuMP model on the previous slide minimizes the cost itself, so relaxing C2 lowers its objective by 2.15, and shadow_price reports minus 2.15. JuMP's rule is that shadow_price is the change in the objective when the constraint is relaxed: never positive for a minimization, never negative for a maximization, however the constraint is written. Given the standard-form model (maximize minus the cost), JuMP returns plus 2.15 and plus 0.37, the by-hand values. The lesson for students: say what the objective is, which direction the constraint moves, and the units.
+Both numbers answer the same question, what happens to the objective when the constraint is relaxed by one unit, and they differ in sign only because the two objectives do. By hand we used standard form and maximized minus the cost, so relaxing C2 raises the objective by 2.16. The JuMP model on the previous slide minimizes the cost itself, so relaxing C2 lowers its objective by 2.16, and shadow_price reports minus 2.16. JuMP's rule is that shadow_price is the change in the objective when the constraint is relaxed: never positive for a minimization, never negative for a maximization, however the constraint is written. Given the standard-form model (maximize minus the cost), JuMP returns plus 2.16 and plus 0.36, the by-hand values. The lesson for students: say what the objective is, which direction the constraint moves, and the units.
 :::
 
 ## Check It: Re-solve
@@ -694,7 +732,7 @@ base_cost = objective_value(emissions_model)
 set_normalized_rhs(limit[2], normalized_rhs(limit[2]) + 1)
 optimize!(emissions_model)
 relaxed_cost = objective_value(emissions_model)
-println("Removals: ", value.(removal), " g/s")
+println("Removals: ", value.(removal))
 println("Cost: \$", relaxed_cost, " thousand per year")
 println("Change in cost: ", relaxed_cost - base_cost)
 ```
@@ -735,7 +773,7 @@ This is the verification step: the shadow price is a prediction about re-solving
 
 **Homework 5**: Due Thursday, October 22.
 
-**Mini-Project 1**: Due Thursday, October 22.
+**Mini-Project 1**: Due Friday, October 23.
 
 **Homework 6**: Assigned Wednesday, due Thursday, October 29.
 

@@ -264,5 +264,9 @@ csl: _assets/references/american-geophysical-union.csl
 engine: julia
 julia:
   exeflags: ["+1.12"]
+  # Keep GR off-screen. Otherwise it starts its display helper (gksqt) to
+  # measure LaTeX labels, and when that connection drops, plots with L"..."
+  # labels fail at random with "total_plotarea_horizontal > 0mm".
+  env: ["GKSwstype=nul"]
 execute:
   freeze: auto
