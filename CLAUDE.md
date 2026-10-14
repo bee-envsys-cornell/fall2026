@@ -99,6 +99,13 @@ dispatch example and the Nov 2 capacity expansion example. The Nov 2 deck then v
 (\$3.50 and \$15). A number quoted in both decks, such as the Oct 28 price on the Nov 2 review slide,
 has to match after any change to either. Mini-Project 2 keeps its own costs, for New York in 2013.
 
+## Writing homework problems
+
+**Limited asks per subproblem** (decided Oct 14, from HW6 on): each `#### Problem N.M` asks for one
+thing, or two tightly linked ones. Do not group two or three asks under one subproblem, as a numbered
+list or as stacked questions; make more subproblems, each with its own points. Details, including what
+counts as an ask, are under "Homework format" in AGENTS.md.
+
 ## Verifying that work
 
 - **Every number in prose, a table, or a caption must come from running the deck's own code.** A value

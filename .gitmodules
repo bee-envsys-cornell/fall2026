@@ -22,3 +22,6 @@
 	path = mini-project/mp01
 	url = https://github.com/bee-envsys-cornell/mp01
 	branch = Fall26
+[submodule "hw/hw05"]
+	path = hw/hw05
+	url = https://github.com/bee-envsys-cornell/hw05.git

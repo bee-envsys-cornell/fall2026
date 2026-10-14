@@ -138,8 +138,8 @@ If we want to make a **decision**, we are now in the world of **prescriptive mod
 To make a decision, we need to:
 
 - define decision options (or **alternatives**);
-- provide one or more **objectives** to assess performance of different alternatives;
-- specify **constraints** to tell us what alternatives are possible or acceptable.
+- provide one or more **objective functions** to assess performance of different alternatives;
+- specify **constraints** to tell us what alternatives are **feasible**.
 
 ## Be Careful Not To Overinterpret Optimization Results
 
@@ -165,17 +165,17 @@ Typical objectives can include:
 
 **Metrics** are functions which measure some relevant quantity, such as a specific cost function.
 
-Many different metrics can be used to specify an objective function!
+Many different metrics can be used to specify an objective! The **objective function** is a combination of an objective and a metric.
 
 ## Optimal Solutions
 
-Write the objective function as $Z(\mathbf{x})$, to be maximized.
+Suppose the objective function is to maximize $Z(\mathbf{x})$.
 
 A solution $\mathbf{x^*}$ is **optimal** if $Z(\mathbf{x^*}) \geq Z(\mathbf{x})$ for all feasible $\mathbf{x}$.
 
 **Note**: an optimum is not necessarily unique!
 
-# Formulating an Emissions Problem
+# Managing Emissions
 
 ## Receptors Exposed to Multiple Sources
 
@@ -208,15 +208,12 @@ stack_design = (; H=41, u_wind=2.5)             # last week's stack, Class F
 | Receptor B | 4.5 km | 120 m | |
 | Receptor C | 4 km | 250 m | |
 
-::: {.notes}
-Students last saw this stack before Fall Break, so restate it rather than assume it: same effective height, wind and stability as last week, now with a second, older plant 1.5 km downwind. Locations are measured from stack 1, downwind along the wind and crosswind across it. We design for this one night. A permit analysis would check every hour of several years of weather and add the background SO2 already in the air; that would add a constraint for each receptor in each hour, and it would still be a linear program.
-:::
 
 ## Problem Parameters and Settings
 
 - **Both stacks**: effective height 41 m.
 - **Wind**: 2.5 m/s, steady, blowing downwind (left to right on the map).
-- **Stability**: class F, a clear night. 
+- **Stability**: class F, a clear night.
 - **Limit**: the 1-hour SO$_2$ standard, 75 ppb, about 196 µg/m³ at ground level.
 
 ## Visualizing the Problem
@@ -269,28 +266,30 @@ plot!(p_map, size=(1050, 330), left_margin=12mm, right_margin=22mm,
 **What are the decision variables?**
 
 ::: {.fragment .fade-in}
-$R_1$, $R_2$: SO$_2$ removed at each stack, in g/s.
+$R_1$, $R_2$: fraction of SO$_2$ removed at each stack.
 
-Each is bounded: $0 \leq R_1 \leq 50$, $0 \leq R_2 \leq 40$. A stack cannot remove more than it emits.
+**Are there limits to what values they can take?**
 :::
 
-::: {.notes}
-Students often name the concentrations as the decision variables. The concentrations are outcomes: we control how much each stack removes, and the plume model turns that into concentrations. The bounds are part of the formulation, not an afterthought; leaving them out allows "removing" more SO2 than the stack emits.
+::: {.fragment .fade-in}
+Each is bounded below by 0 and above by 1:
+
+$$0 \leq R_1 \leq 1, 0 \leq R_2 \leq 1.$$
 :::
 
-## The Objective
+## Objective Function
 
 Removal costs \$20,000 per year for each g/s removed at stack 1, and \$30,000 at stack 2 (an older plant).
 
 ::: {.fragment .fade-in}
-$$\min_{R_1, R_2} \quad 20 R_1 + 30 R_2 \qquad [\$1000/\text{yr}]$$
+$$\min_{R_1, R_2} \quad 1000 R_1 + 1200 R_2 \qquad [\$1000/\text{yr}]$$
 :::
 
-## Concentrations Are Linear in Emissions
+## Developing Constraints
 
-Because concentrations sum, the concentration at receptor $j$ is
+We can write the concentration at receptor $j$ is
 
-$$C_j = t_{1j}\,(Q_1 - R_1) + t_{2j}\,(Q_2 - R_2),$$
+$$C_j = t_{1j}\,Q_1 (1 - R_1) + t_{2j}\,Q_2 (1 - R_2),$$
 
 where $t_{ij}$ is the **transmission factor**: the concentration at receptor $j$ per g/s emitted from stack $i$.
 
@@ -318,7 +317,7 @@ x_1A = receptor_location[1][1] - stack_location[1][1]     # [km]
 sy_1A, sz_1A = sig_y(x_1A), sig_z(x_1A)                    # [m]
 prefactor_1A = 1e6 / (π * stack_design.u_wind * sy_1A * sz_1A)
 height_term_1A = exp(-stack_design.H^2 / (2sz_1A^2))
-t_1A = prefactor_1A * height_term_1A                        # [µg/m³ per g/s]
+t_1A = round(prefactor_1A * height_term_1A; digits=1)       # [µg/m³ per g/s], to the 0.1 shown
 ```
 
 Receptor A is `{julia} x_1A` km directly downwind of stack 1 ($y = 0$), where $\sigma_y$ = `{julia} round(sy_1A; digits=1)` m and $\sigma_z$ = `{julia} round(sz_1A; digits=1)` m on a class F night:
@@ -334,7 +333,7 @@ println("\$\$\\begin{aligned} t_{1A} &= \\frac{10^6}{\\pi \\times ", stack_desig
     "\\ \\text{µg/m}^3 \\text{ per g/s} \\end{aligned}\$\$")
 ```
 
-So stack 1's `{julia} emission[1]` g/s put `{julia} emission[1]` × `{julia} round(t_1A; digits=1)` = `{julia} Int(round(emission[1] * t_1A))` µg/m³ at A.
+So stack 1's `{julia} emission[1]` g/s put `{julia} emission[1]` × `{julia} t_1A` = `{julia} Int(round(emission[1] * t_1A))` µg/m³ at A.
 
 ::: {.notes}
 Board item if there is time: work t_1A from the formula two slides back, then show this slide as the check. The height term, about 0.27, is how much lower the ground-level concentration is than if the same plume had been released at ground level: at 2.5 km on a stable night much of it is still aloft.
@@ -355,7 +354,9 @@ function transmission(stack, receptor)
 end
 
 n_stacks, n_receptors = length(emission), length(receptor_name)
-t = [transmission(i, j) for j in 1:n_receptors, i in 1:n_stacks]   # rows: receptors
+# Rounded to the 0.1 shown in the table, so that every number that follows
+# can be checked by hand from the table
+t = [round(transmission(i, j); digits=1) for j in 1:n_receptors, i in 1:n_stacks]   # rows: receptors
 uncontrolled = t * emission                                       # [µg/m³]
 
 println("| Receptor | \$t_{1j}\$ (µg/m³ per g/s) | \$t_{2j}\$ (µg/m³ per g/s) | Uncontrolled \$C_j\$ (µg/m³) |")
@@ -420,16 +421,17 @@ Write the constraint that keeps receptor B at or below `{julia} standard` µg/m�
 #| echo: false
 #| output: asis
 
-# Constraint at receptor j:  t_1j R_1 + t_2j R_2 >= uncontrolled_j - standard
+# Constraint at receptor j:  t_1j Q_1 R_1 + t_2j Q_2 R_2 >= uncontrolled_j - standard
+# t_ij Q_i is stack i's contribution at receptor j, from_stack[j, i]  [µg/m³]
 required = uncontrolled .- standard
-println("\$\$", round(t[2, 1]; digits=1), " R_1 + ", round(t[2, 2]; digits=1),
+println("\$\$", Int(round(from_stack[2, 1])), " R_1 + ", Int(round(from_stack[2, 2])),
     " R_2 \\geq ", Int(round(required[2])), "\$\$")
 ```
 
 :::
 
 ::: {.notes}
-Board item. Start from C_B = t_1B (Q_1 - R_1) + t_2B (Q_2 - R_2) <= 196. Expand: t_1B Q_1 + t_2B Q_2 - t_1B R_1 - t_2B R_2 <= 196. The first two terms are the uncontrolled concentration at B. Move the removals to the right and the standard to the left: t_1B R_1 + t_2B R_2 >= uncontrolled_B - 196. The trap is the direction of the inequality: concentration has an upper limit, so removal has a lower limit.
+Board item. Start from C_B = t_1B Q_1 (1 - R_1) + t_2B Q_2 (1 - R_2) <= 196. Expand: t_1B Q_1 + t_2B Q_2 - t_1B Q_1 R_1 - t_2B Q_2 R_2 <= 196. The first two terms are the uncontrolled concentration at B. Move the removals to the right and the standard to the left: t_1B Q_1 R_1 + t_2B Q_2 R_2 >= uncontrolled_B - 196. The trap is the direction of the inequality: concentration has an upper limit, so removal has a lower limit.
 :::
 
 ## The Full Problem
@@ -438,17 +440,17 @@ Board item. Start from C_B = t_1B (Q_1 - R_1) + t_2B (Q_2 - R_2) <= 196. Expand:
 #| echo: false
 #| output: asis
 
-coef(x) = round(x; digits=1)
+coef(x) = Int(round(x))
 println("\$\$\\begin{alignedat}{3}")
-println("& \\min_{R_1, R_2} &\\quad 20 R_1 + 30 R_2 & \\\\")
-println("& \\text{subject to:} & $(coef(t[1, 1])) R_1 &\\geq $(Int(round(required[1]))) & \\quad \\text{(C1)} \\\\")
-println("& & $(coef(t[2, 1])) R_1 + $(coef(t[2, 2])) R_2 &\\geq $(Int(round(required[2]))) & \\quad \\text{(C2)} \\\\")
-println("& & $(coef(t[3, 1])) R_1 + $(coef(t[3, 2])) R_2 &\\geq $(Int(round(required[3]))) & \\quad \\text{(C3)} \\\\")
-println("& & 0 \\leq R_1 \\leq 50, \\quad 0 \\leq R_2 &\\leq 40 &")
+println("& \\min_{R_1, R_2} &\\quad 1000 R_1 + 1200 R_2 & \\\\")
+println("& \\text{subject to:} & $(coef(from_stack[1, 1])) R_1 &\\geq $(Int(round(required[1]))) & \\quad \\text{(C1)} \\\\")
+println("& & $(coef(from_stack[2, 1])) R_1 + $(coef(from_stack[2, 2])) R_2 &\\geq $(Int(round(required[2]))) & \\quad \\text{(C2)} \\\\")
+println("& & $(coef(from_stack[3, 1])) R_1 + $(coef(from_stack[3, 2])) R_2 &\\geq $(Int(round(required[3]))) & \\quad \\text{(C3)} \\\\")
+println("& & 0 \\leq R_1 \\leq 1, \\quad 0 \\leq R_2 &\\leq 1 &")
 println("\\end{alignedat}\$\$")
 ```
 
-C1, C2 and C3 are the limits at receptors A, B and C. 
+C1, C2 and C3 are the limits at receptors A, B and C.
 
 
 # Linear Programs
@@ -502,11 +504,11 @@ Convert the emissions problem to standard form.
 #| output: asis
 
 println("\$\$\\begin{alignedat}{3}")
-println("& \\max_{R_1, R_2} &\\quad -20 R_1 - 30 R_2 & \\\\")
-println("& \\text{subject to:} & -$(coef(t[1, 1])) R_1 &\\leq -$(Int(round(required[1]))) & \\quad \\text{(C1)} \\\\")
-println("& & -$(coef(t[2, 1])) R_1 - $(coef(t[2, 2])) R_2 &\\leq -$(Int(round(required[2]))) & \\quad \\text{(C2)} \\\\")
-println("& & -$(coef(t[3, 1])) R_1 - $(coef(t[3, 2])) R_2 &\\leq -$(Int(round(required[3]))) & \\quad \\text{(C3)} \\\\")
-println("& & R_1 \\leq 50, \\quad R_2 &\\leq 40 & \\\\")
+println("& \\max_{R_1, R_2} &\\quad -1000 R_1 - 1200 R_2 & \\\\")
+println("& \\text{subject to:} & -$(coef(from_stack[1, 1])) R_1 &\\leq -$(Int(round(required[1]))) & \\quad \\text{(C1)} \\\\")
+println("& & -$(coef(from_stack[2, 1])) R_1 - $(coef(from_stack[2, 2])) R_2 &\\leq -$(Int(round(required[2]))) & \\quad \\text{(C2)} \\\\")
+println("& & -$(coef(from_stack[3, 1])) R_1 - $(coef(from_stack[3, 2])) R_2 &\\leq -$(Int(round(required[3]))) & \\quad \\text{(C3)} \\\\")
+println("& & R_1 \\leq 1, \\quad R_2 &\\leq 1 & \\\\")
 println("& & R_1, R_2 &\\geq 0 &")
 println("\\end{alignedat}\$\$")
 ```
@@ -534,19 +536,19 @@ function entry(x)
 end
 
 # C1 to C3 first (negated), then one row for each upper bound
-println("\$\$\\mathbf{c} = \\begin{pmatrix} -20 \\\\ -30 \\end{pmatrix} \\;\\;")
+println("\$\$\\mathbf{c} = \\begin{pmatrix} -1000 \\\\ -1200 \\end{pmatrix} \\;\\;")
 println("\\mathbf{A} = \\begin{pmatrix}")
 for j in 1:n_receptors
-    println(entry(-t[j, 1]), " & ", entry(-t[j, 2]), " \\\\")
+    println(entry(-from_stack[j, 1]), " & ", entry(-from_stack[j, 2]), " \\\\")
 end
 println("1 & 0 \\\\ 0 & 1 \\end{pmatrix} \\;\\;")
 println("\\mathbf{b} = \\begin{pmatrix}")
 for j in 1:n_receptors
     println(-Int(round(required[j])), " \\\\")
 end
-println(emission[1], " \\\\ ", emission[2], " \\end{pmatrix} \\quad")
-println("\\begin{matrix} \\text{(C1)} \\\\ \\text{(C2)} \\\\ \\text{(C3)} \\\\ R_1 \\leq ", emission[1],
-    " \\\\ R_2 \\leq ", emission[2], " \\end{matrix}\$\$")
+println("1 \\\\ 1 \\end{pmatrix} \\quad")
+println("\\begin{matrix} \\text{(C1)} \\\\ \\text{(C2)} \\\\ \\text{(C3)} \\\\ R_1 \\leq 1",
+    " \\\\ R_2 \\leq 1 \\end{matrix}\$\$")
 ```
 :::
 
@@ -612,13 +614,13 @@ Board item: redraw the sketch and work on it there, while students annotate thei
 #| code-fold: true
 
 # Is a removal plan within the bounds and below the standard everywhere?
-is_feasible(r) = all(t * r .>= required .- 1e-6) &&
-    all(-1e-9 .<= r .<= emission .+ 1e-9)
+is_feasible(r) = all(from_stack * r .>= required .- 1e-6) &&
+    all(-1e-9 .<= r .<= 1 + 1e-9)
 
 # Every boundary as (a1, a2, rhs) for a1 R1 + a2 R2 = rhs:
 # the receptor constraints C1 to C3, then the four bounds
-boundaries = [[(t[j, 1], t[j, 2], required[j]) for j in 1:n_receptors];
-              [(1, 0, 0), (1, 0, emission[1]), (0, 1, 0), (0, 1, emission[2])]]
+boundaries = [[(from_stack[j, 1], from_stack[j, 2], required[j]) for j in 1:n_receptors];
+              [(1, 0, 0), (1, 0, 1), (0, 1, 0), (0, 1, 1)]]
 
 function crossing(l1, l2)
     determinant = l1[1] * l2[2] - l1[2] * l2[1]
@@ -637,27 +639,26 @@ centre = sum(corners) / length(corners)
 corners = sort(corners, by=p -> atan(p[2] - centre[2], p[1] - centre[1]))
 
 line_style = [:solid, :dash, :dashdot]
-function draw_region(r1_max=52)
+function draw_region(r1_max=1.04)
     p = plot(Shape(first.(corners), last.(corners)), color=cb_blue, alpha=0.25,
-        linewidth=0, xlims=(25, r1_max), ylims=(15, 42), xlabel=L"R_1 \; \mathrm{[g/s]}",
-        ylabel=L"R_2 \; \mathrm{[g/s]}")
+        linewidth=0, xlims=(0.5, r1_max), ylims=(0.375, 1.05), xlabel=L"R_1",
+        ylabel=L"R_2")
     for j in 1:n_receptors
         a1, a2, rhs = boundaries[j]
         # Label each line at a point where it is inside the axes
-        if abs(a2) < 1e-6
+        if abs(a2) < 1e-3
             vline!(p, [rhs / a1], color=:gray30, linestyle=line_style[j], linewidth=2.5)
-            label_at = (rhs / a1 - 1.4, 17)
+            label_at = (rhs / a1 - 0.028, 0.425)
         else
-            r1 = 25:0.5:r1_max
+            r1 = 0.5:0.01:r1_max
             plot!(p, r1, (rhs .- a1 .* r1) ./ a2, color=:gray30, linestyle=line_style[j],
                 linewidth=2.5)
-            r1_at_36 = (rhs - a2 * 36) / a1
-            label_at = 27 <= r1_at_36 <= 48 ? (r1_at_36 + 2.4, 36.6) : (27, (rhs - a1 * 27) / a2 + 2.6)
+            r1_at_09 = (rhs - a2 * 0.9) / a1
+            label_at = 0.54 <= r1_at_09 <= 0.96 ? (r1_at_09 + 0.048, 0.915) : (0.54, (rhs - a1 * 0.54) / a2 + 0.065)
         end
         annotate!(p, label_at..., text("C$(j)", 20, :gray20, plot_font))
     end
-    plot!(p, [0, emission[1], emission[1]], [emission[2], emission[2], 0], color=:black,
-        linewidth=2)
+    plot!(p, [0, 1, 1], [1, 1, 0], color=:black, linewidth=2)
     return p
 end
 
@@ -675,30 +676,40 @@ Each constraint cuts away plans that break one receptor's limit.
 #| echo: true
 #| code-fold: true
 
-cost = [20, 30]                                  # [$1000/yr per g/s removed]
+cost = [20, 30] .* emission                      # [$1000/yr per unit fraction removed]
 corner_cost = [sum(cost .* c) for c in corners]
 optimal_cost, best = findmin(corner_cost)
 optimum = corners[best]
 
 # Widen the plot a little so each level line can be labelled at its right end
-p_level = draw_region(58)
-r1 = 25:0.5:58
+p_level = draw_region(1.16)
+r1 = 0.5:0.01:1.16
 levels = [optimal_cost, optimal_cost + 200, optimal_cost + 400]
 for k in 1:length(levels)
     plot!(p_level, r1, (levels[k] .- cost[1] .* r1) ./ cost[2], color=cb_vermillion,
         linestyle=:dot, linewidth=2)
-    label_y = (levels[k] - cost[1] * 55.2) / cost[2] + 1.6
-    annotate!(p_level, 55.2, label_y,
+    label_y = (levels[k] - cost[1] * 1.104) / cost[2] + 0.04
+    annotate!(p_level, 1.104, label_y,
         text("\$$(round(levels[k] / 1000; digits=1))M/yr", 14, :black, plot_font))
 end
 scatter!(p_level, [optimum[1]], [optimum[2]], markershape=:star5, markersize=16,
     color=cb_vermillion, markerstrokecolor=:black)
-annotate!(p_level, optimum[1] - 2.5, optimum[2] - 4.5,
+annotate!(p_level, optimum[1] - 0.05, optimum[2] - 0.1125,
     text("cheapest plan", 18, :black, plot_font))
-plot!(p_level, ylims=(15, 43), size=(900, 380), left_margin=12mm, bottom_margin=12mm)
+plot!(p_level, ylims=(0.375, 1.075), size=(900, 320), left_margin=12mm, bottom_margin=12mm)
 ```
 
-Cheapest: `{julia} round(optimum[1]; digits=1)` and `{julia} round(optimum[2]; digits=1)` g/s, about \$`{julia} round(optimal_cost / 1000; digits=1)` million per year.
+```{julia}
+#| echo: false
+#| output: false
+
+# The cheapest plan to the two decimals quoted below; the removals and cost
+# follow from those values, so they can be checked by hand
+using Printf
+optimum_shown = round.(optimum; digits=2)
+```
+
+Cheapest, at \$`{julia} round(sum(cost .* optimum_shown) / 1000; digits=1)`M/yr: $R_1$ = `{julia} @sprintf("%.2f", optimum_shown[1])` (`{julia} round(optimum_shown[1] * emission[1]; digits=1)` of stack 1's `{julia} emission[1]` g/s removed) and $R_2$ = `{julia} @sprintf("%.2f", optimum_shown[2])` (`{julia} round(optimum_shown[2] * emission[2]; digits=1)` of stack 2's `{julia} emission[2]` g/s).
 
 ::: {.notes}
 Cost is constant along each dotted line, and the lines are parallel because the cost is linear. Lower cost is toward the origin. Slide the line toward lower cost until it is about to leave the shaded region: the last point it touches is the optimum, and it is a corner. Which corner wins depends on the cost ratio: with these costs, this corner is optimal as long as stack 2's removals cost between about 1.3 and 9 times stack 1's. Below that the corner where C1 and C2 meet wins instead. That sensitivity is Monday's topic.
@@ -710,7 +721,7 @@ Cost is constant along each dotted line, and the lines are parallel because the 
 #| echo: false
 #| output: false
 
-optimal_concentration = t * (emission .- optimum)
+optimal_concentration = t * (emission .* (1 .- optimum))
 ```
 
 | Receptor | Concentration at the cheapest plan |
@@ -731,30 +742,30 @@ C2 and C3 are **binding constraints**: receptors B and C sit exactly at the stan
 #| code-fold: true
 
 # Rising marginal cost: each extra g/s removed costs more than the last
-curved_cost(r1, r2) = cost[1] * r1^2 / emission[1] + cost[2] * r2^2 / emission[2]
+curved_cost(r1, r2) = cost[1] * r1^2 + cost[2] * r2^2
 
 # Search a fine grid of plans for the cheapest one that meets the standard
-grid_r1 = 0:0.05:50
-grid_r2 = 0:0.05:40
+grid_r1 = 0:0.001:1
+grid_r2 = 0:0.00125:1
 grid_cost = [is_feasible([r1, r2]) ? curved_cost(r1, r2) : Inf for r2 in grid_r2, r1 in grid_r1]
 curved_best = argmin(grid_cost)
 curved_optimum = [grid_r1[curved_best[2]], grid_r2[curved_best[1]]]
 
 p_curved = draw_region()
-contour!(p_curved, 25:0.25:52, 15:0.25:42, (r1, r2) -> curved_cost(r1, r2),
+contour!(p_curved, 0.5:0.005:1.04, 0.375:0.00625:1.05, (r1, r2) -> curved_cost(r1, r2),
     levels=curved_cost(curved_optimum...) .+ [0, 150, 300], color=cb_vermillion,
     linestyle=:dot, linewidth=2, colorbar_entry=false)
 scatter!(p_curved, [curved_optimum[1]], [curved_optimum[2]], markershape=:star5,
     markersize=16, color=cb_vermillion, markerstrokecolor=:black)
-annotate!(p_curved, curved_optimum[1] + 3, curved_optimum[2] - 5,
+annotate!(p_curved, curved_optimum[1] + 0.06, curved_optimum[2] - 0.125,
     text("on an edge", 18, :black, plot_font))
 plot!(p_curved, size=(900, 320), left_margin=12mm, bottom_margin=12mm)
 ```
 
-With cost $20 R_1^2/50 + 30 R_2^2/40$ (\$1000/yr), each g/s costs more than the last, and the optimum leaves the **corner**.
+With cost $1000 R_1^2 + 1200 R_2^2$ (\$1000/yr), each g/s costs more than the last, and the optimum leaves the **corner**.
 
 ::: {.notes}
-The curved cost equals the linear one at full removal (20 x 50 = 20 x 50^2 / 50), so the two are comparable; only the shape differs. Its contours bend, and one of them touches the region partway along C2's edge rather than at a corner.
+The curved cost equals the linear one at full removal (1000 x 1 = 1000 x 1^2), so the two are comparable; only the shape differs. Its contours bend, and one of them touches the region partway along C2's edge rather than at a corner.
 :::
 
 # Key Takeaways and Upcoming Schedule

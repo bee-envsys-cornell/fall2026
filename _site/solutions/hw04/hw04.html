@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.3">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-10-14">
+
+<title>Homework 4 Solutions – Environmental Systems Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../_assets/logos/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-037772e4b0a8fb61e9a28208dd0e90cd.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-41afc7412041501ec6863dfe70bda895.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<!-- MathJax 3 -->
+<script>
+window.MathJax = {
+    tex: {
+      tags: 'ams'
+    }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Homework 4 Solutions – Environmental Systems Analysis">
+<meta property="og:site_name" content="Environmental Systems Analysis">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">BEE 4750/5750</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-info" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Info</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-info">    
+        <li>
+    <a class="dropdown-item" href="../../syllabus.html">
+ <span class="dropdown-text">Syllabus</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../policies/index.html">
+ <span class="dropdown-text">Course Policies</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../faq/index.html">
+ <span class="dropdown-text">FAQ</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../setup/index.html">
+ <span class="dropdown-text">Setup</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../schedule.html"> 
+<span class="menu-text">Course Schedule</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-coursework" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Coursework</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-coursework">    
+        <li>
+    <a class="dropdown-item" href="../../labs/index.html">
+ <span class="dropdown-text">Labs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../hw/index.html">
+ <span class="dropdown-text">Homework</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../mini-project/index.html">
+ <span class="dropdown-text">Mini-Projects</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../project/index.html">
+ <span class="dropdown-text">Final Project</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-resources" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Resources</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-resources">    
+        <li>
+    <a class="dropdown-item" href="../../tutorials/index.html">
+ <span class="dropdown-text">Tutorials</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/general.html">
+ <span class="dropdown-text">General Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/julia.html">
+ <span class="dropdown-text">Julia Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/ai.html">
+ <span class="dropdown-text">Generative AI and LLMs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/github.html">
+ <span class="dropdown-text">GitHub Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/markdown.html">
+ <span class="dropdown-text">Markdown Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/optimization.html">
+ <span class="dropdown-text">Optimization Resources</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/bee-envsys-cornell/fall2025"> 
+<span class="menu-text"><i class="fa-brands fa-github" aria-label="github"></i> GitHub</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://canvas.cornell.edu"> 
+<span class="menu-text"><i class="fa-regular fa-notebook" aria-label="notebook"></i> Canvas</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://edstem.org"> 
+<span class="menu-text"><i class="fa-regular fa-comments" aria-label="comments"></i> Ed</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://gradescope.com"> 
+<span class="menu-text"><i class="fa-regular fa-chart-simple" aria-label="chart-simple"></i> Gradescope</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#problem-1-30-points" id="toc-problem-1-30-points" class="nav-link active" data-scroll-target="#problem-1-30-points">Problem 1 (30 points)</a>
+  <ul class="collapse">
+  <li><a href="#problem-1.1-8-points" id="toc-problem-1.1-8-points" class="nav-link" data-scroll-target="#problem-1.1-8-points">Problem 1.1 (8 points)</a></li>
+  <li><a href="#problem-1.2-7-points" id="toc-problem-1.2-7-points" class="nav-link" data-scroll-target="#problem-1.2-7-points">Problem 1.2 (7 points)</a></li>
+  <li><a href="#problem-1.3-7-points" id="toc-problem-1.3-7-points" class="nav-link" data-scroll-target="#problem-1.3-7-points">Problem 1.3 (7 points)</a></li>
+  <li><a href="#problem-1.4-8-points" id="toc-problem-1.4-8-points" class="nav-link" data-scroll-target="#problem-1.4-8-points">Problem 1.4 (8 points)</a></li>
+  </ul></li>
+  <li><a href="#problem-2-20-points" id="toc-problem-2-20-points" class="nav-link" data-scroll-target="#problem-2-20-points">Problem 2 (20 points)</a>
+  <ul class="collapse">
+  <li><a href="#problem-2.1-5-points" id="toc-problem-2.1-5-points" class="nav-link" data-scroll-target="#problem-2.1-5-points">Problem 2.1 (5 points)</a></li>
+  <li><a href="#problem-2.2-8-points" id="toc-problem-2.2-8-points" class="nav-link" data-scroll-target="#problem-2.2-8-points">Problem 2.2 (8 points)</a></li>
+  <li><a href="#problem-2.3-7-points" id="toc-problem-2.3-7-points" class="nav-link" data-scroll-target="#problem-2.3-7-points">Problem 2.3 (7 points)</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/solutions/hw04/hw04.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="hw04.ipynb" download="hw04.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li><li><a href="hw04.pdf"><i class="bi bi-file-pdf"></i>Typst</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Homework 4 Solutions</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 14, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="problem-1-30-points" class="level2">
+<h2 class="anchored" data-anchor-id="problem-1-30-points">Problem 1 (30 points)</h2>
+<section id="problem-1.1-8-points" class="level3">
+<h3 class="anchored" data-anchor-id="problem-1.1-8-points">Problem 1.1 (8 points)</h3>
+<p>With <span class="math inline">\(Y = B_0(1-R)\)</span>, <span class="math inline">\(B_0 = 50\)</span> a constant, <span class="math inline">\(\mathbb{E}[R] = 0.6\)</span> and <span class="math inline">\(\text{Var}(R) = 0.01\)</span>:</p>
+<p><span class="math display">\[\mathbb{E}[Y] = B_0\left(1 - \mathbb{E}[R]\right) = 50(1 - 0.6) = 20\ \text{mg/L}\]</span></p>
+<p><span class="math display">\[\text{Var}(Y) = B_0^2\,\text{Var}(R) = 50^2 (0.01) = 25\ (\text{mg/L})^2, \qquad \text{so } \sigma_Y = 5\ \text{mg/L}.\]</span></p>
+<p>For <span class="math inline">\(Z = Y^2\)</span>, use the identity <span class="math inline">\(\text{Var}(Y) = \mathbb{E}[Y^2] - \left(\mathbb{E}[Y]\right)^2\)</span>, rearranged:</p>
+<p><span class="math display">\[\mathbb{E}[Z] = \mathbb{E}[Y^2] = \text{Var}(Y) + \left(\mathbb{E}[Y]\right)^2 = 25 + 400 = 425\ (\text{mg/L})^2,\]</span></p>
+<p>against <span class="math inline">\(\left(\mathbb{E}[Y]\right)^2 = 400\ (\text{mg/L})^2\)</span>. They differ by exactly <span class="math inline">\(25\ (\text{mg/L})^2\)</span>.</p>
+<p>This implies that running a model once at the mean input gives <span class="math inline">\(h(\mathbb{E}[X])\)</span>, but the quantity you almost always want is the average outcome <span class="math inline">\(\mathbb{E}[h(X)]\)</span>. These are equal only when <span class="math inline">\(h\)</span> is linear. For any curved model the single run at the mean is biased.</p>
+</section>
+<section id="problem-1.2-7-points" class="level3">
+<h3 class="anchored" data-anchor-id="problem-1.2-7-points">Problem 1.2 (7 points)</h3>
+<p>The 95% confidence interval is <span class="math inline">\(0.08 \pm 1.96(0.006) = 0.08 \pm 0.0118\)</span>, so <span class="math inline">\([0.068, 0.092]\)</span>.</p>
+<p>The standard error scales as <span class="math inline">\(\sigma_Y/\sqrt{n}\)</span>, so reducing it by a factor <span class="math inline">\(f\)</span> costs <span class="math inline">\(f^2\)</span> times as many samples. Here <span class="math inline">\(f = 0.006/0.002 = 3\)</span>, so</p>
+<p><span class="math display">\[n_\text{new} = 3^2 \times 2\text{,}000 = 18\text{,}000\ \text{samples}.\]</span></p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Estimating <span class="math inline">\(\sigma_Y\)</span> from <span class="math inline">\(\hat{p}\)</span> instead, as <span class="math inline">\(\sqrt{\hat{p}(1-\hat{p})}\)</span>, gives <span class="math inline">\(n = 0.08(0.92)/0.002^2 = 18\text{,}400\)</span>, which agrees with <span class="math inline">\(18\text{,}000\)</span> to the precision of the rounded standard error <span class="math inline">\(0.006\)</span>.</p>
+</div>
+</div>
+</div>
+<p>A finer spatial grid will not help, as it reduces <em>discretization</em> error. The <span class="math inline">\(0.006\)</span> here is <em>Monte Carlo sampling</em> error, which comes from having drawn a finite number of random inputs.</p>
+</section>
+<section id="problem-1.3-7-points" class="level3">
+<h3 class="anchored" data-anchor-id="problem-1.3-7-points">Problem 1.3 (7 points)</h3>
+<p>The annual exceedance probability corresponding to a 50-year return period is <span class="math inline">\(p = 1/50 = 0.02\)</span>, or 2% per year.</p>
+<p>Assuming independent years, the probability of <em>no</em> exceedance is <span class="math inline">\((1-p)^{20}\)</span>, so</p>
+<p><span class="math display">\[\mathbb{P}(\text{at least one}) = 1 - (1 - 0.02)^{20} \approx 0.33.\]</span></p>
+<p>The problem with the client’s comment is that a return period is a long-run <strong>average</strong> frequency. Last year’s flood carries no information about this year’s due to the assumption about independence. The chance of overtopping next year, or any subsequent year, is still 2%.</p>
+</section>
+<section id="problem-1.4-8-points" class="level3">
+<h3 class="anchored" data-anchor-id="problem-1.4-8-points">Problem 1.4 (8 points)</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Uncertainty</th>
+<th style="text-align: left;">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Daily variation in influent flow</td>
+<td style="text-align: left;"><strong>Aleatory</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Strength of the ice-albedo feedback</td>
+<td style="text-align: left;"><strong>Epistemic</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">Rate of sediment recycling in a shallow lake</td>
+<td style="text-align: left;"><strong>Epistemic</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">Which of next year’s storms is largest</td>
+<td style="text-align: left;"><strong>Aleatory</strong></td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>The flow genuinely varies day to day. Collecting more data could help us characterise that variability better but does not necessarily reduce or remove it.</li>
+<li>The feedback has a definite strength, set by the physics of the climate system; what is uncertain is our knowledge of it.</li>
+<li>For a given lake, recycling proceeds at a rate set by its sediments and chemistry. We are uncertain because it is hard to measure, not because of true randomness in the rate.</li>
+<li>Which storm will turn out to be the largest is intrinsically random.</li>
+</ol>
+</section>
+</section>
+<section id="problem-2-20-points" class="level2">
+<h2 class="anchored" data-anchor-id="problem-2-20-points">Problem 2 (20 points)</h2>
+<section id="problem-2.1-5-points" class="level3">
+<h3 class="anchored" data-anchor-id="problem-2.1-5-points">Problem 2.1 (5 points)</h3>
+<div id="4" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>loss_limit, steepness, midpoint <span class="op">=</span> <span class="fl">200_000</span>, <span class="fl">0.8</span>, <span class="fl">3</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">depth_damage</span>(depth)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> depth <span class="op">&lt;=</span> <span class="fl">0</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="fl">0</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> loss_limit <span class="op">/</span> (<span class="fl">1</span> <span class="op">+</span> <span class="fu">exp</span>(<span class="op">-</span>steepness <span class="op">*</span> (depth <span class="op">-</span> midpoint)))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>hazard <span class="op">=</span> <span class="fu">LogNormal</span>(<span class="fl">1.2</span>, <span class="fl">0.3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="cell-fig-dd" class="cell" data-execution_count="1">
+<div id="fig-dd" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="1">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<!--?xml version="1.0" encoding="utf-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="1000" height="350" viewbox="0 0 4000 1400">
+<defs>
+  <clippath id="clip840">
+    <rect x="0" y="0" width="4000" height="1400"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip840)" d="M0 1400 L4000 1400 L4000 -7.03437e-14 L0 -7.03437e-14  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip841">
+    <rect x="800" y="0" width="2801" height="1400"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip840)" d="M547.486 1110.6 L2039.01 1110.6 L2039.01 47.2441 L547.486 47.2441  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip842">
+    <rect x="547" y="47" width="1493" height="1064"></rect>
+  </clippath>
+</defs>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="547.486,1110.6 2039.01,1110.6 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="547.486,47.2441 2039.01,47.2441 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="589.699,1110.6 589.699,1091.7 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="941.475,1110.6 941.475,1091.7 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1293.25,1110.6 1293.25,1091.7 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1645.03,1110.6 1645.03,1091.7 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1996.8,1110.6 1996.8,1091.7 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="589.699,47.2441 589.699,66.1417 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="941.475,47.2441 941.475,66.1417 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1293.25,47.2441 1293.25,66.1417 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1645.03,47.2441 1645.03,66.1417 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1996.8,47.2441 1996.8,66.1417 "></polyline>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 589.699, 1204.13)" x="589.699" y="1204.13">0</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 941.475, 1204.13)" x="941.475" y="1204.13">2</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 1293.25, 1204.13)" x="1293.25" y="1204.13">4</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 1645.03, 1204.13)" x="1645.03" y="1204.13">6</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 1996.8, 1204.13)" x="1996.8" y="1204.13">8</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:75px; text-anchor:middle;" transform="rotate(0, 1293.25, 1317.14)" x="1293.25" y="1317.14">Flood depth  [m]</text>
+</g>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="547.486,1110.6 547.486,47.2441 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2039.01,1110.6 2039.01,47.2441 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="547.486,1080.5 566.384,1080.5 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="547.486,825.12 566.384,825.12 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="547.486,569.735 566.384,569.735 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="547.486,314.35 566.384,314.35 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="547.486,58.9654 566.384,58.9654 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2039.01,1080.5 2020.12,1080.5 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2039.01,825.12 2020.12,825.12 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2039.01,569.735 2020.12,569.735 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2039.01,314.35 2020.12,314.35 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2039.01,58.9654 2020.12,58.9654 "></polyline>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 470.319, 1104.5)" x="470.319" y="1104.5">0</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:start;" transform="rotate(0, 229.131, 857.745)" x="229.131" y="857.745">5.00×10</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:56px; text-anchor:start;" transform="rotate(0, 459.589, 820.056)" x="459.589" y="820.056">4</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:start;" transform="rotate(0, 229.131, 602.36)" x="229.131" y="602.36">1.00×10</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:56px; text-anchor:start;" transform="rotate(0, 459.589, 564.671)" x="459.589" y="564.671">5</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:start;" transform="rotate(0, 229.131, 346.976)" x="229.131" y="346.976">1.50×10</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:56px; text-anchor:start;" transform="rotate(0, 459.589, 309.286)" x="459.589" y="309.286">5</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:start;" transform="rotate(0, 229.131, 91.5909)" x="229.131" y="91.5909">2.00×10</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:56px; text-anchor:start;" transform="rotate(0, 459.589, 53.9016)" x="459.589" y="53.9016">5</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:75px; text-anchor:middle;" transform="rotate(-90, 149.65, 578.922)" x="149.65" y="578.922">Damage  [$]</text>
+</g>
+<polyline clip-path="url(#clip842)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:16; stroke-opacity:1; fill:none" points="589.699,1080.5 593.217,994.286 596.735,993.014 600.253,991.726 603.77,990.42 607.288,989.097 610.806,987.757 614.324,986.399 617.841,985.023 621.359,983.629 624.877,982.217 628.395,980.786 631.912,979.337 635.43,977.869 638.948,976.383 642.466,974.877 645.983,973.352 649.501,971.808 653.019,970.244 656.537,968.66 660.054,967.057 663.572,965.433 667.09,963.789 670.608,962.125 674.125,960.44 677.643,958.734 681.161,957.008 684.679,955.26 688.196,953.491 691.714,951.701 695.232,949.889 698.75,948.055 702.267,946.2 705.785,944.323 709.303,942.423 712.821,940.501 716.338,938.557 719.856,936.59 723.374,934.601 726.892,932.588 730.409,930.553 733.927,928.494 737.445,926.412 740.963,924.307 744.481,922.178 747.998,920.025 751.516,917.849 755.034,915.649 758.552,913.425 762.069,911.177 765.587,908.905 769.105,906.608 772.623,904.287 776.14,901.942 779.658,899.572 783.176,897.178 786.694,894.758 790.211,892.315 793.729,889.846 797.247,887.352 800.765,884.834 804.282,882.29 807.8,879.721 811.318,877.128 814.836,874.509 818.353,871.865 821.871,869.196 825.389,866.502 828.907,863.783 832.424,861.038 835.942,858.269 839.46,855.474 842.978,852.654 846.495,849.809 850.013,846.939 853.531,844.044 857.049,841.124 860.566,838.178 864.084,835.209 867.602,832.214 871.12,829.194 874.637,826.15 878.155,823.082 881.673,819.989 885.191,816.871 888.709,813.73 892.226,810.564 895.744,807.374 899.262,804.161 902.78,800.923 906.297,797.663 909.815,794.379 913.333,791.071 916.851,787.741 920.368,784.388 923.886,781.012 927.404,777.614 930.922,774.193 934.439,770.751 937.957,767.287 941.475,763.801 944.993,760.295 948.51,756.767 952.028,753.218 955.546,749.649 959.064,746.06 962.581,742.451 966.099,738.822 969.617,735.174 973.135,731.507 976.652,727.822 980.17,724.118 983.688,720.396 987.206,716.657 990.723,712.9 994.241,709.127 997.759,705.337 1001.28,701.53 1004.79,697.709 1008.31,693.871 1011.83,690.019 1015.35,686.152 1018.87,682.271 1022.38,678.377 1025.9,674.469 1029.42,670.548 1032.94,666.615 1036.45,662.67 1039.97,658.714 1043.49,654.746 1047.01,650.768 1050.53,646.78 1054.04,642.782 1057.56,638.775 1061.08,634.759 1064.6,630.735 1068.11,626.703 1071.63,622.664 1075.15,618.619 1078.67,614.567 1082.19,610.51 1085.7,606.447 1089.22,602.38 1092.74,598.308 1096.26,594.233 1099.77,590.155 1103.29,586.074 1106.81,581.991 1110.33,577.907 1113.84,573.821 1117.36,569.735 1120.88,565.649 1124.4,561.563 1127.92,557.479 1131.43,553.396 1134.95,549.315 1138.47,545.237 1141.99,541.162 1145.5,537.09 1149.02,533.023 1152.54,528.96 1156.06,524.903 1159.58,520.851 1163.09,516.806 1166.61,512.767 1170.13,508.735 1173.65,504.711 1177.16,500.695 1180.68,496.688 1184.2,492.69 1187.72,488.702 1191.24,484.724 1194.75,480.756 1198.27,476.8 1201.79,472.855 1205.31,468.922 1208.82,465.001 1212.34,461.093 1215.86,457.199 1219.38,453.318 1222.9,449.451 1226.41,445.599 1229.93,441.761 1233.45,437.94 1236.97,434.133 1240.48,430.343 1244,426.57 1247.52,422.813 1251.04,419.074 1254.56,415.352 1258.07,411.648 1261.59,407.963 1265.11,404.296 1268.63,400.648 1272.14,397.019 1275.66,393.41 1279.18,389.821 1282.7,386.252 1286.21,382.703 1289.73,379.176 1293.25,375.669 1296.77,372.183 1300.29,368.719 1303.8,365.277 1307.32,361.856 1310.84,358.458 1314.36,355.082 1317.87,351.729 1321.39,348.399 1324.91,345.091 1328.43,341.807 1331.95,338.547 1335.46,335.309 1338.98,332.096 1342.5,328.906 1346.02,325.74 1349.53,322.599 1353.05,319.481 1356.57,316.388 1360.09,313.32 1363.61,310.276 1367.12,307.256 1370.64,304.261 1374.16,301.292 1377.68,298.347 1381.19,295.426 1384.71,292.531 1388.23,289.661 1391.75,286.816 1395.27,283.996 1398.78,281.202 1402.3,278.432 1405.82,275.687 1409.34,272.968 1412.85,270.274 1416.37,267.605 1419.89,264.961 1423.41,262.342 1426.93,259.749 1430.44,257.18 1433.96,254.637 1437.48,252.118 1441,249.624 1444.51,247.156 1448.03,244.712 1451.55,242.292 1455.07,239.898 1458.58,237.528 1462.1,235.183 1465.62,232.862 1469.14,230.565 1472.66,228.293 1476.17,226.045 1479.69,223.821 1483.21,221.621 1486.73,219.445 1490.24,217.292 1493.76,215.163 1497.28,213.058 1500.8,210.976 1504.32,208.918 1507.83,206.882 1511.35,204.87 1514.87,202.88 1518.39,200.913 1521.9,198.969 1525.42,197.047 1528.94,195.147 1532.46,193.27 1535.98,191.415 1539.49,189.581 1543.01,187.769 1546.53,185.979 1550.05,184.21 1553.56,182.462 1557.08,180.736 1560.6,179.03 1564.12,177.345 1567.64,175.681 1571.15,174.037 1574.67,172.413 1578.19,170.81 1581.71,169.226 1585.22,167.662 1588.74,166.118 1592.26,164.593 1595.78,163.087 1599.3,161.601 1602.81,160.133 1606.33,158.684 1609.85,157.253 1613.37,155.841 1616.88,154.447 1620.4,153.071 1623.92,151.713 1627.44,150.373 1630.95,149.05 1634.47,147.744 1637.99,146.456 1641.51,145.184 1645.03,143.93 1648.54,142.692 1652.06,141.47 1655.58,140.265 1659.1,139.075 1662.61,137.902 1666.13,136.744 1669.65,135.603 1673.17,134.476 1676.69,133.365 1680.2,132.269 1683.72,131.187 1687.24,130.121 1690.76,129.069 1694.27,128.031 1697.79,127.008 1701.31,125.999 1704.83,125.004 1708.35,124.022 1711.86,123.054 1715.38,122.1 1718.9,121.159 1722.42,120.231 1725.93,119.316 1729.45,118.414 1732.97,117.524 1736.49,116.647 1740.01,115.783 1743.52,114.93 1747.04,114.09 1750.56,113.261 1754.08,112.445 1757.59,111.64 1761.11,110.846 1764.63,110.064 1768.15,109.293 1771.67,108.533 1775.18,107.783 1778.7,107.045 1782.22,106.317 1785.74,105.6 1789.25,104.893 1792.77,104.196 1796.29,103.51 1799.81,102.833 1803.33,102.166 1806.84,101.509 1810.36,100.861 1813.88,100.223 1817.4,99.5944 1820.91,98.9748 1824.43,98.3642 1827.95,97.7626 1831.47,97.1698 1834.98,96.5857 1838.5,96.0102 1842.02,95.4432 1845.54,94.8846 1849.06,94.3342 1852.57,93.792 1856.09,93.2577 1859.61,92.7314 1863.13,92.2129 1866.64,91.7021 1870.16,91.1989 1873.68,90.7031 1877.2,90.2148 1880.72,89.7337 1884.23,89.2598 1887.75,88.793 1891.27,88.3332 1894.79,87.8802 1898.3,87.434 1901.82,86.9946 1905.34,86.5617 1908.86,86.1353 1912.38,85.7153 1915.89,85.3017 1919.41,84.8943 1922.93,84.493 1926.45,84.0978 1929.96,83.7085 1933.48,83.3252 1937,82.9476 1940.52,82.5757 1944.04,82.2095 1947.55,81.8488 1951.07,81.4936 1954.59,81.1438 1958.11,80.7993 1961.62,80.46 1965.14,80.1259 1968.66,79.7969 1972.18,79.4729 1975.7,79.1538 1979.21,78.8396 1982.73,78.5302 1986.25,78.2255 1989.77,77.9254 1993.28,77.63 1996.8,77.3391 "></polyline>
+<path clip-path="url(#clip840)" d="M2461.23 1110.6 L3952.76 1110.6 L3952.76 47.2441 L2461.23 47.2441  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip843">
+    <rect x="2461" y="47" width="1493" height="1064"></rect>
+  </clippath>
+</defs>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2461.23,1110.6 3952.76,1110.6 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2461.23,47.2441 3952.76,47.2441 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2503.44,1110.6 2503.44,1091.7 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2855.22,1110.6 2855.22,1091.7 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3206.99,1110.6 3206.99,1091.7 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3558.77,1110.6 3558.77,1091.7 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3910.54,1110.6 3910.54,1091.7 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2503.44,47.2441 2503.44,66.1417 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2855.22,47.2441 2855.22,66.1417 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3206.99,47.2441 3206.99,66.1417 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3558.77,47.2441 3558.77,66.1417 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3910.54,47.2441 3910.54,66.1417 "></polyline>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 2503.44, 1204.13)" x="2503.44" y="1204.13">0</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 2855.22, 1204.13)" x="2855.22" y="1204.13">2</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 3206.99, 1204.13)" x="3206.99" y="1204.13">4</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 3558.77, 1204.13)" x="3558.77" y="1204.13">6</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 3910.54, 1204.13)" x="3910.54" y="1204.13">8</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:75px; text-anchor:middle;" transform="rotate(0, 3206.99, 1317.14)" x="3206.99" y="1317.14">Flood depth  [m]</text>
+</g>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2461.23,1110.6 2461.23,47.2441 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3952.76,1110.6 3952.76,47.2441 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2461.23,1080.5 2480.13,1080.5 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2461.23,841.062 2480.13,841.062 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2461.23,601.618 2480.13,601.618 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2461.23,362.175 2480.13,362.175 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2461.23,122.732 2480.13,122.732 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3952.76,1080.5 3933.86,1080.5 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3952.76,841.062 3933.86,841.062 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3952.76,601.618 3933.86,601.618 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3952.76,362.175 3933.86,362.175 "></polyline>
+<polyline clip-path="url(#clip840)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3952.76,122.732 3933.86,122.732 "></polyline>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 2358.31, 1104.5)" x="2358.31" y="1104.5">0.0</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 2358.31, 865.062)" x="2358.31" y="865.062">0.1</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 2358.31, 625.618)" x="2358.31" y="625.618">0.2</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 2358.31, 386.175)" x="2358.31" y="386.175">0.3</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:69px; text-anchor:middle;" transform="rotate(0, 2358.31, 146.732)" x="2358.31" y="146.732">0.4</text>
+</g>
+<g clip-path="url(#clip840)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:75px; text-anchor:middle;" transform="rotate(-90, 2235.91, 578.922)" x="2235.91" y="578.922">Density  [1/m]</text>
+</g>
+<polyline clip-path="url(#clip843)" style="stroke:#0072b2; stroke-linecap:round; stroke-linejoin:round; stroke-width:16; stroke-opacity:1; fill:none" points="2503.44,1080.5 2506.96,1080.5 2510.48,1080.5 2513.99,1080.5 2517.51,1080.5 2521.03,1080.5 2524.55,1080.5 2528.06,1080.5 2531.58,1080.5 2535.1,1080.5 2538.62,1080.5 2542.14,1080.5 2545.65,1080.5 2549.17,1080.5 2552.69,1080.5 2556.21,1080.5 2559.72,1080.5 2563.24,1080.5 2566.76,1080.5 2570.28,1080.5 2573.8,1080.5 2577.31,1080.5 2580.83,1080.5 2584.35,1080.5 2587.87,1080.5 2591.38,1080.5 2594.9,1080.5 2598.42,1080.5 2601.94,1080.5 2605.46,1080.5 2608.97,1080.5 2612.49,1080.5 2616.01,1080.5 2619.53,1080.5 2623.04,1080.5 2626.56,1080.5 2630.08,1080.49 2633.6,1080.49 2637.12,1080.48 2640.63,1080.47 2644.15,1080.45 2647.67,1080.43 2651.19,1080.4 2654.7,1080.36 2658.22,1080.3 2661.74,1080.23 2665.26,1080.14 2668.78,1080.02 2672.29,1079.86 2675.81,1079.67 2679.33,1079.44 2682.85,1079.14 2686.36,1078.79 2689.88,1078.35 2693.4,1077.83 2696.92,1077.21 2700.43,1076.48 2703.95,1075.62 2707.47,1074.61 2710.99,1073.44 2714.51,1072.09 2718.02,1070.54 2721.54,1068.78 2725.06,1066.77 2728.58,1064.51 2732.09,1061.98 2735.61,1059.14 2739.13,1055.98 2742.65,1052.48 2746.17,1048.62 2749.68,1044.39 2753.2,1039.75 2756.72,1034.69 2760.24,1029.2 2763.75,1023.26 2767.27,1016.86 2770.79,1009.97 2774.31,1002.6 2777.83,994.723 2781.34,986.337 2784.86,977.435 2788.38,968.012 2791.9,958.066 2795.41,947.596 2798.93,936.603 2802.45,925.091 2805.97,913.065 2809.49,900.532 2813,887.504 2816.52,873.99 2820.04,860.005 2823.56,845.564 2827.07,830.684 2830.59,815.385 2834.11,799.686 2837.63,783.611 2841.15,767.182 2844.66,750.425 2848.18,733.365 2851.7,716.03 2855.22,698.449 2858.73,680.649 2862.25,662.661 2865.77,644.514 2869.29,626.24 2872.8,607.87 2876.32,589.434 2879.84,570.964 2883.36,552.491 2886.88,534.047 2890.39,515.662 2893.91,497.366 2897.43,479.19 2900.95,461.162 2904.46,443.313 2907.98,425.67 2911.5,408.26 2915.02,391.109 2918.54,374.243 2922.05,357.687 2925.57,341.465 2929.09,325.597 2932.61,310.106 2936.12,295.012 2939.64,280.333 2943.16,266.088 2946.68,252.292 2950.2,238.962 2953.71,226.11 2957.23,213.75 2960.75,201.894 2964.27,190.551 2967.78,179.731 2971.3,169.441 2974.82,159.689 2978.34,150.479 2981.86,141.817 2985.37,133.705 2988.89,126.146 2992.41,119.141 2995.93,112.69 2999.44,106.793 3002.96,101.446 3006.48,96.6491 3010,92.3972 3013.52,88.6863 3017.03,85.5113 3020.55,82.8663 3024.07,80.7447 3027.59,79.1393 3031.1,78.0423 3034.62,77.4452 3038.14,77.3391 3041.66,77.7144 3045.17,78.5613 3048.69,79.8694 3052.21,81.628 3055.73,83.826 3059.25,86.4521 3062.76,89.4945 3066.28,92.9414 3069.8,96.7807 3073.32,101 3076.83,105.587 3080.35,110.529 3083.87,115.814 3087.39,121.429 3090.91,127.36 3094.42,133.597 3097.94,140.125 3101.46,146.932 3104.98,154.005 3108.49,161.332 3112.01,168.901 3115.53,176.7 3119.05,184.715 3122.57,192.935 3126.08,201.348 3129.6,209.943 3133.12,218.708 3136.64,227.632 3140.15,236.703 3143.67,245.91 3147.19,255.244 3150.71,264.693 3154.23,274.248 3157.74,283.898 3161.26,293.634 3164.78,303.446 3168.3,313.325 3171.81,323.263 3175.33,333.25 3178.85,343.278 3182.37,353.34 3185.89,363.426 3189.4,373.53 3192.92,383.644 3196.44,393.761 3199.96,403.875 3203.47,413.978 3206.99,424.064 3210.51,434.128 3214.03,444.163 3217.54,454.165 3221.06,464.127 3224.58,474.044 3228.1,483.912 3231.62,493.726 3235.13,503.482 3238.65,513.176 3242.17,522.803 3245.69,532.36 3249.2,541.843 3252.72,551.249 3256.24,560.576 3259.76,569.819 3263.28,578.976 3266.79,588.045 3270.31,597.023 3273.83,605.909 3277.35,614.699 3280.86,623.392 3284.38,631.987 3287.9,640.482 3291.42,648.875 3294.94,657.165 3298.45,665.352 3301.97,673.433 3305.49,681.408 3309.01,689.277 3312.52,697.038 3316.04,704.691 3319.56,712.237 3323.08,719.673 3326.6,727.001 3330.11,734.219 3333.63,741.329 3337.15,748.33 3340.67,755.221 3344.18,762.005 3347.7,768.679 3351.22,775.246 3354.74,781.705 3358.26,788.057 3361.77,794.303 3365.29,800.443 3368.81,806.477 3372.33,812.407 3375.84,818.233 3379.36,823.956 3382.88,829.576 3386.4,835.096 3389.91,840.515 3393.43,845.834 3396.95,851.056 3400.47,856.179 3403.99,861.207 3407.5,866.139 3411.02,870.976 3414.54,875.721 3418.06,880.373 3421.57,884.935 3425.09,889.407 3428.61,893.79 3432.13,898.087 3435.65,902.296 3439.16,906.421 3442.68,910.463 3446.2,914.421 3449.72,918.298 3453.23,922.096 3456.75,925.814 3460.27,929.454 3463.79,933.018 3467.31,936.507 3470.82,939.922 3474.34,943.264 3477.86,946.535 3481.38,949.735 3484.89,952.865 3488.41,955.928 3491.93,958.924 3495.45,961.855 3498.97,964.72 3502.48,967.523 3506,970.263 3509.52,972.943 3513.04,975.562 3516.55,978.123 3520.07,980.626 3523.59,983.072 3527.11,985.463 3530.63,987.8 3534.14,990.083 3537.66,992.314 3541.18,994.493 3544.7,996.622 3548.21,998.702 3551.73,1000.73 3555.25,1002.72 3558.77,1004.66 3562.29,1006.55 3565.8,1008.4 3569.32,1010.2 3572.84,1011.96 3576.36,1013.68 3579.87,1015.36 3583.39,1017 3586.91,1018.6 3590.43,1020.17 3593.94,1021.69 3597.46,1023.18 3600.98,1024.63 3604.5,1026.05 3608.02,1027.43 3611.53,1028.78 3615.05,1030.1 3618.57,1031.38 3622.09,1032.64 3625.6,1033.86 3629.12,1035.05 3632.64,1036.21 3636.16,1037.35 3639.68,1038.46 3643.19,1039.53 3646.71,1040.59 3650.23,1041.61 3653.75,1042.62 3657.26,1043.59 3660.78,1044.54 3664.3,1045.47 3667.82,1046.38 3671.34,1047.26 3674.85,1048.12 3678.37,1048.96 3681.89,1049.78 3685.41,1050.57 3688.92,1051.35 3692.44,1052.11 3695.96,1052.85 3699.48,1053.57 3703,1054.27 3706.51,1054.95 3710.03,1055.62 3713.55,1056.27 3717.07,1056.9 3720.58,1057.52 3724.1,1058.12 3727.62,1058.7 3731.14,1059.27 3734.66,1059.83 3738.17,1060.37 3741.69,1060.9 3745.21,1061.41 3748.73,1061.91 3752.24,1062.4 3755.76,1062.88 3759.28,1063.34 3762.8,1063.79 3766.31,1064.23 3769.83,1064.66 3773.35,1065.08 3776.87,1065.48 3780.39,1065.88 3783.9,1066.26 3787.42,1066.64 3790.94,1067 3794.46,1067.36 3797.97,1067.71 3801.49,1068.04 3805.01,1068.37 3808.53,1068.69 3812.05,1069.01 3815.56,1069.31 3819.08,1069.61 3822.6,1069.89 3826.12,1070.18 3829.63,1070.45 3833.15,1070.72 3836.67,1070.97 3840.19,1071.23 3843.71,1071.47 3847.22,1071.71 3850.74,1071.94 3854.26,1072.17 3857.78,1072.39 3861.29,1072.61 3864.81,1072.82 3868.33,1073.02 3871.85,1073.22 3875.37,1073.41 3878.88,1073.6 3882.4,1073.78 3885.92,1073.96 3889.44,1074.14 3892.95,1074.31 3896.47,1074.47 3899.99,1074.63 3903.51,1074.79 3907.03,1074.94 3910.54,1075.09 "></polyline>
+</svg>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The depth-damage function and the hazard distribution over the same depths.
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="8" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Change in damage per metre of depth, measured over a 2 cm step around the midpoint</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>peak_slope <span class="op">=</span> (<span class="fu">depth_damage</span>(midpoint <span class="op">+</span> <span class="fl">0.01</span>) <span class="op">-</span> <span class="fu">depth_damage</span>(midpoint <span class="op">-</span> <span class="fl">0.01</span>)) <span class="op">/</span> <span class="fl">0.02</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The damage curve is steepest around its midpoint, <span class="math inline">\(h_0 = 3\)</span> m, where the logistic curve is most nearly vertical — roughly the 2 m to 4 m range. At the midpoint the damage rises by about $40000 per metre of depth. That band is also where most of the hazard distribution’s mass sits, so the structure is squarely in the region where a small change in depth produces a large change in loss. Away from that band, in shallow water or as the house nears a total loss, additional depth still adds damage, but more slowly.</p>
+</section>
+<section id="problem-2.2-8-points" class="level3">
+<h3 class="anchored" data-anchor-id="problem-2.2-8-points">Problem 2.2 (8 points)</h3>
+<div id="10" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Random</span>.<span class="fu">seed!</span>(<span class="fl">4750</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">damage_sample</span>(n)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    losses <span class="op">=</span> <span class="fu">zeros</span>(n)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        losses[i] <span class="op">=</span> <span class="fu">depth_damage</span>(<span class="fu">rand</span>(hazard))</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> losses</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>sample_sizes <span class="op">=</span> [<span class="fl">1_000</span>, <span class="fl">2_000</span>, <span class="fl">4_000</span>, <span class="fl">8_000</span>, <span class="fl">16_000</span>, <span class="fl">32_000</span>]</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>estimates <span class="op">=</span> <span class="fu">zeros</span>(<span class="fu">length</span>(sample_sizes))</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>half_widths <span class="op">=</span> <span class="fu">zeros</span>(<span class="fu">length</span>(sample_sizes))</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(sample_sizes)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    losses <span class="op">=</span> <span class="fu">damage_sample</span>(sample_sizes[i])</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    estimates[i] <span class="op">=</span> <span class="fu">mean</span>(losses)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    half_widths[i] <span class="op">=</span> <span class="fl">1.96</span> <span class="op">*</span> <span class="fu">std</span>(losses) <span class="op">/</span> <span class="fu">sqrt</span>(sample_sizes[i])</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;"><span class="math inline">\(n\)</span></th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">95% half-width</th>
+<th style="text-align: right;">change on doubling</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(1000\)</span></td>
+<td style="text-align: right;">$114724</td>
+<td style="text-align: right;">±$2115</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(2000\)</span></td>
+<td style="text-align: right;">$114684</td>
+<td style="text-align: right;">±$1515</td>
+<td style="text-align: right;">$39</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(4000\)</span></td>
+<td style="text-align: right;">$114931</td>
+<td style="text-align: right;">±$1063</td>
+<td style="text-align: right;">$247</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(8000\)</span></td>
+<td style="text-align: right;">$114658</td>
+<td style="text-align: right;">±$743</td>
+<td style="text-align: right;">$273</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(16000\)</span></td>
+<td style="text-align: right;">$115279</td>
+<td style="text-align: right;">±$529</td>
+<td style="text-align: right;">$621</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(32000\)</span></td>
+<td style="text-align: right;">$115541</td>
+<td style="text-align: right;">±$378</td>
+<td style="text-align: right;">$263</td>
+</tr>
+</tbody>
+</table>
+<p>At <span class="math inline">\(n = 32\text{,}000\)</span> the expected annual damage is $115541, with a 95% confidence interval of roughly ±$378. Seed <code>4750</code>.</p>
+<p>The quantity being estimated is the mean annual damage. Across the whole table the estimate never moves by more than a few hundred dollars on a six-figure loss — under 1% — and the reported half-width shrinks steadily as <span class="math inline">\(1/\sqrt{n}\)</span>. By <span class="math inline">\(n = 8\text{,}000\)</span> the estimate is stable well inside any precision this decision needs, and the extra doublings past that change nothing of consequence.</p>
+</section>
+<section id="problem-2.3-7-points" class="level3">
+<h3 class="anchored" data-anchor-id="problem-2.3-7-points">Problem 2.3 (7 points)</h3>
+<div id="14" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Random</span>.<span class="fu">seed!</span>(<span class="fl">20</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>big_sample <span class="op">=</span> <span class="fu">damage_sample</span>(<span class="fl">200_000</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>mean_damage <span class="op">=</span> <span class="fu">mean</span>(big_sample)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>tail_damage <span class="op">=</span> <span class="fu">quantile</span>(big_sample, <span class="fl">0.99</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The mean annual damage is $115086, while the 99th percentile is $189819 — about $74733 more, or 1.6 times the mean, and close to the $200,000 ceiling of the damage function.</p>
+<p>Why is a percentile less precise? The estimate of the mean uses each of the <span class="math inline">\(n\)</span> draws. In contrast, the 99th percentile is determined by the draws that land above or near it. Only 1% of the sample lies above it, so draws in that part of the distribution are sparse, and exactly where those few happen to fall moves the estimate.</p>
+<p>Flood depth only captures the hazard, it cannot say where the properties are that would be exposed to flooding or how vulnerable those properties are to a certain level of flooding. The depth-damage function is the <strong>vulnerability</strong> component: it converts a physical hazard (a depth) into a consequence (a loss).</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/envsys\.viveks\.me\/fall2025");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><span class="faux-block"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> 2025 Vivek Srikrishnan</span><br> See the <a href="../../about.html">About Page</a> for credit information.</p>
+</div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">LICENSE: CC-BY-SA  <i class="fab fa-creative-commons"></i><i class="fab fa-creative-commons-by"></i><i class="fab fa-creative-commons-sa"></i></a>
+  </li>  
+</ul>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/solutions/hw04/hw04.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Made with <a href="https://julialang.org">Julia</a> and <a href="https://quarto.org/">Quarto</a><br> <a href="https://www.github.com/bee-envsys-cornell/fall2026/">View the source at <i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

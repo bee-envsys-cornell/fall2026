@@ -57,6 +57,19 @@ to do: "Problem 3 asks you to find … by hand, then check them in `JuMP`." Add 
 in Markdown cells" bullet when the homework has sketches. Leave out study advice ("do the hand parts
 first"), lecture dates, and commentary on the assignment (from the instructor's HW6 edit, Oct 9).
 
+**Each subproblem carries a limited number of asks** (decided Oct 14, after HW5 went out; applies from
+HW6 on). An ask is a separate thing the student has to produce: a value, the results of a solve, a
+sketch, an explanation, a judgment. Give each `#### Problem N.M` one ask, or two tightly linked ones (a
+result and why, from the same work). Do not group two or three asks under one subproblem, whether as a
+numbered list or as stacked questions in the prose ("Which constraints bind? Give the slack of the
+others. What does that mean for the city?"): split them into more subproblems, each with its own
+points. HW5's 3.3 and 3.4, with three numbered asks each, are the pattern to avoid. Numbered lists inside
+a subproblem are still fine for cases or data (five points to test, two rules, two re-solves that each
+get their own subproblem). Qualifiers such as "with units" or "as a table" are not asks, and one table of
+per-case values counts as one. Splitting keeps each problem's total and the 50-point total; renumber the
+key's `###` headings to match and update every "Problem N.M" cross-reference in the prompt, key and
+README. HW6–HW9 were drafted (Oct 8–10) before this rule and have not been restructured yet.
+
 **Homework keys carry no rubric notes** (decided Oct 9; mini-project and quiz keys keep their grading notes). Grading follows the public standard rubrics in
 `policies/rubric.qmd` (Formulation, Solution, Analysis and Interpretation, Figures), so a key gives the
 model answer and its reasoning, with no per-part point splits, partial-credit fractions, or lists of

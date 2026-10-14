@@ -26,7 +26,7 @@ website:
     left: |
       <span class="faux-block">{{< fa brands creative-commons >}} {{< var course.copyright_year >}} Vivek Srikrishnan</span><br>
       See the [About Page](/about.qmd) for credit information.
-    center: 
+    center:
       - text: "<a href='https://creativecommons.org/licenses/by-sa/4.0/deed.en'>LICENSE: CC-BY-SA {{< fa creative-commons-sa >}} <i class='fab fa-creative-commons'></i><i class='fab fa-creative-commons-by'></i><i class='fab fa-creative-commons-sa'></i></a>"
     right: |
       Made with [Julia](https://julialang.org) and [Quarto](https://quarto.org/)<br>
@@ -97,7 +97,7 @@ website:
         - section: "Tools Setup"
           href: setup/index.qmd
         - section: "Software"
-          contents: 
+          contents:
           - setup/julia.qmd
           - setup/git.qmd
           - setup/vscode.qmd
@@ -129,13 +129,13 @@ website:
         - href: hw/hw01/hw01.qmd
           text: "Homework 1"
         - href: hw/hw02/hw02.qmd
-          text: "Homework 2"      
+          text: "Homework 2"
         - href: hw/hw03/hw03.qmd
-          text: "Homework 3"    
+          text: "Homework 3"
         - href: hw/hw04/hw04.qmd
           text: "Homework 4"
-        - href: hw/index.qmd#schedule
-          text: "Homework 5 (Oct. 14)"
+        - href: hw/hw05/hw05.qmd
+          text: "Homework 5"
         - href: hw/index.qmd#schedule
           text: "Homework 6 (Oct. 21)"
         - href: hw/index.qmd#schedule
@@ -188,7 +188,7 @@ website:
         - tutorials/notebook-to-pdf.qmd
 format:
   html:
-    theme: 
+    theme:
       [simplex, sass/theme.scss]
     mainfont: "Atkinson Hyperlegible"
     copy-code: true
@@ -206,17 +206,17 @@ format:
   typst:
     citeproc: true
     csl: _assets/references/american-geophysical-union.csl
-    filters: 
+    filters:
       - "_assets/typst-pdf/processing.lua"
     mainfont: IBM Plex Sans
-    fontsize: "10pt"  
+    fontsize: "10pt"
     toc: true
     toc-depth: 2
     toc-title: Contents
     margin:
       x: 1in
       y: 1in
-    default-image-extension: png  
+    default-image-extension: png
   revealjs:
     slide-number: c/t
     show-slide-number: all
@@ -241,9 +241,9 @@ format:
     chalkboard:
       theme: whiteboard
       buttons: true
-    mermaid: 
+    mermaid:
         theme: dark
-    default-image-extension: png 
+    default-image-extension: png
     code-fold: true
   beamer:
     theme: metropolis
@@ -252,9 +252,9 @@ format:
     aspectratio: 169
     navigation: horizontal
     section-titles: true
-    toc: false     
+    toc: false
     default-image-extension: png
-    monofontoptions: 
+    monofontoptions:
       - Scale=0.55
 
 
@@ -264,5 +264,5 @@ csl: _assets/references/american-geophysical-union.csl
 engine: julia
 julia:
   exeflags: ["+1.12"]
-execute: 
-  freeze: auto  
+execute:
+  freeze: auto
