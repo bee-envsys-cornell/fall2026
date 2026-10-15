@@ -89,15 +89,15 @@ commas(n) = replace(string(Int(round(n))), r"(?<=\d)(?=(\d{3})+$)" => ",")
 
 # Review and Questions
 
-## Last Class: Economic Dispatch
+## Economic Dispatch
 
 - Dispatch runs the plants we **already have** at least cost: the merit order, bent by minimum outputs and ramping.
-- **The price of electricity is the demand constraint's shadow price**: the cost of the plant that served the last MWh (\$87/MWh at 2200 MW).
+- **The price of electricity is the demand constraint's shadow price**: the cost of the plant that served the last MWh.
 
-Today: deciding what to **build**.
+**Raises the question**: what should we **build**?
 
 ::: {.notes}
-Budget a couple of minutes to re-sync after last week. The Wednesday dispatch lecture was taught by a substitute; ask whether anything from it was unclear, especially the sign of the shadow price (relaxing demand means serving one less MWh, so JuMP reports a negative number).
+Ask whether anything about economic dispatch was unclear, especially the sign of the shadow price (relaxing demand means serving one less MWh, so JuMP reports a negative number).
 :::
 
 ## Questions?
@@ -116,7 +116,7 @@ Budget a couple of minutes to re-sync after last week. The Wednesday dispatch le
 We'll look at a **greenfield** problem (no existing plants), not a **brownfield** one (adding to an existing fleet).
 
 ::: {.notes}
-This sits at the long end of the decision time scales from last week: years, not hours. The dispatch decision is nested inside it: whatever we build has to be run every hour, and the running costs are part of the case for building it. Most real planning is brownfield. Mini-Project 2's final part is one: New York's 2013 fleet is already there, and the plan adds to it.
+Capacity expansion sits at the long end of the decision time scales: years, not hours. The dispatch decision is nested inside it: whatever we build has to be run every hour, and the running costs are part of the case for building it. Most real planning is brownfield, adding to a fleet that is already there.
 :::
 
 ## Plant Types
@@ -131,7 +131,7 @@ They differ in **what they cost to build** and **what they cost to run**, and th
 Preview the result: cheap-to-build plants that are expensive to run (CTs) suit loads that occur only a few hours a year; expensive-to-build plants that are cheap to run suit loads that are there all year. The rest of the lecture makes that precise.
 :::
 
-## Data: Generators and Demand
+## Generator and Demand Data
 
 ```{julia}
 #| echo: true
@@ -244,7 +244,7 @@ $$
 :::
 
 ::: {.notes}
-Board item; the fragment is the answer. Build the objective in two pieces: investment (fixed cost times capacity) and operation (variable cost times generation, plus the penalty on unserved energy). Constraints: each hour, generation plus unserved energy covers demand; no plant produces more than its installed capacity; everything is non-negative. Ask: is this an LP? Yes: it's linear in every variable, capacity is divisible (we model total MW, not individual units), and demand is treated as known. Each of those three is an assumption we'll revisit: discrete units (Wednesday), uncertainty (in two weeks).
+Board item; the fragment is the answer. Build the objective in two pieces: investment (fixed cost times capacity) and operation (variable cost times generation, plus the penalty on unserved energy). Constraints: each hour, generation plus unserved energy covers demand; no plant produces more than its installed capacity; everything is non-negative. Ask: is this an LP? Yes: it's linear in every variable, capacity is divisible (we model total MW, not individual units), and demand is treated as known. Each of those three is an assumption that later methods relax: discrete units (mixed integer programming) and uncertainty (stochastic programming).
 :::
 
 # Solving and Reading the Answer
@@ -428,7 +428,7 @@ A CT is cheaper below **`{julia} commas(ct_vs_ccgt)` hours**; not serving is che
 Board item; the fragment is the answer. Set the two annual costs equal and solve. CCGT costs \$`{julia} commas(gens[3, :FixedCost] - gens[4, :FixedCost])` a year more to build and \$`{julia} gens[4, :VarCost] - gens[3, :VarCost]` per MWh less to run, so it pays back after about `{julia} commas(ct_vs_ccgt)` hours. A CT costs \$`{julia} commas(gens[4, :FixedCost])` a year to build; not serving costs \$`{julia} commas(NSECost - gens[4, :VarCost])` more per MWh than running the CT, so a CT pays for itself only if it would run more than about seven hours a year. At these prices coal does not beat CCGT within a year: the crossover is at `{julia} commas((gens[2, :FixedCost] - gens[3, :FixedCost]) / (gens[3, :VarCost] - gens[2, :VarCost]))` hours. Nuclear's crossover with CCGT is at about `{julia} commas(round((gens[1, :FixedCost] - gens[3, :FixedCost]) / (gens[3, :VarCost] - gens[1, :VarCost]); sigdigits=3))` hours.
 :::
 
-## Reading the Build Off the Curve
+## The Optimal Capacity Mix
 
 ```{julia}
 #| echo: true
@@ -464,10 +464,6 @@ Wind and solar can't produce at full capacity every hour: their **capacity facto
 ::: {.fragment .fade-in}
 The capacity constraint changes from
 $$y_{g,t} \leq x_g \qquad \text{to} \qquad y_{g,t} \leq x_g \times c_{g,t}$$
-:::
-
-::: {.fragment .fade-in}
-So a renewable's value depends on **when** it produces, and screening curves alone no longer give the answer.
 :::
 
 ::: {.notes}
@@ -597,7 +593,7 @@ A MW of solar costs \$`{julia} commas(gens[solar_row, :FixedCost])` a year and a
 :::
 
 ::: {.fragment .fade-in}
-Both cost less than the gas they save, so some of each is worth building. **How much** is a question for the LP.
+Both cost less than the gas they save, so some of each is worth building.
 :::
 
 ::: {.notes}
@@ -606,7 +602,7 @@ Board item; the fragments carry the answer. Divide the annual cost of a MW by th
 Geothermal is a different case, because it is always available. Its energy costs \$`{julia} round(Int, geothermal_energy_cost)` per MWh, more than a CCGT's fuel. But it can take the place of a CCGT altogether, and a CCGT that runs all year costs \$`{julia} round(Int, ccgt_all_year_cost)` per MWh once its fixed cost is counted.
 :::
 
-## In `JuMP`
+## Adding Renewables in `JuMP`
 
 ```{julia}
 #| echo: true
@@ -669,7 +665,7 @@ Only the availability constraint changes: `available[g, t]` is 1 for the thermal
 The folded cell holds the whole model as a function, so the same code can be solved for any set of plant types, with or without an emissions cap, and later at other fuel prices. Everything in it is the model from earlier except this one line. Writing the constraint with indexed sets keeps it one line however many technologies there are.
 :::
 
-## The Plan With Renewables
+## Results With Renewables
 
 ```{julia}
 #| echo: true
@@ -892,7 +888,7 @@ Monthly prices in dollars per million Btu: the Henry Hub spot price for the Unit
 Our base case uses what U.S. power plants paid for delivered gas in 2022, which is a little above that year's Henry Hub average. The next slides solve the plan again at two other prices: \$3.50, about the U.S. price in 2025, and \$15, about Europe's price in 2026.
 :::
 
-## The Plan at Other Gas Prices
+## Results at Other Gas Prices
 
 ```{julia}
 #| echo: true
@@ -986,23 +982,23 @@ The thermal-only plan at \$15 gas, drawn the same way as the first plan. Now the
 
 ::: {.incremental}
 - Capacity expansion chooses **what to build** and **how to run it** together, at least total cost.
-- **Screening curves** read a thermal build off the load duration curve: CT below `{julia} commas(ct_vs_ccgt)` h, unserved below `{julia} round(nse_vs_ct; digits=2)` h.
+- **Screening curves** read a thermal build off the load duration curve: each type serves the hours in which its total cost per MW is lowest.
 - The value of wind and solar depends on *when* they produce.
-- A **CO~2~ cap's shadow price is a carbon price**: \$`{julia} round(Int, -capped_thermal.carbon_price)`/t with thermal types only, \$0 with renewables.
-- The plan depends on **fuel prices**: at \$15 gas, coal or geothermal serves the base load.
+- A **CO~2~ cap's shadow price is a carbon price**: the cost of abating the last tonne.
+- The plan depends on **fuel prices**: expensive gas moves the base load to other plants.
 :::
 
 ## Next Classes
 
 **Wednesday, November 4**: Quiz 4, then mixed integer programming.
 
-**Monday, November 9**: Solid waste and network models (with a substitute).
+**Monday, November 9**: Solid waste and network models.
 
-**Wednesday, November 11**: Lab 3, fixed costs and facility siting in `JuMP` (with the TA).
+**Wednesday, November 11**: Lab 3, fixed costs and facility siting in `JuMP`.
 
 ## Assessments
 
-**Mini-Project 2**: Due Thursday, November 19. Its final part (build decisions and a CO~2~ cap) is now possible. It starts from New York's existing 2013 fleet, with New York's capacity factors and 2013 costs, and offers more kinds of plant to build, so its answers will differ from today's greenfield example.
+**Mini-Project 2**: Due Thursday, November 19. Its final part (build decisions and a CO~2~ cap) can now be done.
 
 **Homework 7**: Assigned Wednesday, due Thursday, November 12.
 
@@ -1034,7 +1030,7 @@ areaplot(1:length(week), week_mix, label=permutedims([gens[built, :Plant]; "Unse
 Gas still covers the evenings, so its capacity falls much less than its energy.
 
 ::: {.notes}
-One week, centred on the year's peak hour. Solar fills the middle of each day and wind comes and goes. Every evening the gas plants climb back to nearly the output they would have without wind and solar. This is last week's duck curve, seen from the planner's side: the capacity is still needed, but it runs fewer hours.
+One week, centred on the year's peak hour. Solar fills the middle of each day and wind comes and goes. Every evening the gas plants climb back to nearly the output they would have without wind and solar. This is the duck curve, seen from the planner's side: the capacity is still needed, but it runs fewer hours.
 :::
 
 ## Hourly Prices

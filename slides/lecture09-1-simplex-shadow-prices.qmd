@@ -87,7 +87,7 @@ commas(n) = replace(string(Int(n)), r"(?<=\d)(?=(\d{3})+$)" => ",")
 ```{julia}
 #| output: false
 
-# Carried over from Wednesday: the two-stack emissions problem.
+# The two-stack emissions problem: plume model, stacks, receptors and costs.
 sig_y(xk) = 34.0 * xk^0.894
 
 function sig_z(xk)
@@ -124,7 +124,7 @@ function transmission(stack, receptor)
 end
 
 n_stacks, n_receptors = length(emission), length(receptor_name)
-# Rounded to the 0.1 shown on Wednesday, as there
+# Rounded to the 0.1 shown on the slides, so hand calculations match
 t = [round(transmission(i, j); digits=1) for j in 1:n_receptors, i in 1:n_stacks]   # rows: receptors
 
 # Each stack's contribution at each receptor, the coefficients of R_1 and R_2  [µg/m³]
@@ -409,7 +409,7 @@ Solvers do the same walk with algebra: [a tableau by hand](#simplex-tableau).
 :::
 
 ::: {.notes}
-Why is a local stop global? The feasible region is convex and the cost is linear, so if every edge out of a corner goes uphill, every direction into the region does too. That is the same argument as Wednesday's "why a corner", run in reverse.
+Why is a local stop global? The feasible region is convex and the cost is linear, so if the objective gets worse along every edge out of a corner, it gets worse in every direction into the region. It is the argument for why an optimum lies at a corner, run in reverse.
 :::
 
 # Shadow Prices
@@ -441,7 +441,7 @@ $$g_j(\mathbf{x}) \leq b_j \qquad \text{becomes} \qquad g_j(\mathbf{x}) + S_j^2 
 - Squaring keeps the slack from going negative.
 
 ::: {.notes}
-We work in Wednesday's standard form: maximize the objective subject to less-than constraints. The Lagrangian is built for equality constraints, so the inequalities are converted first. A less-than constraint has room on its left-hand side, so the slack is added. It is written as a square so that it cannot go negative and no further inequality is needed. For C2 in standard form this reads -450 R_1 - 460 R_2 + S_2^2 = -714. It is the same slack a simplex tableau carries (s_j in the appendix), with s_j = S_j^2.
+We work in standard form: maximize the objective subject to less-than constraints. The Lagrangian is built for equality constraints, so the inequalities are converted first. A less-than constraint has room on its left-hand side, so the slack is added. It is written as a square so that it cannot go negative and no further inequality is needed. For C2 in standard form this reads -450 R_1 - 460 R_2 + S_2^2 = -714. It is the same slack a simplex tableau carries (s_j in the appendix), with s_j = S_j^2.
 :::
 
 ## Shadow Prices Are Lagrange Multipliers
@@ -472,18 +472,18 @@ $$\begin{aligned}
 So $\lambda_j = 0$ or $S_j = 0$: a **slack** constraint has no shadow price, and only **binding** ones stay in the sum.
 
 ::: {.notes}
-Three sets of derivatives. With respect to each decision variable: together they say the objective's gradient is a weighted sum of the constraints' gradients, and the weights are the multipliers. With respect to each slack variable: 2 lambda_j S_j = 0, so for every constraint either the multiplier or the slack is zero (complementary slackness); a constraint with room to spare cannot have a shadow price. With respect to each multiplier: the constraint itself, which adds nothing new. This matches the last simplex step: no edge improves the objective exactly when its gradient is a non-negative combination of the binding constraints' gradients.
+Three sets of derivatives. With respect to each decision variable: together they say the objective's gradient is a weighted sum of the constraints' gradients, and the weights are the multipliers. With respect to each slack variable: 2 lambda_j S_j = 0, so for every constraint either the multiplier or the slack is zero (complementary slackness); a constraint that does not bind cannot have a shadow price. With respect to each multiplier: the constraint itself, which adds nothing new. This matches the last simplex step: no edge improves the objective exactly when its gradient is a non-negative combination of the binding constraints' gradients.
 :::
 
 ## Computing the Shadow Prices
 
-In Wednesday's standard form, $f = -1000R_1 - 1200R_2$, and each gradient is a row of coefficients. C1 is slack $(S_1 \neq 0)$, so $\lambda_1 = 0$ and $\nabla f = \lambda_2 \nabla g_2 + \lambda_3 \nabla g_3$:
+In standard form, $f = -1000R_1 - 1200R_2$, and each gradient is a row of coefficients. C1 is slack $(S_1 \neq 0)$, so $\lambda_1 = 0$ and $\nabla f = \lambda_2 \nabla g_2 + \lambda_3 \nabla g_3$:
 
 ```{julia}
 #| echo: false
 #| output: asis
 
-# Wednesday's standard form: maximize f = -cost, with C2 and C3 written as <= constraints
+# Standard form: maximize f = -cost, with C2 and C3 written as <= constraints
 gradient_f = [-cost[1], -cost[2]]
 gradient_C2 = [-from_stack[2, 1], -from_stack[2, 2]]
 gradient_C3 = [-from_stack[3, 1], -from_stack[3, 2]]
@@ -507,7 +507,7 @@ println("\\end{aligned} \\quad \\Rightarrow \\quad \\lambda_2 = $(round(λ_bindi
 :::
 
 ::: {.notes}
-Board item. Wednesday's lecture wrote this problem in standard form: maximize f = -1000 R_1 - 1200 R_2, with C2 as g_2 = -450 R_1 - 460 R_2 <= -714 and C3 as g_3 = -75 R_1 - 568 R_2 <= -447. The gradients are the coefficient pairs: (-1000, -1200), (-450, -460) and (-75, -568). C1, the two upper bounds and non-negativity are slack at the optimum, so their multipliers are zero. Read the vector equation one row at a time to get the two equations, one for each decision variable, and solve the 2-by-2 system. Both multipliers come out positive, which is the optimality check. Relaxing C2 by one unit raises its right-hand side from -714 to -713, which is the standard at B going up by 1 µg/m³, and raises the objective by 2.16: the cost falls by 2.16.
+Board item. In standard form the problem is: maximize f = -1000 R_1 - 1200 R_2, with C2 as g_2 = -450 R_1 - 460 R_2 <= -714 and C3 as g_3 = -75 R_1 - 568 R_2 <= -447. The gradients are the coefficient pairs: (-1000, -1200), (-450, -460) and (-75, -568). C1, the two upper bounds and non-negativity are slack at the optimum, so their multipliers are zero. Read the vector equation one row at a time to get the two equations, one for each decision variable, and solve the 2-by-2 system. Both multipliers come out positive, which is the optimality check. Relaxing C2 by one unit raises its right-hand side from -714 to -713, which is the standard at B going up by 1 µg/m³, and raises the objective by 2.16: the cost falls by 2.16.
 :::
 
 ## Reading the Shadow Prices
@@ -547,18 +547,18 @@ Would relaxing the standard at B by 100 µg/m³ save 100 × \$`{julia} commas(ro
 :::
 
 ::: {.notes}
-Two points students lose marks on. Units: a shadow price is the objective's units per unit of the constraint's right-hand side, here dollars per year per microgram per cubic metre, so a shadow price without units cannot be compared with a cost. Marginal: it is a rate at the current optimum, and it holds only while the same constraints bind. Ask the question before showing the next slide. For this problem the answer is no: the price for C2 holds until the standard at B has been relaxed by about `{julia} Int(round(c2_range))` µg/m³. Past that, C1 and C3 bind, and relaxing C2 further saves nothing. The homework asks them to find a change like this in its own LP.
+Units: a shadow price is the objective's units per unit of the constraint's right-hand side, here dollars per year per microgram per cubic metre, so a shadow price without units cannot be compared with a cost. Marginal: it is a rate at the current optimum, and it holds only while the same constraints bind. Ask the question before showing the next slide. For this problem the answer is no: the price for C2 holds until the standard at B has been relaxed by about `{julia} Int(round(c2_range))` µg/m³. Past that, C1 and C3 bind, and relaxing C2 further saves nothing.
 :::
 
 ## A Shadow Price Holds Locally
 
 ```{julia}
 #| label: fig-marginal-sketch
-#| fig-cap: "Wednesday's sketch LP with one constraint relaxed twice. Left: the optimum slides along another constraint until a corner stops it. Right: the optimal objective against how far the constraint is relaxed, with the shadow price's prediction dashed."
+#| fig-cap: "A sketch LP with one constraint relaxed twice. Left: the optimum slides along another constraint until a corner stops it. Right: the optimal objective against how far the constraint is relaxed, with the shadow price's prediction dashed."
 #| echo: true
 #| code-fold: true
 
-# Wednesday's sketch LP: four constraint lines, each x2 = slope * x1 + intercept.
+# A sketch LP: four constraint lines, each x2 = slope * x1 + intercept.
 # We minimize x1 + 2 x2 and relax the third constraint by lowering its intercept.
 sketch_slope = [4.5, -1, -1.5, 0.5]
 sketch_intercept = [0, 16, 12, 0]
@@ -631,7 +631,7 @@ plot(p_move, p_value, layout=(1, 2), size=(1150, 310), left_margin=12mm, bottom_
 From 1 to 2 the same constraints bind, so the shadow price holds. By 3 the relaxed constraint no longer binds, and it fails.
 
 ::: {.notes}
-This is Wednesday's sketch with an objective added: minimize a cost that rises with both variables, so the optimum is the lowest corner. One constraint is relaxed twice. At first the optimum slides along the neighbouring constraint, the same two constraints bind, and the objective falls at a constant rate: the shadow price. Relax far enough and the optimum reaches the corner where two other constraints meet. The relaxed constraint has moved off the feasible region, a different pair of constraints sets the optimum, and further relaxation gains nothing. On the right, the solid line is what re-solving gives and the dashed line is what the shadow price predicts; they part at the kink. A shadow price cannot tell you where its own kink is: you have to re-solve.
+This is the corner sketch with an objective added: minimize a cost that rises with both variables, so the optimum is the lowest corner. One constraint is relaxed twice. At first the optimum slides along the neighbouring constraint, the same two constraints bind, and the objective falls at a constant rate: the shadow price. Relax far enough and the optimum reaches the corner where two other constraints meet. The relaxed constraint has moved off the feasible region, a different pair of constraints sets the optimum, and further relaxation gains nothing. On the right, the solid line is what re-solving gives and the dashed line is what the shadow price predicts; they part at the kink. A shadow price cannot tell you where its own kink is: you have to re-solve.
 :::
 
 # Solving LPs in JuMP
@@ -642,7 +642,7 @@ This is Wednesday's sketch with an objective added: minimize a cost that rises w
 #| echo: true
 #| code-fold: false
 
-# Wednesday's formulation, one line for each variable and constraint
+# The formulation, one line for each variable and constraint
 naive_model = Model(HiGHS.Optimizer)
 @variable(naive_model, 0 <= R1 <= 1)
 @variable(naive_model, 0 <= R2 <= 1)
@@ -656,10 +656,10 @@ println("R1 = ", value(R1), ", R2 = ", value(R2))
 println("Cost: \$", objective_value(naive_model), " thousand per year")
 ```
 
-Same as Wednesday: $R_1$ = `{julia} @sprintf("%.2f", round(value(R1); digits=2))`, $R_2$ = `{julia} @sprintf("%.2f", round(value(R2); digits=2))`, \$`{julia} round(objective_value(naive_model) / 1000; digits=1)`M/yr.
+Same solution we got earlier: $R_1$ = `{julia} @sprintf("%.2f", round(value(R1); digits=2))` and $R_2$ = `{julia} @sprintf("%.2f", round(value(R2); digits=2))`.
 
 ::: {.notes}
-Each line copies one line of Wednesday's formulation: `@variable` declares a decision variable with its bounds, `@objective` takes Min or Max and the expression, and `@constraint` takes a name and the inequality. Naming the constraints C1 to C3 lets us ask for their shadow prices later. value(R1) asks for the optimal value of a variable, and objective_value(model) for the optimal cost. The printed numbers are unrounded, which is what students will see in their own notebooks; round when reporting. set_silent only hides the solver's log. Monday's lab uses the same calls.
+Each line copies one line of the formulation: `@variable` declares a decision variable with its bounds, `@objective` takes Min or Max and the expression, and `@constraint` takes a name and the inequality. Naming the constraints C1 to C3 lets us ask for their shadow prices later. value(R1) asks for the optimal value of a variable, and objective_value(model) for the optimal cost. The printed numbers are unrounded, which is what students will see in their own notebooks; round when reporting. set_silent only hides the solver's log.
 :::
 
 ## Writing the Model with Indices
@@ -683,7 +683,7 @@ println("Cost: \$", objective_value(emissions_model), " thousand per year")
 One line, `limit[j]`, writes all three constraints. Adding a stack or a receptor changes only the data.
 
 ::: {.notes}
-Same model and same solution as the previous slide. removal[i] replaces R1 and R2, and limit[j] writes the constraint for every receptor j as concentration at or below the standard. The data (cost, t, emission, standard) are Wednesday's, defined once at the top of the notebook, so no coefficient is typed by hand. removal[i in 1:n_stacks] creates one variable per stack; limit[j in 1:n_receptors] creates one constraint per receptor, and sum(... for i in 1:n_stacks) adds up the stacks' contributions. The constraint is written the way it was derived, C_j = sum of t_ij Q_i (1 - R_i) at or below the standard, and JuMP does the rearranging that we did by hand. value.(removal) asks for every removal at once.
+Same model and same solution as the previous slide. removal[i] replaces R1 and R2, and limit[j] writes the constraint for every receptor j as concentration at or below the standard. The data (cost, t, emission, standard) are defined once at the top of the notebook, so no coefficient is typed by hand. removal[i in 1:n_stacks] creates one variable per stack; limit[j in 1:n_receptors] creates one constraint per receptor, and sum(... for i in 1:n_stacks) adds up the stacks' contributions. The constraint is written the way it was derived, C_j = sum of t_ij Q_i (1 - R_i) at or below the standard, and JuMP does the rearranging that we did by hand. value.(removal) asks for every removal at once.
 :::
 
 ## Reading the Duals
@@ -718,7 +718,7 @@ println("- **JuMP** *minimized* cost. Relaxing C2 changes it by \$", round(limit
 ::::
 
 ::: {.notes}
-Both numbers answer the same question, what happens to the objective when the constraint is relaxed by one unit, and they differ in sign only because the two objectives do. By hand we used standard form and maximized minus the cost, so relaxing C2 raises the objective by 2.16. The JuMP model on the previous slide minimizes the cost itself, so relaxing C2 lowers its objective by 2.16, and shadow_price reports minus 2.16. JuMP's rule is that shadow_price is the change in the objective when the constraint is relaxed: never positive for a minimization, never negative for a maximization, however the constraint is written. Given the standard-form model (maximize minus the cost), JuMP returns plus 2.16 and plus 0.36, the by-hand values. The lesson for students: say what the objective is, which direction the constraint moves, and the units.
+Both numbers answer the same question, what happens to the objective when the constraint is relaxed by one unit, and they differ in sign only because the two objectives do. By hand we used standard form and maximized minus the cost, so relaxing C2 raises the objective by 2.16. The JuMP model on the previous slide minimizes the cost itself, so relaxing C2 lowers its objective by 2.16, and shadow_price reports minus 2.16. JuMP's rule is that shadow_price is the change in the objective when the constraint is relaxed: never positive for a minimization, never negative for a maximization, however the constraint is written. Given the standard-form model (maximize minus the cost), JuMP returns plus 2.16 and plus 0.36, the by-hand values.
 :::
 
 ## Check It: Re-solve

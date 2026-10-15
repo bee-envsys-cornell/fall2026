@@ -97,7 +97,7 @@ three(x) = @sprintf("%.3f", x)
 
 Scenario trees and dynamic programming made decisions under uncertainty when we could **list the outcomes and their probabilities**.
 
-Today: what if the **objectives compete**, and nobody agrees on the **probabilities**?
+**Raises the question**: what if the **objectives compete**, and nobody agrees on the **probabilities**?
 
 ## Questions?
 
@@ -202,7 +202,7 @@ $$X_{t+1} = X_t + a_t + y_t + \frac{X_t^q}{1 + X_t^q} - bX_t$$
 **Reliability**: share of 1,000 100-year inflow sequences never crossing $X_\text{crit}$.
 
 ::: {.notes}
-This is the lake from weeks 2 and 3: recycling from the sediment feeds back on itself, so above a threshold the lake tips into a eutrophic state and does not come back easily. The town wants to release as much phosphorus as possible (a proxy for economic activity) while keeping the lake clear. The plans here are simple: release one amount for years 1 to 50 and another for years 51 to 100, each from 0 to 0.05 in steps of 0.0025, which gives 441 plans.
+In the shallow lake, recycling from the sediment feeds back on itself, so above a threshold the lake tips into a eutrophic state and does not come back easily. The town wants to release as much phosphorus as possible (a proxy for economic activity) while keeping the lake clear. The plans here are simple: release one amount for years 1 to 50 and another for years 51 to 100, each from 0 to 0.05 in steps of 0.0025, which gives 441 plans.
 :::
 
 ## Release Against Reliability
@@ -381,14 +381,14 @@ Future emissions depend on things that are hard to forecast: **economic output**
 When there is no consensus probability for an uncertainty, it is a **deep uncertainty**.
 
 ::: {.fragment .fade-in}
-Contrast with Nov 16: the farmer's scenarios came **with** probabilities. Here, the probabilities are what we cannot agree on.
+Stochastic programming assumes the scenarios come **with** probabilities. Here, the probabilities are what we cannot agree on.
 :::
 
 ::: {.notes}
 The poll answers were not careless; they come from different, defensible beliefs about the economy and policy. Deep uncertainty is not the same as "very uncertain": it means experts disagree about the distribution itself. For the lake, the recycling exponent and loss rate have been estimated for some lakes but not for this one, and the inflow distribution depends on land use decades from now.
 :::
 
-## What We Don't Know We Don't Know
+## Shallow and Deep Uncertainty
 
 ::: {.quote}
 > It ain't what you don't know that gets you into trouble. It's what you know for sure that just ain't so.
@@ -671,7 +671,7 @@ Same lake, same plan, same method; only the assumed range for q changed. The ran
 #| code-fold: true
 #| output: false
 
-# HW6's stormwater LP: minimum cost against the bioretention site limit
+# The stormwater LP: minimum cost against the bioretention site limit
 function stormwater_cost(site_limit)
     model = Model(HiGHS.Optimizer)
     set_silent(model)
@@ -689,12 +689,12 @@ base_cost, site_price = stormwater_cost(6)
 lease_saving = base_cost - first(stormwater_cost(10))
 ```
 
-A shadow price is a **local, one-at-a-time** sensitivity. In HW6 the site limit was worth \$`{julia} Int(round(-site_price))`k per acre, so four acres "should" save \$`{julia} Int(round(-4 * site_price))`k; they saved \$`{julia} Int(round(lease_saving))`k.
+A shadow price is a **local, one-at-a-time** sensitivity. In the stormwater LP (bioretention and permeable pavement), the site limit was worth \$`{julia} Int(round(-site_price))`k per acre, so four acres "should" save \$`{julia} Int(round(-4 * site_price))`k; they saved \$`{julia} Int(round(lease_saving))`k.
 
 Global, all-at-a-time methods (Morris, Sobol') vary everything over its whole range: see the reading.
 
 ::: {.notes}
-This ties the new idea back to something students computed. A shadow price is a derivative at one point, holding everything else fixed. It was exact for the first two acres and then wrong, because the binding constraints changed. Global methods sample the whole input space and can capture interactions between factors, at the cost of many more model runs. The formal methods, the method of Morris and Sobol' indices, are in the reading: @Reed2022-uc, chapter 3, and @Saltelli2019-sa on how often published sensitivity analyses get this wrong by varying one factor at a time.
+A shadow price is a derivative at one point, holding everything else fixed. It was exact for the first two acres and then wrong, because the binding constraints changed. Global methods sample the whole input space and can capture interactions between factors, at the cost of many more model runs. The formal methods, the method of Morris and Sobol' indices, are in the reading: @Reed2022-uc, chapter 3, and @Saltelli2019-sa on how often published sensitivity analyses get this wrong by varying one factor at a time.
 :::
 
 # Key Takeaways and Upcoming Schedule
@@ -712,7 +712,7 @@ This ties the new idea back to something students computed. A shadow price is a 
 
 **Wednesday**: Limits of Optimization and Course Synthesis.
 
-**Monday, Dec 7**: Quiz 6, then a project session with the TA.
+**Monday, Dec 7**: Quiz 6, then a project session.
 
 ## Assessments
 

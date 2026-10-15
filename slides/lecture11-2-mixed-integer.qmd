@@ -88,14 +88,10 @@ commas(n) = replace(string(Int(round(n))), r"(?<=\d)(?=(\d{3})+$)" => ",")
 
 ## What Our LPs Assumed
 
-- **Divisibility**: any fraction of a decision is allowed (Oct 14).
-- Last week's dispatch assumed every plant was **already on** (Oct 28).
+- **Divisibility**: any fraction of a decision is allowed.
+- Economic dispatch assumed every plant was **already on**.
 
-Today: decisions that are **on or off**.
-
-::: {.notes}
-Quiz 4 takes the first 25 minutes, leaving about 50 for this. Timing: discrete decisions by minute 10 after the quiz, the three-plant example by 24, the LP relaxation by 32, branch and bound by 44, wrap-up by 48. If short, cut in this order: the logical-constraints slide (Homework 7 carries the pattern), the nodes 2 and 3 plots (keep the tree), and the divisibility figure.
-:::
+**Raises the question**: how do we model decisions that are **on or off**?
 
 # Discrete Decisions
 
@@ -108,7 +104,7 @@ Some decisions can't be divided into fractions.
 - How many **trucks**, pumps, or treatment units?
 
 ::: {.notes}
-Economic dispatch took the set of running plants as given. In practice, operators also decide which plants to switch on, and a plant that's on has to produce at least its minimum and costs money just to keep running. Facility siting (next Monday and Lab 3) has the same structure: a site is either built or not.
+Economic dispatch took the set of running plants as given. In practice, operators also decide which plants to switch on, and a plant that's on has to produce at least its minimum and costs money just to keep running. Facility siting has the same structure: a site is either built or not.
 :::
 
 ## Fixed Costs Cause Discontinuities
@@ -192,10 +188,10 @@ $$
 :::
 
 ::: {.notes}
-Board item; the fragment is the answer. The key move is the linking constraint: multiply the capacity by the binary. When u is 0, the plant's output is forced to zero; when u is 1, it can run between its minimum and maximum. The fixed cost is paid only when u is 1. This same pattern (capacity times a binary) is how you'll switch facilities on and off in next Monday's waste networks and in Lab 3.
+Board item; the fragment is the answer. The key move is the linking constraint: multiply the capacity by the binary. When u is 0, the plant's output is forced to zero; when u is 1, it can run between its minimum and maximum. The fixed cost is paid only when u is 1. The same pattern (capacity times a binary) switches facilities on and off in facility siting and network models.
 :::
 
-## In `JuMP`
+## The Three-Plant Model in `JuMP`
 
 ```{julia}
 #| echo: true
@@ -239,10 +235,6 @@ At 150 MW the cheapest plan runs the **`{julia} join(plants[mip_150.on .> 0.5], 
 - $3{,}000 + 20d = 1{,}000 + 30d$: coal wins above **`{julia} (fixed_cost[1] - fixed_cost[2]) ÷ (marginal_cost[2] - marginal_cost[1])` MW**.
 :::
 
-::: {.fragment .fade-in}
-**Fixed costs can overturn the merit order.**
-:::
-
 ::: {.notes}
 Board item; the fragments carry the working. Coal saves 10 dollars per MWh but costs 2,000 dollars an hour more to switch on, so it pays only above 200 MW. Above 250 MW coal is full and something else has to top it up; at 280 MW the MIP picks the CT, not the CCGT, because the CCGT would have to run at least 50 MW and pay its 1,000 dollar fixed cost: another case where the fixed cost, not the marginal cost, decides.
 :::
@@ -260,12 +252,12 @@ Binaries also encode rules between decisions:
 $z$ is binary; $M$ is big enough to switch one off ("big-$M$").
 
 ::: {.notes}
-These are patterns, not results: in this example the at-most-one rule doesn't change the answer at any demand we tried. The either/or (disjunctive) form uses one binary to choose which of two constraints holds; M has to be big enough to make the other constraint non-binding, and no bigger than necessary, because a huge M makes the LP relaxation weak. Homework 7 uses the at-most-one and if-then patterns, each as one linear constraint on the binaries.
+These are patterns, not results: in this example the at-most-one rule doesn't change the answer at any demand we tried. The either/or (disjunctive) form uses one binary to choose which of two constraints holds; M has to be big enough to make the other constraint non-binding, and no bigger than necessary, because a huge M makes the LP relaxation weak.
 :::
 
 # The LP Relaxation
 
-## Relax the Binaries
+## Relaxing the Binary Variables
 
 ```{julia}
 #| echo: true
@@ -326,7 +318,7 @@ The integer points are a **subset** of the LP's region, so the relaxed optimum i
 ::::
 
 ::: {.notes}
-The shaded region is an LP's feasible region; the dots are the integer points inside it. Dropping integrality can only add options, so the relaxed optimum is never worse than the integer optimum. For a minimization (our plants, Lab 3, Homework 7) that makes it a lower bound on cost; for a maximization (the next example) an upper bound. LP corners land on integer points only by luck, which is why we can't just solve the LP and round.
+The shaded region is an LP's feasible region; the dots are the integer points inside it. Dropping integrality can only add options, so the relaxed optimum is never worse than the integer optimum. For a minimization (like our plants) that makes it a lower bound on cost; for a maximization (the next example) an upper bound. LP corners land on integer points only by luck, which is why we can't just solve the LP and round.
 :::
 
 # Branch and Bound
@@ -517,7 +509,7 @@ p_tree
 ```
 
 ::: {.notes}
-Green boxes are integer solutions; grey boxes end a branch. Prune a branch when it is infeasible, when it gives an integer solution (nothing below can do better), or when its bound is worse than the incumbent. Node 6 is the first incumbent; node 8 beats it; node 9's bound is below node 8's value. Nodes 4 through 9 are worked in the appendix, solved by the same function. In the worst case the tree grows exponentially with the number of integer variables, which is why commercial solvers add cutting planes and heuristics (branch and cut). Homework 7 asks you to trace two or three nodes by hand.
+Green boxes are integer solutions; grey boxes end a branch. Prune a branch when it is infeasible, when it gives an integer solution (nothing below can do better), or when its bound is worse than the incumbent. Node 6 is the first incumbent; node 8 beats it; node 9's bound is below node 8's value. Nodes 4 through 9 are worked in the appendix, solved by the same function. In the worst case the tree grows exponentially with the number of integer variables, which is why commercial solvers add cutting planes and heuristics (branch and cut).
 :::
 
 # Key Takeaways and Upcoming Schedule
@@ -526,16 +518,16 @@ Green boxes are integer solutions; grey boxes end a branch. Prune a branch when 
 
 ::: {.incremental}
 - **Binary variables** turn on/off decisions into linear constraints: fixed cost × $u$, output ≤ capacity × $u$.
-- **Fixed costs can overturn the merit order**: at `{julia} demands[1]` MW the CCGT beats cheaper coal.
+- **Fixed costs can overturn the merit order**: a plant with cheaper energy can lose to one that costs less to switch on.
 - The **LP relaxation** bounds the MIP (below for min, above for max), but its "solution" can be meaningless.
 - **Branch and bound** solves relaxations, branches on fractional variables, and prunes.
 :::
 
 ## Next Classes and Assessments
 
-**Monday, November 9**: Solid waste and network models (with a substitute).
+**Monday, November 9**: Solid waste and network models.
 
-**Wednesday, November 11**: Lab 3, fixed costs and facility siting in `JuMP` (with the TA). Bring a laptop.
+**Wednesday, November 11**: Lab 3, fixed costs and facility siting in `JuMP`. Bring a laptop.
 
 **Homework 7**: Assigned today, due Thursday, November 12.
 

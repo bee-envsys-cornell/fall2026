@@ -126,7 +126,7 @@ The plan that was best for the baseline lake was the **least robust** across pla
 :::
 
 ::: {.notes}
-Everything since Oct 14 has relied on writing the objective and constraints down in closed form, with linear or at least convex geometry. That is what buys the guarantees: the corner property, shadow prices, the relaxation bound. The cost is that the problem has to be bent into that shape.
+Everything in the optimization part of the course has relied on writing the objective and constraints down in closed form, with linear or at least convex geometry. That is what buys the guarantees: the corner property, shadow prices, the relaxation bound. The cost is that the problem has to be bent into that shape.
 :::
 
 ## The Lake Problem As a Mathematical Program?
@@ -253,7 +253,7 @@ Each model run of the lake simulation-optimization below is 1,000 hundred-year s
 The search only sees the response surface through model runs, so it can be applied almost anywhere, which is also why it can rarely guarantee anything.
 :::
 
-## The Lake Problem: Setup
+## Lake Problem Settings
 
 ```{julia}
 #| echo: true
@@ -300,11 +300,11 @@ release_bounds[2, :] .= 0.1
 
 - Decisions: a release $a_t \in [0, 0.1]$ for each of $T = 100$ years: **100 variables**.
 - Objective: maximize mean release. Constraint: $\mathbb{P}[X_{T+1} > X_\text{crit}] \leq 0.1$, over 1,000 inflow samples.
-- Model: $q = 2.5$ (recycling exponent), $b = 0.4$ (loss rate), $y_t \sim \text{LogNormal}(\log 0.03,\ 0.5)$, as on Monday.
+- Model: $q = 2.5$ (recycling exponent), $b = 0.4$ (loss rate), $y_t \sim \text{LogNormal}(\log 0.03,\ 0.5)$.
 - Search: differential evolution, 10,000 model evaluations.
 
 ::: {.notes}
-This is the same lake as Monday, with one difference in the constraint: it only looks at whether the lake is above the threshold at the end of the 100 years, which is how the problem is often posed and will matter later. Every candidate plan is scored on the same 1,000 inflow sequences. A second, separate set of 10,000 sequences is held back to check the plans the search returns, which is the out-of-sample idea from Oct 7.
+This is the same lake model, with one difference in the constraint: it only looks at whether the lake is above the threshold at the end of the 100 years, which is how the problem is often posed and will matter later. Every candidate plan is scored on the same 1,000 inflow sequences. A second, separate set of 10,000 sequences is held back to check the plans the search returns, which is the out-of-sample idea from model validation.
 :::
 
 ## A Known-Answer Check
@@ -335,12 +335,8 @@ Ask a question with a **known answer**: *minimize* release, subject to the same 
 
 After 10,000 model runs, the search returns mean releases of `{julia} four(mean(known_answer[1]))` and `{julia} four(mean(known_answer[2]))` (seeds 1 and 2).
 
-::: {.fragment .fade-in}
-**Getting an answer is not evidence that it is the answer.**
-:::
-
 ::: {.notes}
-This is the positive control from Oct 7, moved into optimization. We picked a problem whose answer we know, zero release, and the search did not find it: it stopped at a mean release near 0.037, because 100 decision variables and 10,000 evaluations are not enough for differential evolution to converge. If the code had a sign error and we did not know the answer, this run would have looked entirely plausible. Before trusting a search on the real problem, check it on a problem you can answer.
+This is a positive control, moved into optimization. We picked a problem whose answer we know, zero release, and the search did not find it: it stopped at a mean release near 0.037, because 100 decision variables and 10,000 evaluations are not enough for differential evolution to converge. If the code had a sign error and we did not know the answer, this run would have looked entirely plausible. Before trusting a search on the real problem, check it on a problem you can answer.
 :::
 
 ## Maximizing Release With 100 Variables
@@ -381,7 +377,7 @@ plot!(p_search, size=(1100, 320), legend=:topleft, ylims=(0, 0.1), left_margin=1
 On 10,000 fresh futures the search's plans tip the lake in **`{julia} two(searched_fresh[1])`** and **`{julia} two(searched_fresh[2])`** of them, against a limit of 0.1.
 
 ::: {.notes}
-Now maximizing, as intended. The plans meet the constraint on the 1,000 samples the search saw, but on fresh futures they tip the lake far more often than allowed: the search found plans that happen to squeeze past these particular samples. That is overfitting, the calibration lesson from Oct 7, showing up in optimization. More evaluations would help, but there is no point at which the search can tell you it is done.
+Now maximizing, as intended. The plans meet the constraint on the 1,000 samples the search saw, but on fresh futures they tip the lake far more often than allowed: the search found plans that happen to squeeze past these particular samples. That is overfitting, the calibration problem, showing up in optimization. More evaluations would help, but there is no point at which the search can tell you it is done.
 :::
 
 ## One Decision Variable Instead of 100
@@ -395,7 +391,7 @@ Now maximizing, as intended. The plans meet the constraint on the 1,000 samples 
 The best constant release, a single variable, **meets the limit** on fresh futures; the 100-variable searches do not.
 
 ::: {.notes}
-The constant release was found by bisection: a one-dimensional search we can actually solve. Fewer decision variables means the search can converge, and the result is easier to explain to a lake manager. This is the idea behind decision rules: write the release as a simple function of the lake's state, with a few parameters to search over, instead of 100 free numbers. Dynamic programming on Nov 18 produced exactly that kind of policy.
+The constant release was found by bisection: a one-dimensional search we can actually solve. Fewer decision variables means the search can converge, and the result is easier to explain to a lake manager. This is the idea behind decision rules: write the release as a simple function of the lake's state, with a few parameters to search over, instead of 100 free numbers. Dynamic programming produces exactly that kind of policy.
 :::
 
 ## The Optimizer Exploits the Horizon
@@ -450,7 +446,7 @@ end
 Allow a different release in the last 5 years, and the best plan releases **`{julia} four(early_release)`** for 95 years, then **`{julia} three(late_release)`**.
 
 ::: {.fragment .fade-in}
-The model ends before the lake can respond, so the optimizer **spends** the years it cannot see.
+The model ends before the lake can respond, so the optimizer raises releases in the final years, whose consequences fall outside the model.
 
 The number of samples, the number of evaluations, the horizon and the constraint all shape the "optimum" the search returns.
 :::
@@ -472,7 +468,7 @@ The **optimal solution of a model is not an optimal solution of a problem unless
 :::
 
 ::: {.notes}
-We met this quote on Oct 14, at the start of the optimization half. The lake shows the search side of it: the optimizer exploits gaps between the model and the problem, like the horizon and the particular inflow samples. The next slide shows the other side with a problem we could solve exactly.
+The lake shows the search side of it: the optimizer exploits gaps between the model and the problem, like the horizon and the particular inflow samples. The next slide shows the other side with a problem we could solve exactly.
 :::
 
 ## The Plan by Stability Class
@@ -482,8 +478,8 @@ We met this quote on Oct 14, at the start of the optimization half. The lake sho
 #| code-fold: true
 #| output: false
 
-# Oct 14's two-stack, three-receptor emissions LP, with the plume's stability class varied
-# (dispersion coefficients as in the Oct 5 deck; class F is the Oct 14 model)
+# The two-stack, three-receptor emissions LP, with the plume's stability class varied
+# (Pasquill-Gifford dispersion coefficients; class F is the base case)
 # sigma_y = a x^0.894, sigma_z = c x^d + f (x in km; c, d, f differ below/above 1 km)
 stability_coefs = Dict(
     "B" => (a=156, c_near=106.6, d_near=1.149, f_near=3.3,
@@ -514,7 +510,8 @@ standard = 196
 stack_location = [(0, 0), (1.5, 200)]                # (downwind km, crosswind m)
 receptor_location = [(2.5, 0), (4.5, 120), (4, 250)]
 emission = [50, 40]
-cost = [20, 30]                                   # [$1000/yr per g/s removed]
+# R_1, R_2: the fraction of each stack's SO₂ removed
+cost = [20, 30] .* emission                       # [$1000/yr per unit fraction removed]
 
 # Concentration at each receptor (rows) per g/s emitted from each stack (columns)
 function transmission(coefs)
@@ -532,10 +529,10 @@ end
 function emissions_plan(transmission_matrix)
     model = Model(HiGHS.Optimizer)
     set_silent(model)
-    @variable(model, 0 <= removal[i in 1:2] <= emission[i])
+    @variable(model, 0 <= removal[i in 1:2] <= 1)
     @objective(model, Min, sum(cost[i] * removal[i] for i in 1:2))
     @constraint(model, limit[j in 1:3],
-        sum(transmission_matrix[j, i] * (emission[i] - removal[i]) for i in 1:2) <= standard)
+        sum(transmission_matrix[j, i] * emission[i] * (1 - removal[i]) for i in 1:2) <= standard)
     JuMP.optimize!(model)                         # Metaheuristics also exports optimize!
     return value.(removal), objective_value(model), shadow_price.(limit)
 end
@@ -562,15 +559,15 @@ end
 #| echo: false
 #| output: asis
 
-class_label = Dict("F" => "F, clear (Oct 14)", "D" => "D, overcast", "B" => "B, sunny")
-println("| Stability class | Removals (g/s) | Cost | Binding receptors |")
+class_label = Dict("F" => "F, clear (base case)", "D" => "D, overcast", "B" => "B, sunny")
+println("| Stability class | \$R_1\$, \$R_2\$ | Cost | Binding receptors |")
 println("|:--|:--|--:|:--|")
-# Zero prints as a whole number; everything else to one decimal (g/s) or two ($M/yr)
+# Zero prints as a whole number; removal fractions and $M/yr to two decimals
 function show_removal(removal)
     if abs(removal) < 1e-9
         return "0"
     end
-    return @sprintf("%.1f", removal)
+    return @sprintf("%.2f", removal)
 end
 function show_cost(annual_cost)
     if abs(annual_cost) < 1e-6
@@ -602,7 +599,7 @@ Only the description of the atmosphere changes. The removals, the cost and even 
 function night_check(plan_class, night_class)
     plan_row = findfirst(classes .== plan_class)
     night_transmission = transmission(stability_coefs[night_class])
-    return night_transmission * (emission .- removals[plan_row, :])
+    return night_transmission * (emission .* (1 .- removals[plan_row, :]))
 end
 f_plan_on_d = night_check("F", "D")
 f_plan_on_b = night_check("F", "B")
@@ -625,41 +622,35 @@ println("| D (overcast) | F (clear) | $(show_concentrations(d_plan_on_f)) | ",
     "**$(show_meets_standard(d_plan_on_f))** |")
 ```
 
-::: {.fragment .fade-in}
-***Who chose the stability class, and did they know it chose the plan?***
-
-The plan is only as good as the plume model behind it.
-:::
-
 ::: {.notes}
-The robustness check from Monday, on a problem we solved exactly. The plan designed for the typical overcast night leaves every receptor above the standard on a clear night, while the clear-night plan complies on the other two kinds of night. Designing for the worst case was robust here; designing for the typical case was not. This is HW5's "worst case at each receptor" again, now with a price tag attached. Let the room answer the question before revealing it.
+A robustness check on a problem we solved exactly. The plan designed for the typical overcast night leaves every receptor above the standard on a clear night, while the clear-night plan complies on the other two kinds of night. Designing for the worst case was robust here; designing for the typical case was not. This is the worst case at each receptor again, now with a price tag attached. Let the room answer the question before revealing it.
 :::
 
 # The Whole Arc
 
 ## Describing Systems {.smaller}
 
-| Method (when) | Answers | Characteristic error | Check |
+| Method | Answers | Characteristic error | Check |
 |:--|:--|:--|:--|
-| Forward Euler (Sep 14–16) | DO along a river | $O(\Delta t)$ | Halve the step, the error halves |
-| Monte Carlo (Sep 23–28) | P(exceedance), risk | $O(n^{-1/2})$ | CI half-width; 4× samples halves it |
-| Closed form on a grid (Oct 5) | Where and how large the exceedance is | Grid: the peak is sensitive, the area isn't | Refine for the question asked |
-| Calibration (Oct 7) | Parameter values | Doesn't shrink with effort | Controls, held-out data, face validity |
+| Forward Euler | DO along a river | $O(\Delta t)$ | Halve the step, the error halves |
+| Monte Carlo | P(exceedance), risk | $O(n^{-1/2})$ | CI half-width; 4× samples halves it |
+| Closed form on a grid | Where and how large the exceedance is | Grid: the peak is sensitive, the area isn't | Refine for the question asked |
+| Calibration | Parameter values | Doesn't shrink with effort | Controls, held-out data, face validity |
 
 ::: {.notes}
-Read the error column aloud. Ask: which of these errors shrinks if you spend more computing time? Euler and Monte Carlo do, at known rates; the grid does if you refine for the right question; calibration does not, because more optimization cannot add information the data do not contain.
+Ask: which of these errors shrinks if you spend more computing time? Euler and Monte Carlo do, at known rates; the grid does if you refine for the right question; calibration does not, because more optimization cannot add information the data do not contain.
 :::
 
 ## Prescribing Decisions {.smaller}
 
-| Method (when) | Answers | Characteristic error | Check |
+| Method | Answers | Characteristic error | Check |
 |:--|:--|:--|:--|
-| LP (Oct 14–19) | Least-cost plan | Exact, *given* the model | Shadow prices, valid only locally |
-| MIP (Nov 4) | Discrete choices | Optimality gap | LP relaxation bound |
-| Stochastic programming (Nov 16) | A plan, probabilities known | Which scenarios | VSS and EVPI |
-| Dynamic programming (Nov 18) | A policy over time | End-of-horizon value | Brute force on a small case |
-| Multiple objectives (Nov 30) | Tradeoffs; what matters | No single optimum | The front; vary ranges |
-| Simulation-optimization (today) | Anything we can simulate | Local optima, horizon, samples | Known answers; fresh samples |
+| LP | Least-cost plan | Exact, *given* the model | Shadow prices, valid only locally |
+| MIP | Discrete choices | Optimality gap | LP relaxation bound |
+| Stochastic programming | A plan, probabilities known | Which scenarios | VSS and EVPI |
+| Dynamic programming | A policy over time | End-of-horizon value | Brute force on a small case |
+| Multiple objectives | Tradeoffs; what matters | No single optimum | The front; vary ranges |
+| Simulation-optimization | Anything we can simulate | Local optima, horizon, samples | Known answers; fresh samples |
 
 ::: {.notes}
 The pattern across both tables: every method has an error you can name and a check you can run, and running those checks is part of building the model. Note how the optimization half's errors are mostly not about computation at all: they are about whether the model represents the problem.
@@ -686,7 +677,7 @@ The pattern across both tables: every method has an error you can name and a che
 ::::
 
 ::: {.notes}
-What students can now do, in the course's learning outcomes: build models of environmental systems; simulate their dynamics; analyze risk and vulnerability; determine management strategies with optimization; identify the tradeoffs between competing objectives; and evaluate modeled outcomes against their assumptions and limits. The last one is what Monday's project session asks them to apply to their own projects.
+What students can now do, in the course's learning outcomes: build models of environmental systems; simulate their dynamics; analyze risk and vulnerability; determine management strategies with optimization; identify the tradeoffs between competing objectives; and evaluate modeled outcomes against their assumptions and limits.
 :::
 
 # Key Takeaways and Upcoming Schedule
@@ -702,7 +693,7 @@ What students can now do, in the course's learning outcomes: build models of env
 
 ## Next Classes
 
-**Monday, Dec 7**: Quiz 6, then a project session with the TA (no lecture).
+**Monday, Dec 7**: Quiz 6, then a project session (no lecture).
 
 ## Assessments
 

@@ -120,7 +120,7 @@ Source: [Wikipedia](https://en.wikipedia.org/wiki/Electric_power_transmission)
 :::
 
 ::: {.notes}
-You should be here by minute 4. Walk through the chain: generation, step-up transformers, high-voltage transmission, substations, distribution, customers. Today is about the first box: which plants generate, and how much, to meet the load at each moment.
+Walk through the chain: generation, step-up transformers, high-voltage transmission, substations, distribution, customers. Today is about the first box: which plants generate, and how much, to meet the load at each moment.
 :::
 
 ## Decision Problems for Power Systems
@@ -132,7 +132,7 @@ Adapted from Perez-Arriaga, Ignacio J., Hugh Rudnick, and Michel Rivier (2009)
 :::
 
 ::: {.notes}
-Decisions sit on different time scales: what to build (years; that is Monday's capacity expansion), which plants to commit (a day ahead), and how much each running plant generates (hours to minutes; that is economic dispatch, today). The same LP tools show up at every scale.
+Decisions sit on different time scales: what to build (years: capacity expansion), which plants to commit (a day ahead: unit commitment), and how much each running plant generates (hours to minutes: economic dispatch). The same LP tools show up at every scale.
 :::
 
 ## Electricity Generation by Source
@@ -159,7 +159,7 @@ The US mix: natural gas is the largest source, then nuclear, coal and renewables
 :::
 
 ::: {.notes}
-You should be here by minute 10. Ask the room what the decision variables are before revealing the table. The answer: one generation level per plant. Demand, costs and limits are data. Plants also face engineering constraints we ignored in capacity planning: minimum outputs, ramping limits, and in real systems transmission limits, which we leave out.
+Ask the room what the decision variables are before revealing the table. The answer: one generation level per plant. Demand, costs and limits are data. Plants also face engineering constraints: minimum outputs, ramping limits, and in real systems transmission limits, which we leave out.
 :::
 
 ## Where Variable Costs Come From
@@ -239,7 +239,7 @@ end
 ```
 
 ::: {.notes}
-One nuclear plant, `{julia} count(gens.Resource .== "NG CCGT")` combined-cycle gas plants (CCGT) and `{julia} count(gens.Resource .== "NG CT")` combustion turbines (CT), plus a biomass and a hydro plant. Hydro is cheapest to run because the water is free, and nuclear fuel is cheap, so the nuclear plant comes next. CTs are the most expensive per MWh. The gas plants' costs use the average price U.S. power plants paid for gas in 2022, \$7.21 per million Btu, about twice today's; Monday's lecture starts from the same price and then varies it. The nuclear plant and several gas plants have minimum outputs: once on, they must produce at least that much.
+One nuclear plant, `{julia} count(gens.Resource .== "NG CCGT")` combined-cycle gas plants (CCGT) and `{julia} count(gens.Resource .== "NG CT")` combustion turbines (CT), plus a biomass and a hydro plant. Hydro is cheapest to run because the water is free, and nuclear fuel is cheap, so the nuclear plant comes next. CTs are the most expensive per MWh. The gas plants' costs use the average price U.S. power plants paid for gas in 2022, \$7.21 per million Btu, about twice today's. The nuclear plant and several gas plants have minimum outputs: once on, they must produce at least that much.
 :::
 
 # Single-Period Dispatch
@@ -354,7 +354,7 @@ Generating plants don't lose money when they generate (expensive plants would lo
 
 
 ::: {.notes}
-The model is on the "Single-Period Model" slide: it names the demand constraint `load`, so JuMP can report its shadow price. Say the sign sentence: JuMP reports what relaxing a constraint by one unit does to the cost. For demand, relaxing means serving one less MWh, so the cost falls by \$`{julia} round(Int, price)` and the shadow price is −`{julia} round(Int, price)`. The price of electricity is the size of that number. This is how wholesale markets set prices: the demand constraint's shadow price in the operator's dispatch model.
+The model is on the "Single-Period Model" slide: it names the demand constraint `load`, so JuMP can report its shadow price. JuMP reports what relaxing a constraint by one unit does to the cost. For demand, relaxing means serving one less MWh, so the cost falls by \$`{julia} round(Int, price)` and the shadow price is −`{julia} round(Int, price)`. The price of electricity is the size of that number. This is how wholesale markets set prices: the demand constraint's shadow price in the operator's dispatch model.
 :::
 
 ## What Complicates the Merit Order?
@@ -436,7 +436,7 @@ end
 ::: {.notes}
 These are the hourly limits that planning models use. The nuclear plant can change by `{julia} round(Int, 100 * lowest_share[findfirst(plant_types .== "Nuclear")])`% of its capacity per hour, the CCGTs by `{julia} round(Int, 100 * lowest_share[findfirst(plant_types .== "NG CCGT")])`%, and everything else can cross its whole range within the hour.
 
-Physical ramp rates are faster than these. Gas and coal plants can change by one to several percent of their capacity per minute, so a single running unit can usually cross its operating range within an hour. What limits steam plants over hours is their minimum output and the hours they take to start up, which need on/off decisions (next Wednesday). Nuclear plants are usually run at constant output.
+Physical ramp rates are faster than these. Gas and coal plants can change by one to several percent of their capacity per minute, so a single running unit can usually cross its operating range within an hour. What limits steam plants over hours is their minimum output and the hours they take to start up, which need on/off decisions. Nuclear plants are usually run at constant output.
 
 The clearest real case of an hourly ramp limit is hydropower below a dam with flow-change rules. At Glen Canyon Dam, releases may rise by at most 4,000 cubic feet per second in an hour and fall by at most 1,500, against a maximum of 25,000, to protect the river downstream.
 :::
