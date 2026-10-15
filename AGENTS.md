@@ -88,6 +88,32 @@ rounding, the form of the constraint). Deliberately open questions are fine in m
 recommendations, what information would change the answer. When a new kind of problem appears, extend the
 "What this looks like" lists on the rubric page rather than writing a per-assignment rubric.
 
+## Releasing keys
+
+From HW5 and Lab 2 on, keys are never committed here. They live in the private
+`bee-envsys-cornell/hw-solutions` (`Fall26`, local `~/Teaching/BEE4750/hw-solutions`), one folder per
+key with its frozen results (`_freeze/`). The deploy workflow runs `scripts/release-keys.sh`, which
+copies every key whose time in `data/key-releases.csv` (US Eastern) has passed into
+`solutions/<folder>/`, renders the page with `quarto render … --use-freezer` (no Julia), and deploys.
+The vault note **Key Release Workflow** is the instructor's checklist; the points for agents:
+
+- **A key's time is in two places**: its row in `data/key-releases.csv` and the `data-release` on its
+  link in `hw/index.qmd` or `labs/index.qmd` (`_assets/release-gate.html` keeps the icon plain until
+  then). Change both together.
+- **A key must be rendered from the top of `hw-solutions`** (`quarto render hw06/hw06.qmd`), and its
+  `_freeze/<folder>/` committed. The script refuses a key whose `.qmd` changed after its last render
+  (the frozen results record the source's hash). `hw-solutions` must not sit under a hidden folder:
+  Quarto then ignores its `_quarto.yml` and writes no `_freeze/`.
+- **Never commit a key here.** `.gitignore` covers `solutions/*` except HW1–4 and Lab 1, which were
+  released the old way and stay.
+- **Rehearse without publishing:** `scripts/release-keys.sh --keys ~/Teaching/BEE4750/hw-solutions
+  --now "2026-10-30 21:00" --serve` builds a temporary copy and serves it at localhost:4400; Run
+  workflow with a `now` input renders in CI without deploying. `--deploy` with `--now` is refused.
+- **Secrets** on this repo: `HW_SOLUTIONS_DEPLOY_KEY` (read-only deploy key on `hw-solutions`),
+  `CLOUDFLARE_API_TOKEN` (Pages: Edit, expires 2027-06-01), `CLOUDFLARE_ACCOUNT_ID`.
+- **Schedule:** cron 01:20 and 02:20 UTC, so 9:20 pm Eastern in either daylight or standard time;
+  a scheduled run deploys only if a key came due in the last 25 hours.
+
 ## Two GitHub organizations
 
 Remotes point at either `BEE4750/…` or `bee-envsys-cornell/…`, apparently from an organization
@@ -103,10 +129,15 @@ rename, so both resolve. The consequence to watch: the submodule `hw/hw01` is co
 - **Julia version is inconsistent.** `_quarto.yml` sets `exeflags: ["+1.12"]`, but individual decks
   and assignments set `["+1.11.5"]` in their own front matter, which wins. Match the file you are
   editing rather than the project default.
-- **No** Makefile, CI workflows, linters, type checkers, or test framework.
-- **Deploy:** Cloudflare Pages (project `envsys-fa26`) builds from this repository on every push to
-  `main` and serves the committed `_site/`. The `gh-pages` branch and its stale GitHub Pages site
-  were deleted on 2026-10-15 (a bundle of the branch is in `~/Teaching/BEE4750/archive/`).
+- **No** Makefile, linters, type checkers, or test framework. The one CI workflow is the deploy
+  (below).
+- **Deploy:** `.github/workflows/deploy.yml` uploads the committed `_site/` to Cloudflare Pages
+  (project `envsys-fa26-du`, direct upload) on every push to `main` and nightly, adding the keys
+  whose time has passed; see "Releasing keys". The public path `envsys.viveks.me/fall2026` is the
+  Worker `envsys-fa26-proxy`, which fetches `envsys-fa26-du.pages.dev`. The old Git-built project
+  `envsys-fa26` (subdomain `envsys-fa26.viveks.me`) no longer deploys, since 2026-10-15. The
+  `gh-pages` branch and its stale GitHub Pages site were deleted that day (a bundle of the branch is
+  in `~/Teaching/BEE4750/archive/`).
 - Solver: **HiGHS** is the only one used anywhere in the course.
 
 ## Julia environments (multi-environment)
