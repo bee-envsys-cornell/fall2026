@@ -345,3 +345,25 @@ _site/agenda.html
 
 # Hand-off snapshots of decks, for diffing against the delivered versions
 slides/.handoff/
+
+# Keys from HW5 and Lab 2 on are released by scripts/release-keys.sh at deploy time, from the
+# private hw-solutions repository. They are never committed here (see the Key Release Workflow
+# note). HW1-4 and Lab 1 were committed before that and stay.
+/solutions/*
+!/solutions/hw01/
+!/solutions/hw02/
+!/solutions/hw03/
+!/solutions/hw04/
+!/solutions/lab01/
+/_freeze/solutions/*
+!/_freeze/solutions/hw01/
+!/_freeze/solutions/hw02/
+!/_freeze/solutions/hw03/
+!/_freeze/solutions/hw04/
+!/_freeze/solutions/lab01/
+/_site/solutions/*
+!/_site/solutions/hw01/
+!/_site/solutions/hw02/
+!/_site/solutions/hw03/
+!/_site/solutions/hw04/
+!/_site/solutions/lab01/

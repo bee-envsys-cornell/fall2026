@@ -201,6 +201,7 @@ format:
     code-annotations: select
     html-math-method: mathjax
     include-in-header: mathjax-config.html
+    include-after-body: _assets/release-gate.html
     footnotes-hover: false
     default-image-extension: png
   typst:

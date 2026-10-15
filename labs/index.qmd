@@ -23,8 +23,8 @@ Labs are graded on a scale of 0-2 on the basis of effort towards demonstrated wo
 | Lab | Instructions | Solutions | Due Date | 
 |:----------:|:------:|:------:|:------------:|
 | Lab 1: Discretization and Convergence (Sep. 21) | [{{< fa sharp pen-field >}}](lab01/lab01.qmd) |  [{{< fa sharp key-skeleton  >}}](../solutions/lab01/lab01.qmd) | Sep. 21, 2026 |
-| Lab 2: Linear Programming with JuMP (Oct. 26) | {{< fa sharp pen-field >}} | {{< fa sharp key-skeleton >}} | Oct. 27, 2026 |
-| Lab 3: Fixed Costs and Facility Siting (Nov. 11) | {{< fa sharp pen-field >}} | {{< fa sharp key-skeleton >}} | Nov. 12, 2026 |
-| Lab 4: Scenario Trees and Sequential Decisions (Nov. 23) | {{< fa sharp pen-field >}} | {{< fa sharp key-skeleton >}} | Nov. 24, 2026 |
+| Lab 2: Linear Programming with JuMP (Oct. 26) | {{< fa sharp pen-field >}} | [{{< fa sharp key-skeleton >}}](../solutions/lab02/lab02.html){.key-link data-release="2026-10-28T21:00"} | Oct. 27, 2026 |
+| Lab 3: Fixed Costs and Facility Siting (Nov. 11) | {{< fa sharp pen-field >}} | [{{< fa sharp key-skeleton >}}](../solutions/lab03/lab03.html){.key-link data-release="2026-11-13T21:00"} | Nov. 12, 2026 |
+| Lab 4: Scenario Trees and Sequential Decisions (Nov. 23) | {{< fa sharp pen-field >}} | [{{< fa sharp key-skeleton >}}](../solutions/lab04/lab04.html){.key-link data-release="2026-11-25T21:00"} | Nov. 24, 2026 |
 
 Instructions and solutions are linked as each lab is released.

@@ -392,37 +392,37 @@ window.MathJax = {
 <tr class="even">
 <td style="text-align: center;">Homework 4</td>
 <td style="text-align: center;"><a href="../hw/hw04/hw04.html"><i class="fa-sharp fa-pen-field" aria-label="pen-field"></i></a></td>
-<td style="text-align: center;"><i class="fa-sharp fa-key-skeleton" aria-label="key-skeleton"></i>(../solutions/hw04/hw04.qmd)</td>
+<td style="text-align: center;"><a href="../solutions/hw04/hw04.html"><i class="fa-sharp fa-key-skeleton" aria-label="key-skeleton"></i></a></td>
 <td style="text-align: center;">Oct.&nbsp;08</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">Homework 5</td>
-<td style="text-align: center;"><i class="fa-sharp fa-pen-field" aria-label="pen-field"></i>(hw05/hw05.qmd)</td>
-<td style="text-align: center;"><p><i class="fa-sharp fa-key-skeleton" aria-label="key-skeleton"></i></p></td>
+<td style="text-align: center;"><a href="../hw/hw05/hw05.html"><i class="fa-sharp fa-pen-field" aria-label="pen-field"></i></a></td>
+<td style="text-align: center;"><a href="../solutions/hw05/hw05.html" class="key-link" data-release="2026-10-23T21:00"><i class="fa-sharp fa-key-skeleton" aria-label="key-skeleton"></i></a></td>
 <td style="text-align: center;">Oct.&nbsp;22</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">Homework 6</td>
 <td style="text-align: center;"><p><i class="fa-sharp fa-pen-field" aria-label="pen-field"></i></p></td>
-<td style="text-align: center;"><p><i class="fa-sharp fa-key-skeleton" aria-label="key-skeleton"></i></p></td>
+<td style="text-align: center;"><a href="../solutions/hw06/hw06.html" class="key-link" data-release="2026-10-30T21:00"><i class="fa-sharp fa-key-skeleton" aria-label="key-skeleton"></i></a></td>
 <td style="text-align: center;">Oct.&nbsp;29</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">Homework 7</td>
 <td style="text-align: center;"><p><i class="fa-sharp fa-pen-field" aria-label="pen-field"></i></p></td>
-<td style="text-align: center;"><p><i class="fa-sharp fa-key-skeleton" aria-label="key-skeleton"></i></p></td>
+<td style="text-align: center;"><a href="../solutions/hw07/hw07.html" class="key-link" data-release="2026-11-13T21:00"><i class="fa-sharp fa-key-skeleton" aria-label="key-skeleton"></i></a></td>
 <td style="text-align: center;">Nov.&nbsp;12</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">Homework 8</td>
 <td style="text-align: center;"><p><i class="fa-sharp fa-pen-field" aria-label="pen-field"></i></p></td>
-<td style="text-align: center;"><p><i class="fa-sharp fa-key-skeleton" aria-label="key-skeleton"></i></p></td>
+<td style="text-align: center;"><a href="../solutions/hw08/hw08.html" class="key-link" data-release="2026-11-20T21:00"><i class="fa-sharp fa-key-skeleton" aria-label="key-skeleton"></i></a></td>
 <td style="text-align: center;">Nov.&nbsp;19</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">Homework 9</td>
 <td style="text-align: center;"><p><i class="fa-sharp fa-pen-field" aria-label="pen-field"></i></p></td>
-<td style="text-align: center;"><p><i class="fa-sharp fa-key-skeleton" aria-label="key-skeleton"></i></p></td>
+<td style="text-align: center;"><a href="../solutions/hw09/hw09.html" class="key-link" data-release="2026-12-04T21:00"><i class="fa-sharp fa-key-skeleton" aria-label="key-skeleton"></i></a></td>
 <td style="text-align: center;">Dec.&nbsp;03</td>
 </tr>
 </tbody>
@@ -433,6 +433,30 @@ window.MathJax = {
 </section>
 
 </main> <!-- /main -->
+<script>
+// Key links carry data-release="YYYY-MM-DDTHH:MM", a US Eastern wall time. Until it passes, the
+// link is shown as its plain icon with no target. The key itself is not deployed until then
+// either (scripts/release-keys.sh). Add ?release-now=YYYY-MM-DDTHH:MM to a page URL to check
+// how it will look at another time.
+(function () {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+  }).formatToParts(new Date());
+  const part = (type) => parts.find((p) => p.type === type).value;
+  const now = new URLSearchParams(window.location.search).get("release-now") ||
+    `${part("year")}-${part("month")}-${part("day")}T${part("hour")}:${part("minute")}`;
+  document.querySelectorAll("a.key-link[data-release]").forEach((link) => {
+    if (link.dataset.release > now) {
+      const icon = document.createElement("span");
+      icon.className = "key-pending";
+      icon.innerHTML = link.innerHTML;
+      icon.title = `Posted ${link.dataset.release.replace("T", " ")} ET`;
+      link.replaceWith(icon);
+    }
+  });
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

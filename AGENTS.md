@@ -10,7 +10,8 @@ separate repository checked out as a sibling under `~/Teaching/BEE4750/`:
 | `fall2026/` | This repo — site, slides, tutorials |
 | `labs/lab01`–`lab03` | Lab repos, one each |
 | `hw/hw01`–`hw05` | Homework repos, one each |
-| `hw/solutions/hw01`–`hw05` | Solution repos, named `hwXX-solution` |
+| `hw/solutions/hw01`–`hw04` | Solution repos for the keys already released, named `hwXX-solution` |
+| `hw-solutions/` | **Private keys repo** for HW5–9 and Labs 2–4 (`bee-envsys-cornell/hw-solutions`, `Fall26`), published at each key's release time |
 | `exams/midterm1`, `midterm2` | Prelim repos |
 | `quizzes/quiz01` | Quiz repos |
 | `website/` | **Fall 2025 offering** (prior year, full site) |
@@ -45,6 +46,12 @@ and `quizzes/quiz01` are on `Fall26`; `labs/lab02`–`lab03`, `hw/hw04`–`hw05`
 assignment folders `hw/hw06`–`hw09`, their solutions, `labs/solutions/lab04` and
 `quizzes/quiz05`–`quiz06` are local repos initialised on `Fall26` with no commits and no remote yet,
 like `mini-project/mp02`.
+*Updated Oct 15:* the HW5–9 and Lab 2–4 keys moved into one private repository,
+`bee-envsys-cornell/hw-solutions` (`Fall26`; local clone `~/Teaching/BEE4750/hw-solutions`, folders
+`hw05`–`hw09`, `lab02`–`lab04`), which the site publishes at each key's release time (see
+"Releasing keys"). The old folders are in `~/Teaching/BEE4750/archive/2026-10-15-key-folders/`, and
+`hw05-solution`, `lab02-solution` and `lab03-solution` are archived on GitHub. HW1–4 and Lab 1 keys
+stay in `hw/solutions` and `labs/solutions` and in this site's `solutions/`.
 
 ## Homework format
 
@@ -68,7 +75,8 @@ a subproblem are still fine for cases or data (five points to test, two rules, t
 get their own subproblem). Qualifiers such as "with units" or "as a table" are not asks, and one table of
 per-case values counts as one. Splitting keeps each problem's total and the 50-point total; renumber the
 key's `###` headings to match and update every "Problem N.M" cross-reference in the prompt, key and
-README. HW6–HW9 were drafted (Oct 8–10) before this rule and have not been restructured yet.
+README. HW6–HW9, drafted on Oct 8–10 before this rule, were restructured to it on Oct 15. The earlier versions are in
+`hw/.drafts/2026-10-15-hw06-09/`.
 
 **Homework keys carry no rubric notes** (decided Oct 9; mini-project and quiz keys keep their grading notes). Grading follows the public standard rubrics in
 `policies/rubric.qmd` (Formulation, Solution, Analysis and Interpretation, Figures), so a key gives the
@@ -96,7 +104,9 @@ rename, so both resolve. The consequence to watch: the submodule `hw/hw01` is co
   and assignments set `["+1.11.5"]` in their own front matter, which wins. Match the file you are
   editing rather than the project default.
 - **No** Makefile, CI workflows, linters, type checkers, or test framework.
-- **gh-pages** branch exists for deployment; no deploy automation in this repo.
+- **Deploy:** Cloudflare Pages (project `envsys-fa26`) builds from this repository on every push to
+  `main` and serves the committed `_site/`. The `gh-pages` branch and its stale GitHub Pages site
+  were deleted on 2026-10-15 (a bundle of the branch is in `~/Teaching/BEE4750/archive/`).
 - Solver: **HiGHS** is the only one used anywhere in the course.
 
 ## Julia environments (multi-environment)
@@ -287,4 +297,4 @@ Prose and table numbers are unaffected.
 
 - `main` — current development (Fall 2026)
 - `Fall25` — previous year (origin only, not merged)
-- `gh-pages` — built site deployment
+- `gh-pages` — deleted 2026-10-15; it served a June 2025 build on GitHub Pages

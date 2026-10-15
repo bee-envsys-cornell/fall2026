@@ -1,0 +1,66 @@
+# Deploys the committed _site to Cloudflare Pages, adding every homework and lab key whose release
+# time has passed (scripts/release-keys.sh). Keys come from the private hw-solutions repository and
+# are never committed here. See the "Key Release Workflow" note in the course vault.
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # 9:20 pm US Eastern: the first line during daylight time (UTC-4), the second during standard
+    # time (UTC-5). The off-season run finds nothing new and does nothing.
+    - cron: "20 1 * * *"
+    - cron: "20 2 * * *"
+  workflow_dispatch:
+    inputs:
+      now:
+        description: >-
+          Rehearse as if it were this US Eastern time (YYYY-MM-DD HH:MM): render every key due by
+          then and report, without deploying anything. Leave empty for a normal deploy.
+        required: false
+        default: ""
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+
+      - name: Check out hw-solutions
+        uses: actions/checkout@v4
+        with:
+          repository: bee-envsys-cornell/hw-solutions
+          ref: Fall26
+          ssh-key: ${{ secrets.HW_SOLUTIONS_DEPLOY_KEY }}
+          path: .hw-solutions
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.10.3
+
+      - name: Release keys and deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          REHEARSE_AT: ${{ inputs.now }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          args=(--keys .hw-solutions --in-place)
+          if [ -n "${REHEARSE_AT:-}" ]; then
+            args+=(--now "$REHEARSE_AT")      # rehearsal: render only, deploy nothing
+          else
+            args+=(--deploy)
+          fi
+          if [ "$EVENT" = schedule ]; then
+            args+=(--only-if-new)
+          fi
+          scripts/release-keys.sh "${args[@]}"
