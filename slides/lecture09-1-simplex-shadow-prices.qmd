@@ -199,26 +199,61 @@ About 2 minutes. A group without its LLM proposals can make them in class from t
 #| code-fold: true
 
 line_style = [:solid, :dash, :dashdot]
-function draw_region()
+
+# A constraint as an equation for a plot label: 450 R_1 + 460 R_2 ≥ 714 (C2)
+function constraint_label(j)
+    a1, a2, rhs = boundaries[j]
+    lhs = abs(a2) < 1e-3 ? "$(Int(round(a1)))R_1" : "$(Int(round(a1)))R_1 + $(Int(round(a2)))R_2"
+    return latexstring("$(lhs) \\geq $(Int(round(rhs)))\\;\\; (\\mathrm{C$(j)})")
+end
+
+# The angle (degrees) at which a line of the given slope is drawn, so a label can follow it
+function drawn_angle(slope, xlims, ylims, size)
+    plot_width, plot_height = size[1] - 110, size[2] - 105     # less the margins and tick labels
+    return atan(slope * (plot_height / (ylims[2] - ylims[1])) / (plot_width / (xlims[2] - xlims[1]))) * 180 / π
+end
+
+# The feasible region and its constraint lines, each labelled C1, C2 or C3. With equations=true
+# (the simplex walkthrough), each line is labelled with its equation instead, on its infeasible side.
+function draw_region(; equations=false, xlims=(0.5, 1.04), ylims=(0.375, 1.05), size=(1200, 450))
     p = plot(Shape(first.(corners), last.(corners)), color=cb_blue, alpha=0.25,
-        linewidth=0, xlims=(0.5, 1.04), ylims=(0.375, 1.05), xlabel=L"R_1",
-        ylabel=L"R_2")
+        linewidth=0, xlims=xlims, ylims=ylims, xlabel=L"R_1", ylabel=L"R_2", size=size)
     for j in 1:n_receptors
         a1, a2, rhs = boundaries[j]
-        # Label each line at a point where it is inside the axes
         if abs(a2) < 1e-3
             vline!(p, [rhs / a1], color=:gray30, linestyle=line_style[j], linewidth=2.5)
-            label_at = (rhs / a1 - 0.028, 0.425)
         else
-            r1 = 0.5:0.01:1.04
+            r1 = xlims[1]:0.005:xlims[2]
             plot!(p, r1, (rhs .- a1 .* r1) ./ a2, color=:gray30, linestyle=line_style[j],
                 linewidth=2.5)
-            r1_at_09 = (rhs - a2 * 0.9) / a1
-            label_at = 0.54 <= r1_at_09 <= 0.96 ? (r1_at_09 + 0.048, 0.915) : (0.54, (rhs - a1 * 0.54) / a2 + 0.065)
         end
-        annotate!(p, label_at..., text("C$(j)", 20, :gray20, plot_font))
+        if !equations
+            # Label each line at a point where it is inside the axes
+            if abs(a2) < 1e-3
+                label_at = (rhs / a1 - 0.028, 0.425)
+            else
+                r1_at_09 = (rhs - a2 * 0.9) / a1
+                label_at = 0.54 <= r1_at_09 <= 0.96 ? (r1_at_09 + 0.048, 0.915) : (0.54, (rhs - a1 * 0.54) / a2 + 0.065)
+            end
+            annotate!(p, label_at..., text("C$(j)", 20, :gray20, plot_font))
+        end
     end
     plot!(p, [0, 1, 1], [1, 1, 0], color=:black, linewidth=2)
+    if equations
+        # C1 is vertical: label it above the top bound, just right of the line
+        r1_C1 = boundaries[1][3] / boundaries[1][1]
+        annotate!(p, r1_C1 + 0.008, 1.03, text(constraint_label(1), 12, :left, :gray10))
+        # C2 and C3 slope down: label each just below its line, in the space left of C1
+        for (j, shift) in ((2, -0.012), (3, 0))
+            a1, a2, rhs = boundaries[j]
+            label_r1 = (xlims[1] + r1_C1) / 2 + shift
+            annotate!(p, label_r1, (rhs - a1 * label_r1) / a2 - 0.022,
+                text(constraint_label(j), 12, :gray10; rotation=drawn_angle(-a1 / a2, xlims, ylims, size)))
+        end
+        # The bounds
+        annotate!(p, 1.012, 1.035, text(L"R_2 \leq 1", 12, :left, :gray10))
+        annotate!(p, 1.02, (ylims[1] + 0.95) / 2, text(L"R_1 \leq 1", 12, :gray10; rotation=90))
+    end
     return p
 end
 
@@ -245,8 +280,8 @@ For simple LPs, we can just list the corners and evaluate the objective at each.
 The **simplex method** [@Dantzig1963-li] is the core algorithm for solving LPs (assuming the problem is minimization):
 
 1. Start at any corner. Look along each edge neighboring it.
-2. If the objective decreases, move its other corner.
-3. Stop when the objective increases across every  edge.
+2. If the objective decreases, move to its other corner.
+3. Stop when the objective increases across every edge.
 :::
 
 ## The Objective Along an Edge
@@ -261,6 +296,42 @@ Along an edge, the objective **decreases** if this is negative and **increases**
 
 ::: {.notes}
 This is what "look along each edge" means in practice. The objective is linear, so its gradient is the same everywhere and the test needs only the edge's direction, never the cost at the far corner. Take d per unit of removal fraction given up at one stack: (-1, 0) along the top edge, (0, -1) down the right edge. Along a receptor's constraint, removal given up at stack 1 has to be made up at stack 2, so d has a positive second entry. In a tableau these numbers are the reduced costs.
+:::
+
+## Reminder: Problem Formulation
+
+```{julia}
+#| echo: false
+#| output: asis
+
+coef(x) = Int(round(x))
+println("\$\$\\begin{alignedat}{3}")
+println("& \\min_{R_1, R_2} &\\quad 1000 R_1 + 1200 R_2 & \\\\")
+println("& \\text{subject to:} & $(coef(from_stack[1, 1])) R_1 &\\geq $(Int(round(required[1]))) & \\quad \\text{(C1)} \\\\")
+println("& & $(coef(from_stack[2, 1])) R_1 + $(coef(from_stack[2, 2])) R_2 &\\geq $(Int(round(required[2]))) & \\quad \\text{(C2)} \\\\")
+println("& & $(coef(from_stack[3, 1])) R_1 + $(coef(from_stack[3, 2])) R_2 &\\geq $(Int(round(required[3]))) & \\quad \\text{(C3)} \\\\")
+println("& & 0 \\leq R_1 \\leq 1, \\quad 0 \\leq R_2 &\\leq 1 &")
+println("\\end{alignedat}\$\$")
+```
+
+## Constraint Gradients
+
+Along an edge on a constraint's line, the constraint stays met. For C3, $75R_1 + 568R_2 = 447$, so the changes $\mathbf{d} = (d_1, d_2)$ satisfy
+$$75\,d_1 + 568\,d_2 = 0.$$
+
+```{julia}
+#| echo: false
+#| output: asis
+
+# Removal given up at stack 1 (d_1 = -1) has to be made up at stack 2 to stay on C3
+a1_C3, a2_C3 = Int(round(from_stack[3, 1])), Int(round(from_stack[3, 2]))
+@assert (a1_C3, a2_C3) == (75, 568) && Int(round(required[3])) == 447   # the numbers typed above
+println("Removal given up at stack 1, \$d_1 = -1\$, has to be made up at stack 2:")
+println("\$\$d_2 = \\tfrac{$(a1_C3)}{$(a2_C3)} \\approx $(round(a1_C3 / a2_C3; digits=3)), \\qquad \\mathbf{d} = (-1, $(round(a1_C3 / a2_C3; digits=3))).\$\$")
+```
+
+::: {.notes}
+Staying on a binding constraint means its left-hand side does not change, so the changes in the two removals have to cancel in it. Giving up one unit of removal fraction at stack 1 lowers C3's left-hand side by 75; stack 2 has to raise it back with 568 d_2, so d_2 = 75/568. Stack 1 contributes little at receptor C and stack 2 a lot, so only 0.132 of stack 2's removal makes up for each unit of stack 1's. The same reasoning along C2 gives d = (-1, 450/460) = (-1, 0.978): there the two stacks contribute about equally. Along a bound only one removal changes: (-1, 0) along the top edge, (0, -1) down the right edge.
 :::
 
 ## Step 1: Start at a Corner
@@ -307,9 +378,12 @@ while true
 end
 path = path[1:n_steps]
 
+# The walkthrough's view: zoomed to the feasible region, each line labelled with its equation
+walk_view = (; equations=true, xlims=(0.52, 1.09), ylims=(0.6, 1.07), size=(620, 450))
+
 # Draw the walk after `step` moves, with the costs of the corners in view
 function draw_walk(step)
-    p = draw_region()
+    p = draw_region(; walk_view...)
     scatter!(p, first.(corners), last.(corners), color=:gray60, markersize=7,
         markerstrokecolor=:gray30)
     visited = path[1:(step + 1)]
@@ -325,8 +399,9 @@ function draw_walk(step)
     end
     scatter!(p, [corners[here][1]], [corners[here][2]], color=cb_vermillion,
         markersize=12, markerstrokecolor=:black)
-    annotate!(p, 0.512, 0.525, text("costs in \$1000/yr", 14, :left, :black, plot_font))
-    plot!(p, size=(580, 450), left_margin=5mm, bottom_margin=5mm)
+    annotate!(p, walk_view.xlims[1] + 0.01, walk_view.ylims[1] + 0.015,
+        text("costs in \$1000/yr", 14, :left, :black, plot_font))
+    plot!(p, left_margin=5mm, bottom_margin=5mm)
     return p
 end
 
@@ -385,10 +460,12 @@ draw_walk(1)
 #| echo: false
 #| output: asis
 
-# Edges leaving the second corner: back up the bound, and along C3
+# Edges leaving the second corner: back up the bound, and along C3 (the direction from the
+# previous slide, d_2 = 75 / 568)
 along_C3 = edge_direction(path[2], path[3])
+@assert abs(along_C3[2] - a1_C3 / a2_C3) < 1e-9 && along_C3[1] == -1
 println("- Back up: \$\\nabla f \\cdot (0, 1) = ", signed_text(edge_rate(path[2], path[1])), "\$")
-println("- Along C3: \$\\nabla f \\cdot (-1, ", round(along_C3[2]; digits=3), ") = ",
+println("- Along C3: \$\\nabla f \\cdot (-1, \\tfrac{$(a1_C3)}{$(a2_C3)}) = ",
     signed_text(edge_rate(path[2], path[3])), "\$\n")
 ```
 :::
@@ -413,12 +490,14 @@ draw_walk(2)
 #| echo: false
 #| output: asis
 
-# Edges leaving the third corner: back along C3, and along C2
+# Edges leaving the third corner: back along C3, and along C2 (d_2 = 450 / 460, by the same rule)
+a1_C2, a2_C2 = Int(round(from_stack[2, 1])), Int(round(from_stack[2, 2]))
 next_corner = other_neighbour(path[3], path[2])
 along_C2 = edge_direction(path[3], next_corner)
-println("- Back along C3: \$\\nabla f \\cdot (1, -", round(along_C3[2]; digits=3), ") = ",
+@assert abs(along_C2[2] - a1_C2 / a2_C2) < 1e-9 && along_C2[1] == -1
+println("- Back along C3: \$\\nabla f \\cdot (1, -\\tfrac{$(a1_C3)}{$(a2_C3)}) = ",
     signed_text(edge_rate(path[3], path[2])), "\$")
-println("- Along C2: \$\\nabla f \\cdot (-1, ", round(along_C2[2]; digits=3), ") = ",
+println("- Along C2: \$\\nabla f \\cdot (-1, \\tfrac{$(a1_C2)}{$(a2_C2)}) = ",
     signed_text(edge_rate(path[3], next_corner)), "\$\n")
 ```
 :::
@@ -459,6 +538,65 @@ The **marginal cost** of a constraint is the amount by which the solution would 
 This is also referred to as the **shadow price** (these are also called the *dual variables* of the constraint).
 
 Non-zero shadow prices tell us that the constraint is binding, and their values rank which constraints are most influential.
+
+## Reminder: Lagrange Multipliers
+
+:::: {.columns}
+::: {.column width=45%}
+```{julia}
+#| echo: true
+#| code-fold: true
+
+# Maximize f(x) = x_1 + 2 x_2 on the circle g(x) = x_1^2 + x_2^2 = 5
+θ = range(0, π / 2; length=200)
+lagrange_plot = plot(sqrt(5) .* cos.(θ), sqrt(5) .* sin.(θ), color=:black, linewidth=3,
+    xlims=(0, 3.2), ylims=(0, 3.2), aspect_ratio=:equal, xlabel=L"x_1", ylabel=L"x_2",
+    size=(500, 470))
+# Level lines of f, x_2 = (c - x_1) / 2: the one through each marked point
+for (c, style) in ((4, :dash), (5, :solid))
+    plot!(lagrange_plot, [0, 3.2], [c / 2, (c - 3.2) / 2], color=:gray55, linestyle=style, linewidth=2)
+end
+annotate!(lagrange_plot, 0.08, 2.66, text(L"f = 5", 13, :left, :gray35))
+annotate!(lagrange_plot, 3.15, 0.66, text(L"f = 4", 13, :right, :gray35))
+# Gradients at two points on the circle, drawn at the same scale: parallel at the optimum
+# (1, 2), not at (2, 1)
+arrow_scale = 0.25
+for point in ([1, 2], [2, 1])
+    gradient_f = [1, 2]
+    gradient_g = 2 .* point
+    plot!(lagrange_plot, [point[1], point[1] + arrow_scale * gradient_g[1]],
+        [point[2], point[2] + arrow_scale * gradient_g[2]], color=cb_blue, linewidth=3, arrow=true)
+    plot!(lagrange_plot, [point[1], point[1] + arrow_scale * gradient_f[1]],
+        [point[2], point[2] + arrow_scale * gradient_f[2]], color=cb_vermillion, linewidth=4, arrow=true)
+    scatter!(lagrange_plot, [point[1]], [point[2]], color=:black, markersize=6)
+end
+annotate!(lagrange_plot, 1.12, 2.55, text(L"\nabla f", 15, cb_vermillion, :right))
+annotate!(lagrange_plot, 1.37, 3.05, text(L"\nabla g", 15, cb_blue, :right))
+annotate!(lagrange_plot, 2.32, 1.52, text(L"\nabla f", 15, cb_vermillion, :left))
+annotate!(lagrange_plot, 3.0, 1.68, text(L"\nabla g", 15, cb_blue))
+annotate!(lagrange_plot, 0.93, 1.86, text(L"\mathbf{x}^*", 15, :black, :right))
+annotate!(lagrange_plot, 0.3, 0.25, text(L"g(\mathbf{x}) = 5", 14, :left, :black))
+lagrange_plot
+```
+:::
+::: {.column width=55%}
+For $\max f(\mathbf{x})$ subject to $g(\mathbf{x}) = b$, the Lagrangian is
+$$\mathcal{L} = f(\mathbf{x}) - \lambda \left(g(\mathbf{x}) - b\right).$$
+
+At an optimum $\mathbf{x}^*$, $\nabla_{\mathbf{x}} \mathcal{L} = 0$:
+$$\nabla f(\mathbf{x}^*) = \lambda \nabla g(\mathbf{x}^*)$$
+
+The gradients are **parallel**, and $\lambda$ scales $\nabla g$ to $\nabla f$. Where they are not parallel, moving along the constraint still improves $f$.
+
+::: {.fragment .fade-in}
+Here $f = x_1 + 2x_2$ and $g = x_1^2 + x_2^2 = 5$. At $\mathbf{x}^* = (1, 2)$, $\nabla f = (1, 2) = \tfrac{1}{2}\,(2, 4) = \tfrac{1}{2} \nabla g$, so $\lambda = \tfrac{1}{2}$. At $(2, 1)$, $\nabla g = (4, 2)$ is not parallel to $\nabla f$.
+:::
+:::
+::::
+
+::: {.notes}
+A reminder from calculus. The gradient of f is perpendicular to f's level curves, and the gradient of g is perpendicular to the constraint curve. Moving along the constraint from (2, 1) towards (1, 2) crosses higher level curves, so (2, 1) is not the best point: there the gradient of f has a component along the constraint. At (1, 2) the level curve f = 5 just touches the constraint, so the two curves share a tangent and their gradients point the same way; the multiplier is the ratio of their lengths. The multiplier is also a rate: the best value of f on the circle g = b is the square root of 5b, which grows at 1/2 per unit of b at b = 5. That is the shadow price idea, which the next slides make precise for the LP's inequality constraints.
+:::
 
 ## Lagrange Multipliers Need Equalities
 
@@ -570,7 +708,7 @@ c2_range = required[2] - (from_stack[2, 1] * r1_at_C1 + from_stack[2, 2] * r2_on
 ```
 
 - **Units**: objective units per unit of the right-hand side. For C2: \$`{julia} commas(round(1000 * λ_binding[1]; digits=-1))`/yr *per µg/m³*.
-- **Marginal**: the rate at the current optimum. It holds for small changes, while the same constraints bind.
+- **Marginal**: the rate at the current optimum. It holds for small changes, while the same constraints are binding.
 
 ::: {.fragment .fade-in}
 Would relaxing the standard at B by 100 µg/m³ save 100 × \$`{julia} commas(round(1000 * λ_binding[1]; digits=-1))`?
