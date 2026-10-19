@@ -586,7 +586,7 @@ $$\mathcal{L} = f(\mathbf{x}) - \lambda \left(g(\mathbf{x}) - b\right).$$
 At an optimum $\mathbf{x}^*$, $\nabla_{\mathbf{x}} \mathcal{L} = 0$:
 $$\nabla f(\mathbf{x}^*) = \lambda \nabla g(\mathbf{x}^*)$$
 
-The gradients are **parallel**, and $\lambda$ scales $\nabla g$ to $\nabla f$. Where they are not parallel, moving along the constraint still improves $f$.
+The gradients are **parallel**, and $\lambda$ scales $\nabla g$ to $\nabla f$.
 
 ::: {.fragment .fade-in}
 Here $f = x_1 + 2x_2$ and $g = x_1^2 + x_2^2 = 5$. At $\mathbf{x}^* = (1, 2)$, $\nabla f = (1, 2) = \tfrac{1}{2}\,(2, 4) = \tfrac{1}{2} \nabla g$, so $\lambda = \tfrac{1}{2}$. At $(2, 1)$, $\nabla g = (4, 2)$ is not parallel to $\nabla f$.
