@@ -403,7 +403,7 @@ To find the exact path, run <code>juliaup status</code> in a terminal and look f
 <h3 class="anchored" data-anchor-id="clone-a-repository">Clone a repository</h3>
 <ol type="1">
 <li>Open the Command Palette (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>) and type <code>Git: Clone</code>.</li>
-<li>Paste the URL of your forked repository and press <kbd>Enter</kbd>.</li>
+<li>Paste the URL of your copy of the assignment repository and press <kbd>Enter</kbd>.</li>
 <li>Choose a folder on your computer to save the repository.</li>
 <li>VS Code will ask if you want to open the cloned repository — click <strong>Open</strong>.</li>
 </ol>
@@ -490,6 +490,30 @@ To find the exact path, run <code>juliaup status</code> in a terminal and look f
 
 
 </main> <!-- /main -->
+<script>
+// Key links carry data-release="YYYY-MM-DDTHH:MM", a US Eastern wall time. Until it passes, the
+// link is shown as its plain icon with no target. The key itself is not deployed until then
+// either (scripts/release-keys.sh). Add ?release-now=YYYY-MM-DDTHH:MM to a page URL to check
+// how it will look at another time.
+(function () {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+  }).formatToParts(new Date());
+  const part = (type) => parts.find((p) => p.type === type).value;
+  const now = new URLSearchParams(window.location.search).get("release-now") ||
+    `${part("year")}-${part("month")}-${part("day")}T${part("hour")}:${part("minute")}`;
+  document.querySelectorAll("a.key-link[data-release]").forEach((link) => {
+    if (link.dataset.release > now) {
+      const icon = document.createElement("span");
+      icon.className = "key-pending";
+      icon.innerHTML = link.innerHTML;
+      icon.title = `Posted ${link.dataset.release.replace("T", " ")} ET`;
+      link.replaceWith(icon);
+    }
+  });
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

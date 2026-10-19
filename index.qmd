@@ -57,4 +57,4 @@ format:
 ## Software Tools
 
 - This course will use the [Julia](https://julialang.org) programming language. Julia is a modern, free, open source language which is designed for scientific computing. No prior knowledge of Julia is required. My recommendation is to use [Visual Studio Code](https://code.visualstudio.com/) with the [official Julia extension](https://code.visualstudio.com/docs/languages/julia) for coding.
-- Assignments will be distributed as GitHub repositories that you'll fork to your own account. You should create a GitHub account, but we will walk through how to use it.
+- Assignments will be distributed as GitHub template repositories that you'll copy to your own account. You should create a GitHub account, but we will walk through how to use it.

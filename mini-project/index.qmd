@@ -10,7 +10,7 @@ This page contains information about and a schedule of the mini-projects for the
 ## General Information
 
 - There are **two mini-projects**, each worth 10% of the final grade. They are more in-depth than a homework: each applies several methods from the course to one systems problem, is more open-ended, and is written up as a short report. Each runs three to four weeks, so it should be lighter per week than a homework.
--  While the instructions for each mini-project are available through the linked pages for quick and public access, **if you are in the class you must fork the assignment repository linked in [Ed Discussion](http://us.edstem.org)**. This will ensure that:
+-  While the instructions for each mini-project are available through the linked pages for quick and public access, **if you are in the class you must make your own copy of the assignment repository linked in [Ed Discussion](http://us.edstem.org)** (**Use this template**, then **Create a new repository**, set to private). This will ensure that:
     - You have compatible versions of all relevant packages provided in the environment;
     - You have a GitHub repository that you can use to share your code.
 - Submit mini-projects by 9:00pm Eastern Time on the due date on [Gradescope](https://gradescope.com).

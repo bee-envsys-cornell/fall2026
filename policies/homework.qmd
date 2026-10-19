@@ -27,14 +27,14 @@ But this emphasis on homework as practice also means that you should start the h
 
 ## Homework Logistics
 
-### Forking Assignments
+### Copying Assignments
 
-- Homework assignments will be distributed as GitHub repositories. When an assignment is released, a link to the repository will be posted on Ed Discussion. **You must fork this repository to your own GitHub account** (click the **Fork** button on GitHub) or subsequent steps will not work properly. This will give you your own copy with the files for the assignment.
+- Homework assignments will be distributed as GitHub template repositories. When an assignment is released, a link to the repository will be posted on Ed Discussion. **You must make your own copy of this repository**: click **Use this template**, then **Create a new repository**, and make it **private**, or subsequent steps will not work properly. This will give you your own copy with the files for the assignment. (Homework 1–5 asked you to fork the repository instead; the forks you already have are fine.)
 - These repositories will include a Jupyter Notebook set up with a Julia kernel, and appropiate environment files for the packages we think you may want to use to complete the assignment. You do not have to use all of them, and you can feel free to install additional packages as would be helpful.
 - Clone your repository to your computer.
 
   ::: {.callout-warning}
-  It is important that you clone your fork from the previous step, not the original repository. Make sure that the URL looks like `https://www.github.com/<your-username>/hwxx.git`, **not** `https://www.github.com/bee-envsys-cornell/hwxx.git`.
+  It is important that you clone your copy from the previous step, not the original repository. Make sure that the URL looks like `https://www.github.com/<your-username>/hwxx.git`, **not** `https://www.github.com/bee-envsys-cornell/hwxx.git`.
   :::
 
 ### Working On Assignments
@@ -48,6 +48,7 @@ But this emphasis on homework as practice also means that you should start the h
     :::
 
   - After the notebook loads, if prompted to, select the `julia-1.11` kernel.
+  - From Homework 6 on, you can instead open the assignment in GitHub Codespaces, which runs in your browser with Julia already set up. See [Working in GitHub Codespaces](../setup/homework.qmd#working-in-github-codespaces).
   - Make sure that you run the initial notebook cell (starting with `Pkg.activate()`) to load the Julia environment and install any needed packages.
   - You can toggle line numbers in a notebook cell with the `L` key.
 - If you choose to write your own code files, make sure to add them to the repository with `git add`. Make sure that you copy the initial notebook cell into your new script(s) to use the appropriate environment.

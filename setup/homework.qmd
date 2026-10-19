@@ -4,15 +4,38 @@ format:
     html: default
 ---
 
-Your assignments (labs and homeworks) will be distributed as Jupyter Notebooks (`.ipynb` files) in GitHub repositories that you'll fork, and will be submitted to Gradescope as PDF files. This means that the following steps are required for each assignment^[Note that you do not actually have to solve your assignments using the provided notebook: we aren't going to grade your code, so if you want to solve the problems separately and write up your solutions in something like Microsoft Word (with figures), that's fine. But, in this case, I would make sure your code is synced with GitHub in case there are any questions about how you got your solutions].
+Your assignments (labs and homeworks) will be distributed as Jupyter Notebooks (`.ipynb` files) in GitHub template repositories that you'll copy, and will be submitted to Gradescope as PDF files. This means that the following steps are required for each assignment^[Note that you do not actually have to solve your assignments using the provided notebook: we aren't going to grade your code, so if you want to solve the problems separately and write up your solutions in something like Microsoft Word (with figures), that's fine. But, in this case, I would make sure your code is synced with GitHub in case there are any questions about how you got your solutions].
 
 If you are totally new to `git`, you can go through the [Software Carpentry "Version Control with Git" course](https://swcarpentry.github.io/git-novice/), which includes links to [several `git` cheatsheets](https://swcarpentry.github.io/git-novice/reference.html).
 
-## Forking Assignments
+## Copying Assignments
 
-When an assignment is released, I will post a link to the assignment repository on Ed Discussion. Click the **Fork** button on GitHub to create a copy of the repository under your own account.
+When an assignment is released, I will post a link to the assignment repository on Ed Discussion. Click **Use this template**, then **Create a new repository**, and make it **private** to create a copy of the repository under your own account. (Assignments before Homework 6 asked you to fork; those forks are fine.)
 
-Because forking creates a new repository under your own account, **you should not use the original repository**, as you will be unable to push any changes back to GitHub. In other words, do not clone a repository with the name `bee-envsys-cornell/hwx.git` or `bee-envsys-cornell/labx.git`, but look for your fork, named like `<your-username>/hwx.git`. If you accidentally clone the original repository, do not worry: you can re-clone your fork and move any files you edited to the new location.
+Because this creates a new repository under your own account, **you should not use the original repository**, as you will be unable to push any changes back to GitHub. In other words, do not clone a repository with the name `bee-envsys-cornell/hwx.git` or `bee-envsys-cornell/labx.git`, but look for your copy, named like `<your-username>/hwx.git`. If you accidentally clone the original repository, do not worry: you can re-clone your copy and move any files you edited to the new location.
+
+## Working in GitHub Codespaces
+
+From Homework 6 on, you can also work on an assignment in [GitHub Codespaces](https://docs.github.com/en/codespaces/overview): VS Code running in your web browser, with Julia, Jupyter, and the assignment's packages already installed. Nothing needs to be installed on your computer, so this is a good option if Julia or the notebook won't run for you locally.
+
+1. On GitHub, go to **your copy** of the assignment repository (named like `<your-username>/hw06`), not the original.
+2. Click the green **Code** button, open the **Codespaces** tab, and click **Create codespace**.
+3. The first start takes several minutes while Julia and the packages install. Opening the same codespace again later is quick.
+4. Open the notebook (for example, `hw06.ipynb`). If VS Code asks you to select a kernel, choose **Jupyter Kernel** and then **Julia 1.11.5**.
+5. Commit and push as you work: in the **Source Control** panel on the left, write a message, click **Commit**, and then **Sync Changes**. Work that you haven't pushed is lost if the codespace is deleted.
+6. When you stop working, stop the codespace: click **Codespaces** in the bottom-left corner and choose **Stop Current Codespace**. It also stops on its own after 30 minutes without activity.
+7. After you submit, delete the codespace from [github.com/codespaces](https://github.com/codespaces). A stopped codespace still uses storage, and GitHub deletes it after 30 days anyway.
+
+Codespaces are free within a monthly allowance: 120 core-hours (60 hours on the standard two-core machine) for a free GitHub account, and 180 core-hours for [verified students](https://education.github.com/students). If you use up the allowance, your codespaces stop until the next month; you are not charged unless you have added a payment method to your GitHub account.
+
+To get the larger student allowance, verify your student status with GitHub Education (this also gives you the other free tools in the GitHub Student Developer Pack):
+
+1. If you haven't already, add your Cornell email address to your GitHub account (**Settings**, then **Emails**) and confirm it from the email GitHub sends you.
+2. Go to [github.com/settings/education/benefits](https://github.com/settings/education/benefits) and click **Start an application**.
+3. Fill in the form and add proof that you are currently enrolled: a photo of your student ID showing a current enrollment date, your class schedule, your transcript, or an enrollment verification letter.
+4. Click **Submit application**. GitHub emails you when your application is approved. Approval can take some time, so apply early in the semester.
+
+To make your PDF from a codespace, follow [Exporting To PDF](#exporting-to-pdf). To download a file to your computer, right-click it in the file list and choose **Download**.
 
 ## Syncing Changes To GitHub
 

@@ -292,7 +292,7 @@ window.MathJax = {
 <h2 class="anchored" data-anchor-id="general-information">General Information</h2>
 <ul>
 <li>There are <strong>two mini-projects</strong>, each worth 10% of the final grade. They are more in-depth than a homework: each applies several methods from the course to one systems problem, is more open-ended, and is written up as a short report. Each runs three to four weeks, so it should be lighter per week than a homework.</li>
-<li>While the instructions for each mini-project are available through the linked pages for quick and public access, <strong>if you are in the class you must fork the assignment repository linked in <a href="http://us.edstem.org">Ed Discussion</a></strong>. This will ensure that:
+<li>While the instructions for each mini-project are available through the linked pages for quick and public access, <strong>if you are in the class you must make your own copy of the assignment repository linked in <a href="http://us.edstem.org">Ed Discussion</a></strong> (<strong>Use this template</strong>, then <strong>Create a new repository</strong>, set to private). This will ensure that:
 <ul>
 <li>You have compatible versions of all relevant packages provided in the environment;</li>
 <li>You have a GitHub repository that you can use to share your code.</li>
@@ -345,6 +345,30 @@ window.MathJax = {
 </section>
 
 </main> <!-- /main -->
+<script>
+// Key links carry data-release="YYYY-MM-DDTHH:MM", a US Eastern wall time. Until it passes, the
+// link is shown as its plain icon with no target. The key itself is not deployed until then
+// either (scripts/release-keys.sh). Add ?release-now=YYYY-MM-DDTHH:MM to a page URL to check
+// how it will look at another time.
+(function () {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+  }).formatToParts(new Date());
+  const part = (type) => parts.find((p) => p.type === type).value;
+  const now = new URLSearchParams(window.location.search).get("release-now") ||
+    `${part("year")}-${part("month")}-${part("day")}T${part("hour")}:${part("minute")}`;
+  document.querySelectorAll("a.key-link[data-release]").forEach((link) => {
+    if (link.dataset.release > now) {
+      const icon = document.createElement("span");
+      icon.className = "key-pending";
+      icon.innerHTML = link.innerHTML;
+      icon.title = `Posted ${link.dataset.release.replace("T", " ")} ET`;
+      link.replaceWith(icon);
+    }
+  });
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

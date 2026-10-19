@@ -287,13 +287,37 @@ window.MathJax = {
 <h2 class="anchored" data-anchor-id="software-tools">Software Tools</h2>
 <ul>
 <li>This course will use the <a href="https://julialang.org">Julia</a> programming language. Julia is a modern, free, open source language which is designed for scientific computing. No prior knowledge of Julia is required. My recommendation is to use <a href="https://code.visualstudio.com/">Visual Studio Code</a> with the <a href="https://code.visualstudio.com/docs/languages/julia">official Julia extension</a> for coding.</li>
-<li>Assignments will be distributed as GitHub repositories that you’ll fork to your own account. You should create a GitHub account, but we will walk through how to use it.</li>
+<li>Assignments will be distributed as GitHub template repositories that you’ll copy to your own account. You should create a GitHub account, but we will walk through how to use it.</li>
 </ul>
 
 
 </section>
 
 </main> <!-- /main -->
+<script>
+// Key links carry data-release="YYYY-MM-DDTHH:MM", a US Eastern wall time. Until it passes, the
+// link is shown as its plain icon with no target. The key itself is not deployed until then
+// either (scripts/release-keys.sh). Add ?release-now=YYYY-MM-DDTHH:MM to a page URL to check
+// how it will look at another time.
+(function () {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+  }).formatToParts(new Date());
+  const part = (type) => parts.find((p) => p.type === type).value;
+  const now = new URLSearchParams(window.location.search).get("release-now") ||
+    `${part("year")}-${part("month")}-${part("day")}T${part("hour")}:${part("minute")}`;
+  document.querySelectorAll("a.key-link[data-release]").forEach((link) => {
+    if (link.dataset.release > now) {
+      const icon = document.createElement("span");
+      icon.className = "key-pending";
+      icon.innerHTML = link.innerHTML;
+      icon.title = `Posted ${link.dataset.release.replace("T", " ")} ET`;
+      link.replaceWith(icon);
+    }
+  });
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

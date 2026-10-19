@@ -297,7 +297,7 @@ window.MathJax = {
 <h3 class="anchored" data-anchor-id="why-are-we-using-github">Why are we using GitHub?</h3>
 <p>GitHub is an industry-standard version control platform. Anecdotally, adding GitHub to your skillset is a great resume booster for engineers who work in computing-heavy environments. For the purposes of our class, GitHub facilitates:</p>
 <ul>
-<li>Assignment distribution via forking GitHub repositories;</li>
+<li>Assignment distribution via GitHub template repositories;</li>
 <li>Sharing of code/notebooks for debugging and asking for help (otherwise, I end up with many files with the same name, and might not open the right one…);</li>
 <li>Using your repository as your submission in case something goes wrong and you can’t submit your completed assignment on time.</li>
 </ul>
@@ -317,7 +317,7 @@ window.MathJax = {
 <h2 class="anchored" data-anchor-id="assignments-homeworks-and-labs">Assignments (Homeworks and Labs)</h2>
 <section id="how-do-i-access-assignments" class="level3">
 <h3 class="anchored" data-anchor-id="how-do-i-access-assignments">How do I access assignments?</h3>
-<p>Assignments will be distributed as GitHub repositories that you fork to your own account. Links to the assignment repositories will be posted on <a href="https://us.edstem.org">Ed Discussion</a> as they are released, and posts with the links for active assignments will be pinned. The class schedule will link to a page which has a preview of the assignment, but links are not provided from this page to the repository.</p>
+<p>Assignments will be distributed as GitHub template repositories that you copy to your own account (<strong>Use this template</strong>, then <strong>Create a new repository</strong>, set to private). Links to the assignment repositories will be posted on <a href="https://us.edstem.org">Ed Discussion</a> as they are released, and posts with the links for active assignments will be pinned. The class schedule will link to a page which has a preview of the assignment, but links are not provided from this page to the repository.</p>
 </section>
 <section id="what-if-theres-an-error-in-the-assignment-repository" class="level3">
 <h3 class="anchored" data-anchor-id="what-if-theres-an-error-in-the-assignment-repository">What if there’s an error in the assignment repository?</h3>
@@ -410,6 +410,30 @@ window.MathJax = {
 </section>
 
 </main> <!-- /main -->
+<script>
+// Key links carry data-release="YYYY-MM-DDTHH:MM", a US Eastern wall time. Until it passes, the
+// link is shown as its plain icon with no target. The key itself is not deployed until then
+// either (scripts/release-keys.sh). Add ?release-now=YYYY-MM-DDTHH:MM to a page URL to check
+// how it will look at another time.
+(function () {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+  }).formatToParts(new Date());
+  const part = (type) => parts.find((p) => p.type === type).value;
+  const now = new URLSearchParams(window.location.search).get("release-now") ||
+    `${part("year")}-${part("month")}-${part("day")}T${part("hour")}:${part("minute")}`;
+  document.querySelectorAll("a.key-link[data-release]").forEach((link) => {
+    if (link.dataset.release > now) {
+      const icon = document.createElement("span");
+      icon.className = "key-pending";
+      icon.innerHTML = link.innerHTML;
+      icon.title = `Posted ${link.dataset.release.replace("T", " ")} ET`;
+      link.replaceWith(icon);
+    }
+  });
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

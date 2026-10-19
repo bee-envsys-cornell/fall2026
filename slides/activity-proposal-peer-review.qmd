@@ -98,21 +98,23 @@ About 15 minutes. The point is judgement, not a list of differences. Useful prom
 
 ## Step 4: Share Out
 
-Each group, in one minute:
+Each group, in one minute, **without identifying the proposal you reviewed**:
 
 - One place where the **LLM's plan was better**, and why.
 - One place where the **students' proposal was better**, and why.
 
 ::: {.notes}
-About 7 minutes. Collect patterns on the board: typically LLMs are broader and more generic, name plausible-sounding data, and miss local constraints; students are more specific but can under-specify uncertainty and regulations.
+About 7 minutes. Keep it to patterns, without naming a proposal or its topic: the authors are in the room, and the reviews reach them without the reviewers' names. Collect patterns on the board: typically LLMs are broader and more generic, name plausible-sounding data, and miss local constraints; students are more specific but can under-specify uncertainty and regulations.
 :::
 
 ## Before Monday, October 26
 
 Submit **one PDF per group** to Gradescope by 9:00 PM:
 
-- **Part A**: the review, which will be shared with the other group.
-- **Part B**: the LLM comparison (at most 1 page), graded but not shared, with prompts and outputs in an appendix.
+- **Part A**: the review (at most 2 pages).
+- **Part B**: the LLM comparison (at most 1 page), with prompts and outputs in an appendix.
+
+Both parts will be sent to the other group.
 
 Full instructions: [Proposal Peer Review](../project/proposal-review.qmd)
 

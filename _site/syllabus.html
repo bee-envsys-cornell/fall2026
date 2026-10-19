@@ -689,7 +689,7 @@ window.MathJax = {
 <p>Consulting and referencing external resources and your peers is encouraged (engineering is a collaborative discipline!), but plagiarism is a violation of academic integrity.</p>
 <p>Some notes on assignment and grading logistics:</p>
 <ul>
-<li>Homework assignments will be distributed as GitHub repositories that you will fork and clone. While GitHub use is not required for the class aside from forking and cloning assignments, students are encouraged to update their GitHub repositories as they work on the assignments; this helps with answering questions, keeping solutions synced across groups, and gives you a backstop in case something goes wrong and you can’t submit your assignment on time.</li>
+<li>Homework assignments will be distributed as GitHub template repositories that you will copy and clone. While GitHub use is not required for the class aside from copying and cloning assignments, students are encouraged to update their GitHub repositories as they work on the assignments; this helps with answering questions, keeping solutions synced across groups, and gives you a backstop in case something goes wrong and you can’t submit your assignment on time.</li>
 <li>Homeworks are due by 9:00pm Eastern Time on the designed due date (usually a Thursday). Your assignment writeup should be submitted to Gradescope as a PDF with the answers to each question tagged (a failure to do this will result in a non-negotiable 10% point deduction). <strong>All students in a group are responsible for ensuring that the student who submits the assignment for their group tags each question, as all will have points deducted if this is not done</strong>.</li>
 <li>A meta-rubric is provided on the website, under the Homework page. These are not customized for each assignment but the principles will apply generally.</li>
 <li>One homework assignment will be dropped by default for students in BEE 4750 (but not for students in BEE 5750). You can turn in assignments within 24 hours of the due date with a 50% penalty. If you need a further accomodation for a particular assignment, talk to Prof.&nbsp;Srikrishnan <strong><em>before the due date.</em></strong> Requests for extensions made after the due date will only be considered under extraordinary and unexpected circumstances. <strong>Technical challenges submitting assignments are not acceptable reasons for extensions to be granted</strong>, and late penalties will apply.</li>
@@ -829,6 +829,30 @@ window.MathJax = {
 </section>
 
 </main> <!-- /main -->
+<script>
+// Key links carry data-release="YYYY-MM-DDTHH:MM", a US Eastern wall time. Until it passes, the
+// link is shown as its plain icon with no target. The key itself is not deployed until then
+// either (scripts/release-keys.sh). Add ?release-now=YYYY-MM-DDTHH:MM to a page URL to check
+// how it will look at another time.
+(function () {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+  }).formatToParts(new Date());
+  const part = (type) => parts.find((p) => p.type === type).value;
+  const now = new URLSearchParams(window.location.search).get("release-now") ||
+    `${part("year")}-${part("month")}-${part("day")}T${part("hour")}:${part("minute")}`;
+  document.querySelectorAll("a.key-link[data-release]").forEach((link) => {
+    if (link.dataset.release > now) {
+      const icon = document.createElement("span");
+      icon.className = "key-pending";
+      icon.innerHTML = link.innerHTML;
+      icon.title = `Posted ${link.dataset.release.replace("T", " ")} ET`;
+      link.replaceWith(icon);
+    }
+  });
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

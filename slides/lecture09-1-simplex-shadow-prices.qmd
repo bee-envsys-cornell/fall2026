@@ -160,6 +160,36 @@ corners = sort(corners, by=p -> atan(p[2] - centre[2], p[1] - centre[1]))
 corner_cost = [sum(cost .* c) for c in corners]
 ```
 
+# Proposal Peer Review
+
+## Peer Review Timeline {.smaller}
+
+| When | What |
+|:-----------|:------------------------------------|
+| **Tonight** (Mon, Oct 19) | Each group gets one other group's proposal by email. |
+| **Before Wednesday** | Read it and take notes. Each of you asks an LLM for a proposal on the same topic, from a one-sentence description (not the proposal). Bring the output and your prompt. |
+| **Wed, Oct 21** | Quiz 3, then the review in your project groups. |
+| **Mon, Oct 26, 9:00 PM** | Submit one PDF per group to Gradescope: the review (at most 2 pages) and the LLM comparison (at most 1 page). |
+| **After grading** | Both parts (anonymized) go to the proposal's authors. |
+
+::: {.notes}
+About 3 minutes. The proposals go out tonight by email, one per group. Keep the proposal within the class: don't share it or upload it to any AI tool, which is what the authors were promised. Both parts of the review go back to the authors, the LLM comparison included, so write both for them.
+:::
+
+## Wednesday's Plan {.smaller}
+
+1. **Quiz 3** (25 minutes), then sit with your project group.
+2. **The key question** (8 minutes): restate it on your own, then compare within your group.
+3. **The rubric** (15 minutes): agree on a rating and one sentence of evidence for each criterion.
+4. **The LLM proposals** (15 minutes): where do they differ from the students' plan, and whose choice is better?
+5. **Share out** (7 minutes).
+
+Bring a laptop with the proposal and your LLM output. Full instructions: [Proposal Peer Review](../project/proposal-review.qmd).
+
+::: {.notes}
+About 2 minutes. A group without its LLM proposals can make them in class from the topic sentence, but that comes out of the time for step 4.
+:::
+
 # Review of Last Class
 
 ## The Emissions LP Geometry
@@ -774,6 +804,8 @@ This is the verification step: the shadow price is a prediction about re-solving
 **Homework 5**: Due Thursday, October 22.
 
 **Mini-Project 1**: Due Friday, October 23.
+
+**Proposal Peer Review**: Due Monday, October 26.
 
 **Homework 6**: Assigned Wednesday, due Thursday, October 29.
 
