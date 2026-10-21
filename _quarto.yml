@@ -113,8 +113,8 @@ website:
           text: "Lab Overview"
         - href: labs/lab01/lab01.qmd
           text: "Lab 1"
-        - href: labs/index.qmd#schedule
-          text: "Lab 2 (Oct. 26)"
+        - href: labs/lab02/lab02.qmd
+          text: "Lab 2"
         - href: labs/index.qmd#schedule
           text: "Lab 3 (Nov. 11)"
         - href: labs/index.qmd#schedule

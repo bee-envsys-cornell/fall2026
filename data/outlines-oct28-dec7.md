@@ -70,7 +70,7 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
 29. Course evaluations, if open, take 5 minutes of the Dec 7 work time (the TA can run them).
 
 **Across sessions**
-30. File names follow week and session: `lecture11-1-capacity-expansion` (new), `lecture11-2-mixed-integer` (renamed, with its `_freeze` directory), `lecture13-2-dynamic-programming`, `lecture15-1-multiple-objectives-robustness`, `lecture15-2-limits-of-optimization`, and `activity-project-session` for Dec 7 (next to `activity-proposal-peer-review`). The superseded FA25 sources stay unlinked as last year's record, except the plume fork (decision 9).
+30. File names follow week and session: `lecture11-1-capacity-expansion` (new), `lecture11-2-mixed-integer` (renamed, with its `_freeze` directory), `lecture13-2-dynamic-programming`, `lecture15-1-multiple-objectives-robustness`, `lecture15-2-limits-of-optimization`, and `activity-project-session` for Dec 7 (next to `lecture09-2-proposal-peer-review`, renamed Oct 21 from `activity-proposal-peer-review`). The superseded FA25 sources stay unlinked as last year's record, except the plume fork (decision 9).
 31. Bibliography: add Reed et al. (2022) and Saltelli et al. (2019) if cited; remove the duplicate `Quinn2017-vn`.
 32. **Done (Oct 6):** `data/schedule.md` updated: Dec 7 becomes a TA session (Quiz 6 + project session), Dec 2 is renamed, the travel note gains Dec 7, and the build inventory swaps the wrap-up lecture for the small activity deck.
 
@@ -1265,7 +1265,7 @@ Robustness: F's plan on a D night 57 / 129 / 156 µg/m³ and on a B night 46 / 1
 | **Date** | Mon Dec 7, 2026 (week 16; last class meeting) |
 | **Minutes** | 75: Quiz 6 (25) + project session (50) |
 | **Runs it** | **TA** — the instructor is travelling |
-| **Deck** | New, small activity deck `activity-project-session.qmd` (about 6 slides), styled like `activity-proposal-peer-review`, with full notes and timings for the TA |
+| **Deck** | New, small activity deck `activity-project-session.qmd` (about 6 slides), styled like `lecture09-2-proposal-peer-review`, with full notes and timings for the TA |
 | **What follows** | Presentation videos due Tue Dec 8 at 9pm (final-exam slot); presentation peer reviews in Canvas from Dec 10; final report, self-assessment and peer evaluations due Dec 20 |
 
 ## 2. Why this shape

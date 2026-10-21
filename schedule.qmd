@@ -29,8 +29,8 @@ Note that this schedule will be updated as necessary the semester progresses, wi
 | 8 |   Oct 12   | **No Class: Fall Break** | | | | | | |
 |   |   Oct 14   | Decision Models and Linear Programming | [{{< fa sharp presentation-screen >}}](slides/lecture08-2-optimization.qmd) | | HW5 | | | |
 | 9 |   Oct 19   | The Simplex Method and Shadow Prices | [{{< fa sharp presentation-screen >}}](slides/lecture09-1-simplex-shadow-prices.qmd) | | | | | |
-|   |   Oct 21   | Project Proposal Peer Review | | | HW6 | | Quiz 3 | |
-| 10 |   Oct 26   | Linear Programming with JuMP Lab | | Lab 2 | | | | |
+|   |   Oct 21   | Project Proposal Peer Review | [{{< fa sharp presentation-screen >}}](slides/lecture09-2-proposal-peer-review.qmd) | | HW6 | | Quiz 3 | |
+| 10 |   Oct 26   | Linear Programming with JuMP Lab | | [{{< fa laptop >}}](labs/lab02/lab02.qmd) | | | | |
 |   |   Oct 28   | Economic Dispatch |  [{{< fa sharp presentation-screen >}}](slides/lecture10-2-economic-dispatch.qmd) | | | MP2 | | |
 | 11 |   Nov 2    | Capacity Expansion |  [{{< fa sharp presentation-screen >}}](slides/lecture11-1-capacity-expansion.qmd) | | | | | |
 |   |   Nov 4    | Discrete Variables and Mixed Integer Programming | | | HW7 | | Quiz 4 | |
