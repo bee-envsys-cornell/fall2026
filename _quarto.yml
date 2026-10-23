@@ -136,8 +136,8 @@ website:
           text: "Homework 4"
         - href: hw/hw05/hw05.qmd
           text: "Homework 5"
-        - href: hw/index.qmd#schedule
-          text: "Homework 6 (Oct. 21)"
+        - href: hw/hw06/hw06.qmd
+          text: "Homework 6"
         - href: hw/index.qmd#schedule
           text: "Homework 7 (Nov. 4)"
         - href: hw/index.qmd#schedule

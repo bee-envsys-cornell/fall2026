@@ -163,7 +163,7 @@ is graphical (corners or level lines) on two-variable problems.
 
 **Design notes.** HW4 deliberately echoes HW3, putting deterministic truncation error in Δt beside
 statistical error in *n*. HW6's graphical-LP question matches Quiz 4's format so the homework is
-real practice, and HW6 asks for the hand answer *before* the JuMP check. HW9 is the only homework
+real practice, and HW6's LP answers are all by hand; its one `JuMP` model (Problem 4) is provided. HW9 is the only homework
 in weeks 13–16, which the term project otherwise fills: update (Nov 13), presentations (Dec 8),
 report (Dec 20).
 
@@ -178,6 +178,15 @@ lectures' and from Lab 4's.
 Outline approved Oct 8 (`data/hw09-outline.md`, checks in `data/hw09-checks.jl`): activated carbon for an
 algal-bloom season, and a three-year site cleanup with inhibited biodegradation. Drafted Oct 8 with
 its key in `hw/hw09` and `hw/solutions/hw09` (local folders, no GitHub repos yet).
+
+**HW6's JuMP trimmed** (decided Oct 23). Students first use `JuMP` in Lab 2 (Mon Oct 26), three days
+before HW6 is due, so HW6 no longer has them write any. Problem 3 drops its `JuMP` implementation and
+`shadow_price` check, and the 4-acre lease is re-solved by hand (with 10 acres the optimum moves to
+(8, 0), saving \$50,000 against the shadow price's \$100,000). Problem 4 gives the complete nitrogen
+model in the notebook; its formulation part, the reservoir and intake questions and the upgrade
+re-solve are cut, leaving four parts (2, 3, 4, 3). Later the same day Problem 3 also lost 3.3's slack
+question, the phosphorus-slack question and the church acre; it is now 3.1–3.9 (2, 2, 1, 4, 1, then
+the lease as 3.6–3.9 at 2, 3, 1, 2). Still 50 points, now 20 subproblems.
 
 **HW6–HW9 split into single-ask subproblems** (decided Oct 14, done Oct 15). Every problem keeps its points; stacked asks became separate subproblems: HW6 now has 27, HW7 26, HW8 20 and HW9 20. Keys, READMEs and cross-references were renumbered to match (HW6 1.4 is now 1.5, 3.7 is now 3.10 to 3.12, and so on), including the Lab 2 TA guide. The pre-split versions are in `hw/.drafts/2026-10-15-hw06-09/`.
 

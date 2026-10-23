@@ -120,7 +120,7 @@ Source: [Wikipedia](https://en.wikipedia.org/wiki/Electric_power_transmission)
 :::
 
 ::: {.notes}
-Walk through the chain: generation, step-up transformers, high-voltage transmission, substations, distribution, customers. Today is about the first box: which plants generate, and how much, to meet the load at each moment.
+This is just to provide context: the complexity of the power grid and what parts of it we are focusing on (bulk generation).
 :::
 
 ## Decision Problems for Power Systems
@@ -132,16 +132,13 @@ Adapted from Perez-Arriaga, Ignacio J., Hugh Rudnick, and Michel Rivier (2009)
 :::
 
 ::: {.notes}
-Decisions sit on different time scales: what to build (years: capacity expansion), which plants to commit (a day ahead: unit commitment), and how much each running plant generates (hours to minutes: economic dispatch). The same LP tools show up at every scale.
+Power systems have lots of decision problems at very different time scales: we are going to look at two over the next couple of classes, economic dispatch today and capacity expansion next week.
 :::
 
 ## Electricity Generation by Source
 
 ![Electricity Generation in 2024 by Source](https://www.eia.gov/energyexplained/electricity/images/outlet-graph-large.jpg)
 
-::: {.notes}
-The US mix: natural gas is the largest source, then nuclear, coal and renewables. Gas plants come in two kinds that matter today: efficient combined-cycle plants (CCGT) that run for long stretches, and cheaper-to-build but more expensive-to-run combustion turbines (CT) that run only when needed.
-:::
 
 # Single-Period Economic Dispatch
 
@@ -159,7 +156,7 @@ The US mix: natural gas is the largest source, then nuclear, coal and renewables
 :::
 
 ::: {.notes}
-Ask the room what the decision variables are before revealing the table. The answer: one generation level per plant. Demand, costs and limits are data. Plants also face engineering constraints: minimum outputs, ramping limits, and in real systems transmission limits, which we leave out.
+Ask the class what the decision variables and relevant parameters are before revealing the table and explain why this is a set afterwards (e.g. what are we neglecting).
 :::
 
 ## Where Variable Costs Come From
@@ -167,7 +164,7 @@ Ask the room what the decision variables are before revealing the table. The ans
 :::: {.columns}
 ::: {.column width=55%}
 - labor and equipment upkeep;
-- **fuel** (the big one), converted to \$/MWh by the plant's efficiency, its **heat rate**.
+- fuel (the big one), converted to \$/MWh by the plant's efficiency, its heat rate.
 
 Cost curves are really slightly *quadratic*; we use a linear (or piecewise linear) approximation.
 :::
@@ -181,7 +178,7 @@ Source: [Ross Baldick, UT Austin](https://users.ece.utexas.edu/~baldick/classes/
 ::::
 
 ::: {.notes}
-The heat rate is how much fuel energy a plant burns per MWh of electricity. A plant with a lower heat rate (more efficient) has a lower variable cost for the same fuel price. The curve on the right bends upward because efficiency changes with output; a linear approximation is good enough for dispatch over the normal operating range.
+The heat rate is how much fuel energy a plant burns per MWh of electricity.  The curve on the right bends upward because efficiency changes with output; a linear approximation is good enough for dispatch over the normal operating range.
 :::
 
 ## The Single-Period Problem
@@ -192,7 +189,7 @@ Write the economic dispatch problem for one hour.
 $$
 \begin{aligned}
 \min_{\mathbf{y}} \quad & \sum_{g \in \mathcal{G}} \text{VarCost}_g \, y_g \\
-\text{subject to:} \quad & \sum_{g \in \mathcal{G}} y_g = d \\[0.3em]
+\text{subject to:} \quad & \sum_{g \in \mathcal{G}} y_g \geq d \\[0.3em]
 & y_g \leq P^{\text{max}}_g \qquad \forall g \in \mathcal{G} \\[0.3em]
 & y_g \geq P^{\text{min}}_g \qquad \forall g \in \mathcal{G}
 \end{aligned}
@@ -200,7 +197,8 @@ $$
 :::
 
 ::: {.notes}
-Board item; the answer is the fragment, so no board is needed. Give students a minute to write it, then reveal. Points to make: there is one demand constraint (a single sum over all plants, not one per plant). Generation must equal demand: we can't store electricity. Each plant has its own capacity and minimum-output constraint. Everything is linear, so it is an LP.
+Give students some time to think about the formulation, then reveal. Generation must at least meet demand; any output above demand is curtailed. Each plant has its own capacity and minimum-output constraint.
+use
 :::
 
 ## Example: The Fleet
@@ -222,17 +220,17 @@ println("Demand is **$(demand_mw) MW**. The plants, at 2022 gas prices:\n")
 for resource in unique(gens[thermal, :Resource])
     rows = gens[thermal, :][gens[thermal, :Resource] .== resource, :]
     n_plants = nrow(rows)
-    smallest, largest = extrema(rows.Pmax)
-    cheapest, dearest = extrema(rows.VarCost)
-    if smallest == largest
-        cap_text = "$(smallest) MW"
+    min_capacity, max_capacity = extrema(rows.Pmax)
+    min_cost, max_cost = extrema(rows.VarCost)
+    if min_capacity == max_capacity
+        cap_text = "$(min_capacity) MW"
     else
-        cap_text = "$(smallest)–$(largest) MW"
+        cap_text = "$(min_capacity)–$(max_capacity) MW"
     end
-    if cheapest == dearest
-        cost_text = "\\\$$(cheapest)/MWh"
+    if min_cost == max_cost
+        cost_text = "\\\$$(min_cost)/MWh"
     else
-        cost_text = "\\\$$(cheapest)–$(dearest)/MWh"
+        cost_text = "\\\$$(min_cost)–$(max_cost)/MWh"
     end
     println("- $(n_plants) $(resource): $(cap_text) capacity, $(cost_text)")
 end
@@ -260,7 +258,7 @@ demand_mw = 2200                    # one hour's demand [MW]
 dispatch = Model(HiGHS.Optimizer)
 @variable(dispatch, y[g in 1:n_thermal] >= 0)
 @objective(dispatch, Min, sum(gens[g, :VarCost] * y[g] for g in 1:n_thermal))
-@constraint(dispatch, load, sum(y) == demand_mw)
+@constraint(dispatch, load, sum(y) >= demand_mw)
 @constraint(dispatch, capacity[g in 1:n_thermal], y[g] <= gens[g, :Pmax])
 @constraint(dispatch, minimum_output[g in 1:n_thermal], y[g] >= gens[g, :Pmin])
 set_silent(dispatch)
@@ -293,7 +291,7 @@ plot!(p_results, size=(1200, 460), bottom_margin=22mm, left_margin=12mm)
 ```
 
 ::: {.notes}
-Bars are what each plant produces; black ticks are capacities and red ticks are minimum outputs. Read the pattern: the cheap plants (hydro, biomass, nuclear and the CCGTs) are at capacity. CT1 is partly loaded. CT2 to CT4 sit at their minimums. CT5 is off. The total is `{julia} demand_mw` MW at a cost of \$`{julia} commas(objective_value(dispatch))` for the hour.
+The cheap plants (hydro, biomass, nuclear and the CCGTs) are at capacity. CT1 is partly loaded. CT2 to CT4 sit at their minimums. CT5 is off. The total is `{julia} demand_mw` MW at a cost of \$`{julia} commas(objective_value(dispatch))` for the hour.
 :::
 
 ## The Dispatch Stack/Merit Order
@@ -334,10 +332,6 @@ plot!(p_stack, size=(1200, 370), left_margin=12mm, right_margin=6mm)
 
 CT1 (red) serves the next MWh, so the price is **\$`{julia} stack_price`/MWh**.
 
-::: {.notes}
-This is the merit order: plants stacked from cheapest to most expensive, after the minimum outputs that must run anyway (gray). Demand (dashed line) cuts the stack inside CT1, so CT1 is the marginal plant. If demand rose by one MWh, CT1 would produce it at \$`{julia} stack_price`, so \$`{julia} stack_price`/MWh is the price. Ask: "what happens to the price if demand rises past CT1's capacity?" Answer: the next plant in the stack, CT2 or CT3 at \$`{julia} heights[marginal + 1]`, sets it.
-:::
-
 ## Shadow Price from JuMP
 
 ```{julia}
@@ -353,16 +347,11 @@ price = -shadow_price(load)                 # [$/MWh]
 Generating plants don't lose money when they generate (expensive plants would lose money if the price was an average.)
 
 
-::: {.notes}
-The model is on the "Single-Period Model" slide: it names the demand constraint `load`, so JuMP can report its shadow price. JuMP reports what relaxing a constraint by one unit does to the cost. For demand, relaxing means serving one less MWh, so the cost falls by \$`{julia} round(Int, price)` and the shadow price is −`{julia} round(Int, price)`. The price of electricity is the size of that number. This is how wholesale markets set prices: the demand constraint's shadow price in the operator's dispatch model.
-:::
-
 ## What Complicates the Merit Order?
 
 What could make the cheapest-first rule wrong?
 
 ::: {.fragment .fade-in}
-- **Minimum generation**: Plants may have to generate a minimum amount to be on.
 - **Ramping limits**: output can change only so fast from hour to hour.
 - **Start-up/shut-down**: starting up a plant costs money, and shutting down can keep a plant offline for hours.
 - **Transmission**: cheap power may not be able to reach the load if lines are congested.
@@ -379,7 +368,7 @@ Over many hours, plant $g$ produces $y_{g,t}$ MW in hour $t$:
 $$
 \begin{aligned}
 \min_{\mathbf{y}} \quad & \sum_{g \in \mathcal{G}} \sum_{t \in \mathcal{T}} \text{VarCost}_g \, y_{g,t} \\
-\text{subject to:} \quad & \sum_{g \in \mathcal{G}} y_{g,t} = d_t \qquad \forall t \in \mathcal{T} \\[0.3em]
+\text{subject to:} \quad & \sum_{g \in \mathcal{G}} y_{g,t} \geq d_t \qquad \forall t \in \mathcal{T} \\[0.3em]
 & P^{\text{min}}_g \leq y_{g,t} \leq P^{\text{max}}_g \qquad \forall g, t
 \end{aligned}
 $$
@@ -396,7 +385,7 @@ Output can change by at most $R_g$ per hour:
 $$
 \begin{aligned}
 \min_{\mathbf{y}} \quad & \sum_{g \in \mathcal{G}} \sum_{t \in \mathcal{T}} \text{VarCost}_g \, y_{g,t} \\
-\text{subject to:} \quad & \sum_{g \in \mathcal{G}} y_{g,t} = d_t \qquad \forall t \in \mathcal{T} \\[0.3em]
+\text{subject to:} \quad & \sum_{g \in \mathcal{G}} y_{g,t} \geq d_t \qquad \forall t \in \mathcal{T} \\[0.3em]
 & P^{\text{min}}_g \leq y_{g,t} \leq P^{\text{max}}_g \qquad \forall g, t \\[0.3em]
 & \color{#D55E00}{y_{g,t+1} - y_{g,t} \leq R_g} \qquad \forall g, \ t = 1, \ldots, T-1 \\[0.3em]
 & \color{#D55E00}{y_{g,t} - y_{g,t+1} \leq R_g} \qquad \forall g, \ t = 1, \ldots, T-1
@@ -414,32 +403,24 @@ $$
 
 # Each dispatchable plant type's ramp limit as a share of its capacity, slowest first
 plant_types = unique(gens[thermal, :Resource])
-lowest_share = zeros(length(plant_types))
-highest_share = zeros(length(plant_types))
+min_share = zeros(length(plant_types))
+max_share = zeros(length(plant_types))
 for (i, resource) in enumerate(plant_types)
     rows = gens[thermal, :][gens[thermal, :Resource] .== resource, :]
-    lowest_share[i] = minimum(rows.Ramp ./ rows.Pmax)
-    highest_share[i] = maximum(rows.Ramp ./ rows.Pmax)
+    min_share[i] = minimum(rows.Ramp ./ rows.Pmax)
+    max_share[i] = maximum(rows.Ramp ./ rows.Pmax)
 end
-for i in sortperm(lowest_share)
-    lowest = round(Int, 100 * lowest_share[i])
-    highest = round(Int, 100 * highest_share[i])
-    if lowest == highest
-        share_text = "$(lowest)%"
+for i in sortperm(min_share)
+    min_percent = round(Int, 100 * min_share[i])
+    max_percent = round(Int, 100 * max_share[i])
+    if min_percent == max_percent
+        share_text = "$(min_percent)%"
     else
-        share_text = "$(lowest)–$(highest)%"
+        share_text = "$(min_percent)–$(max_percent)%"
     end
     println("- **$(plant_types[i])**: up to $(share_text) of capacity per hour")
 end
 ```
-
-::: {.notes}
-These are the hourly limits that planning models use. The nuclear plant can change by `{julia} round(Int, 100 * lowest_share[findfirst(plant_types .== "Nuclear")])`% of its capacity per hour, the CCGTs by `{julia} round(Int, 100 * lowest_share[findfirst(plant_types .== "NG CCGT")])`%, and everything else can cross its whole range within the hour.
-
-Physical ramp rates are faster than these. Gas and coal plants can change by one to several percent of their capacity per minute, so a single running unit can usually cross its operating range within an hour. What limits steam plants over hours is their minimum output and the hours they take to start up, which need on/off decisions. Nuclear plants are usually run at constant output.
-
-The clearest real case of an hourly ramp limit is hydropower below a dam with flow-change rules. At Glen Canyon Dam, releases may rise by at most 4,000 cubic feet per second in an hour and fall by at most 1,500, against a maximum of 25,000, to protect the river downstream.
-:::
 
 ## Demand and Renewables on a Fall Day
 
@@ -476,11 +457,7 @@ Wind and solar enter through their capacity factors $c_{g,t}$:
 
 $$y_{g,t} \leq P^{\text{max}}_g \times c_{g,t} \qquad \forall g \in \mathcal{G}, t \in \mathcal{T}$$
 
-Everything else stays the same. Their variable cost is zero, so the dispatch uses all they can give, unless something else stops it.
-
-::: {.notes}
-For the dispatchable plants the capacity factor is 1 every hour. "Unless something else stops it" foreshadows the three-times-solar case later: when the zero-cost plants and the plants that must run can together supply more than demand, some free energy goes unused.
-:::
+Everything else stays the same. Their variable cost is zero, so the dispatch uses all they will provide unless there is another constraint.
 
 ## Multi-Period Results
 
@@ -505,7 +482,7 @@ function solve_day(; ramp=true, solar_scale=1)
     model = Model(HiGHS.Optimizer)
     @variable(model, gens[g, :Pmin] <= z[g in 1:n_plants, t in 1:24] <= available[g, t])
     @objective(model, Min, sum(gens[g, :VarCost] * z[g, t] for g in 1:n_plants, t in 1:24))
-    @constraint(model, hourly_load[t in 1:24], sum(z[:, t]) == hourly_demand[t])
+    @constraint(model, hourly_load[t in 1:24], sum(z[:, t]) >= hourly_demand[t])
     if ramp
         # ramp limits apply to the dispatchable plants
         @constraint(model, ramp_up[g in thermal, t in 1:23], z[g, t+1] - z[g, t] <= gens[g, :Ramp])
@@ -583,7 +560,7 @@ Fast but expensive gas turbines, or plants kept on all afternoon.
 :::
 
 ::: {.notes}
-California's net load on its lowest spring day has dropped close to zero at midday in recent years, then climbs by about 20 GW in four or five hours as the sun sets. That evening rise has to come from plants that can ramp quickly. If ramp limits bind, the operator either keeps slower plants online through the afternoon (running at their minimums, which can force solar curtailment, as in our three-times-solar case) or relies on fast but expensive combustion turbines. Both raise costs, and without enough ramping capability, demand at sunset may not be met.
+California's net load on its lowest spring day has dropped close to zero at midday in recent years, then climbs by about 20 GW in four or five hours as the sun sets. That evening rise has to come from plants that can ramp quickly. If ramp limits bind, the operator either keeps slower plants online through the afternoon (running at their minimums, which can force solar curtailment) or relies on fast but expensive combustion turbines. Both raise costs, and without enough ramping capability, demand at sunset may not be met.
 :::
 
 ## Tripling the Solar Capacity
@@ -595,9 +572,13 @@ California's net load on its lowest spring day has dropped close to zero at midd
 triple_solar_day = solve_day(solar_scale=3)
 triple_solar_no_ramp = solve_day(solar_scale=3, ramp=false)
 
-# Zero-cost energy (hydro, wind and solar) that was available but not used [MWh]
-unused = triple_solar_day.available .- triple_solar_day.generation    # plants × hours
-unused_free_energy = sum(unused[gens.VarCost .== 0, :])
+# Zero-cost energy (hydro, wind and solar) that was available but did not serve demand [MWh].
+# Demand is a >= constraint, so the model may run these plants above demand: that output is curtailed
+free = gens.VarCost .== 0
+free_available = vec(sum(triple_solar_day.available[free, :]; dims=1))                 # [MW] each hour
+free_served = hourly_demand .- vec(sum(triple_solar_day.generation[.!free, :]; dims=1))  # [MW] each hour
+@assert all(-1e-6 .<= free_served .<= free_available .+ 1e-6)
+unused_free_energy = sum(free_available .- free_served)
 
 p_solar = plot(day_hours, base_day.prices, seriestype=:steppost, color=cb_blue,
     label="$(gens[end, :Pmax]) MW solar", xlabel="Hour", ylabel="Price  [\$/MWh]", xticks=0:6:24,

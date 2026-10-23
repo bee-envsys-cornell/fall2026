@@ -28,7 +28,8 @@ than clear, every time.
 - **Plain, descriptive names.** `distance_into_box`, not `Δ`. `DO_in`, not `Cm`. This is a
   guideline, not a hard rule: single letters are fine for loop indices and where they are the
   conventional notation (`x` and `y` for a generic input and output, `n` or `k` in a short helper).
-  Avoid Unicode subscripts (`α₁`) and abbreviations a reader has to decode.
+  Avoid Unicode subscripts (`α₁`) and abbreviations a reader has to decode. No playful or colloquial
+  names: the ends of a range are `min_cost` and `max_cost`, not `cheapest` and `dearest`.
 - **Explicit loops over clever constructs.** No `Ref(...)` broadcasting, `searchsortedlast`, returned
   closures, ternaries, or comprehension tricks. A plain `for` loop with an `if` inside is the target.
 - **Structure the code like the physics.** If the prose says "treat each stretch as a box," loop over
@@ -113,13 +114,20 @@ interest. **Here**: …"). Takeaways state concepts without this example's numbe
 
 ## Power-system examples
 
-Two rules for dispatch and capacity-expansion material, in decks and assessments alike (decided Oct 11):
+Rules for dispatch and capacity-expansion material, in decks and assessments alike (the first two decided Oct 11):
 
 - **Ramp limits apply to dispatchable plants.** Do not describe wind or solar as ramping, and do not
   put ramp constraints on them in a model: their output follows the weather through a capacity factor.
 - **Interpret only the shadow prices that are read in practice**: the demand balance (the price of
   electricity) and a system-wide cap such as emissions (a carbon price). Do not ask students to
   interpret a generator's own capacity or minimum-output shadow price.
+- **Generation at least meets demand** (decided Oct 23): write the demand constraint as
+  $\sum_g y_{g,t} \geq d_t$ (plus non-served energy where the model has it), in the math and in
+  `JuMP`, never as an equality. Output above demand is curtailment, so a model with ramp limits and
+  minimum outputs stays feasible. With zero-cost plants the solver may run them above demand, so any
+  number or figure about wind, solar or hydro generation, unused energy or generation shares counts
+  only the energy that served demand (demand minus the other plants' output), not the solver's raw
+  output. The shadow price is unchanged: `-shadow_price` of the demand constraint is still the price.
 
 **The lecture examples share one set of fuel prices: 2022's** (decided Oct 12). Natural gas is \$7.21
 and coal \$2.36 per MMBtu, the averages delivered to U.S. power plants that year, in the Oct 28

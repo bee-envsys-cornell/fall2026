@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.3">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-10-23">
+
+<title>BEE 4750 Homework 6: Linear Programs and Shadow Prices – Environmental Systems Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../hw/index.qmd#schedule" rel="next">
+<link href="../../hw/hw05/hw05.html" rel="prev">
+<link href="../../_assets/logos/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-037772e4b0a8fb61e9a28208dd0e90cd.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-41afc7412041501ec6863dfe70bda895.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<!-- MathJax 3 -->
+<script>
+window.MathJax = {
+    tex: {
+      tags: 'ams'
+    }
+  };
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="BEE 4750 Homework 6: Linear Programs and Shadow Prices – Environmental Systems Analysis">
+<meta property="og:site_name" content="Environmental Systems Analysis">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">BEE 4750/5750</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-info" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Info</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-info">    
+        <li>
+    <a class="dropdown-item" href="../../syllabus.html">
+ <span class="dropdown-text">Syllabus</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../policies/index.html">
+ <span class="dropdown-text">Course Policies</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../faq/index.html">
+ <span class="dropdown-text">FAQ</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../setup/index.html">
+ <span class="dropdown-text">Setup</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../schedule.html"> 
+<span class="menu-text">Course Schedule</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-coursework" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Coursework</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-coursework">    
+        <li>
+    <a class="dropdown-item" href="../../labs/index.html">
+ <span class="dropdown-text">Labs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../hw/index.html">
+ <span class="dropdown-text">Homework</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../mini-project/index.html">
+ <span class="dropdown-text">Mini-Projects</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../project/index.html">
+ <span class="dropdown-text">Final Project</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-resources" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Resources</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-resources">    
+        <li>
+    <a class="dropdown-item" href="../../tutorials/index.html">
+ <span class="dropdown-text">Tutorials</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/general.html">
+ <span class="dropdown-text">General Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/julia.html">
+ <span class="dropdown-text">Julia Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/ai.html">
+ <span class="dropdown-text">Generative AI and LLMs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/github.html">
+ <span class="dropdown-text">GitHub Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/markdown.html">
+ <span class="dropdown-text">Markdown Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../resources/optimization.html">
+ <span class="dropdown-text">Optimization Resources</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/bee-envsys-cornell/fall2025"> 
+<span class="menu-text"><i class="fa-brands fa-github" aria-label="github"></i> GitHub</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://canvas.cornell.edu"> 
+<span class="menu-text"><i class="fa-regular fa-notebook" aria-label="notebook"></i> Canvas</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://edstem.org"> 
+<span class="menu-text"><i class="fa-regular fa-comments" aria-label="comments"></i> Ed</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://gradescope.com"> 
+<span class="menu-text"><i class="fa-regular fa-chart-simple" aria-label="chart-simple"></i> Gradescope</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../hw/hw06/hw06.html">Homework 6</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hw/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hw/hw01/hw01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework 1</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hw/hw02/hw02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework 2</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hw/hw03/hw03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework 3</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hw/hw04/hw04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework 4</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hw/hw05/hw05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework 5</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hw/hw06/hw06.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Homework 6</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hw/index.html#schedule" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework 7 (Nov.&nbsp;4)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hw/index.html#schedule" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework 8 (Nov.&nbsp;11)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hw/index.html#schedule" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework 9 (Nov.&nbsp;18)</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
+  <ul class="collapse">
+  <li><a href="#instructions" id="toc-instructions" class="nav-link" data-scroll-target="#instructions">Instructions</a></li>
+  <li><a href="#load-environment" id="toc-load-environment" class="nav-link" data-scroll-target="#load-environment">Load Environment</a></li>
+  </ul></li>
+  <li><a href="#problems-total-50-points" id="toc-problems-total-50-points" class="nav-link" data-scroll-target="#problems-total-50-points">Problems (Total: 50 Points)</a>
+  <ul class="collapse">
+  <li><a href="#problem-1-13" id="toc-problem-1-13" class="nav-link" data-scroll-target="#problem-1-13">Problem 1 (13)</a></li>
+  <li><a href="#problem-2-7" id="toc-problem-2-7" class="nav-link" data-scroll-target="#problem-2-7">Problem 2 (7)</a></li>
+  <li><a href="#problem-3-18" id="toc-problem-3-18" class="nav-link" data-scroll-target="#problem-3-18">Problem 3 (18)</a></li>
+  <li><a href="#problem-4-12" id="toc-problem-4-12" class="nav-link" data-scroll-target="#problem-4-12">Problem 4 (12)</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/hw/hw06/hw06.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="hw06.pdf"><i class="bi bi-file-earmark-pdf"></i>PDF</a></li><li><a href="hw06.ipynb" download="hw06.ipynb"><i class="bi bi-laptop"></i>Notebook</a></li><li><a href="hw06.ipynb" download="hw06.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li><li><a href="hw06.pdf"><i class="bi bi-file-pdf"></i>Typst</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">BEE 4750 Homework 6: Linear Programs and Shadow Prices</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 23, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Due Date
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Thursday, 10/29/26, 9:00pm</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-caution">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>If you are enrolled in the course, use the assignment link posted on Ed Discussion so that we can find your repository if you need help.</p>
+</div>
+</div>
+</div>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<section id="instructions" class="level3">
+<h3 class="anchored" data-anchor-id="instructions">Instructions</h3>
+<ul>
+<li>Problem 1 asks you to formulate a water-supply problem as a linear program.</li>
+<li>Problem 2 asks you to interpret a linear program graphically.</li>
+<li>Problem 3 asks you to find the optimal solution to a stormwater plan and its shadow prices by hand, and to see where a shadow price stops being a good estimate.</li>
+<li>Problem 4 is a larger nutrient-management LP. The <code>JuMP</code> code that solves it is provided; you interpret its solution.</li>
+<li>Write your answers in Markdown cells. For the sketches, a photo or scan of a hand drawing is fine: save it in this folder and insert it with <code>![](sketch.png)</code>.</li>
+</ul>
+</section>
+<section id="load-environment" class="level3">
+<h3 class="anchored" data-anchor-id="load-environment">Load Environment</h3>
+<div id="2" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">Pkg</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">activate</span>(<span class="pp">@__DIR__</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">instantiate</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="4" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">JuMP</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">HiGHS</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Plots</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+<section id="problems-total-50-points" class="level2">
+<h2 class="anchored" data-anchor-id="problems-total-50-points">Problems (Total: 50 Points)</h2>
+<section id="problem-1-13" class="level3">
+<h3 class="anchored" data-anchor-id="problem-1-13">Problem 1 (13)</h3>
+<p>A city of about 150,000 people supplies its drinking water from two sources: a river intake and a groundwater well field. It must deliver at least 20 million gallons per day (MGD). The operating cost (energy and chemicals) of treating and pumping river water is $300 per million gallons; for groundwater, which has to be pumped from deeper, it is $500 per million gallons. The river withdrawal permit allows at most 15 MGD, and the well field can produce at most 12 MGD.</p>
+<p>River water carries 8 mg/L of nitrate from farms upstream; the groundwater carries 2 mg/L. To stay well below the 10 mg/L drinking-water standard, the city requires the blended supply to average at most 6 mg/L of nitrate. The city wants to meet demand at the lowest daily cost.</p>
+<section id="problem-1.1-1" class="level4">
+<h4 class="anchored" data-anchor-id="problem-1.1-1">Problem 1.1 (1)</h4>
+<p>Define the decision variables, with units.</p>
+</section>
+<section id="problem-1.2-2" class="level4">
+<h4 class="anchored" data-anchor-id="problem-1.2-2">Problem 1.2 (2)</h4>
+<p>What are the bounds on each decision variable, and where does each bound come from?</p>
+</section>
+<section id="problem-1.3-2" class="level4">
+<h4 class="anchored" data-anchor-id="problem-1.3-2">Problem 1.3 (2)</h4>
+<p>Write the objective function, with units. Is the city maximizing or minimizing it?</p>
+</section>
+<section id="problem-1.4-5" class="level4">
+<h4 class="anchored" data-anchor-id="problem-1.4-5">Problem 1.4 (5)</h4>
+<p>Write every constraint in linear form, including the bounds from Problem 1.2, each with a short label saying what it represents and with units that agree on both sides.</p>
+</section>
+<section id="problem-1.5-3" class="level4">
+<h4 class="anchored" data-anchor-id="problem-1.5-3">Problem 1.5 (3)</h4>
+<p>Write the problem in standard form,</p>
+<p><span class="math display">\[\max_{\mathbf{x}} \quad \mathbf{c}^\top \mathbf{x} \qquad \text{subject to} \quad \mathbf{A}\mathbf{x} \leq \mathbf{b}, \quad \mathbf{x} \geq \mathbf{0},\]</span></p>
+<p>where <span class="math inline">\(\mathbf{x}\)</span> is the vector of decision variables. <span class="math inline">\(\mathbf{A}\mathbf{x} \leq \mathbf{b}\)</span> collects every constraint except <span class="math inline">\(\mathbf{x} \geq \mathbf{0}\)</span>: <span class="math inline">\(\mathbf{A}\)</span> has one row, and <span class="math inline">\(\mathbf{b}\)</span> one entry, for each. Give the vector <span class="math inline">\(\mathbf{c}\)</span>, the matrix <span class="math inline">\(\mathbf{A}\)</span>, and the vector <span class="math inline">\(\mathbf{b}\)</span> explicitly.</p>
+</section>
+</section>
+<section id="problem-2-7" class="level3">
+<h3 class="anchored" data-anchor-id="problem-2-7">Problem 2 (7)</h3>
+<p>Consider the linear program</p>
+<p><span class="math display">\[
+\begin{aligned}
+\max_{x_1, x_2} \quad &amp; z = 3x_1 + 2x_2 \\
+\text{subject to:} \quad &amp; x_1 + x_2 \leq 8 \\
+&amp; 2x_1 + x_2 \leq 12 \\
+&amp; x_2 \leq 6 \\
+&amp; x_1, x_2 \geq 0.
+\end{aligned}
+\]</span></p>
+<section id="problem-2.1-2" class="level4">
+<h4 class="anchored" data-anchor-id="problem-2.1-2">Problem 2.1 (2)</h4>
+<p>Sketch the feasible region. Label each constraint’s boundary line, and label every corner of the region with its coordinates.</p>
+</section>
+<section id="problem-2.2-5" class="level4">
+<h4 class="anchored" data-anchor-id="problem-2.2-5">Problem 2.2 (5)</h4>
+<p>Say whether each of the following points is optimal for this linear program, and justify each answer.</p>
+<ol type="1">
+<li><span class="math inline">\((4, 4)\)</span></li>
+<li><span class="math inline">\((2, 6)\)</span></li>
+<li><span class="math inline">\((3, 5)\)</span></li>
+<li><span class="math inline">\((2, 2)\)</span></li>
+<li><span class="math inline">\((5, 3)\)</span></li>
+</ol>
+</section>
+</section>
+<section id="problem-3-18" class="level3">
+<h3 class="anchored" data-anchor-id="problem-3-18">Problem 3 (18)</h3>
+<p>A lakeside city is under a consent order to reduce the stormwater reaching its combined sewers and the phosphorus reaching its lake. It plans to build two kinds of green infrastructure in one sewershed:</p>
+<ul>
+<li><strong>Bioretention cells</strong> (rain gardens): shallow planted basins that collect runoff from the surrounding pavement and roofs and filter it through soil. Each cell drains an area several times its own size.</li>
+<li><strong>Permeable pavement</strong>: parking-lot surfaces that let rain soak through into a stone reservoir underneath. It mostly handles the rain that falls on it.</li>
+</ul>
+<p>Per acre built, the two options have the following performance and cost characteristics. The costs are annualized: construction spread over the lifetime of the infrastructure plus maintenance.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Per acre built</th>
+<th style="text-align: right;">Bioretention</th>
+<th style="text-align: right;">Permeable pavement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Runoff captured (million gallons/yr)</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Phosphorus removed (kg/yr)</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Annualized cost ($1,000/yr)</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">30</td>
+</tr>
+</tbody>
+</table>
+<p>The consent order requires the city to capture at least 40 million gallons of runoff per year and to remove at least 30 kg of phosphorus per year. Suitable sites exist for at most 6 acres of bioretention, and there are 15 acres of parking lots that could take permeable pavement. With <span class="math inline">\(B\)</span> the acres of bioretention and <span class="math inline">\(P\)</span> the acres of permeable pavement, the city’s problem is</p>
+<p><span class="math display">\[
+\begin{aligned}
+\min_{B, P} \quad &amp; 50B + 30P &amp;&amp; (\$1\text{,}000/\text{yr}) \\
+\text{subject to:} \quad &amp; 5B + 2P \geq 40 &amp;&amp; \text{runoff captured (million gal/yr)} \\
+&amp; 5B + P \geq 30 &amp;&amp; \text{phosphorus removed (kg/yr)} \\
+&amp; B \leq 6 &amp;&amp; \text{bioretention sites (acres)} \\
+&amp; P \leq 15 &amp;&amp; \text{parking lots (acres)} \\
+&amp; B, P \geq 0.
+\end{aligned}
+\]</span></p>
+<section id="problem-3.1-2" class="level4">
+<h4 class="anchored" data-anchor-id="problem-3.1-2">Problem 3.1 (2)</h4>
+<p>Sketch the feasible region, with <span class="math inline">\(B\)</span> on the horizontal axis, and label every corner with its coordinates.</p>
+</section>
+<section id="problem-3.2-2" class="level4">
+<h4 class="anchored" data-anchor-id="problem-3.2-2">Problem 3.2 (2)</h4>
+<p>Find the optimal plan, using level lines of the cost or by evaluating the cost at each corner, and report the minimum annual cost.</p>
+</section>
+<section id="problem-3.3-1" class="level4">
+<h4 class="anchored" data-anchor-id="problem-3.3-1">Problem 3.3 (1)</h4>
+<p>Which constraints are binding at the optimum?</p>
+</section>
+<section id="problem-3.4-4" class="level4">
+<h4 class="anchored" data-anchor-id="problem-3.4-4">Problem 3.4 (4)</h4>
+<p>Find the shadow prices of the two binding constraints, with units. One way: relax each binding constraint by one unit, find where the optimal corner moves, and compute how much the cost falls. You can check your answer with the method from lecture, writing the cost coefficients as a combination of the binding constraints’ coefficients.</p>
+</section>
+<section id="problem-3.5-1" class="level4">
+<h4 class="anchored" data-anchor-id="problem-3.5-1">Problem 3.5 (1)</h4>
+<p>The shadow price of the phosphorus constraint is zero. What does that mean for the city?</p>
+</section>
+<section id="problem-3.6-2" class="level4">
+<h4 class="anchored" data-anchor-id="problem-3.6-2">Problem 3.6 (2)</h4>
+<p>A school district offers a 4-acre site for bioretention, but only as a single lease, at $60,000 per year for the whole site. Using only the shadow price of the bioretention-site constraint, estimate how much 4 more acres would save the city each year. On that estimate, should the city sign the lease?</p>
+</section>
+<section id="problem-3.7-3" class="level4">
+<h4 class="anchored" data-anchor-id="problem-3.7-3">Problem 3.7 (3)</h4>
+<p>Raise the bioretention limit from 6 to 10 acres. Find the new optimal plan and its annual cost by hand, by extending your sketch from Problem 3.1.</p>
+</section>
+<section id="problem-3.8-1" class="level4">
+<h4 class="anchored" data-anchor-id="problem-3.8-1">Problem 3.8 (1)</h4>
+<p>How much does the city actually save with the 10-acre limit, and should it sign the lease?</p>
+</section>
+<section id="problem-3.9-2" class="level4">
+<h4 class="anchored" data-anchor-id="problem-3.9-2">Problem 3.9 (2)</h4>
+<p>Look at your plan from Problem 3.7. Why is the shadow-price estimate from Problem 3.6 wrong for a change this large?</p>
+</section>
+</section>
+<section id="problem-4-12" class="level3">
+<h3 class="anchored" data-anchor-id="problem-4-12">Problem 4 (12)</h3>
+<p>Nitrogen from farms and wastewater treatment plants feeds algal blooms in rivers, reservoirs and estuaries. A state agency is setting limits on the nitrogen load reaching three points on a river: a drinking-water <strong>intake</strong>, a <strong>reservoir</strong>, and the <strong>estuary</strong> at the river’s mouth. Six sources release nitrogen to the river. Going downstream, the river passes the upper farms and an upstream town’s treatment plant, then the intake; then the middle farms and a city’s treatment plant, then the reservoir; then the lower farms and a coastal town’s treatment plant, and then it reaches the estuary.</p>
+<p>Not all the nitrogen a source releases reaches each point downstream of it: plants and algae take some up, bacteria return some to the air, and the reservoir traps about half of what flows into it. A source’s <strong>delivery ratio</strong> to a point is the fraction of its nitrogen that reaches that point; it is 0 for a point upstream of the source. Each source can cut its nitrogen, with cover crops and buffer strips on the farms or upgrades at the treatment plants, up to a maximum and at a cost per kg removed. Loads and removals are in kg of nitrogen per day:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Source</th>
+<th style="text-align: right;">Load with no cuts</th>
+<th style="text-align: right;">Maximum removal</th>
+<th style="text-align: right;">Cost per kg removed</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Upper farms</td>
+<td style="text-align: right;">1,000</td>
+<td style="text-align: right;">300</td>
+<td style="text-align: right;">$3.50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Upstream town’s plant</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">160</td>
+<td style="text-align: right;">$5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Middle farms</td>
+<td style="text-align: right;">1,200</td>
+<td style="text-align: right;">360</td>
+<td style="text-align: right;">$4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">City’s plant</td>
+<td style="text-align: right;">1,500</td>
+<td style="text-align: right;">1,200</td>
+<td style="text-align: right;">$8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lower farms</td>
+<td style="text-align: right;">800</td>
+<td style="text-align: right;">240</td>
+<td style="text-align: right;">$6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Coastal town’s plant</td>
+<td style="text-align: right;">300</td>
+<td style="text-align: right;">240</td>
+<td style="text-align: right;">$7</td>
+</tr>
+</tbody>
+</table>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Delivery ratio</th>
+<th style="text-align: right;">Intake</th>
+<th style="text-align: right;">Reservoir</th>
+<th style="text-align: right;">Estuary</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Upper farms</td>
+<td style="text-align: right;">0.4</td>
+<td style="text-align: right;">0.3</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Upstream town’s plant</td>
+<td style="text-align: right;">0.8</td>
+<td style="text-align: right;">0.6</td>
+<td style="text-align: right;">0.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Middle farms</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.6</td>
+<td style="text-align: right;">0.3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">City’s plant</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.8</td>
+<td style="text-align: right;">0.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lower farms</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Coastal town’s plant</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.9</td>
+</tr>
+</tbody>
+</table>
+<p>The limits are 500 kg/day at the intake, 1,500 kg/day at the reservoir and 1,200 kg/day at the estuary. The agency wants the cheapest set of cuts that meets all three.</p>
+<p>With six decision variables, you can’t draw the feasible region, and it has far too many corners to check by hand. The code below writes the problem as a linear program in <code>JuMP</code> and solves it; you only need to run it. The shadow prices then do the work the picture did in Problems 2 and 3: they explain why the optimal plan looks the way it does.</p>
+<div id="6" class="cell" data-execution_count="0">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>source_name <span class="op">=</span> [<span class="st">"Upper farms"</span>, <span class="st">"Upstream town"</span>, <span class="st">"Middle farms"</span>,</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"City"</span>, <span class="st">"Lower farms"</span>, <span class="st">"Coastal town"</span>]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>nitrogen_load <span class="op">=</span> [<span class="fl">1000</span>, <span class="fl">200</span>, <span class="fl">1200</span>, <span class="fl">1500</span>, <span class="fl">800</span>, <span class="fl">300</span>]   <span class="co"># [kg/day] with no cuts</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>max_removal <span class="op">=</span> [<span class="fl">300</span>, <span class="fl">160</span>, <span class="fl">360</span>, <span class="fl">1200</span>, <span class="fl">240</span>, <span class="fl">240</span>]       <span class="co"># [kg/day]</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>removal_cost <span class="op">=</span> [<span class="fl">3.5</span>, <span class="fl">5</span>, <span class="fl">4</span>, <span class="fl">8</span>, <span class="fl">6</span>, <span class="fl">7</span>]                 <span class="co"># [$ per kg removed]</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>point_name <span class="op">=</span> [<span class="st">"Intake"</span>, <span class="st">"Reservoir"</span>, <span class="st">"Estuary"</span>]</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>load_limit <span class="op">=</span> [<span class="fl">500</span>, <span class="fl">1500</span>, <span class="fl">1200</span>]                      <span class="co"># [kg/day]</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># delivery[j, i]: the fraction of source i's nitrogen that reaches point j</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>delivery <span class="op">=</span> [<span class="fl">0.4</span>  <span class="fl">0.8</span>  <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span>;</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>            <span class="fl">0.3</span>  <span class="fl">0.6</span>  <span class="fl">0.6</span>  <span class="fl">0.8</span>  <span class="fl">0</span>    <span class="fl">0</span>;</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>            <span class="fl">0.15</span> <span class="fl">0.3</span>  <span class="fl">0.3</span>  <span class="fl">0.4</span>  <span class="fl">0.6</span>  <span class="fl">0.9</span>]</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>n_sources <span class="op">=</span> <span class="fu">length</span>(nitrogen_load)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>n_points <span class="op">=</span> <span class="fu">length</span>(load_limit)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>nutrients <span class="op">=</span> <span class="fu">Model</span>(HiGHS.Optimizer)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="fu">set_silent</span>(nutrients)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co"># removal at each source [kg/day], up to its maximum</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="pp">@variable</span>(nutrients, <span class="fl">0</span> <span class="op">&lt;=</span> removal[i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_sources] <span class="op">&lt;=</span> max_removal[i])</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co"># daily cost [$/day]</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="pp">@objective</span>(nutrients, Min,</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(removal_cost[i] <span class="op">*</span> removal[i] <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_sources))</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co"># the nitrogen reaching each point [kg/day] stays within its limit</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="pp">@constraint</span>(nutrients, limit[j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_points],</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(delivery[j, i] <span class="op">*</span> (nitrogen_load[i] <span class="op">-</span> removal[i])</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_sources) <span class="op">&lt;=</span> load_limit[j])</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="fu">optimize!</span>(nutrients)</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(<span class="st">"Daily cost: \$"</span>, <span class="fu">round</span>(<span class="fu">objective_value</span>(nutrients); digits<span class="op">=</span><span class="fl">2</span>))</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="co"># How much each source removes [kg/day]. Adding 0 after rounding</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="co"># turns a -0.0 from the solver into 0</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_sources</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    kg_removed <span class="op">=</span> <span class="fu">round</span>(<span class="fu">value</span>(removal[i]); digits<span class="op">=</span><span class="fl">1</span>) <span class="op">+</span> <span class="fl">0</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">println</span>(source_name[i], <span class="st">": removes "</span>, kg_removed, <span class="st">" of at most "</span>,</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>        max_removal[i], <span class="st">" kg/day"</span>)</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="co"># The nitrogen reaching each point with the plan [kg/day], and the</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="co"># shadow price of the point's limit</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>reaching <span class="op">=</span> <span class="fu">zeros</span>(n_points)</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_points</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_sources</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>        kg_left <span class="op">=</span> nitrogen_load[i] <span class="op">-</span> <span class="fu">value</span>(removal[i])</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>        reaching[j] <span class="op">=</span> reaching[j] <span class="op">+</span> delivery[j, i] <span class="op">*</span> kg_left</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>    limit_price <span class="op">=</span> <span class="fu">round</span>(<span class="fu">shadow_price</span>(limit[j]); digits<span class="op">=</span><span class="fl">2</span>) <span class="op">+</span> <span class="fl">0</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>    <span class="fu">println</span>(point_name[j], <span class="st">": "</span>, <span class="fu">round</span>(reaching[j]; digits<span class="op">=</span><span class="fl">1</span>),</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>        <span class="st">" kg/day reaching, limit "</span>, load_limit[j],</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>        <span class="st">" kg/day, shadow price "</span>, limit_price)</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="problem-4.1-2" class="level4">
+<h4 class="anchored" data-anchor-id="problem-4.1-2">Problem 4.1 (2)</h4>
+<p>Run the model. Report the daily cost, how much each source removes (as a table), and the load reaching each of the three points, compared with its limit.</p>
+</section>
+<section id="problem-4.2-3" class="level4">
+<h4 class="anchored" data-anchor-id="problem-4.2-3">Problem 4.2 (3)</h4>
+<p>Which limits bind? Report the shadow price of each limit, as a positive number with units.</p>
+</section>
+<section id="problem-4.3-4" class="level4">
+<h4 class="anchored" data-anchor-id="problem-4.3-4">Problem 4.3 (4)</h4>
+<p>Write <span class="math inline">\(d_{ji}\)</span> for source <span class="math inline">\(i\)</span>’s delivery ratio to point <span class="math inline">\(j\)</span> and <span class="math inline">\(c_i\)</span> for its cost per kg removed. Removing 1 more kg/day at source <span class="math inline">\(i\)</span> lowers the load reaching each point <span class="math inline">\(j\)</span> by <span class="math inline">\(d_{ji}\)</span> kg/day. With <span class="math inline">\(\lambda_j\)</span> the shadow price of point <span class="math inline">\(j\)</span>’s limit (as a positive number), that kilogram is worth</p>
+<p><span class="math display">\[v_i = \sum_{j} \lambda_j d_{ji} \qquad (\$ \text{ per kg removed}).\]</span></p>
+<p>Compute <span class="math inline">\(v_i\)</span> for each source and compare it with the source’s cost, <span class="math inline">\(c_i\)</span>. Use the comparison to explain why each source removes nothing, less than its maximum, or its maximum.</p>
+</section>
+<section id="problem-4.4-3" class="level4">
+<h4 class="anchored" data-anchor-id="problem-4.4-3">Problem 4.4 (3)</h4>
+<p>The upper farms are the cheapest source per kg removed, and the city’s plant is the most expensive. Why does the plan cut nothing at the upper farms, but more at the city’s plant than at any other source?</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script>
+// Key links carry data-release="YYYY-MM-DDTHH:MM", a US Eastern wall time. Until it passes, the
+// link is shown as its plain icon with no target. The key itself is not deployed until then
+// either (scripts/release-keys.sh). Add ?release-now=YYYY-MM-DDTHH:MM to a page URL to check
+// how it will look at another time.
+(function () {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+  }).formatToParts(new Date());
+  const part = (type) => parts.find((p) => p.type === type).value;
+  const now = new URLSearchParams(window.location.search).get("release-now") ||
+    `${part("year")}-${part("month")}-${part("day")}T${part("hour")}:${part("minute")}`;
+  document.querySelectorAll("a.key-link[data-release]").forEach((link) => {
+    if (link.dataset.release > now) {
+      const icon = document.createElement("span");
+      icon.className = "key-pending";
+      icon.innerHTML = link.innerHTML;
+      icon.title = `Posted ${link.dataset.release.replace("T", " ")} ET`;
+      link.replaceWith(icon);
+    }
+  });
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/envsys\.viveks\.me\/fall2025");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+        for (let i=0; i<annoteTargets.length; i++) {
+          const annoteTarget = annoteTargets[i];
+          const targetCell = annoteTarget.getAttribute("data-target-cell");
+          const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+          const contentFn = () => {
+            const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+            if (content) {
+              const tipContent = content.cloneNode(true);
+              tipContent.classList.add("code-annotation-tip-content");
+              return tipContent.outerHTML;
+            }
+          }
+          const config = {
+            allowHTML: true,
+            content: contentFn,
+            onShow: (instance) => {
+              selectCodeLines(instance.reference);
+              instance.reference.classList.add('code-annotation-active');
+              window.tippy.hideAll();
+            },
+            onHide: (instance) => {
+              unselectCodeLines();
+              instance.reference.classList.remove('code-annotation-active');
+            },
+            maxWidth: 300,
+            delay: [50, 0],
+            duration: [200, 0],
+            offset: [5, 10],
+            arrow: true,
+            trigger: 'click',
+            appendTo: function(el) {
+              return el.parentElement.parentElement.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'quarto',
+            placement: 'right',
+            positionFixed: true,
+            popperOptions: {
+              modifiers: [
+              {
+                name: 'flip',
+                options: {
+                  flipVariations: false, // true by default
+                  allowedAutoPlacements: ['right'],
+                  fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+                },
+              },
+              {
+                name: 'preventOverflow',
+                options: {
+                  mainAxis: false,
+                  altAxis: false
+                }
+              }
+              ]        
+            }      
+          };
+          window.tippy(annoteTarget, config); 
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../hw/hw05/hw05.html" class="pagination-link" aria-label="Homework 5">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Homework 5</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../hw/index.html#schedule" class="pagination-link" aria-label="Homework 7 (Nov. 4)">
+        <span class="nav-page-text">Homework 7 (Nov.&nbsp;4)</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><span class="faux-block"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> 2025 Vivek Srikrishnan</span><br> See the <a href="../../about.html">About Page</a> for credit information.</p>
+</div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">LICENSE: CC-BY-SA  <i class="fab fa-creative-commons"></i><i class="fab fa-creative-commons-by"></i><i class="fab fa-creative-commons-sa"></i></a>
+  </li>  
+</ul>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bee-envsys-cornell/fall2025/edit/main/hw/hw06/hw06.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bee-envsys-cornell/fall2025/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Made with <a href="https://julialang.org">Julia</a> and <a href="https://quarto.org/">Quarto</a><br> <a href="https://www.github.com/bee-envsys-cornell/fall2026/">View the source at <i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
