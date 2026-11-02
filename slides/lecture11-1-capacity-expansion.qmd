@@ -251,7 +251,7 @@ $$
 Board item. Build the objective in two pieces: investment (fixed cost times capacity) and operation (variable cost times generation, plus the penalty on unserved energy). Constraints: each hour, generation plus unserved energy covers demand; no plant produces more than its installed capacity; everything is non-negative. Ask: is this an LP? Yes: it's linear in every variable, capacity is divisible (we model total MW, not individual units), and demand is treated as known. Mixed integer programming relaxes the second of these assumptions and stochastic programming the third.
 :::
 
-# Solving and Reading the Answer
+# Interpreting the Solution
 
 ## Implementation in `JuMP`
 
