@@ -27,5 +27,5 @@ Mini-projects are graded on Gradescope using rubrics similar to the [standard ho
 
 | Assignment | Instructions | Solutions | Due Date |
 |:----------:|:------------:|:---------:|:--------:|
-| Mini-Project 1 | [{{< fa sharp pen-field >}}](mp01/mp01.qmd) | {{< fa sharp key-skeleton >}} | Oct. 23 |
+| Mini-Project 1 | [{{< fa sharp pen-field >}}](mp01/mp01.qmd) | [{{< fa sharp key-skeleton >}}](../solutions/mp01/mp01.html){.key-link data-release="2026-11-02T13:00"} | Oct. 23 |
 | Mini-Project 2 | [{{< fa sharp pen-field >}}](mp02/mp02.qmd) | [{{< fa sharp key-skeleton >}}](../solutions/mp02/mp02.html){.key-link data-release="2026-11-21T21:00"} | Nov. 20 |
