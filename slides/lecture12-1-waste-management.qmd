@@ -53,6 +53,7 @@ using Measures
 using LaTeXStrings
 using JuMP
 using HiGHS
+using Printf
 
 plot_font = "Palatino Roman"
 default(
@@ -135,18 +136,12 @@ An optional facility needs a **binary** $u \in \{0, 1\}$:
 **Raises the question**: what if the decisions are **flows** through a network?
 
 ::: {.notes}
-A binary variable turns an on/off decision into linear constraints; here that idea meets a network.
-
-Likely questions. Why is the WTE open if it is expensive? Because the landfill is exactly full, and the recycler's residual has to go somewhere. Why is the binary in the capacity constraint? So that a closed facility cannot receive anything: one constraint does the job of "if Y is zero, no flow". What is "residual"? What a facility passes on after processing: the recycler sends 60% of what it receives onward, and the combustor leaves 20% as ash.
+A binary variable turns an on/off decision into linear constraints.
 :::
 
 ## Questions?
 
 {{< include _poll-prompt.qmd >}}
-
-::: {.notes}
-If the poll link does not work, ask for hands instead.
-:::
 
 # Solid Waste Management
 
@@ -170,7 +165,7 @@ Source: [EPA](https://www.epa.gov/homeland-security-waste/waste-management-optio
 ::::
 
 ::: {.notes}
-A city produces waste every day and has to put it somewhere. The options form a hierarchy: reduce first, then recycle, then recover energy, and landfill last. Two kinds of decision are tangled together: where each truckload goes (a routing decision that can vary continuously), and which facilities to build or keep open (an on/off decision). That combination is why this is a mixed integer problem.
+A city produces waste every day and has to put it somewhere. The options form a hierarchy: reduce first, then recycle, then recover energy, and landfill last. The problem combines two kinds of decision: where each truckload goes (a routing decision that can vary continuously), and which facilities to build or keep open (an on/off decision). That combination is why this is a mixed integer problem.
 :::
 
 ## Waste Allocation As A Network
@@ -180,7 +175,7 @@ Want to model *flows* between waste sources and sinks (disposal sites).
 ![Network Representation](figures/waste-network-blank.svg){width=75%}
 
 ::: {.notes}
-A network has nodes (cities, facilities) and arcs (the roads between them). The decisions are how much flows along each arc. Point out that some arcs go from one facility to another: what a facility does not fully dispose of has to be shipped on.
+A network has nodes (cities, facilities) and arcs (the roads between them). The decisions are how much flows along each arc. Some arcs go from one facility to another: what a facility does not fully dispose of has to be shipped on.
 :::
 
 ## Network Parameterization
@@ -206,16 +201,16 @@ Three symbols to carry through the lecture: S for what each source produces, K f
 
 ## Conservation at Each Node
 
-At every node, flow is **conserved**: a source ships everything it produces, $\sum_j W_{ij} = S_i$, and a facility passes on a fixed fraction of what arrives.
+**Mass balance** at each node: a source ships everything it produces, $\sum_j W_{ij} = S_i$. A facility passes on a fixed fraction of what arrives.
 
-**Check**: A transfer station receives 40 Mg/day from each of two cities and sends it all to a landfill ($T_L$) or a recycler ($T_R$). Write its constraint.
+A transfer station receives 40 Mg/day from each of two cities and sends it all to a landfill ($T_L$) or a recycler ($T_R$). **What is its mass-balance constraint?**
 
 ::: {.fragment .fade-in}
 $$T_L + T_R = 40 + 40 = 80 \text{ Mg/day}$$
 :::
 
 ::: {.notes}
-Conservation is the core of every network model: nothing is created or destroyed at a node, only routed or transformed. Give the class a minute on the transfer station, then reveal the answer: what leaves equals what arrives. A facility is the same idea with a transformation: a recycler that recovers 40% passes on the other 60%. If short on time, skip the check and reveal the answer directly.
+Conservation holds at every node: nothing is created or destroyed at a node, only routed or transformed. At the transfer station, what leaves equals what arrives. A facility is the same idea with a transformation: a recycler that recovers 40% passes on the other 60%.
 :::
 
 ## What Is Missing?
@@ -230,7 +225,7 @@ The network captures the graph structure of the system, but nothing else. **What
 :::
 
 ::: {.notes}
-Ask the question and take a couple of answers before revealing the list. The graph says what is connected to what; it says nothing about what a recycler or an incinerator does to the waste, what anything costs, or what the rules are. All of that has to come from outside the network.
+The graph says what is connected to what; it says nothing about what an MRF or a WTE does to the waste, what anything costs, or what the rules are. All of that has to come from outside the network.
 :::
 
 # Waste Management Example
@@ -251,7 +246,7 @@ Three disposal options:
 ::::
 
 ::: {.notes}
-Two cities, producing 100 and 170 Mg/day, and three facilities with the capacities in red. Distances in blue. Note the arcs between facilities: the recycler (MRF) sends its residual to the incinerator (WTE) or the landfill, and the incinerator sends its ash to the landfill.
+Two cities, producing 100 and 170 Mg/day, and three facilities with the capacities in red. Distances in blue. Note the arcs between facilities: the MRF sends its residual to the WTE or the landfill, and the WTE sends its ash to the landfill.
 :::
 
 ## Decision Variables
@@ -267,12 +262,12 @@ $Y_j$ | Operational status (on/off) of disposal $j$ (binary)
 :::
 
 ::: {.notes}
-Ask, wait, then reveal. Three kinds: flows from cities (W), flows of residuals between facilities (R), and whether each facility operates (Y, binary). The residual flows here are R21 (MRF to WTE), R23 (MRF to landfill), and R13 (WTE ash to landfill). The facility numbering is WTE 1, MRF 2, landfill 3.
+Three kinds: flows from cities (W), flows of residuals between facilities (R), and whether each facility operates (Y, binary). The residual flows here are R21 (MRF to WTE), R23 (MRF to landfill), and R13 (WTE ash to landfill). The facility numbering is WTE 1, MRF 2, landfill 3.
 :::
 
 ## What Does It Cost?
 
-- **Transportation**: $\sum_{i, j} a_{ij} \, l_{ij} \, W_{ij}$ (\$/Mg-km × km × Mg/day), plus residuals.
+- **Transportation**: a cost $a_{ij}$ (\$/Mg-km) times the distance $l_{ij}$ (km) from $i$ to $j$ times the flow, $\sum_{i, j} a_{ij} \, l_{ij} \, W_{ij}$, plus residuals.
 - **Disposal**: a fixed cost $c_j$ (\$/day) and a tipping cost $b_j$ (\$/Mg).
 
 ::: {.fragment .fade-in}
@@ -282,7 +277,7 @@ $$\text{Disposal cost} = \sum_j \left[c_j + b_j \times (\text{everything arrivin
 :::
 
 ::: {.notes}
-Build the two cost components. Then ask whether the disposal expression is right, and give the class a moment. The problem is the fixed cost: as written, every facility pays it even if it receives nothing. The next slide fixes that.
+Board item: the two cost components. The problem is the fixed cost: as written, every facility pays it even if it receives nothing.
 :::
 
 ## Fixed Costs Need an On/Off Variable
@@ -313,10 +308,10 @@ for j in 1:3
 end
 ```
 
-Transport costs \$`{julia} fmt(transport_rate)`/Mg-km. The MRF recycles `{julia} round(Int, 100 * recycle_rate)`% of what it receives, at \$`{julia} recycle_cost`/Mg recycled, and passes on the rest; the WTE leaves `{julia} round(Int, 100 * ash_rate)`% of its input as ash.
+Transport costs \$`{julia} @sprintf("%.2f", transport_rate)`/Mg-km. The MRF recycles `{julia} round(Int, 100 * recycle_rate)`% of what it receives, at \$`{julia} recycle_cost`/Mg recycled, and passes on the rest; the WTE leaves `{julia} round(Int, 100 * ash_rate)`% of its input as ash.
 
 ::: {.notes}
-The daily fixed costs are the annual costs divided by 365. The recycler is cheap to run but only handles waste: what it does not recycle (60%) still has to go to the incinerator or the landfill.
+The daily fixed costs are the annual costs divided by 365. The MRF is cheap to run but does not dispose of the rest: the `{julia} round(Int, 100 * (1 - recycle_rate))`% it does not recycle still has to go to the WTE or the landfill.
 :::
 
 ## Working Out One Cost Coefficient
@@ -353,7 +348,7 @@ println("| WTE ash | — | — | ", fmt(cost_R13), " |")
 ::::
 
 ::: {.notes}
-Work one coefficient aloud: haul 5 km at 1.50 a Mg-km, tip 5 dollars, and recycle 40% of the ton at 35 dollars per ton recycled. Every other entry is built the same way; for example City 1 to the WTE is 1.5 times 15 plus 60, which is 82.5. The residual rows include the tipping cost at the facility receiving them. If short on time, skip the worked line and show only the table.
+The worked coefficient: haul `{julia} city_distance[1, 2]` km at \$`{julia} @sprintf("%.2f", transport_rate)` a Mg-km, tip \$`{julia} tipping[2]`, and recycle `{julia} round(Int, 100 * recycle_rate)`% of each Mg at \$`{julia} recycle_cost` per Mg recycled. Every other entry is built the same way; for example, City 1 to the WTE is `{julia} fmt(transport_rate)` × `{julia} city_distance[1, 1]` + `{julia} tipping[1]` = `{julia} fmt(city_cost[1, 1])`. The residual rows include the tipping cost at the facility receiving them.
 :::
 
 ## Mass Balance for Cities and Residuals
@@ -380,12 +375,14 @@ $$R_{21} + R_{23} = 0.6\,(W_{12} + W_{22})$$
 ::::
 
 ::: {.notes}
-These are conservation constraints. The city ones say every ton goes somewhere. The residual ones carry the facility physics: the incinerator turns everything it burns, including residual sent from the recycler, into 20% ash that must be landfilled; the recycler passes on 60% of what it receives.
+These are mass-balance constraints. The city ones say every Mg goes somewhere. The residual ones describe what each facility does to the waste: the WTE leaves `{julia} round(Int, 100 * ash_rate)`% of everything it burns as ash, including residual from the MRF, and the ash must be landfilled; the MRF passes on `{julia} round(Int, 100 * (1 - recycle_rate))`% of what it receives.
+
+Likely question: what is "residual"? What a facility passes on after processing: the MRF's unrecycled waste and the WTE's ash.
 :::
 
 ## Linking Capacity to On/Off
 
-Everything **arriving** counts; a closed facility takes **nothing**:
+Capacity counts all waste arriving at a facility, and multiplying it by $Y_j$ means a closed facility receives nothing:
 
 $$
 \begin{aligned}
@@ -395,14 +392,14 @@ $$
 \end{aligned}
 $$
 
-**Check**: Which constraints need a binary, and why?
+**Which constraints need a binary, and why?**
 
 ::: {.fragment .fade-in}
-Any that must change when it closes: here, the capacities (a minimum feed would too).
+Any that must change when a facility closes: the capacities.
 :::
 
 ::: {.notes}
-This one constraint per facility does two jobs: it is the capacity limit when the facility is open, and it forces every incoming flow to zero when it is closed. That is why Y belongs here and not in the city balances. The test for any constraint is whether it has to change when the facility is closed. The residual balances don't: once nothing arrives at a closed facility, its residual is zero anyway. A minimum feed (this model has none) would need Y too, as flow in at least the minimum times Y; otherwise it would force a closed facility to take waste. Make sure the landfill line includes the residual and ash arriving from the other facilities: everything that arrives counts.
+Likely question: why is the binary in the capacity constraint? This one constraint per facility does two jobs: it is the capacity limit when the facility is open, and it forces every incoming flow to zero when it is closed. That is why Y belongs here and not in the city balances. The test for any constraint is whether it has to change when the facility is closed. The residual balances don't: once nothing arrives at a closed facility, its residual is zero anyway. A minimum feed (this model has none) would need Y too, as flow in at least the minimum times Y; otherwise it would force a closed facility to take waste. Make sure the landfill line includes the residual and ash arriving from the other facilities.
 :::
 
 ## The Full Problem
@@ -417,7 +414,7 @@ $$
 \end{aligned}
 $$
 
-The constraints cover the cities, fate and transport, capacity linked to on/off, and signs.
+$C_{ij}$, $C^R_{kj}$: cost per Mg sent from city $i$, or of residual sent from facility $k$, to facility $j$ (\$/Mg): haul, tip and, at the MRF, recycle.
 
 ::: {.notes}
 The same problem in general form. It is a mixed integer linear program: linear in everything, with three binary variables.
@@ -461,7 +458,7 @@ base = solve_waste()
 The optimal cost is **\$`{julia} commas(base.cost)`/day**, and all `{julia} sum(base.Y)` facilities operate.
 
 ::: {.notes}
-You do not need to walk through the code line by line: open the fold to show that every constraint on the previous slides appears once, with the binaries declared as Bin and the capacity constraints multiplied by Y. The point is that the formulation goes into JuMP almost word for word.
+Open the fold: each constraint from the previous slides appears once, with Y declared `Bin` and each capacity multiplied by Y.
 :::
 
 ## The Solution
@@ -482,7 +479,7 @@ You do not need to walk through the code line by line: open the fold to show tha
 ::::
 
 ::: {.notes}
-Read the flows off the figure. City 1 sends everything to the nearby recycler. City 2 sends everything to the landfill. The recycler's residual is split between the incinerator and the landfill, and the incinerator's ash goes to the landfill too.
+City 1 sends everything to the nearby MRF. City 2 sends everything to the landfill. The MRF's residual is split between the WTE and the landfill, and the WTE's ash goes to the landfill too.
 :::
 
 ## Why Is the WTE Open?
@@ -490,13 +487,13 @@ Read the flows off the figure. City 1 sends everything to the nearby recycler. C
 The WTE costs \$`{julia} commas(fixed_cost[1])`/day just to open. **Why pay that to burn `{julia} fmt(base.R21)` Mg/day?**
 
 ::: {.fragment .fade-in}
-Because the **landfill is full**: it takes `{julia} fmt(base.lf_load)` of its `{julia} capacity[3]` Mg/day. The recycler's residual has to go somewhere, and the only other place is the WTE.
+Because the **landfill is full**: it takes `{julia} fmt(base.lf_load)` of its `{julia} capacity[3]` Mg/day. The MRF's residual has to go somewhere, and the only other place is the WTE.
 
-The WTE operates because of a binding constraint somewhere else in the network, not because it is cheap.
+The landfill's capacity constraint is **binding**.
 :::
 
 ::: {.notes}
-Give the class a minute to look at the flows before revealing. This is the network lesson: decisions at one node are driven by limits at another. The next slide tests that explanation by changing the landfill.
+Likely question: why is the WTE open if it is expensive? Because the landfill is exactly full, and the MRF's residual has to go somewhere.
 :::
 
 ## What If the Landfill Were Bigger?
@@ -523,7 +520,7 @@ end
 With `{julia} bigger.cap[3] - base.cap[3]` Mg/day more landfill, the **WTE closes** and the system saves \$`{julia} commas(base.cost - bigger.cost)`/day. City 2 now sends `{julia} fmt(bigger.W[2, 2])` Mg/day to the MRF, and all `{julia} fmt(bigger.R23)` Mg/day of the MRF's residual goes to the landfill.
 
 ::: {.notes}
-This confirms the explanation on the previous slide: as soon as the landfill has room for the recycler's residual, the incinerator is no longer worth its fixed cost, so the binary switches it off.
+With a `{julia} bigger.cap[3]` Mg/day landfill, the MRF's residual fits in the landfill and the WTE is no longer worth its fixed cost.
 :::
 
 # Key Takeaways
@@ -532,12 +529,8 @@ This confirms the explanation on the previous slide: as soon as the landfill has
 
 - A network model's decisions are **flows** on arcs, constrained by **conservation** at each node.
 - An optional facility needs a **binary**: fixed cost $\times\, Y_j$ in the objective, and in every constraint that changes when it is closed (here, flow in $\leq K_j Y_j$).
-- Facilities can open for **non-obvious reasons**: the WTE runs only because the landfill is full.
+- A binding capacity at one facility can force another to open: the WTE runs only because the landfill is full.
 - A network graph becomes a model only with fate and transport, costs, and rules.
-
-::: {.notes}
-The third takeaway is the one to dwell on: in a network, the reason a facility operates is often a constraint somewhere else.
-:::
 
 ## Network Models Elsewhere
 
@@ -556,13 +549,9 @@ The same structure (flows on arcs, conservation at nodes, capacities, sometimes 
 
 ## Next Classes
 
-**This week**: Lab 3, Fixed Costs and Facility Siting in JuMP (bring a laptop).
+**Wednesday, November 11**: Lab 3, Fixed Costs and Facility Siting in JuMP (bring a laptop).
 
 **Monday, November 16**: Quiz 5, then stochastic optimization and scenario trees.
-
-::: {.notes}
-Do not say which day the lab is on: depending on scheduling it may come before or after this lecture.
-:::
 
 ## Assessments
 
@@ -573,7 +562,7 @@ Do not say which day the lab is on: depending on scheduling it may come before o
 **Quiz 5**: Monday, November 16 (capacity expansion, mixed integer programming, and waste and network models).
 
 ::: {.notes}
-Remind students that HW8 asks them to set up a different, small network themselves.
+HW8 asks students to set up a different, small network themselves.
 :::
 
 # Appendix

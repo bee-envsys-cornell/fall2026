@@ -76,9 +76,9 @@ default(
     left_margin=5mm
 )
 
-# Okabe-Ito palette: distinguishable under all common types of colour
+# Okabe-Ito palette: distinguishable under all common types of color
 # blindness, and every pair also differs in line style so the figures
-# still read in greyscale.
+# still read in grayscale.
 cb_orange = "#E69F00"
 cb_green = "#009E73"
 cb_yellow = "#F0E442"
@@ -95,7 +95,7 @@ three(x) = @sprintf("%.3f", x)
 
 ## Decisions With Known Probabilities
 
-Scenario trees and dynamic programming made decisions under uncertainty when we could **list the outcomes and their probabilities**.
+With scenario trees and dynamic programming, we made decisions under uncertainty when we could **list the outcomes and their probabilities**.
 
 **Raises the question**: what if the **objectives compete**, and nobody agrees on the **probabilities**?
 
@@ -107,14 +107,14 @@ Scenario trees and dynamic programming made decisions under uncertainty when we 
 
 ## Multiple Objectives and Environmental Systems
 
-Often several objectives at once: **cost**, **environmental quality**, **reliability**.
+Often several objectives at once: cost, environmental quality, reliability.
 
 **Power systems**: generation cost, CO~2~ emissions, resource adequacy, reliability, other environmental impacts.
 
 **Reservoir operations**: municipal demand, irrigation, recreation, hydropower, flood management, streamflow for ecosystems.
 
 ::: {.notes}
-Most environmental systems are managed for several things at once, usually some version of cost, environmental quality, and reliability. Ask the room which of these objectives pull against each other: cheap generation against emissions, storing water for irrigation against keeping space free for floods.
+Most environmental systems are managed for several things at once, usually some version of cost, environmental quality, and reliability. Some pull against each other: cheap generation against emissions, storing water for irrigation against keeping space free for floods.
 :::
 
 ## What Does It Mean to "Optimize" Two Objectives?
@@ -140,7 +140,7 @@ A plan is **non-dominated** if no other plan dominates it.
 The non-dominated plans form the **Pareto front**. Each is a different tradeoff between the objectives.
 
 ::: {.notes}
-"At least as good" depends on direction: lower cost is better, more phosphorus removed is better. Two things to stress. First, a plan that ties on some objectives and is worse on one is still dominated. Second, nothing on the front is better than anything else on the front without a judgment about how much of one objective is worth how much of another.
+"At least as good" depends on direction: lower cost is better, more phosphorus removed is better. A plan that ties another on every objective but one, and is worse on that one, is dominated. Nothing on the front is better than anything else on the front without a judgment about how much of one objective is worth how much of another.
 :::
 
 ## Which Plans Are Non-Dominated?
@@ -189,17 +189,17 @@ println("Plans **", non_dominated_names, "** are non-dominated; B dominates C an
 :::
 
 ::: {.notes}
-Board item. Arrows in the header: lower is better for cost and overflows, higher is better for phosphorus removed. Give the room two minutes. Working: compare each plan against the others. C against B: B is cheaper (2.5 vs 2.6), removes more (40 vs 35) and overflows less (4 vs 5), so B dominates C. E against B: same phosphorus, same overflows, but E costs more, so B dominates E. This is the case a "strictly better on every objective" definition gets wrong: it would keep E. A, B and D survive: D is cheapest, B removes the most for its cost, and A sits between them. None of A, B, D is better than the others without saying how much a dollar is worth in phosphorus.
+Board item. Arrows in the header: lower is better for cost and overflows, higher is better for phosphorus removed. Working: compare each plan against the others. C against B: B is cheaper (2.5 vs 2.6), removes more (40 vs 35) and overflows less (4 vs 5), so B dominates C. E against B: same phosphorus, same overflows, but E costs more, so B dominates E. This is the case a "strictly better on every objective" definition gets wrong: it would keep E. A, B and D survive: D is cheapest, B removes the most and has the fewest overflows, and A is between them. None of A, B, D is better than the others without saying how much a dollar is worth in phosphorus.
 :::
 
 ## The Shallow Lake Model
 
 $$X_{t+1} = X_t + a_t + y_t + \frac{X_t^q}{1 + X_t^q} - bX_t$$
 
-- $a_t$: point-source release (**the decision**); $q = 2.5$, $b = 0.4$.
+- $a_t$: point-source release (**the decision**); recycling exponent $q = 2.5$, loss rate $b = 0.4$.
 - $y_t \sim \text{LogNormal}(\log 0.03,\ 0.5)$: inflow (**uncertain**).
 
-**Reliability**: share of 1,000 100-year inflow sequences never crossing $X_\text{crit}$.
+**Reliability**: share of 1,000 100-year inflow sequences in which the lake never crosses the tipping threshold $X_\text{crit}$.
 
 ::: {.notes}
 In the shallow lake, recycling from the sediment feeds back on itself, so above a threshold the lake tips into a eutrophic state and does not come back easily. The town wants to release as much phosphorus as possible (a proxy for economic activity) while keeping the lake clear. The plans here are simple: release one amount for years 1 to 50 and another for years 51 to 100, each from 0 to 0.05 in steps of 0.0025, which gives 441 plans.
@@ -329,7 +329,7 @@ plot!(p_front, size=(1100, 300), xlims=(0, 0.051), ylims=(-0.03, 1.05),
 `{julia} count(on_front)` of `{julia} n_lake_plans` plans are non-dominated. At the star's release (`{julia} round(mean_release[best_plan]; digits=4)`), timing alone moves reliability from `{julia} two(minimum(plan_reliability[same_mean]))` to `{julia} two(maximum(plan_reliability[same_mean]))`.
 
 ::: {.notes}
-Each grey column is a set of plans with the same mean release but different timing; the front is the upper envelope. Reading it left to right: reliability is essentially 1 at low releases, then falls quickly near a mean release of 0.035 to 0.04, and is near zero by 0.045. The starred plan is the most release you can get while keeping reliability at 0.9. The vertical spread at the star's release is the point to make: how much you release matters, but so does when. Releasing the same total late in the horizon is much riskier, because the lake has more time to accumulate phosphorus.
+Each gray column is a set of plans with the same mean release but different timing; the front is the upper envelope. Reading it left to right: reliability is near 1 at low releases, then falls steeply to near zero. The starred plan is the most release you can get while keeping reliability at 0.9. At the star's release, the most reliable plan releases `{julia} early_release[same_mean[argmax(plan_reliability[same_mean])]]` in years 1–50 and `{julia} late_release[same_mean[argmax(plan_reliability[same_mean])]]` in years 51–100, and the least reliable releases `{julia} early_release[same_mean[argmin(plan_reliability[same_mean])]]` and then `{julia} late_release[same_mean[argmin(plan_reliability[same_mean])]]`. At the same mean release, plans that split the release unevenly between the two periods are less reliable, whichever period gets more.
 :::
 
 ## Choosing From the Front
@@ -342,7 +342,7 @@ Two positions on **when** the value judgment is made:
 ***Is the starred plan the optimum?***
 
 ::: {.notes}
-Think-pair for a minute. The answer to aim for: it is the optimum only for someone who has already decided that 0.9 reliability is the right target. A town that values the lake more would pick a plan to the left; one that values release more would accept less reliability. Both positions are used in practice. A priori weighting is common when a single agency decides and its preferences are stable; a posteriori exploration is common when several stakeholders disagree, because the front shows what each of them is asking the others to give up. Neither removes the value judgment; they move it.
+It is the optimum only for someone who has already decided that 0.9 reliability is the right target. A town that values the lake more would pick a plan to the left; one that values release more would accept less reliability.
 :::
 
 # Deep Uncertainty
@@ -368,11 +368,7 @@ plot!(p_co2, size=(1100, 360), left_margin=12mm, right_margin=8mm, bottom_margin
     top_margin=5mm)
 ```
 
-How high will CO~2~ emissions be in 2100? Answer in the poll.
-
-::: {.notes}
-Take the poll now (the poll link is on the Questions slide). Expect answers from near zero to more than double today's emissions. That spread is the point of the next slide.
-:::
+Answer in the poll.
 
 ## Why Can't We Agree?
 
@@ -398,23 +394,23 @@ The poll answers were not careless; they come from different, defensible beliefs
 :::
 :::
 
-Rumsfeld's (2002) categories, translated: **known knowns** are certainty; **known unknowns** are "shallow" uncertainty, with agreed probabilities; **unknown unknowns** are "deep" uncertainty.
+Rumsfeld's (2002) categories, translated: **known knowns** are certain; **known unknowns** with agreed probabilities are "shallow" uncertainty; known unknowns without agreed probabilities, and **unknown unknowns**, are "deep" uncertainty.
 
 ::: {.notes}
-The categories come from Donald Rumsfeld's 2002 remark about known knowns, known unknowns and unknown unknowns; the translation is what matters here. Optimization quietly assumes the first two: the model, the parameters and the probabilities are treated as known. The question for the rest of today is how to check what happens when they are not.
+The categories come from Donald Rumsfeld's 2002 remark about known knowns, known unknowns and unknown unknowns. Optimization assumes the first two: the model, the parameters and the probabilities are treated as known. The question for the rest of today is how to check what happens when they are not.
 :::
 
 # Robustness
 
-## Testing Plans Across Futures
+## Testing Plans Across States of the World
 
-A plan is **robust** if it performs acceptably across many plausible futures, not only the one it was optimized for.
+A plan is **robust** if it performs acceptably across many plausible states of the world, not only the one it was optimized for.
 
 :::: {.columns}
 ::: {.column width=45%}
-Draw 500 plausible lakes ("states of the world") from wide ranges.
+Draw 500 **states of the world**: lake parameters from these ranges.
 
-**Robustness**: share of futures with reliability ≥ 0.9.
+**Robustness**: share of the 500 with reliability ≥ 0.9.
 :::
 ::: {.column width=55%}
 | Factor | Range |
@@ -427,14 +423,14 @@ Draw 500 plausible lakes ("states of the world") from wide ranges.
 ::::
 
 ::: {.notes}
-This is a satisficing measure: a plan "works" in a future if it meets the reliability target there, and robustness counts the futures in which it works. The other common position is regret: how much worse a plan does in each future than the best plan for that future would have done. Satisficing is easier to explain and needs only a target; regret needs the best plan for every future, which is more computation, but it does not need a target. The ranges are judgments too, and we will see shortly that they matter.
+This is a satisficing measure: a plan "works" in a state of the world if it meets the reliability target there, and robustness counts the states of the world in which it works. The other common position is regret: how much worse a plan does in each state of the world than the best plan for that state would have done. Satisficing is easier to explain and needs only a target; regret needs the best plan for every state of the world, which is more computation, but it does not need a target. The ranges are judgments too.
 :::
 
 ## How Robust Are Plans on the Front?
 
 ```{julia}
 #| label: fig-robustness
-#| fig-cap: "Robustness of plans from the baseline front across 500 plausible lakes."
+#| fig-cap: "Robustness of four release plans across 500 states of the world."
 #| echo: true
 #| code-fold: true
 
@@ -520,20 +516,20 @@ plot!(p_robust, size=(1100, 350), left_margin=12mm, right_margin=8mm, bottom_mar
     top_margin=5mm)
 ```
 
-The aggressive plan meets the target in only `{julia} two(robustness[1])` of futures.
+The aggressive plan has a robustness of only `{julia} two(robustness[1])`.
 
 ::: {.notes}
-The aggressive plan is the starred plan from the front. The cautious plan gives up about `{julia} Int(round(100 * (1 - robust_release[3] / robust_release[1])))` percent of the release for about `{julia} Int(round(100 * (robustness[3] - robustness[1])))` points of robustness; the zero-release plan is the most robust of all but releases nothing. So robustness is another objective, with its own tradeoff against release. Even releasing nothing does not keep every plausible lake clear: in some futures the non-point inflows alone are enough. One technical note: every future and plan uses the same underlying random inflow draws, scaled to that future's median and variability, so the differences between plans are not noise.
+The aggressive plan is the non-dominated plan at the star's mean release. The cautious plan gives up about `{julia} Int(round(100 * (1 - robust_release[3] / robust_release[1])))` percent of the release for about `{julia} Int(round(100 * (robustness[3] - robustness[1])))` percentage points of robustness; the zero-release plan is the most robust of all but releases nothing. So robustness is another objective, with its own tradeoff against release. Even releasing nothing misses the target in some states of the world: there the non-point inflows alone tip the lake too often. One technical note: every state of the world and plan uses the same underlying random inflow draws, scaled to that state's median and variability, so the differences between plans are not sampling noise.
 :::
 
 ## Robustness Is Another Objective
 
-- The plan that was best for the **baseline** lake is the **least robust** of the three.
+- The plan with the most release at reliability 0.9 for the baseline lake is the **least robust** of the four.
 - Each step toward caution **costs release** and **buys robustness**, so choosing among them is another tradeoff and another value judgment.
-- Robustness says how often a plan works across futures; it does **not** say which future we are in.
+- Robustness is the share of sampled states of the world in which a plan meets the target, not a probability that it will.
 
 ::: {.notes}
-Two things to leave the room with. First, optimizing for one set of assumptions tends to push a plan right up against that set's limits, which is exactly where it is fragile when the assumptions are wrong. Second, the robustness number depends on the futures we chose to test. That leads straight into sensitivity analysis: which of those assumptions actually drive the result?
+Optimizing for one set of assumptions tends to push a plan against that set's limits, where it can fail if the assumptions are wrong. The robustness number also depends on the states of the world we chose to test.
 :::
 
 # Sensitivity Analysis
@@ -570,14 +566,14 @@ Source: @Reed2022-uc
 ::::
 
 ::: {.notes}
-The three modes come from @Reed2022-uc, chapter 3, which is also the reading for the formal methods. Prioritization asks which inputs the output is most sensitive to, so you know where better data would help most. Fixing asks which inputs barely matter, so you can stop treating them as uncertain and save computation. Mapping asks which regions of the input space lead to an outcome you care about, here, the lake tipping.
+The three modes come from @Reed2022-uc, chapter 3, which is also the reading for the formal methods. Prioritization asks which inputs the output is most sensitive to, so you know where better data would help most. Fixing asks which inputs barely matter, so you can stop treating them as uncertain and save computation. Mapping asks which regions of the input space lead to an outcome you care about (here, the lake tipping).
 :::
 
 ## Where Does the Aggressive Plan Fail?
 
 ```{julia}
 #| label: fig-factor-map
-#| fig-cap: "Futures in which the aggressive plan meets (blue) or misses (vermillion) the reliability target, by recycling exponent and loss rate."
+#| fig-cap: "States of the world in which the aggressive plan meets (blue) or misses (vermillion) the reliability target, by recycling exponent and loss rate."
 #| echo: true
 #| code-fold: true
 
@@ -596,7 +592,7 @@ plot!(p_map, size=(1100, 300), left_margin=12mm, right_margin=8mm, bottom_margin
 Failures cluster at **low** $q$, where the threshold is lower: $X_\text{crit}$ is `{julia} three(threshold(2, 0.4))` at $q = 2$ and `{julia} three(threshold(3, 0.4))` at $q = 3$.
 
 ::: {.notes}
-Read the map: the vermillion crosses fill the left of the plot, and higher loss rates rescue some of them. The mechanism is visible in the model: a lower recycling exponent makes the sediment feedback kick in at a lower concentration, so the tipping threshold is lower and the same releases cross it. In the lowest third of q, even releasing nothing keeps the lake clear in fewer futures; some futures cannot be managed by releases alone.
+The vermillion crosses fill the left of the plot; at higher loss rates, some of those states of the world meet the target. The mechanism is in the model: a lower recycling exponent makes sediment recycling start at a lower concentration, so the tipping threshold is lower and the same releases cross it. In the lowest third of $q$, even zero release misses the target in some states of the world.
 :::
 
 ## Which Factor Matters Most?
@@ -615,6 +611,7 @@ function success_spread(succeeded, factor)
 end
 factor_names = ["Recycling exponent q", "Loss rate b", "Median inflow",
     "Inflow variability σ"]
+factor_words = ["recycling exponent", "loss rate", "median inflow", "inflow variability"]
 # Each factor's value in every future, in the same order as factor_names
 function factor_values(futures)
     return [futures.q, futures.b, futures.median_inflow, futures.variability]
@@ -628,10 +625,10 @@ for i in sortperm(spreads, rev=true)
 end
 ```
 
-$q$ matters most: measure the **recycling exponent** first.
+With these ranges, the `{julia} factor_words[argmax(spreads)]` has the largest effect on whether the aggressive plan meets the target.
 
 ::: {.notes}
-This is a simple global, all-at-a-time measure: sort the 500 futures by one factor at a time and compare the success rate in the bottom and top thirds of its range, with all the other factors varying. It ranks q first by a wide margin. That is a statement about where better information is worth the most: a field study of sediment recycling would narrow the biggest uncertainty in whether the plan works.
+This is a simple global, all-at-a-time measure: sort the 500 states of the world by one factor at a time and compare the success rate in the bottom and top thirds of its range, with all the other factors varying. Within these ranges, the success rate changes most across the range of q.
 :::
 
 ## The Answer Depends on the Ranges
@@ -658,10 +655,10 @@ for i in 1:4
 end
 ```
 
-Narrow $q$'s range and the **loss rate becomes the most important factor**. A sensitivity ranking depends on the ranges assumed for each factor, so report those ranges with it.
+With $q$'s range narrowed to 2.25–2.75, the `{julia} factor_words[argmax(narrow_spreads)]` has the largest effect. A sensitivity ranking depends on the ranges assumed for each factor, so report those ranges with it.
 
 ::: {.notes}
-Same lake, same plan, same method; only the assumed range for q changed. The ranking flips because a factor can only matter as much as it is allowed to vary. So the ranges in a sensitivity analysis are themselves assumptions to report and defend, and a ranking from one study does not transfer to another with different ranges.
+Only the assumed range for q changed. A narrower range limits how much q can change the success rate, so the ranking changes.
 :::
 
 ## Shadow Prices Are Local Sensitivities
@@ -689,7 +686,7 @@ base_cost, site_price = stormwater_cost(6)
 lease_saving = base_cost - first(stormwater_cost(10))
 ```
 
-A shadow price is a **local, one-at-a-time** sensitivity. In the stormwater LP (bioretention and permeable pavement), the site limit was worth \$`{julia} Int(round(-site_price))`k per acre, so four acres "should" save \$`{julia} Int(round(-4 * site_price))`k; they saved \$`{julia} Int(round(lease_saving))`k.
+A shadow price is a **local, one-at-a-time** sensitivity. In the stormwater LP (bioretention and permeable pavement), the site limit's shadow price is \$`{julia} Int(round(-site_price))`k per acre, so four more acres "should" save \$`{julia} Int(round(-4 * site_price))`k; they save \$`{julia} Int(round(lease_saving))`k.
 
 Global, all-at-a-time methods (Morris, Sobol') vary everything over its whole range: see the reading.
 
@@ -702,10 +699,10 @@ A shadow price is a derivative at one point, holding everything else fixed. It w
 ## Key Takeaways
 
 ::: {.incremental}
-- **With competing objectives there is no single optimum**: only non-dominated plans, each a different tradeoff.
-- **Choosing among them is a value judgment**, made before (weights) or after (the front).
-- **A plan optimal under one set of assumptions can fail under others**; robustness tests plans across futures.
-- **Sensitivity analysis asks what drives the outcome**, and its answer depends on the ranges assumed.
+- With competing objectives there is no single optimum, only **non-dominated** plans, each a different tradeoff.
+- Choosing among them is a value judgment, made before (weights) or after (the front).
+- A plan optimal under one set of assumptions can fail under others; **robustness** is the share of states of the world in which it meets the target.
+- In **sensitivity analysis**, we ask which inputs drive the outcome; the answer depends on the ranges assumed.
 :::
 
 ## Next Classes
@@ -720,6 +717,6 @@ A shadow price is a derivative at one point, holding everything else fixed. It w
 
 **Quiz 6**: Monday, Dec 7. Covers stochastic optimization, dynamic programming, today, and Wednesday.
 
-**Project**: presentation video due Tuesday, Dec 8, 9pm; report and evaluations due Dec 20.
+**Project**: presentations Friday, Dec 11, 10am; report and evaluations due Dec 20.
 
 ## References

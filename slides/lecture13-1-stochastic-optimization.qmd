@@ -116,7 +116,7 @@ commas(n) = replace(string(round(Int, n)), r"(?<=\d)(?=(\d{3})+$)" => ",")
 
 - A network model's decisions are **flows**; its constraints are **conservation** at each node.
 - An optional facility gets a **binary**: fixed cost $\times\, Y_j$, and flow in $\leq K_j Y_j$.
-- In the waste example, the incinerator ran only because the **landfill was full**: a limit at one node set the decision at another.
+- In the waste example, the WTE ran only because the **landfill was full**: a limit at one node set the decision at another.
 
 ::: {.notes}
 Everything we have optimized so far assumed we know every number in the model. This lecture drops that assumption.
@@ -133,9 +133,9 @@ Everything we have optimized so far assumed we know every number in the model. T
 :::: {.columns}
 ::: {.column width=60%}
 - **Reservoir**: summer release targets are set in spring, before the summer's inflow is known.
-- **Grid**: plants are committed the day before, before tomorrow's wind is known.
+- **Grid**: plants are committed a day ahead, before the wind is known.
 
-In both, the decision comes first and **adjusting afterwards costs money**.
+In both, the decision comes first and adjusting afterwards costs money.
 :::
 ::: {.column width=40%}
 ![](figures/reservoir-system.png){width=100%}
@@ -143,7 +143,7 @@ In both, the decision comes first and **adjusting afterwards costs money**.
 ::::
 
 ::: {.notes}
-The manager has to commit to a release plan before knowing the inflow; once the inflow arrives, there is some room to adjust (cut releases, buy water elsewhere, spill), but adjustments cost something. The grid operator is the same: plants are committed a day ahead, and if the wind is lower than expected, expensive peaking plants make up the difference. Today is about choosing the first decision knowing that the later adjustments will happen.
+The manager has to commit to a release plan before knowing the inflow; once the inflow arrives, there is some room to adjust (cut releases, buy water elsewhere, spill), but adjustments cost something. The grid operator is the same: plants are committed a day ahead, and if the wind is lower than expected, expensive peaking plants make up the difference.
 :::
 
 ## Certainty and Linear Programming
@@ -184,7 +184,7 @@ A farmer has `{julia} land` acres for wheat, corn, and sugar beets. **How much o
 - Yields: `{julia} avg_yield[1]`, `{julia} fmt(avg_yield[2])`, `{julia} fmt(avg_yield[3])` T/acre on average; ±`{julia} round(Int, 100 * (yield_factor[1] - 1))`% in good and bad years, each with probability 1/3.
 
 ::: {.notes}
-This is a classic example from Birge and Louveaux's textbook on stochastic programming. Planting happens before the yield is known; buying and selling happen after the harvest. The beet quota matters: beets are very profitable up to 6,000 tonnes and barely worth growing beyond.
+This is a classic example from Birge and Louveaux's textbook on stochastic programming. Planting happens before the yield is known; buying and selling happen after the harvest. Beets sell for \$`{julia} beet_price` a tonne up to the quota of `{julia} commas(beet_quota)` tonnes and \$`{julia} beet_excess_price` above it, which is less than their planting cost of \$`{julia} fmt(plant_cost[3] / avg_yield[3])` a tonne in an average year.
 :::
 
 ## Formulation for One Known Year
@@ -263,6 +263,9 @@ eev = sum(prob .* average_plan_by_year)       # average plan, judged under uncer
 wait_and_see = sum(prob .* known_profit)      # perfect information
 vss = stochastic_profit - eev
 evpi = wait_and_see - stochastic_profit
+
+# Beets the average-year plan grows above the quota in a good year [T]
+good_year_excess_beets = average_plan[3] * avg_yield[3] * yield_factor[1] - beet_quota
 ```
 
 ```{julia}
@@ -279,7 +282,7 @@ end
 The best plan depends on the year, and planting happens before the year is known.
 
 ::: {.notes}
-The folded cell is the whole lecture's computation: one function that solves the farm problem for any set of scenarios, and can also evaluate a fixed plan. With one scenario it is the ordinary LP. Read the table: in a good year plant less beet land (the quota fills sooner) and more wheat; in a bad year plant more beets to reach the quota and buy corn. The average-year plan earns $118,600, but only if the year is average.
+The folded cell is the whole lecture's computation: one function that solves the farm problem for any set of scenarios, and can also evaluate a fixed plan. With one scenario it is the ordinary LP. Read the table: in a good year plant less beet land (the quota fills sooner) and more wheat; in a bad year plant more beets to reach the quota and buy corn. The average-year plan earns \$`{julia} commas(known_profit[2])`, but only if the year is average.
 :::
 
 ## What Changes About the Variables?
@@ -302,12 +305,12 @@ $z_{is}$, T sold | one per scenario $s$
 ::::
 
 ::: {.notes}
-Ask the question first. Planting happens once, so it has one copy. Buying and selling happen after the harvest, so there is a separate copy for each year type. The scenario tree is the bookkeeping: one branch per scenario with its probability. With more uncertainties or more stages, the tree branches again at each one.
+Planting happens once, so it has one copy. Buying and selling happen after the harvest, so there is a separate copy for each year type. The scenario tree lists the scenarios: one branch per scenario, with its probability. With more uncertainties or more stages, the tree branches again at each one.
 :::
 
 ## One Scenario's Constraints
 
-**Write the good-year constraints** (yields $\times$ 1.2).
+**What are the good-year constraints?** (yields $\times$ 1.2)
 
 ::: {.fragment .fade-in}
 ```{julia}
@@ -326,12 +329,12 @@ The average and bad years are the same with yields $\times$ 1 and $\times$ 0.8. 
 :::
 
 ::: {.notes}
-Board item. Give students a minute to write the good-year block from the one-year formulation: every yield is multiplied by 1.2 (2.5 becomes 3, 3 becomes 3.6, 20 becomes 24), and the purchase and sale variables get a good-year subscript. Then point out that the planting variables appear in every scenario's block unchanged: that is what ties the scenarios together. The full set of constraints is in the appendix.
+Board item. The good-year block comes from the one-year formulation: every yield is multiplied by 1.2 (2.5 becomes 3, 3 becomes 3.6, 20 becomes 24), and the purchase and sale variables get a good-year subscript. The planting variables appear unchanged in every scenario's block: they are the first-stage decisions. The full set of constraints is in the appendix.
 :::
 
 ## The Two-Stage Objective
 
-Maximize **expected** profit: planting cost once, plus each scenario's sales minus purchases, weighted by its probability.
+Maximize **expected** profit: minus the planting cost, plus each scenario's sales minus purchases, weighted by its probability.
 
 $$\max_{\mathbf{x}, \mathbf{y}, \mathbf{z}} \quad -\sum_i c_i x_i + \sum_s p_s \left(\text{sales}_s - \text{purchases}_s\right)$$
 
@@ -340,7 +343,7 @@ Other choices are possible: a quantile to hedge against bad years, or the varian
 :::
 
 ::: {.notes}
-The expected value is one summary of performance across scenarios; it is not the only defensible one. A farmer who cannot survive a bad year might instead maximize the bad-year profit or a low quantile. That choice is a value judgment about risk, and it changes the plan.
+The expected value is one summary of performance across scenarios; it is not the only defensible one. A farmer who cannot survive a bad year might instead maximize the bad-year profit or a low quantile. That choice is a value judgment about risk, and it can change the plan.
 :::
 
 ## The Stochastic Plan
@@ -358,12 +361,12 @@ println("| Two-stage plan | ", join(fmt.(stochastic_plan), " | "), " |")
 Expected profit of the two-stage plan: **\$`{julia} commas(stochastic_profit)`**.
 
 ::: {.fragment .fade-in}
-- **Good year**: no beet land wasted above the quota.
-- **Bad year**: extra wheat profit helps pay for the corn it has to buy.
+- **Good year**: no beets above the quota, which sell for \$`{julia} beet_excess_price`/T.
+- **Average and bad years**: less beet land, so less profit.
 :::
 
 ::: {.notes}
-The two-stage plan moves land from beets to wheat. In a good year the average-year plan would grow more beets than the quota allows, which earns only $10 a tonne; the two-stage plan avoids that. In a bad year both plans fall short on corn, and the extra wheat helps cover the purchase. The plan hedges.
+The two-stage plan moves `{julia} fmt(average_plan[3] - stochastic_plan[3])` acres from beets to wheat. Wheat on that land earns less than beets sold at the quota price, so in average and bad years the two-stage plan earns less than the average-year plan. In a good year the average-year plan grows `{julia} commas(good_year_excess_beets)` T of beets above the quota, which sell for only \$`{julia} beet_excess_price` a tonne, while the two-stage plan's beets stay within the quota; there the wheat earns more.
 :::
 
 # Comparing Plans
@@ -380,7 +383,7 @@ Is the average-year plan better?
 :::
 
 ::: {.notes}
-This is the question that names the issue. The two numbers answer different questions: one is a single-scenario profit on paper, the other is an expected value under uncertainty. Ask before revealing.
+The two numbers answer different questions: one is a single-scenario profit on paper, the other is an expected value under uncertainty.
 :::
 
 ## Each Plan, Year by Year
@@ -389,6 +392,12 @@ This is the question that names the issue. The two numbers answer different ques
 #| echo: false
 #| output: asis
 
+# The notes say the two-stage plan earns more than the average-year plan only in a
+# good year, and that its beets stay within the quota in that year
+@assert stochastic_plan_by_year[1] > average_plan_by_year[1]
+@assert stochastic_plan_by_year[2] < average_plan_by_year[2]
+@assert stochastic_plan_by_year[3] < average_plan_by_year[3]
+@assert stochastic_plan[3] * avg_yield[3] * yield_factor[1] <= beet_quota + 1e-6
 println("| Year | Average-year plan | Two-stage plan |")
 println("|:--|--:|--:|")
 for s in 1:3
@@ -400,7 +409,7 @@ println("| **Expected** | **\\\$", commas(eev), "** | **\\\$", commas(stochastic
 **Value of the stochastic solution (VSS)**: \$`{julia} commas(stochastic_profit)` − \$`{julia} commas(eev)` = **\$`{julia} commas(vss)`** per year.
 
 ::: {.notes}
-Board item for the VSS subtraction. Each plan is evaluated in each year with the best purchases and sales for that year. The average-year plan does well in average and good years but badly in a bad year. Its expected profit under uncertainty is $107,240, less than the two-stage plan's $108,390. The difference is the value of the stochastic solution: what building the uncertainty into the model is worth. Note the two-stage plan is worse than the average-year plan in the average year itself; it trades some average-year profit for protection in bad years.
+Board item for the VSS subtraction. Each plan is evaluated in each year with the best purchases and sales for that year. The two-stage plan earns less in average and bad years and more in a good year, where the average-year plan grows `{julia} commas(good_year_excess_beets)` T of beets above the quota. On balance its expected profit is higher: \$`{julia} commas(stochastic_profit)` against \$`{julia} commas(eev)` for the average-year plan. The difference is the value of the stochastic solution: what building the uncertainty into the model is worth.
 :::
 
 ## What Is a Perfect Forecast Worth?
@@ -410,24 +419,24 @@ With perfect foresight the farmer plants the best plan for each year: expected p
 **Expected value of perfect information (EVPI)**: \$`{julia} commas(wait_and_see)` − \$`{julia} commas(stochastic_profit)` = **\$`{julia} commas(evpi)`** per year.
 
 ::: {.fragment .fade-in}
-Here modelling the uncertainty is worth \$`{julia} commas(vss)` a year, but a perfect forecast would be worth about **`{julia} round(Int, evpi / vss)` times** as much. The EVPI is the most the farmer should pay for better forecasts.
+The EVPI is about **`{julia} round(Int, evpi / vss)` times** the VSS. It is the most the farmer should pay for any forecast.
 :::
 
 ::: {.notes}
-With perfect information the farmer would know the year before planting and use the best plan for it: the expected profit is the average of the three known-year profits. The gap between that and the two-stage plan is the EVPI. Here it is much larger than the VSS: hedging buys a little, but information would buy a lot more. That is not always the case; it depends on the problem.
+With perfect information the farmer would know the year before planting and use the best plan for it: the expected profit is the average of the three known-year profits. The gap between that and the two-stage plan is the EVPI.
 :::
 
 # Key Takeaways
 
 ## Key Takeaways
 
-- **The best plan for the average year is not the best plan across years.**
+- The plan that is optimal for the average year need not be optimal in expectation.
 - Two stages: **one** here-and-now decision, **one recourse decision per scenario**, weighted by probability.
-- **Compare plans under uncertainty**: VSS is what modelling uncertainty is worth; EVPI, what a perfect forecast is worth.
+- **Compare plans under uncertainty**: VSS is what modeling uncertainty is worth; EVPI, what a perfect forecast is worth.
 - **Scenario trees grow multiplicatively** with every stage that has its own decision and uncertainty.
 
 ::: {.notes}
-The last takeaway leads to dynamic programming: with decisions every year and uncertainty every year, the tree explodes, and dynamic programming avoids writing it out.
+With a decision and an uncertainty every year, the number of scenarios grows exponentially with the number of years.
 :::
 
 # Upcoming Schedule
@@ -442,7 +451,7 @@ The last takeaway leads to dynamic programming: with decisions every year and un
 
 ## Assessments
 
-**HW8** and **MP2**: due Thursday, November 19.
+**HW8**: due Thursday, November 19. **MP2**: due Friday, November 20.
 
 **HW9**: assigned Wednesday, due Thursday, December 3.
 

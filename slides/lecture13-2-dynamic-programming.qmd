@@ -67,9 +67,9 @@ default(
     left_margin=5mm
 )
 
-# Okabe-Ito palette: distinguishable under all common types of colour
+# Okabe-Ito palette: distinguishable under all common types of color
 # blindness, and every pair also differs in line style so the figures
-# still read in greyscale.
+# still read in grayscale.
 cb_orange = "#E69F00"
 cb_green = "#009E73"
 cb_yellow = "#F0E442"
@@ -137,7 +137,7 @@ commas(n) = replace(string(round(Int, n)), r"(?<=\d)(?=(\d{3})+$)" => ",")
 ## Scenario Trees Grow Fast
 
 - Two-stage problems: **one** here-and-now decision, **one recourse decision per scenario**.
-- With a decision **every** period and uncertainty **every** period, the tree branches again each time: 3 outcomes a year for 10 years is `{julia} commas(3^10)` leaves.
+- With a decision and an uncertain outcome every period, the tree branches again each period: 3 outcomes a year for 10 years is `{julia} commas(3^10)` leaves.
 
 **Raises the question**: how do we make decisions in a **sequence** without writing out the tree?
 
@@ -154,13 +154,13 @@ The farmer in the two-stage problem made one decision, learned the yield, and ad
 ## Decisions Linked Over Time
 
 - **Reservoir**: water released this month is not there next month.
-- **Lake**: $P_{t+1} = P_t + L_t - sP_t + R(P_t)$. This year's loading $L_t$ sets next year's lake.
-- **Fishery**: this season's harvest sets next season's stock.
+- **Lake**: $P_{t+1} = P_t + L_t - sP_t + R(P_t)$. This year's loading $L_t$ changes next year's phosphorus $P_{t+1}$.
+- **Fishery**: this season's harvest changes next season's stock.
 
 **Why not just optimize each month on its own?**
 
 ::: {.notes}
-Each example has a stock that carries the past into the future, so today's decision changes tomorrow's options. In the lake equation the state evolves from year to year; here the loading becomes a decision. Pose the question and take answers; the reservoir example answers it.
+Each example has a stock that carries the past into the future, so today's decision changes tomorrow's options.
 :::
 
 ## A Reservoir in a Dry Season
@@ -180,7 +180,7 @@ println("| **Benefit** | ", join(benefit_table, " | "), " |")
 ```
 
 ::: {.notes}
-Small numbers on purpose: everything today can be done by hand. The benefits have diminishing returns: the first unit released in a month is worth 6, the second only 4 more, the third 2, the fourth 1. Think of water for irrigation or a city during a dry season.
+The benefits have diminishing returns: the first unit released in a month is worth 6, the second only 4 more, the third 2, the fourth 1. Think of water for irrigation or a city during a dry season.
 :::
 
 ## The Greedy Plan
@@ -192,11 +192,11 @@ It releases `{julia} join(greedy_release, ", ")`, for a total benefit of **`{jul
 **Can you beat `{julia} greedy_total`?**
 
 ::: {.fragment .fade-in}
-Releasing 2, 2, 2 gives a total of **`{julia} 3 * benefit(2)`**. Spreading the water out wins, because the second unit in a month is worth less than the first unit in another month.
+Releasing 2, 2, 2 gives a total of **`{julia} 3 * benefit(2)`**.
 :::
 
 ::: {.notes}
-Use a poll or a minute of pair work. Greedy maximizes each month's benefit separately: it empties the reservoir in month 1, then only has the inflow. Most students find 2, 2, 2 quickly. The harder question is how to find the best plan when there are more months, more storage levels, or uncertain inflows: trial and error does not scale.
+Greedy maximizes each month's benefit separately: it empties the reservoir in month 1, then only has the inflow. The harder question is how to find the best plan when there are more months, more storage levels, or uncertain inflows: trial and error does not scale.
 :::
 
 ## Elements of a Dynamic Program
@@ -209,14 +209,14 @@ Use a poll or a minute of pair work. Greedy maximizes each month's benefit separ
 - **Policy**: the best release for each month and storage level.
 
 ::: {.notes}
-These names are the vocabulary for the rest of the lecture. The value function is the key idea: it answers "how good is it to be here?" for every state, not only the one we start in. Once we know next month's value function, choosing this month's release is a one-step problem.
+The value function is the key idea: it answers "how good is it to be here?" for every state, not only the one we start in. Once we know next month's value function, choosing this month's release is a one-step problem.
 :::
 
 # Backward Induction
 
 ## The Last Month
 
-In the **last month**, nothing comes after, so release everything:
+In the **last month**, this model gives water left over no value, so release everything:
 
 ```{julia}
 #| echo: false
@@ -231,7 +231,7 @@ println("| **Value** $(raw"$V_3(s)$") | ", join(value_month3, " | "), " |")
 Now step **backwards**: knowing $V_3$, month 2 is a one-step problem.
 
 ::: {.notes}
-The last stage is the easy one, because there is no future to protect. That is why we start there.
+The last stage is the easy one, because no later month depends on it. That is why we start there.
 :::
 
 ## Month 2 by Hand
@@ -322,7 +322,7 @@ println("| **Value** $(raw"$V_1(s)$") | ", join(Int.(value[:, 1]), " | "), " |")
 From a full reservoir, $V_1(`{julia} start_storage`) =$ **`{julia} Int(value[start_storage + 1, 1])`**. Following the policy forward gives releases **`{julia} join(dp_release, ", ")`**.
 
 ::: {.notes}
-The value function at the start answers the whole problem: 30, against greedy's 25. To get the plan, follow the policy forward: release 2, see the storage, look up the next month's best release, and so on.
+The value function at the start answers the whole problem: `{julia} Int(value[start_storage + 1, 1])`, against greedy's `{julia} greedy_total`. To get the plan, follow the policy forward: release 2, see the storage, look up the next month's best release, and so on.
 :::
 
 ## Checking by Brute Force
@@ -356,10 +356,10 @@ end
 best_total, n_best = brute_force()
 ```
 
-Checking every release sequence directly, the best total is **`{julia} best_total`**, and **`{julia} n_best`** sequence reaches it. Backward induction found it.
+Trying every release sequence gives the same best total, **`{julia} best_total`**, and only one sequence reaches it.
 
 ::: {.notes}
-Verification as a named step: on a problem this small we can try every sequence and confirm the answer. On a realistic problem we cannot, which is exactly why we need a method we have checked on cases where we can.
+On a problem this small we can try every sequence. On a realistic problem we cannot, so we check the method on cases where we can.
 :::
 
 ## Why Spread the Water?
@@ -379,10 +379,10 @@ bar!(p_releases, months .+ 0.18, dp_release, bar_width=0.35, color=cb_blue, line
 plot!(p_releases, size=(1050, 330), left_margin=10mm, bottom_margin=10mm)
 ```
 
-With diminishing returns, the best plan **equalizes** the releases.
+Here, with diminishing returns, the best plan releases the same amount every month.
 
 ::: {.notes}
-Interpretation after the result. With diminishing returns, moving a unit from a month with a big release to a month with a small one always gains, until the releases are equal. Greedy ignores that the water could have been used later.
+With diminishing returns, moving a unit from a month with a large release to one with a small release gains, as long as storage allows the move. Greedy ignores that the water could have been used later.
 :::
 
 # Uncertain Inflows
@@ -455,10 +455,10 @@ end
 release_all_value = release_all_expected(start_storage, 1)
 ```
 
-From a full reservoir the policy releases **`{julia} policy_u[start_storage + 1, 1]`** and holds `{julia} start_storage - policy_u[start_storage + 1, 1]` in case it doesn't rain. Its expected benefit is **`{julia} fmt(value_u[start_storage + 1, 1])`**; releasing everything gets `{julia} fmt(release_all_value)`.
+From a full reservoir the policy releases **`{julia} policy_u[start_storage + 1, 1]`** and keeps `{julia} start_storage - policy_u[start_storage + 1, 1]` in case the inflow is 0. Its expected benefit is **`{julia} fmt(value_u[start_storage + 1, 1])`**; releasing everything every month has an expected benefit of `{julia} fmt(release_all_value)`.
 
 ::: {.notes}
-Even though the reservoir is full and rain might come, the policy releases only 2 in the first month: holding water is insurance against a dry month. That is hedging. Releasing everything immediately does much worse in expectation. If asked, the full policy table is in the value_u and policy_u arrays; at low storage the policy releases less.
+Even though the reservoir is full and inflow might come, the policy releases only `{julia} policy_u[start_storage + 1, 1]` in the first month: holding water is insurance against a dry month. That is hedging. Releasing everything immediately does much worse in expectation.
 :::
 
 ## Check It Against the Scenario Tree
@@ -491,7 +491,7 @@ tree_best = tree_value(start_storage, 1)
 Enumerating every branch of the scenario tree gives **`{julia} fmt(tree_best)`**, and dynamic programming gives the same **`{julia} fmt(value_u[start_storage + 1, 1])`**.
 
 ::: {.notes}
-Verification against the scenario-tree method. The tree allows a different decision at every node; dynamic programming gets the same optimum because the best decision at a node depends only on the storage there, not on how we got there. That property is what lets the table replace the tree.
+The tree allows a different decision at every node; dynamic programming gets the same optimum because the best decision at a node depends only on the storage there, not on how we got there. That property is what lets the table replace the tree.
 :::
 
 ## Trees Versus Tables
@@ -507,10 +507,10 @@ for T in [3, 6, 12]
 end
 ```
 
-With 2 inflow outcomes a month and 5 storage levels, the tree grows **exponentially** with the number of months; the table grows **linearly**.
+With 2 inflow outcomes a month and 5 storage levels, the tree grows exponentially with the number of months; the table grows linearly.
 
 ::: {.notes}
-The tree records every possible history; the table records only the states that matter for the future. That is the whole trick of dynamic programming. The catch, in the appendix, is that the table grows exponentially with the number of state variables instead: the curse of dimensionality.
+The tree records every possible history; the table records only the states that matter for the future. The appendix shows that the table grows exponentially with the number of state variables instead: the curse of dimensionality.
 :::
 
 ## What Is Water Worth at the End?
@@ -535,10 +535,10 @@ for c in carryover_values
 end
 ```
 
-The **end-of-horizon value** is a modelling choice that can flip the plan: what is water worth in October?
+The **end-of-horizon value** is a modeling choice that can change the plan: what is water left at the end of the dry season worth?
 
 ::: {.notes}
-With no value on leftover water, the plan empties the reservoir by the end of the season. Value leftover water at 6 per unit and the plan holds most of it back. Neither is wrong: it depends on whether the reservoir refills in winter. The default today, zero, assumes it does. This is the dynamic programming version of the horizon problem we will see again in the limits-of-optimization lecture.
+With no value on leftover water, the plan empties the reservoir by the end of the season. Value leftover water at 6 per unit and the plan holds most of it back. Neither is wrong: it depends on whether the reservoir refills in winter. The default today, zero, assumes it does.
 :::
 
 # Key Takeaways
@@ -547,14 +547,14 @@ With no value on leftover water, the plan empties the reservoir by the end of th
 
 - A **sequential decision** has stages, a **state** that carries the past forward, and a **transition**; deciding each month on its own (greedy) can be badly wrong.
 - **Backward induction**: start at the end, keep one **value function** per stage, step backwards.
-- Under uncertainty, DP returns a **policy** and matches the scenario tree's answer, with a table that grows linearly instead of exponentially.
+- Under uncertainty, DP returns a **policy** and matches the scenario tree's answer, with a table that grows linearly in the number of stages, where the tree grows exponentially.
 - End-of-horizon values can change the whole plan.
 
 # Upcoming Schedule
 
 ## Next Classes
 
-**Monday, November 23**: Lab 4, scenario trees and sequential decisions for reservoir operations. It builds on today's model (bring a laptop).
+**Monday, November 23**: Lab 4, reservoir operations (bring a laptop).
 
 **Wednesday, November 25**: No class (Thanksgiving).
 
@@ -562,7 +562,7 @@ With no value on leftover water, the plan empties the reservoir by the end of th
 
 ## Assessments
 
-**HW8** and **MP2**: due Thursday, November 19.
+**HW8**: due Thursday, November 19. **MP2**: due Friday, November 20.
 
 **HW9**: assigned today, due Thursday, December 3 (stochastic optimization and dynamic programming).
 
@@ -572,13 +572,13 @@ With no value on leftover water, the plan empties the reservoir by the end of th
 
 ## The Bellman Recursion
 
-In general notation, with state $s$, decision $r$, benefit $b$, and random inflow $q$:
+In general notation, with state $s$, decision $r$, benefit $b$, and random inflow $I$:
 
-$$V_t(s) = \max_{r} \left\{ b(r) + \mathbb{E}_q\left[V_{t+1}\big(f(s, r, q)\big)\right] \right\}$$
+$$V_t(s) = \max_{r} \left\{ b(r) + \mathbb{E}_I\left[V_{t+1}\big(f(s, r, I)\big)\right] \right\}$$
 
 $$V_{T+1}(s) = \text{terminal value}$$
 
-where $f$ is the transition. Everything in the lecture is this equation with small numbers.
+where $f$ is the transition.
 
 ## The Curse of Dimensionality
 
@@ -593,7 +593,7 @@ for n in [1, 2, 10]
 end
 ```
 
-The table is small for one state variable, but it grows exponentially with the **number** of state variables. Dynamic programming avoids the tree's growth over time, but its table grows exponentially with the number of state variables instead.
+The table grows exponentially with the number of state variables: the **curse of dimensionality**.
 
 ## Does the Storage Grid Matter?
 
@@ -637,7 +637,7 @@ for spacing in [1, 0.5, 0.25]
 end
 ```
 
-The answer does not change as the storage grid is refined.
+Refining the grid to spacings of 0.5 and 0.25 units gives the same best total.
 
 ## The Lake as a Dynamic Program
 

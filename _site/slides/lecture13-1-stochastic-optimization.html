@@ -281,7 +281,7 @@
 <ul>
 <li>A network model’s decisions are <strong>flows</strong>; its constraints are <strong>conservation</strong> at each node.</li>
 <li>An optional facility gets a <strong>binary</strong>: fixed cost <span class="math inline">\(\times\, Y_j\)</span>, and flow in <span class="math inline">\(\leq K_j Y_j\)</span>.</li>
-<li>In the waste example, the incinerator ran only because the <strong>landfill was full</strong>: a limit at one node set the decision at another.</li>
+<li>In the waste example, the WTE ran only because the <strong>landfill was full</strong>: a limit at one node set the decision at another.</li>
 </ul>
 <aside class="notes">
 <p>Everything we have optimized so far assumed we know every number in the model. This lecture drops that assumption.</p>
@@ -322,14 +322,14 @@
 <div class="column" style="width:60%;">
 <ul>
 <li><strong>Reservoir</strong>: summer release targets are set in spring, before the summer’s inflow is known.</li>
-<li><strong>Grid</strong>: plants are committed the day before, before tomorrow’s wind is known.</li>
+<li><strong>Grid</strong>: plants are committed a day ahead, before the wind is known.</li>
 </ul>
-<p>In both, the decision comes first and <strong>adjusting afterwards costs money</strong>.</p>
+<p>In both, the decision comes first and adjusting afterwards costs money.</p>
 </div><div class="column" style="width:40%;">
 <p><img data-src="figures/reservoir-system.png" style="width:100.0%"></p>
 </div></div>
 <aside class="notes">
-<p>The manager has to commit to a release plan before knowing the inflow; once the inflow arrives, there is some room to adjust (cut releases, buy water elsewhere, spill), but adjustments cost something. The grid operator is the same: plants are committed a day ahead, and if the wind is lower than expected, expensive peaking plants make up the difference. Today is about choosing the first decision knowing that the later adjustments will happen.</p>
+<p>The manager has to commit to a release plan before knowing the inflow; once the inflow arrives, there is some room to adjust (cut releases, buy water elsewhere, spill), but adjustments cost something. The grid operator is the same: plants are committed a day ahead, and if the wind is lower than expected, expensive peaking plants make up the difference.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -400,7 +400,7 @@
 <li>Yields: 2.5, 3, 20 T/acre on average; ±20% in good and bad years, each with probability 1/3.</li>
 </ul>
 <aside class="notes">
-<p>This is a classic example from Birge and Louveaux’s textbook on stochastic programming. Planting happens before the yield is known; buying and selling happen after the harvest. The beet quota matters: beets are very profitable up to 6,000 tonnes and barely worth growing beyond.</p>
+<p>This is a classic example from Birge and Louveaux’s textbook on stochastic programming. Planting happens before the yield is known; buying and selling happen after the harvest. Beets sell for $36 a tonne up to the quota of 6,000 tonnes and $10 above it, which is less than their planting cost of $13 a tonne in an average year.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -494,7 +494,10 @@
 <span id="cb1-48"><a></a>eev <span class="op">=</span> <span class="fu">sum</span>(prob <span class="op">.*</span> average_plan_by_year)       <span class="co"># average plan, judged under uncertainty</span></span>
 <span id="cb1-49"><a></a>wait_and_see <span class="op">=</span> <span class="fu">sum</span>(prob <span class="op">.*</span> known_profit)      <span class="co"># perfect information</span></span>
 <span id="cb1-50"><a></a>vss <span class="op">=</span> stochastic_profit <span class="op">-</span> eev</span>
-<span id="cb1-51"><a></a>evpi <span class="op">=</span> wait_and_see <span class="op">-</span> stochastic_profit</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-51"><a></a>evpi <span class="op">=</span> wait_and_see <span class="op">-</span> stochastic_profit</span>
+<span id="cb1-52"><a></a></span>
+<span id="cb1-53"><a></a><span class="co"># Beets the average-year plan grows above the quota in a good year [T]</span></span>
+<span id="cb1-54"><a></a>good_year_excess_beets <span class="op">=</span> average_plan[<span class="fl">3</span>] <span class="op">*</span> avg_yield[<span class="fl">3</span>] <span class="op">*</span> yield_factor[<span class="fl">1</span>] <span class="op">-</span> beet_quota</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <table class="caption-top">
@@ -584,7 +587,7 @@
 </div>
 </div></div>
 <aside class="notes">
-<p>Ask the question first. Planting happens once, so it has one copy. Buying and selling happen after the harvest, so there is a separate copy for each year type. The scenario tree is the bookkeeping: one branch per scenario with its probability. With more uncertainties or more stages, the tree branches again at each one.</p>
+<p>Planting happens once, so it has one copy. Buying and selling happen after the harvest, so there is a separate copy for each year type. The scenario tree lists the scenarios: one branch per scenario, with its probability. With more uncertainties or more stages, the tree branches again at each one.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -599,7 +602,7 @@
 </section>
 <section id="one-scenarios-constraints" class="slide level2">
 <h2>One Scenario’s Constraints</h2>
-<p><strong>Write the good-year constraints</strong> (yields <span class="math inline">\(\times\)</span> 1.2).</p>
+<p><strong>What are the good-year constraints?</strong> (yields <span class="math inline">\(\times\)</span> 1.2)</p>
 <div class="fragment fade-in">
 <p><span class="math display">\[
 \begin{aligned}
@@ -610,7 +613,7 @@
 <p>The average and bad years are the same with yields <span class="math inline">\(\times\)</span> 1 and <span class="math inline">\(\times\)</span> 0.8. There is <strong>one</strong> land constraint, <span class="math inline">\(x_1 + x_2 + x_3 \leq 500\)</span>, shared by all three.</p>
 </div>
 <aside class="notes">
-<p>Board item. Give students a minute to write the good-year block from the one-year formulation: every yield is multiplied by 1.2 (2.5 becomes 3, 3 becomes 3.6, 20 becomes 24), and the purchase and sale variables get a good-year subscript. Then point out that the planting variables appear in every scenario’s block unchanged: that is what ties the scenarios together. The full set of constraints is in the appendix.</p>
+<p>Board item. The good-year block comes from the one-year formulation: every yield is multiplied by 1.2 (2.5 becomes 3, 3 becomes 3.6, 20 becomes 24), and the purchase and sale variables get a good-year subscript. The planting variables appear unchanged in every scenario’s block: they are the first-stage decisions. The full set of constraints is in the appendix.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -625,13 +628,13 @@
 </section>
 <section id="the-two-stage-objective" class="slide level2">
 <h2>The Two-Stage Objective</h2>
-<p>Maximize <strong>expected</strong> profit: planting cost once, plus each scenario’s sales minus purchases, weighted by its probability.</p>
+<p>Maximize <strong>expected</strong> profit: minus the planting cost, plus each scenario’s sales minus purchases, weighted by its probability.</p>
 <p><span class="math display">\[\max_{\mathbf{x}, \mathbf{y}, \mathbf{z}} \quad -\sum_i c_i x_i + \sum_s p_s \left(\text{sales}_s - \text{purchases}_s\right)\]</span></p>
 <div class="fragment fade-in">
 <p>Other choices are possible: a quantile to hedge against bad years, or the variance of profit to smooth year-to-year swings.</p>
 </div>
 <aside class="notes">
-<p>The expected value is one summary of performance across scenarios; it is not the only defensible one. A farmer who cannot survive a bad year might instead maximize the bad-year profit or a low quantile. That choice is a value judgment about risk, and it changes the plan.</p>
+<p>The expected value is one summary of performance across scenarios; it is not the only defensible one. A farmer who cannot survive a bad year might instead maximize the bad-year profit or a low quantile. That choice is a value judgment about risk, and it can change the plan.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -673,12 +676,12 @@
 <p>Expected profit of the two-stage plan: <strong>$108,390</strong>.</p>
 <div class="fragment fade-in">
 <ul>
-<li><strong>Good year</strong>: no beet land wasted above the quota.</li>
-<li><strong>Bad year</strong>: extra wheat profit helps pay for the corn it has to buy.</li>
+<li><strong>Good year</strong>: no beets above the quota, which sell for $10/T.</li>
+<li><strong>Average and bad years</strong>: less beet land, so less profit.</li>
 </ul>
 </div>
 <aside class="notes">
-<p>The two-stage plan moves land from beets to wheat. In a good year the average-year plan would grow more beets than the quota allows, which earns only $10 a tonne; the two-stage plan avoids that. In a bad year both plans fall short on corn, and the extra wheat helps cover the purchase. The plan hedges.</p>
+<p>The two-stage plan moves 50 acres from beets to wheat. Wheat on that land earns less than beets sold at the quota price, so in average and bad years the two-stage plan earns less than the average-year plan. In a good year the average-year plan grows 1,200 T of beets above the quota, which sell for only $10 a tonne, while the two-stage plan’s beets stay within the quota; there the wheat earns more.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -707,7 +710,7 @@
 <p><strong>No.</strong> $118,600 is what that plan earns <em>if the year is average</em>. To compare fairly, judge both plans across the same three year types.</p>
 </div>
 <aside class="notes">
-<p>This is the question that names the issue. The two numbers answer different questions: one is a single-scenario profit on paper, the other is an expected value under uncertainty. Ask before revealing.</p>
+<p>The two numbers answer different questions: one is a single-scenario profit on paper, the other is an expected value under uncertainty.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -755,7 +758,7 @@
 </table>
 <p><strong>Value of the stochastic solution (VSS)</strong>: $108,390 − $107,240 = <strong>$1,150</strong> per year.</p>
 <aside class="notes">
-<p>Board item for the VSS subtraction. Each plan is evaluated in each year with the best purchases and sales for that year. The average-year plan does well in average and good years but badly in a bad year. Its expected profit under uncertainty is $107,240, less than the two-stage plan’s $108,390. The difference is the value of the stochastic solution: what building the uncertainty into the model is worth. Note the two-stage plan is worse than the average-year plan in the average year itself; it trades some average-year profit for protection in bad years.</p>
+<p>Board item for the VSS subtraction. Each plan is evaluated in each year with the best purchases and sales for that year. The two-stage plan earns less in average and bad years and more in a good year, where the average-year plan grows 1,200 T of beets above the quota. On balance its expected profit is higher: $108,390 against $107,240 for the average-year plan. The difference is the value of the stochastic solution: what building the uncertainty into the model is worth.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -773,10 +776,10 @@
 <p>With perfect foresight the farmer plants the best plan for each year: expected profit $115,406.</p>
 <p><strong>Expected value of perfect information (EVPI)</strong>: $115,406 − $108,390 = <strong>$7,016</strong> per year.</p>
 <div class="fragment fade-in">
-<p>Here modelling the uncertainty is worth $1,150 a year, but a perfect forecast would be worth about <strong>6 times</strong> as much. The EVPI is the most the farmer should pay for better forecasts.</p>
+<p>The EVPI is about <strong>6 times</strong> the VSS. It is the most the farmer should pay for any forecast.</p>
 </div>
 <aside class="notes">
-<p>With perfect information the farmer would know the year before planting and use the best plan for it: the expected profit is the average of the three known-year profits. The gap between that and the two-stage plan is the EVPI. Here it is much larger than the VSS: hedging buys a little, but information would buy a lot more. That is not always the case; it depends on the problem.</p>
+<p>With perfect information the farmer would know the year before planting and use the best plan for it: the expected profit is the average of the three known-year profits. The gap between that and the two-stage plan is the EVPI.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -797,13 +800,13 @@
 <section id="key-takeaways-1" class="slide level2">
 <h2>Key Takeaways</h2>
 <ul>
-<li><strong>The best plan for the average year is not the best plan across years.</strong></li>
+<li>The plan that is optimal for the average year need not be optimal in expectation.</li>
 <li>Two stages: <strong>one</strong> here-and-now decision, <strong>one recourse decision per scenario</strong>, weighted by probability.</li>
-<li><strong>Compare plans under uncertainty</strong>: VSS is what modelling uncertainty is worth; EVPI, what a perfect forecast is worth.</li>
+<li><strong>Compare plans under uncertainty</strong>: VSS is what modeling uncertainty is worth; EVPI, what a perfect forecast is worth.</li>
 <li><strong>Scenario trees grow multiplicatively</strong> with every stage that has its own decision and uncertainty.</li>
 </ul>
 <aside class="notes">
-<p>The last takeaway leads to dynamic programming: with decisions every year and uncertainty every year, the tree explodes, and dynamic programming avoids writing it out.</p>
+<p>With a decision and an uncertainty every year, the number of scenarios grows exponentially with the number of years.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -829,7 +832,7 @@
 </section>
 <section id="assessments" class="slide level2">
 <h2>Assessments</h2>
-<p><strong>HW8</strong> and <strong>MP2</strong>: due Thursday, November 19.</p>
+<p><strong>HW8</strong>: due Thursday, November 19. <strong>MP2</strong>: due Friday, November 20.</p>
 <p><strong>HW9</strong>: assigned Wednesday, due Thursday, December 3.</p>
 <p><strong>Quiz 6</strong>: Monday, December 7.</p>
 </section></section>
