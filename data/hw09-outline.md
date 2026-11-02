@@ -7,7 +7,7 @@ stochastic plan, VSS, EVPI) and the Nov 18 lecture (backward induction on a thre
 uncertain inflows, end-of-horizon value). Not Nov 30 or Dec 2: too close to the due date.
 
 **Scope.** Light: one problem per lecture, mostly by hand, each with one short code check. It spans
-Thanksgiving and lands in the project crunch before the Dec 8 presentations, so it should take about
+Thanksgiving and lands in the project crunch before the Dec 11 presentations, so it should take about
 a normal week's effort. Examples are new: not the farmer, not the reservoir, and not Lab 4's reservoir
 operations under hydroclimatic uncertainty.
 

@@ -33,3 +33,7 @@
 	path = hw/hw06
 	url = https://github.com/bee-envsys-cornell/hw06
 	branch = Fall26
+[submodule "mini-project/mp02"]
+	path = mini-project/mp02
+	url = https://github.com/bee-envsys-cornell/mp02
+	branch = Fall26

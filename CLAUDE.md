@@ -152,10 +152,11 @@ Lectures 8-2 and 9-1 share one two-stack, three-receptor LP, and 15-2 reuses it 
 
 ## Writing homework problems
 
-**Limited asks per subproblem** (decided Oct 14, from HW6 on): each `#### Problem N.M` asks for one
-thing, or two tightly linked ones. Do not group two or three asks under one subproblem, as a numbered
-list or as stacked questions; make more subproblems, each with its own points. Details, including what
-counts as an ask, are under "Homework format" in AGENTS.md.
+**Few, simple asks** (decided Oct 14, clarified Oct 31): the aim is fewer and simpler things for
+students to produce, not more subproblems. One ask per part is the rule for quizzes; in homework it is
+a guide, not a literal rule. A `#### Problem N.M` can hold a few closely related asks (a result, why,
+and what it means), and parts that test the same step should be merged. Cut asks that repeat an earlier
+part or a lab rather than splitting them out. Details are under "Homework format" in AGENTS.md.
 
 ## Verifying that work
 

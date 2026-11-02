@@ -153,8 +153,8 @@ website:
           text: "Mini-Project Overview"
         - href: mini-project/mp01/mp01.qmd
           text: Mini-Project 1
-        - href: mini-project/index.qmd#schedule
-          text: "Mini-Project 2 (Oct. 28)"
+        - href: mini-project/mp02/mp02.qmd
+          text: Mini-Project 2
     - title: "Project"
       style: docked
       search: false
@@ -166,8 +166,6 @@ website:
           text: "Proposal"
         - href: project/presentation.qmd
           text: "Presentation"
-        - href: project/peer-review.qmd
-          text: "Peer Review"
         - href: project/report.qmd
           text: "Report"
         - href: project/evaluations.qmd

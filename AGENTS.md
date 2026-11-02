@@ -70,29 +70,38 @@ to do: "Problem 3 asks you to find … by hand, then check them in `JuMP`." Add 
 in Markdown cells" bullet when the homework has sketches. Leave out study advice ("do the hand parts
 first"), lecture dates, and commentary on the assignment (from the instructor's HW6 edit, Oct 9).
 
-**Each subproblem carries a limited number of asks** (decided Oct 14, after HW5 went out; applies from
-HW6 on). An ask is a separate thing the student has to produce: a value, the results of a solve, a
-sketch, an explanation, a judgment. Give each `#### Problem N.M` one ask, or two tightly linked ones (a
-result and why, from the same work). Do not group two or three asks under one subproblem, whether as a
-numbered list or as stacked questions in the prose ("Which constraints bind? Give the slack of the
-others. What does that mean for the city?"): split them into more subproblems, each with its own
-points. HW5's 3.3 and 3.4, with three numbered asks each, are the pattern to avoid. Numbered lists inside
-a subproblem are still fine for cases or data (five points to test, two rules, two re-solves that each
-get their own subproblem). Qualifiers such as "with units" or "as a table" are not asks, and one table of
-per-case values counts as one. Splitting keeps each problem's total and the 50-point total; renumber the
-key's `###` headings to match and update every "Problem N.M" cross-reference in the prompt, key and
-README. HW6–HW9, drafted on Oct 8–10 before this rule, were restructured to it on Oct 15. The earlier versions are in
+**Keep the asks few and simple** (decided Oct 14, after HW5 went out; clarified Oct 31). An ask is a
+separate thing the student has to produce: a value, the results of a solve, a sketch, an explanation, a
+judgment. Count them over the whole assignment and keep the count down; that, not the number of
+subproblems, is what sets the workload. One ask per part is the rule for quizzes. In homework it is a
+guide: a `#### Problem N.M` can hold a few closely related asks from the same work ("Find the optimum,
+its cost, and which constraints bind"), and parts that test the same step should be merged. What to
+avoid is a long run of unrelated questions in one part, as in HW5's 3.3 and 3.4. Cut an ask that
+repeats an earlier part, the lab or the lecture's worked example instead of splitting it out.
+Qualifiers such as "with units" or "as a table" are not asks, and one table of per-case values counts
+as one. Keep each problem's total and the 50-point total when merging or cutting; renumber the key's
+`###` headings to match and update every "Problem N.M" cross-reference in the prompt, key and README.
+HW6–HW9 were split into single-ask subproblems on Oct 15, which took the rule too literally (HW7 had 26
+parts); the instructor clarified on Oct 31 that the rule "was intended primarily for quizzes and to
+simplify (but not to be taken literally) for HWs". The pre-split versions are in
 `hw/.drafts/2026-10-15-hw06-09/`.
 
-**Homework keys carry no rubric notes** (decided Oct 9; mini-project and quiz keys keep their grading notes). Grading follows the public standard rubrics in
-`policies/rubric.qmd` (Formulation, Solution, Analysis and Interpretation, Figures), so a key gives the
-model answer and its reasoning, with no per-part point splits, partial-credit fractions, or lists of
-common errors. A note stays only where a correct answer can legitimately vary and the prompt cannot pin it
-(a solver artefact, Monte Carlo noise), in one sentence. If a key would need to list several acceptable
-answers, the problem is not pinned well enough: tighten the prompt instead (state the sign convention, the
-rounding, the form of the constraint). Deliberately open questions are fine in moderation: tradeoffs,
-recommendations, what information would change the answer. When a new kind of problem appears, extend the
-"What this looks like" lists on the rubric page rather than writing a per-assignment rubric.
+**Keys carry no grading notes; each assignment has a `rubric.md` beside its key** (decided Oct 31,
+replacing the Oct 9 rule that kept rubric notes out of homework keys and in mini-project and quiz keys).
+Grading follows the public standard rubrics in `policies/rubric.qmd` (Formulation, Solution, Analysis
+and Interpretation, Figures). The key gives the model answer and its reasoning, with no per-part point
+splits, partial-credit fractions, lists of acceptable answers, or common errors. The rubric file, for
+entering into Gradescope, splits each part's points across the components of the standard rubrics that
+apply, scaled to the part, says what earns each item in this assignment, and holds the grader notes:
+common mistakes, the alternatives a prompt allows, and checks students may try. Homework, lab,
+mini-project and quiz keys all follow it (first written for HW7–9, Labs 3–4, MP2 and Quizzes 4–6; labs
+are graded on effort, so their rubric files say what earns each mark). A note stays in a key only where a
+correct answer can legitimately vary and the prompt cannot pin it (a solver artefact, Monte Carlo noise),
+in one sentence. If a key would need to list several acceptable answers, the problem is not pinned well
+enough: tighten the prompt instead (state the sign convention, the rounding, the form of the constraint).
+Deliberately open questions are fine in moderation: tradeoffs, recommendations, what information would
+change the answer. When a new kind of problem appears, extend the "What this looks like" lists on the
+rubric page as well.
 
 ## Releasing keys
 
@@ -192,15 +201,22 @@ done
 
 ## Submodules
 
-Only two are registered, both on `Fall26`:
+These are registered, each on its `Fall26` branch (from `.gitmodules`, Nov 2):
 
 | Path | Remote |
 |------|--------|
 | `hw/hw01` | `bee-envsys-cornell/hw01` |
 | `hw/hw02` | `bee-envsys-cornell/hw02` |
+| `hw/hw03` | `bee-envsys-cornell/hw03` |
+| `labs/lab01` | `bee-envsys-cornell/lab01` |
+| `hw/hw04` | `bee-envsys-cornell/hw04` |
+| `mini-project/mp01` | `bee-envsys-cornell/mp01` |
+| `hw/hw05` | `bee-envsys-cornell/hw05` |
+| `labs/lab02` | `bee-envsys-cornell/lab02` |
+| `hw/hw06` | `bee-envsys-cornell/hw06` |
+| `mini-project/mp02` | `bee-envsys-cornell/mp02` |
 
-Not checked out by default — `git submodule update --init`. Everything else under `hw/` and `labs/`
-referenced by the site is **not** a submodule.
+Not checked out by default: `git submodule update --init`. Anything else under `hw/`, `labs/` and `mini-project/` that the site references is **not** a submodule. To add an assignment when it is released: `git submodule add -b Fall26 https://github.com/bee-envsys-cornell/<repo> <folder>/<repo>`, then link it from the folder's `index.qmd` table and the sidebar in `_quarto.yml`, and render the pages in that sidebar.
 
 ## Typst rendering for assignments and quizzes
 

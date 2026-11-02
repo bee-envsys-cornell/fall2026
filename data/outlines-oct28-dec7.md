@@ -37,7 +37,7 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
 
 **Nov 4 — MIP (after Quiz 4)**
 10. Add an applied, coded anchor: three plants with min/max output and fixed costs, `Bin` variables, linking constraints y ≤ Pmax·u and y ≥ Pmin·u. At 150 MW the CCGT alone (\$5,500) beats cheaper-per-MWh coal (\$6,000); the switch is 200 MW by hand; `relax_integrality` gives coal "60% on" at \$4,800 (12.7% gap). The Nov 11 lab and HW7 both assume students have seen this once.
-11. Trim branch and bound from 17 slides to nodes 1–3 plus the final annotated tree; nodes 4–9 to the appendix. HW7 traces only 2–3 nodes; every node value checked.
+11. Trim branch and bound from 17 slides to nodes 1–3 plus the final annotated tree; nodes 4–9 to the appendix. HW7 traces only 2–3 nodes; every node value checked. **Reversed Oct 31:** the lecture has time for the full walkthrough, so it follows the FA25 example step by step: for each pair of nodes, the tree with the new nodes empty, their plots, then the tree with results, the upper and lower bounds, and a question on which node to branch next. Nodes 1–9 are in the main deck and the appendix is gone; the tree is drawn by code (`tree_plot`), not FA25's images.
 12. State the relaxation bound for both senses (the example maximizes; the lab and HW7 minimize).
 
 **Nov 9 — Waste and Network Models (sub)**
@@ -159,7 +159,7 @@ Reply with the numbers you'd change; the rest go ahead as recommended.
   - Q2 reads a JuMP dispatch output: the price from the demand shadow price, the cost of a small rise in demand from that shadow price, the price after a rise too large for the marginal plant, and the cost of a minimum output (revised Oct 11; the capacity shadow-price parts are gone).
   - Q3a asks for both ramping constraints; Q3b asks about the EIA duck curve.
   - The deck must teach each of these explicitly, in words matching 09-1's sign convention. No quiz asides on slides or in notes; the notes are visible in the published deck.
-- **MP2** (assigned today, due Nov 19): multi-period dispatch of an existing fleet with ramping limits, hourly prices from demand duals, and a carbon-tax sweep. It uses FA25 HW4 data, different from this deck's (2020 Zone C, 13 thermal units plus wind and solar), so the deck doesn't pre-solve it. The carbon-tax sweep is MP2's core, so the deck mentions a carbon price only as one thing that reorders the merit order, with no computation.
+- **MP2** (assigned Oct 31, due Fri Nov 20): multi-period dispatch of an existing fleet with ramping limits, hourly prices from demand duals, and a carbon-tax sweep. It uses FA25 HW4 data, different from this deck's (2020 Zone C, 13 thermal units plus wind and solar), so the deck doesn't pre-solve it. The carbon-tax sweep is MP2's core, so the deck mentions a carbon price only as one thing that reorders the merit order, with no computation.
 - **Nov 2 (capacity expansion)** builds on "price = demand dual" and moves the power-system overview here; it doesn't repeat it.
 
 ## 5. Section table (75 minutes; computed sum 75)
@@ -982,7 +982,7 @@ That is roughly 60 content slides of material for one 75-minute session. FA26 de
 | 10 | **Deep uncertainty**: the instructor's CO₂-2100 poll; "why can't we agree?"; known knowns / unknown unknowns, compressed to one slide; definition; contrast with Nov 16 (there, the scenario probabilities were inputs) | 5 | Motivation before mechanism | slide + poll |
 | 15 | **Robustness** (details below) | 3 | Interpretation slide, explicit scope, anchoring number | slide; tablet on the results |
 | 18 | **Sensitivity analysis** (details below) | 4 | Trap named, callback, verification | slide; board for the shadow-price sketch, optional |
-| 5 | **Takeaways; next** (Dec 2: limits of optimization; Dec 7: wrap-up and Quiz 6); **assessments** (presentation video Dec 8, report Dec 20) | — | — | slide |
+| 5 | **Takeaways; next** (Dec 2: limits of optimization; Dec 7: wrap-up and Quiz 6); **assessments** (presentations Dec 11, report Dec 20) | — | — | slide |
 | **75** | | | | |
 
 **Multiple objectives (22 min):**
@@ -1173,7 +1173,7 @@ That is roughly 60 content slides of material for one 75-minute session. FA26 de
 | 20 | **Simulation-optimization of the lake** (σ = 0.5, as Nov 30): definition; corrected setup; **known-answer check** (minimize release: true answer 0, search returns 0.036–0.038); the real run (plan tips the lake in 0.67 / 0.91 of fresh futures); **one constant release, 0.0345**, meets the limit (0.086 fresh); the horizon (0.034 for 95 years, then 0.075) | 2, 3 | Verification as a named step; interpretation; anchoring numbers | slide; tablet on trajectories |
 | 10 | **An optimum is only as good as its model**: Ackoff callback (Oct 14); the emissions LP re-solved under classes F, D and B (one folded cell, table below); "who chose the description?"; class D's plan on a class F night: 303 / 306 / 211 µg/m³, all above 196 | 4 | Callback; concrete anchoring number; interpretation | slide; tablet on the table |
 | 14 | **The whole arc**: descriptive-methods table, then prescriptive-methods table (answers / characteristic error / check), revealed row by row; check: "which of these errors shrinks with more computing time?"; your closing "Content" and "Themes" slides with the six learning outcomes in student terms | 5 | Cross-course comparison table; check for understanding | slide (incremental rows) |
-| 5 | **Takeaways; next** (Dec 7: Quiz 6 and a project session with the TA; Dec 8 video; Dec 20 report and self/peer evaluations) | — | — | slide |
+| 5 | **Takeaways; next** (Dec 7: Quiz 6 and a project session with the TA; Dec 11 presentations; Dec 20 report and self/peer evaluations) | — | — | slide |
 | 5 | Buffer | — | — | — |
 | **75** | | | | |
 
@@ -1266,12 +1266,12 @@ Robustness: F's plan on a D night 57 / 129 / 156 µg/m³ and on a B night 46 / 1
 | **Minutes** | 75: Quiz 6 (25) + project session (50) |
 | **Runs it** | **TA** — the instructor is travelling |
 | **Deck** | New, small activity deck `activity-project-session.qmd` (about 6 slides), styled like `lecture09-2-proposal-peer-review`, with full notes and timings for the TA |
-| **What follows** | Presentation videos due Tue Dec 8 at 9pm (final-exam slot); presentation peer reviews in Canvas from Dec 10; final report, self-assessment and peer evaluations due Dec 20 |
+| **What follows** | Live presentations Fri Dec 11 at 10am (no peer reviews, decided Nov 2); final report, self-assessment and peer evaluations due Dec 20 |
 
 ## 2. Why this shape
 
 - The wrap-up lecture's content moved into Dec 2, the last lecture the instructor gives.
-- A project session needs no lecturing, so the TA can run it, and it lands the week the videos are due.
+- A project session needs no lecturing, so the TA can run it, and it lands the week before the presentations.
 - Quiz 6 on an activity session follows the rule used for every other quiz host (the 25-minute loss lands on an activity, not on new material). It does break the schedule's "no quiz in a travel week" rule; see decision 28.
 
 ## 3. Session plan
@@ -1279,9 +1279,9 @@ Robustness: F's plan on a D night 57 / 129 / 156 µg/m³ and on a B night 46 / 1
 | Min | Part | What happens | Materials |
 |--:|:--|:--|:--|
 | 25 | **Quiz 6** (TA proctors) | Covers Nov 16, 18, 30 and Dec 2 | Printed quiz |
-| 5 | **Logistics** | Video due Dec 8 at 9pm; peer reviews from Dec 10; report, self-assessment and peer evaluation due Dec 20; where the rubrics are | 1 slide |
+| 5 | **Logistics** | Presentations Fri Dec 11 at 10am; report, self-assessment and peer evaluation due Dec 20; where the rubrics are | 1 slide |
 | 15 | **Your project through the course's checks** | 2 min alone, 8 in groups, 5 for two or three groups to share. Four questions: (1) What is your descriptive model, and what is your method? (2) Which single assumption would most change your recommendation? (3) Which check would reveal it: refining, validating, sensitivity, or robustness? (4) Who is affected if it's wrong? Each group leaves with a draft of the report's Discussion paragraph | 2 slides (prompt; the four questions) |
-| 30 | **Supervised work time** | Groups finish videos and reports; the TA circulates. Course evaluations here if open (5 min) | 1 slide |
+| 30 | **Supervised work time** | Groups rehearse presentations and draft reports; the TA circulates. Course evaluations here if open (5 min) | 1 slide |
 | **75** | | | |
 
 ## 4. What the TA needs

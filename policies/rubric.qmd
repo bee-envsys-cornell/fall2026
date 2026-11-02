@@ -26,7 +26,7 @@ These rubrics are intended as a description for students and a guide to the TA f
 - You will not be doubly penalized for getting the "right" solution to the "wrong" setup (you would have been penalized above), but this requires the TA to be able to *easily* identify that your implementation is correct given the wrong model. If your implementation is unclear, you are likely to lose points here because we have no way of knowing that your answer is "right" without re-coding your problem. 
 - You will not be given credit for your code (this isn't a programming class); the code is a means to solving the problem, and we're more interested in how you set up the problem and interpret the solution.  This does mean that code that is sloppy but *works* is perfectly acceptable. However, your code may get you partial credit if the TA can **easily** find where you made a mistake, so make sure your submitted code is well commented. It's important to write down the mathematics of what your code is trying to implement, because the TA will only take a cursory look at your code.
 - Some rubrics include "***deadly sins***" which will cause an immediate zero to be given for the problem. Do not do these!
-- Regardless of the problem type, the following penalties will be applied ***per incident***:
+- Regardless of the problem type, the following penalties will be applied ***per incident***, on any part however many points it is worth, but only once for the same omission, not again each time it repeats:
     - -1 for missing units.
 
 ## Standard Rubrics

@@ -11,8 +11,8 @@ Planning document. **Canonical** for the plan; `schedule.qmd` is the student-fac
 
 **Class**: MW 2:55–4:10pm (75 min), 105 Riley-Robb.
 **No class**: Sep 7 (Labor Day), Oct 12 (Fall Break), Nov 25 (Thanksgiving).
-**Last class** Dec 7 assumed; project presentations Tue Dec 8 sit in the final-exam slot and do not
-consume a class day. Confirm all three break dates and the last day against the registrar.
+**Last class** Dec 7 assumed; project presentations are live on Fri Dec 11 at 10am (decided Nov 2, replacing a recorded video due Dec 8
+and Canvas peer reviews, which are dropped) and do not consume a class day. Confirm all three break dates and the last day against the registrar.
 
 ---
 
@@ -51,7 +51,7 @@ change named · **New** — nothing exists, build from scratch.
 | 10 | Mon Oct 26 | **Lab: Linear Programming with JuMP** — *TA* | `labs/lab02` (`Fall26`, from FA25 `lab03`) | **Drafted Oct 8** — three co-located power plants sharing a river heat limit and a transmission line in a heat wave (reframed Oct 21 from one plant with three units, a mix only one US plant has). Numbers made realistic Oct 21: gas plants at the Oct 28 deck's 2022 costs (CCGT3 \$56, CT1 \$87), NOx rates near EPA's summer 2024 fleet averages (turbines 0.5 lb/MWh, was 2), price \$120, limits 1,000 MWth (cut to 850), 650 lb, 1,000 MW; profit \$73,672, heat \$38/MWth, line \$33/MW, and the cut now lowers NOx; key and TA guide in `hw-solutions/lab02` | Lab 2 |
 | 10 | Wed Oct 28 | Economic Dispatch — *sub (power systems expert)* | `lecture10-2-economic-dispatch` | **Drafted Oct 6** — sub-ready (full notes); keeps multi-period dispatch and the duck curve; adds JuMP shadow-price output, hourly prices, a twice-solar case; Oct 10: students write the ramping constraints before they are shown; Oct 11: the capacity shadow-price slide is cut (Quiz 4 Q2 (b)–(d) rewritten to match), ramp limits are for dispatchable plants only, a 600 MW nuclear unit is added and CT6–CT7 dropped, demand is raised 600 MW and shown as an illustrative fall day, and the high-solar case is three times the solar; Oct 12: gas plants priced at the 2022 U.S. gas price (\$7.21/MMBtu), so the single-hour price is \$87 and the day runs \$58–107, megawatts unchanged | MP2 assigned |
 | 11 | Mon Nov 2 | Capacity Expansion | `lecture11-1-capacity-expansion` (new, from the capacity half of `lecture09-1` + `lecture10-1-capacity-expansion-2`) | **Drafted Oct 6** — screening curves; CO₂ cap and its shadow price; Oct 11: stepped through thermal types only (nuclear in place of geothermal), then wind and solar added with a worked example on a good site, then caps at 50%, 25% and 10% (\$148/t thermal only by hand, \$15/t with wind and solar); names brownfield in words for MP2; Oct 12: moved to 2022 fuel prices as the base (CCGT \$48, CT \$69, coal \$27; EIA coal cost; geothermal added), with a utilization column, the load duration curve filled by plant and net of wind and solar, the cap at \$94/t thermal only, and a new gas-price part (U.S. and European prices 2019–2026; the plan at \$3.50 and \$15, where coal or geothermal takes the base load); 32 slides | |
-| 11 | Wed Nov 4 | Mixed Integer Programming | `lecture11-2-mixed-integer` (renamed from `lecture11-1`) | **Drafted Oct 6** — coded three-plant anchor; branch and bound trimmed | HW7 · **Quiz 4** |
+| 11 | Wed Nov 4 | Mixed Integer Programming | `lecture11-2-mixed-integer` (renamed from `lecture11-1`) | **Drafted Oct 6** — coded three-plant anchor; branch and bound walked through node by node (Oct 31) | HW7 · **Quiz 4** |
 | 12 | Mon Nov 9 | Solid Waste and Network Models — *sub* | `lecture12-1-waste-management` | **Drafted Oct 6** — sub-ready (full notes, no board work); moves to Wed if that is the only day the sub can come | |
 | 12 | Wed Nov 11 | **Lab: Fixed Costs and Facility Siting in JuMP** — *TA* | `labs/lab03` (`Fall26`) | **Drafted Oct 8** — compost siting, four towns and three sites; key and TA guide in `hw-solutions/lab03`; siting MIP with the formulation given; works before or after the waste lecture, so it can swap to Mon | Lab 3 · HW8 |
 | 13 | Mon Nov 16 | Stochastic Optimization and Scenario Trees | `lecture13-1-stochastic-optimization` | **Drafted Oct 6** — farmer corrected; tables from one JuMP cell | **Quiz 5** |
@@ -119,6 +119,9 @@ Reusable questions live in `exams/midterm1` and `exams/midterm2`, across branche
   year: units, which constraints bind, relaxation comparison, buy-the-land arithmetic (2–5 min each).
   Dispatch formulation from a plant table (~12–15 min) plus "where does the price come from" (3 min).
   The duck-curve conceptual question (FA25, 2 pts) moves here now that ramping is taught Oct 28.
+  *(Nov 2: 3(b) pinned to one answer. The setup now says the cheapest plants ramp up slowly and gas combustion
+  turbines reach full output within an hour but cost more, and the ask is why the cost of meeting demand rises
+  before sunset; the rubric's list of other acceptable consequences is gone.)*
   More precedented material than will fit — pick two.
 - **Quiz 5** — **no precedent at all** now that the duck-curve item has moved to Quiz 4. Capacity
   expansion, MIP, branch and bound, and network/waste allocation have never been assessed on a timed
@@ -158,13 +161,13 @@ is graphical (corners or level lines) on two-variable problems.
 | 5 | Wed Oct 14 | Thu Oct 22 | Gaussian plumes & model validation | Evaluate the plume equation at a receptor; stability class and wind speed effects; where the max ground-level concentration occurs; what a goodness-of-fit metric is blind to | Calibrate a plume's wind speed and stability class against monitors on a calm valley night, find that neither helps, and say which of the model's assumptions fail |
 | 6 | Wed Oct 21 | Thu Oct 29 | Linear programs & shadow prices | Formulate a word problem with a blending constraint; standard form; read a 2-variable LP graphically; binding constraints, shadow prices with units, a buy-capacity decision, a zero shadow price | Solve the stormwater LP in JuMP, check its shadow prices against the hand answer, and re-solve a change too large for them; a six-source nitrogen LP with three load limits, too large to graph (which limits bind, and each source's shadow-price value against its cost explains the plan and predicts a re-solve) |
 | 7 | Wed Nov 4 | Thu Nov 12 | Mixed integer programming | Model a fixed cost, an either/or, and an indicator with binaries; why the LP relaxation bounds; trace 2–3 branch-and-bound nodes | Solve a small MIP; compare to its LP relaxation |
-| 8 | Wed Nov 11 | Thu Nov 19 | Network models & waste allocation | Set up a small facility-allocation network; flow-conservation and capacity constraints; siting indicators | Solve the instance; interpret which facilities open; a 12-hour combined-sewer storage LP (a storage balance across hours; moved from HW6 Oct 10) |
+| 8 | Wed Nov 11 | Thu Nov 19 | Network models & waste allocation | Set up a small facility-allocation network; flow-conservation and capacity constraints; siting indicators | Solve the instance; interpret which facilities open (the combined-sewer storage LP moved here from HW6 was cut Oct 31) |
 | 9 | Wed Nov 18 | Thu Dec 3 | Stochastic optimization & dynamic programming | A small two-stage problem: expected-value plan, recourse, VSS; backward induction by hand on a small sequential decision | A light check in code of one by-hand answer; outline in `data/hw09-outline.md` |
 
 **Design notes.** HW4 deliberately echoes HW3, putting deterministic truncation error in Δt beside
 statistical error in *n*. HW6's graphical-LP question matches Quiz 4's format so the homework is
 real practice, and HW6's LP answers are all by hand; its one `JuMP` model (Problem 4) is provided. HW9 is the only homework
-in weeks 13–16, which the term project otherwise fills: update (Nov 13), presentations (Dec 8),
+in weeks 13–16, which the term project otherwise fills: update (Nov 13), presentations (Dec 11),
 report (Dec 20).
 
 **HW9 added** (decided Oct 7). With eight homeworks, Quiz 6 (Dec 7) would have had no homework
@@ -172,12 +175,14 @@ behind it: scenario trees, DP, and multiple objectives and robustness rested on 
 graded on effort. HW9 goes out Wed Nov 18 and is due Thu Dec 3, spanning Thanksgiving, so it is two
 calendar weeks for about one week of work, and its key can be posted Fri Dec 4. It covers the Nov 16
 and Nov 18 lectures only: Nov 30 is too close to the deadline. Keep it light, about one problem per
-lecture, since it lands in the project crunch before the Dec 8 presentations; 4750 students can make
+lecture, since it lands in the project crunch before the Dec 11 presentations; 4750 students can make
 it their dropped homework (5750 students cannot drop one). Its examples must differ from both
 lectures' and from Lab 4's.
 Outline approved Oct 8 (`data/hw09-outline.md`, checks in `data/hw09-checks.jl`): activated carbon for an
 algal-bloom season, and a three-year site cleanup with inhibited biodegradation. Drafted Oct 8 with
 its key in `hw/hw09` and `hw/solutions/hw09` (local folders, no GitHub repos yet).
+
+**HW7 and HW8 merged and trimmed** (decided Oct 31). HW7 is due with Lab 3's sheet and the day before the project update, and HW8 the day before Mini-Project 2, so both were lightened. The instructor clarified that the one-ask rule "was intended primarily for quizzes and to simplify (but not to be taken literally) for HWs", so parts testing the same step were merged and repeated asks cut. HW7 went from 26 parts to 9 (still 32 + 18): it lost the two re-solves without each rule and the branch-and-bound check in `JuMP`. HW8 went from 20 parts to 7: Problem 3 (the storage LP, 8 points) and Problem 2's two confirming re-solves were cut, and its problems are now 24 + 26. The pre-merge versions are in `hw/.drafts/2026-10-31-hw07-08/`.
 
 **HW6's JuMP trimmed** (decided Oct 23). Students first use `JuMP` in Lab 2 (Mon Oct 26), three days
 before HW6 is due, so HW6 no longer has them write any. Problem 3 drops its `JuMP` implementation and
@@ -269,6 +274,8 @@ the capture, combined cycle or hydro cost is nudged by 2–10%. The prompt's dat
 capture cost was an estimate for a plant nobody had built, and that part of hydro's cost increase
 is a change in EIA's reference plant. The Part 5 data-loading code is now a runnable cell in the
 notebook (it had been inside a text cell).
+
+**MP2 pared down** (decided Nov 2, as it went out late). Problem 1.2's switching taxes by hand are cut; the tax term moved into 4.1, which now asks which plant type moves ahead of coal between the five taxes. Problem 3.1 (every hour's price, the sorted price curve, price-setter counts) is cut, since Lab 2, HW6 and Quiz 4 already test the price as the demand constraint's shadow price, and so is the price half of 4.2 (the average price and who pays). 2.2 plots one July week and asks only how the model uses hydro. The value of water is now Problem 3.1. Points: 1.1 15; 2.1 10, 2.2 10; 3.1 10; 4.1 15, 4.2 10; 5.1 8, 5.2 10, 5.3 12 (Parts 15, 20, 10, 25, 30). The key, `rubric.md` and both PDFs follow.
 
 **Two mini-projects, not three** (decided Sep 23), each worth 10% and scoped to a short report so it reads as a project rather than a heavier homework. MP1 runs four weeks because Fall Break and the proposal fall inside it; MP2 runs three, opening with the dispatch lecture it depends on. MP3 is dropped; the scenario-tree lab (Lab 4) stands on its own.
 
