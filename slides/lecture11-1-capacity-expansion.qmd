@@ -414,51 +414,6 @@ plot!(p_screen, size=(1200, 440), left_margin=12mm)
 Each line is what one MW of a technology costs per year if it runs for a given number of hours: fixed cost at zero hours, rising at the variable cost. The cheapest technology for a load that lasts h hours is the lowest line at h. At these prices nuclear and coal are not the lowest at any number of hours in a year. CTs are cheapest below the crossover with CCGT; CCGTs above. Unserved energy (the dotted line, steepest of all) is cheapest only for loads that last a few hours: its crossover with CTs is too close to zero to see at this scale.
 :::
 
-## Crossover Hours
-
-Find the crossovers: below how many hours a year is a CT cheaper than a CCGT? Not serving cheaper than a CT?
-
-::: {.fragment .fade-in}
-$$
-\begin{aligned}
-\text{CT vs. CCGT:} \quad & 65{,}000 + 69h = 82{,}000 + 48h \\
-\text{Unserved vs. CT:} \quad & 9{,}000h = 65{,}000 + 69h
-\end{aligned}
-$$
-
-A CT is cheaper below **`{julia} commas(ct_vs_ccgt)` hours**; not serving is cheaper below **`{julia} round(nse_vs_ct; digits=2)` hours**.
-:::
-
-::: {.notes}
-Board item. Set the two annual costs equal and solve. CCGT costs \$`{julia} commas(gens[3, :FixedCost] - gens[4, :FixedCost])` a year more to build and \$`{julia} gens[4, :VarCost] - gens[3, :VarCost]` per MWh less to run, so it pays back after about `{julia} commas(ct_vs_ccgt)` hours. A CT costs \$`{julia} commas(gens[4, :FixedCost])` a year to build; not serving costs \$`{julia} commas(NSECost - gens[4, :VarCost])` more per MWh than running the CT, so a CT pays for itself only if it would run more than about seven hours a year. At these prices coal does not beat CCGT within a year: the crossover is at `{julia} commas((gens[2, :FixedCost] - gens[3, :FixedCost]) / (gens[3, :VarCost] - gens[2, :VarCost]))` hours. Nuclear's crossover with CCGT is at about `{julia} commas(round((gens[1, :FixedCost] - gens[3, :FixedCost]) / (gens[3, :VarCost] - gens[1, :VarCost]); sigdigits=3))` hours.
-:::
-
-## The Optimal Capacity Mix
-
-```{julia}
-#| echo: true
-#| code-fold: true
-
-ccgt_level = sorted_demand[ceil(Int, ct_vs_ccgt)]
-ct_top = sorted_demand[ceil(Int, nse_vs_ct)]
-p_full = plot(1:n_hours, sorted_demand, color=:black, xlabel="Hours", ylabel="Load  [MW]",
-    xlims=(0, n_hours), ylims=(0, 3000), title="Whole year")
-hline!(p_full, [ccgt_level], color=cb_orange, linestyle=:dash)
-vline!(p_full, [ct_vs_ccgt], color=:gray50, linewidth=1)
-annotate!(p_full, 2300, ccgt_level + 200, text("CCGT below $(commas(ccgt_level)) MW", 15, :left, plot_font))
-p_top = plot(1:24, sorted_demand[1:24], color=:black, marker=:circle, xlabel="Hours", ylabel="Load  [MW]",
-    title="Top 24 hours", ylims=(2600, 2800))
-hline!(p_top, [ct_top], color=cb_vermillion, linestyle=:dash)
-vline!(p_top, [nse_vs_ct], color=:gray50, linewidth=1)
-annotate!(p_top, 11, ct_top + 22, text("CT up to $(commas(ct_top)) MW", 15, :left, plot_font))
-plot(p_full, p_top, layout=(1, 2), size=(1200, 350), left_margin=12mm)
-```
-
-CCGT **`{julia} commas(ccgt_level)` MW**, CT **`{julia} commas(ct_top - ccgt_level)` MW**, **`{julia} round(Int, peak_demand - ct_top)` MW** unserved, which is exactly what the LP builds.
-
-::: {.notes}
-Read the crossovers off the load duration curve. Load that lasts more than `{julia} commas(ct_vs_ccgt)` hours is cheapest served by CCGT: that's the curve's height at `{julia} commas(ct_vs_ccgt)` hours, `{julia} commas(ccgt_level)` MW. Load lasting between about 7 and `{julia} commas(ct_vs_ccgt)` hours is cheapest served by CTs: up to the curve's height at 8 hours. Load lasting fewer hours isn't worth building for at all. This reproduces the LP's build to the megawatt, and it answers why there's unserved energy despite the 9,000 dollar penalty: the last `{julia} round(Int, peak_demand - ct_top)` MW are needed for only `{julia} nse_hours` hours a year, and building capacity for them would cost more than the penalty. The `{julia} round(nse_vs_ct; digits=2)`-hour threshold depends on the penalty: at 10,000 dollars per MWh it's `{julia} round(gens[4, :FixedCost] / (10000 - gens[4, :VarCost]); digits=1)` hours.
-:::
 
 # Adding Renewables
 
@@ -576,10 +531,6 @@ hline!(p_renewable_screen, [gens[wind_row, :FixedCost] / 1000], color=cb_sky, li
 hline!(p_renewable_screen, [gens[solar_row, :FixedCost] / 1000], color=cb_green, linestyle=:dot, label="Solar")
 plot!(p_renewable_screen, size=(1200, 370), left_margin=12mm)
 ```
-
-::: {.fragment .fade-in}
-Solar appears to be best for every load over **`{julia} commas(solar_vs_ct)` hours** a year and no CCGT is built. What is missing?
-:::
 
 
 ## The Cost of a Solar MWh
@@ -745,10 +696,6 @@ println("| CO~2~ (kt/yr) | $(commas(thermal_emissions / 1000)) | | $(commas(with
 println("\n:::")
 ```
 
-::: {.caption}
-Energy in GWh a year. When some of the geothermal, wind and solar output isn't needed, the model doesn't say which is turned down; the table splits it in proportion to what each could produce.
-:::
-
 Wind and solar add **`{julia} commas(renewables_added)` MW**; gas falls by only **`{julia} commas(gas_before - gas_after)` MW**.
 
 ::: {.notes}
@@ -852,10 +799,6 @@ println(plan_rows("All,\u00a025%", capped_quarter))
 println(plan_rows("All,\u00a010%", capped_tenth))
 println("\n:::")
 ```
-
-::: {.caption}
-Each plan's first row is the capacity of each type (MW) and its second the energy each type generates (GWh), with geothermal, wind and solar output that isn't needed split as on the previous results; cost in \$M a year, shadow price in \$/t. Emission factors $e_g$: coal `{julia} round(Int, gens[2, :Emissions])`, CCGT `{julia} gens[3, :Emissions]`, CT `{julia} gens[4, :Emissions]` t/MWh; the other types 0.
-:::
 
 Each cap is a share of the thermal-only plan's emissions, `{julia} commas(thermal_emissions / 1000)` kt of CO~2~ a year: $\sum_{g,t} e_g \, y_{g,t} \leq E$.
 
@@ -1004,27 +947,6 @@ With thermal types only, \$15 gas makes **coal** the largest plant and CO~2~ (ab
 Each bar is a new solve with only the gas price changed. The six plans cost \$`{julia} commas(thermal_2025.cost / 1e6)`M, \$`{julia} commas(all_2025.cost / 1e6)`M, \$`{julia} commas(thermal_2022.cost / 1e6)`M, \$`{julia} commas(with_renewables.cost / 1e6)`M, \$`{julia} commas(thermal_europe.cost / 1e6)`M and \$`{julia} commas(all_europe.cost / 1e6)`M a year, left to right. At \$3.50 the plans look like the base case with less wind and solar, because the fuel they save is worth less. At \$15 the thermal-only plan changes character: coal, which no plan has built so far, becomes the largest plant at `{julia} commas(thermal_europe.build[2])` MW, and emissions more than double. A high gas price with no limit on carbon raises emissions here. With renewables the high price does the opposite. Geothermal, which wind and solar kept out at \$7.21, is now built (`{julia} commas(all_europe.build[geothermal_row])` MW), because the gas plants that covered the evenings have become expensive to run, and emissions fall to `{julia} commas(all_europe.emissions / 1000)` thousand tonnes.
 
 Coal is worth building for load that lasts all year once gas costs more than about \$`{julia} round((gens[2, :VarCost] + (gens[2, :FixedCost] - gens[3, :FixedCost]) / n_hours - gens[3, :OtherVarCost]) / gens[3, :HeatRate]; digits=1)` per million Btu. That is the price at which coal's line on the screening chart meets the CCGT's at the end of the year.
-:::
-
-## Base, Intermediate and Peak Load
-
-```{julia}
-#| echo: true
-#| code-fold: true
-
-# The thermal-only plan at $15 gas, and the two crossovers of its screening curves [hours]
-coal_vs_ccgt_europe = (gens[2, :FixedCost] - gens[3, :FixedCost]) / (europe_costs[3] - europe_costs[2])
-ct_vs_ccgt_europe = (gens[3, :FixedCost] - gens[4, :FixedCost]) / (europe_costs[4] - europe_costs[3])
-p_three = band_plot(thermal_europe.build, [1, 2, 3, 4])
-plot!(p_three, size=(1200, 280), left_margin=12mm)
-```
-
-- Coal serves the **base load**, lasting over **`{julia} commas(coal_vs_ccgt_europe)` hours**.
-- CCGT serves the **intermediate load**, **`{julia} commas(ct_vs_ccgt_europe)`** to **`{julia} commas(coal_vs_ccgt_europe)` hours**.
-- CT serves the **peak load**, under **`{julia} commas(ct_vs_ccgt_europe)` hours**.
-
-::: {.notes}
-The thermal-only plan at \$15 gas, drawn the same way as the first plan. Now there are three bands, and each crossover of the screening curves marks where one ends: coal costs \$`{julia} commas(gens[2, :FixedCost] - gens[3, :FixedCost])` a year more than a CCGT to build and \$`{julia} europe_costs[3] - europe_costs[2]` less per MWh to run, so it wins for load lasting more than `{julia} commas(coal_vs_ccgt_europe)` hours. Utilization falls from band to band: `{julia} utilization(thermal_europe.build[2], thermal_europe.energy[2])`% for coal, `{julia} utilization(thermal_europe.build[3], thermal_europe.energy[3])`% for CCGT and `{julia} utilization(thermal_europe.build[4], thermal_europe.energy[4])`% for CT. A plant that is expensive to build and cheap to run is worth it only if it runs most of the year; that is a baseload plant. A peaker is the reverse. At the 2022 and 2025 U.S. prices, a CCGT is both the baseload and the intermediate plant, and coal is not built.
 :::
 
 # Key Takeaways and Upcoming Schedule
