@@ -1518,14 +1518,14 @@
     "href": "slides/lecture11-2-mixed-integer.html#relaxing-the-binary-variables",
     "title": "Discrete Variables and Mixed Integer Programming",
     "section": "Relaxing the Binary Variables",
-    "text": "Relaxing the Binary Variables\n\nCode\nlp_150 = commit(150; relax=true)\ndemands = [150, 220, 280, 420]\nmip_cost = zeros(length(demands))\nlp_cost = zeros(length(demands))\nfor (k, d) in enumerate(demands)\n    mip_cost[k] = commit(d).cost\n    lp_cost[k] = commit(d; relax=true).cost\nend\nprintln(\"| Demand (MW) | MIP (\\\\\\$/h) | LP relaxation (\\\\\\$/h) | Gap |\")\nprintln(\"|--:|--:|--:|--:|\")\nfor k in eachindex(demands)\n    println(\"| $(demands[k]) | $(commas(mip_cost[k])) | $(commas(lp_cost[k])) | $(round(100 * (mip_cost[k] - lp_cost[k]) / mip_cost[k]; digits=1))% |\")\nend\n\n\n\n\nDemand (MW)\nMIP ($/h)\nLP relaxation ($/h)\nGap\n\n\n\n\n150\n5,500\n4,800\n12.7%\n\n\n220\n7,400\n7,040\n4.9%\n\n\n280\n9,600\n9,050\n5.7%\n\n\n420\n14,100\n13,950\n1.1%\n\n\n\n\nrelax_integrality turns the binaries into continuous variables between 0 and 1."
+    "text": "Relaxing the Binary Variables\n\nCode\nlp_150 = commit(150; relax=true)\ndemands = [150, 220, 280, 420]\nmip_cost = zeros(length(demands))\nlp_cost = zeros(length(demands))\nfor (k, d) in enumerate(demands)\n    mip_cost[k] = commit(d).cost\n    lp_cost[k] = commit(d; relax=true).cost\nend\nprintln(\"| Demand (MW) | MILP (\\\\\\$/h) | LP relaxation (\\\\\\$/h) | Gap |\")\nprintln(\"|--:|--:|--:|--:|\")\nfor k in eachindex(demands)\n    println(\"| $(demands[k]) | $(commas(mip_cost[k])) | $(commas(lp_cost[k])) | $(round(100 * (mip_cost[k] - lp_cost[k]) / mip_cost[k]; digits=1))% |\")\nend\n\n\n\n\nDemand (MW)\nMILP ($/h)\nLP relaxation ($/h)\nGap\n\n\n\n\n150\n5,500\n4,800\n12.7%\n\n\n220\n7,400\n7,040\n4.9%\n\n\n280\n9,600\n9,050\n5.7%\n\n\n420\n14,100\n13,950\n1.1%\n\n\n\n\nrelax_integrality turns the binaries into continuous variables between 0 and 1."
   },
   {
-    "objectID": "slides/lecture11-2-mixed-integer.html#a-simple-mip",
-    "href": "slides/lecture11-2-mixed-integer.html#a-simple-mip",
+    "objectID": "slides/lecture11-2-mixed-integer.html#a-simple-milp",
+    "href": "slides/lecture11-2-mixed-integer.html#a-simple-milp",
     "title": "Discrete Variables and Mixed Integer Programming",
-    "section": "A Simple MIP",
-    "text": "A Simple MIP\n\\[\n\\begin{aligned}\n\\max \\quad & 3x_1 + 4x_2 \\\\\n\\text{subject to:} \\quad & 2x_1 + 6x_2 \\leq 27 \\\\\n& x_2 \\geq 2 \\\\\n& 3x_1 + x_2 \\leq 19 \\\\\n& x_1, x_2 \\geq 0, \\ \\text{integer}\n\\end{aligned}\n\\]\nBranch and bound: solve LP relaxations, split on a fractional variable, and prune branches that can’t beat the best integer solution found so far.\n\nThis example maximizes, so the relaxation gives an upper bound. Any integer point we find gives a lower bound. Branch and bound narrows the gap between them."
+    "section": "A Simple MILP",
+    "text": "A Simple MILP\n\\[\n\\begin{aligned}\n\\max \\quad & 3x_1 + 4x_2 \\\\\n\\text{subject to:} \\quad & 2x_1 + 6x_2 \\leq 27 \\\\\n& x_2 \\geq 2 \\\\\n& 3x_1 + x_2 \\leq 19 \\\\\n& x_1, x_2 \\geq 0, \\ \\text{integer}\n\\end{aligned}\n\\]\nBranch and bound: solve LP relaxations, split on a fractional variable, and prune branches that can’t beat the best integer solution found so far.\n\nThis example maximizes, so the relaxation gives an upper bound. Any integer point we find gives a lower bound. Branch and bound narrows the gap between them."
   },
   {
     "objectID": "slides/lecture11-2-mixed-integer.html#node-1-the-lp-relaxation",
@@ -1630,21 +1630,21 @@
     "href": "slides/lecture11-2-mixed-integer.html#the-final-tree",
     "title": "Discrete Variables and Mixed Integer Programming",
     "section": "The Final Tree",
-    "text": "The Final Tree\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nUpper bound: 24 (node 8)\n\n\nLower bound: 24 (node 8)\n\n\nNode 1: Z = 27.06\n\n\n(5.44, 2.69)\n\n\nNode 2: Z = 25\n\n\n(5.67, 2)\n\n\nNode 3: Z = 25.5\n\n\n(4.5, 3)\n\n\nNode 4: Z = 24.67\n\n\n(4, 3.17)\n\n\nNode 5\n\n\ninfeasible\n\n\nNode 6: Z = 23\n\n\n(5, 2), integer\n\n\nNode 7\n\n\ninfeasible\n\n\nNode 8: Z = 24\n\n\n(4, 3), optimum\n\n\nNode 9: Z = 20.5\n\n\n(1.5, 4), pruned\n\n\n\n\nThe upper and lower bounds meet at 24: the optimum is (4, 3).\n\nGreen boxes are integer solutions; gray boxes end a branch. A branch ends when its node is infeasible, when its solution is integer (nothing below can do better), or when its value is below the lower bound. In the worst case the tree grows exponentially with the number of integer variables, which is why MIP solvers, HiGHS included, add cutting planes and heuristics (branch and cut)."
+    "text": "The Final Tree\n\n\n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n  \n    \n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nUpper bound: 24 (node 8)\n\n\nLower bound: 24 (node 8)\n\n\nNode 1: Z = 27.06\n\n\n(5.44, 2.69)\n\n\nNode 2: Z = 25\n\n\n(5.67, 2)\n\n\nNode 3: Z = 25.5\n\n\n(4.5, 3)\n\n\nNode 4: Z = 24.67\n\n\n(4, 3.17)\n\n\nNode 5\n\n\ninfeasible\n\n\nNode 6: Z = 23\n\n\n(5, 2), integer\n\n\nNode 7\n\n\ninfeasible\n\n\nNode 8: Z = 24\n\n\n(4, 3), optimum\n\n\nNode 9: Z = 20.5\n\n\n(1.5, 4), pruned\n\n\n\n\nThe upper and lower bounds meet at 24: the optimum is (4, 3).\n\nGreen boxes are integer solutions; gray boxes end a branch. A branch ends when its node is infeasible, when its solution is integer (nothing below can do better), or when its value is below the lower bound. In the worst case the tree grows exponentially with the number of integer variables, which is why MILP solvers, HiGHS included, add cutting planes and heuristics (branch and cut)."
   },
   {
     "objectID": "slides/lecture11-2-mixed-integer.html#key-takeaways",
     "href": "slides/lecture11-2-mixed-integer.html#key-takeaways",
     "title": "Discrete Variables and Mixed Integer Programming",
     "section": "Key Takeaways",
-    "text": "Key Takeaways\n\nBinary variables turn on/off decisions into linear constraints: fixed cost × \\(u\\), output ≤ capacity × \\(u\\).\nFixed costs can overturn the merit order: a plant with cheaper energy can lose to one with a lower fixed cost.\nThe LP relaxation bounds the MIP (below for min, above for max), but its solution can have fractional values for the binaries, such as a plant that is partly on.\nBranch and bound solves relaxations, branches on fractional variables, and prunes."
+    "text": "Key Takeaways\n\nBinary variables turn on/off decisions into linear constraints: fixed cost × \\(u\\), output ≤ capacity × \\(u\\).\nThe LP relaxation bounds the MILP (below for min, above for max), but its solution can have fractional values for the binaries, such as a plant that is partly on.\nBranch and bound solves relaxations, branches on fractional variables, and prunes."
   },
   {
     "objectID": "slides/lecture11-2-mixed-integer.html#next-classes-and-assessments",
     "href": "slides/lecture11-2-mixed-integer.html#next-classes-and-assessments",
     "title": "Discrete Variables and Mixed Integer Programming",
     "section": "Next Classes and Assessments",
-    "text": "Next Classes and Assessments\nMonday, November 9: Solid waste and network models.\nWednesday, November 11: Lab 3, fixed costs and facility siting in JuMP. Bring a laptop.\nHomework 7: Assigned today, due Thursday, November 12.\nQuiz 5: Monday, November 16."
+    "text": "Next Classes and Assessments\nMonday, November 9: Solid waste and network models.\nWednesday, November 11: Lab 3, fixed costs and facility siting in JuMP.\nHomework 7: Assigned today, due Thursday, November 12.\nQuiz 5: Monday, November 16."
   },
   {
     "objectID": "slides/lecture10-2-managing-air-sources.html#gaussian-plume-for-air-pollution-dispersion",

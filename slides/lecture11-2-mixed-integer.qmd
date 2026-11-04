@@ -312,7 +312,7 @@ for (k, d) in enumerate(demands)
     mip_cost[k] = commit(d).cost
     lp_cost[k] = commit(d; relax=true).cost
 end
-println("| Demand (MW) | MIP (\\\$/h) | LP relaxation (\\\$/h) | Gap |")
+println("| Demand (MW) | MILP (\\\$/h) | LP relaxation (\\\$/h) | Gap |")
 println("|--:|--:|--:|--:|")
 for k in eachindex(demands)
     println("| $(demands[k]) | $(commas(mip_cost[k])) | $(commas(lp_cost[k])) | $(round(100 * (mip_cost[k] - lp_cost[k]) / mip_cost[k]; digits=1))% |")
@@ -323,7 +323,7 @@ end
 relax_integrality turns the binaries into continuous variables between 0 and 1.
 :::
 
-## A Simple MIP
+## A Simple MILP
 
 $$
 \begin{aligned}
@@ -770,7 +770,7 @@ tree_plot(9)
 The upper and lower bounds meet at **`{julia} show_z(bounds_after(9).lower)`**: the optimum is (`{julia} show_z(node8.x1)`, `{julia} show_z(node8.x2)`).
 
 ::: {.notes}
-Green boxes are integer solutions; gray boxes end a branch. A branch ends when its node is infeasible, when its solution is integer (nothing below can do better), or when its value is below the lower bound. In the worst case the tree grows exponentially with the number of integer variables, which is why MIP solvers, HiGHS included, add cutting planes and heuristics (branch and cut).
+Green boxes are integer solutions; gray boxes end a branch. A branch ends when its node is infeasible, when its solution is integer (nothing below can do better), or when its value is below the lower bound. In the worst case the tree grows exponentially with the number of integer variables, which is why MILP solvers, HiGHS included, add cutting planes and heuristics (branch and cut).
 :::
 
 # Key Takeaways and Upcoming Schedule
@@ -779,8 +779,7 @@ Green boxes are integer solutions; gray boxes end a branch. A branch ends when i
 
 ::: {.incremental}
 - **Binary variables** turn on/off decisions into linear constraints: fixed cost × $u$, output ≤ capacity × $u$.
-- **Fixed costs can overturn the merit order**: a plant with cheaper energy can lose to one with a lower fixed cost.
-- The **LP relaxation** bounds the MIP (below for min, above for max), but its solution can have fractional values for the binaries, such as a plant that is partly on.
+- The **LP relaxation** bounds the MILP (below for min, above for max), but its solution can have fractional values for the binaries, such as a plant that is partly on.
 - **Branch and bound** solves relaxations, branches on fractional variables, and prunes.
 :::
 
@@ -788,7 +787,7 @@ Green boxes are integer solutions; gray boxes end a branch. A branch ends when i
 
 **Monday, November 9**: Solid waste and network models.
 
-**Wednesday, November 11**: Lab 3, fixed costs and facility siting in `JuMP`. Bring a laptop.
+**Wednesday, November 11**: Lab 3, fixed costs and facility siting in `JuMP`.
 
 **Homework 7**: Assigned today, due Thursday, November 12.
 
