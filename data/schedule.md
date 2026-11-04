@@ -122,6 +122,17 @@ Reusable questions live in `exams/midterm1` and `exams/midterm2`, across branche
   *(Nov 2: 3(b) pinned to one answer. The setup now says the cheapest plants ramp up slowly and gas combustion
   turbines reach full output within an hour but cost more, and the ask is why the cost of meeting demand rises
   before sunset; the rubric's list of other acceptable consequences is gone.)*
+  *(Nov 4, the morning of the quiz, at the instructor's request: Problem 3 (ramping constraints and the
+  duck curve) is replaced by a farm LP (4 points). Students formulate it with the variables given (2),
+  explain from a `JuMP` output table why the water constraint's shadow price is zero (1), and use the
+  nitrogen shadow price to price 500 lb of nitrogen allowances (1). The old 3(b) could be answered without
+  ramping, because a rising net load raises the cost through the merit order alone. Problem 2 is now a
+  stated single-hour dispatch with no `JuMP` or shadow-price wording, testing the price as the marginal
+  plant's cost: (a) the price, (b) the price after a 150 MW rise, (c) the cost of the turbine's minimum
+  output; the 20 MW shadow-price part is cut. 1(b), which evaluated the corners, now asks why no interior
+  point can be optimal, and row iii of 1(a) is (10, 0), a crossing of two constraint lines outside the
+  region, so that 1(b) does not give away the interior point (4, 3) it replaced. Points 3 / 3 / 4, 8
+  asks, 5 pages. Ramping is no longer on any quiz; MP2 Problem 1.1 still assesses it.)*
   More precedented material than will fit — pick two.
 - **Quiz 5** — **no precedent at all** now that the duck-curve item has moved to Quiz 4. Capacity
   expansion, MIP, branch and bound, and network/waste allocation have never been assessed on a timed
@@ -160,7 +171,7 @@ is graphical (corners or level lines) on two-variable problems.
 | 4 | Wed Sep 30 | Thu Oct 8 | Monte Carlo, uncertainty & risk | Expectation/variance of a function of a random variable; why MC error scales as σ/√n and the samples a target precision needs; exceedance probability and return periods; aleatory vs. epistemic | Propagate parameter uncertainty through the HW3 model; CI on one decision-relevant quantity plus an *n*-convergence plot |
 | 5 | Wed Oct 14 | Thu Oct 22 | Gaussian plumes & model validation | Evaluate the plume equation at a receptor; stability class and wind speed effects; where the max ground-level concentration occurs; what a goodness-of-fit metric is blind to | Calibrate a plume's wind speed and stability class against monitors on a calm valley night, find that neither helps, and say which of the model's assumptions fail |
 | 6 | Wed Oct 21 | Thu Oct 29 | Linear programs & shadow prices | Formulate a word problem with a blending constraint; standard form; read a 2-variable LP graphically; binding constraints, shadow prices with units, a buy-capacity decision, a zero shadow price | Solve the stormwater LP in JuMP, check its shadow prices against the hand answer, and re-solve a change too large for them; a six-source nitrogen LP with three load limits, too large to graph (which limits bind, and each source's shadow-price value against its cost explains the plan and predicts a re-solve) |
-| 7 | Wed Nov 4 | Thu Nov 12 | Mixed integer programming | Model a fixed cost, an either/or, and an indicator with binaries; why the LP relaxation bounds; trace 2–3 branch-and-bound nodes | Solve a small MIP; compare to its LP relaxation |
+| 7 | Wed Nov 4 | Thu Nov 12 | Mixed integer programming | Model a fixed cost, an either/or, and an indicator with binaries; why the LP relaxation bounds; trace 2–3 branch-and-bound nodes | Solve a small MIP and check the hand answer |
 | 8 | Wed Nov 11 | Thu Nov 19 | Network models & waste allocation | Set up a small facility-allocation network; flow-conservation and capacity constraints; siting indicators | Solve the instance; interpret which facilities open (the combined-sewer storage LP moved here from HW6 was cut Oct 31) |
 | 9 | Wed Nov 18 | Thu Dec 3 | Stochastic optimization & dynamic programming | A small two-stage problem: expected-value plan, recourse, VSS; backward induction by hand on a small sequential decision | A light check in code of one by-hand answer; outline in `data/hw09-outline.md` |
 
@@ -181,6 +192,19 @@ lectures' and from Lab 4's.
 Outline approved Oct 8 (`data/hw09-outline.md`, checks in `data/hw09-checks.jl`): activated carbon for an
 algal-bloom season, and a three-year site cleanup with inhibited biodegradation. Drafted Oct 8 with
 its key in `hw/hw09` and `hw/solutions/hw09` (local folders, no GitHub repos yet).
+
+**HW7 trimmed** (decided Nov 4, the day it went out, to lighten the load as the term projects ramp
+up). The instructor cut the by-hand plan (old 1.4) and simplified the formulation parts: 1.1 no longer
+asks why both kinds of variable are needed; 1.2 asks for the objective, the permit and one capacity
+constraint per upgrade, without the units check or the off/on reading; 1.3 asks for the two rules
+without the four-combination checks. The `JuMP` part is now 1.4. 2.2 no longer asks why no more
+branching is needed, which restated its pruning ask. Points: 1.1 4, 1.2 10, 1.3 6, 1.4 10; 2.1 7, 2.2
+13 (problem totals unchanged at 30 and 20). The lecture's point that fixed costs can overturn the merit
+order is no longer asked; Quiz 5 and Lab 3 are the next places it could be.
+
+**HW8 and HW9 repeats cut** (decided Nov 2). HW8: 2.2 now asks only about the MRF (its transfer-station half repeated 1.4's break-even), and 1.3's question on which constraints contain a binary is gone (the formulation shows it, HW7 1.2 asked what linking constraints say, and Quiz 5 2(b) assesses it before HW8 is due); points went to 1.3's objective and capacities, 1.4 (4 → 5) and 2.3 (8 → 10), so Problem 1 is 25 and Problem 2 is 25. HW9: 1.10 asks only what the VSS measures (its EVPI half was 1.11), and 2.8 is cut (2.5's explanation run backward); its points went to 2.3 (3 → 4, rehearsal for Quiz 6 2(a)) and 2.5 (3 → 4).
+
+**HW7 1.6 and 2.2 cut** (decided Nov 2). They repeated Lab 3's Step 3, due the same night: the share of a fixed cost the relaxation pays, why the relaxation bounds the optimum, and rounding to the nearest whole number. Their 9 points went to the logical constraints (1.3, 4 → 6), the hand enumeration (1.4, 7 → 9), the bound explanation (2.1, 6 → 7) and branch and bound (the old 2.3, now 2.2, 9 → 13), whose pruning Quiz 5 assesses. Problem 1 is now 30 points and Problem 2 is 20.
 
 **HW7 and HW8 merged and trimmed** (decided Oct 31). HW7 is due with Lab 3's sheet and the day before the project update, and HW8 the day before Mini-Project 2, so both were lightened. The instructor clarified that the one-ask rule "was intended primarily for quizzes and to simplify (but not to be taken literally) for HWs", so parts testing the same step were merged and repeated asks cut. HW7 went from 26 parts to 9 (still 32 + 18): it lost the two re-solves without each rule and the branch-and-bound check in `JuMP`. HW8 went from 20 parts to 7: Problem 3 (the storage LP, 8 points) and Problem 2's two confirming re-solves were cut, and its problems are now 24 + 26. The pre-merge versions are in `hw/.drafts/2026-10-31-hw07-08/`.
 
@@ -255,7 +279,8 @@ nothing and the most expensive cuts the most, and predict a re-solve exactly (10
 coastal plant saves $20/day). Points 3 / 3 / 2 / 4. No homework practises a time index before Quiz 4
 (Nov 4), so its ramping question gets two other supports: on Oct 28 students write the ramping
 constraints themselves before the slide that shows them, and the Assessments slide points to MP2
-Problem 1.1 (multi-period dispatch with ramping limits) as practice, to finish by Nov 3.
+Problem 1.1 (multi-period dispatch with ramping limits) as practice, to finish by Nov 3. (Nov 4: the
+ramping question was taken off Quiz 4 the morning of the quiz.)
 
 **MP2 Part 5 gains hydro and carbon capture** (decided Oct 12). The instructor asked for both as
 things the state can build. Added plainly they break two of Part 5's three problems: hydro up to its

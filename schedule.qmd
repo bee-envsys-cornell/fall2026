@@ -33,7 +33,7 @@ Note that this schedule will be updated as necessary the semester progresses, wi
 | 10 |   Oct 26   | Linear Programming with JuMP Lab | | [{{< fa laptop >}}](labs/lab02/lab02.qmd) | | | | |
 |   |   Oct 28   | Economic Dispatch |  [{{< fa sharp presentation-screen >}}](slides/lecture10-2-economic-dispatch.qmd) | | | MP2 | | |
 | 11 |   Nov 2    | Capacity Expansion |  [{{< fa sharp presentation-screen >}}](slides/lecture11-1-capacity-expansion.qmd) | | | | | |
-|   |   Nov 4    | Discrete Variables and Mixed Integer Programming |  [{{< fa sharp presentation-screen >}}](slides/lecture11-2-mixed-integer.qmd) | | HW7 | | Quiz 4 | |
+|   |   Nov 4    | Discrete Variables and Mixed Integer Programming |  [{{< fa sharp presentation-screen >}}](slides/lecture11-2-mixed-integer.qmd) | | [{{< fa sharp file-pen >}}](hw/hw07/hw07.qmd) | | Quiz 4 | |
 | 12 |   Nov 9    | Solid Waste and Network Models | | | | | | |
 |   |   Nov 11   | Fixed Costs and Facility Siting Lab | | Lab 3 | HW8 | | | |
 | 13 |   Nov 16   | Stochastic Optimization and Scenario Trees | | | | | Quiz 5 | |

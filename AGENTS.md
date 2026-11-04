@@ -13,7 +13,7 @@ separate repository checked out as a sibling under `~/Teaching/BEE4750/`:
 | `hw/solutions/hw01`–`hw04` | Solution repos for the keys already released, named `hwXX-solution` |
 | `hw-solutions/` | **Private keys repo** for HW5–9 and Labs 2–4 (`bee-envsys-cornell/hw-solutions`, `Fall26`), published at each key's release time |
 | `exams/midterm1`, `midterm2` | Prelim repos |
-| `quizzes/` | **One private repo** for all six quizzes and their keys (`bee-envsys-cornell/quizzes`, `Fall26`), a folder per quiz |
+| `quiz/` | **One private repo** for all six quizzes and their keys (`bee-envsys-cornell/quizzes`, `Fall26`), a folder per quiz |
 | `website/` | **Fall 2025 offering** (prior year, full site) |
 | `fa24/`, `fall2023/`, `fall2022/`, `old-web/` | Earlier offerings |
 
@@ -53,8 +53,9 @@ like `mini-project/mp02`.
 `hw05-solution`, `lab02-solution` and `lab03-solution` are archived on GitHub. HW1–4 and Lab 1 keys
 stay in `hw/solutions` and `labs/solutions` and in this site's `solutions/`.
 *Updated Oct 15:* the six quizzes and their keys are one private repository too,
-`bee-envsys-cornell/quizzes` (`Fall26`), cloned at `~/Teaching/BEE4750/quizzes` with folders
-`quiz01`–`quiz06` (paths unchanged). The per-quiz folders as they were are in
+`bee-envsys-cornell/quizzes` (`Fall26`), cloned at `~/Teaching/BEE4750/quiz` with folders
+`quiz01`–`quiz06`. A second clone at `~/Teaching/BEE4750/quizzes` fell behind and was removed on
+Nov 4; edit quizzes in `quiz/` only. The per-quiz folders as they were are in
 `~/Teaching/BEE4750/archive/2026-10-15-per-quiz-repos/`; the old `quizNN` repositories still exist on
 GitHub, unarchived. Access: the Fall 2026 TA, `jenna637`, has write on `quizzes` and `hw-solutions`;
 the organization's owners (including former TAs, kept by the instructor's choice) see everything.
@@ -102,6 +103,14 @@ enough: tighten the prompt instead (state the sign convention, the rounding, the
 Deliberately open questions are fine in moderation: tradeoffs, recommendations, what information would
 change the answer. When a new kind of problem appears, extend the "What this looks like" lists on the
 rubric page as well.
+
+## Lab format
+
+**Students submit only the Activity Sheet, not their code** (instructor, Nov 2, 2026): a PDF to
+Gradescope, or the paper sheet at the end of class where a lab allows it. Each lab's prompt, sheet,
+README and TA guide says so, and its rubric judges an attempt from the sheet alone: the results
+tables show the coding work, and a step whose code stopped with an error counts when the sheet shows
+the student kept going. Labs 1 and 2 (already run) asked for the code output as well.
 
 ## Releasing keys
 
