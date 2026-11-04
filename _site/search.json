@@ -1500,20 +1500,6 @@
     "text": "Logical Constraints\nA water utility chooses new projects, with \\(u_j = 1\\) if project \\(j\\) is built:\n\n\n\n\n\n\n\n\nRule\nConstraint\n\n\n\n\na reservoir at site 1 or site 2, not both\n\\(u_1 + u_2 \\leq 1\\)\n\n\na treatment plant (3) only with a reservoir\n\\(u_3 \\leq u_1 + u_2\\)\n\n\nat least one new source: a reservoir or a well field (4)\n\\(u_1 + u_2 + u_4 \\geq 1\\)\n\n\n\n\n\nEach rule is a linear inequality on the binaries. To check one, list the combinations of the binaries it involves and confirm that the constraint allows exactly the combinations the rule allows: \\(u_3 \\leq u_1 + u_2\\) rules out only a treatment plant with no reservoir."
   },
   {
-    "objectID": "slides/lecture11-2-mixed-integer.html#big-m-constraints",
-    "href": "slides/lecture11-2-mixed-integer.html#big-m-constraints",
-    "title": "Discrete Variables and Mixed Integer Programming",
-    "section": "Big-\\(M\\) Constraints",
-    "text": "Big-\\(M\\) Constraints\nTo require either \\(\\sum_j a_j y_j \\leq b_1\\) or \\(\\sum_j c_j y_j \\leq b_2\\), add a binary \\(z\\) that switches one of them off:\n\\[\\sum_j a_j y_j \\leq b_1 + M z, \\qquad \\sum_j c_j y_j \\leq b_2 + M(1 - z).\\]\n\\(M\\) must be large enough that the switched-off constraint cannot bind."
-  },
-  {
-    "objectID": "slides/lecture11-2-mixed-integer.html#how-big-should-m-be",
-    "href": "slides/lecture11-2-mixed-integer.html#how-big-should-m-be",
-    "title": "Discrete Variables and Mixed Integer Programming",
-    "section": "How Big Should \\(M\\) Be?",
-    "text": "How Big Should \\(M\\) Be?\nA pumping station runs its small pump (\\(0 \\leq y \\leq 5\\) MGD) or its large pump (\\(20 \\leq y \\leq 50\\) MGD), with \\(z = 1\\) for the large pump:\n\\[y \\leq 5 + M_1 z, \\qquad y \\geq 20 - M_2 (1 - z).\\]\nHow big must \\(M_1\\) and \\(M_2\\) be?\n\nFrom \\(y\\)’s bounds, \\(0 \\leq y \\leq 50\\): \\(M_1 = 45\\) and \\(M_2 = 20\\). A larger \\(M\\) is still correct.\n\n\nBoard item. With \\(z = 0\\) the constraints read \\(y \\leq 5\\) and \\(y \\geq 0\\); with \\(z = 1\\) they read \\(y \\leq 50\\) and \\(y \\geq 20\\), so in each case only the chosen pump’s limits restrict \\(y\\). The linking constraint \\(y_i \\leq P^{\\text{max}}_i u_i\\) is a big-\\(M\\) constraint with \\(M = P^{\\text{max}}_i\\), the smallest value that works.\nWhy not just pick a huge \\(M\\)? In the LP relaxation \\(z\\) can be fractional, and if running the large pump has a fixed cost, the relaxation pays only \\(z\\) of it. A flow of 12 MGD, which no real plan allows, needs \\(z \\geq (12 - 5)/M_1\\): about 0.16 with \\(M_1 = 45\\), but 0.007 with \\(M_1 = 1{,}000\\), so the relaxation pays almost none of the fixed cost and its bound is weaker. Very large values of \\(M\\) also cause numerical trouble in solvers."
-  },
-  {
     "objectID": "slides/lecture11-2-mixed-integer.html#relaxing-integer-variables",
     "href": "slides/lecture11-2-mixed-integer.html#relaxing-integer-variables",
     "title": "Discrete Variables and Mixed Integer Programming",
