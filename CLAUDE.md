@@ -158,6 +158,11 @@ a guide, not a literal rule. A `#### Problem N.M` can hold a few closely related
 and what it means), and parts that test the same step should be merged. Cut asks that repeat an earlier
 part or a lab rather than splitting them out. Details are under "Homework format" in AGENTS.md.
 
+**No lecture pointers in problem text** (decided Nov 1): a problem in a homework, lab, mini-project or quiz
+doesn't name a lecture or its date. The instructor cut "This part uses the capacity expansion lecture on
+November 2." from the start of Mini-Project 2's Part 5. As in decks, a pointer dates the assignment; state in
+the problem whatever students need from that lecture instead.
+
 ## Verifying that work
 
 - **Every number in prose, a table, or a caption must come from running the deck's own code.** A value

@@ -430,5 +430,5 @@ needs too much formulation discussion to run as one.
    touches that material.
 9. **Deck filenames encode FA25 lecture numbers** that no longer match; the `lecture09-1` split turns
    one file into two sessions two weeks apart.
-10. **`project/index.qmd` links `update.qmd`, which does not exist.**
+10. ~~**`project/index.qmd` links `update.qmd`, which does not exist.**~~ Written Nov 6 (5 points, at most 3 pages): only what has changed since the proposal, in the research plan, the timeline and the group's work plan, plus the challenges that have come up; nothing from the proposal is restated (instructor, Nov 6).
 11. Syllabus promises 27 lectures; this calendar yields 28.
