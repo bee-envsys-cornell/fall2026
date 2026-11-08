@@ -1273,14 +1273,14 @@
     "href": "slides/lecture12-1-waste-management.html#waste-load-allocation",
     "title": "Solid Waste and Network Models",
     "section": "Waste Load Allocation",
-    "text": "Waste Load Allocation\n\n\nSome relevant questions:\n\nWhere do we send waste?\nWhat types of facilities do we build/operate?\n\n\n\n\n\nWaste Management Hierarchy\n\n\n\nSource: EPA\n\n\n\nA city produces waste every day and has to put it somewhere. The options form a hierarchy: reduce first, then recycle, then recover energy, and landfill last. The problem combines two kinds of decision: where each truckload goes (a routing decision that can vary continuously), and which facilities to build or keep open (an on/off decision). That combination is why this is a mixed integer problem."
+    "text": "Waste Load Allocation\n\n\nSome relevant questions:\n\nWhere do we send waste?\nWhat types of facilities do we build/operate?\n\n\n\n\n\nWaste Management Hierarchy\n\n\n\nSource: EPA\n\n\n\nWaste management options form a hierarchy: reduce first, then recycle, then recover energy, and landfill last. There are a variety of types of facilities, and a waste management plan requires deciding which facilities to build or operate."
   },
   {
     "objectID": "slides/lecture12-1-waste-management.html#waste-allocation-as-a-network",
     "href": "slides/lecture12-1-waste-management.html#waste-allocation-as-a-network",
     "title": "Solid Waste and Network Models",
     "section": "Waste Allocation As A Network",
-    "text": "Waste Allocation As A Network\nWant to model flows between waste sources and sinks (disposal sites).\n\nNetwork Representation\nA network has nodes (cities, facilities) and arcs (the roads between them). The decisions are how much flows along each arc. Some arcs go from one facility to another: what a facility does not fully dispose of has to be shipped on."
+    "text": "Waste Allocation As A Network\nWaste moves as flows between waste sources and sinks (disposal sites) based on transportation networks.\n\nNetwork Representation\nA network has nodes and edges. We want to decide how to allocate waste given the restrictions of the road network as well as processing any residual waste."
   },
   {
     "objectID": "slides/lecture12-1-waste-management.html#network-parameterization",
@@ -1294,7 +1294,7 @@
     "href": "slides/lecture12-1-waste-management.html#conservation-at-each-node",
     "title": "Solid Waste and Network Models",
     "section": "Conservation at Each Node",
-    "text": "Conservation at Each Node\nMass balance at each node: a source ships everything it produces, \\(\\sum_j W_{ij} = S_i\\). A facility passes on a fixed fraction of what arrives.\nA transfer station receives 40 Mg/day from each of two cities and sends it all to a landfill (\\(T_L\\)) or a recycler (\\(T_R\\)). What is its mass-balance constraint?\n\n\\[T_L + T_R = 40 + 40 = 80 \\text{ Mg/day}\\]\n\n\nConservation holds at every node: nothing is created or destroyed at a node, only routed or transformed. At the transfer station, what leaves equals what arrives. A facility is the same idea with a transformation: a recycler that recovers 40% passes on the other 60%."
+    "text": "Conservation at Each Node\nMass balance holds at each facility:\n\nA waste source does not hold onto any waste, \\(\\sum_j W_{ij} = S_i\\),\nIncoming flows at a disposal facility have to balance with waste disposal and outflows of residual waste (e.g. material that cannot be recycled)."
   },
   {
     "objectID": "slides/lecture12-1-waste-management.html#what-is-missing",
@@ -1308,14 +1308,14 @@
     "href": "slides/lecture12-1-waste-management.html#example-system",
     "title": "Solid Waste and Network Models",
     "section": "Example System",
-    "text": "Example System\n\n\n\n\n\nWaste Management Example\n\n\n\nThree disposal options:\n\nWaste-to-Energy (WTE)\nMaterials Recovery Facility (MRF)\nLandfill (LF)\n\n\n\nTwo cities, producing 100 and 170 Mg/day, and three facilities with the capacities in red. Distances in blue. Note the arcs between facilities: the MRF sends its residual to the WTE or the landfill, and the WTE sends its ash to the landfill."
+    "text": "Example System\n\n\n\n\n\nWaste Management Example\n\n\n\nThree disposal options:\n\nWaste-to-Energy (WTE)\nMaterials Recovery Facility (MRF)\nLandfill (LF)\n\n\n\nTwo cities, producing 100 and 170 Mg/day, and three facilities with the capacities in red. Distances in blue."
   },
   {
     "objectID": "slides/lecture12-1-waste-management.html#decision-variables",
     "href": "slides/lecture12-1-waste-management.html#decision-variables",
     "title": "Solid Waste and Network Models",
     "section": "Decision Variables",
-    "text": "Decision Variables\nWhat are our decision variables?\n\n\n\n\n\n\n\n\nVariable\nDefinition\n\n\n\n\n\\(W_{ij}\\)\nWaste transported from city \\(i\\) to disposal \\(j\\) (Mg/day)\n\n\n\\(R_{kj}\\)\nResidual waste transported from disposal \\(k\\) to disposal \\(j\\) (Mg/day)\n\n\n\\(Y_j\\)\nOperational status (on/off) of disposal \\(j\\) (binary)\n\n\n\n\n\nThree kinds: flows from cities (W), flows of residuals between facilities (R), and whether each facility operates (Y, binary). The residual flows here are R21 (MRF to WTE), R23 (MRF to landfill), and R13 (WTE ash to landfill). The facility numbering is WTE 1, MRF 2, landfill 3."
+    "text": "Decision Variables\nWhat are our decision variables?\n\n\n\n\n\n\n\n\nVariable\nDefinition\n\n\n\n\n\\(W_{ij}\\)\nWaste transported from city \\(i\\) to disposal \\(j\\) (Mg/day)\n\n\n\\(R_{kj}\\)\nResidual waste transported from disposal \\(k\\) to disposal \\(j\\) (Mg/day)\n\n\n\\(Y_j\\)\nOperational status (on/off) of disposal \\(j\\) (binary)"
   },
   {
     "objectID": "slides/lecture12-1-waste-management.html#what-does-it-cost",
@@ -1364,14 +1364,14 @@
     "href": "slides/lecture12-1-waste-management.html#the-full-problem",
     "title": "Solid Waste and Network Models",
     "section": "The Full Problem",
-    "text": "The Full Problem\n\\[\n\\begin{aligned}\n\\min_{\\mathbf{W}, \\mathbf{R}, \\mathbf{Y}} \\quad & \\sum_{i, j} C_{ij} W_{ij} + \\sum_{k, j} C^R_{kj} R_{kj} + \\sum_j c_j Y_j \\\\\n\\text{subject to:} \\quad & \\textstyle\\sum_j W_{ij} = S_i \\\\\n& \\text{residual out of } k = \\text{fraction} \\times \\text{input to } k \\\\\n& \\textstyle\\sum_i W_{ij} + \\sum_k R_{kj} \\leq K_j\\,Y_j \\\\\n& W_{ij},\\, R_{kj} \\geq 0, \\quad Y_j \\in \\{0, 1\\}\n\\end{aligned}\n\\]\n\\(C_{ij}\\), \\(C^R_{kj}\\): cost per Mg sent from city \\(i\\), or of residual sent from facility \\(k\\), to facility \\(j\\) ($/Mg): haul, tip and, at the MRF, recycle.\n\nThe same problem in general form. It is a mixed integer linear program: linear in everything, with three binary variables."
+    "text": "The Full Problem\n\\[\n\\begin{aligned}\n\\min_{\\mathbf{W}, \\mathbf{R}, \\mathbf{Y}} \\quad & 82.5\\,W_{11} + 26.5\\,W_{12} + 85\\,W_{13} + 75\\,W_{21} + 41.5\\,W_{22} + 77.5\\,W_{23} \\\\\n& + 82.5\\,R_{21} + 88\\,R_{23} + 67\\,R_{13} + 2{,}466\\,Y_1 + 1{,}096\\,Y_2 + 1{,}918\\,Y_3 \\\\[0.4em]\n\\text{subject to:} \\quad & W_{11} + W_{12} + W_{13} = 100 \\qquad \\text{(City 1)} \\\\\n& W_{21} + W_{22} + W_{23} = 170 \\qquad \\text{(City 2)} \\\\\n& R_{13} = 0.2\\,(W_{11} + W_{21} + R_{21}) \\qquad \\text{(WTE ash)} \\\\\n& R_{21} + R_{23} = 0.6\\,(W_{12} + W_{22}) \\qquad \\text{(MRF residual)} \\\\\n& W_{11} + W_{21} + R_{21} \\leq 150\\,Y_1 \\qquad \\text{(WTE capacity)} \\\\\n& W_{12} + W_{22} \\leq 130\\,Y_2 \\qquad \\text{(MRF capacity)} \\\\\n& W_{13} + W_{23} + R_{13} + R_{23} \\leq 200\\,Y_3 \\qquad \\text{(LF capacity)} \\\\\n& W_{ij},\\, R_{kj} \\geq 0, \\quad Y_j \\in \\{0, 1\\}\n\\end{aligned}\n\\]"
   },
   {
     "objectID": "slides/lecture12-1-waste-management.html#solving-the-example-in-jump",
     "href": "slides/lecture12-1-waste-management.html#solving-the-example-in-jump",
     "title": "Solid Waste and Network Models",
     "section": "Solving the Example in JuMP",
-    "text": "Solving the Example in JuMP\n\n\nCode\nfunction solve_waste(; landfill_capacity=capacity[3])\n    cap = [capacity[1], capacity[2], landfill_capacity]\n    model = Model(HiGHS.Optimizer)\n    set_silent(model)\n    @variable(model, W[1:2, 1:3] &gt;= 0)        # city i -&gt; facility j [Mg/day]\n    @variable(model, R21 &gt;= 0)                # MRF residual -&gt; WTE\n    @variable(model, R23 &gt;= 0)                # MRF residual -&gt; LF\n    @variable(model, R13 &gt;= 0)                # WTE ash -&gt; LF\n    @variable(model, Y[1:3], Bin)             # facility operates?\n    @objective(model, Min, sum(city_cost[i, j] * W[i, j] for i in 1:2, j in 1:3) +\n        cost_R21 * R21 + cost_R23 * R23 + cost_R13 * R13 + sum(fixed_cost[j] * Y[j] for j in 1:3))\n    @constraint(model, city[i in 1:2], sum(W[i, :]) == waste[i])\n    @constraint(model, ash, R13 == ash_rate * (W[1, 1] + W[2, 1] + R21))\n    @constraint(model, residual, R21 + R23 == (1 - recycle_rate) * (W[1, 2] + W[2, 2]))\n    @constraint(model, wte, W[1, 1] + W[2, 1] + R21 &lt;= cap[1] * Y[1])\n    @constraint(model, mrf, W[1, 2] + W[2, 2] &lt;= cap[2] * Y[2])\n    @constraint(model, lf, W[1, 3] + W[2, 3] + R13 + R23 &lt;= cap[3] * Y[3])\n    optimize!(model)\n    return (cost=objective_value(model), W=value.(W), R21=value(R21), R23=value(R23),\n        R13=value(R13), Y=round.(Int, value.(Y)),\n        lf_load=value(W[1, 3] + W[2, 3] + R13 + R23), cap=cap)\nend\n\nbase = solve_waste()\n\n\nThe optimal cost is $26,881/day, and all 3 facilities operate.\n\nOpen the fold: each constraint from the previous slides appears once, with Y declared Bin and each capacity multiplied by Y."
+    "text": "Solving the Example in JuMP\n\nCode\n# The optimal flows, on/off decisions and cost of a solved model\nfunction solution(model)\n    W, Y = model[:W], model[:Y]\n    R21, R23, R13 = model[:R21], model[:R23], model[:R13]\n    return (cost=objective_value(model), Y=round.(Int, value.(Y)),\n        W=value.(W), R21=value(R21), R23=value(R23), R13=value(R13),\n        lf_load=value(W[1, 3] + W[2, 3] + R13 + R23))\nend\n\nbase_model = waste_model()\noptimize!(base_model)\nbase = solution(base_model)\n\n# The solution as a table\nprintln(\"| Solution | Value |\")\nprintln(\"|:--|--:|\")\nprintln(\"| Cost (\\\\\\$/day) | \", commas(base.cost), \" |\")\nprintln(\"| \\$Y\\$ (WTE, MRF, LF) | \", join(base.Y, \", \"), \" |\")\nprintln(\"| \\$W_{1j}\\$, City 1 to WTE, MRF, LF (Mg/day) | \", join(fmt.(base.W[1, :]), \", \"), \" |\")\nprintln(\"| \\$W_{2j}\\$, City 2 to WTE, MRF, LF (Mg/day) | \", join(fmt.(base.W[2, :]), \", \"), \" |\")\nprintln(\"| \\$R_{21}\\$, \\$R_{23}\\$, \\$R_{13}\\$ (Mg/day) | \", join(fmt.([base.R21, base.R23, base.R13]), \", \"), \" |\")\n\n\n\n\nSolution\nValue\n\n\n\n\nCost ($/day)\n26,881\n\n\n\\(Y\\) (WTE, MRF, LF)\n1, 1, 1\n\n\n\\(W_{1j}\\), City 1 to WTE, MRF, LF (Mg/day)\n0, 100, 0\n\n\n\\(W_{2j}\\), City 2 to WTE, MRF, LF (Mg/day)\n0, 0, 170\n\n\n\\(R_{21}\\), \\(R_{23}\\), \\(R_{13}\\) (Mg/day)\n37.5, 22.5, 7.5\n\n\n\n\nMost important: Y line, where all facilities are operated. Then City 1 sends everything to the MRF, City 2 sends everything to the LF."
   },
   {
     "objectID": "slides/lecture12-1-waste-management.html#the-solution",
@@ -1385,42 +1385,42 @@
     "href": "slides/lecture12-1-waste-management.html#why-is-the-wte-open",
     "title": "Solid Waste and Network Models",
     "section": "Why Is the WTE Open?",
-    "text": "Why Is the WTE Open?\nThe WTE costs $2,466/day just to open. Why pay that to burn 37.5 Mg/day?\n\nBecause the landfill is full: it takes 200 of its 200 Mg/day. The MRF’s residual has to go somewhere, and the only other place is the WTE.\nThe landfill’s capacity constraint is binding.\n\n\nLikely question: why is the WTE open if it is expensive? Because the landfill is exactly full, and the MRF’s residual has to go somewhere."
+    "text": "Why Is the WTE Open?\nThe WTE costs $2,466/day just to open. Why pay that to burn 37.5 Mg/day?\n\nWithout it, no plan works. Even with the MRF full, recycling 0.4 × 130 = 52 Mg/day, the landfill would have to take 270 − 52 = 218 Mg/day, more than its 200.\nBurning 37.5 Mg/day of the MRF’s residual leaves 7.5 Mg/day of ash: the WTE cuts what reaches the landfill by 30 Mg/day.\n\n\nThe WTE is the most expensive facility to open, so it is fair to ask why it runs. Without it there is no feasible plan at all: everything the MRF does not recycle has to be landfilled, and even recycling as much as the MRF can (52 Mg/day), 218 Mg/day would be left for a landfill that takes 200. The WTE shrinks the waste: what it burns leaves only 20% as ash. So the WTE stays open even with a much higher fixed cost; it is there to reduce the final amount of solid waste, which is what the landfill’s binding constraint and its shadow price point to."
   },
   {
     "objectID": "slides/lecture12-1-waste-management.html#what-if-the-landfill-were-bigger",
     "href": "slides/lecture12-1-waste-management.html#what-if-the-landfill-were-bigger",
     "title": "Solid Waste and Network Models",
     "section": "What If the Landfill Were Bigger?",
-    "text": "What If the Landfill Were Bigger?\n\nCode\nbigger = solve_waste(landfill_capacity=220)\nprintln(\"| Landfill capacity (Mg/day) | Cost (\\\\\\$/day) | WTE | MRF | LF |\")\nprintln(\"|:--|--:|:--:|:--:|:--:|\")\nfor r in (base, bigger)\n    status = fill(\"open\", 3)\n    for j in 1:3\n        if r.Y[j] == 0\n            status[j] = \"**closed**\"\n        end\n    end\n    println(\"| \", r.cap[3], \" | \", commas(r.cost), \" | \", join(status, \" | \"), \" |\")\nend\n\n\n\n\nLandfill capacity (Mg/day)\nCost ($/day)\nWTE\nMRF\nLF\n\n\n\n\n200\n26,881\nopen\nopen\nopen\n\n\n220\n24,539\nclosed\nopen\nopen\n\n\n\nWith 20 Mg/day more landfill, the WTE closes and the system saves $2,342/day. City 2 now sends 25 Mg/day to the MRF, and all 75 Mg/day of the MRF’s residual goes to the landfill.\n\nWith a 220 Mg/day landfill, the MRF’s residual fits in the landfill and the WTE is no longer worth its fixed cost."
+    "text": "What If the Landfill Were Bigger?\n\nCode\nbigger_capacity = 220\nbigger_model = waste_model(landfill_capacity=bigger_capacity)\noptimize!(bigger_model)\nbigger = solution(bigger_model)\nprintln(\"| Landfill capacity (Mg/day) | Cost (\\\\\\$/day) | WTE | MRF | LF |\")\nprintln(\"|:--|--:|:--:|:--:|:--:|\")\nfor (lf_capacity, r) in ((capacity[3], base), (bigger_capacity, bigger))\n    status = fill(\"open\", 3)\n    for j in 1:3\n        if r.Y[j] == 0\n            status[j] = \"**closed**\"\n        end\n    end\n    println(\"| \", lf_capacity, \" | \", commas(r.cost), \" | \", join(status, \" | \"), \" |\")\nend\n\n\n\n\nLandfill capacity (Mg/day)\nCost ($/day)\nWTE\nMRF\nLF\n\n\n\n\n200\n26,881\nopen\nopen\nopen\n\n\n220\n24,539\nclosed\nopen\nopen\n\n\n\nWith 20 Mg/day more landfill, the WTE closes and the system saves $2,342/day. City 2 now sends 25 Mg/day to the MRF, and all 75 Mg/day of the MRF’s residual goes to the landfill.\nThe landfill’s shadow price predicted a saving of only 20 × $9.88 = $198/day.\n\nWith a 220 Mg/day landfill, the MRF’s residual fits in the landfill and the WTE is no longer worth its fixed cost.\nThe shadow price assumes the same facilities run and the same constraints bind. Here the change is large enough that the WTE closes, and its fixed cost of $2,466/day goes away, so the actual saving is far larger than the shadow price predicts. A shadow price describes the effect of a small change at the current solution."
   },
   {
     "objectID": "slides/lecture12-1-waste-management.html#key-takeaways-1",
     "href": "slides/lecture12-1-waste-management.html#key-takeaways-1",
     "title": "Solid Waste and Network Models",
     "section": "Key Takeaways",
-    "text": "Key Takeaways\n\nA network model’s decisions are flows on arcs, constrained by conservation at each node.\nAn optional facility needs a binary: fixed cost \\(\\times\\, Y_j\\) in the objective, and in every constraint that changes when it is closed (here, flow in \\(\\leq K_j Y_j\\)).\nA binding capacity at one facility can force another to open: the WTE runs only because the landfill is full.\nA network graph becomes a model only with fate and transport, costs, and rules."
+    "text": "Key Takeaways\n\nA network model’s decisions are flows on edges, constrained by conservation at each node.\nWaste facilities can produce residuals which need to be processed or disposed of at the next level of the waste disposal hierarchy.\nA flow constraint limits edges, not nodes, unlike mass-balance constraints."
   },
   {
     "objectID": "slides/lecture12-1-waste-management.html#network-models-elsewhere",
     "href": "slides/lecture12-1-waste-management.html#network-models-elsewhere",
     "title": "Solid Waste and Network Models",
     "section": "Network Models Elsewhere",
-    "text": "Network Models Elsewhere\n\nCan have more advanced network models with highly-specified routes\n\nTransportation networks\nPower transmission networks\nPipeline networks\n\nCan also add flow constraints rather than just mass-balance.\nFlows could also be bidirectional.\n\n\nThe same structure (flows on arcs, conservation at nodes, capacities, sometimes on/off decisions) covers transportation, power transmission, and pipelines. Power flow adds physics that determines how flow splits across lines, rather than letting the planner choose freely."
+    "text": "Network Models Elsewhere\n\nCan have more advanced network models with highly-specified routes:\n\nTransportation networks\nPower transmission networks\nPipeline networks\n\nFlows could also be bidirectional."
   },
   {
     "objectID": "slides/lecture12-1-waste-management.html#next-classes",
     "href": "slides/lecture12-1-waste-management.html#next-classes",
     "title": "Solid Waste and Network Models",
     "section": "Next Classes",
-    "text": "Next Classes\nWednesday, November 11: Lab 3, Fixed Costs and Facility Siting in JuMP (bring a laptop).\nMonday, November 16: Quiz 5, then stochastic optimization and scenario trees."
+    "text": "Next Classes\nWednesday, November 11: Lab 3, Fixed Costs and Facility Siting in JuMP.\nMonday, November 16: Quiz 5, then stochastic optimization and scenario trees."
   },
   {
     "objectID": "slides/lecture12-1-waste-management.html#assessments",
     "href": "slides/lecture12-1-waste-management.html#assessments",
     "title": "Solid Waste and Network Models",
     "section": "Assessments",
-    "text": "Assessments\nHW8: assigned Wednesday, due Thursday, November 19 (network models and waste allocation).\nProject update: due Friday, November 13.\nQuiz 5: Monday, November 16 (capacity expansion, mixed integer programming, and waste and network models).\n\nHW8 asks students to set up a different, small network themselves."
+    "text": "Assessments\nHW8: assigned Wednesday, due Thursday, November 19 (network models and waste allocation).\nProject update: due Friday, November 13.\nQuiz 5: Monday, November 16 (capacity expansion, mixed integer programming, and waste and network models)."
   },
   {
     "objectID": "slides/lecture12-1-waste-management.html#indicator-constraints-in-jump",
@@ -9416,5 +9416,201 @@
     "crumbs": [
       "Getting Started with Quarto"
     ]
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#indicator-variables-and-mixed-integer-programming",
+    "href": "slides/lecture12-1-waste-management.html#indicator-variables-and-mixed-integer-programming",
+    "title": "Solid Waste and Network Models",
+    "section": "Indicator Variables and Mixed Integer Programming",
+    "text": "Indicator Variables and Mixed Integer Programming\nBinary decisions need indicator variables \\(u \\in \\{0, 1\\}\\):\n\nchanges decision problem to mixed integer;\nwrite conditional constraints or objectives using indicators;\nbasic solution algorithm is branch and bound."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#network-and-decision-parameterization",
+    "href": "slides/lecture12-1-waste-management.html#network-and-decision-parameterization",
+    "title": "Solid Waste and Network Models",
+    "section": "Network and Decision Parameterization",
+    "text": "Network and Decision Parameterization\n\n\n\n\n\nNetwork Parameterization\n\n\n\n\n\n\n\n\n\n\nVariable\nDefinition\n\n\n\n\n\\(\\color{purple}S_i\\)\nWaste produced at source \\(i\\) (Mg/day)\n\n\n\\(\\color{red}K_j\\)\nCapacity of disposal \\(j\\) (Mg/day)\n\n\n\\(\\color{blue}W_{ij}\\)\nWaste transported from source \\(i\\) to disposal \\(j\\) (Mg/day)"
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#objective-minimize-costs",
+    "href": "slides/lecture12-1-waste-management.html#objective-minimize-costs",
+    "title": "Solid Waste and Network Models",
+    "section": "Objective: Minimize Costs",
+    "text": "Objective: Minimize Costs\n\nTransportation: transporting waste has a per-weight cost \\(a_{ij}\\) ($/Mg-km) times the distance \\(l_{ij}\\) (km).\nDisposal: facilities have a fixed cost to operate \\(c_j\\) ($/day) and a variable tipping cost \\(b_j\\) ($/Mg).\n\n\\[\\begin{aligned}\nY_j &= \\begin{cases}0 & \\text{if facility } j \\text{ is not operated} \\\\ 1 & \\text{if facility } j \\text{ is operated} \\end{cases}\\\\\n\\text{Disposal cost} &= \\sum_j \\left[c_j \\, Y_j + b_j \\times (\\text{everything arriving at } j)\\right]\n\\end{aligned}\\]"
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#costs-for-our-example",
+    "href": "slides/lecture12-1-waste-management.html#costs-for-our-example",
+    "title": "Solid Waste and Network Models",
+    "section": "Costs For Our Example",
+    "text": "Costs For Our Example\n\n\n\n\n\n\n\n\n\n\nFacility\nFixed cost ($/yr)\nFixed cost ($/day)\nTipping ($/Mg)\nCapacity (Mg/day)\n\n\n\n\nWTE (1)\n900,000\n2,466\n60\n150\n\n\nMRF (2)\n400,000\n1,096\n5\n130\n\n\nLF (3)\n700,000\n1,918\n40\n200\n\n\n\nTransport costs $1.50/Mg-km. The MRF recycles 40% of what it receives, at $35/Mg recycled, and passes on the rest; the WTE leaves 20% of its input as ash.\n\nThe daily fixed costs are the annual costs divided by 365. The MRF is cheap to run but the 60% it does not recycle still has to go to the WTE or the landfill."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#mass-balance-for-sources-and-residuals",
+    "href": "slides/lecture12-1-waste-management.html#mass-balance-for-sources-and-residuals",
+    "title": "Solid Waste and Network Models",
+    "section": "Mass Balance for Sources and Residuals",
+    "text": "Mass Balance for Sources and Residuals\n\n\nOutflows from cities have to match produced waste:\n\\(W_{11} + W_{12} + W_{13} =\\) 100\n\\(W_{21} + W_{22} + W_{23} =\\) 170\n\n\nFacilities can produce residual waste (outflows after processing):\nWTE ash: \\[R_{13} = 0.2\\,(W_{11} + W_{21} + R_{21})\\]\nMRF residual: \\[R_{21} + R_{23} = 0.6\\,(W_{12} + W_{22})\\]"
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#capacity-constraints",
+    "href": "slides/lecture12-1-waste-management.html#capacity-constraints",
+    "title": "Solid Waste and Network Models",
+    "section": "Capacity Constraints",
+    "text": "Capacity Constraints\nNeed to modify capacity constraints to ensure that a closed facility receives no waste:\n\\[\n\\begin{aligned}\n\\text{WTE:}& \\quad W_{11} + W_{21} + R_{21} \\leq 150\\,Y_1 \\\\\n\\text{MRF:}& \\quad W_{12} + W_{22} \\leq 130\\,Y_2 \\\\\n\\text{LF:}& \\quad W_{13} + W_{23} + R_{13} + R_{23} \\leq 200\\,Y_3\n\\end{aligned}\n\\]"
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#reading-the-shadow-prices",
+    "href": "slides/lecture12-1-waste-management.html#reading-the-shadow-prices",
+    "title": "Solid Waste and Network Models",
+    "section": "Reading the Shadow Prices",
+    "text": "Reading the Shadow Prices\n\nCode\n# Fix the binaries at their optimal values and re-solve: an LP with the same solution\nfix_discrete_variables(base_model)\noptimize!(base_model)\n# -shadow_price: the cost of one more unit of each constraint's right-hand side\nbase_price = (city=-shadow_price.(base_model[:city]), wte=-shadow_price(base_model[:wte]),\n    mrf=-shadow_price(base_model[:mrf]), lf=-shadow_price(base_model[:lf]))\n\nprintln(\"| Constraint | Shadow price (\\\\\\$/Mg) | Meaning |\")\nprintln(\"|:--|--:|:--|\")\nprintln(\"| City 1's waste | \", money(base_price.city[1]), \" | one more Mg/day from City 1 |\")\nprintln(\"| City 2's waste | \", money(base_price.city[2]), \" | one more Mg/day from City 2 |\")\nprintln(\"| WTE capacity | \", money(abs(base_price.wte)), \" | has room |\")\nprintln(\"| MRF capacity | \", money(abs(base_price.mrf)), \" | has room |\")\nprintln(\"| Landfill capacity | \", money(base_price.lf), \" | one more Mg/day of landfill capacity |\")\n\n\n\n\nConstraint\nShadow price ($/Mg)\nMeaning\n\n\n\n\nCity 1’s waste\n85.22\none more Mg/day from City 1\n\n\nCity 2’s waste\n87.38\none more Mg/day from City 2\n\n\nWTE capacity\n0.00\nhas room\n\n\nMRF capacity\n0.00\nhas room\n\n\nLandfill capacity\n9.88\none more Mg/day of landfill capacity\n\n\n\nWhy does one more Mg from City 2 cost $87.38, when hauling and landfilling it costs $77.50?\n\nThe table gives minus shadow_price for each constraint, from the LP with the binaries fixed: the cost of one more unit (the same convention as the price of electricity in the dispatch lecture).\nThe WTE and MRF capacities have shadow prices of zero: neither is full, so more capacity there would change nothing. The landfill’s capacity is the binding constraint: one more Mg/day of landfill would save $9.88 a day."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#city-2s-trucks",
+    "href": "slides/lecture12-1-waste-management.html#city-2s-trucks",
+    "title": "Solid Waste and Network Models",
+    "section": "City 2’s Trucks",
+    "text": "City 2’s Trucks\nSuppose City 2’s collection trucks also haul its waste to the facilities. We assume each carries 10 Mg, averages 40 km/h and takes 15 minutes to unload, so a load takes:\n\n\n\nFrom City 2 to\nHours per load\nTruck-hours per Mg\n\n\n\n\nWTE (10 km)\n0.75\n0.075\n\n\nMRF (15 km)\n1.00\n0.100\n\n\nLF (25 km)\n1.50\n0.150\n\n\n\n\nA fleet’s time is what usually limits how much a city can haul directly: collection trucks have to collect as well as haul, and a long trip to a distant site takes a truck off its route for longer. (Truck size, speed and unloading time are assumptions for this example; rear-loading collection trucks typically carry about 6 to 19 tons, depending on the body and how tightly the waste is compacted.) The landfill is the farthest facility from City 2, so each Mg sent there takes twice the truck time of a Mg sent to the WTE.\nEach load is a round trip plus unloading."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#re-solving-with-the-truck-limit",
+    "href": "slides/lecture12-1-waste-management.html#re-solving-with-the-truck-limit",
+    "title": "Solid Waste and Network Models",
+    "section": "Re-Solving With the Truck Limit",
+    "text": "Re-Solving With the Truck Limit\n\nCode\n# The model as formulated, plus a limit on City 2's truck-hours [truck-hours/day]\nfunction solve_with_truck_limit(fleet_hours)\n    model = waste_model()\n    W = model[:W]\n    @constraint(model, fleet, sum(hours_per_Mg[j] * W[2, j] for j in 1:3) &lt;= fleet_hours)\n    optimize!(model)\n    result = solution(model)\n    truck_hours = sum(hours_per_Mg[j] * result.W[2, j] for j in 1:3)\n    fix_discrete_variables(model)               # for the shadow price, as before\n    optimize!(model)\n    return merge(result, (truck_hours=truck_hours, fleet_price=-shadow_price(fleet)))\nend\n\ntrucks = solve_with_truck_limit(fleet_limit)\nprintln(\"| | No limit | $(fleet_limit) truck-hours |\")\nprintln(\"|:--|--:|--:|\")\nprintln(\"| City 2 → WTE (Mg/day) | \", fmt(base.W[2, 1]), \" | \", fmt(trucks.W[2, 1]), \" |\")\nprintln(\"| City 2 → LF (Mg/day) | \", fmt(base.W[2, 3]), \" | \", fmt(trucks.W[2, 3]), \" |\")\nprintln(\"| MRF residual → WTE (Mg/day) | \", fmt(base.R21), \" | \", fmt(trucks.R21), \" |\")\nprintln(\"| MRF residual → LF (Mg/day) | \", fmt(base.R23), \" | \", fmt(trucks.R23), \" |\")\nprintln(\"| City 2 truck-hours/day | \", fmt(base_truck_hours), \" | \", fmt(trucks.truck_hours), \" |\")\nprintln(\"| Cost (\\\\\\$/day) | \", commas(base.cost), \" | \", commas(trucks.cost), \" |\")\n\n\n\n\n\nNo limit\n24 truck-hours\n\n\n\n\nCity 2 → WTE (Mg/day)\n0\n20\n\n\nCity 2 → LF (Mg/day)\n170\n150\n\n\nMRF residual → WTE (Mg/day)\n37.5\n17.5\n\n\nMRF residual → LF (Mg/day)\n22.5\n42.5\n\n\nCity 2 truck-hours/day\n25.5\n24\n\n\nCost ($/day)\n26,881\n26,941\n\n\n\n\nThe whole network now adjusts to the new constraint. City 2 can cut its truck time only by sending waste somewhere closer than the landfill, and the WTE is the closest. The WTE has room for City 2’s waste only if it burns less of the MRF’s residual, and that residual then goes to the landfill, which is still operating at full capacity."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#what-is-a-truck-hour-worth",
+    "href": "slides/lecture12-1-waste-management.html#what-is-a-truck-hour-worth",
+    "title": "Solid Waste and Network Models",
+    "section": "What Is a Truck-Hour Worth?",
+    "text": "What Is a Truck-Hour Worth?\nThe truck limit’s shadow price is $40.00/day per truck-hour. One more truck-hour lets City 2 send 13.3 Mg/day to the landfill instead of the WTE, saving $3.00 per Mg."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#making-room-in-the-landfill",
+    "href": "slides/lecture12-1-waste-management.html#making-room-in-the-landfill",
+    "title": "Solid Waste and Network Models",
+    "section": "Making Room in the Landfill",
+    "text": "Making Room in the Landfill\nThe landfill is operated at full capacity, so landfilling one more Mg anywhere needs 1 Mg of space freed, by sending waste that now goes to the landfill to the WTE instead.\nWhat does moving 1 Mg from the landfill to the WTE cost? ($/Mg)\n\n\n\n\n\n\n\n\n\n\n\nMoved to the WTE\nBurn it\nLandfill its 0.2 Mg of ash\nNo longer landfill it\nPer Mg moved\nPer Mg of space (÷ 0.8)\n\n\n\n\nMRF residual\n+82.50\n+13.40\n−88.00\n7.90\n9.88\n\n\nCity 2’s waste\n+75.00\n+13.40\n−77.50\n10.90\n13.63\n\n\n\nEach Mg moved frees only 0.8 Mg, because its ash comes back. Burning the residual saves $5.50/Mg on its costly 32 km landfill route, against $2.50/Mg for City 2’s waste, so landfill space is worth $9.88 per Mg: the landfill’s shadow price.\n\nRead each row left to right. Moving 1 Mg to the WTE means paying to haul and burn it there, paying to landfill the 0.2 Mg of ash it leaves, and no longer paying to haul and landfill it. The sum is the cost per Mg moved. Because the ash goes back to the landfill, each Mg moved frees only 0.8 Mg of space, so the cost per Mg of space is the cost per Mg moved divided by 0.8.\nThe ash column is 0.2 × $67.00 per Mg burned. These are the only two candidates, because they are the two flows that go to the landfill now: City 1 sends nothing to the landfill, and the WTE’s ash has nowhere else to go. A third way to make room, sending City 2’s waste to the MRF instead and burning its residual, costs $24.48 per Mg of space, because 60% of it comes back as residual. The cheapest way, $9.88, is the landfill’s shadow price from the table of shadow prices: the solver’s number and the hand reasoning agree."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#where-does-one-more-mg-from-city-2-go",
+    "href": "slides/lecture12-1-waste-management.html#where-does-one-more-mg-from-city-2-go",
+    "title": "Solid Waste and Network Models",
+    "section": "Where Does One More Mg From City 2 Go?",
+    "text": "Where Does One More Mg From City 2 Go?\nPrice each route at the cost of making room, $9.88 per Mg of landfill:\n\n\n\n\n\n\n\nRoute for the extra Mg\nCost ($/Mg)\n\n\n\n\nLandfill, with room made for it\n77.50 + 9.88 = 87.38\n\n\nWTE directly, with room made for its ash\n75.00 + 0.2 × 67.00 + 0.2 × 9.88 = 90.38\n\n\nMRF, with its residual burned\n41.50 + 0.6 × (82.50 + 0.2 × 67.00 + 0.2 × 9.88) = 100.22\n\n\n\nThe cheapest route sends the extra Mg to the landfill and the MRF’s residual to the WTE, for $87.38: the shadow price of City 2’s waste. Sending it to the WTE directly costs $3.00/Mg more.\n\nEvery route has to account for the full landfill. Sending the extra Mg straight to the landfill means making 1 Mg of room, at the price from the previous slide. Sending it to the WTE needs room only for its ash, and the WTE is closer to City 2, but tipping there costs $60/Mg against $40 at the landfill. Sending it to the MRF is cheap at the gate, but 60% comes out as residual, which costs $97.88 per Mg to burn and to make room for its ash (sending the residual to the landfill instead, with room made for it, costs the same at the margin).\nThe answer matches the solver: $87.38 is the shadow price of City 2’s waste. The $3.00 gap between the landfill route and the direct WTE route comes back in the trucking example."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#where-does-city-2s-next-mg-go",
+    "href": "slides/lecture12-1-waste-management.html#where-does-city-2s-next-mg-go",
+    "title": "Solid Waste and Network Models",
+    "section": "Where Does City 2’s Next Mg Go?",
+    "text": "Where Does City 2’s Next Mg Go?\nPrice each route at the cost of making room, $9.88 per Mg of landfill:\n\n\n\n\n\n\n\nRoute for the extra Mg\nCost ($/Mg)\n\n\n\n\nLandfill, with room made for it\n77.50 + 9.88 = 87.38\n\n\nWTE directly, with room made for its ash\n75.00 + 0.2 × 67.00 + 0.2 × 9.88 = 90.38\n\n\nMRF, with its residual burned\n41.50 + 0.6 × (82.50 + 0.2 × 67.00 + 0.2 × 9.88) = 100.23\n\n\n\nThe cheapest route sends the extra Mg to the landfill and the MRF’s residual to the WTE, for $87.38: the shadow price of City 2’s waste. Sending it to the WTE directly costs $3.00/Mg more.\n\nEvery route has to account for the full landfill. Sending the extra Mg straight to the landfill means making 1 Mg of room, at the price from the previous slide. Sending it to the WTE needs room only for its ash, and the WTE is closer to City 2, but tipping there costs $60/Mg against $40 at the landfill. Sending it to the MRF is cheap at the gate, but 60% comes out as residual, which costs $97.88 per Mg to burn and to make room for its ash (sending the residual to the landfill instead, with room made for it, costs the same at the margin).\nThe answer matches the solver: $87.38 is the shadow price of City 2’s waste. The $3.00 gap between the landfill route and the direct WTE route comes back in the trucking example."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#shadow-prices-for-a-milp",
+    "href": "slides/lecture12-1-waste-management.html#shadow-prices-for-a-milp",
+    "title": "Solid Waste and Network Models",
+    "section": "Shadow Prices for a MILP",
+    "text": "Shadow Prices for a MILP\n\nShadow prices are not well-defined for MILPs as they are for LPs because an indicator variable can only switch between 0 and 1.\nOne approach: Fix the indicators at their optimal values to produce an LP with the same solution.\nThis LP’s shadow prices are conditional on that choice: they describe small changes with the same facilities running.\n\n\nIf a change is large enough that the cheapest plan opens or closes a facility, the conditional shadow price no longer describes the change in the objective (just like sufficiently large changes for LPs), because the change in fixed costs creates a discontinuity."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#mip-shadow-prices-in-jump",
+    "href": "slides/lecture12-1-waste-management.html#mip-shadow-prices-in-jump",
+    "title": "Solid Waste and Network Models",
+    "section": "MIP Shadow Prices in JuMP",
+    "text": "MIP Shadow Prices in JuMP\noptimize!(model)                  # the MILP: no shadow prices yet\nfix_discrete_variables(model)     # fix each Y_j at its optimal 0 or 1\noptimize!(model)                  # an LP with the same solution\nshadow_price(lf)                  # conditional on which facilities run\n\nBy default, JuMP reports no shadow prices for a MILP.\nfix_discrete_variables() fixes the indicator variables at the optimal values so the rest of the problem becomes an LP."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#writing-the-model-in-jump",
+    "href": "slides/lecture12-1-waste-management.html#writing-the-model-in-jump",
+    "title": "Solid Waste and Network Models",
+    "section": "Writing the Model in JuMP",
+    "text": "Writing the Model in JuMP\n\n# The model as formulated on the previous slides\nfunction waste_model(; landfill_capacity=capacity[3])\n    cap = [capacity[1], capacity[2], landfill_capacity]\n    model = Model(HiGHS.Optimizer)\n    set_silent(model)\n    @variable(model, W[1:2, 1:3] &gt;= 0)   # city i -&gt; facility j [Mg/day]\n    @variable(model, R21 &gt;= 0)           # MRF residual -&gt; WTE\n    @variable(model, R23 &gt;= 0)           # MRF residual -&gt; LF\n    @variable(model, R13 &gt;= 0)           # WTE ash -&gt; LF\n    @variable(model, Y[1:3], Bin)        # facility operates?\n    @objective(model, Min,\n        sum(city_cost[i, j] * W[i, j] for i in 1:2, j in 1:3) +\n        cost_R21 * R21 + cost_R23 * R23 + cost_R13 * R13 +\n        sum(fixed_cost[j] * Y[j] for j in 1:3))\n    @constraint(model, city[i in 1:2], sum(W[i, :]) == waste[i])\n    @constraint(model, ash, R13 == ash_rate * (W[1, 1] + W[2, 1] + R21))\n    @constraint(model, residual,\n        R21 + R23 == (1 - recycle_rate) * (W[1, 2] + W[2, 2]))\n    @constraint(model, wte, W[1, 1] + W[2, 1] + R21 &lt;= cap[1] * Y[1])\n    @constraint(model, mrf, W[1, 2] + W[2, 2] &lt;= cap[2] * Y[2])\n    @constraint(model, lf, W[1, 3] + W[2, 3] + R13 + R23 &lt;= cap[3] * Y[3])\n    return model\nend\n\n\nYou also don’t need to walk through this: they’ve seen the relevant parts of setting up a MILP."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#the-objective-for-our-example",
+    "href": "slides/lecture12-1-waste-management.html#the-objective-for-our-example",
+    "title": "Solid Waste and Network Models",
+    "section": "The Objective for Our Example",
+    "text": "The Objective for Our Example\n\n\n\nFlow\nHauling\nTipping\nRecycling\nCost ($/Mg)\n\n\n\n\nCity 1 → MRF (5 km)\n7.50\n5.00\n14.00\n26.50\n\n\nCity 2 → MRF (15 km)\n22.50\n5.00\n14.00\n41.50\n\n\nMRF residual → WTE (15 km)\n22.50\n60.00\n\n82.50\n\n\nMRF residual → LF (32 km)\n48.00\n40.00\n\n88.00\n\n\n\nThe MRF is the cheapest place to send City 1’s waste, at $26.50/Mg, but only 40% is recycled. The other 60% leaves as residual that still has to be hauled and disposed of, and the residual flows carry that cost:\n\\[\n\\begin{aligned}\n\\min_{\\mathbf{W}, \\mathbf{R}, \\mathbf{Y}} \\quad & 82.5\\,W_{11} + 26.5\\,W_{12} + 85\\,W_{13} + 75\\,W_{21} + 41.5\\,W_{22} + 77.5\\,W_{23} \\\\\n& + 82.5\\,R_{21} + 88\\,R_{23} + 67\\,R_{13} + 2{,}466\\,Y_1 + 1{,}096\\,Y_2 + 1{,}918\\,Y_3\n\\end{aligned}\n\\]\n\nEach flow’s coefficient is its cost per Mg: hauling at $1.50/Mg-km, the tipping fee where it arrives, and, for waste sent to the MRF, $35 for each Mg recycled, which is 40% of what arrives ($14.00 per Mg sent). The other coefficients are hauling plus tipping: City 2 to the landfill is 1.5 × 25 + 40 = 77.5, and the WTE’s ash to the landfill is 1.5 × 18 + 40 = 67. The fixed costs are the daily costs from the previous slide, each multiplied by its facility’s binary.\nA Mg sent to the MRF looks cheap at the gate, but it commits the system to moving 0.6 Mg of residual, at $82.50 or more per Mg. The objective counts that cost through the residual flows; the mass balance on the next slide ties the residual to what arrives at the MRF."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#the-mrfs-contribution-to-the-cost",
+    "href": "slides/lecture12-1-waste-management.html#the-mrfs-contribution-to-the-cost",
+    "title": "Solid Waste and Network Models",
+    "section": "The MRF’s Contribution to the Cost",
+    "text": "The MRF’s Contribution to the Cost\nThe objective adds up each facility’s fixed cost, the tipping on what arrives (and, at the MRF, the recycling), and the hauling. For the MRF:\n\\[\n\\begin{aligned}\n& \\underbrace{1{,}096\\,Y_2}_{\\text{fixed cost}} + \\underbrace{(5 + 0.4 \\times 35)\\,(W_{12} + W_{22})}_{\\text{tipping and recycling}} \\\\\n& + \\underbrace{1.5\\,(5\\,W_{12} + 15\\,W_{22})}_{\\text{hauling in}} + \\underbrace{1.5\\,(15\\,R_{21} + 32\\,R_{23})}_{\\text{hauling its residual out}} \\\\[0.6em]\n& = 1{,}096\\,Y_2 + 26.5\\,W_{12} + 41.5\\,W_{22} + 22.5\\,R_{21} + 48\\,R_{23}\n\\end{aligned}\n\\]\nOnly 40% of what arrives is recycled. The other 60% leaves as residual, which costs hauling and then tipping at the WTE ($60/Mg) or the landfill ($40/Mg).\n\nThe MRF’s share follows the structure of the objective slide: a fixed cost when it operates, a cost per Mg for everything that arrives (the $5 tipping fee plus $35 for each Mg recycled, 40% of what arrives), and the hauling of waste to it and of its residual away from it. The residual’s tipping fees are counted with the facility it goes to. In the full problem each residual route has one coefficient that combines the two: hauling from the MRF plus tipping where it ends, 1.5 × 15 + 60 = 82.5 to the WTE and 1.5 × 32 + 40 = 88 to the landfill. The WTE’s and the landfill’s shares are built the same way.\nThe MRF looks cheap at the gate, but each Mg sent there commits the system to moving 0.6 Mg of residual; the mass balance on the next slide ties the residual to what arrives."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#calculating-the-objective",
+    "href": "slides/lecture12-1-waste-management.html#calculating-the-objective",
+    "title": "Solid Waste and Network Models",
+    "section": "Calculating the Objective",
+    "text": "Calculating the Objective\nThe objective adds up each facility’s fixed cost, the tipping on what arrives (and, at the MRF, the recycling cost), and the hauling, e.g. for the MRF:\n\\[\n\\begin{aligned}\n& \\underbrace{1{,}096\\,Y_2}_{\\text{fixed cost}} + \\underbrace{(5 + 0.4 \\times 35)\\,(W_{12} + W_{22})}_{\\text{tipping and recycling}} \\\\\n& + \\underbrace{1.5\\,(5\\,W_{12} + 15\\,W_{22})}_{\\text{hauling in}} + \\underbrace{1.5\\,(15\\,R_{21} + 32\\,R_{23})}_{\\text{hauling its residual out}} \\\\[0.6em]\n& = 1{,}096\\,Y_2 + 26.5\\,W_{12} + 41.5\\,W_{22} + 22.5\\,R_{21} + 48\\,R_{23}\n\\end{aligned}\n\\]"
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#example-system-1",
+    "href": "slides/lecture12-1-waste-management.html#example-system-1",
+    "title": "Solid Waste and Network Models",
+    "section": "Example System",
+    "text": "Example System\n\n\n\n\n\nWaste Management Example\n\n\n\nWe do not have to operate all facilities.\nThe MRF and WTE reduce waste mass but create residuals which must be further disposed of.\n\n\nNote the edges between facilities: the MRF sends its residual to the WTE or the landfill, and the WTE sends its ash to the landfill."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#costs-for-our-problem",
+    "href": "slides/lecture12-1-waste-management.html#costs-for-our-problem",
+    "title": "Solid Waste and Network Models",
+    "section": "Costs For Our Problem",
+    "text": "Costs For Our Problem\n\n\n\n\n\n\n\n\n\n\nFacility\nFixed cost ($/yr)\nFixed cost ($/day)\nTipping ($/Mg)\nCapacity (Mg/day)\n\n\n\n\nWTE (1)\n900,000\n2,466\n60\n150\n\n\nMRF (2)\n400,000\n1,096\n5\n130\n\n\nLF (3)\n700,000\n1,918\n40\n200\n\n\n\nTransport costs $1.50/Mg-km. The MRF recycles 40% of what it receives, at $35/Mg recycled, and passes on the rest; the WTE leaves 20% of its input as ash.\n\nThe daily fixed costs are the annual costs divided by 365. The MRF is cheap to run but the 60% it does not recycle still has to go to the WTE or the landfill."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#the-data-in-jump",
+    "href": "slides/lecture12-1-waste-management.html#the-data-in-jump",
+    "title": "Solid Waste and Network Models",
+    "section": "The Data in JuMP",
+    "text": "The Data in JuMP\n# The example system: two cities, three facilities (1 = WTE, 2 = MRF, 3 = LF)\nwaste = [100, 170]                              # [Mg/day] produced by each city\ncapacity = [150, 130, 200]                      # [Mg/day] facility capacity\nfixed_cost_year = [900_000, 400_000, 700_000]   # [$/yr] if the facility operates\nfixed_cost = round.(Int, fixed_cost_year ./ 365)   # [$/day]\ntipping = [60, 5, 40]                           # [$/Mg] handled at each facility\nrecycle_rate = 0.4                              # fraction of MRF input recycled\nrecycle_cost = 35                               # [$/Mg recycled]\nash_rate = 0.2                                  # WTE input left as ash\ntransport_rate = 1.5                            # [$/Mg-km]\ncity_distance = [15 5 30; 10 15 25]             # [km] from city i to facility j\nmrf_to_wte, mrf_to_lf, wte_to_lf = 15, 32, 18   # [km] residual routes\n\n# Cost of sending 1 Mg from city i to facility j: haul it, tip it, and\n# (at the MRF) pay to recycle the fraction that is recovered\ncity_cost = zeros(2, 3)\nfor i in 1:2\n    for j in 1:3\n        city_cost[i, j] = transport_rate * city_distance[i, j] + tipping[j]\n        if j == 2\n            city_cost[i, j] = city_cost[i, j] + recycle_rate * recycle_cost\n        end\n    end\nend\ncost_R21 = transport_rate * mrf_to_wte + tipping[1]   # MRF residual to WTE\ncost_R23 = transport_rate * mrf_to_lf + tipping[3]    # MRF residual to LF\ncost_R13 = transport_rate * wte_to_lf + tipping[3]    # WTE ash to LF\n\nThe data from the costs slide, as JuMP uses it. The loop builds each city-to-facility cost per Mg: hauling plus tipping, plus the recycling cost at the MRF. The last three lines are the residual routes’ costs per Mg."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#the-data-in-julia",
+    "href": "slides/lecture12-1-waste-management.html#the-data-in-julia",
+    "title": "Solid Waste and Network Models",
+    "section": "The Data in Julia",
+    "text": "The Data in Julia\n# The example system: two cities, three facilities (1 = WTE, 2 = MRF, 3 = LF)\nwaste = [100, 170]                              # [Mg/day] produced by each city\ncapacity = [150, 130, 200]                      # [Mg/day] facility capacity\nfixed_cost_year = [900_000, 400_000, 700_000]   # [$/yr] if the facility operates\nfixed_cost = round.(Int, fixed_cost_year ./ 365)   # [$/day]\ntipping = [60, 5, 40]                           # [$/Mg] handled at each facility\nrecycle_rate = 0.4                              # fraction of MRF input recycled\nrecycle_cost = 35                               # [$/Mg recycled]\nash_rate = 0.2                                  # WTE input left as ash\ntransport_rate = 1.5                            # [$/Mg-km]\ncity_distance = [15 5 30; 10 15 25]             # [km] from city i to facility j\nmrf_to_wte, mrf_to_lf, wte_to_lf = 15, 32, 18   # [km] residual routes\n\n# Cost of sending 1 Mg from city i to facility j: haul it, tip it, and\n# (at the MRF) pay to recycle the fraction that is recovered\ncity_cost = zeros(2, 3)\nfor i in 1:2\n    for j in 1:3\n        city_cost[i, j] = transport_rate * city_distance[i, j] + tipping[j]\n        if j == 2\n            city_cost[i, j] = city_cost[i, j] + recycle_rate * recycle_cost\n        end\n    end\nend\ncost_R21 = transport_rate * mrf_to_wte + tipping[1]   # MRF residual to WTE\ncost_R23 = transport_rate * mrf_to_lf + tipping[3]    # MRF residual to LF\ncost_R13 = transport_rate * wte_to_lf + tipping[3]    # WTE ash to LF\n\nYou don’t need to walk through this; it’s there for student reference."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#the-optimal-plans-flows",
+    "href": "slides/lecture12-1-waste-management.html#the-optimal-plans-flows",
+    "title": "Solid Waste and Network Models",
+    "section": "The Optimal Plan’s Flows",
+    "text": "The Optimal Plan’s Flows\n\n\n\n\n\nWaste Management Problem Solution\n\n\n\n\n\n\nFlow\nMg/day\n\n\n\n\nCity 1 → MRF\n100\n\n\nCity 2 → LF\n170\n\n\nMRF residual → WTE\n37.5\n\n\nMRF residual → LF\n22.5\n\n\nWTE ash → LF\n7.5\n\n\n\n\n\nThe MRF’s residual is split between the WTE and the landfill."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#conditional-shadow-prices",
+    "href": "slides/lecture12-1-waste-management.html#conditional-shadow-prices",
+    "title": "Solid Waste and Network Models",
+    "section": "Conditional Shadow Prices",
+    "text": "Conditional Shadow Prices\n\n\n\nCode\n# Fix the binaries at their optimal values and re-solve: an LP with the same solution\nfix_discrete_variables(base_model)\noptimize!(base_model)\n# Sizes of the shadow prices: for a city, the cost of one more Mg/day of waste;\n# for a facility, the saving from one more Mg/day of capacity\nbase_price = (city=-shadow_price.(base_model[:city]), wte=-shadow_price(base_model[:wte]),\n    mrf=-shadow_price(base_model[:mrf]), lf=-shadow_price(base_model[:lf]))\n# Landfill space freed per Mg moved from the landfill to the WTE: its ash comes back [Mg]\nspace_per_Mg = 1 - ash_rate\n\n# The table's sign: + if one more Mg/day raises the cost, - if it lowers it\nsigned(x) = x &gt; 0.005 ? \"+\" * money(x) : (x &lt; -0.005 ? \"−\" * money(-x) : \"0.00\")\nprintln(\"| One more Mg/day of | Change in cost (\\\\\\$/day) |\")\nprintln(\"|:--|--:|\")\nprintln(\"| City 1's waste | \", signed(base_price.city[1]), \" |\")\nprintln(\"| City 2's waste | \", signed(base_price.city[2]), \" |\")\nprintln(\"| WTE capacity | \", signed(-base_price.wte), \" |\")\nprintln(\"| MRF capacity | \", signed(-base_price.mrf), \" |\")\nprintln(\"| Landfill capacity | \", signed(-base_price.lf), \" |\")\n\n\n\n\nOne more Mg/day of\nChange in cost ($/day)\n\n\n\n\nCity 1’s waste\n+85.22\n\n\nCity 2’s waste\n+87.38\n\n\nWTE capacity\n0.00\n\n\nMRF capacity\n0.00\n\n\nLandfill capacity\n−9.88\n\n\n\n\n\n\nMoving 1 Mg to the WTE frees only 0.8 Mg in the landfill.\nSo each additional Mg/day of landfill capacity takes 1.25 Mg/day of MRF residual away from the WTE, saving $9.88/day.\n\n\nThe landfill’s capacity is the binding constraint. Every route for new waste has to account for the full landfill."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#what-if-the-landfill-were-expanded",
+    "href": "slides/lecture12-1-waste-management.html#what-if-the-landfill-were-expanded",
+    "title": "Solid Waste and Network Models",
+    "section": "What If the Landfill Were Expanded?",
+    "text": "What If the Landfill Were Expanded?\n\nCode\nbigger_capacity = 220\nbigger_model = waste_model(landfill_capacity=bigger_capacity)\noptimize!(bigger_model)\nbigger = solution(bigger_model)\nprintln(\"| Landfill capacity (Mg/day) | Cost (\\\\\\$/day) | WTE | MRF | LF |\")\nprintln(\"|:--|--:|:--:|:--:|:--:|\")\nfor (lf_capacity, r) in ((capacity[3], base), (bigger_capacity, bigger))\n    status = fill(\"open\", 3)\n    for j in 1:3\n        if r.Y[j] == 0\n            status[j] = \"**closed**\"\n        end\n    end\n    println(\"| \", lf_capacity, \" | \", commas(r.cost), \" | \", join(status, \" | \"), \" |\")\nend\n\n\n\n\nLandfill capacity (Mg/day)\nCost ($/day)\nWTE\nMRF\nLF\n\n\n\n\n200\n26,881\nopen\nopen\nopen\n\n\n220\n24,539\nclosed\nopen\nopen\n\n\n\nWith 20 Mg/day more landfill capacity, the WTE closes and the system saves $2,342/day.\nThe landfill’s shadow price predicted a saving of only 20 × $9.88 = $198/day.\n\nThe shadow price assumes the same facilities run and the same constraints are binding. Here the change is large enough that the WTE closes, and its fixed cost of $2,466/day goes away, so the actual saving is far larger than the shadow price predicts."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#why-isnt-this-the-shadow-price",
+    "href": "slides/lecture12-1-waste-management.html#why-isnt-this-the-shadow-price",
+    "title": "Solid Waste and Network Models",
+    "section": "Why Isn’t This The Shadow Price?",
+    "text": "Why Isn’t This The Shadow Price?\nWith 20 Mg/day more landfill, the WTE closes and the system saves $2,342/day. City 2 now sends 25 Mg/day to the MRF, and all 75 Mg/day of the MRF’s residual goes to the landfill.\nThe landfill’s shadow price predicted a saving of only 20 × $9.88 = $198/day.\n\nWith a 220 Mg/day landfill, the MRF’s residual fits in the landfill and the WTE is not needed; better to save its fixed costs.\nThe shadow price assumes the same facilities run and the same constraints bind. Here the change is large enough that the WTE closes, and its fixed cost of $2,466/day goes away, so the actual saving is far larger than the shadow price predicts."
+  },
+  {
+    "objectID": "slides/lecture12-1-waste-management.html#limits-on-city-2s-trucking-capacity",
+    "href": "slides/lecture12-1-waste-management.html#limits-on-city-2s-trucking-capacity",
+    "title": "Solid Waste and Network Models",
+    "section": "Limits on City 2’s Trucking Capacity",
+    "text": "Limits on City 2’s Trucking Capacity\nSending all 170 Mg/day to the landfill takes 25.5 truck-hours a day. Suppose City 2’s trucks have only 24 hours.\nThis produces a new constraint:\n\\[0.075\\,W_{21} + 0.100\\,W_{22} + 0.150\\,W_{23} \\leq 24 \\quad \\text{(truck-hours/day)}\\]\n\nThis is an example of a flow constraint: it limits outflows along City 2’s edges, each weighted by how long the trip takes."
   }
 ]

@@ -243,10 +243,10 @@
 <li><a href="#/review-of-last-class" id="/toc-review-of-last-class">Review of Last Class</a></li>
 <li><a href="#/solid-waste-management" id="/toc-solid-waste-management">Solid Waste Management</a></li>
 <li><a href="#/waste-management-example" id="/toc-waste-management-example">Waste Management Example</a></li>
-<li><a href="#/solving-it" id="/toc-solving-it">Solving It</a></li>
+<li><a href="#/solving-the-problem" id="/toc-solving-the-problem">Solving The Problem</a></li>
+<li><a href="#/limits-on-trucking" id="/toc-limits-on-trucking">Limits on Trucking</a></li>
 <li><a href="#/key-takeaways" id="/toc-key-takeaways">Key Takeaways</a></li>
 <li><a href="#/upcoming-schedule" id="/toc-upcoming-schedule">Upcoming Schedule</a></li>
-<li><a href="#/appendix" id="/toc-appendix">Appendix</a></li>
 </ul>
 </nav>
 </section>
@@ -255,28 +255,14 @@
 <h1>Review of Last Class</h1>
 
 </section>
-<section id="binaries-switch-facilities-on-and-off" class="slide level2">
-<h2>Binaries Switch Facilities On and Off</h2>
-<p>An optional facility needs a <strong>binary</strong> <span class="math inline">\(u \in \{0, 1\}\)</span>:</p>
+<section id="indicator-variables-and-mixed-integer-programming" class="slide level2">
+<h2>Indicator Variables and Mixed Integer Programming</h2>
+<p>Binary decisions need <strong>indicator variables</strong> <span class="math inline">\(u \in \{0, 1\}\)</span>:</p>
 <ul>
-<li>fixed cost <span class="math inline">\(\times\, u\)</span> in the objective (paid only if it operates);</li>
-<li>output <span class="math inline">\(\leq\)</span> capacity <span class="math inline">\(\times\, u\)</span> (a closed facility does nothing);</li>
-<li>output <span class="math inline">\(\geq\)</span> minimum <span class="math inline">\(\times\, u\)</span> (at least the minimum when on).</li>
+<li>changes decision problem to <strong>mixed integer</strong>;</li>
+<li>write <strong>conditional</strong> constraints or objectives using indicators;</li>
+<li>basic solution algorithm is <strong>branch and bound</strong>.</li>
 </ul>
-<p><strong>Raises the question</strong>: what if the decisions are <strong>flows</strong> through a network?</p>
-<aside class="notes">
-<p>A binary variable turns an on/off decision into linear constraints.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="questions" class="slide level2">
 <h2>Questions?</h2>
@@ -318,7 +304,7 @@
 </div>
 </div></div>
 <aside class="notes">
-<p>A city produces waste every day and has to put it somewhere. The options form a hierarchy: reduce first, then recycle, then recover energy, and landfill last. The problem combines two kinds of decision: where each truckload goes (a routing decision that can vary continuously), and which facilities to build or keep open (an on/off decision). That combination is why this is a mixed integer problem.</p>
+<p>Waste management options form a hierarchy: reduce first, then recycle, then recover energy, and landfill last. There are a variety of types of facilities, and a waste management plan requires deciding which facilities to build or operate.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -333,10 +319,10 @@
 </section>
 <section id="waste-allocation-as-a-network" class="slide level2">
 <h2>Waste Allocation As A Network</h2>
-<p>Want to model <em>flows</em> between waste sources and sinks (disposal sites).</p>
+<p>Waste moves as <em>flows</em> between waste sources and sinks (disposal sites) based on transportation networks.</p>
 
 <img data-src="figures/waste-network-blank.svg" style="width:75.0%" class="r-stretch quarto-figure-center"><p class="caption">Network Representation</p><aside class="notes">
-<p>A network has nodes (cities, facilities) and arcs (the roads between them). The decisions are how much flows along each arc. Some arcs go from one facility to another: what a facility does not fully dispose of has to be shipped on.</p>
+<p>A network has nodes and edges. We want to decide how to allocate waste given the restrictions of the road network as well as processing any residual waste.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -349,8 +335,8 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="network-parameterization" class="slide level2">
-<h2>Network Parameterization</h2>
+<section id="network-and-decision-parameterization" class="slide level2">
+<h2>Network and Decision Parameterization</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
@@ -387,65 +373,14 @@
 </tbody>
 </table>
 </div></div>
-<aside class="notes">
-<p>Three symbols to carry through the lecture: S for what each source produces, K for what each facility can take, and W for the flow on each arc. W is the decision. Mg is a megagram, a metric ton.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
 <section id="conservation-at-each-node" class="slide level2">
 <h2>Conservation at Each Node</h2>
-<p><strong>Mass balance</strong> at each node: a source ships everything it produces, <span class="math inline">\(\sum_j W_{ij} = S_i\)</span>. A facility passes on a fixed fraction of what arrives.</p>
-<p>A transfer station receives 40 Mg/day from each of two cities and sends it all to a landfill (<span class="math inline">\(T_L\)</span>) or a recycler (<span class="math inline">\(T_R\)</span>). <strong>What is its mass-balance constraint?</strong></p>
-<div class="fragment fade-in">
-<p><span class="math display">\[T_L + T_R = 40 + 40 = 80 \text{ Mg/day}\]</span></p>
-</div>
-<aside class="notes">
-<p>Conservation holds at every node: nothing is created or destroyed at a node, only routed or transformed. At the transfer station, what leaves equals what arrives. A facility is the same idea with a transformation: a recycler that recovers 40% passes on the other 60%.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="what-is-missing" class="slide level2">
-<h2>What Is Missing?</h2>
-<p>The network captures the graph structure of the system, but nothing else. <strong>What else might we need?</strong></p>
-<div class="fragment fade-in">
+<p><strong>Mass balance</strong> holds at each facility:</p>
 <ul>
-<li>System dynamics (fate &amp; transport)</li>
-<li>Objectives</li>
-<li>Costs</li>
-<li>Management goals and/or regulatory constraints</li>
+<li>A waste source does not hold onto any waste, <span class="math inline">\(\sum_j W_{ij} = S_i\)</span>,</li>
+<li>Incoming flows at a disposal facility have to balance with waste disposal and outflows of residual waste (<em>e.g.</em> material that cannot be recycled).</li>
 </ul>
-</div>
-<aside class="notes">
-<p>The graph says what is connected to what; it says nothing about what an MRF or a WTE does to the waste, what anything costs, or what the rules are. All of that has to come from outside the network.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section></section>
 <section>
 <section id="waste-management-example" class="title-slide slide level1 center">
@@ -471,7 +406,35 @@
 </ul>
 </div></div>
 <aside class="notes">
-<p>Two cities, producing 100 and 170 Mg/day, and three facilities with the capacities in red. Distances in blue. Note the arcs between facilities: the MRF sends its residual to the WTE or the landfill, and the WTE sends its ash to the landfill.</p>
+<p>Two cities, producing 100 and 170 Mg/day, and three facilities with the capacities in red. Distances in blue.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example-system-1" class="slide level2">
+<h2>Example System</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/waste-example-network.svg"></p>
+<figcaption>Waste Management Example</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:40%;">
+<p>We do not have to operate all facilities.</p>
+<p>The MRF and WTE reduce waste mass but create residuals which must be further disposed of.</p>
+</div></div>
+<aside class="notes">
+<p>Note the edges between facilities: the MRF sends its residual to the WTE or the landfill, and the WTE sends its ash to the landfill.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -515,67 +478,20 @@
 </tbody>
 </table>
 </div>
-<aside class="notes">
-<p>Three kinds: flows from cities (W), flows of residuals between facilities (R), and whether each facility operates (Y, binary). The residual flows here are R21 (MRF to WTE), R23 (MRF to landfill), and R13 (WTE ash to landfill). The facility numbering is WTE 1, MRF 2, landfill 3.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
-<section id="what-does-it-cost" class="slide level2">
-<h2>What Does It Cost?</h2>
+<section id="objective-minimize-costs" class="slide level2">
+<h2>Objective: Minimize Costs</h2>
 <ul>
-<li><strong>Transportation</strong>: a cost <span class="math inline">\(a_{ij}\)</span> ($/Mg-km) times the distance <span class="math inline">\(l_{ij}\)</span> (km) from <span class="math inline">\(i\)</span> to <span class="math inline">\(j\)</span> times the flow, <span class="math inline">\(\sum_{i, j} a_{ij} \, l_{ij} \, W_{ij}\)</span>, plus residuals.</li>
-<li><strong>Disposal</strong>: a fixed cost <span class="math inline">\(c_j\)</span> ($/day) and a tipping cost <span class="math inline">\(b_j\)</span> ($/Mg).</li>
+<li><strong>Transportation</strong>: transporting waste has a per-weight cost <span class="math inline">\(a_{ij}\)</span> ($/Mg-km) times the distance <span class="math inline">\(l_{ij}\)</span> (km).</li>
+<li><strong>Disposal</strong>: facilities have a fixed cost to operate <span class="math inline">\(c_j\)</span> ($/day) and a variable tipping cost <span class="math inline">\(b_j\)</span> ($/Mg).</li>
 </ul>
-<div class="fragment fade-in">
-<p><span class="math display">\[\text{Disposal cost} = \sum_j \left[c_j + b_j \times (\text{everything arriving at } j)\right]\]</span></p>
-<p><strong>Is this right?</strong></p>
-</div>
-<aside class="notes">
-<p>Board item: the two cost components. The problem is the fixed cost: as written, every facility pays it even if it receives nothing.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<p><span class="math display">\[\begin{aligned}
+Y_j &amp;= \begin{cases}0 &amp; \text{if facility } j \text{ is not operated} \\ 1 &amp; \text{if facility } j \text{ is operated} \end{cases}\\
+\text{Disposal cost} &amp;= \sum_j \left[c_j \, Y_j + b_j \times (\text{everything arriving at } j)\right]
+\end{aligned}\]</span></p>
 </section>
-<section id="fixed-costs-need-an-onoff-variable" class="slide level2">
-<h2>Fixed Costs Need an On/Off Variable</h2>
-<p>The fixed cost is paid <strong>only if the facility operates</strong>:</p>
-<p><span class="math display">\[Y_j = \begin{cases}0 &amp; \text{if facility } j \text{ is not operated} \\ 1 &amp; \text{if facility } j \text{ is operated} \end{cases}\]</span></p>
-<div class="fragment fade-in">
-<p><span class="math display">\[\text{Disposal cost} = \sum_j \left[c_j \, Y_j + b_j \times (\text{everything arriving at } j)\right]\]</span></p>
-</div>
-<aside class="notes">
-<p>This is the fixed-cost pattern: fixed cost times the binary. On its own it is not enough, because nothing yet stops waste from being sent to a facility with Y equal to zero. The capacity constraint will close that gap.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-examples-costs" class="slide level2">
-<h2>The Example’s Costs</h2>
+<section id="costs-for-our-problem" class="slide level2">
+<h2>Costs For Our Problem</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 20%">
@@ -595,21 +511,21 @@
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">WTE</td>
+<td style="text-align: left;">WTE (1)</td>
 <td style="text-align: right;">900,000</td>
 <td style="text-align: right;">2,466</td>
 <td style="text-align: right;">60</td>
 <td style="text-align: right;">150</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">MRF</td>
+<td style="text-align: left;">MRF (2)</td>
 <td style="text-align: right;">400,000</td>
 <td style="text-align: right;">1,096</td>
 <td style="text-align: right;">5</td>
 <td style="text-align: right;">130</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">LF</td>
+<td style="text-align: left;">LF (3)</td>
 <td style="text-align: right;">700,000</td>
 <td style="text-align: right;">1,918</td>
 <td style="text-align: right;">40</td>
@@ -619,7 +535,7 @@
 </table>
 <p>Transport costs $1.50/Mg-km. The MRF recycles 40% of what it receives, at $35/Mg recycled, and passes on the rest; the WTE leaves 20% of its input as ash.</p>
 <aside class="notes">
-<p>The daily fixed costs are the annual costs divided by 365. The MRF is cheap to run but does not dispose of the rest: the 60% it does not recycle still has to go to the WTE or the landfill.</p>
+<p>The daily fixed costs are the annual costs divided by 365. The MRF is cheap to run but the 60% it does not recycle still has to go to the WTE or the landfill.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -632,97 +548,35 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="working-out-one-cost-coefficient" class="slide level2">
-<h2>Working Out One Cost Coefficient</h2>
-<div class="columns">
-<div class="column" style="width:48%;">
-<p>Sending 1 Mg from City 1 to the MRF (5 km) costs</p>
-<p><span class="math display">\[\underbrace{1.5 \times 5}_{\text{haul}} + \underbrace{5}_{\text{tip}} + \underbrace{0.4 \times 35}_{\text{recycle}}\]</span></p>
-<p>= <strong>$26.5/Mg</strong>.</p>
-</div><div class="column" style="width:52%;">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: left;">$/Mg</th>
-<th style="text-align: right;">WTE</th>
-<th style="text-align: right;">MRF</th>
-<th style="text-align: right;">LF</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">City 1</td>
-<td style="text-align: right;">82.5</td>
-<td style="text-align: right;">26.5</td>
-<td style="text-align: right;">85</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">City 2</td>
-<td style="text-align: right;">75</td>
-<td style="text-align: right;">41.5</td>
-<td style="text-align: right;">77.5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">MRF residual</td>
-<td style="text-align: right;">82.5</td>
-<td style="text-align: right;">—</td>
-<td style="text-align: right;">88</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">WTE ash</td>
-<td style="text-align: right;">—</td>
-<td style="text-align: right;">—</td>
-<td style="text-align: right;">67</td>
-</tr>
-</tbody>
-</table>
-</div></div>
-<aside class="notes">
-<p>The worked coefficient: haul 5 km at $1.50 a Mg-km, tip $5, and recycle 40% of each Mg at $35 per Mg recycled. Every other entry is built the same way; for example, City 1 to the WTE is 1.5 × 15 + 60 = 82.5. The residual rows include the tipping cost at the facility receiving them.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<section id="calculating-the-objective" class="slide level2">
+<h2>Calculating the Objective</h2>
+<p>The objective adds up each facility’s fixed cost, the tipping on what arrives (and, at the MRF, the recycling cost), and the hauling, <strong>e.g.&nbsp;for the MRF</strong>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp; \underbrace{1{,}096\,Y_2}_{\text{fixed cost}} + \underbrace{(5 + 0.4 \times 35)\,(W_{12} + W_{22})}_{\text{tipping and recycling}} \\
+&amp; + \underbrace{1.5\,(5\,W_{12} + 15\,W_{22})}_{\text{hauling in}} + \underbrace{1.5\,(15\,R_{21} + 32\,R_{23})}_{\text{hauling its residual out}} \\[0.6em]
+&amp; = 1{,}096\,Y_2 + 26.5\,W_{12} + 41.5\,W_{22} + 22.5\,R_{21} + 48\,R_{23}
+\end{aligned}
+\]</span></p>
 </section>
-<section id="mass-balance-for-cities-and-residuals" class="slide level2">
-<h2>Mass Balance for Cities and Residuals</h2>
+<section id="mass-balance-for-sources-and-residuals" class="slide level2">
+<h2>Mass Balance for Sources and Residuals</h2>
 <div class="columns">
 <div class="column" style="width:45%;">
-<p><strong>Cities</strong> ship everything they produce:</p>
+<p>Outflows from cities have to match produced waste:</p>
 <p><span class="math inline">\(W_{11} + W_{12} + W_{13} =\)</span> 100</p>
 <p><span class="math inline">\(W_{21} + W_{22} + W_{23} =\)</span> 170</p>
 </div><div class="column" style="width:55%;">
 <div class="fragment fade-in">
-<p><strong>Residuals</strong> (fate and transport):</p>
+<p>Facilities can produce residual waste (outflows after processing):</p>
 <p>WTE ash: <span class="math display">\[R_{13} = 0.2\,(W_{11} + W_{21} + R_{21})\]</span></p>
 <p>MRF residual: <span class="math display">\[R_{21} + R_{23} = 0.6\,(W_{12} + W_{22})\]</span></p>
 </div>
 </div></div>
-<aside class="notes">
-<p>These are mass-balance constraints. The city ones say every Mg goes somewhere. The residual ones describe what each facility does to the waste: the WTE leaves 20% of everything it burns as ash, including residual from the MRF, and the ash must be landfilled; the MRF passes on 60% of what it receives.</p>
-<p>Likely question: what is “residual”? What a facility passes on after processing: the MRF’s unrecycled waste and the WTE’s ash.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
-<section id="linking-capacity-to-onoff" class="slide level2">
-<h2>Linking Capacity to On/Off</h2>
-<p>Capacity counts all waste arriving at a facility, and multiplying it by <span class="math inline">\(Y_j\)</span> means a closed facility receives nothing:</p>
+<section id="capacity-constraints" class="slide level2">
+<h2>Capacity Constraints</h2>
+<p>Need to modify capacity constraints to ensure that a closed facility receives no waste:</p>
 <p><span class="math display">\[
 \begin{aligned}
 \text{WTE:}&amp; \quad W_{11} + W_{21} + R_{21} \leq 150\,Y_1 \\
@@ -730,38 +584,60 @@
 \text{LF:}&amp; \quad W_{13} + W_{23} + R_{13} + R_{23} \leq 200\,Y_3
 \end{aligned}
 \]</span></p>
-<p><strong>Which constraints need a binary, and why?</strong></p>
-<div class="fragment fade-in">
-<p>Any that must change when a facility closes: the capacities.</p>
-</div>
-<aside class="notes">
-<p>Likely question: why is the binary in the capacity constraint? This one constraint per facility does two jobs: it is the capacity limit when the facility is open, and it forces every incoming flow to zero when it is closed. That is why Y belongs here and not in the city balances. The test for any constraint is whether it has to change when the facility is closed. The residual balances don’t: once nothing arrives at a closed facility, its residual is zero anyway. A minimum feed (this model has none) would need Y too, as flow in at least the minimum times Y; otherwise it would force a closed facility to take waste. Make sure the landfill line includes the residual and ash arriving from the other facilities.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
-<section id="the-full-problem" class="slide level2">
+<section id="the-full-problem" class="slide level2 smaller">
 <h2>The Full Problem</h2>
 <p><span class="math display">\[
 \begin{aligned}
-\min_{\mathbf{W}, \mathbf{R}, \mathbf{Y}} \quad &amp; \sum_{i, j} C_{ij} W_{ij} + \sum_{k, j} C^R_{kj} R_{kj} + \sum_j c_j Y_j \\
-\text{subject to:} \quad &amp; \textstyle\sum_j W_{ij} = S_i \\
-&amp; \text{residual out of } k = \text{fraction} \times \text{input to } k \\
-&amp; \textstyle\sum_i W_{ij} + \sum_k R_{kj} \leq K_j\,Y_j \\
+\min_{\mathbf{W}, \mathbf{R}, \mathbf{Y}} \quad &amp; 82.5\,W_{11} + 26.5\,W_{12} + 85\,W_{13} + 75\,W_{21} + 41.5\,W_{22} + 77.5\,W_{23} \\
+&amp; + 82.5\,R_{21} + 88\,R_{23} + 67\,R_{13} + 2{,}466\,Y_1 + 1{,}096\,Y_2 + 1{,}918\,Y_3 \\[0.4em]
+\text{subject to:} \quad &amp; W_{11} + W_{12} + W_{13} = 100 \qquad \text{(City 1)} \\
+&amp; W_{21} + W_{22} + W_{23} = 170 \qquad \text{(City 2)} \\
+&amp; R_{13} = 0.2\,(W_{11} + W_{21} + R_{21}) \qquad \text{(WTE ash)} \\
+&amp; R_{21} + R_{23} = 0.6\,(W_{12} + W_{22}) \qquad \text{(MRF residual)} \\
+&amp; W_{11} + W_{21} + R_{21} \leq 150\,Y_1 \qquad \text{(WTE capacity)} \\
+&amp; W_{12} + W_{22} \leq 130\,Y_2 \qquad \text{(MRF capacity)} \\
+&amp; W_{13} + W_{23} + R_{13} + R_{23} \leq 200\,Y_3 \qquad \text{(LF capacity)} \\
 &amp; W_{ij},\, R_{kj} \geq 0, \quad Y_j \in \{0, 1\}
 \end{aligned}
 \]</span></p>
-<p><span class="math inline">\(C_{ij}\)</span>, <span class="math inline">\(C^R_{kj}\)</span>: cost per Mg sent from city <span class="math inline">\(i\)</span>, or of residual sent from facility <span class="math inline">\(k\)</span>, to facility <span class="math inline">\(j\)</span> ($/Mg): haul, tip and, at the MRF, recycle.</p>
+</section></section>
+<section>
+<section id="solving-the-problem" class="title-slide slide level1 center">
+<h1>Solving The Problem</h1>
+
+</section>
+<section id="the-data-in-julia" class="slide level2">
+<h2>The Data in Julia</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a><span class="co"># The example system: two cities, three facilities (1 = WTE, 2 = MRF, 3 = LF)</span></span>
+<span id="cb1-2"><a></a>waste <span class="op">=</span> [<span class="fl">100</span>, <span class="fl">170</span>]                              <span class="co"># [Mg/day] produced by each city</span></span>
+<span id="cb1-3"><a></a>capacity <span class="op">=</span> [<span class="fl">150</span>, <span class="fl">130</span>, <span class="fl">200</span>]                      <span class="co"># [Mg/day] facility capacity</span></span>
+<span id="cb1-4"><a></a>fixed_cost_year <span class="op">=</span> [<span class="fl">900_000</span>, <span class="fl">400_000</span>, <span class="fl">700_000</span>]   <span class="co"># [$/yr] if the facility operates</span></span>
+<span id="cb1-5"><a></a>fixed_cost <span class="op">=</span> <span class="fu">round</span>.(<span class="dt">Int</span>, fixed_cost_year <span class="op">./</span> <span class="fl">365</span>)   <span class="co"># [$/day]</span></span>
+<span id="cb1-6"><a></a>tipping <span class="op">=</span> [<span class="fl">60</span>, <span class="fl">5</span>, <span class="fl">40</span>]                           <span class="co"># [$/Mg] handled at each facility</span></span>
+<span id="cb1-7"><a></a>recycle_rate <span class="op">=</span> <span class="fl">0.4</span>                              <span class="co"># fraction of MRF input recycled</span></span>
+<span id="cb1-8"><a></a>recycle_cost <span class="op">=</span> <span class="fl">35</span>                               <span class="co"># [$/Mg recycled]</span></span>
+<span id="cb1-9"><a></a>ash_rate <span class="op">=</span> <span class="fl">0.2</span>                                  <span class="co"># WTE input left as ash</span></span>
+<span id="cb1-10"><a></a>transport_rate <span class="op">=</span> <span class="fl">1.5</span>                            <span class="co"># [$/Mg-km]</span></span>
+<span id="cb1-11"><a></a>city_distance <span class="op">=</span> [<span class="fl">15</span> <span class="fl">5</span> <span class="fl">30</span>; <span class="fl">10</span> <span class="fl">15</span> <span class="fl">25</span>]             <span class="co"># [km] from city i to facility j</span></span>
+<span id="cb1-12"><a></a>mrf_to_wte, mrf_to_lf, wte_to_lf <span class="op">=</span> <span class="fl">15</span>, <span class="fl">32</span>, <span class="fl">18</span>   <span class="co"># [km] residual routes</span></span>
+<span id="cb1-13"><a></a></span>
+<span id="cb1-14"><a></a><span class="co"># Cost of sending 1 Mg from city i to facility j: haul it, tip it, and</span></span>
+<span id="cb1-15"><a></a><span class="co"># (at the MRF) pay to recycle the fraction that is recovered</span></span>
+<span id="cb1-16"><a></a>city_cost <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">2</span>, <span class="fl">3</span>)</span>
+<span id="cb1-17"><a></a><span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span></span>
+<span id="cb1-18"><a></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
+<span id="cb1-19"><a></a>        city_cost[i, j] <span class="op">=</span> transport_rate <span class="op">*</span> city_distance[i, j] <span class="op">+</span> tipping[j]</span>
+<span id="cb1-20"><a></a>        <span class="cf">if</span> j <span class="op">==</span> <span class="fl">2</span></span>
+<span id="cb1-21"><a></a>            city_cost[i, j] <span class="op">=</span> city_cost[i, j] <span class="op">+</span> recycle_rate <span class="op">*</span> recycle_cost</span>
+<span id="cb1-22"><a></a>        <span class="cf">end</span></span>
+<span id="cb1-23"><a></a>    <span class="cf">end</span></span>
+<span id="cb1-24"><a></a><span class="cf">end</span></span>
+<span id="cb1-25"><a></a>cost_R21 <span class="op">=</span> transport_rate <span class="op">*</span> mrf_to_wte <span class="op">+</span> tipping[<span class="fl">1</span>]   <span class="co"># MRF residual to WTE</span></span>
+<span id="cb1-26"><a></a>cost_R23 <span class="op">=</span> transport_rate <span class="op">*</span> mrf_to_lf <span class="op">+</span> tipping[<span class="fl">3</span>]    <span class="co"># MRF residual to LF</span></span>
+<span id="cb1-27"><a></a>cost_R13 <span class="op">=</span> transport_rate <span class="op">*</span> wte_to_lf <span class="op">+</span> tipping[<span class="fl">3</span>]    <span class="co"># WTE ash to LF</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <aside class="notes">
-<p>The same problem in general form. It is a mixed integer linear program: linear in everything, with three binary variables.</p>
+<p>You don’t need to walk through this; it’s there for student reference.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -773,46 +649,106 @@
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section></section>
-<section>
-<section id="solving-it" class="title-slide slide level1 center">
-<h1>Solving It</h1>
-
+</section>
+<section id="writing-the-model-in-jump" class="slide level2">
+<h2>Writing the Model in JuMP</h2>
+<div id="16" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a></a><span class="co"># The model as formulated on the previous slides</span></span>
+<span id="cb2-2"><a></a><span class="kw">function</span> <span class="fu">waste_model</span>(; landfill_capacity<span class="op">=</span>capacity[<span class="fl">3</span>])</span>
+<span id="cb2-3"><a></a>    cap <span class="op">=</span> [capacity[<span class="fl">1</span>], capacity[<span class="fl">2</span>], landfill_capacity]</span>
+<span id="cb2-4"><a></a>    model <span class="op">=</span> <span class="fu">Model</span>(HiGHS.Optimizer)</span>
+<span id="cb2-5"><a></a>    <span class="fu">set_silent</span>(model)</span>
+<span id="cb2-6"><a></a>    <span class="pp">@variable</span>(model, W[<span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>] <span class="op">&gt;=</span> <span class="fl">0</span>)   <span class="co"># city i -&gt; facility j [Mg/day]</span></span>
+<span id="cb2-7"><a></a>    <span class="pp">@variable</span>(model, R21 <span class="op">&gt;=</span> <span class="fl">0</span>)           <span class="co"># MRF residual -&gt; WTE</span></span>
+<span id="cb2-8"><a></a>    <span class="pp">@variable</span>(model, R23 <span class="op">&gt;=</span> <span class="fl">0</span>)           <span class="co"># MRF residual -&gt; LF</span></span>
+<span id="cb2-9"><a></a>    <span class="pp">@variable</span>(model, R13 <span class="op">&gt;=</span> <span class="fl">0</span>)           <span class="co"># WTE ash -&gt; LF</span></span>
+<span id="cb2-10"><a></a>    <span class="pp">@variable</span>(model, Y[<span class="fl">1</span><span class="op">:</span><span class="fl">3</span>], Bin)        <span class="co"># facility operates?</span></span>
+<span id="cb2-11"><a></a>    <span class="pp">@objective</span>(model, Min,</span>
+<span id="cb2-12"><a></a>        <span class="fu">sum</span>(city_cost[i, j] <span class="op">*</span> W[i, j] <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>) <span class="op">+</span></span>
+<span id="cb2-13"><a></a>        cost_R21 <span class="op">*</span> R21 <span class="op">+</span> cost_R23 <span class="op">*</span> R23 <span class="op">+</span> cost_R13 <span class="op">*</span> R13 <span class="op">+</span></span>
+<span id="cb2-14"><a></a>        <span class="fu">sum</span>(fixed_cost[j] <span class="op">*</span> Y[j] <span class="cf">for</span> j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>))</span>
+<span id="cb2-15"><a></a>    <span class="pp">@constraint</span>(model, city[i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>], <span class="fu">sum</span>(W[i, <span class="op">:</span>]) <span class="op">==</span> waste[i])</span>
+<span id="cb2-16"><a></a>    <span class="pp">@constraint</span>(model, ash, R13 <span class="op">==</span> ash_rate <span class="op">*</span> (W[<span class="fl">1</span>, <span class="fl">1</span>] <span class="op">+</span> W[<span class="fl">2</span>, <span class="fl">1</span>] <span class="op">+</span> R21))</span>
+<span id="cb2-17"><a></a>    <span class="pp">@constraint</span>(model, residual,</span>
+<span id="cb2-18"><a></a>        R21 <span class="op">+</span> R23 <span class="op">==</span> (<span class="fl">1</span> <span class="op">-</span> recycle_rate) <span class="op">*</span> (W[<span class="fl">1</span>, <span class="fl">2</span>] <span class="op">+</span> W[<span class="fl">2</span>, <span class="fl">2</span>]))</span>
+<span id="cb2-19"><a></a>    <span class="pp">@constraint</span>(model, wte, W[<span class="fl">1</span>, <span class="fl">1</span>] <span class="op">+</span> W[<span class="fl">2</span>, <span class="fl">1</span>] <span class="op">+</span> R21 <span class="op">&lt;=</span> cap[<span class="fl">1</span>] <span class="op">*</span> Y[<span class="fl">1</span>])</span>
+<span id="cb2-20"><a></a>    <span class="pp">@constraint</span>(model, mrf, W[<span class="fl">1</span>, <span class="fl">2</span>] <span class="op">+</span> W[<span class="fl">2</span>, <span class="fl">2</span>] <span class="op">&lt;=</span> cap[<span class="fl">2</span>] <span class="op">*</span> Y[<span class="fl">2</span>])</span>
+<span id="cb2-21"><a></a>    <span class="pp">@constraint</span>(model, lf, W[<span class="fl">1</span>, <span class="fl">3</span>] <span class="op">+</span> W[<span class="fl">2</span>, <span class="fl">3</span>] <span class="op">+</span> R13 <span class="op">+</span> R23 <span class="op">&lt;=</span> cap[<span class="fl">3</span>] <span class="op">*</span> Y[<span class="fl">3</span>])</span>
+<span id="cb2-22"><a></a>    <span class="cf">return</span> model</span>
+<span id="cb2-23"><a></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<aside class="notes">
+<p>You also don’t need to walk through this: they’ve seen the relevant parts of setting up a MILP.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="solving-the-example-in-jump" class="slide level2">
 <h2>Solving the Example in JuMP</h2>
-<div id="14" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a><span class="kw">function</span> <span class="fu">solve_waste</span>(; landfill_capacity<span class="op">=</span>capacity[<span class="fl">3</span>])</span>
-<span id="cb1-2"><a></a>    cap <span class="op">=</span> [capacity[<span class="fl">1</span>], capacity[<span class="fl">2</span>], landfill_capacity]</span>
-<span id="cb1-3"><a></a>    model <span class="op">=</span> <span class="fu">Model</span>(HiGHS.Optimizer)</span>
-<span id="cb1-4"><a></a>    <span class="fu">set_silent</span>(model)</span>
-<span id="cb1-5"><a></a>    <span class="pp">@variable</span>(model, W[<span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>] <span class="op">&gt;=</span> <span class="fl">0</span>)        <span class="co"># city i -&gt; facility j [Mg/day]</span></span>
-<span id="cb1-6"><a></a>    <span class="pp">@variable</span>(model, R21 <span class="op">&gt;=</span> <span class="fl">0</span>)                <span class="co"># MRF residual -&gt; WTE</span></span>
-<span id="cb1-7"><a></a>    <span class="pp">@variable</span>(model, R23 <span class="op">&gt;=</span> <span class="fl">0</span>)                <span class="co"># MRF residual -&gt; LF</span></span>
-<span id="cb1-8"><a></a>    <span class="pp">@variable</span>(model, R13 <span class="op">&gt;=</span> <span class="fl">0</span>)                <span class="co"># WTE ash -&gt; LF</span></span>
-<span id="cb1-9"><a></a>    <span class="pp">@variable</span>(model, Y[<span class="fl">1</span><span class="op">:</span><span class="fl">3</span>], Bin)             <span class="co"># facility operates?</span></span>
-<span id="cb1-10"><a></a>    <span class="pp">@objective</span>(model, Min, <span class="fu">sum</span>(city_cost[i, j] <span class="op">*</span> W[i, j] <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>) <span class="op">+</span></span>
-<span id="cb1-11"><a></a>        cost_R21 <span class="op">*</span> R21 <span class="op">+</span> cost_R23 <span class="op">*</span> R23 <span class="op">+</span> cost_R13 <span class="op">*</span> R13 <span class="op">+</span> <span class="fu">sum</span>(fixed_cost[j] <span class="op">*</span> Y[j] <span class="cf">for</span> j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>))</span>
-<span id="cb1-12"><a></a>    <span class="pp">@constraint</span>(model, city[i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>], <span class="fu">sum</span>(W[i, <span class="op">:</span>]) <span class="op">==</span> waste[i])</span>
-<span id="cb1-13"><a></a>    <span class="pp">@constraint</span>(model, ash, R13 <span class="op">==</span> ash_rate <span class="op">*</span> (W[<span class="fl">1</span>, <span class="fl">1</span>] <span class="op">+</span> W[<span class="fl">2</span>, <span class="fl">1</span>] <span class="op">+</span> R21))</span>
-<span id="cb1-14"><a></a>    <span class="pp">@constraint</span>(model, residual, R21 <span class="op">+</span> R23 <span class="op">==</span> (<span class="fl">1</span> <span class="op">-</span> recycle_rate) <span class="op">*</span> (W[<span class="fl">1</span>, <span class="fl">2</span>] <span class="op">+</span> W[<span class="fl">2</span>, <span class="fl">2</span>]))</span>
-<span id="cb1-15"><a></a>    <span class="pp">@constraint</span>(model, wte, W[<span class="fl">1</span>, <span class="fl">1</span>] <span class="op">+</span> W[<span class="fl">2</span>, <span class="fl">1</span>] <span class="op">+</span> R21 <span class="op">&lt;=</span> cap[<span class="fl">1</span>] <span class="op">*</span> Y[<span class="fl">1</span>])</span>
-<span id="cb1-16"><a></a>    <span class="pp">@constraint</span>(model, mrf, W[<span class="fl">1</span>, <span class="fl">2</span>] <span class="op">+</span> W[<span class="fl">2</span>, <span class="fl">2</span>] <span class="op">&lt;=</span> cap[<span class="fl">2</span>] <span class="op">*</span> Y[<span class="fl">2</span>])</span>
-<span id="cb1-17"><a></a>    <span class="pp">@constraint</span>(model, lf, W[<span class="fl">1</span>, <span class="fl">3</span>] <span class="op">+</span> W[<span class="fl">2</span>, <span class="fl">3</span>] <span class="op">+</span> R13 <span class="op">+</span> R23 <span class="op">&lt;=</span> cap[<span class="fl">3</span>] <span class="op">*</span> Y[<span class="fl">3</span>])</span>
-<span id="cb1-18"><a></a>    <span class="fu">optimize!</span>(model)</span>
-<span id="cb1-19"><a></a>    <span class="cf">return</span> (cost<span class="op">=</span><span class="fu">objective_value</span>(model), W<span class="op">=</span><span class="fu">value</span>.(W), R21<span class="op">=</span><span class="fu">value</span>(R21), R23<span class="op">=</span><span class="fu">value</span>(R23),</span>
-<span id="cb1-20"><a></a>        R13<span class="op">=</span><span class="fu">value</span>(R13), Y<span class="op">=</span><span class="fu">round</span>.(<span class="dt">Int</span>, <span class="fu">value</span>.(Y)),</span>
-<span id="cb1-21"><a></a>        lf_load<span class="op">=</span><span class="fu">value</span>(W[<span class="fl">1</span>, <span class="fl">3</span>] <span class="op">+</span> W[<span class="fl">2</span>, <span class="fl">3</span>] <span class="op">+</span> R13 <span class="op">+</span> R23), cap<span class="op">=</span>cap)</span>
-<span id="cb1-22"><a></a><span class="cf">end</span></span>
-<span id="cb1-23"><a></a></span>
-<span id="cb1-24"><a></a>base <span class="op">=</span> <span class="fu">solve_waste</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a></a><span class="co"># The optimal flows, on/off decisions and cost of a solved model</span></span>
+<span id="cb3-2"><a></a><span class="kw">function</span> <span class="fu">solution</span>(model)</span>
+<span id="cb3-3"><a></a>    W, Y <span class="op">=</span> model[<span class="op">:</span>W], model[<span class="op">:</span>Y]</span>
+<span id="cb3-4"><a></a>    R21, R23, R13 <span class="op">=</span> model[<span class="op">:</span>R21], model[<span class="op">:</span>R23], model[<span class="op">:</span>R13]</span>
+<span id="cb3-5"><a></a>    <span class="cf">return</span> (cost<span class="op">=</span><span class="fu">objective_value</span>(model), Y<span class="op">=</span><span class="fu">round</span>.(<span class="dt">Int</span>, <span class="fu">value</span>.(Y)),</span>
+<span id="cb3-6"><a></a>        W<span class="op">=</span><span class="fu">value</span>.(W), R21<span class="op">=</span><span class="fu">value</span>(R21), R23<span class="op">=</span><span class="fu">value</span>(R23), R13<span class="op">=</span><span class="fu">value</span>(R13),</span>
+<span id="cb3-7"><a></a>        lf_load<span class="op">=</span><span class="fu">value</span>(W[<span class="fl">1</span>, <span class="fl">3</span>] <span class="op">+</span> W[<span class="fl">2</span>, <span class="fl">3</span>] <span class="op">+</span> R13 <span class="op">+</span> R23))</span>
+<span id="cb3-8"><a></a><span class="kw">end</span></span>
+<span id="cb3-9"><a></a></span>
+<span id="cb3-10"><a></a>base_model <span class="op">=</span> <span class="fu">waste_model</span>()</span>
+<span id="cb3-11"><a></a><span class="fu">optimize!</span>(base_model)</span>
+<span id="cb3-12"><a></a>base <span class="op">=</span> <span class="fu">solution</span>(base_model)</span>
+<span id="cb3-13"><a></a></span>
+<span id="cb3-14"><a></a><span class="co"># The solution as a table</span></span>
+<span id="cb3-15"><a></a><span class="fu">println</span>(<span class="st">"| Solution | Value |"</span>)</span>
+<span id="cb3-16"><a></a><span class="fu">println</span>(<span class="st">"|:--|--:|"</span>)</span>
+<span id="cb3-17"><a></a><span class="fu">println</span>(<span class="st">"| Cost (</span><span class="sc">\\</span><span class="st">\$/day) | "</span>, <span class="fu">commas</span>(base.cost), <span class="st">" |"</span>)</span>
+<span id="cb3-18"><a></a><span class="fu">println</span>(<span class="st">"| \$Y\$ (WTE, MRF, LF) | "</span>, <span class="fu">join</span>(base.Y, <span class="st">", "</span>), <span class="st">" |"</span>)</span>
+<span id="cb3-19"><a></a><span class="fu">println</span>(<span class="st">"| \$W_{1j}\$, City 1 to WTE, MRF, LF (Mg/day) | "</span>, <span class="fu">join</span>(<span class="fu">fmt</span>.(base.W[<span class="fl">1</span>, <span class="op">:</span>]), <span class="st">", "</span>), <span class="st">" |"</span>)</span>
+<span id="cb3-20"><a></a><span class="fu">println</span>(<span class="st">"| \$W_{2j}\$, City 2 to WTE, MRF, LF (Mg/day) | "</span>, <span class="fu">join</span>(<span class="fu">fmt</span>.(base.W[<span class="fl">2</span>, <span class="op">:</span>]), <span class="st">", "</span>), <span class="st">" |"</span>)</span>
+<span id="cb3-21"><a></a><span class="fu">println</span>(<span class="st">"| \$R_{21}\$, \$R_{23}\$, \$R_{13}\$ (Mg/day) | "</span>, <span class="fu">join</span>(<span class="fu">fmt</span>.([base.R21, base.R23, base.R13]), <span class="st">", "</span>), <span class="st">" |"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-</div>
-<p>The optimal cost is <strong>$26,881/day</strong>, and all 3 facilities operate.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Solution</th>
+<th style="text-align: right;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Cost ($/day)</td>
+<td style="text-align: right;">26,881</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(Y\)</span> (WTE, MRF, LF)</td>
+<td style="text-align: right;">1, 1, 1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(W_{1j}\)</span>, City 1 to WTE, MRF, LF (Mg/day)</td>
+<td style="text-align: right;">0, 100, 0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(W_{2j}\)</span>, City 2 to WTE, MRF, LF (Mg/day)</td>
+<td style="text-align: right;">0, 0, 170</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(R_{21}\)</span>, <span class="math inline">\(R_{23}\)</span>, <span class="math inline">\(R_{13}\)</span> (Mg/day)</td>
+<td style="text-align: right;">37.5, 22.5, 7.5</td>
+</tr>
+</tbody>
+</table>
 <aside class="notes">
-<p>Open the fold: each constraint from the previous slides appears once, with Y declared <code>Bin</code> and each capacity multiplied by Y.</p>
+<p>Most important: Y line, where all facilities are operated. Then City 1 sends everything to the MRF, City 2 sends everything to the LF.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -825,8 +761,8 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-solution" class="slide level2">
-<h2>The Solution</h2>
+<section id="the-optimal-plans-flows" class="slide level2">
+<h2>The Optimal Plan’s Flows</h2>
 <div class="columns">
 <div class="column" style="width:55%;">
 <div class="quarto-figure quarto-figure-center">
@@ -868,7 +804,7 @@
 </table>
 </div></div>
 <aside class="notes">
-<p>City 1 sends everything to the nearby MRF. City 2 sends everything to the landfill. The MRF’s residual is split between the WTE and the landfill, and the WTE’s ash goes to the landfill too.</p>
+<p>The MRF’s residual is split between the WTE and the landfill.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -881,15 +817,15 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="why-is-the-wte-open" class="slide level2">
-<h2>Why Is the WTE Open?</h2>
-<p>The WTE costs $2,466/day just to open. <strong>Why pay that to burn 37.5 Mg/day?</strong></p>
-<div class="fragment fade-in">
-<p>Because the <strong>landfill is full</strong>: it takes 200 of its 200 Mg/day. The MRF’s residual has to go somewhere, and the only other place is the WTE.</p>
-<p>The landfill’s capacity constraint is <strong>binding</strong>.</p>
-</div>
+<section id="shadow-prices-for-a-milp" class="slide level2">
+<h2>Shadow Prices for a MILP</h2>
+<ul>
+<li>Shadow prices are not well-defined for MILPs as they are for LPs because an indicator variable can only switch between 0 and 1.</li>
+<li>One approach: Fix the indicators at their optimal values to produce an LP with the same solution.</li>
+<li>This LP’s shadow prices are <strong>conditional</strong> on that choice: they describe small changes with the same facilities running.</li>
+</ul>
 <aside class="notes">
-<p>Likely question: why is the WTE open if it is expensive? Because the landfill is exactly full, and the MRF’s residual has to go somewhere.</p>
+<p>If a change is large enough that the cheapest plan opens or closes a facility, the conditional shadow price no longer describes the change in the objective (just like sufficiently large changes for LPs), because the change in fixed costs creates a discontinuity.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -902,22 +838,112 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="what-if-the-landfill-were-bigger" class="slide level2">
-<h2>What If the Landfill Were Bigger?</h2>
+<section id="mip-shadow-prices-in-jump" class="slide level2">
+<h2>MIP Shadow Prices in <code>JuMP</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a></a><span class="fu">optimize!</span>(model)                  <span class="co"># the MILP: no shadow prices yet</span></span>
+<span id="cb4-2"><a></a><span class="fu">fix_discrete_variables</span>(model)     <span class="co"># fix each Y_j at its optimal 0 or 1</span></span>
+<span id="cb4-3"><a></a><span class="fu">optimize!</span>(model)                  <span class="co"># an LP with the same solution</span></span>
+<span id="cb4-4"><a></a><span class="fu">shadow_price</span>(lf)                  <span class="co"># conditional on which facilities run</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>By default, <code>JuMP</code> reports no shadow prices for a MILP.</li>
+<li><code>fix_discrete_variables()</code> fixes the indicator variables at the optimal values so the rest of the problem becomes an LP.</li>
+</ul>
+</section>
+<section id="conditional-shadow-prices" class="slide level2">
+<h2>Conditional Shadow Prices</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a></a>bigger <span class="op">=</span> <span class="fu">solve_waste</span>(landfill_capacity<span class="op">=</span><span class="fl">220</span>)</span>
-<span id="cb2-2"><a></a><span class="fu">println</span>(<span class="st">"| Landfill capacity (Mg/day) | Cost (</span><span class="sc">\\</span><span class="st">\$/day) | WTE | MRF | LF |"</span>)</span>
-<span id="cb2-3"><a></a><span class="fu">println</span>(<span class="st">"|:--|--:|:--:|:--:|:--:|"</span>)</span>
-<span id="cb2-4"><a></a><span class="cf">for</span> r <span class="kw">in</span> (base, bigger)</span>
-<span id="cb2-5"><a></a>    status <span class="op">=</span> <span class="fu">fill</span>(<span class="st">"open"</span>, <span class="fl">3</span>)</span>
-<span id="cb2-6"><a></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
-<span id="cb2-7"><a></a>        <span class="cf">if</span> r.Y[j] <span class="op">==</span> <span class="fl">0</span></span>
-<span id="cb2-8"><a></a>            status[j] <span class="op">=</span> <span class="st">"**closed**"</span></span>
-<span id="cb2-9"><a></a>        <span class="cf">end</span></span>
-<span id="cb2-10"><a></a>    <span class="cf">end</span></span>
-<span id="cb2-11"><a></a>    <span class="fu">println</span>(<span class="st">"| "</span>, r.cap[<span class="fl">3</span>], <span class="st">" | "</span>, <span class="fu">commas</span>(r.cost), <span class="st">" | "</span>, <span class="fu">join</span>(status, <span class="st">" | "</span>), <span class="st">" |"</span>)</span>
-<span id="cb2-12"><a></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a></a><span class="co"># Fix the binaries at their optimal values and re-solve: an LP with the same solution</span></span>
+<span id="cb5-2"><a></a><span class="fu">fix_discrete_variables</span>(base_model)</span>
+<span id="cb5-3"><a></a><span class="fu">optimize!</span>(base_model)</span>
+<span id="cb5-4"><a></a><span class="co"># Sizes of the shadow prices: for a city, the cost of one more Mg/day of waste;</span></span>
+<span id="cb5-5"><a></a><span class="co"># for a facility, the saving from one more Mg/day of capacity</span></span>
+<span id="cb5-6"><a></a>base_price <span class="op">=</span> (city<span class="op">=</span><span class="fu">-shadow_price</span>.(base_model[<span class="op">:</span>city]), wte<span class="op">=</span><span class="fu">-shadow_price</span>(base_model[<span class="op">:</span>wte]),</span>
+<span id="cb5-7"><a></a>    mrf<span class="op">=</span><span class="fu">-shadow_price</span>(base_model[<span class="op">:</span>mrf]), lf<span class="op">=</span><span class="fu">-shadow_price</span>(base_model[<span class="op">:</span>lf]))</span>
+<span id="cb5-8"><a></a><span class="co"># Landfill space freed per Mg moved from the landfill to the WTE: its ash comes back [Mg]</span></span>
+<span id="cb5-9"><a></a>space_per_Mg <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> ash_rate</span>
+<span id="cb5-10"><a></a></span>
+<span id="cb5-11"><a></a><span class="co"># The table's sign: + if one more Mg/day raises the cost, - if it lowers it</span></span>
+<span id="cb5-12"><a></a><span class="fu">signed</span>(x) <span class="op">=</span> x <span class="op">&gt;</span> <span class="fl">0.005</span> ? <span class="st">"+"</span> <span class="op">*</span> <span class="fu">money</span>(x) <span class="op">:</span> (x <span class="op">&lt;</span> <span class="op">-</span><span class="fl">0.005</span> ? <span class="st">"−"</span> <span class="op">*</span> <span class="fu">money</span>(<span class="op">-</span>x) <span class="op">:</span> <span class="st">"0.00"</span>)</span>
+<span id="cb5-13"><a></a><span class="fu">println</span>(<span class="st">"| One more Mg/day of | Change in cost (</span><span class="sc">\\</span><span class="st">\$/day) |"</span>)</span>
+<span id="cb5-14"><a></a><span class="fu">println</span>(<span class="st">"|:--|--:|"</span>)</span>
+<span id="cb5-15"><a></a><span class="fu">println</span>(<span class="st">"| City 1's waste | "</span>, <span class="fu">signed</span>(base_price.city[<span class="fl">1</span>]), <span class="st">" |"</span>)</span>
+<span id="cb5-16"><a></a><span class="fu">println</span>(<span class="st">"| City 2's waste | "</span>, <span class="fu">signed</span>(base_price.city[<span class="fl">2</span>]), <span class="st">" |"</span>)</span>
+<span id="cb5-17"><a></a><span class="fu">println</span>(<span class="st">"| WTE capacity | "</span>, <span class="fu">signed</span>(<span class="op">-</span>base_price.wte), <span class="st">" |"</span>)</span>
+<span id="cb5-18"><a></a><span class="fu">println</span>(<span class="st">"| MRF capacity | "</span>, <span class="fu">signed</span>(<span class="op">-</span>base_price.mrf), <span class="st">" |"</span>)</span>
+<span id="cb5-19"><a></a><span class="fu">println</span>(<span class="st">"| Landfill capacity | "</span>, <span class="fu">signed</span>(<span class="op">-</span>base_price.lf), <span class="st">" |"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">One more Mg/day of</th>
+<th style="text-align: right;">Change in cost ($/day)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">City 1’s waste</td>
+<td style="text-align: right;">+85.22</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">City 2’s waste</td>
+<td style="text-align: right;">+87.38</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">WTE capacity</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MRF capacity</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Landfill capacity</td>
+<td style="text-align: right;">−9.88</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:40%;">
+<p>Moving 1 Mg to the WTE frees only 0.8 Mg in the landfill.</p>
+<p>So each additional Mg/day of landfill capacity takes 1.25 Mg/day of MRF residual away from the WTE, saving $9.88/day.</p>
+</div></div>
+<aside class="notes">
+<p>The landfill’s capacity is the binding constraint. Every route for new waste has to account for the full landfill.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-if-the-landfill-were-expanded" class="slide level2">
+<h2>What If the Landfill Were Expanded?</h2>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a></a>bigger_capacity <span class="op">=</span> <span class="fl">220</span></span>
+<span id="cb6-2"><a></a>bigger_model <span class="op">=</span> <span class="fu">waste_model</span>(landfill_capacity<span class="op">=</span>bigger_capacity)</span>
+<span id="cb6-3"><a></a><span class="fu">optimize!</span>(bigger_model)</span>
+<span id="cb6-4"><a></a>bigger <span class="op">=</span> <span class="fu">solution</span>(bigger_model)</span>
+<span id="cb6-5"><a></a><span class="fu">println</span>(<span class="st">"| Landfill capacity (Mg/day) | Cost (</span><span class="sc">\\</span><span class="st">\$/day) | WTE | MRF | LF |"</span>)</span>
+<span id="cb6-6"><a></a><span class="fu">println</span>(<span class="st">"|:--|--:|:--:|:--:|:--:|"</span>)</span>
+<span id="cb6-7"><a></a><span class="cf">for</span> (lf_capacity, r) <span class="kw">in</span> ((capacity[<span class="fl">3</span>], base), (bigger_capacity, bigger))</span>
+<span id="cb6-8"><a></a>    status <span class="op">=</span> <span class="fu">fill</span>(<span class="st">"open"</span>, <span class="fl">3</span>)</span>
+<span id="cb6-9"><a></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
+<span id="cb6-10"><a></a>        <span class="cf">if</span> r.Y[j] <span class="op">==</span> <span class="fl">0</span></span>
+<span id="cb6-11"><a></a>            status[j] <span class="op">=</span> <span class="st">"**closed**"</span></span>
+<span id="cb6-12"><a></a>        <span class="cf">end</span></span>
+<span id="cb6-13"><a></a>    <span class="cf">end</span></span>
+<span id="cb6-14"><a></a>    <span class="fu">println</span>(<span class="st">"| "</span>, lf_capacity, <span class="st">" | "</span>, <span class="fu">commas</span>(r.cost), <span class="st">" | "</span>, <span class="fu">join</span>(status, <span class="st">" | "</span>), <span class="st">" |"</span>)</span>
+<span id="cb6-15"><a></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <table class="caption-top">
 <thead>
@@ -946,9 +972,10 @@
 </tr>
 </tbody>
 </table>
-<p>With 20 Mg/day more landfill, the <strong>WTE closes</strong> and the system saves $2,342/day. City 2 now sends 25 Mg/day to the MRF, and all 75 Mg/day of the MRF’s residual goes to the landfill.</p>
+<p>With 20 Mg/day more landfill capacity, the <strong>WTE closes</strong> and the system saves $2,342/day.</p>
+<p>The landfill’s shadow price predicted a saving of only 20 × $9.88 = $198/day.</p>
 <aside class="notes">
-<p>With a 220 Mg/day landfill, the MRF’s residual fits in the landfill and the WTE is no longer worth its fixed cost.</p>
+<p>The shadow price assumes the same facilities run and the same constraints are binding. Here the change is large enough that the WTE closes, and its fixed cost of $2,466/day goes away, so the actual saving is far larger than the shadow price predicts.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -960,6 +987,160 @@
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</section></section>
+<section>
+<section id="limits-on-trucking" class="title-slide slide level1 center">
+<h1>Limits on Trucking</h1>
+
+</section>
+<section id="city-2s-trucks" class="slide level2">
+<h2>City 2’s Trucks</h2>
+<p>Suppose City 2’s collection trucks also haul its waste to the facilities. We assume each carries 10 Mg, averages 40 km/h and takes 15 minutes to unload, so a load takes:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">From City 2 to</th>
+<th style="text-align: right;">Hours per load</th>
+<th style="text-align: right;">Truck-hours per Mg</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">WTE (10 km)</td>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">0.075</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MRF (15 km)</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">LF (25 km)</td>
+<td style="text-align: right;">1.50</td>
+<td style="text-align: right;">0.150</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>A fleet’s time is what usually limits how much a city can haul directly: collection trucks have to collect as well as haul, and a long trip to a distant site takes a truck off its route for longer. (Truck size, speed and unloading time are assumptions for this example; rear-loading collection trucks typically carry about 6 to 19 tons, depending on the body and how tightly the waste is compacted.) The landfill is the farthest facility from City 2, so each Mg sent there takes twice the truck time of a Mg sent to the WTE.</p>
+<p>Each load is a round trip plus unloading.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="limits-on-city-2s-trucking-capacity" class="slide level2">
+<h2>Limits on City 2’s Trucking Capacity</h2>
+<p>Sending all 170 Mg/day to the landfill takes 25.5 truck-hours a day. Suppose City 2’s trucks have only 24 hours.</p>
+<p>This produces a new constraint:</p>
+<p><span class="math display">\[0.075\,W_{21} + 0.100\,W_{22} + 0.150\,W_{23} \leq 24 \quad \text{(truck-hours/day)}\]</span></p>
+<aside class="notes">
+<p>This is an example of a <strong>flow constraint</strong>: it limits outflows along City 2’s edges, each weighted by how long the trip takes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="re-solving-with-the-truck-limit" class="slide level2 smaller">
+<h2>Re-Solving With the Truck Limit</h2>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a></a><span class="co"># The model as formulated, plus a limit on City 2's truck-hours [truck-hours/day]</span></span>
+<span id="cb7-2"><a></a><span class="kw">function</span> <span class="fu">solve_with_truck_limit</span>(fleet_hours)</span>
+<span id="cb7-3"><a></a>    model <span class="op">=</span> <span class="fu">waste_model</span>()</span>
+<span id="cb7-4"><a></a>    W <span class="op">=</span> model[<span class="op">:</span>W]</span>
+<span id="cb7-5"><a></a>    <span class="pp">@constraint</span>(model, fleet, <span class="fu">sum</span>(hours_per_Mg[j] <span class="op">*</span> W[<span class="fl">2</span>, j] <span class="cf">for</span> j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>) <span class="op">&lt;=</span> fleet_hours)</span>
+<span id="cb7-6"><a></a>    <span class="fu">optimize!</span>(model)</span>
+<span id="cb7-7"><a></a>    result <span class="op">=</span> <span class="fu">solution</span>(model)</span>
+<span id="cb7-8"><a></a>    truck_hours <span class="op">=</span> <span class="fu">sum</span>(hours_per_Mg[j] <span class="op">*</span> result.W[<span class="fl">2</span>, j] <span class="cf">for</span> j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>)</span>
+<span id="cb7-9"><a></a>    <span class="fu">fix_discrete_variables</span>(model)               <span class="co"># for the shadow price, as before</span></span>
+<span id="cb7-10"><a></a>    <span class="fu">optimize!</span>(model)</span>
+<span id="cb7-11"><a></a>    <span class="cf">return</span> <span class="fu">merge</span>(result, (truck_hours<span class="op">=</span>truck_hours, fleet_price<span class="op">=</span><span class="fu">-shadow_price</span>(fleet)))</span>
+<span id="cb7-12"><a></a><span class="cf">end</span></span>
+<span id="cb7-13"><a></a></span>
+<span id="cb7-14"><a></a>trucks <span class="op">=</span> <span class="fu">solve_with_truck_limit</span>(fleet_limit)</span>
+<span id="cb7-15"><a></a><span class="fu">println</span>(<span class="st">"| | No limit | </span><span class="sc">$</span>(fleet_limit)<span class="st"> truck-hours |"</span>)</span>
+<span id="cb7-16"><a></a><span class="fu">println</span>(<span class="st">"|:--|--:|--:|"</span>)</span>
+<span id="cb7-17"><a></a><span class="fu">println</span>(<span class="st">"| City 2 → WTE (Mg/day) | "</span>, <span class="fu">fmt</span>(base.W[<span class="fl">2</span>, <span class="fl">1</span>]), <span class="st">" | "</span>, <span class="fu">fmt</span>(trucks.W[<span class="fl">2</span>, <span class="fl">1</span>]), <span class="st">" |"</span>)</span>
+<span id="cb7-18"><a></a><span class="fu">println</span>(<span class="st">"| City 2 → LF (Mg/day) | "</span>, <span class="fu">fmt</span>(base.W[<span class="fl">2</span>, <span class="fl">3</span>]), <span class="st">" | "</span>, <span class="fu">fmt</span>(trucks.W[<span class="fl">2</span>, <span class="fl">3</span>]), <span class="st">" |"</span>)</span>
+<span id="cb7-19"><a></a><span class="fu">println</span>(<span class="st">"| MRF residual → WTE (Mg/day) | "</span>, <span class="fu">fmt</span>(base.R21), <span class="st">" | "</span>, <span class="fu">fmt</span>(trucks.R21), <span class="st">" |"</span>)</span>
+<span id="cb7-20"><a></a><span class="fu">println</span>(<span class="st">"| MRF residual → LF (Mg/day) | "</span>, <span class="fu">fmt</span>(base.R23), <span class="st">" | "</span>, <span class="fu">fmt</span>(trucks.R23), <span class="st">" |"</span>)</span>
+<span id="cb7-21"><a></a><span class="fu">println</span>(<span class="st">"| City 2 truck-hours/day | "</span>, <span class="fu">fmt</span>(base_truck_hours), <span class="st">" | "</span>, <span class="fu">fmt</span>(trucks.truck_hours), <span class="st">" |"</span>)</span>
+<span id="cb7-22"><a></a><span class="fu">println</span>(<span class="st">"| Cost (</span><span class="sc">\\</span><span class="st">\$/day) | "</span>, <span class="fu">commas</span>(base.cost), <span class="st">" | "</span>, <span class="fu">commas</span>(trucks.cost), <span class="st">" |"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">No limit</th>
+<th style="text-align: right;">24 truck-hours</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">City 2 → WTE (Mg/day)</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">City 2 → LF (Mg/day)</td>
+<td style="text-align: right;">170</td>
+<td style="text-align: right;">150</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">MRF residual → WTE (Mg/day)</td>
+<td style="text-align: right;">37.5</td>
+<td style="text-align: right;">17.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MRF residual → LF (Mg/day)</td>
+<td style="text-align: right;">22.5</td>
+<td style="text-align: right;">42.5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">City 2 truck-hours/day</td>
+<td style="text-align: right;">25.5</td>
+<td style="text-align: right;">24</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cost ($/day)</td>
+<td style="text-align: right;">26,881</td>
+<td style="text-align: right;">26,941</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>The whole network now adjusts to the new constraint. City 2 can cut its truck time only by sending waste somewhere closer than the landfill, and the WTE is the closest. The WTE has room for City 2’s waste only if it burns less of the MRF’s residual, and that residual then goes to the landfill, which is still operating at full capacity.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-is-a-truck-hour-worth" class="slide level2">
+<h2>What Is a Truck-Hour Worth?</h2>
+<p>The truck limit’s shadow price is <strong>$40.00/day per truck-hour</strong>. One more truck-hour lets City 2 send 13.3 Mg/day to the landfill instead of the WTE, saving $3.00 per Mg.</p>
 </section></section>
 <section>
 <section id="key-takeaways" class="title-slide slide level1 center">
@@ -969,37 +1150,22 @@
 <section id="key-takeaways-1" class="slide level2">
 <h2>Key Takeaways</h2>
 <ul>
-<li>A network model’s decisions are <strong>flows</strong> on arcs, constrained by <strong>conservation</strong> at each node.</li>
-<li>An optional facility needs a <strong>binary</strong>: fixed cost <span class="math inline">\(\times\, Y_j\)</span> in the objective, and in every constraint that changes when it is closed (here, flow in <span class="math inline">\(\leq K_j Y_j\)</span>).</li>
-<li>A binding capacity at one facility can force another to open: the WTE runs only because the landfill is full.</li>
-<li>A network graph becomes a model only with fate and transport, costs, and rules.</li>
+<li>A network model’s decisions are <strong>flows</strong> on edges, constrained by <strong>conservation</strong> at each node.</li>
+<li>Waste facilities can produce residuals which need to be processed or disposed of at the next level of the waste disposal hierarchy.</li>
+<li>A <strong>flow constraint</strong> limits edges, not nodes, unlike mass-balance constraints.</li>
 </ul>
 </section>
 <section id="network-models-elsewhere" class="slide level2">
 <h2>Network Models Elsewhere</h2>
 <ul>
-<li>Can have more advanced network models with highly-specified routes
+<li>Can have more advanced network models with highly-specified routes:
 <ul>
 <li>Transportation networks</li>
 <li>Power transmission networks</li>
 <li>Pipeline networks</li>
 </ul></li>
-<li>Can also add flow constraints rather than just mass-balance.</li>
 <li>Flows could also be bidirectional.</li>
 </ul>
-<aside class="notes">
-<p>The same structure (flows on arcs, conservation at nodes, capacities, sometimes on/off decisions) covers transportation, power transmission, and pipelines. Power flow adds physics that determines how flow splits across lines, rather than letting the planner choose freely.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section></section>
 <section>
 <section id="upcoming-schedule" class="title-slide slide level1 center">
@@ -1008,7 +1174,7 @@
 </section>
 <section id="next-classes" class="slide level2">
 <h2>Next Classes</h2>
-<p><strong>Wednesday, November 11</strong>: Lab 3, Fixed Costs and Facility Siting in JuMP (bring a laptop).</p>
+<p><strong>Wednesday, November 11</strong>: Lab 3, Fixed Costs and Facility Siting in JuMP.</p>
 <p><strong>Monday, November 16</strong>: Quiz 5, then stochastic optimization and scenario trees.</p>
 </section>
 <section id="assessments" class="slide level2">
@@ -1016,64 +1182,6 @@
 <p><strong>HW8</strong>: assigned Wednesday, due Thursday, November 19 (network models and waste allocation).</p>
 <p><strong>Project update</strong>: due Friday, November 13.</p>
 <p><strong>Quiz 5</strong>: Monday, November 16 (capacity expansion, mixed integer programming, and waste and network models).</p>
-<aside class="notes">
-<p>HW8 asks students to set up a different, small network themselves.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="appendix" class="title-slide slide level1 center">
-<h1>Appendix</h1>
-
-</section>
-<section id="indicator-constraints-in-jump" class="slide level2">
-<h2>Indicator Constraints in JuMP</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a></a><span class="pp">@variable</span>(waste, Y[<span class="fl">1</span><span class="op">:</span><span class="fl">3</span>], Bin)</span>
-<span id="cb3-2"><a></a><span class="pp">@constraint</span>(waste, commit_mrf, !Y[<span class="fl">2</span>] <span class="op">=&gt;</span> {W[<span class="fl">1</span>, <span class="fl">2</span>] <span class="op">+</span> W[<span class="fl">2</span>, <span class="fl">2</span>] <span class="op">==</span> <span class="fl">0</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Some solvers let you write the on/off logic directly. This says: if <span class="math inline">\(Y_2 = 0\)</span>, nothing arrives at the MRF, <span class="math inline">\(W_{12} + W_{22} = 0\)</span>. For the WTE, the arriving flow also includes the MRF residual: <span class="math inline">\(W_{11} + W_{21} + R_{21} = 0\)</span> when <span class="math inline">\(Y_1 = 0\)</span>.</p>
-<p>The capacity-linking constraint used in the lecture does the same job and works with every solver.</p>
-<aside class="notes">
-<p>Reference only. Indicator constraints are a convenience some solvers support. The linking constraint, arriving flow at most capacity times Y, is the portable way to write the same logic.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="big-m-reformulation" class="slide level2">
-<h2>Big-M Reformulation</h2>
-<p>Not every solver supports indicator constraints. The general trick is a <strong>big-M</strong> constraint:</p>
-<p><span class="math display">\[M\,Y_2 \geq W_{12} + W_{22}, \qquad M\,Y_1 \geq W_{11} + W_{21} + R_{21}\]</span></p>
-<p>where <span class="math inline">\(M\)</span> is larger than any feasible value of the right-hand side.</p>
-<p>Choosing <span class="math inline">\(M = K_j\)</span> (the facility’s capacity) gives exactly the capacity-linking constraint from the lecture.</p>
-<aside class="notes">
-<p>Reference only. A smaller valid M gives a tighter LP relaxation, which helps branch and bound; the capacity is the natural choice here because no feasible flow can exceed it.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 
 
 </section></section>

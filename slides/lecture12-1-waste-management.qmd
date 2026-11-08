@@ -84,33 +84,8 @@ cb_purple = "#CC79A7"
 ```{julia}
 #| output: false
 
-# The example system: two cities, three facilities (1 = WTE, 2 = MRF, 3 = LF)
-waste = [100, 170]                              # [Mg/day] produced by each city
-capacity = [150, 130, 200]                      # [Mg/day] each facility can take
-fixed_cost_year = [900_000, 400_000, 700_000]   # [$/yr] if the facility operates
-fixed_cost = round.(Int, fixed_cost_year ./ 365)   # [$/day]
-tipping = [60, 5, 40]                           # [$/Mg] handled at each facility
-recycle_rate = 0.4                              # fraction of MRF input recycled
-recycle_cost = 35                               # [$/Mg recycled]
-ash_rate = 0.2                                  # fraction of WTE input left as ash
-transport_rate = 1.5                            # [$/Mg-km]
-city_distance = [15 5 30; 10 15 25]             # [km] from city i to facility j
-mrf_to_wte, mrf_to_lf, wte_to_lf = 15, 32, 18   # [km] residual routes
-
-# Cost of sending 1 Mg from city i to facility j: haul it, tip it, and
-# (at the MRF) pay to recycle the fraction that is recovered
-city_cost = zeros(2, 3)
-for i in 1:2
-    for j in 1:3
-        city_cost[i, j] = transport_rate * city_distance[i, j] + tipping[j]
-        if j == 2
-            city_cost[i, j] = city_cost[i, j] + recycle_rate * recycle_cost
-        end
-    end
-end
-cost_R21 = transport_rate * mrf_to_wte + tipping[1]   # MRF residual to WTE
-cost_R23 = transport_rate * mrf_to_lf + tipping[3]    # MRF residual to LF
-cost_R13 = transport_rate * wte_to_lf + tipping[3]    # WTE ash to LF
+# The example's data, shown on "The Data in Julia"
+include("data/waste_management/example_data.jl")
 
 # Print whole numbers without a decimal point
 function fmt(x)
@@ -121,6 +96,7 @@ function fmt(x)
     return string(rounded_x)
 end
 commas(n) = replace(string(round(Int, n)), r"(?<=\d)(?=(\d{3})+$)" => ",")
+money(x) = @sprintf("%.2f", x)
 ```
 
 # Review of Last Class
@@ -211,12 +187,29 @@ Three disposal options:
 - Materials Recovery Facility (MRF)
 - Landfill (LF)
 
-We do not have to operate all of the facilities if they are not needed.
 :::
 ::::
 
 ::: {.notes}
-Two cities, producing 100 and 170 Mg/day, and three facilities with the capacities in red. Distances in blue. Note the edges between facilities: the MRF sends its residual to the WTE or the landfill, and the WTE sends its ash to the landfill.
+Two cities, producing 100 and 170 Mg/day, and three facilities with the capacities in red. Distances in blue.
+:::
+
+## Example System
+
+:::: {.columns}
+::: {.column width=60%}
+![Waste Management Example](figures/waste-example-network.svg)
+:::
+::: {.column width=40%}
+We do not have to operate all facilities.
+
+The MRF and WTE reduce waste mass but create residuals which must be further disposed of.
+
+:::
+::::
+
+::: {.notes}
+Note the edges between facilities: the MRF sends its residual to the WTE or the landfill, and the WTE sends its ash to the landfill.
 :::
 
 ## Decision Variables
@@ -236,13 +229,12 @@ $Y_j$ | Operational status (on/off) of disposal $j$ (binary)
 - **Transportation**: transporting waste has a per-weight cost $a_{ij}$ (\$/Mg-km) times the distance $l_{ij}$ (km).
 - **Disposal**: facilities have a fixed cost to operate $c_j$ (\$/day) and a variable tipping cost $b_j$ (\$/Mg).
 
-::: {.fragment .fade-in}
-$$Y_j = \begin{cases}0 & \text{if facility } j \text{ is not operated} \\ 1 & \text{if facility } j \text{ is operated} \end{cases}$$
+$$\begin{aligned}
+Y_j &= \begin{cases}0 & \text{if facility } j \text{ is not operated} \\ 1 & \text{if facility } j \text{ is operated} \end{cases}\\
+\text{Disposal cost} &= \sum_j \left[c_j \, Y_j + b_j \times (\text{everything arriving at } j)\right]
+\end{aligned}$$
 
-$$\text{Disposal cost} = \sum_j \left[c_j \, Y_j + b_j \times (\text{everything arriving at } j)\right]$$
-:::
-
-## Costs For Our Example
+## Costs For Our Problem
 
 ```{julia}
 #| echo: false
@@ -251,7 +243,7 @@ $$\text{Disposal cost} = \sum_j \left[c_j \, Y_j + b_j \times (\text{everything 
 println("| Facility | Fixed cost (\\\$/yr) | Fixed cost (\\\$/day) | Tipping (\\\$/Mg) | Capacity (Mg/day) |")
 println("|:--|--:|--:|--:|--:|")
 for j in 1:3
-    println("| ", ["WTE", "MRF", "LF"][j], " | ", commas(fixed_cost_year[j]), " | ", commas(fixed_cost[j]),
+    println("| ", ["WTE (1)", "MRF (2)", "LF (3)"][j], " | ", commas(fixed_cost_year[j]), " | ", commas(fixed_cost[j]),
         " | ", tipping[j], " | ", capacity[j], " |")
 end
 ```
@@ -259,15 +251,41 @@ end
 Transport costs \$`{julia} @sprintf("%.2f", transport_rate)`/Mg-km. The MRF recycles `{julia} round(Int, 100 * recycle_rate)`% of what it receives, at \$`{julia} recycle_cost`/Mg recycled, and passes on the rest; the WTE leaves `{julia} round(Int, 100 * ash_rate)`% of its input as ash.
 
 ::: {.notes}
-The daily fixed costs are the annual costs divided by 365. The MRF is cheap to run but does not dispose of the rest: the `{julia} round(Int, 100 * (1 - recycle_rate))`% it does not recycle still has to go to the WTE or the landfill.
+The daily fixed costs are the annual costs divided by 365. The MRF is cheap to run but the `{julia} round(Int, 100 * (1 - recycle_rate))`% it does not recycle still has to go to the WTE or the landfill.
 :::
 
+
+## Calculating the Objective
+
+The objective adds up each facility's fixed cost, the tipping on what arrives (and, at the MRF, the recycling cost), and the hauling, **e.g. for the MRF**:
+
+```{julia}
+#| echo: false
+#| output: asis
+
+# The MRF's terms in the objective, from the data
+gate = tipping[2] + recycle_rate * recycle_cost             # [$/Mg arriving]
+in_1, in_2 = city_distance[1, 2], city_distance[2, 2]       # [km] from each city
+mrf_terms = (fixed=fixed_cost[2], W12=gate + transport_rate * in_1, W22=gate + transport_rate * in_2,
+    R21=transport_rate * mrf_to_wte, R23=transport_rate * mrf_to_lf)
+@assert mrf_terms.W12 ≈ city_cost[1, 2] && mrf_terms.W22 ≈ city_cost[2, 2]
+println("\$\$")
+println("\\begin{aligned}")
+println("& \\underbrace{", replace(commas(fixed_cost[2]), "," => "{,}"), "\\,Y_2}_{\\text{fixed cost}}",
+    " + \\underbrace{($(tipping[2]) + $(recycle_rate) \\times $(recycle_cost))\\,(W_{12} + W_{22})}_{\\text{tipping and recycling}} \\\\")
+println("& + \\underbrace{$(transport_rate)\\,($(in_1)\\,W_{12} + $(in_2)\\,W_{22})}_{\\text{hauling in}}",
+    " + \\underbrace{$(transport_rate)\\,($(mrf_to_wte)\\,R_{21} + $(mrf_to_lf)\\,R_{23})}_{\\text{hauling its residual out}} \\\\[0.6em]")
+println("& = ", replace(commas(fixed_cost[2]), "," => "{,}"), "\\,Y_2 + ", fmt(mrf_terms.W12), "\\,W_{12} + ",
+    fmt(mrf_terms.W22), "\\,W_{22} + ", fmt(mrf_terms.R21), "\\,R_{21} + ", fmt(mrf_terms.R23), "\\,R_{23}")
+println("\\end{aligned}")
+println("\$\$")
+```
 
 ## Mass Balance for Sources and Residuals
 
 :::: {.columns}
 ::: {.column width=45%}
-**Cities** ship everything they produce:
+Outflows from cities have to match produced waste:
 
 $W_{11} + W_{12} + W_{13} =$ `{julia} waste[1]`
 
@@ -275,7 +293,7 @@ $W_{21} + W_{22} + W_{23} =$ `{julia} waste[2]`
 :::
 ::: {.column width=55%}
 ::: {.fragment .fade-in}
-**Residuals** (partial outflows after processing):
+Facilities can produce residual waste (outflows after processing):
 
 WTE ash:
 $$R_{13} = 0.2\,(W_{11} + W_{21} + R_{21})$$
@@ -299,66 +317,121 @@ $$
 $$
 
 
-## The Full Problem
+## The Full Problem {.smaller}
 
-$$
-\begin{aligned}
-\min_{\mathbf{W}, \mathbf{R}, \mathbf{Y}} \quad & \sum_{i, j} C_{ij} W_{ij} + \sum_{k, j} C^R_{kj} R_{kj} + \sum_j c_j Y_j \\
-\text{subject to:} \quad & \textstyle\sum_j W_{ij} = S_i \\
-& \text{residual out of } k = \text{fraction} \times \text{input to } k \\
-& \textstyle\sum_i W_{ij} + \sum_k R_{kj} \leq K_j\,Y_j \\
-& W_{ij},\, R_{kj} \geq 0, \quad Y_j \in \{0, 1\}
-\end{aligned}
-$$
+```{julia}
+#| echo: false
+#| output: asis
 
-$C_{ij}$, $C^R_{kj}$: cost per Mg sent from city $i$, or of residual sent from facility $k$, to facility $j$ (\$/Mg): haul, tip and, at the MRF, recycle.
+# The example's problem with its coefficients: $/Mg for flows, $/day for the binaries
+term(c, v) = fmt(c) * "\\," * v
+city_terms = join([term(city_cost[i, j], "W_{$(i)$(j)}") for i in 1:2 for j in 1:3], " + ")
+fixed_terms = join([replace(commas(fixed_cost[j]), "," => "{,}") * "\\,Y_$(j)" for j in 1:3], " + ")
+println("\$\$")
+println("\\begin{aligned}")
+println("\\min_{\\mathbf{W}, \\mathbf{R}, \\mathbf{Y}} \\quad & ", city_terms, " \\\\")
+println("& + ", term(cost_R21, "R_{21}"), " + ", term(cost_R23, "R_{23}"), " + ", term(cost_R13, "R_{13}"),
+    " + ", fixed_terms, " \\\\[0.4em]")
+println("\\text{subject to:} \\quad & W_{11} + W_{12} + W_{13} = $(waste[1]) \\qquad \\text{(City 1)} \\\\")
+println("& W_{21} + W_{22} + W_{23} = $(waste[2]) \\qquad \\text{(City 2)} \\\\")
+println("& R_{13} = $(ash_rate)\\,(W_{11} + W_{21} + R_{21}) \\qquad \\text{(WTE ash)} \\\\")
+println("& R_{21} + R_{23} = $(1 - recycle_rate)\\,(W_{12} + W_{22}) \\qquad \\text{(MRF residual)} \\\\")
+println("& W_{11} + W_{21} + R_{21} \\leq $(capacity[1])\\,Y_1 \\qquad \\text{(WTE capacity)} \\\\")
+println("& W_{12} + W_{22} \\leq $(capacity[2])\\,Y_2 \\qquad \\text{(MRF capacity)} \\\\")
+println("& W_{13} + W_{23} + R_{13} + R_{23} \\leq $(capacity[3])\\,Y_3 \\qquad \\text{(LF capacity)} \\\\")
+println("& W_{ij},\\, R_{kj} \\geq 0, \\quad Y_j \\in \\{0, 1\\}")
+println("\\end{aligned}")
+println("\$\$")
+```
+# Solving The Problem
+
+## The Data in Julia
+
+```{julia}
+#| echo: false
+#| output: asis
+
+# Show the file the setup cell runs, so the slide and the model share one source
+println("```julia")
+print(read("data/waste_management/example_data.jl", String))
+println("```")
+```
 
 ::: {.notes}
-The same problem in general form. It is a mixed integer linear program: linear in everything, with three binary variables.
+You don't need to walk through this; it's there for student reference.
 :::
 
-# Solving It
+## Writing the Model in JuMP
+
+```{julia}
+#| echo: true
+#| code-fold: false
+#| output: false
+
+# The model as formulated on the previous slides
+function waste_model(; landfill_capacity=capacity[3])
+    cap = [capacity[1], capacity[2], landfill_capacity]
+    model = Model(HiGHS.Optimizer)
+    set_silent(model)
+    @variable(model, W[1:2, 1:3] >= 0)   # city i -> facility j [Mg/day]
+    @variable(model, R21 >= 0)           # MRF residual -> WTE
+    @variable(model, R23 >= 0)           # MRF residual -> LF
+    @variable(model, R13 >= 0)           # WTE ash -> LF
+    @variable(model, Y[1:3], Bin)        # facility operates?
+    @objective(model, Min,
+        sum(city_cost[i, j] * W[i, j] for i in 1:2, j in 1:3) +
+        cost_R21 * R21 + cost_R23 * R23 + cost_R13 * R13 +
+        sum(fixed_cost[j] * Y[j] for j in 1:3))
+    @constraint(model, city[i in 1:2], sum(W[i, :]) == waste[i])
+    @constraint(model, ash, R13 == ash_rate * (W[1, 1] + W[2, 1] + R21))
+    @constraint(model, residual,
+        R21 + R23 == (1 - recycle_rate) * (W[1, 2] + W[2, 2]))
+    @constraint(model, wte, W[1, 1] + W[2, 1] + R21 <= cap[1] * Y[1])
+    @constraint(model, mrf, W[1, 2] + W[2, 2] <= cap[2] * Y[2])
+    @constraint(model, lf, W[1, 3] + W[2, 3] + R13 + R23 <= cap[3] * Y[3])
+    return model
+end
+```
+
+::: {.notes}
+You also don't need to walk through this: they've seen the relevant parts of setting up a MILP.
+:::
 
 ## Solving the Example in JuMP
 
 ```{julia}
 #| echo: true
 #| code-fold: true
-#| output: false
+#| output: asis
 
-function solve_waste(; landfill_capacity=capacity[3])
-    cap = [capacity[1], capacity[2], landfill_capacity]
-    model = Model(HiGHS.Optimizer)
-    set_silent(model)
-    @variable(model, W[1:2, 1:3] >= 0)        # city i -> facility j [Mg/day]
-    @variable(model, R21 >= 0)                # MRF residual -> WTE
-    @variable(model, R23 >= 0)                # MRF residual -> LF
-    @variable(model, R13 >= 0)                # WTE ash -> LF
-    @variable(model, Y[1:3], Bin)             # facility operates?
-    @objective(model, Min, sum(city_cost[i, j] * W[i, j] for i in 1:2, j in 1:3) +
-        cost_R21 * R21 + cost_R23 * R23 + cost_R13 * R13 + sum(fixed_cost[j] * Y[j] for j in 1:3))
-    @constraint(model, city[i in 1:2], sum(W[i, :]) == waste[i])
-    @constraint(model, ash, R13 == ash_rate * (W[1, 1] + W[2, 1] + R21))
-    @constraint(model, residual, R21 + R23 == (1 - recycle_rate) * (W[1, 2] + W[2, 2]))
-    @constraint(model, wte, W[1, 1] + W[2, 1] + R21 <= cap[1] * Y[1])
-    @constraint(model, mrf, W[1, 2] + W[2, 2] <= cap[2] * Y[2])
-    @constraint(model, lf, W[1, 3] + W[2, 3] + R13 + R23 <= cap[3] * Y[3])
-    optimize!(model)
-    return (cost=objective_value(model), W=value.(W), R21=value(R21), R23=value(R23),
-        R13=value(R13), Y=round.(Int, value.(Y)),
-        lf_load=value(W[1, 3] + W[2, 3] + R13 + R23), cap=cap)
+# The optimal flows, on/off decisions and cost of a solved model
+function solution(model)
+    W, Y = model[:W], model[:Y]
+    R21, R23, R13 = model[:R21], model[:R23], model[:R13]
+    return (cost=objective_value(model), Y=round.(Int, value.(Y)),
+        W=value.(W), R21=value(R21), R23=value(R23), R13=value(R13),
+        lf_load=value(W[1, 3] + W[2, 3] + R13 + R23))
 end
 
-base = solve_waste()
+base_model = waste_model()
+optimize!(base_model)
+base = solution(base_model)
+
+# The solution as a table
+println("| Solution | Value |")
+println("|:--|--:|")
+println("| Cost (\\\$/day) | ", commas(base.cost), " |")
+println("| \$Y\$ (WTE, MRF, LF) | ", join(base.Y, ", "), " |")
+println("| \$W_{1j}\$, City 1 to WTE, MRF, LF (Mg/day) | ", join(fmt.(base.W[1, :]), ", "), " |")
+println("| \$W_{2j}\$, City 2 to WTE, MRF, LF (Mg/day) | ", join(fmt.(base.W[2, :]), ", "), " |")
+println("| \$R_{21}\$, \$R_{23}\$, \$R_{13}\$ (Mg/day) | ", join(fmt.([base.R21, base.R23, base.R13]), ", "), " |")
 ```
 
-The optimal cost is **\$`{julia} commas(base.cost)`/day**, and all `{julia} sum(base.Y)` facilities operate.
-
 ::: {.notes}
-Open the fold: each constraint from the previous slides appears once, with Y declared `Bin` and each capacity multiplied by Y.
+Most important: Y line, where all facilities are operated. Then City 1 sends everything to the MRF, City 2 sends everything to the LF.
 :::
 
-## The Solution
+## The Optimal Plan's Flows
 
 :::: {.columns}
 ::: {.column width=55%}
@@ -376,77 +449,250 @@ Open the fold: each constraint from the previous slides appears once, with Y dec
 ::::
 
 ::: {.notes}
-City 1 sends everything to the nearby MRF. City 2 sends everything to the landfill. The MRF's residual is split between the WTE and the landfill, and the WTE's ash goes to the landfill too.
+The MRF's residual is split between the WTE and the landfill.
 :::
 
-## Why Is the WTE Open?
+## Shadow Prices for a MILP
 
-The WTE costs \$`{julia} commas(fixed_cost[1])`/day just to open. **Why pay that to burn `{julia} fmt(base.R21)` Mg/day?**
-
-::: {.fragment .fade-in}
-Because the **landfill is full**: it takes `{julia} fmt(base.lf_load)` of its `{julia} capacity[3]` Mg/day. The MRF's residual has to go somewhere, and the only other place is the WTE.
-
-The landfill's capacity constraint is **binding**.
-:::
+- Shadow prices are not well-defined for MILPs as they are for LPs because an indicator variable can only switch between 0 and 1.
+- One approach: Fix the indicators at their optimal values to produce an LP with the same solution.
+- This LP's shadow prices are **conditional** on that choice: they describe small changes with the same facilities running.
 
 ::: {.notes}
-Likely question: why is the WTE open if it is expensive? Because the landfill is exactly full, and the MRF's residual has to go somewhere.
+If a change is large enough that the cheapest plan opens or closes a facility, the conditional shadow price no longer describes the change in the objective (just like sufficiently large changes for LPs), because the change in fixed costs creates a discontinuity.
 :::
 
-## What If the Landfill Were Bigger?
+## MIP Shadow Prices in `JuMP`
+
+```julia
+optimize!(model)                  # the MILP: no shadow prices yet
+fix_discrete_variables(model)     # fix each Y_j at its optimal 0 or 1
+optimize!(model)                  # an LP with the same solution
+shadow_price(lf)                  # conditional on which facilities run
+```
+- By default, `JuMP` reports no shadow prices for a MILP.
+- `fix_discrete_variables()` fixes the indicator variables at the optimal values so the rest of the problem becomes an LP.
+
+
+## Conditional Shadow Prices
+
+:::: {.columns}
+::: {.column width=50%}
 
 ```{julia}
 #| echo: true
 #| code-fold: true
 #| output: asis
 
-bigger = solve_waste(landfill_capacity=220)
+# Fix the binaries at their optimal values and re-solve: an LP with the same solution
+fix_discrete_variables(base_model)
+optimize!(base_model)
+# Sizes of the shadow prices: for a city, the cost of one more Mg/day of waste;
+# for a facility, the saving from one more Mg/day of capacity
+base_price = (city=-shadow_price.(base_model[:city]), wte=-shadow_price(base_model[:wte]),
+    mrf=-shadow_price(base_model[:mrf]), lf=-shadow_price(base_model[:lf]))
+# Landfill space freed per Mg moved from the landfill to the WTE: its ash comes back [Mg]
+space_per_Mg = 1 - ash_rate
+
+# The table's sign: + if one more Mg/day raises the cost, - if it lowers it
+signed(x) = x > 0.005 ? "+" * money(x) : (x < -0.005 ? "−" * money(-x) : "0.00")
+println("| One more Mg/day of | Change in cost (\\\$/day) |")
+println("|:--|--:|")
+println("| City 1's waste | ", signed(base_price.city[1]), " |")
+println("| City 2's waste | ", signed(base_price.city[2]), " |")
+println("| WTE capacity | ", signed(-base_price.wte), " |")
+println("| MRF capacity | ", signed(-base_price.mrf), " |")
+println("| Landfill capacity | ", signed(-base_price.lf), " |")
+```
+
+:::
+::: {.column width=10%}
+:::
+::: {.column width=40%}
+Moving 1 Mg to the WTE frees only `{julia} space_per_Mg` Mg in the landfill.
+
+So each additional Mg/day of landfill capacity takes `{julia} 1 / space_per_Mg` Mg/day of MRF residual away from the WTE, saving \$`{julia} money(base_price.lf)`/day.
+:::
+::::
+
+::: {.notes}
+The landfill's capacity is the binding constraint. Every route for new waste has to account for the full landfill.
+
+
+:::
+
+
+## What If the Landfill Were Expanded?
+
+```{julia}
+#| echo: true
+#| code-fold: true
+#| output: asis
+
+bigger_capacity = 220
+bigger_model = waste_model(landfill_capacity=bigger_capacity)
+optimize!(bigger_model)
+bigger = solution(bigger_model)
 println("| Landfill capacity (Mg/day) | Cost (\\\$/day) | WTE | MRF | LF |")
 println("|:--|--:|:--:|:--:|:--:|")
-for r in (base, bigger)
+for (lf_capacity, r) in ((capacity[3], base), (bigger_capacity, bigger))
     status = fill("open", 3)
     for j in 1:3
         if r.Y[j] == 0
             status[j] = "**closed**"
         end
     end
-    println("| ", r.cap[3], " | ", commas(r.cost), " | ", join(status, " | "), " |")
+    println("| ", lf_capacity, " | ", commas(r.cost), " | ", join(status, " | "), " |")
+end
+```
+With `{julia} bigger_capacity - capacity[3]` Mg/day more landfill capacity, the **WTE closes** and the system saves \$`{julia} commas(base.cost - bigger.cost)`/day.
+
+The landfill's shadow price predicted a saving of only `{julia} bigger_capacity - capacity[3]` × \$`{julia} money(base_price.lf)` = \$`{julia} commas((bigger_capacity - capacity[3]) * base_price.lf)`/day.
+
+::: {.notes}
+The shadow price assumes the same facilities run and the same constraints are binding. Here the change is large enough that the WTE closes, and its fixed cost of \$`{julia} commas(fixed_cost[1])`/day goes away, so the actual saving is far larger than the shadow price predicts.
+:::
+
+# Limits on Trucking
+
+## City 2's Trucks
+
+```{julia}
+#| echo: false
+#| output: false
+
+# City 2's trucks. Each load: a round trip plus unloading
+truck_load = 10                                 # [Mg] per truckload
+truck_speed = 40                                # [km/h] average
+unload_time = 0.25                              # [h] at the facility
+hours_per_load = zeros(3)                       # [h] City 2 to facility j and back
+for j in 1:3
+    hours_per_load[j] = 2 * city_distance[2, j] / truck_speed + unload_time
+end
+hours_per_Mg = hours_per_load ./ truck_load     # [truck-hours per Mg]
+fleet_limit = 24                                # [truck-hours/day] City 2 has for these trips
+base_truck_hours = sum(hours_per_Mg .* base.W[2, :])   # the plan so far
+```
+
+Suppose City 2's collection trucks also haul its waste to the facilities. We assume each carries `{julia} truck_load` Mg, averages `{julia} truck_speed` km/h and takes `{julia} round(Int, 60 * unload_time)` minutes to unload, so a load takes:
+
+```{julia}
+#| echo: false
+#| output: asis
+
+println("| From City 2 to | Hours per load | Truck-hours per Mg |")
+println("|:--|--:|--:|")
+for j in 1:3
+    println("| ", ["WTE", "MRF", "LF"][j], " (", city_distance[2, j], " km) | ", @sprintf("%.2f", hours_per_load[j]),
+        " | ", @sprintf("%.3f", hours_per_Mg[j]), " |")
 end
 ```
 
-With `{julia} bigger.cap[3] - base.cap[3]` Mg/day more landfill, the **WTE closes** and the system saves \$`{julia} commas(base.cost - bigger.cost)`/day. City 2 now sends `{julia} fmt(bigger.W[2, 2])` Mg/day to the MRF, and all `{julia} fmt(bigger.R23)` Mg/day of the MRF's residual goes to the landfill.
+::: {.notes}
+A fleet's time is what usually limits how much a city can haul directly: collection trucks have to collect as well as haul, and a long trip to a distant site takes a truck off its route for longer. (Truck size, speed and unloading time are assumptions for this example; rear-loading collection trucks typically carry about 6 to 19 tons, depending on the body and how tightly the waste is compacted.) The landfill is the farthest facility from City 2, so each Mg sent there takes twice the truck time of a Mg sent to the WTE.
+
+Each load is a round trip plus unloading.
+:::
+
+## Limits on City 2's Trucking Capacity
+
+Sending all `{julia} waste[2]` Mg/day to the landfill takes `{julia} fmt(base_truck_hours)` truck-hours a day. Suppose City 2's trucks have only `{julia} fleet_limit` hours.
+
+This produces a new constraint:
+
+```{julia}
+#| echo: false
+#| output: asis
+
+println("\$\$", @sprintf("%.3f", hours_per_Mg[1]), "\\,W_{21} + ", @sprintf("%.3f", hours_per_Mg[2]),
+    "\\,W_{22} + ", @sprintf("%.3f", hours_per_Mg[3]), "\\,W_{23} \\leq ", fleet_limit,
+    " \\quad \\text{(truck-hours/day)}\$\$")
+```
 
 ::: {.notes}
-With a `{julia} bigger.cap[3]` Mg/day landfill, the MRF's residual fits in the landfill and the WTE is no longer worth its fixed cost.
+This is an example of a **flow constraint**: it limits outflows along City 2's edges, each weighted by how long the trip takes.
 :::
+
+## Re-Solving With the Truck Limit {.smaller}
+
+```{julia}
+#| echo: true
+#| code-fold: true
+#| output: asis
+
+# The model as formulated, plus a limit on City 2's truck-hours [truck-hours/day]
+function solve_with_truck_limit(fleet_hours)
+    model = waste_model()
+    W = model[:W]
+    @constraint(model, fleet, sum(hours_per_Mg[j] * W[2, j] for j in 1:3) <= fleet_hours)
+    optimize!(model)
+    result = solution(model)
+    truck_hours = sum(hours_per_Mg[j] * result.W[2, j] for j in 1:3)
+    fix_discrete_variables(model)               # for the shadow price, as before
+    optimize!(model)
+    return merge(result, (truck_hours=truck_hours, fleet_price=-shadow_price(fleet)))
+end
+
+trucks = solve_with_truck_limit(fleet_limit)
+println("| | No limit | $(fleet_limit) truck-hours |")
+println("|:--|--:|--:|")
+println("| City 2 → WTE (Mg/day) | ", fmt(base.W[2, 1]), " | ", fmt(trucks.W[2, 1]), " |")
+println("| City 2 → LF (Mg/day) | ", fmt(base.W[2, 3]), " | ", fmt(trucks.W[2, 3]), " |")
+println("| MRF residual → WTE (Mg/day) | ", fmt(base.R21), " | ", fmt(trucks.R21), " |")
+println("| MRF residual → LF (Mg/day) | ", fmt(base.R23), " | ", fmt(trucks.R23), " |")
+println("| City 2 truck-hours/day | ", fmt(base_truck_hours), " | ", fmt(trucks.truck_hours), " |")
+println("| Cost (\\\$/day) | ", commas(base.cost), " | ", commas(trucks.cost), " |")
+```
+
+::: {.notes}
+The whole network now adjusts to the new constraint. City 2 can cut its truck time only by sending waste somewhere closer than the landfill, and the WTE is the closest. The WTE has room for City 2's waste only if it burns less of the MRF's residual, and that residual then goes to the landfill, which is still operating at full capacity.
+:::
+
+## What Is a Truck-Hour Worth?
+
+```{julia}
+#| echo: false
+#| output: false
+
+few_hours = 20
+few = solve_with_truck_limit(few_hours)
+# The truck limit at which the WTE has no MRF residual left to give up [truck-hours/day]
+no_residual_hours = base_truck_hours - (hours_per_Mg[3] - hours_per_Mg[1]) * base.R21
+
+# The slides' claims about the truck limit
+@assert trucks.truck_hours > fleet_limit - 1e-6                 # the limit binds
+@assert all(trucks.Y .== 1) && trucks.R21 > 0
+@assert abs(trucks.lf_load - capacity[3]) < 1e-6
+@assert trucks.fleet_price > 0
+@assert fleet_limit > no_residual_hours
+@assert few.Y[2] == 0 && abs(few.fleet_price) < 1e-6
+```
+
+The truck limit's shadow price is **\$`{julia} money(trucks.fleet_price)`/day per truck-hour**. One more truck-hour lets City 2 send `{julia} fmt(1 / (hours_per_Mg[3] - hours_per_Mg[1]))` Mg/day to the landfill instead of the WTE, saving \$`{julia} money(trucks.fleet_price * (hours_per_Mg[3] - hours_per_Mg[1]))` per Mg.
+
 
 # Key Takeaways
 
 ## Key Takeaways
 
-- A network model's decisions are **flows** on arcs, constrained by **conservation** at each node.
-- An optional facility needs a **binary**: fixed cost $\times\, Y_j$ in the objective, and in every constraint that changes when it is closed (here, flow in $\leq K_j Y_j$).
-- A binding capacity at one facility can force another to open: the WTE runs only because the landfill is full.
-- A network graph becomes a model only with fate and transport, costs, and rules.
+- A network model's decisions are **flows** on edges, constrained by **conservation** at each node.
+- Waste facilities can produce residuals which need to be processed or disposed of at the next level of the waste disposal hierarchy.
+- A **flow constraint** limits edges, not nodes, unlike mass-balance constraints.
 
 ## Network Models Elsewhere
 
-- Can have more advanced network models with highly-specified routes
+- Can have more advanced network models with highly-specified routes:
   - Transportation networks
   - Power transmission networks
   - Pipeline networks
-- Can also add flow constraints rather than just mass-balance.
 - Flows could also be bidirectional.
 
-::: {.notes}
-The same structure (flows on arcs, conservation at nodes, capacities, sometimes on/off decisions) covers transportation, power transmission, and pipelines. Power flow adds physics that determines how flow splits across lines, rather than letting the planner choose freely.
-:::
 
 # Upcoming Schedule
 
 ## Next Classes
 
-**Wednesday, November 11**: Lab 3, Fixed Costs and Facility Siting in JuMP (bring a laptop).
+**Wednesday, November 11**: Lab 3, Fixed Costs and Facility Siting in JuMP.
 
 **Monday, November 16**: Quiz 5, then stochastic optimization and scenario trees.
 
@@ -457,38 +703,3 @@ The same structure (flows on arcs, conservation at nodes, capacities, sometimes 
 **Project update**: due Friday, November 13.
 
 **Quiz 5**: Monday, November 16 (capacity expansion, mixed integer programming, and waste and network models).
-
-::: {.notes}
-HW8 asks students to set up a different, small network themselves.
-:::
-
-# Appendix
-
-## Indicator Constraints in JuMP
-
-```julia
-@variable(waste, Y[1:3], Bin)
-@constraint(waste, commit_mrf, !Y[2] => {W[1, 2] + W[2, 2] == 0})
-```
-
-Some solvers let you write the on/off logic directly. This says: if $Y_2 = 0$, nothing arrives at the MRF, $W_{12} + W_{22} = 0$. For the WTE, the arriving flow also includes the MRF residual: $W_{11} + W_{21} + R_{21} = 0$ when $Y_1 = 0$.
-
-The capacity-linking constraint used in the lecture does the same job and works with every solver.
-
-::: {.notes}
-Reference only. Indicator constraints are a convenience some solvers support. The linking constraint, arriving flow at most capacity times Y, is the portable way to write the same logic.
-:::
-
-## Big-M Reformulation
-
-Not every solver supports indicator constraints. The general trick is a **big-M** constraint:
-
-$$M\,Y_2 \geq W_{12} + W_{22}, \qquad M\,Y_1 \geq W_{11} + W_{21} + R_{21}$$
-
-where $M$ is larger than any feasible value of the right-hand side.
-
-Choosing $M = K_j$ (the facility's capacity) gives exactly the capacity-linking constraint from the lecture.
-
-::: {.notes}
-Reference only. A smaller valid M gives a tighter LP relaxation, which helps branch and bound; the capacity is the natural choice here because no feasible flow can exceed it.
-:::
