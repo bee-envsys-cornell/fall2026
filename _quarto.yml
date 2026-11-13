@@ -138,10 +138,10 @@ website:
           text: "Homework 5"
         - href: hw/hw06/hw06.qmd
           text: "Homework 6"
-        - href: hw/index.qmd#schedule
-          text: "Homework 7 (Nov. 4)"
-        - href: hw/index.qmd#schedule
-          text: "Homework 8 (Nov. 11)"
+        - href: hw/hw07/hw07.qmd
+          text: "Homework 7"
+        - href: hw/hw08/hw08/qmd
+          text: "Homework 8"
         - href: hw/index.qmd#schedule
           text: "Homework 9 (Nov. 18)"
     - title: "Mini-Projects"

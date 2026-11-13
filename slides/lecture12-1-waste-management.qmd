@@ -692,7 +692,7 @@ The truck limit's shadow price is **\$`{julia} money(trucks.fleet_price)`/day pe
 
 ## Next Classes
 
-**Wednesday, November 11**: Lab 3, Fixed Costs and Facility Siting in JuMP.
+**Wednesday, November 11**: Lab 3, Mixed Integer Programming and Facility Siting in JuMP.
 
 **Monday, November 16**: Quiz 5, then stochastic optimization and scenario trees.
 

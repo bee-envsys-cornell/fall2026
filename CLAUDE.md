@@ -34,8 +34,29 @@ than clear, every time.
   closures, ternaries, or comprehension tricks. A plain `for` loop with an `if` inside is the target.
 - **Structure the code like the physics.** If the prose says "treat each stretch as a box," loop over
   boxes — not over grid points with a state machine inside.
-- **Never shadow Base names** (`last`, `min`, `step`).
-- **Course vocabulary**: *effluent* not outfall; *simulate* not march.
+- **Never shadow Base names** (`last`, `min`, `step`), or JuMP's exports in a file that loads JuMP
+  (`value`, `Model`, `objective_value`): Julia won't assign a top-level variable named after an
+  imported function. Lecture 13-2's top-level `value` table broke its render when the scenario-tree
+  section brought `using JuMP` in (Nov 11); it is now `dp_value`.
+- **Course vocabulary**: *effluent* not outfall; *simulate* not march. In prose, *indicator variable*
+  not binary variable (`Bin` stays in code); *organic matter* not organics (decided Nov 9, Lab 3).
+  In student-facing text, a constraint of the form flow ≤ capacity × indicator is a *capacity
+  constraint* (decided Nov 10); "linking constraint" stays only where a deck already uses it.
+- **Visible code is at most 79 characters a line.** The Typst PDFs of assignments and keys wrap longer
+  lines in the middle of an expression (found Nov 9, HW8). Hidden cells are not shown.
+- **Students build and query models themselves** (decided Nov 9, Lab 3). Labs and homework provide no
+  helper that builds, solves or prints a model; students query with `@show` for numbers and `display`
+  for arrays. A skeleton cell that changes a model builds its own model, copying the earlier
+  formulation, so running it again after a fix starts clean; adding a constraint to an earlier cell's
+  model keeps a wrong version after it is corrected.
+- **GR draws a line with `arrow=true` twice**, once in each direction, and the second copy can fill in
+  a dashed line's gaps so it prints solid. Draw a dashed line without an arrow and add the arrowhead as a
+  short solid segment at its end (HW8's network figure, Nov 9).
+- **Shadow prices of a MILP** come from `fix_discrete_variables` and a re-solve (lecture 12-1). Ask only
+  about a binding constraint that contains continuous variables. The shadow price of a capacity at a
+  facility that isn't built, or of a constraint on indicator variables alone, is not unique: Lab 3's
+  Step 2 model gave −11 or −6 for the same constraint with presolve on or off. Check any shadow price
+  an assignment asks for with presolve on and off and with the right-hand side moved a step each way.
 
 ## Math notation
 
@@ -62,6 +83,10 @@ for vectors and matrices (decided Oct 9):
   to match ($s_2$, $\lambda_2$). In lectures 8-2 and 9-1 the plume LP's variable bounds are left untagged.
 
 ## Writing slides
+
+**Split before you shrink** (decided Nov 10): don't use `{.smaller}` to fit content on a slide; break it
+across slides instead, which is always better. `{.smaller}` is only for an artifact that is too big at full
+size on its own (a long equation, a wide table), not for a table plus its explanation.
 
 **Slide titles.** Three forms, drawn from the existing decks — a **question** the slide answers
 ("Why Is This Hard?", "What Assumptions Did We Make?", "How Small Should $\Delta t$ Be?", "Where Did
@@ -161,7 +186,10 @@ part or a lab rather than splitting them out. Details are under "Homework format
 **No lecture pointers in problem text** (decided Nov 1): a problem in a homework, lab, mini-project or quiz
 doesn't name a lecture or its date. The instructor cut "This part uses the capacity expansion lecture on
 November 2." from the start of Mini-Project 2's Part 5. As in decks, a pointer dates the assignment; state in
-the problem whatever students need from that lecture instead.
+the problem whatever students need from that lecture instead. The same goes for pointers to other assessments
+and for reminders of conventions students already use (decided Nov 9): the instructor cut "As in the November 9
+lecture", "As in Lab 2, a shadow price is …" and "This model minimizes cost, so expect shadow prices that are
+negative or zero" from Lab 3, and HW8's coding hints ("you may want to write it as a function").
 
 ## Verifying that work
 

@@ -51,6 +51,8 @@ Pkg.instantiate()
 using Plots
 using Measures
 using LaTeXStrings
+using JuMP
+using HiGHS
 
 plot_font = "Palatino Roman"
 default(
@@ -132,22 +134,318 @@ end
 commas(n) = replace(string(round(Int, n)), r"(?<=\d)(?=(\d{3})+$)" => ",")
 ```
 
+```{julia}
+#| output: false
+
+# The farmer (Birge and Louveaux), from the two-stage example: wheat, corn and
+# sugar beets on 500 acres, planted before the yield is known
+land = 500                         # [acres]
+plant_cost = [150, 230, 260]       # [$/acre]
+avg_yield = [2.5, 3, 20]           # [T/acre] in an average year
+feed_need = [200, 240]             # [T] of wheat and corn needed for feed
+sell_price = [170, 150]            # [$/T] wheat and corn
+buy_price = 1.4 .* sell_price      # buying costs 40% more than selling
+beet_price = 36                    # [$/T] up to the quota
+beet_quota = 6000                  # [T]
+beet_excess_price = 10             # [$/T] above the quota
+scenarios = ["Good", "Average", "Bad"]
+yield_factor = [1.2, 1, 0.8]       # yields relative to average
+prob = fill(1 / 3, 3)
+
+# The two-stage farm model: one planting x, and purchases y and sales z for each
+# scenario. Passing `plan` fixes the planting. Returns the planting and the
+# expected profit.
+function farm_model(factors, probs; plan=nothing)
+    n = length(factors)
+    model = Model(HiGHS.Optimizer)
+    set_silent(model)
+    @variable(model, x[1:3] >= 0)
+    @variable(model, y[1:2, 1:n] >= 0)
+    @variable(model, z[1:4, 1:n] >= 0)
+    if plan !== nothing
+        @constraint(model, x .== plan)
+    end
+    @constraint(model, sum(x) <= land)
+    for s in 1:n
+        crop_yield = avg_yield .* factors[s]
+        @constraint(model, crop_yield[1] * x[1] + y[1, s] - z[1, s] >= feed_need[1])
+        @constraint(model, crop_yield[2] * x[2] + y[2, s] - z[2, s] >= feed_need[2])
+        @constraint(model, z[3, s] + z[4, s] <= crop_yield[3] * x[3])
+        @constraint(model, z[3, s] <= beet_quota)
+    end
+    @objective(model, Max, -sum(plant_cost .* x) + sum(probs[s] * (
+        sell_price[1] * z[1, s] + sell_price[2] * z[2, s] + beet_price * z[3, s] +
+        beet_excess_price * z[4, s] - buy_price[1] * y[1, s] - buy_price[2] * y[2, s])
+        for s in 1:n))
+    optimize!(model)
+    return value.(x), objective_value(model)
+end
+
+# The two-stage plan, for one year with three equally likely year types
+stochastic_plan, stochastic_profit = farm_model(yield_factor, prob)
+```
+
 # Review of Last Class
 
-## Scenario Trees Grow Fast
+## Two-Stage Problems with Recourse
 
-- Two-stage problems: **one** here-and-now decision, **one recourse decision per scenario**.
-- With a decision and an uncertain outcome every period, the tree branches again each period: 3 outcomes a year for 10 years is `{julia} commas(3^10)` leaves.
-
-**Raises the question**: how do we make decisions in a **sequence** without writing out the tree?
-
-::: {.notes}
-The farmer in the two-stage problem made one decision, learned the yield, and adjusted. Most environmental decisions repeat: release water every month, set a loading every year, harvest every season. Writing out every path through the future quickly becomes impossible. Dynamic programming is the standard way around it.
-:::
+- The farmer plants wheat, corn and beets before the yield is known, then buys and sells once the harvest is in.
+- Two-stage problems: **one** here-and-now decision, **one recourse decision per scenario**, weighted by probability.
+- A **scenario tree** lays out the scenarios: each path from the root to a leaf is one.
 
 ## Questions?
 
 {{< include _poll-prompt.qmd >}}
+
+# Multi-Stage Scenario Trees
+
+## Multi-Stage Trees
+
+Suppose good years tend to follow good years and bad follow bad, so year 2's probabilities depend on year 1's yield.
+
+![](figures/scenario-tree-two-years.svg){width=100% fig-alt="Scenario tree over two years: planting, three year 1 yields with probability 1/3 each, a node for each with buying, selling and the year 2 planting, then three year 2 yields whose probabilities depend on year 1: after a good year, good 1/2, average 1/3, bad 1/6; after an average year, 1/3 each; after a bad year, good 1/6, average 1/3, bad 1/2."}
+
+::: {.notes}
+Each year on its own is still good, average or bad with probability 1/3; only the sequence of years changes. The tree figure is drawn by `figures/scenario-trees.jl`.
+:::
+
+## Probabilities Along a Path
+
+**How likely are two bad years in a row? A good year, then a bad one?**
+
+::: {.fragment .fade-in}
+Multiply the branch probabilities along the path, each conditional on the branches before it:
+
+$$
+\begin{aligned}
+P(\text{bad}, \text{bad}) &= \tfrac{1}{3} \times \tfrac{1}{2} = \tfrac{1}{6} \\
+P(\text{good}, \text{bad}) &= \tfrac{1}{3} \times \tfrac{1}{6} = \tfrac{1}{18}
+\end{aligned}
+$$
+
+If the years were independent, both would be $\frac{1}{9}$.
+:::
+
+## Two-Year Decision Variables
+
+Let $a$ be year 1's yield and $b$ year 2's, each G, A or B (good, average, bad). **Which yields can each decision depend on?**
+
+::: {.fragment .fade-in}
+- $\mathbf{x}^{(1)}$: year 1 planting, before any yield is known
+- $\mathbf{y}^{(1)}_a$, $\mathbf{z}^{(1)}_a$: year 1 purchases and sales, after year 1's yield
+- $\mathbf{x}^{(2)}_a$: year 2 planting, after year 1's yield but before year 2's
+- $\mathbf{y}^{(2)}_{ab}$, $\mathbf{z}^{(2)}_{ab}$: year 2 purchases and sales, after both
+:::
+
+::: {.notes}
+Each variable is indexed by the yields known when it is decided, so the subscripts match the nodes of the tree: one year 1 planting, three sets of year 1 purchases and sales, three year 2 plantings, and nine sets of year 2 purchases and sales.
+:::
+
+## Two-Year Objective
+
+$$
+\begin{aligned}
+\max \quad & -\mathbf{c}^\top \mathbf{x}^{(1)} + \sum_a p_a \Big[ r\big(\mathbf{y}^{(1)}_a, \mathbf{z}^{(1)}_a\big) - \mathbf{c}^\top \mathbf{x}^{(2)}_a \\
+& \qquad + \sum_b p_{b \mid a}\, r\big(\mathbf{y}^{(2)}_{ab}, \mathbf{z}^{(2)}_{ab}\big) \Big]
+\end{aligned}
+$$
+
+$r$ is the money from sales minus purchases, and $p_{b \mid a}$ the probability of year 2 yield $b$ after year 1 yield $a$. The year 2 planting cost sits outside the sum over $b$: one planting for all three year 2 outcomes.
+
+::: {.notes}
+The constraints follow the same indexing. On path $ab$, year 2's wheat feed constraint is $2.5 f_b\, x^{(2)}_{1,a} + y^{(2)}_{1,ab} - z^{(2)}_{1,ab} \geq 200$, where $f_b$ is the yield factor for year 2 yield $b$: the same planting $x^{(2)}_{1,a}$ appears in the constraints for all three values of $b$. The year 1 constraints are the two-stage ones, with $\mathbf{x}^{(1)}$ and $f_a$.
+:::
+
+## Non-Anticipativity
+
+**Why $\mathbf{x}^{(2)}_a$ and not $\mathbf{x}^{(2)}_{ab}$, like the year 2 sales?**
+
+::: {.fragment .fade-in}
+With $\mathbf{x}^{(2)}_{ab}$, the planting for path BG could be chosen knowing year 2 will be good. A decision can depend only on what is known when it is made: **non-anticipativity**. Indexing by $a$ alone is the same as requiring
+
+$$\mathbf{x}^{(2)}_{aG} = \mathbf{x}^{(2)}_{aA} = \mathbf{x}^{(2)}_{aB} \quad \text{for each } a.$$
+:::
+
+::: {.notes}
+The year 2 planting is recourse for year 1 but a here-and-now decision for year 2, which is why the two-stage rule of one recourse copy per scenario doesn't carry over. Indexing it by $ab$ would solve without error and plan as if each year 2 yield were known, overstating the expected profit. In the two-stage model the single planting $\mathbf{x}$ already satisfies non-anticipativity; giving each year type its own planting would give the perfect-information plans, whose extra expected profit is the EVPI. Because each node knows the whole path to it, a tree can carry any dependence on the past, as $p_{b \mid a}$ does here.
+:::
+
+## Variables in `JuMP`
+
+```{julia}
+#| echo: true
+#| output: false
+#| code-fold: false
+#| code-line-numbers: "|3|4-5|6|7-8"
+
+two_year = Model(HiGHS.Optimizer)
+@variables(two_year, begin
+    x1[1:3] >= 0                        # x^(1): year 1 planting
+    y1[1:2, a in 1:3] >= 0              # y^(1)_a: year 1 purchases
+    z1[1:4, a in 1:3] >= 0              # z^(1)_a: year 1 sales
+    x2[1:3, a in 1:3] >= 0              # x^(2)_a: year 2 planting
+    y2[1:2, a in 1:3, b in 1:3] >= 0    # y^(2)_ab: year 2 purchases
+    z2[1:4, a in 1:3, b in 1:3] >= 0    # z^(2)_ab: year 2 sales
+end)
+```
+
+Each variable gets an index for each yield known when it is decided: `x2` has one for `a` but none for `b`.
+
+## Objective in `JuMP`
+
+```{julia}
+#| echo: true
+#| output: false
+#| code-fold: false
+#| code-line-numbers: "|1-2|4-8|10|11|12-13|14"
+
+# p_{b|a}: probability of year 2 yield b (column) after year 1 yield a (row)
+persistence = [1/2 1/3 1/6; 1/3 1/3 1/3; 1/6 1/3 1/2]
+
+function net_sales(y, z)    # r(y, z): money from sales minus purchases
+    sales = sell_price[1] * z[1] + sell_price[2] * z[2] +
+        beet_price * z[3] + beet_excess_price * z[4]
+    return sales - buy_price[1] * y[1] - buy_price[2] * y[2]
+end
+
+@objective(two_year, Max, -sum(plant_cost .* x1) + sum(prob[a] * (
+    net_sales(y1[:, a], z1[:, a]) - sum(plant_cost .* x2[:, a]) +
+    sum(persistence[a, b] * net_sales(y2[:, a, b], z2[:, a, b])
+        for b in 1:3))
+    for a in 1:3))
+```
+
+`prob[a]` is $p_a$ and `persistence[a, b]` is $p_{b \mid a}$; the year 2 planting cost sits outside the sum over `b`.
+
+## Constraints in `JuMP`
+
+```{julia}
+#| echo: true
+#| output: false
+#| code-fold: true
+
+# One year's feed and beet constraints, for planting x, purchases y and
+# sales z, in a year with yield factor f: the same as in the two-stage model
+function add_year_constraints!(model, x, y, z, f)
+    crop_yield = avg_yield .* f
+    @constraint(model, crop_yield[1] * x[1] + y[1] - z[1] >= feed_need[1])
+    @constraint(model, crop_yield[2] * x[2] + y[2] - z[2] >= feed_need[2])
+    @constraint(model, z[3] + z[4] <= crop_yield[3] * x[3])
+    @constraint(model, z[3] <= beet_quota)
+end
+```
+
+```{julia}
+#| echo: true
+#| output: false
+#| code-fold: false
+#| code-line-numbers: "|1|2-5|6-10|12-13"
+
+@constraint(two_year, sum(x1) <= land)
+for a in 1:3
+    # year 1, after yield a
+    add_year_constraints!(two_year, x1, y1[:, a], z1[:, a], yield_factor[a])
+    @constraint(two_year, sum(x2[:, a]) <= land)
+    for b in 1:3
+        # year 2, after yields a and b: the same x2[:, a] for every b
+        add_year_constraints!(two_year, x2[:, a], y2[:, a, b], z2[:, a, b],
+            yield_factor[b])
+    end
+end
+set_silent(two_year)
+optimize!(two_year)
+```
+
+The year 2 constraints use the same `x2[:, a]` for every `b`.
+
+::: {.notes}
+One year 2 planting serves the three year 2 outcomes after yield `a`: that indexing is non-anticipativity. `add_year_constraints!` adds one year's feed and beet constraints, the same as in the two-stage model.
+:::
+
+## Two-Year Planting Plan
+
+```{julia}
+#| echo: true
+#| code-fold: true
+#| output: asis
+
+# The year 2 planting x^(2)_a after each year 1 yield a
+println("| Year 1 yield | Wheat (acres) | Corn (acres) | Beets (acres) |")
+println("|:--|--:|--:|--:|")
+for a in 1:3
+    println("| ", scenarios[a], " | ", join(fmt.(value.(x2[:, a])), " | "), " |")
+end
+```
+
+```{julia}
+#| echo: false
+#| output: false
+
+# The same plans from the two-stage model at each year 1 node, since nothing is
+# carried between the years; the notes use their expected year 2 profits
+year2_plan = zeros(3, 3)
+year2_profit = zeros(3)
+# the original two-stage plan, kept in year 2, with the same probabilities
+original_plan_profit = zeros(3)
+for a in 1:3
+    year2_plan[a, :], year2_profit[a] = farm_model(yield_factor, persistence[a, :])
+    original_plan_profit[a] = farm_model(yield_factor, persistence[a, :];
+        plan=stochastic_plan)[2]
+end
+@assert is_solved_and_feasible(two_year)
+@assert isapprox(value.(x1), stochastic_plan; atol=1e-6)
+for a in 1:3
+    @assert isapprox(value.(x2[:, a]), year2_plan[a, :]; atol=1e-6)
+end
+@assert isapprox(objective_value(two_year), stochastic_profit + sum(prob .* year2_profit); atol=1e-3)
+
+# The probabilities on the tree and the earlier slides
+for i in 1:3
+    @assert isapprox(sum(persistence[i, :]), 1) && isapprox(sum(persistence[:, i]), 1)
+end
+@assert persistence[3, 3] == 1 / 2 && persistence[1, 3] == 1 / 6
+# After a good or an average year the plan is unchanged; after a bad year the
+# wheat and corn just cover the feed in another bad year, and the new plan
+# earns more than keeping the original one
+for i in 1:2
+    @assert isapprox(year2_plan[i, :], stochastic_plan; atol=1e-6)
+end
+@assert isapprox(year2_plan[3, 1] * avg_yield[1] * yield_factor[3], feed_need[1]; atol=1e-6)
+@assert isapprox(year2_plan[3, 2] * avg_yield[2] * yield_factor[3], feed_need[2]; atol=1e-6)
+bad_year_gain = year2_profit[3] - original_plan_profit[3]
+@assert bad_year_gain > 1
+```
+
+After a bad year, the farmer plants enough wheat and corn to cover the feed even if year 2 is bad too.
+
+::: {.notes}
+With nothing carried between the years, the year 1 planting is the two-stage plan, `{julia} join(fmt.(stochastic_plan), "/")` acres, and so is the year 2 planting after a good or an average year. After a bad year, another bad year has probability 1/2: the plan grows `{julia} fmt(year2_plan[3, 1])` acres of wheat and `{julia} fmt(year2_plan[3, 2])` of corn, just enough for the feed in a bad year, and `{julia} fmt(year2_plan[3, 3])` of beets. The expected year 2 profit is \$`{julia} commas(year2_profit[1])` after a good year, \$`{julia} commas(year2_profit[2])` after an average one and \$`{julia} commas(year2_profit[3])` after a bad one.
+:::
+
+## Scenario Trees Grow Fast
+
+```{julia}
+#| echo: false
+#| output: asis
+
+# With three yield outcomes a year: 3^T leaves after T years, and
+# 1 + 3 + ... + 3^T nodes, each with its own copy of the decisions made there
+println("| Years | Scenarios (leaves) | Nodes |")
+println("|:--|--:|--:|")
+for n_years in [1, 2, 3, 5, 10]
+    n_nodes = 0
+    for t in 0:n_years
+        n_nodes = n_nodes + 3^t
+    end
+    println("| ", n_years, " | ", commas(3^n_years), " | ", commas(n_nodes), " |")
+end
+```
+
+**Raises the question**: how do we make decisions in a **sequence** without writing out the tree?
+
+::: {.notes}
+With a decision and an uncertainty every year, the number of scenarios grows exponentially with the number of years. Each node carries its own copy of the decisions made there, so the model grows with the number of nodes. Sampling a finite set of branches is one way to keep a tree small. Most environmental decisions repeat: release water every month, set a loading every year, harvest every season. Writing out every path through the future quickly becomes impossible, and dynamic programming is the standard way around it.
+:::
 
 # Sequential Decisions
 
@@ -292,11 +590,11 @@ The code is the hand calculation in a loop: months backwards, every storage leve
 #| echo: false
 #| output: false
 
-value, policy = backward_induction(inflow)
+dp_value, policy = backward_induction(inflow)
 
 # The function reproduces the hand calculation
-@assert value[:, 3] == value_month3
-@assert value[:, 2] == value_month2
+@assert dp_value[:, 3] == value_month3
+@assert dp_value[:, 2] == value_month2
 
 # Follow the policy forward from a full reservoir
 dp_release = zeros(Int, n_months)
@@ -316,13 +614,13 @@ dp_total = sum(benefit.(dp_release))
 println("| Storage | ", join(levels, " | "), " |")
 println("|:--|", repeat("--:|", capacity + 1))
 println("| **Best release** | ", join(policy[:, 1], " | "), " |")
-println("| **Value** $(raw"$V_1(s)$") | ", join(Int.(value[:, 1]), " | "), " |")
+println("| **Value** $(raw"$V_1(s)$") | ", join(Int.(dp_value[:, 1]), " | "), " |")
 ```
 
-From a full reservoir, $V_1(`{julia} start_storage`) =$ **`{julia} Int(value[start_storage + 1, 1])`**. Following the policy forward gives releases **`{julia} join(dp_release, ", ")`**.
+From a full reservoir, $V_1(`{julia} start_storage`) =$ **`{julia} Int(dp_value[start_storage + 1, 1])`**. Following the policy forward gives releases **`{julia} join(dp_release, ", ")`**.
 
 ::: {.notes}
-The value function at the start answers the whole problem: `{julia} Int(value[start_storage + 1, 1])`, against greedy's `{julia} greedy_total`. To get the plan, follow the policy forward: release 2, see the storage, look up the next month's best release, and so on.
+The value function at the start answers the whole problem: `{julia} Int(dp_value[start_storage + 1, 1])`, against greedy's `{julia} greedy_total`. To get the plan, follow the policy forward: release 2, see the storage, look up the next month's best release, and so on.
 :::
 
 ## Checking by Brute Force
@@ -491,7 +789,7 @@ tree_best = tree_value(start_storage, 1)
 Enumerating every branch of the scenario tree gives **`{julia} fmt(tree_best)`**, and dynamic programming gives the same **`{julia} fmt(value_u[start_storage + 1, 1])`**.
 
 ::: {.notes}
-The tree allows a different decision at every node; dynamic programming gets the same optimum because the best decision at a node depends only on the storage there, not on how we got there. That property is what lets the table replace the tree.
+The tree allows a different decision at every node; dynamic programming gets the same optimum because the best decision at a node depends only on the storage there, not on how we got there. That property is what lets the table replace the tree. It relies on the inflows being independent from month to month: with persistence like the farmer's yields, the best release would also depend on last month's inflow, so the state would have to include it.
 :::
 
 ## Trees Versus Tables
@@ -543,7 +841,13 @@ With no value on leftover water, the plan empties the reservoir by the end of th
 
 # Key Takeaways
 
-## Key Takeaways
+## Key Takeaways (Scenario Trees)
+
+- Each **node** of a scenario tree has its own decisions; a scenario's probability is the product of the branch probabilities along its path, each conditional on the branches before it.
+- **Non-anticipativity**: a decision can depend only on what is known when it is made.
+- **Scenario trees grow multiplicatively** with every stage that has its own decision and uncertainty.
+
+## Key Takeaways (DP)
 
 - A **sequential decision** has stages, a **state** that carries the past forward, and a **transition**; deciding each month on its own (greedy) can be badly wrong.
 - **Backward induction**: start at the end, keep one **value function** per stage, step backwards.

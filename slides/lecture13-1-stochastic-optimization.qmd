@@ -53,6 +53,8 @@ using Measures
 using LaTeXStrings
 using JuMP
 using HiGHS
+using Distributions
+using Random
 
 plot_font = "Palatino Roman"
 default(
@@ -112,11 +114,11 @@ commas(n) = replace(string(round(Int, n)), r"(?<=\d)(?=(\d{3})+$)" => ",")
 
 # Review of Last Class
 
-## Waste Allocation as a Network
+## Waste Allocation as a Network Problem
 
 - A network model's decisions are **flows**; its constraints are **conservation** at each node.
-- An optional facility gets a **binary**: fixed cost $\times\, Y_j$, and flow in $\leq K_j Y_j$.
-- In the waste example, the WTE ran only because the **landfill was full**: a limit at one node set the decision at another.
+- Flows can be constrained and/or incur costs which influence the decision.
+- In the waste example, the WTE ran only because the landfill was full: a limit at one node set the decision at another.
 
 ::: {.notes}
 Everything we have optimized so far assumed we know every number in the model. This lecture drops that assumption.
@@ -128,14 +130,14 @@ Everything we have optimized so far assumed we know every number in the model. T
 
 # Decisions Under Uncertainty
 
-## Decisions Made in Advance
+## Two-Stage Decision Problems
 
 :::: {.columns}
 ::: {.column width=60%}
 - **Reservoir**: summer release targets are set in spring, before the summer's inflow is known.
-- **Grid**: plants are committed a day ahead, before the wind is known.
+- **Grid**: plants are committed to operate a day ahead, before wind, solar, and demand are known.
 
-In both, the decision comes first and adjusting afterwards costs money.
+These are examples of **two-stage problems with recourse**: act-learn-react.
 :::
 ::: {.column width=40%}
 ![](figures/reservoir-system.png){width=100%}
@@ -148,9 +150,9 @@ The manager has to commit to a release plan before knowing the inflow; once the 
 
 ## Certainty and Linear Programming
 
-**Certainty** was the third assumption of linear programming (with linearity and divisibility): every number in the model is known.
+**Certainty** was the third assumption of linear programming (with linearity and divisibility): there is no uncertainty about the mapping from decisions to constraints and outcomes.
 
-**Common practice**: solve with best estimates, then stress-test the plan (Monte Carlo, safety margins).
+**Common practice**: solve with best estimates of parameters, then stress-test the plan using Monte Carlo to identify appropriate safety margins.
 
 ::: {.fragment .fade-in}
 **Alternative**: put the uncertainty *in* the model, as a set of scenarios with probabilities, and optimize the expected outcome.
@@ -162,19 +164,20 @@ We relaxed divisibility with mixed integer programming; today we relax certainty
 
 ## Two-Stage Decisions
 
-1. Make a decision $\mathbf{x}$ under uncertainty (**here and now**).
-2. Observe which scenario happens.
-3. Make a **recourse** decision that compensates for $\mathbf{x}$ in that scenario.
+1. Make a decision $\mathbf{x}$ under uncertainty (**act**).
+2. Observe which scenario happens (**learn**).
+3. Make a **recourse** decision that compensates for $\mathbf{x}$ in that scenario (**react**).
 
-**Dispatch version**: dispatch hour 1, get better forecasts of demand and wind, re-dispatch (possibly with expensive peakers) to meet hour 2.
+## General Two-Stage Decision Problems
 
-::: {.notes}
-This is the two-stage structure. The first-stage decision is made once. The recourse decision is made after learning which scenario occurred, so there is one recourse decision per scenario. The goal is a first decision that leaves good options for every scenario, weighted by how likely each is.
-:::
+$$\max_{\mathbf{x}} \; \underbrace{f(\mathbf{x})}_{\text{first stage}} + \mathbb{E}_{\boldsymbol{\xi}}\left[\underbrace{Q(\mathbf{x}; \boldsymbol{\xi})}_{\substack{\text{best recourse after} \\ \text{seeing } \boldsymbol{\xi}}}\right]$$
 
-# The Farmer's Problem
+With discrete scenarios $\boldsymbol{\xi}_s$ and probabilities $p_s$, the expectation is $\sum_s p_s\, Q(\mathbf{x}; \boldsymbol{\xi}_s)$, which is what the farmer model maximizes.
 
-## The Farmer's Problem
+
+# Land Allocation Example
+
+## Land Allocation Example
 
 A farmer has `{julia} land` acres for wheat, corn, and sugar beets. **How much of each should they plant?** [@Birge2011-ip]
 
@@ -187,7 +190,7 @@ A farmer has `{julia} land` acres for wheat, corn, and sugar beets. **How much o
 This is a classic example from Birge and Louveaux's textbook on stochastic programming. Planting happens before the yield is known; buying and selling happen after the harvest. Beets sell for \$`{julia} beet_price` a tonne up to the quota of `{julia} commas(beet_quota)` tonnes and \$`{julia} beet_excess_price` above it, which is less than their planting cost of \$`{julia} fmt(plant_cost[3] / avg_yield[3])` a tonne in an average year.
 :::
 
-## Formulation for One Known Year
+## Formulation for The Average Year
 
 $x_i$: acres planted; $y_i$: T bought; $z_i$: T sold ($z_3$ beets at the quota price, $z_4$ above it).
 
@@ -196,8 +199,8 @@ $$
 \max_{\mathbf{x}, \mathbf{y}, \mathbf{z}} \quad & -150x_1 - 230x_2 - 260x_3 - 238y_1 - 210y_2 \\
 & \quad + 170z_1 + 150z_2 + 36z_3 + 10z_4 \\
 \text{subject to:} \quad & x_1 + x_2 + x_3 \leq 500 \\
-& 2.5x_1 + y_1 - z_1 \geq 200, \qquad 3x_2 + y_2 - z_2 \geq 240 \\
-& z_3 + z_4 \leq 20x_3, \qquad z_3 \leq 6000, \qquad \mathbf{x}, \mathbf{y}, \mathbf{z} \geq \mathbf{0}
+& {\color{red}2.5x_1 + y_1 - z_1 \geq 200}, \qquad {\color{red}3x_2 + y_2 - z_2 \geq 240} \\
+& {\color{red}z_3 + z_4 \leq 20x_3}, \qquad z_3 \leq 6000, \qquad \mathbf{x}, \mathbf{y}, \mathbf{z} \geq \mathbf{0}
 \end{aligned}
 $$
 
@@ -205,7 +208,7 @@ $$
 Profit is sales minus purchases minus planting. The feed constraints say what you grow plus what you buy, minus what you sell, must cover the feed. With known yields, this is an ordinary LP.
 :::
 
-## If We Knew the Year
+## "Perfect Information" Solutions
 
 ```{julia}
 #| echo: true
@@ -214,8 +217,12 @@ Profit is sales minus purchases minus planting. The feed constraints say what yo
 
 # Two-stage farm model: one planting plan x, a copy of the purchases y and
 # sales z for each scenario. With one scenario it is the ordinary LP.
-# Passing `plan` fixes the planting and evaluates it.
-function farm_model(factors, probs; plan=nothing)
+# Passing `plan` fixes the planting and evaluates it; passing `min_profit`
+# requires at least that profit in every scenario; `price_factors` scales the
+# wheat and corn prices in each scenario. Returns the planting, the expected
+# profit, and the purchases and sales in each scenario.
+function farm_model(factors, probs; plan=nothing, min_profit=nothing,
+                    price_factors=ones(length(factors)))
     n = length(factors)
     model = Model(HiGHS.Optimizer)
     set_silent(model)
@@ -233,15 +240,20 @@ function farm_model(factors, probs; plan=nothing)
         @constraint(model, z[3, s] + z[4, s] <= crop_yield[3] * x[3])
         @constraint(model, z[3, s] <= beet_quota)
     end
-    @objective(model, Max, -sum(plant_cost .* x) + sum(probs[s] * (
-        sell_price[1] * z[1, s] + sell_price[2] * z[2, s] + beet_price * z[3, s] +
-        beet_excess_price * z[4, s] - buy_price[1] * y[1, s] - buy_price[2] * y[2, s])
-        for s in 1:n))
+    # profit in each scenario: sales, minus purchases and planting
+    @expression(model, profit[s in 1:n], -sum(plant_cost .* x) +
+        price_factors[s] * (sell_price[1] * z[1, s] + sell_price[2] * z[2, s] -
+        buy_price[1] * y[1, s] - buy_price[2] * y[2, s]) +
+        beet_price * z[3, s] + beet_excess_price * z[4, s])
+    if min_profit !== nothing
+        @constraint(model, [s in 1:n], profit[s] >= min_profit)
+    end
+    @objective(model, Max, sum(probs[s] * profit[s] for s in 1:n))
     optimize!(model)
-    return value.(x), objective_value(model)
+    return value.(x), objective_value(model), value.(y), value.(z)
 end
 
-# The best plan for each year type, if that year were known in advance
+# The best plan for each year type
 known_plan = zeros(3, 3)
 known_profit = zeros(3)
 for s in 1:3
@@ -250,7 +262,7 @@ end
 average_plan = known_plan[2, :]
 
 # The two-stage plan: one planting for all three year types
-stochastic_plan, stochastic_profit = farm_model(yield_factor, prob)
+stochastic_plan, stochastic_profit, stochastic_buy, stochastic_sell = farm_model(yield_factor, prob)
 
 # Each plan's profit in each year type, with the best purchases and sales
 average_plan_by_year = zeros(3)
@@ -279,28 +291,24 @@ for s in [2, 1, 3]
 end
 ```
 
-The best plan depends on the year, and planting happens before the year is known.
-
-::: {.notes}
-The folded cell is the whole lecture's computation: one function that solves the farm problem for any set of scenarios, and can also evaluate a fixed plan. With one scenario it is the ordinary LP. Read the table: in a good year plant less beet land (the quota fills sooner) and more wheat; in a bad year plant more beets to reach the quota and buy corn. The average-year plan earns \$`{julia} commas(known_profit[2])`, but only if the year is average.
-:::
+The optimal planting decision depends on the yields for each year --- which we don't know until after planting.
 
 ## What Changes About the Variables?
 
 :::: {.columns}
 ::: {.column width=55%}
-***What should change about our decision variables?***
-
 ::: {.fragment .fade-in}
-Variable | Copies
+Variable | Role
 :----: | :-----
-$x_i$, acres planted | **one** (decided before the yield)
-$y_{is}$, T bought | one per scenario $s$
-$z_{is}$, T sold | one per scenario $s$
+$x_i$, acres planted | fixed decision before the scenario is revealed
+$z_{ij}$, T sold | quantity sold sold scenario $j$
+$y_{ij}$, T bought | quantity to buy in scenario $j$ (**recourse**)
 :::
 :::
 ::: {.column width=45%}
+::: {.fragment .fade-in}
 ![Scenario tree](figures/farm-scen-tree.svg)
+:::
 :::
 ::::
 
@@ -308,45 +316,43 @@ $z_{is}$, T sold | one per scenario $s$
 Planting happens once, so it has one copy. Buying and selling happen after the harvest, so there is a separate copy for each year type. The scenario tree lists the scenarios: one branch per scenario, with its probability. With more uncertainties or more stages, the tree branches again at each one.
 :::
 
-## One Scenario's Constraints
+## The Full Two-Stage Constraints
 
-**What are the good-year constraints?** (yields $\times$ 1.2)
-
-::: {.fragment .fade-in}
 ```{julia}
 #| echo: false
 #| output: asis
 
-good = fmt.(avg_yield .* yield_factor[1])
-println("\$\$\n\\begin{aligned}")
-println("& ", good[1], "x_1 + y_{1,\\text{good}} - z_{1,\\text{good}} \\geq ", feed_need[1], ", \\qquad ",
-    good[2], "x_2 + y_{2,\\text{good}} - z_{2,\\text{good}} \\geq ", feed_need[2], " \\\\")
-println("& z_{3,\\text{good}} + z_{4,\\text{good}} \\leq ", good[3], "x_3, \\qquad z_{3,\\text{good}} \\leq ", beet_quota)
-println("\\end{aligned}\n\$\$")
+colours = ["blue", "purple", "red"]
+println("\$\$\n\\begin{alignedat}{2}")
+println("&x_1 + x_2 + x_3 \\leq ", land, " \\\\[0.5ex]")
+for s in 1:3
+    y = fmt.(avg_yield .* yield_factor[s]); c = "\\color{" * colours[s] * "}"
+    println("&", c, y[1], "x_1 + y_{1", s, "} - z_{1", s, "} \\geq ", feed_need[1], ", && \\qquad ",
+        c, y[2], "x_2 + y_{2", s, "} - z_{2", s, "} \\geq ", feed_need[2], " \\\\[0.5ex]")
+    println("&", c, "z_{3", s, "} + z_{4", s, "} \\leq ", y[3], "x_3, && \\qquad ", c, "z_{3", s, "} \\leq ", beet_quota, " \\\\[0.5ex]")
+end
+println("&x_i, y_{ij}, z_{ij} \\geq 0")
+println("\\end{alignedat}\n\$\$")
 ```
 
-The average and bad years are the same with yields $\times$ 1 and $\times$ 0.8. There is **one** land constraint, $x_1 + x_2 + x_3 \leq 500$, shared by all three.
-:::
+Scenarios: good (blue), average (purple), bad (red).
 
-::: {.notes}
-Board item. The good-year block comes from the one-year formulation: every yield is multiplied by 1.2 (2.5 becomes 3, 3 becomes 3.6, 20 becomes 24), and the purchase and sale variables get a good-year subscript. The planting variables appear unchanged in every scenario's block: they are the first-stage decisions. The full set of constraints is in the appendix.
-:::
 
 ## The Two-Stage Objective
 
-Maximize **expected** profit: minus the planting cost, plus each scenario's sales minus purchases, weighted by its probability.
+Typically to maximize **expected** profit:
 
-$$\max_{\mathbf{x}, \mathbf{y}, \mathbf{z}} \quad -\sum_i c_i x_i + \sum_s p_s \left(\text{sales}_s - \text{purchases}_s\right)$$
+$$\max_{\mathbf{x}, \mathbf{y}, \mathbf{z}} \quad -\sum_i c_i x_i + \sum_j p_j \left(\sum_i z_{i,j} - y_{i,j}\right)$$
 
 ::: {.fragment .fade-in}
-Other choices are possible: a quantile to hedge against bad years, or the variance of profit to smooth year-to-year swings.
+Other choices are possible: a quantile to hedge against bad years, or the variance of profit to smooth year-to-year swings. The appendix shows a related approach: [a floor on the profit in every year type](#risk-averse-optimization).
 :::
 
 ::: {.notes}
 The expected value is one summary of performance across scenarios; it is not the only defensible one. A farmer who cannot survive a bad year might instead maximize the bad-year profit or a low quantile. That choice is a value judgment about risk, and it can change the plan.
 :::
 
-## The Stochastic Plan
+## The Stochastic Plan (Decision Under Uncertainty)
 
 ```{julia}
 #| echo: false
@@ -360,26 +366,119 @@ println("| Two-stage plan | ", join(fmt.(stochastic_plan), " | "), " |")
 
 Expected profit of the two-stage plan: **\$`{julia} commas(stochastic_profit)`**.
 
-::: {.fragment .fade-in}
-- **Good year**: no beets above the quota, which sell for \$`{julia} beet_excess_price`/T.
-- **Average and bad years**: less beet land, so less profit.
-:::
-
 ::: {.notes}
 The two-stage plan moves `{julia} fmt(average_plan[3] - stochastic_plan[3])` acres from beets to wheat. Wheat on that land earns less than beets sold at the quota price, so in average and bad years the two-stage plan earns less than the average-year plan. In a good year the average-year plan grows `{julia} commas(good_year_excess_beets)` T of beets above the quota, which sell for only \$`{julia} beet_excess_price` a tonne, while the two-stage plan's beets stay within the quota; there the wheat earns more.
+:::
+
+## The Two-Stage Plan (Good Year)
+
+```{julia}
+#| echo: false
+#| output: false
+
+# The two-stage plan's harvest [T], and the money from its recourse (sales and
+# purchases) and its planting [$], in year type s
+function year_outcome(s)
+    harvest = stochastic_plan .* avg_yield .* yield_factor[s]
+    sales = sell_price[1] * stochastic_sell[1, s] + sell_price[2] * stochastic_sell[2, s] +
+        beet_price * stochastic_sell[3, s] + beet_excess_price * stochastic_sell[4, s]
+    purchases = buy_price[1] * stochastic_buy[1, s] + buy_price[2] * stochastic_buy[2, s]
+    planting = sum(plant_cost .* stochastic_plan)
+    return harvest, sales, purchases, planting
+end
+
+# Print year type s's table: each crop's harvest, feed, purchases and sales
+function print_year_table(s)
+    harvest = year_outcome(s)[1]
+    println("| Crop | Harvest (T) | Feed (T) | Bought (T) | Sold (T) | Price (\\\$/T) |")
+    println("|:--|--:|--:|--:|--:|--:|")
+    for i in 1:2
+        println("| ", crops[i], " | ", commas(harvest[i]), " | ", feed_need[i], " | ",
+            commas(stochastic_buy[i, s]), " | ", commas(stochastic_sell[i, s]), " | ", sell_price[i], " |")
+    end
+    # all beets sold, up to and above the quota (none sell above it; see the check below)
+    println("| Beets | ", commas(harvest[3]), " | | | ", commas(stochastic_sell[3, s] + stochastic_sell[4, s]), " | ", beet_price, " |")
+end
+
+year_harvest = zeros(3, 3)
+year_sales = zeros(3)
+year_purchases = zeros(3)
+year_profit = zeros(3)
+for s in 1:3
+    year_harvest[s, :], year_sales[s], year_purchases[s], planting_cost = year_outcome(s)
+    year_profit[s] = year_sales[s] - year_purchases[s] - planting_cost
+end
+planting_cost = sum(plant_cost .* stochastic_plan)
+corn_shortfall = feed_need[2] - year_harvest[3, 2]
+
+# The slides' claims: each year's profit is the plan's profit in that year, and
+# the three average to the expected profit
+@assert isapprox(year_profit, stochastic_plan_by_year; atol=1e-6)
+@assert isapprox(sum(prob .* year_profit), stochastic_profit; atol=1e-6)
+# no beets sell above the quota in any year (the tables leave that row out)
+@assert all(stochastic_sell[4, :] .< 1e-6)
+# good year: beets fill the quota exactly, none above it, nothing bought
+@assert isapprox(year_harvest[1, 3], beet_quota; atol=1e-6) && stochastic_sell[4, 1] < 1e-6
+@assert all(stochastic_buy[:, 1] .< 1e-6)
+# average year: corn covers the feed exactly, with none bought or sold
+@assert isapprox(year_harvest[2, 2], feed_need[2]; atol=1e-6)
+@assert stochastic_buy[2, 2] < 1e-6 && stochastic_sell[2, 2] < 1e-6
+# bad year: the corn shortfall is bought, and wheat still has some to sell
+@assert corn_shortfall > 0 && isapprox(stochastic_buy[2, 3], corn_shortfall; atol=1e-6)
+@assert stochastic_sell[1, 3] > 1
+```
+
+```{julia}
+#| echo: false
+#| output: asis
+
+print_year_table(1)
+```
+
+Profit: sales \$`{julia} commas(year_sales[1])` − purchases \$`{julia} commas(year_purchases[1])` − planting \$`{julia} commas(planting_cost)` = **\$`{julia} commas(year_profit[1])`**.
+
+::: {.notes}
+The planting is fixed before the yield is known; the purchases and sales are the recourse, chosen after the harvest for each year type. These are the recourse decisions the two-stage model chose for each year.
+:::
+
+## The Two-Stage Plan (Average Year)
+
+```{julia}
+#| echo: false
+#| output: asis
+
+print_year_table(2)
+```
+
+Profit: sales \$`{julia} commas(year_sales[2])` − purchases \$`{julia} commas(year_purchases[2])` − planting \$`{julia} commas(planting_cost)` = **\$`{julia} commas(year_profit[2])`**.
+
+
+## The Two-Stage Plan (Bad Year)
+
+```{julia}
+#| echo: false
+#| output: asis
+
+print_year_table(3)
+```
+
+Profit: sales \$`{julia} commas(year_sales[3])` − purchases \$`{julia} commas(year_purchases[3])` − planting \$`{julia} commas(planting_cost)` = **\$`{julia} commas(year_profit[3])`**.
+
+::: {.notes}
+Across the three years the profits average to the expected profit, \$`{julia} commas(stochastic_profit)`, since each year type has probability 1/3.
 :::
 
 # Comparing Plans
 
 ## Can We Compare These Numbers?
 
-- Average-year plan: **\$`{julia} commas(known_profit[2])`** profit
-- Two-stage plan: **\$`{julia} commas(stochastic_profit)`** expected profit
+- Average-year plan: obtained **\$`{julia} commas(known_profit[2])`** profit
+- Two-stage plan: obtained **\$`{julia} commas(stochastic_profit)`** expected profit
 
 Is the average-year plan better?
 
 ::: {.fragment .fade-in}
-**No.** \$`{julia} commas(known_profit[2])` is what that plan earns *if the year is average*. To compare fairly, judge both plans across the same three year types.
+**No.** \$`{julia} commas(known_profit[2])` is what that plan earns *if the year is average*. To compare fairly, we need to compare the expected profit across the full scenario set.
 :::
 
 ::: {.notes}
@@ -414,16 +513,164 @@ Board item for the VSS subtraction. Each plan is evaluated in each year with the
 
 ## What Is a Perfect Forecast Worth?
 
-With perfect foresight the farmer plants the best plan for each year: expected profit \$`{julia} commas(wait_and_see)`.
+With perfect knowledge of the upcoming year the farmer makes the best decision for that year: expected profit \$`{julia} commas(wait_and_see)`.
 
 **Expected value of perfect information (EVPI)**: \$`{julia} commas(wait_and_see)` − \$`{julia} commas(stochastic_profit)` = **\$`{julia} commas(evpi)`** per year.
 
-::: {.fragment .fade-in}
-The EVPI is about **`{julia} round(Int, evpi / vss)` times** the VSS. It is the most the farmer should pay for any forecast.
-:::
 
 ::: {.notes}
 With perfect information the farmer would know the year before planting and use the best plan for it: the expected profit is the average of the three known-year profits. The gap between that and the two-stage plan is the EVPI.
+:::
+
+# Scenario Trees
+
+## Scenario Trees
+
+**Scenario trees** are a useful way to map out discrete scenarios, particularly when their probabilities are chained together or conditional.
+
+## Parts of a Scenario Tree
+
+:::: {.columns}
+::: {.column width=55%}
+- The **root** is the here-and-now decision (planting).
+- Each **branch** is an outcome, with its probability.
+- Each later **node** holds the recourse decided there (buying and selling).
+- A path from the root to a **leaf** is a **scenario**.
+:::
+::: {.column width=45%}
+![Scenario tree](figures/farm-scen-tree.svg)
+:::
+::::
+
+# Monte Carlo Scenarios
+
+## A Continuous Yield Distribution
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+# A normal yield factor with the same mean (1) and standard deviation as the
+# three year types; as there, one factor scales all three crops' yields
+yield_sd = sqrt(sum(prob .* (yield_factor .- 1) .^ 2))
+yield_dist = Normal(1, yield_sd)
+
+factor_grid = 0.4:0.01:1.6
+p_dist = plot(factor_grid, pdf.(yield_dist, factor_grid), color=cb_blue,
+    xlabel="Yield factor for all three crops (relative to an average year)",
+    ylabel="Probability density",
+    ylims=(0, 3))
+vline!(p_dist, yield_factor, color=cb_vermillion, linestyle=:dash, linewidth=2)
+for s in 1:3
+    annotate!(p_dist, yield_factor[s] + 0.015, 2.8,
+        text(scenarios[s], plot_font, 16, cb_vermillion, :left))
+end
+plot!(p_dist, size=(1200, 340), left_margin=12mm, bottom_margin=12mm)
+```
+
+Suppose the yield factor is normal, with the same mean (1) and standard deviation (`{julia} round(yield_sd; digits=2)`) as the three year types.
+
+::: {.notes}
+The three year types have mean 1 and standard deviation 0.2 × √(2/3) ≈ `{julia} round(yield_sd; digits=2)`; the normal distribution keeps both, but lets the yield take any value. As in the three year types, one factor scales the wheat, corn and beet yields together.
+:::
+
+## Prices Depend on the Yield
+
+Good harvests tend to lower prices. Suppose the wheat and corn prices, for selling and buying, are scaled by a price factor
+
+$$g = 1 - 0.5\,(f - 1) + \varepsilon, \qquad \varepsilon \sim \text{Normal}(0, 0.1),$$
+
+where $f$ is the yield factor. Beet prices are set by the contract. **How many scenarios would a tree need?**
+
+::: {.fragment .fade-in}
+With three yields and three prices for each, 9 a year, and $9^T$ over $T$ years.
+:::
+
+::: {.notes}
+The farmer's yield stands in for the region's harvest, which is what moves prices. The slope (a yield 20% above average lowers prices by 10%) and the noise from other markets are illustrative assumptions.
+:::
+
+## Sample Average Approximation
+
+**How do we find the plan with the highest expected profit?**
+
+::: {.fragment .fade-in}
+**Sample average approximation**: draw $n$ years (a yield, then a price given it), each a scenario with probability $p_j = 1/n$:
+
+$$\max_{\mathbf{x}, \mathbf{y}, \mathbf{z}} \quad -\sum_i c_i x_i + \frac{1}{n}\sum_{j=1}^n \left(\sum_i z_{i,j} - y_{i,j}\right)$$
+
+There are $n$ scenarios however many uncertainties each year has; the model needs a copy of $\mathbf{y}$ and $\mathbf{z}$ for each.
+:::
+
+::: {.notes}
+The constraints are the same as for the three year types, written once for each sampled year, and the wheat and corn prices in the objective are scaled by that year's price factor.
+:::
+
+## Solving with Sampled Years
+
+```{julia}
+#| echo: true
+#| code-fold: false
+#| output: false
+
+Random.seed!(1)
+n_samples = 1000
+price_slope = 0.5
+price_noise = Normal(0, 0.1)
+yield_samples = rand(yield_dist, n_samples)
+# the price factor given each year's yield
+price_samples = 1 .- price_slope .* (yield_samples .- 1) .+
+    rand(price_noise, n_samples)
+sample_prob = fill(1 / n_samples, n_samples)
+sampled_plan, sampled_profit = farm_model(yield_samples, sample_prob;
+    price_factors=price_samples)
+```
+
+Estimated expected profit: **\$`{julia} commas(sampled_profit)`**.
+
+## The Sampled Plan
+
+```{julia}
+#| echo: false
+#| output: asis
+
+# The price model on the previous slide
+@assert price_slope == 0.5 && std(price_noise) == 0.1
+# The same sampled yields with fixed prices, to separate the prices' effect
+fixed_price_plan, fixed_price_profit = farm_model(yield_samples, sample_prob)
+sampled_buy, sampled_sell = farm_model(yield_samples, sample_prob;
+    price_factors=price_samples)[3:4]
+
+# Beet acres that just fill the quota in a good year, and the yield factor above
+# which the sampled plan's beets go over the quota, with the share of years in
+# which that happens
+beet_fill_good = beet_quota / (avg_yield[3] * yield_factor[1])
+quota_factor = beet_quota / (avg_yield[3] * sampled_plan[3])
+quota_percent = 100 * (1 - cdf(yield_dist, quota_factor))
+
+# The slide's and notes' claims: more beets and less wheat than with three year
+# types; the prices barely move the plan but lower the expected profit, because
+# more grain is sold when prices are low and corn is bought when they are high
+@assert sampled_plan[3] > stochastic_plan[3] && sampled_plan[1] < stochastic_plan[1]
+@assert maximum(abs.(sampled_plan .- fixed_price_plan)) < 5
+@assert sampled_profit < fixed_price_profit
+grain_sold = sampled_sell[1, :] .+ sampled_sell[2, :]
+low_price_years = price_samples .< 1
+@assert mean(grain_sold[low_price_years]) > mean(grain_sold[.!low_price_years])
+corn_bought_years = sampled_buy[2, :] .> 1e-6
+@assert mean(price_samples[corn_bought_years]) > 1
+
+println("| Plan | Wheat (acres) | Corn (acres) | Beets (acres) |")
+println("|:--|--:|--:|--:|")
+println("| Three year types | ", join(fmt.(stochastic_plan), " | "), " |")
+println("| Sampled, fixed prices | ", join(fmt.(fixed_price_plan), " | "), " |")
+println("| Sampled, prices vary | ", join(fmt.(sampled_plan), " | "), " |")
+```
+
+The prices barely move the plan, but the estimated expected profit falls from \$`{julia} commas(fixed_price_profit)` to \$`{julia} commas(sampled_profit)`: more grain is sold when prices are low, and corn is bought when they are high.
+
+::: {.notes}
+The sampled plans grow more beets and less wheat. With three year types, beets beyond `{julia} fmt(beet_fill_good)` acres go over the quota in the good year, one year in three. With yields that can take any value, the plan's `{julia} fmt(sampled_plan[3])` acres of beets go over the quota only when the yield factor is above `{julia} round(quota_factor; digits=2)`, in about `{julia} round(Int, quota_percent)`% of years. The estimates are expected profits under the sampled distribution, so they aren't comparable with the \$`{julia} commas(stochastic_profit)` from three year types.
 :::
 
 # Key Takeaways
@@ -433,19 +680,15 @@ With perfect information the farmer would know the year before planting and use 
 - The plan that is optimal for the average year need not be optimal in expectation.
 - Two stages: **one** here-and-now decision, **one recourse decision per scenario**, weighted by probability.
 - **Compare plans under uncertainty**: VSS is what modeling uncertainty is worth; EVPI, what a perfect forecast is worth.
-- **Scenario trees grow multiplicatively** with every stage that has its own decision and uncertainty.
-
-::: {.notes}
-With a decision and an uncertainty every year, the number of scenarios grows exponentially with the number of years.
-:::
+- A **scenario tree** lays out the scenarios: each path from the root to a leaf is one, and its probability is the product of the branch probabilities along it.
 
 # Upcoming Schedule
 
 ## Next Classes
 
-**Wednesday**: Sequential decisions and dynamic programming.
+**Wednesday**: Multi-stage scenario trees, sequential decisions and dynamic programming.
 
-**Monday, November 23**: Lab 4, scenario trees and sequential decisions for reservoir operations (bring a laptop).
+**Monday, November 23**: Lab 4, scenario trees and sequential decisions for reservoir operations.
 
 **Wednesday, November 25**: No class (Thanksgiving).
 
@@ -459,32 +702,192 @@ With a decision and an uncertainty every year, the number of scenarios grows exp
 
 # Appendix
 
-## The Full Two-Stage Constraints
+## "Risk-Averse" Optimization
+
+The two-stage plan earns \$`{julia} commas(stochastic_plan_by_year[3])` in a bad year. **What if the farmer needs a profit of at least $F$ in every year?**
+
+::: {.fragment .fade-in}
+Keep expected profit as the objective, and add a constraint for each scenario $j$:
+
+$$
+\begin{aligned}
+& -150x_1 - 230x_2 - 260x_3 - 238y_{1,j} - 210y_{2,j} \\
+& \quad + 170z_{1,j} + 150z_{2,j} + 36z_{3,j} + 10z_{4,j} \geq F
+\end{aligned}
+$$
+:::
+
+::: {.notes}
+The left side is the profit in scenario $j$. A lower yield never raises a fixed plan's profit, so the bad-year constraint is the one that binds. The farmer chooses $F$: the profit they need to get through a bad year. In the code, `farm_model` adds these constraints when it is given `min_profit`.
+:::
+
+## How Much Does This Risk Aversion Cost?
+
+```{julia}
+#| echo: true
+#| code-fold: true
+
+# The best plan for floors from below the two-stage plan's bad-year profit up to
+# the highest floor any plan can meet: the best profit in a known bad year
+floors = range(45000, known_profit[3]; length=60)
+floor_plan = zeros(length(floors), 3)
+floor_profit = zeros(length(floors))
+for k in 1:length(floors)
+    floor_plan[k, :], floor_profit[k] = farm_model(yield_factor, prob; min_profit=floors[k])
+end
+
+# The plans in the table on the next slide
+table_floors = [52000, 56000, known_profit[3]]
+n_rows = length(table_floors) + 1
+table_plan = zeros(n_rows, 3)
+table_expected = zeros(n_rows)
+table_plan[1, :] = stochastic_plan
+table_expected[1] = stochastic_profit
+for k in 1:length(table_floors)
+    table_plan[k + 1, :], table_expected[k + 1] =
+        farm_model(yield_factor, prob; min_profit=table_floors[k])
+end
+
+p_floor = plot(floors ./ 1000, floor_profit ./ 1000, color=cb_blue,
+    xlabel="Floor on profit in every year  [\$1000]", ylabel="Expected profit  [\$1000]",
+    ylims=(80, 115))
+scatter!(p_floor, table_floors ./ 1000, table_expected[2:end] ./ 1000, color=:black,
+    markersize=7)
+# below the two-stage plan's bad-year profit, the floor doesn't bind
+vline!(p_floor, [stochastic_plan_by_year[3] / 1000], color=:black, linestyle=:dash, linewidth=2)
+annotate!(p_floor, stochastic_plan_by_year[3] / 1000 + 0.2, 84,
+    text("two-stage plan's\nbad-year profit", plot_font, 16, :left))
+plot!(p_floor, size=(1200, 340), left_margin=12mm, top_margin=6mm)
+```
+
+```{julia}
+#| echo: false
+#| output: false
+
+mid_cost = stochastic_profit - table_expected[3]     # given up for the $56,000 floor
+top_cost = table_expected[3] - table_expected[4]     # and for the rest of the way
+table_good = zeros(n_rows)
+for k in 1:n_rows
+    table_good[k] = farm_model([yield_factor[1]], [1]; plan=table_plan[k, :])[2]
+end
+
+# An acre's profit in a bad year: beets below the quota, and wheat beyond the feed
+beet_acre_bad = avg_yield[3] * yield_factor[3] * beet_price - plant_cost[3]
+wheat_acre_bad = avg_yield[1] * yield_factor[3] * sell_price[1] - plant_cost[1]
+# Wheat acres that just cover the feed in a bad year, and beet acres that just
+# fill the quota in a good year
+wheat_cover_bad = feed_need[1] / (avg_yield[1] * yield_factor[3])
+beet_fill_good = beet_quota / (avg_yield[3] * yield_factor[1])
+
+# The notes' claims. Once the floor binds, it binds only in the bad year
+for k in 1:length(floors)
+    plan_by_year = zeros(3)
+    for s in 1:3
+        plan_by_year[s] = farm_model([yield_factor[s]], [1]; plan=floor_plan[k, :])[2]
+    end
+    if floors[k] > stochastic_plan_by_year[3] + 1
+        @assert isapprox(plan_by_year[3], floors[k]; atol=1e-3)
+        @assert plan_by_year[1] > floors[k] + 1 && plan_by_year[2] > floors[k] + 1
+    else
+        @assert isapprox(floor_profit[k], stochastic_profit; atol=1e-3)
+    end
+end
+# Higher floors move land from wheat to beets; once the wheat is down to the
+# bad-year feed, the beets take land from corn
+for k in 2:length(floors)
+    @assert floor_plan[k, 1] <= floor_plan[k - 1, 1] + 1e-6
+    @assert floor_plan[k, 3] >= floor_plan[k - 1, 3] - 1e-6
+    @assert floor_plan[k, 1] >= wheat_cover_bad - 1e-6
+    if floor_plan[k - 1, 1] <= wheat_cover_bad + 1e-6
+        @assert floor_plan[k, 2] <= floor_plan[k - 1, 2] + 1e-6
+    end
+end
+# With any of the table's floors, the beets go over the quota in a good year
+for k in 2:n_rows
+    @assert table_plan[k, 3] > beet_fill_good
+end
+# The highest floor's plan is the best plan for a known bad year
+@assert isapprox(table_plan[end, :], known_plan[3, :]; atol=1e-6)
+@assert beet_acre_bad > wheat_acre_bad
+```
+
+A floor of \$`{julia} commas(table_floors[2])` costs \$`{julia} commas(mid_cost)` of expected profit; raising it to \$`{julia} commas(table_floors[3])` costs \$`{julia} commas(top_cost)` more.
+
+::: {.notes}
+Below \$`{julia} commas(stochastic_plan_by_year[3])` the two-stage plan already meets the floor, so nothing changes. The curve bends where the wheat is down to `{julia} fmt(wheat_cover_bad)` acres, just enough for the feed in a bad year; above that, the beets can only take land from corn, and the cost rises steeply.
+:::
+
+## Plans with Varying Floors
 
 ```{julia}
 #| echo: false
 #| output: asis
 
-colours = ["blue", "purple", "red"]
-println("\$\$\n\\begin{alignedat}{2}")
-println("&x_1 + x_2 + x_3 \\leq ", land, " \\\\[0.5ex]")
-for s in 1:3
-    y = fmt.(avg_yield .* yield_factor[s]); c = "\\color{" * colours[s] * "}"
-    println("&", c, y[1], "x_1 + y_{1", s, "} - z_{1", s, "} \\geq ", feed_need[1], ", && \\qquad ",
-        c, y[2], "x_2 + y_{2", s, "} - z_{2", s, "} \\geq ", feed_need[2], " \\\\[0.5ex]")
-    println("&", c, "z_{3", s, "} + z_{4", s, "} \\leq ", y[3], "x_3, && \\qquad ", c, "z_{3", s, "} \\leq ", beet_quota, " \\\\[0.5ex]")
+println("| Floor | Wheat (acres) | Corn (acres) | Beets (acres) | Good year | Expected |")
+println("|:--|--:|--:|--:|--:|--:|")
+for k in 1:n_rows
+    if k == 1
+        floor_text = "None"
+    else
+        floor_text = "\\\$" * commas(table_floors[k - 1])
+    end
+    println("| ", floor_text, " | ", join(fmt.(table_plan[k, :]), " | "), " | \\\$",
+        commas(table_good[k]), " | \\\$", commas(table_expected[k]), " |")
 end
-println("&x_i, y_{is}, z_{is} \\geq 0")
-println("\\end{alignedat}\n\$\$")
 ```
 
-Scenarios: good (blue), average (purple), bad (red).
+::: {.notes}
+Higher floors move land from wheat to beets. In a bad year an acre of beets earns \$`{julia} fmt(beet_acre_bad)` above its planting cost, and an acre of wheat beyond the feed \$`{julia} fmt(wheat_acre_bad)`. In a good year, beets beyond `{julia} fmt(beet_fill_good)` acres go over the quota and sell for \$`{julia} beet_excess_price`/T. The highest floor, \$`{julia} commas(known_profit[3])`, is the most any plan can earn in a bad year; the plan that meets it is the best plan for a known bad year.
+:::
 
-## General Two-Stage Notation
+## How Many Samples?
 
-$$\max_{\mathbf{x}} \; \underbrace{f(\mathbf{x})}_{\text{first stage}} + \mathbb{E}_{\boldsymbol{\xi}}\left[\underbrace{Q(\mathbf{x}; \boldsymbol{\xi})}_{\substack{\text{best recourse after} \\ \text{seeing } \boldsymbol{\xi}}}\right]$$
+```{julia}
+#| echo: true
+#| code-fold: true
 
-With discrete scenarios $\boldsymbol{\xi}_s$ and probabilities $p_s$, the expectation is $\sum_s p_s\, Q(\mathbf{x}; \boldsymbol{\xi}_s)$, which is what the farmer model maximizes.
+# Estimated expected profit from 20 independent sets of samples of each size
+sample_sizes = [10, 30, 100, 300, 1000]
+n_sets = 20
+estimates = zeros(length(sample_sizes), n_sets)
+beet_acres = zeros(length(sample_sizes), n_sets)
+for k in 1:length(sample_sizes)
+    m = sample_sizes[k]
+    for r in 1:n_sets
+        samples = rand(yield_dist, m)
+        prices = 1 .- price_slope .* (samples .- 1) .+ rand(price_noise, m)
+        plan, estimates[k, r] = farm_model(samples, fill(1 / m, m);
+            price_factors=prices)
+        beet_acres[k, r] = plan[3]
+    end
+end
+
+p_sizes = plot(xscale=:log10, xticks=(sample_sizes, string.(sample_sizes)),
+    xlabel="Number of sampled years", ylabel="Estimated profit  [\$1000]",
+    xlims=(7, 1400))
+for k in 1:length(sample_sizes)
+    scatter!(p_sizes, fill(sample_sizes[k], n_sets), estimates[k, :] ./ 1000,
+        color=cb_blue, markersize=7, markerstrokewidth=0, alpha=0.5)
+end
+plot!(p_sizes, size=(1200, 340), left_margin=12mm, top_margin=6mm)
+```
+
+```{julia}
+#| echo: false
+#| output: false
+
+estimate_sd = zeros(length(sample_sizes))
+for k in 1:length(sample_sizes)
+    estimate_sd[k] = std(estimates[k, :])
+end
+@assert estimate_sd[end] < estimate_sd[1] / 5
+```
+
+Each estimate is a Monte Carlo average over $n$ sampled years, so the spread shrinks like $1/\sqrt{n}$.
+
+::: {.notes}
+Each column is 20 independent sets of samples. The standard deviation of the 20 estimates falls from \$`{julia} commas(estimate_sd[1])` with `{julia} sample_sizes[1]` samples to \$`{julia} commas(estimate_sd[end])` with `{julia} commas(sample_sizes[end])`. The plans settle too: with `{julia} commas(sample_sizes[end])` samples, the beets range from `{julia} fmt(minimum(beet_acres[end, :]))` to `{julia} fmt(maximum(beet_acres[end, :]))` acres across the 20 sets.
+:::
 
 # References
 

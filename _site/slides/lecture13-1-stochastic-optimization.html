@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head>
 <link href="../_assets/logos/favicon.png" rel="icon" type="image/png">
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-html/tabby.min.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -243,6 +243,9 @@
     }
   };
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+  
+  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 <meta property="og:title" content="Stochastic Optimization and Scenario Trees – Environmental Systems Analysis">
 <meta property="og:description" content="Lecture 19">
 <meta property="og:site_name" content="Environmental Systems Analysis">
@@ -262,8 +265,10 @@
 <ul>
 <li><a href="#/review-of-last-class" id="/toc-review-of-last-class">Review of Last Class</a></li>
 <li><a href="#/decisions-under-uncertainty" id="/toc-decisions-under-uncertainty">Decisions Under Uncertainty</a></li>
-<li><a href="#/the-farmers-problem" id="/toc-the-farmers-problem">The Farmer’s Problem</a></li>
+<li><a href="#/land-allocation-example" id="/toc-land-allocation-example">Land Allocation Example</a></li>
 <li><a href="#/comparing-plans" id="/toc-comparing-plans">Comparing Plans</a></li>
+<li><a href="#/scenario-trees" id="/toc-scenario-trees">Scenario Trees</a></li>
+<li><a href="#/monte-carlo-scenarios" id="/toc-monte-carlo-scenarios">Monte Carlo Scenarios</a></li>
 <li><a href="#/key-takeaways" id="/toc-key-takeaways">Key Takeaways</a></li>
 <li><a href="#/upcoming-schedule" id="/toc-upcoming-schedule">Upcoming Schedule</a></li>
 <li><a href="#/appendix" id="/toc-appendix">Appendix</a></li>
@@ -276,12 +281,12 @@
 <h1>Review of Last Class</h1>
 
 </section>
-<section id="waste-allocation-as-a-network" class="slide level2">
-<h2>Waste Allocation as a Network</h2>
+<section id="waste-allocation-as-a-network-problem" class="slide level2">
+<h2>Waste Allocation as a Network Problem</h2>
 <ul>
 <li>A network model’s decisions are <strong>flows</strong>; its constraints are <strong>conservation</strong> at each node.</li>
-<li>An optional facility gets a <strong>binary</strong>: fixed cost <span class="math inline">\(\times\, Y_j\)</span>, and flow in <span class="math inline">\(\leq K_j Y_j\)</span>.</li>
-<li>In the waste example, the WTE ran only because the <strong>landfill was full</strong>: a limit at one node set the decision at another.</li>
+<li>Flows can be constrained and/or incur costs which influence the decision.</li>
+<li>In the waste example, the WTE ran only because the landfill was full: a limit at one node set the decision at another.</li>
 </ul>
 <aside class="notes">
 <p>Everything we have optimized so far assumed we know every number in the model. This lecture drops that assumption.</p>
@@ -316,15 +321,15 @@
 <h1>Decisions Under Uncertainty</h1>
 
 </section>
-<section id="decisions-made-in-advance" class="slide level2">
-<h2>Decisions Made in Advance</h2>
+<section id="two-stage-decision-problems" class="slide level2">
+<h2>Two-Stage Decision Problems</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
 <ul>
 <li><strong>Reservoir</strong>: summer release targets are set in spring, before the summer’s inflow is known.</li>
-<li><strong>Grid</strong>: plants are committed a day ahead, before the wind is known.</li>
+<li><strong>Grid</strong>: plants are committed to operate a day ahead, before wind, solar, and demand are known.</li>
 </ul>
-<p>In both, the decision comes first and adjusting afterwards costs money.</p>
+<p>These are examples of <strong>two-stage problems with recourse</strong>: act-learn-react.</p>
 </div><div class="column" style="width:40%;">
 <p><img data-src="figures/reservoir-system.png" style="width:100.0%"></p>
 </div></div>
@@ -344,8 +349,8 @@
 </section>
 <section id="certainty-and-linear-programming" class="slide level2">
 <h2>Certainty and Linear Programming</h2>
-<p><strong>Certainty</strong> was the third assumption of linear programming (with linearity and divisibility): every number in the model is known.</p>
-<p><strong>Common practice</strong>: solve with best estimates, then stress-test the plan (Monte Carlo, safety margins).</p>
+<p><strong>Certainty</strong> was the third assumption of linear programming (with linearity and divisibility): there is no uncertainty about the mapping from decisions to constraints and outcomes.</p>
+<p><strong>Common practice</strong>: solve with best estimates of parameters, then stress-test the plan using Monte Carlo to identify appropriate safety margins.</p>
 <div class="fragment fade-in">
 <p><strong>Alternative</strong>: put the uncertainty <em>in</em> the model, as a set of scenarios with probabilities, and optimize the expected outcome.</p>
 </div>
@@ -366,32 +371,23 @@
 <section id="two-stage-decisions" class="slide level2">
 <h2>Two-Stage Decisions</h2>
 <ol type="1">
-<li>Make a decision <span class="math inline">\(\mathbf{x}\)</span> under uncertainty (<strong>here and now</strong>).</li>
-<li>Observe which scenario happens.</li>
-<li>Make a <strong>recourse</strong> decision that compensates for <span class="math inline">\(\mathbf{x}\)</span> in that scenario.</li>
+<li>Make a decision <span class="math inline">\(\mathbf{x}\)</span> under uncertainty (<strong>act</strong>).</li>
+<li>Observe which scenario happens (<strong>learn</strong>).</li>
+<li>Make a <strong>recourse</strong> decision that compensates for <span class="math inline">\(\mathbf{x}\)</span> in that scenario (<strong>react</strong>).</li>
 </ol>
-<p><strong>Dispatch version</strong>: dispatch hour 1, get better forecasts of demand and wind, re-dispatch (possibly with expensive peakers) to meet hour 2.</p>
-<aside class="notes">
-<p>This is the two-stage structure. The first-stage decision is made once. The recourse decision is made after learning which scenario occurred, so there is one recourse decision per scenario. The goal is a first decision that leaves good options for every scenario, weighted by how likely each is.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+</section>
+<section id="general-two-stage-decision-problems" class="slide level2">
+<h2>General Two-Stage Decision Problems</h2>
+<p><span class="math display">\[\max_{\mathbf{x}} \; \underbrace{f(\mathbf{x})}_{\text{first stage}} + \mathbb{E}_{\boldsymbol{\xi}}\left[\underbrace{Q(\mathbf{x}; \boldsymbol{\xi})}_{\substack{\text{best recourse after} \\ \text{seeing } \boldsymbol{\xi}}}\right]\]</span></p>
+<p>With discrete scenarios <span class="math inline">\(\boldsymbol{\xi}_s\)</span> and probabilities <span class="math inline">\(p_s\)</span>, the expectation is <span class="math inline">\(\sum_s p_s\, Q(\mathbf{x}; \boldsymbol{\xi}_s)\)</span>, which is what the farmer model maximizes.</p>
 </section></section>
 <section>
-<section id="the-farmers-problem" class="title-slide slide level1 center">
-<h1>The Farmer’s Problem</h1>
+<section id="land-allocation-example" class="title-slide slide level1 center">
+<h1>Land Allocation Example</h1>
 
 </section>
-<section id="the-farmers-problem-1" class="slide level2">
-<h2>The Farmer’s Problem</h2>
+<section id="land-allocation-example-1" class="slide level2">
+<h2>Land Allocation Example</h2>
 <p>A farmer has 500 acres for wheat, corn, and sugar beets. <strong>How much of each should they plant?</strong> <span class="citation" data-cites="Birge2011-ip">(<a href="#/references-1" role="doc-biblioref" onclick="">Birge &amp; Louveaux, 2011</a>)</span></p>
 <ul>
 <li>Planting: $150, $230, $260 per acre.</li>
@@ -413,16 +409,16 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="formulation-for-one-known-year" class="slide level2">
-<h2>Formulation for One Known Year</h2>
+<section id="formulation-for-the-average-year" class="slide level2">
+<h2>Formulation for The Average Year</h2>
 <p><span class="math inline">\(x_i\)</span>: acres planted; <span class="math inline">\(y_i\)</span>: T bought; <span class="math inline">\(z_i\)</span>: T sold (<span class="math inline">\(z_3\)</span> beets at the quota price, <span class="math inline">\(z_4\)</span> above it).</p>
 <p><span class="math display">\[
 \begin{aligned}
 \max_{\mathbf{x}, \mathbf{y}, \mathbf{z}} \quad &amp; -150x_1 - 230x_2 - 260x_3 - 238y_1 - 210y_2 \\
 &amp; \quad + 170z_1 + 150z_2 + 36z_3 + 10z_4 \\
 \text{subject to:} \quad &amp; x_1 + x_2 + x_3 \leq 500 \\
-&amp; 2.5x_1 + y_1 - z_1 \geq 200, \qquad 3x_2 + y_2 - z_2 \geq 240 \\
-&amp; z_3 + z_4 \leq 20x_3, \qquad z_3 \leq 6000, \qquad \mathbf{x}, \mathbf{y}, \mathbf{z} \geq \mathbf{0}
+&amp; {\color{red}2.5x_1 + y_1 - z_1 \geq 200}, \qquad {\color{red}3x_2 + y_2 - z_2 \geq 240} \\
+&amp; {\color{red}z_3 + z_4 \leq 20x_3}, \qquad z_3 \leq 6000, \qquad \mathbf{x}, \mathbf{y}, \mathbf{z} \geq \mathbf{0}
 \end{aligned}
 \]</span></p>
 <aside class="notes">
@@ -439,65 +435,74 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="if-we-knew-the-year" class="slide level2">
-<h2>If We Knew the Year</h2>
+<section id="perfect-information-solutions" class="slide level2">
+<h2>“Perfect Information” Solutions</h2>
 <div id="8" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a><span class="co"># Two-stage farm model: one planting plan x, a copy of the purchases y and</span></span>
 <span id="cb1-2"><a></a><span class="co"># sales z for each scenario. With one scenario it is the ordinary LP.</span></span>
-<span id="cb1-3"><a></a><span class="co"># Passing `plan` fixes the planting and evaluates it.</span></span>
-<span id="cb1-4"><a></a><span class="kw">function</span> <span class="fu">farm_model</span>(factors, probs; plan<span class="op">=</span><span class="cn">nothing</span>)</span>
-<span id="cb1-5"><a></a>    n <span class="op">=</span> <span class="fu">length</span>(factors)</span>
-<span id="cb1-6"><a></a>    model <span class="op">=</span> <span class="fu">Model</span>(HiGHS.Optimizer)</span>
-<span id="cb1-7"><a></a>    <span class="fu">set_silent</span>(model)</span>
-<span id="cb1-8"><a></a>    <span class="pp">@variable</span>(model, x[<span class="fl">1</span><span class="op">:</span><span class="fl">3</span>] <span class="op">&gt;=</span> <span class="fl">0</span>)             <span class="co"># acres planted</span></span>
-<span id="cb1-9"><a></a>    <span class="pp">@variable</span>(model, y[<span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">:</span>n] <span class="op">&gt;=</span> <span class="fl">0</span>)        <span class="co"># T bought, per scenario</span></span>
-<span id="cb1-10"><a></a>    <span class="pp">@variable</span>(model, z[<span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">1</span><span class="op">:</span>n] <span class="op">&gt;=</span> <span class="fl">0</span>)        <span class="co"># T sold, per scenario</span></span>
-<span id="cb1-11"><a></a>    <span class="cf">if</span> plan <span class="op">!==</span> <span class="cn">nothing</span></span>
-<span id="cb1-12"><a></a>        <span class="pp">@constraint</span>(model, x <span class="op">.==</span> plan)</span>
-<span id="cb1-13"><a></a>    <span class="cf">end</span></span>
-<span id="cb1-14"><a></a>    <span class="pp">@constraint</span>(model, <span class="fu">sum</span>(x) <span class="op">&lt;=</span> land)</span>
-<span id="cb1-15"><a></a>    <span class="cf">for</span> s <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n</span>
-<span id="cb1-16"><a></a>        crop_yield <span class="op">=</span> avg_yield <span class="op">.*</span> factors[s]</span>
-<span id="cb1-17"><a></a>        <span class="pp">@constraint</span>(model, crop_yield[<span class="fl">1</span>] <span class="op">*</span> x[<span class="fl">1</span>] <span class="op">+</span> y[<span class="fl">1</span>, s] <span class="op">-</span> z[<span class="fl">1</span>, s] <span class="op">&gt;=</span> feed_need[<span class="fl">1</span>])</span>
-<span id="cb1-18"><a></a>        <span class="pp">@constraint</span>(model, crop_yield[<span class="fl">2</span>] <span class="op">*</span> x[<span class="fl">2</span>] <span class="op">+</span> y[<span class="fl">2</span>, s] <span class="op">-</span> z[<span class="fl">2</span>, s] <span class="op">&gt;=</span> feed_need[<span class="fl">2</span>])</span>
-<span id="cb1-19"><a></a>        <span class="pp">@constraint</span>(model, z[<span class="fl">3</span>, s] <span class="op">+</span> z[<span class="fl">4</span>, s] <span class="op">&lt;=</span> crop_yield[<span class="fl">3</span>] <span class="op">*</span> x[<span class="fl">3</span>])</span>
-<span id="cb1-20"><a></a>        <span class="pp">@constraint</span>(model, z[<span class="fl">3</span>, s] <span class="op">&lt;=</span> beet_quota)</span>
-<span id="cb1-21"><a></a>    <span class="cf">end</span></span>
-<span id="cb1-22"><a></a>    <span class="pp">@objective</span>(model, Max, <span class="fu">-sum</span>(plant_cost <span class="op">.*</span> x) <span class="op">+</span> <span class="fu">sum</span>(probs[s] <span class="op">*</span> (</span>
-<span id="cb1-23"><a></a>        sell_price[<span class="fl">1</span>] <span class="op">*</span> z[<span class="fl">1</span>, s] <span class="op">+</span> sell_price[<span class="fl">2</span>] <span class="op">*</span> z[<span class="fl">2</span>, s] <span class="op">+</span> beet_price <span class="op">*</span> z[<span class="fl">3</span>, s] <span class="op">+</span></span>
-<span id="cb1-24"><a></a>        beet_excess_price <span class="op">*</span> z[<span class="fl">4</span>, s] <span class="op">-</span> buy_price[<span class="fl">1</span>] <span class="op">*</span> y[<span class="fl">1</span>, s] <span class="op">-</span> buy_price[<span class="fl">2</span>] <span class="op">*</span> y[<span class="fl">2</span>, s])</span>
-<span id="cb1-25"><a></a>        <span class="cf">for</span> s <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n))</span>
-<span id="cb1-26"><a></a>    <span class="fu">optimize!</span>(model)</span>
-<span id="cb1-27"><a></a>    <span class="cf">return</span> <span class="fu">value</span>.(x), <span class="fu">objective_value</span>(model)</span>
-<span id="cb1-28"><a></a><span class="cf">end</span></span>
-<span id="cb1-29"><a></a></span>
-<span id="cb1-30"><a></a><span class="co"># The best plan for each year type, if that year were known in advance</span></span>
-<span id="cb1-31"><a></a>known_plan <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>, <span class="fl">3</span>)</span>
-<span id="cb1-32"><a></a>known_profit <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
-<span id="cb1-33"><a></a><span class="cf">for</span> s <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
-<span id="cb1-34"><a></a>    known_plan[s, <span class="op">:</span>], known_profit[s] <span class="op">=</span> <span class="fu">farm_model</span>([yield_factor[s]], [<span class="fl">1</span>])</span>
-<span id="cb1-35"><a></a><span class="cf">end</span></span>
-<span id="cb1-36"><a></a>average_plan <span class="op">=</span> known_plan[<span class="fl">2</span>, <span class="op">:</span>]</span>
-<span id="cb1-37"><a></a></span>
-<span id="cb1-38"><a></a><span class="co"># The two-stage plan: one planting for all three year types</span></span>
-<span id="cb1-39"><a></a>stochastic_plan, stochastic_profit <span class="op">=</span> <span class="fu">farm_model</span>(yield_factor, prob)</span>
-<span id="cb1-40"><a></a></span>
-<span id="cb1-41"><a></a><span class="co"># Each plan's profit in each year type, with the best purchases and sales</span></span>
-<span id="cb1-42"><a></a>average_plan_by_year <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
-<span id="cb1-43"><a></a>stochastic_plan_by_year <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
-<span id="cb1-44"><a></a><span class="cf">for</span> s <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
-<span id="cb1-45"><a></a>    average_plan_by_year[s] <span class="op">=</span> <span class="fu">farm_model</span>([yield_factor[s]], [<span class="fl">1</span>]; plan<span class="op">=</span>average_plan)[<span class="fl">2</span>]</span>
-<span id="cb1-46"><a></a>    stochastic_plan_by_year[s] <span class="op">=</span> <span class="fu">farm_model</span>([yield_factor[s]], [<span class="fl">1</span>]; plan<span class="op">=</span>stochastic_plan)[<span class="fl">2</span>]</span>
-<span id="cb1-47"><a></a><span class="cf">end</span></span>
-<span id="cb1-48"><a></a>eev <span class="op">=</span> <span class="fu">sum</span>(prob <span class="op">.*</span> average_plan_by_year)       <span class="co"># average plan, judged under uncertainty</span></span>
-<span id="cb1-49"><a></a>wait_and_see <span class="op">=</span> <span class="fu">sum</span>(prob <span class="op">.*</span> known_profit)      <span class="co"># perfect information</span></span>
-<span id="cb1-50"><a></a>vss <span class="op">=</span> stochastic_profit <span class="op">-</span> eev</span>
-<span id="cb1-51"><a></a>evpi <span class="op">=</span> wait_and_see <span class="op">-</span> stochastic_profit</span>
-<span id="cb1-52"><a></a></span>
-<span id="cb1-53"><a></a><span class="co"># Beets the average-year plan grows above the quota in a good year [T]</span></span>
-<span id="cb1-54"><a></a>good_year_excess_beets <span class="op">=</span> average_plan[<span class="fl">3</span>] <span class="op">*</span> avg_yield[<span class="fl">3</span>] <span class="op">*</span> yield_factor[<span class="fl">1</span>] <span class="op">-</span> beet_quota</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-3"><a></a><span class="co"># Passing `plan` fixes the planting and evaluates it; passing `min_profit`</span></span>
+<span id="cb1-4"><a></a><span class="co"># requires at least that profit in every scenario; `price_factors` scales the</span></span>
+<span id="cb1-5"><a></a><span class="co"># wheat and corn prices in each scenario. Returns the planting, the expected</span></span>
+<span id="cb1-6"><a></a><span class="co"># profit, and the purchases and sales in each scenario.</span></span>
+<span id="cb1-7"><a></a><span class="kw">function</span> <span class="fu">farm_model</span>(factors, probs; plan<span class="op">=</span><span class="cn">nothing</span>, min_profit<span class="op">=</span><span class="cn">nothing</span>,</span>
+<span id="cb1-8"><a></a>                    price_factors<span class="op">=</span><span class="fu">ones</span>(<span class="fu">length</span>(factors)))</span>
+<span id="cb1-9"><a></a>    n <span class="op">=</span> <span class="fu">length</span>(factors)</span>
+<span id="cb1-10"><a></a>    model <span class="op">=</span> <span class="fu">Model</span>(HiGHS.Optimizer)</span>
+<span id="cb1-11"><a></a>    <span class="fu">set_silent</span>(model)</span>
+<span id="cb1-12"><a></a>    <span class="pp">@variable</span>(model, x[<span class="fl">1</span><span class="op">:</span><span class="fl">3</span>] <span class="op">&gt;=</span> <span class="fl">0</span>)             <span class="co"># acres planted</span></span>
+<span id="cb1-13"><a></a>    <span class="pp">@variable</span>(model, y[<span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">:</span>n] <span class="op">&gt;=</span> <span class="fl">0</span>)        <span class="co"># T bought, per scenario</span></span>
+<span id="cb1-14"><a></a>    <span class="pp">@variable</span>(model, z[<span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">1</span><span class="op">:</span>n] <span class="op">&gt;=</span> <span class="fl">0</span>)        <span class="co"># T sold, per scenario</span></span>
+<span id="cb1-15"><a></a>    <span class="cf">if</span> plan <span class="op">!==</span> <span class="cn">nothing</span></span>
+<span id="cb1-16"><a></a>        <span class="pp">@constraint</span>(model, x <span class="op">.==</span> plan)</span>
+<span id="cb1-17"><a></a>    <span class="cf">end</span></span>
+<span id="cb1-18"><a></a>    <span class="pp">@constraint</span>(model, <span class="fu">sum</span>(x) <span class="op">&lt;=</span> land)</span>
+<span id="cb1-19"><a></a>    <span class="cf">for</span> s <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n</span>
+<span id="cb1-20"><a></a>        crop_yield <span class="op">=</span> avg_yield <span class="op">.*</span> factors[s]</span>
+<span id="cb1-21"><a></a>        <span class="pp">@constraint</span>(model, crop_yield[<span class="fl">1</span>] <span class="op">*</span> x[<span class="fl">1</span>] <span class="op">+</span> y[<span class="fl">1</span>, s] <span class="op">-</span> z[<span class="fl">1</span>, s] <span class="op">&gt;=</span> feed_need[<span class="fl">1</span>])</span>
+<span id="cb1-22"><a></a>        <span class="pp">@constraint</span>(model, crop_yield[<span class="fl">2</span>] <span class="op">*</span> x[<span class="fl">2</span>] <span class="op">+</span> y[<span class="fl">2</span>, s] <span class="op">-</span> z[<span class="fl">2</span>, s] <span class="op">&gt;=</span> feed_need[<span class="fl">2</span>])</span>
+<span id="cb1-23"><a></a>        <span class="pp">@constraint</span>(model, z[<span class="fl">3</span>, s] <span class="op">+</span> z[<span class="fl">4</span>, s] <span class="op">&lt;=</span> crop_yield[<span class="fl">3</span>] <span class="op">*</span> x[<span class="fl">3</span>])</span>
+<span id="cb1-24"><a></a>        <span class="pp">@constraint</span>(model, z[<span class="fl">3</span>, s] <span class="op">&lt;=</span> beet_quota)</span>
+<span id="cb1-25"><a></a>    <span class="cf">end</span></span>
+<span id="cb1-26"><a></a>    <span class="co"># profit in each scenario: sales, minus purchases and planting</span></span>
+<span id="cb1-27"><a></a>    <span class="pp">@expression</span>(model, profit[s <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n], <span class="fu">-sum</span>(plant_cost <span class="op">.*</span> x) <span class="op">+</span></span>
+<span id="cb1-28"><a></a>        price_factors[s] <span class="op">*</span> (sell_price[<span class="fl">1</span>] <span class="op">*</span> z[<span class="fl">1</span>, s] <span class="op">+</span> sell_price[<span class="fl">2</span>] <span class="op">*</span> z[<span class="fl">2</span>, s] <span class="op">-</span></span>
+<span id="cb1-29"><a></a>        buy_price[<span class="fl">1</span>] <span class="op">*</span> y[<span class="fl">1</span>, s] <span class="op">-</span> buy_price[<span class="fl">2</span>] <span class="op">*</span> y[<span class="fl">2</span>, s]) <span class="op">+</span></span>
+<span id="cb1-30"><a></a>        beet_price <span class="op">*</span> z[<span class="fl">3</span>, s] <span class="op">+</span> beet_excess_price <span class="op">*</span> z[<span class="fl">4</span>, s])</span>
+<span id="cb1-31"><a></a>    <span class="cf">if</span> min_profit <span class="op">!==</span> <span class="cn">nothing</span></span>
+<span id="cb1-32"><a></a>        <span class="pp">@constraint</span>(model, [s <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n], profit[s] <span class="op">&gt;=</span> min_profit)</span>
+<span id="cb1-33"><a></a>    <span class="cf">end</span></span>
+<span id="cb1-34"><a></a>    <span class="pp">@objective</span>(model, Max, <span class="fu">sum</span>(probs[s] <span class="op">*</span> profit[s] <span class="cf">for</span> s <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n))</span>
+<span id="cb1-35"><a></a>    <span class="fu">optimize!</span>(model)</span>
+<span id="cb1-36"><a></a>    <span class="cf">return</span> <span class="fu">value</span>.(x), <span class="fu">objective_value</span>(model), <span class="fu">value</span>.(y), <span class="fu">value</span>.(z)</span>
+<span id="cb1-37"><a></a><span class="cf">end</span></span>
+<span id="cb1-38"><a></a></span>
+<span id="cb1-39"><a></a><span class="co"># The best plan for each year type</span></span>
+<span id="cb1-40"><a></a>known_plan <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>, <span class="fl">3</span>)</span>
+<span id="cb1-41"><a></a>known_profit <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
+<span id="cb1-42"><a></a><span class="cf">for</span> s <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
+<span id="cb1-43"><a></a>    known_plan[s, <span class="op">:</span>], known_profit[s] <span class="op">=</span> <span class="fu">farm_model</span>([yield_factor[s]], [<span class="fl">1</span>])</span>
+<span id="cb1-44"><a></a><span class="cf">end</span></span>
+<span id="cb1-45"><a></a>average_plan <span class="op">=</span> known_plan[<span class="fl">2</span>, <span class="op">:</span>]</span>
+<span id="cb1-46"><a></a></span>
+<span id="cb1-47"><a></a><span class="co"># The two-stage plan: one planting for all three year types</span></span>
+<span id="cb1-48"><a></a>stochastic_plan, stochastic_profit, stochastic_buy, stochastic_sell <span class="op">=</span> <span class="fu">farm_model</span>(yield_factor, prob)</span>
+<span id="cb1-49"><a></a></span>
+<span id="cb1-50"><a></a><span class="co"># Each plan's profit in each year type, with the best purchases and sales</span></span>
+<span id="cb1-51"><a></a>average_plan_by_year <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
+<span id="cb1-52"><a></a>stochastic_plan_by_year <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
+<span id="cb1-53"><a></a><span class="cf">for</span> s <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
+<span id="cb1-54"><a></a>    average_plan_by_year[s] <span class="op">=</span> <span class="fu">farm_model</span>([yield_factor[s]], [<span class="fl">1</span>]; plan<span class="op">=</span>average_plan)[<span class="fl">2</span>]</span>
+<span id="cb1-55"><a></a>    stochastic_plan_by_year[s] <span class="op">=</span> <span class="fu">farm_model</span>([yield_factor[s]], [<span class="fl">1</span>]; plan<span class="op">=</span>stochastic_plan)[<span class="fl">2</span>]</span>
+<span id="cb1-56"><a></a><span class="cf">end</span></span>
+<span id="cb1-57"><a></a>eev <span class="op">=</span> <span class="fu">sum</span>(prob <span class="op">.*</span> average_plan_by_year)       <span class="co"># average plan, judged under uncertainty</span></span>
+<span id="cb1-58"><a></a>wait_and_see <span class="op">=</span> <span class="fu">sum</span>(prob <span class="op">.*</span> known_profit)      <span class="co"># perfect information</span></span>
+<span id="cb1-59"><a></a>vss <span class="op">=</span> stochastic_profit <span class="op">-</span> eev</span>
+<span id="cb1-60"><a></a>evpi <span class="op">=</span> wait_and_see <span class="op">-</span> stochastic_profit</span>
+<span id="cb1-61"><a></a></span>
+<span id="cb1-62"><a></a><span class="co"># Beets the average-year plan grows above the quota in a good year [T]</span></span>
+<span id="cb1-63"><a></a>good_year_excess_beets <span class="op">=</span> average_plan[<span class="fl">3</span>] <span class="op">*</span> avg_yield[<span class="fl">3</span>] <span class="op">*</span> yield_factor[<span class="fl">1</span>] <span class="op">-</span> beet_quota</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <table class="caption-top">
@@ -534,56 +539,44 @@
 </tr>
 </tbody>
 </table>
-<p>The best plan depends on the year, and planting happens before the year is known.</p>
-<aside class="notes">
-<p>The folded cell is the whole lecture’s computation: one function that solves the farm problem for any set of scenarios, and can also evaluate a fixed plan. With one scenario it is the ordinary LP. Read the table: in a good year plant less beet land (the quota fills sooner) and more wheat; in a bad year plant more beets to reach the quota and buy corn. The average-year plan earns $118,600, but only if the year is average.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<p>The optimal planting decision depends on the yields for each year — which we don’t know until after planting.</p>
 </section>
 <section id="what-changes-about-the-variables" class="slide level2">
 <h2>What Changes About the Variables?</h2>
 <div class="columns">
 <div class="column" style="width:55%;">
-<p><strong><em>What should change about our decision variables?</em></strong></p>
 <div class="fragment fade-in">
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th style="text-align: center;">Variable</th>
-<th style="text-align: left;">Copies</th>
+<th style="text-align: left;">Role</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(x_i\)</span>, acres planted</td>
-<td style="text-align: left;"><strong>one</strong> (decided before the yield)</td>
+<td style="text-align: left;">fixed decision before the scenario is revealed</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(y_{is}\)</span>, T bought</td>
-<td style="text-align: left;">one per scenario <span class="math inline">\(s\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(z_{ij}\)</span>, T sold</td>
+<td style="text-align: left;">quantity sold sold scenario <span class="math inline">\(j\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(z_{is}\)</span>, T sold</td>
-<td style="text-align: left;">one per scenario <span class="math inline">\(s\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(y_{ij}\)</span>, T bought</td>
+<td style="text-align: left;">quantity to buy in scenario <span class="math inline">\(j\)</span> (<strong>recourse</strong>)</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div><div class="column" style="width:45%;">
+<div class="fragment fade-in">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figures/farm-scen-tree.svg"></p>
 <figcaption>Scenario tree</figcaption>
 </figure>
+</div>
 </div>
 </div></div>
 <aside class="notes">
@@ -600,38 +593,28 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="one-scenarios-constraints" class="slide level2">
-<h2>One Scenario’s Constraints</h2>
-<p><strong>What are the good-year constraints?</strong> (yields <span class="math inline">\(\times\)</span> 1.2)</p>
-<div class="fragment fade-in">
+<section id="the-full-two-stage-constraints" class="slide level2">
+<h2>The Full Two-Stage Constraints</h2>
 <p><span class="math display">\[
-\begin{aligned}
-&amp; 3x_1 + y_{1,\text{good}} - z_{1,\text{good}} \geq 200, \qquad 3.6x_2 + y_{2,\text{good}} - z_{2,\text{good}} \geq 240 \\
-&amp; z_{3,\text{good}} + z_{4,\text{good}} \leq 24x_3, \qquad z_{3,\text{good}} \leq 6000
-\end{aligned}
+\begin{alignedat}{2}
+&amp;x_1 + x_2 + x_3 \leq 500 \\[0.5ex]
+&amp;\color{blue}3x_1 + y_{11} - z_{11} \geq 200, &amp;&amp; \qquad \color{blue}3.6x_2 + y_{21} - z_{21} \geq 240 \\[0.5ex]
+&amp;\color{blue}z_{31} + z_{41} \leq 24x_3, &amp;&amp; \qquad \color{blue}z_{31} \leq 6000 \\[0.5ex]
+&amp;\color{purple}2.5x_1 + y_{12} - z_{12} \geq 200, &amp;&amp; \qquad \color{purple}3x_2 + y_{22} - z_{22} \geq 240 \\[0.5ex]
+&amp;\color{purple}z_{32} + z_{42} \leq 20x_3, &amp;&amp; \qquad \color{purple}z_{32} \leq 6000 \\[0.5ex]
+&amp;\color{red}2x_1 + y_{13} - z_{13} \geq 200, &amp;&amp; \qquad \color{red}2.4x_2 + y_{23} - z_{23} \geq 240 \\[0.5ex]
+&amp;\color{red}z_{33} + z_{43} \leq 16x_3, &amp;&amp; \qquad \color{red}z_{33} \leq 6000 \\[0.5ex]
+&amp;x_i, y_{ij}, z_{ij} \geq 0
+\end{alignedat}
 \]</span></p>
-<p>The average and bad years are the same with yields <span class="math inline">\(\times\)</span> 1 and <span class="math inline">\(\times\)</span> 0.8. There is <strong>one</strong> land constraint, <span class="math inline">\(x_1 + x_2 + x_3 \leq 500\)</span>, shared by all three.</p>
-</div>
-<aside class="notes">
-<p>Board item. The good-year block comes from the one-year formulation: every yield is multiplied by 1.2 (2.5 becomes 3, 3 becomes 3.6, 20 becomes 24), and the purchase and sale variables get a good-year subscript. The planting variables appear unchanged in every scenario’s block: they are the first-stage decisions. The full set of constraints is in the appendix.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<p>Scenarios: good (blue), average (purple), bad (red).</p>
 </section>
 <section id="the-two-stage-objective" class="slide level2">
 <h2>The Two-Stage Objective</h2>
-<p>Maximize <strong>expected</strong> profit: minus the planting cost, plus each scenario’s sales minus purchases, weighted by its probability.</p>
-<p><span class="math display">\[\max_{\mathbf{x}, \mathbf{y}, \mathbf{z}} \quad -\sum_i c_i x_i + \sum_s p_s \left(\text{sales}_s - \text{purchases}_s\right)\]</span></p>
+<p>Typically to maximize <strong>expected</strong> profit:</p>
+<p><span class="math display">\[\max_{\mathbf{x}, \mathbf{y}, \mathbf{z}} \quad -\sum_i c_i x_i + \sum_j p_j \left(\sum_i z_{i,j} - y_{i,j}\right)\]</span></p>
 <div class="fragment fade-in">
-<p>Other choices are possible: a quantile to hedge against bad years, or the variance of profit to smooth year-to-year swings.</p>
+<p>Other choices are possible: a quantile to hedge against bad years, or the variance of profit to smooth year-to-year swings. The appendix shows a related approach: <a href="#/risk-averse-optimization">a floor on the profit in every year type</a>.</p>
 </div>
 <aside class="notes">
 <p>The expected value is one summary of performance across scenarios; it is not the only defensible one. A farmer who cannot survive a bad year might instead maximize the bad-year profit or a low quantile. That choice is a value judgment about risk, and it can change the plan.</p>
@@ -647,8 +630,8 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-stochastic-plan" class="slide level2">
-<h2>The Stochastic Plan</h2>
+<section id="the-stochastic-plan-decision-under-uncertainty" class="slide level2">
+<h2>The Stochastic Plan (Decision Under Uncertainty)</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -674,14 +657,160 @@
 </tbody>
 </table>
 <p>Expected profit of the two-stage plan: <strong>$108,390</strong>.</p>
-<div class="fragment fade-in">
-<ul>
-<li><strong>Good year</strong>: no beets above the quota, which sell for $10/T.</li>
-<li><strong>Average and bad years</strong>: less beet land, so less profit.</li>
-</ul>
-</div>
 <aside class="notes">
 <p>The two-stage plan moves 50 acres from beets to wheat. Wheat on that land earns less than beets sold at the quota price, so in average and bad years the two-stage plan earns less than the average-year plan. In a good year the average-year plan grows 1,200 T of beets above the quota, which sell for only $10 a tonne, while the two-stage plan’s beets stay within the quota; there the wheat earns more.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-two-stage-plan-good-year" class="slide level2">
+<h2>The Two-Stage Plan (Good Year)</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Crop</th>
+<th style="text-align: right;">Harvest (T)</th>
+<th style="text-align: right;">Feed (T)</th>
+<th style="text-align: right;">Bought (T)</th>
+<th style="text-align: right;">Sold (T)</th>
+<th style="text-align: right;">Price ($/T)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Wheat</td>
+<td style="text-align: right;">510</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">310</td>
+<td style="text-align: right;">170</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Corn</td>
+<td style="text-align: right;">288</td>
+<td style="text-align: right;">240</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">150</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Beets</td>
+<td style="text-align: right;">6,000</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">6,000</td>
+<td style="text-align: right;">36</td>
+</tr>
+</tbody>
+</table>
+<p>Profit: sales $275,900 − purchases $0 − planting $108,900 = <strong>$167,000</strong>.</p>
+<aside class="notes">
+<p>The planting is fixed before the yield is known; the purchases and sales are the recourse, chosen after the harvest for each year type. These are the recourse decisions the two-stage model chose for each year.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-two-stage-plan-average-year" class="slide level2">
+<h2>The Two-Stage Plan (Average Year)</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Crop</th>
+<th style="text-align: right;">Harvest (T)</th>
+<th style="text-align: right;">Feed (T)</th>
+<th style="text-align: right;">Bought (T)</th>
+<th style="text-align: right;">Sold (T)</th>
+<th style="text-align: right;">Price ($/T)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Wheat</td>
+<td style="text-align: right;">425</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">225</td>
+<td style="text-align: right;">170</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Corn</td>
+<td style="text-align: right;">240</td>
+<td style="text-align: right;">240</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">150</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Beets</td>
+<td style="text-align: right;">5,000</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">5,000</td>
+<td style="text-align: right;">36</td>
+</tr>
+</tbody>
+</table>
+<p>Profit: sales $218,250 − purchases $0 − planting $108,900 = <strong>$109,350</strong>.</p>
+</section>
+<section id="the-two-stage-plan-bad-year" class="slide level2">
+<h2>The Two-Stage Plan (Bad Year)</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Crop</th>
+<th style="text-align: right;">Harvest (T)</th>
+<th style="text-align: right;">Feed (T)</th>
+<th style="text-align: right;">Bought (T)</th>
+<th style="text-align: right;">Sold (T)</th>
+<th style="text-align: right;">Price ($/T)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Wheat</td>
+<td style="text-align: right;">340</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">140</td>
+<td style="text-align: right;">170</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Corn</td>
+<td style="text-align: right;">192</td>
+<td style="text-align: right;">240</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">150</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Beets</td>
+<td style="text-align: right;">4,000</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">4,000</td>
+<td style="text-align: right;">36</td>
+</tr>
+</tbody>
+</table>
+<p>Profit: sales $167,800 − purchases $10,080 − planting $108,900 = <strong>$48,820</strong>.</p>
+<aside class="notes">
+<p>Across the three years the profits average to the expected profit, $108,390, since each year type has probability 1/3.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -702,12 +831,12 @@
 <section id="can-we-compare-these-numbers" class="slide level2">
 <h2>Can We Compare These Numbers?</h2>
 <ul>
-<li>Average-year plan: <strong>$118,600</strong> profit</li>
-<li>Two-stage plan: <strong>$108,390</strong> expected profit</li>
+<li>Average-year plan: obtained <strong>$118,600</strong> profit</li>
+<li>Two-stage plan: obtained <strong>$108,390</strong> expected profit</li>
 </ul>
 <p>Is the average-year plan better?</p>
 <div class="fragment fade-in">
-<p><strong>No.</strong> $118,600 is what that plan earns <em>if the year is average</em>. To compare fairly, judge both plans across the same three year types.</p>
+<p><strong>No.</strong> $118,600 is what that plan earns <em>if the year is average</em>. To compare fairly, we need to compare the expected profit across the full scenario set.</p>
 </div>
 <aside class="notes">
 <p>The two numbers answer different questions: one is a single-scenario profit on paper, the other is an expected value under uncertainty.</p>
@@ -773,13 +902,279 @@
 </section>
 <section id="what-is-a-perfect-forecast-worth" class="slide level2">
 <h2>What Is a Perfect Forecast Worth?</h2>
-<p>With perfect foresight the farmer plants the best plan for each year: expected profit $115,406.</p>
+<p>With perfect knowledge of the upcoming year the farmer makes the best decision for that year: expected profit $115,406.</p>
 <p><strong>Expected value of perfect information (EVPI)</strong>: $115,406 − $108,390 = <strong>$7,016</strong> per year.</p>
-<div class="fragment fade-in">
-<p>The EVPI is about <strong>6 times</strong> the VSS. It is the most the farmer should pay for any forecast.</p>
-</div>
 <aside class="notes">
 <p>With perfect information the farmer would know the year before planting and use the best plan for it: the expected profit is the average of the three known-year profits. The gap between that and the two-stage plan is the EVPI.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="scenario-trees" class="title-slide slide level1 center">
+<h1>Scenario Trees</h1>
+
+</section>
+<section id="scenario-trees-1" class="slide level2">
+<h2>Scenario Trees</h2>
+<p><strong>Scenario trees</strong> are a useful way to map out discrete scenarios, particularly when their probabilities are chained together or conditional.</p>
+</section>
+<section id="parts-of-a-scenario-tree" class="slide level2">
+<h2>Parts of a Scenario Tree</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<ul>
+<li>The <strong>root</strong> is the here-and-now decision (planting).</li>
+<li>Each <strong>branch</strong> is an outcome, with its probability.</li>
+<li>Each later <strong>node</strong> holds the recourse decided there (buying and selling).</li>
+<li>A path from the root to a <strong>leaf</strong> is a <strong>scenario</strong>.</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/farm-scen-tree.svg"></p>
+<figcaption>Scenario tree</figcaption>
+</figure>
+</div>
+</div></div>
+</section></section>
+<section>
+<section id="monte-carlo-scenarios" class="title-slide slide level1 center">
+<h1>Monte Carlo Scenarios</h1>
+
+</section>
+<section id="a-continuous-yield-distribution" class="slide level2">
+<h2>A Continuous Yield Distribution</h2>
+<div id="26" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a></a><span class="co"># A normal yield factor with the same mean (1) and standard deviation as the</span></span>
+<span id="cb2-2"><a></a><span class="co"># three year types; as there, one factor scales all three crops' yields</span></span>
+<span id="cb2-3"><a></a>yield_sd <span class="op">=</span> <span class="fu">sqrt</span>(<span class="fu">sum</span>(prob <span class="op">.*</span> (yield_factor <span class="op">.-</span> <span class="fl">1</span>) <span class="op">.^</span> <span class="fl">2</span>))</span>
+<span id="cb2-4"><a></a>yield_dist <span class="op">=</span> <span class="fu">Normal</span>(<span class="fl">1</span>, yield_sd)</span>
+<span id="cb2-5"><a></a></span>
+<span id="cb2-6"><a></a>factor_grid <span class="op">=</span> <span class="fl">0.4</span><span class="op">:</span><span class="fl">0.01</span><span class="op">:</span><span class="fl">1.6</span></span>
+<span id="cb2-7"><a></a>p_dist <span class="op">=</span> <span class="fu">plot</span>(factor_grid, <span class="fu">pdf</span>.(yield_dist, factor_grid), color<span class="op">=</span>cb_blue,</span>
+<span id="cb2-8"><a></a>    xlabel<span class="op">=</span><span class="st">"Yield factor for all three crops (relative to an average year)"</span>,</span>
+<span id="cb2-9"><a></a>    ylabel<span class="op">=</span><span class="st">"Probability density"</span>,</span>
+<span id="cb2-10"><a></a>    ylims<span class="op">=</span>(<span class="fl">0</span>, <span class="fl">3</span>))</span>
+<span id="cb2-11"><a></a><span class="fu">vline!</span>(p_dist, yield_factor, color<span class="op">=</span>cb_vermillion, linestyle<span class="op">=:</span>dash, linewidth<span class="op">=</span><span class="fl">2</span>)</span>
+<span id="cb2-12"><a></a><span class="cf">for</span> s <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
+<span id="cb2-13"><a></a>    <span class="fu">annotate!</span>(p_dist, yield_factor[s] <span class="op">+</span> <span class="fl">0.015</span>, <span class="fl">2.8</span>,</span>
+<span id="cb2-14"><a></a>        <span class="fu">text</span>(scenarios[s], plot_font, <span class="fl">16</span>, cb_vermillion, <span class="op">:</span>left))</span>
+<span id="cb2-15"><a></a><span class="cf">end</span></span>
+<span id="cb2-16"><a></a><span class="fu">plot!</span>(p_dist, size<span class="op">=</span>(<span class="fl">1200</span>, <span class="fl">340</span>), left_margin<span class="op">=</span><span class="fl">12</span>mm, bottom_margin<span class="op">=</span><span class="fl">12</span>mm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<!--?xml version="1.0" encoding="utf-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="1200" height="340" viewbox="0 0 4800 1360">
+<defs>
+  <clippath id="clip480">
+    <rect x="0" y="0" width="4800" height="1360"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip480)" d="M0 1360 L4800 1360 L4800 3.55271e-14 L0 3.55271e-14  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip481">
+    <rect x="960" y="0" width="3361" height="1360"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip480)" d="M384.71 1028.7 L4752.76 1028.7 L4752.76 47.2441 L384.71 47.2441  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip482">
+    <rect x="384" y="47" width="4369" height="982"></rect>
+  </clippath>
+</defs>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="384.71,1028.7 4752.76,1028.7 "></polyline>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="384.71,47.2441 4752.76,47.2441 "></polyline>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="851.734,1028.7 851.734,1009.8 "></polyline>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1710.23,1028.7 1710.23,1009.8 "></polyline>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2568.73,1028.7 2568.73,1009.8 "></polyline>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3427.23,1028.7 3427.23,1009.8 "></polyline>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4285.73,1028.7 4285.73,1009.8 "></polyline>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="851.734,47.2441 851.734,66.1417 "></polyline>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1710.23,47.2441 1710.23,66.1417 "></polyline>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2568.73,47.2441 2568.73,66.1417 "></polyline>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3427.23,47.2441 3427.23,66.1417 "></polyline>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4285.73,47.2441 4285.73,66.1417 "></polyline>
+<g clip-path="url(#clip480)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 851.734, 1156.19)" x="851.734" y="1156.19">0.50</text>
+</g>
+<g clip-path="url(#clip480)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 1710.23, 1156.19)" x="1710.23" y="1156.19">0.75</text>
+</g>
+<g clip-path="url(#clip480)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 2568.73, 1156.19)" x="2568.73" y="1156.19">1.00</text>
+</g>
+<g clip-path="url(#clip480)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 3427.23, 1156.19)" x="3427.23" y="1156.19">1.25</text>
+</g>
+<g clip-path="url(#clip480)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 4285.73, 1156.19)" x="4285.73" y="1156.19">1.50</text>
+</g>
+<g clip-path="url(#clip480)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:112px; text-anchor:middle;" transform="rotate(0, 2568.73, 1317.09)" x="2568.73" y="1317.09">Yield factor for all three crops (relative to an average year)</text>
+</g>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="384.71,1028.7 384.71,47.2441 "></polyline>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4752.76,1028.7 4752.76,47.2441 "></polyline>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="384.71,1028.7 403.607,1028.7 "></polyline>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="384.71,701.548 403.607,701.548 "></polyline>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="384.71,374.396 403.607,374.396 "></polyline>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="384.71,47.2441 403.607,47.2441 "></polyline>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4752.76,1028.7 4733.86,1028.7 "></polyline>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4752.76,701.548 4733.86,701.548 "></polyline>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4752.76,374.396 4733.86,374.396 "></polyline>
+<polyline clip-path="url(#clip480)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4752.76,47.2441 4733.86,47.2441 "></polyline>
+<g clip-path="url(#clip480)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 287.739, 1063.2)" x="287.739" y="1063.2">0</text>
+</g>
+<g clip-path="url(#clip480)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 287.739, 736.048)" x="287.739" y="736.048">1</text>
+</g>
+<g clip-path="url(#clip480)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 287.739, 408.896)" x="287.739" y="408.896">2</text>
+</g>
+<g clip-path="url(#clip480)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 287.739, 81.7441)" x="287.739" y="81.7441">3</text>
+</g>
+<g clip-path="url(#clip480)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:112px; text-anchor:middle;" transform="rotate(-90, 161.547, 537.972)" x="161.547" y="537.972">Probability density</text>
+</g>
+<polyline clip-path="url(#clip482)" style="stroke:#0072b2; stroke-linecap:round; stroke-linejoin:round; stroke-width:12; stroke-opacity:1; fill:none" points="508.334,1027.76 542.674,1027.53 577.014,1027.24 611.354,1026.89 645.694,1026.47 680.034,1025.95 714.374,1025.33 748.714,1024.58 783.054,1023.68 817.394,1022.61 851.734,1021.34 886.074,1019.84 920.414,1018.07 954.754,1016 989.094,1013.58 1023.43,1010.76 1057.77,1007.51 1092.11,1003.75 1126.45,999.442 1160.79,994.515 1195.13,988.908 1229.47,982.555 1263.81,975.388 1298.15,967.338 1332.49,958.338 1366.83,948.319 1401.17,937.217 1435.51,924.971 1469.85,911.526 1504.19,896.834 1538.53,880.856 1572.87,863.562 1607.21,844.935 1641.55,824.973 1675.89,803.687 1710.23,781.108 1744.57,757.283 1778.91,732.279 1813.25,706.183 1847.59,679.103 1881.93,651.167 1916.27,622.526 1950.61,593.347 1984.95,563.819 2019.29,534.146 2053.63,504.548 2087.97,475.258 2122.31,446.519 2156.65,418.579 2190.99,391.692 2225.33,366.11 2259.67,342.079 2294.01,319.841 2328.35,299.621 2362.69,281.632 2397.03,266.063 2431.37,253.085 2465.71,242.838 2500.05,235.435 2534.39,230.961 2568.73,229.464 2603.07,230.961 2637.41,235.435 2671.75,242.838 2706.09,253.085 2740.43,266.063 2774.77,281.632 2809.11,299.621 2843.45,319.841 2877.79,342.079 2912.13,366.11 2946.47,391.692 2980.81,418.579 3015.15,446.519 3049.49,475.258 3083.83,504.548 3118.17,534.146 3152.51,563.819 3186.85,593.347 3221.19,622.526 3255.53,651.167 3289.87,679.103 3324.21,706.183 3358.55,732.279 3392.89,757.283 3427.23,781.108 3461.57,803.687 3495.91,824.973 3530.25,844.935 3564.59,863.562 3598.93,880.856 3633.27,896.834 3667.61,911.526 3701.95,924.971 3736.29,937.217 3770.63,948.319 3804.97,958.338 3839.31,967.338 3873.65,975.388 3907.99,982.555 3942.33,988.908 3976.67,994.515 4011.01,999.442 4045.35,1003.75 4079.69,1007.51 4114.03,1010.76 4148.37,1013.58 4182.71,1016 4217.05,1018.07 4251.39,1019.84 4285.73,1021.34 4320.07,1022.61 4354.41,1023.68 4388.75,1024.58 4423.09,1025.33 4457.43,1025.95 4491.77,1026.47 4526.11,1026.89 4560.45,1027.24 4594.79,1027.53 4629.13,1027.76 "></polyline>
+<polyline clip-path="url(#clip482)" style="stroke:#d55e00; stroke-linecap:round; stroke-linejoin:round; stroke-width:8; stroke-opacity:1; fill:none" stroke-dasharray="32, 20" points="3255.53,2010.16 3255.53,-934.212 "></polyline>
+<polyline clip-path="url(#clip482)" style="stroke:#d55e00; stroke-linecap:round; stroke-linejoin:round; stroke-width:8; stroke-opacity:1; fill:none" stroke-dasharray="32, 20" points="2568.73,2010.16 2568.73,-934.212 "></polyline>
+<polyline clip-path="url(#clip482)" style="stroke:#d55e00; stroke-linecap:round; stroke-linejoin:round; stroke-width:8; stroke-opacity:1; fill:none" stroke-dasharray="32, 20" points="1881.93,2010.16 1881.93,-934.212 "></polyline>
+<g clip-path="url(#clip480)">
+<text style="fill:#d55e00; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:start;" transform="rotate(0, 3307.04, 147.174)" x="3307.04" y="147.174">Good</text>
+</g>
+<g clip-path="url(#clip480)">
+<text style="fill:#d55e00; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:start;" transform="rotate(0, 2620.24, 147.174)" x="2620.24" y="147.174">Average</text>
+</g>
+<g clip-path="url(#clip480)">
+<text style="fill:#d55e00; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:start;" transform="rotate(0, 1933.44, 147.174)" x="1933.44" y="147.174">Bad</text>
+</g>
+</svg>
+</div>
+</div>
+<p>Suppose the yield factor is normal, with the same mean (1) and standard deviation (0.16) as the three year types.</p>
+<aside class="notes">
+<p>The three year types have mean 1 and standard deviation 0.2 × √(2/3) ≈ 0.16; the normal distribution keeps both, but lets the yield take any value. As in the three year types, one factor scales the wheat, corn and beet yields together.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="prices-depend-on-the-yield" class="slide level2">
+<h2>Prices Depend on the Yield</h2>
+<p>Good harvests tend to lower prices. Suppose the wheat and corn prices, for selling and buying, are scaled by a price factor</p>
+<p><span class="math display">\[g = 1 - 0.5\,(f - 1) + \varepsilon, \qquad \varepsilon \sim \text{Normal}(0, 0.1),\]</span></p>
+<p>where <span class="math inline">\(f\)</span> is the yield factor. Beet prices are set by the contract. <strong>How many scenarios would a tree need?</strong></p>
+<div class="fragment fade-in">
+<p>With three yields and three prices for each, 9 a year, and <span class="math inline">\(9^T\)</span> over <span class="math inline">\(T\)</span> years.</p>
+</div>
+<aside class="notes">
+<p>The farmer’s yield stands in for the region’s harvest, which is what moves prices. The slope (a yield 20% above average lowers prices by 10%) and the noise from other markets are illustrative assumptions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="sample-average-approximation" class="slide level2">
+<h2>Sample Average Approximation</h2>
+<p><strong>How do we find the plan with the highest expected profit?</strong></p>
+<div class="fragment fade-in">
+<p><strong>Sample average approximation</strong>: draw <span class="math inline">\(n\)</span> years (a yield, then a price given it), each a scenario with probability <span class="math inline">\(p_j = 1/n\)</span>:</p>
+<p><span class="math display">\[\max_{\mathbf{x}, \mathbf{y}, \mathbf{z}} \quad -\sum_i c_i x_i + \frac{1}{n}\sum_{j=1}^n \left(\sum_i z_{i,j} - y_{i,j}\right)\]</span></p>
+<p>There are <span class="math inline">\(n\)</span> scenarios however many uncertainties each year has; the model needs a copy of <span class="math inline">\(\mathbf{y}\)</span> and <span class="math inline">\(\mathbf{z}\)</span> for each.</p>
+</div>
+<aside class="notes">
+<p>The constraints are the same as for the three year types, written once for each sampled year, and the wheat and corn prices in the objective are scaled by that year’s price factor.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="solving-with-sampled-years" class="slide level2">
+<h2>Solving with Sampled Years</h2>
+<div id="28" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a></a><span class="bu">Random</span>.<span class="fu">seed!</span>(<span class="fl">1</span>)</span>
+<span id="cb3-2"><a></a>n_samples <span class="op">=</span> <span class="fl">1000</span></span>
+<span id="cb3-3"><a></a>price_slope <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb3-4"><a></a>price_noise <span class="op">=</span> <span class="fu">Normal</span>(<span class="fl">0</span>, <span class="fl">0.1</span>)</span>
+<span id="cb3-5"><a></a>yield_samples <span class="op">=</span> <span class="fu">rand</span>(yield_dist, n_samples)</span>
+<span id="cb3-6"><a></a><span class="co"># the price factor given each year's yield</span></span>
+<span id="cb3-7"><a></a>price_samples <span class="op">=</span> <span class="fl">1</span> <span class="op">.-</span> price_slope <span class="op">.*</span> (yield_samples <span class="op">.-</span> <span class="fl">1</span>) <span class="op">.+</span></span>
+<span id="cb3-8"><a></a>    <span class="fu">rand</span>(price_noise, n_samples)</span>
+<span id="cb3-9"><a></a>sample_prob <span class="op">=</span> <span class="fu">fill</span>(<span class="fl">1</span> <span class="op">/</span> n_samples, n_samples)</span>
+<span id="cb3-10"><a></a>sampled_plan, sampled_profit <span class="op">=</span> <span class="fu">farm_model</span>(yield_samples, sample_prob;</span>
+<span id="cb3-11"><a></a>    price_factors<span class="op">=</span>price_samples)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Estimated expected profit: <strong>$108,961</strong>.</p>
+</section>
+<section id="the-sampled-plan" class="slide level2">
+<h2>The Sampled Plan</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Plan</th>
+<th style="text-align: right;">Wheat (acres)</th>
+<th style="text-align: right;">Corn (acres)</th>
+<th style="text-align: right;">Beets (acres)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Three year types</td>
+<td style="text-align: right;">170</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">250</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sampled, fixed prices</td>
+<td style="text-align: right;">141.9</td>
+<td style="text-align: right;">84</td>
+<td style="text-align: right;">274.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sampled, prices vary</td>
+<td style="text-align: right;">140.2</td>
+<td style="text-align: right;">84.9</td>
+<td style="text-align: right;">275</td>
+</tr>
+</tbody>
+</table>
+<p>The prices barely move the plan, but the estimated expected profit falls from $110,272 to $108,961: more grain is sold when prices are low, and corn is bought when they are high.</p>
+<aside class="notes">
+<p>The sampled plans grow more beets and less wheat. With three year types, beets beyond 250 acres go over the quota in the good year, one year in three. With yields that can take any value, the plan’s 275 acres of beets go over the quota only when the yield factor is above 1.09, in about 29% of years. The estimates are expected profits under the sampled distribution, so they aren’t comparable with the $108,390 from three year types.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -803,21 +1198,8 @@
 <li>The plan that is optimal for the average year need not be optimal in expectation.</li>
 <li>Two stages: <strong>one</strong> here-and-now decision, <strong>one recourse decision per scenario</strong>, weighted by probability.</li>
 <li><strong>Compare plans under uncertainty</strong>: VSS is what modeling uncertainty is worth; EVPI, what a perfect forecast is worth.</li>
-<li><strong>Scenario trees grow multiplicatively</strong> with every stage that has its own decision and uncertainty.</li>
+<li>A <strong>scenario tree</strong> lays out the scenarios: each path from the root to a leaf is one, and its probability is the product of the branch probabilities along it.</li>
 </ul>
-<aside class="notes">
-<p>With a decision and an uncertainty every year, the number of scenarios grows exponentially with the number of years.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section></section>
 <section>
 <section id="upcoming-schedule" class="title-slide slide level1 center">
@@ -826,8 +1208,8 @@
 </section>
 <section id="next-classes" class="slide level2">
 <h2>Next Classes</h2>
-<p><strong>Wednesday</strong>: Sequential decisions and dynamic programming.</p>
-<p><strong>Monday, November 23</strong>: Lab 4, scenario trees and sequential decisions for reservoir operations (bring a laptop).</p>
+<p><strong>Wednesday</strong>: Multi-stage scenario trees, sequential decisions and dynamic programming.</p>
+<p><strong>Monday, November 23</strong>: Lab 4, scenario trees and sequential decisions for reservoir operations.</p>
 <p><strong>Wednesday, November 25</strong>: No class (Thanksgiving).</p>
 </section>
 <section id="assessments" class="slide level2">
@@ -841,26 +1223,490 @@
 <h1>Appendix</h1>
 
 </section>
-<section id="the-full-two-stage-constraints" class="slide level2">
-<h2>The Full Two-Stage Constraints</h2>
+<section id="risk-averse-optimization" class="slide level2">
+<h2>“Risk-Averse” Optimization</h2>
+<p>The two-stage plan earns $48,820 in a bad year. <strong>What if the farmer needs a profit of at least <span class="math inline">\(F\)</span> in every year?</strong></p>
+<div class="fragment fade-in">
+<p>Keep expected profit as the objective, and add a constraint for each scenario <span class="math inline">\(j\)</span>:</p>
 <p><span class="math display">\[
-\begin{alignedat}{2}
-&amp;x_1 + x_2 + x_3 \leq 500 \\[0.5ex]
-&amp;\color{blue}3x_1 + y_{11} - z_{11} \geq 200, &amp;&amp; \qquad \color{blue}3.6x_2 + y_{21} - z_{21} \geq 240 \\[0.5ex]
-&amp;\color{blue}z_{31} + z_{41} \leq 24x_3, &amp;&amp; \qquad \color{blue}z_{31} \leq 6000 \\[0.5ex]
-&amp;\color{purple}2.5x_1 + y_{12} - z_{12} \geq 200, &amp;&amp; \qquad \color{purple}3x_2 + y_{22} - z_{22} \geq 240 \\[0.5ex]
-&amp;\color{purple}z_{32} + z_{42} \leq 20x_3, &amp;&amp; \qquad \color{purple}z_{32} \leq 6000 \\[0.5ex]
-&amp;\color{red}2x_1 + y_{13} - z_{13} \geq 200, &amp;&amp; \qquad \color{red}2.4x_2 + y_{23} - z_{23} \geq 240 \\[0.5ex]
-&amp;\color{red}z_{33} + z_{43} \leq 16x_3, &amp;&amp; \qquad \color{red}z_{33} \leq 6000 \\[0.5ex]
-&amp;x_i, y_{is}, z_{is} \geq 0
-\end{alignedat}
+\begin{aligned}
+&amp; -150x_1 - 230x_2 - 260x_3 - 238y_{1,j} - 210y_{2,j} \\
+&amp; \quad + 170z_{1,j} + 150z_{2,j} + 36z_{3,j} + 10z_{4,j} \geq F
+\end{aligned}
 \]</span></p>
-<p>Scenarios: good (blue), average (purple), bad (red).</p>
+</div>
+<aside class="notes">
+<p>The left side is the profit in scenario <span class="math inline">\(j\)</span>. A lower yield never raises a fixed plan’s profit, so the bad-year constraint is the one that binds. The farmer chooses <span class="math inline">\(F\)</span>: the profit they need to get through a bad year. In the code, <code>farm_model</code> adds these constraints when it is given <code>min_profit</code>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="general-two-stage-notation" class="slide level2">
-<h2>General Two-Stage Notation</h2>
-<p><span class="math display">\[\max_{\mathbf{x}} \; \underbrace{f(\mathbf{x})}_{\text{first stage}} + \mathbb{E}_{\boldsymbol{\xi}}\left[\underbrace{Q(\mathbf{x}; \boldsymbol{\xi})}_{\substack{\text{best recourse after} \\ \text{seeing } \boldsymbol{\xi}}}\right]\]</span></p>
-<p>With discrete scenarios <span class="math inline">\(\boldsymbol{\xi}_s\)</span> and probabilities <span class="math inline">\(p_s\)</span>, the expectation is <span class="math inline">\(\sum_s p_s\, Q(\mathbf{x}; \boldsymbol{\xi}_s)\)</span>, which is what the farmer model maximizes.</p>
+<section id="how-much-does-this-risk-aversion-cost" class="slide level2">
+<h2>How Much Does This Risk Aversion Cost?</h2>
+<div id="32" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a></a><span class="co"># The best plan for floors from below the two-stage plan's bad-year profit up to</span></span>
+<span id="cb4-2"><a></a><span class="co"># the highest floor any plan can meet: the best profit in a known bad year</span></span>
+<span id="cb4-3"><a></a>floors <span class="op">=</span> <span class="fu">range</span>(<span class="fl">45000</span>, known_profit[<span class="fl">3</span>]; length<span class="op">=</span><span class="fl">60</span>)</span>
+<span id="cb4-4"><a></a>floor_plan <span class="op">=</span> <span class="fu">zeros</span>(<span class="fu">length</span>(floors), <span class="fl">3</span>)</span>
+<span id="cb4-5"><a></a>floor_profit <span class="op">=</span> <span class="fu">zeros</span>(<span class="fu">length</span>(floors))</span>
+<span id="cb4-6"><a></a><span class="cf">for</span> k <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(floors)</span>
+<span id="cb4-7"><a></a>    floor_plan[k, <span class="op">:</span>], floor_profit[k] <span class="op">=</span> <span class="fu">farm_model</span>(yield_factor, prob; min_profit<span class="op">=</span>floors[k])</span>
+<span id="cb4-8"><a></a><span class="cf">end</span></span>
+<span id="cb4-9"><a></a></span>
+<span id="cb4-10"><a></a><span class="co"># The plans in the table on the next slide</span></span>
+<span id="cb4-11"><a></a>table_floors <span class="op">=</span> [<span class="fl">52000</span>, <span class="fl">56000</span>, known_profit[<span class="fl">3</span>]]</span>
+<span id="cb4-12"><a></a>n_rows <span class="op">=</span> <span class="fu">length</span>(table_floors) <span class="op">+</span> <span class="fl">1</span></span>
+<span id="cb4-13"><a></a>table_plan <span class="op">=</span> <span class="fu">zeros</span>(n_rows, <span class="fl">3</span>)</span>
+<span id="cb4-14"><a></a>table_expected <span class="op">=</span> <span class="fu">zeros</span>(n_rows)</span>
+<span id="cb4-15"><a></a>table_plan[<span class="fl">1</span>, <span class="op">:</span>] <span class="op">=</span> stochastic_plan</span>
+<span id="cb4-16"><a></a>table_expected[<span class="fl">1</span>] <span class="op">=</span> stochastic_profit</span>
+<span id="cb4-17"><a></a><span class="cf">for</span> k <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(table_floors)</span>
+<span id="cb4-18"><a></a>    table_plan[k <span class="op">+</span> <span class="fl">1</span>, <span class="op">:</span>], table_expected[k <span class="op">+</span> <span class="fl">1</span>] <span class="op">=</span></span>
+<span id="cb4-19"><a></a>        <span class="fu">farm_model</span>(yield_factor, prob; min_profit<span class="op">=</span>table_floors[k])</span>
+<span id="cb4-20"><a></a><span class="cf">end</span></span>
+<span id="cb4-21"><a></a></span>
+<span id="cb4-22"><a></a>p_floor <span class="op">=</span> <span class="fu">plot</span>(floors <span class="op">./</span> <span class="fl">1000</span>, floor_profit <span class="op">./</span> <span class="fl">1000</span>, color<span class="op">=</span>cb_blue,</span>
+<span id="cb4-23"><a></a>    xlabel<span class="op">=</span><span class="st">"Floor on profit in every year  [\$1000]"</span>, ylabel<span class="op">=</span><span class="st">"Expected profit  [\$1000]"</span>,</span>
+<span id="cb4-24"><a></a>    ylims<span class="op">=</span>(<span class="fl">80</span>, <span class="fl">115</span>))</span>
+<span id="cb4-25"><a></a><span class="fu">scatter!</span>(p_floor, table_floors <span class="op">./</span> <span class="fl">1000</span>, table_expected[<span class="fl">2</span><span class="op">:</span><span class="kw">end</span>] <span class="op">./</span> <span class="fl">1000</span>, color<span class="op">=:</span>black,</span>
+<span id="cb4-26"><a></a>    markersize<span class="op">=</span><span class="fl">7</span>)</span>
+<span id="cb4-27"><a></a><span class="co"># below the two-stage plan's bad-year profit, the floor doesn't bind</span></span>
+<span id="cb4-28"><a></a><span class="fu">vline!</span>(p_floor, [stochastic_plan_by_year[<span class="fl">3</span>] <span class="op">/</span> <span class="fl">1000</span>], color<span class="op">=:</span>black, linestyle<span class="op">=:</span>dash, linewidth<span class="op">=</span><span class="fl">2</span>)</span>
+<span id="cb4-29"><a></a><span class="fu">annotate!</span>(p_floor, stochastic_plan_by_year[<span class="fl">3</span>] <span class="op">/</span> <span class="fl">1000</span> <span class="op">+</span> <span class="fl">0.2</span>, <span class="fl">84</span>,</span>
+<span id="cb4-30"><a></a>    <span class="fu">text</span>(<span class="st">"two-stage plan's</span><span class="sc">\n</span><span class="st">bad-year profit"</span>, plot_font, <span class="fl">16</span>, <span class="op">:</span>left))</span>
+<span id="cb4-31"><a></a><span class="fu">plot!</span>(p_floor, size<span class="op">=</span>(<span class="fl">1200</span>, <span class="fl">340</span>), left_margin<span class="op">=</span><span class="fl">12</span>mm, top_margin<span class="op">=</span><span class="fl">6</span>mm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<!--?xml version="1.0" encoding="utf-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="1200" height="340" viewbox="0 0 4800 1360">
+<defs>
+  <clippath id="clip540">
+    <rect x="0" y="0" width="4800" height="1360"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip540)" d="M0 1360 L4800 1360 L4800 3.55271e-14 L0 3.55271e-14  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip541">
+    <rect x="960" y="0" width="3361" height="1360"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip540)" d="M484.594 1060.2 L4752.76 1060.2 L4752.76 125.984 L484.594 125.984  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip542">
+    <rect x="484" y="125" width="4269" height="935"></rect>
+  </clippath>
+</defs>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="484.594,1060.2 4752.76,1060.2 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="484.594,125.984 4752.76,125.984 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="605.391,1060.2 605.391,1041.3 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1952.07,1060.2 1952.07,1041.3 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3298.75,1060.2 3298.75,1041.3 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4645.43,1060.2 4645.43,1041.3 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="605.391,125.984 605.391,144.882 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1952.07,125.984 1952.07,144.882 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3298.75,125.984 3298.75,144.882 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4645.43,125.984 4645.43,144.882 "></polyline>
+<g clip-path="url(#clip540)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 605.391, 1187.68)" x="605.391" y="1187.68">45</text>
+</g>
+<g clip-path="url(#clip540)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 1952.07, 1187.68)" x="1952.07" y="1187.68">50</text>
+</g>
+<g clip-path="url(#clip540)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 3298.75, 1187.68)" x="3298.75" y="1187.68">55</text>
+</g>
+<g clip-path="url(#clip540)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 4645.43, 1187.68)" x="4645.43" y="1187.68">60</text>
+</g>
+<g clip-path="url(#clip540)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:112px; text-anchor:middle;" transform="rotate(0, 2618.68, 1348.59)" x="2618.68" y="1348.59">Floor on profit in every year  [$1000]</text>
+</g>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="484.594,1060.2 484.594,125.984 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4752.76,1060.2 4752.76,125.984 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="484.594,1060.2 503.492,1060.2 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="484.594,926.737 503.492,926.737 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="484.594,793.278 503.492,793.278 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="484.594,659.819 503.492,659.819 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="484.594,526.361 503.492,526.361 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="484.594,392.902 503.492,392.902 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="484.594,259.443 503.492,259.443 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="484.594,125.984 503.492,125.984 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4752.76,1060.2 4733.86,1060.2 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4752.76,926.737 4733.86,926.737 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4752.76,793.278 4733.86,793.278 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4752.76,659.819 4733.86,659.819 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4752.76,526.361 4733.86,526.361 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4752.76,392.902 4733.86,392.902 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4752.76,259.443 4733.86,259.443 "></polyline>
+<polyline clip-path="url(#clip540)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4752.76,125.984 4733.86,125.984 "></polyline>
+<g clip-path="url(#clip540)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 362.652, 1094.7)" x="362.652" y="1094.7">80</text>
+</g>
+<g clip-path="url(#clip540)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 362.652, 961.237)" x="362.652" y="961.237">85</text>
+</g>
+<g clip-path="url(#clip540)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 362.652, 827.778)" x="362.652" y="827.778">90</text>
+</g>
+<g clip-path="url(#clip540)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 362.652, 694.319)" x="362.652" y="694.319">95</text>
+</g>
+<g clip-path="url(#clip540)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 337.681, 560.861)" x="337.681" y="560.861">100</text>
+</g>
+<g clip-path="url(#clip540)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 337.681, 427.402)" x="337.681" y="427.402">105</text>
+</g>
+<g clip-path="url(#clip540)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 337.681, 293.943)" x="337.681" y="293.943">110</text>
+</g>
+<g clip-path="url(#clip540)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 337.681, 160.484)" x="337.681" y="160.484">115</text>
+</g>
+<g clip-path="url(#clip540)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:112px; text-anchor:middle;" transform="rotate(-90, 161.547, 593.09)" x="161.547" y="593.09">Expected profit  [$1000]</text>
+</g>
+<polyline clip-path="url(#clip542)" style="stroke:#0072b2; stroke-linecap:round; stroke-linejoin:round; stroke-width:12; stroke-opacity:1; fill:none" points="605.391,302.417 673.638,302.417 741.885,302.417 810.132,302.417 878.379,302.417 946.626,302.417 1014.87,302.417 1083.12,302.417 1151.37,302.417 1219.61,302.417 1287.86,302.417 1356.11,302.417 1424.35,302.417 1492.6,302.417 1560.85,302.417 1629.09,302.417 1697.34,302.938 1765.59,303.501 1833.84,304.065 1902.08,304.629 1970.33,305.192 2038.58,305.756 2106.82,306.517 2175.07,307.752 2243.32,308.986 2311.56,310.221 2379.81,311.455 2448.06,312.69 2516.3,313.925 2584.55,315.159 2652.8,316.394 2721.05,317.628 2789.29,318.863 2857.54,320.098 2925.79,321.332 2994.03,322.567 3062.28,323.801 3130.53,325.036 3198.77,326.27 3267.02,327.505 3335.27,328.74 3403.51,329.974 3471.76,331.209 3540.01,332.443 3608.26,333.678 3676.5,334.913 3744.75,336.147 3813,350.003 3881.24,380.492 3949.49,410.981 4017.74,442.595 4085.98,482.746 4154.23,522.897 4222.48,573.557 4290.72,625.303 4358.97,677.048 4427.22,728.794 4495.47,780.539 4563.71,832.285 4631.96,884.03 "></polyline>
+<circle clip-path="url(#clip542)" cx="2490.74" cy="313.462" r="25.2" fill="#000000" fill-rule="evenodd" fill-opacity="1" stroke="none"></circle>
+<circle clip-path="url(#clip542)" cx="3568.08" cy="332.951" r="25.2" fill="#000000" fill-rule="evenodd" fill-opacity="1" stroke="none"></circle>
+<circle clip-path="url(#clip542)" cx="4631.96" cy="884.03" r="25.2" fill="#000000" fill-rule="evenodd" fill-opacity="1" stroke="none"></circle>
+<polyline clip-path="url(#clip542)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:8; stroke-opacity:1; fill:none" stroke-dasharray="32, 20" points="1634.25,1994.41 1634.25,-808.227 "></polyline>
+<g clip-path="url(#clip540)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:start;" transform="rotate(0, 1688.12, 933.342)" x="1688.12" y="933.342">two-stage plan's</text>
+</g>
+<g clip-path="url(#clip540)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:start;" transform="rotate(0, 1688.12, 1042.52)" x="1688.12" y="1042.52">bad-year profit</text>
+</g>
+</svg>
+</div>
+</div>
+<p>A floor of $56,000 costs $1,144 of expected profit; raising it to $59,950 costs $20,646 more.</p>
+<aside class="notes">
+<p>Below $48,820 the two-stage plan already meets the floor, so nothing changes. The curve bends where the wheat is down to 100 acres, just enough for the feed in a bad year; above that, the beets can only take land from corn, and the cost rises steeply.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="plans-with-varying-floors" class="slide level2">
+<h2>Plans with Varying Floors</h2>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Floor</th>
+<th style="text-align: right;">Wheat (acres)</th>
+<th style="text-align: right;">Corn (acres)</th>
+<th style="text-align: right;">Beets (acres)</th>
+<th style="text-align: right;">Good year</th>
+<th style="text-align: right;">Expected</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">None</td>
+<td style="text-align: right;">170</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">250</td>
+<td style="text-align: right;">$167,000</td>
+<td style="text-align: right;">$108,390</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$52,000</td>
+<td style="text-align: right;">138.1</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">261.9</td>
+<td style="text-align: right;">$161,476</td>
+<td style="text-align: right;">$107,976</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$56,000</td>
+<td style="text-align: right;">106.3</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">293.7</td>
+<td style="text-align: right;">$149,413</td>
+<td style="text-align: right;">$107,246</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$59,950</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">375</td>
+<td style="text-align: right;">$113,250</td>
+<td style="text-align: right;">$86,600</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Higher floors move land from wheat to beets. In a bad year an acre of beets earns $316 above its planting cost, and an acre of wheat beyond the feed $190. In a good year, beets beyond 250 acres go over the quota and sell for $10/T. The highest floor, $59,950, is the most any plan can earn in a bad year; the plan that meets it is the best plan for a known bad year.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="how-many-samples" class="slide level2">
+<h2>How Many Samples?</h2>
+<div id="38" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a></a><span class="co"># Estimated expected profit from 20 independent sets of samples of each size</span></span>
+<span id="cb5-2"><a></a>sample_sizes <span class="op">=</span> [<span class="fl">10</span>, <span class="fl">30</span>, <span class="fl">100</span>, <span class="fl">300</span>, <span class="fl">1000</span>]</span>
+<span id="cb5-3"><a></a>n_sets <span class="op">=</span> <span class="fl">20</span></span>
+<span id="cb5-4"><a></a>estimates <span class="op">=</span> <span class="fu">zeros</span>(<span class="fu">length</span>(sample_sizes), n_sets)</span>
+<span id="cb5-5"><a></a>beet_acres <span class="op">=</span> <span class="fu">zeros</span>(<span class="fu">length</span>(sample_sizes), n_sets)</span>
+<span id="cb5-6"><a></a><span class="cf">for</span> k <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(sample_sizes)</span>
+<span id="cb5-7"><a></a>    m <span class="op">=</span> sample_sizes[k]</span>
+<span id="cb5-8"><a></a>    <span class="cf">for</span> r <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_sets</span>
+<span id="cb5-9"><a></a>        samples <span class="op">=</span> <span class="fu">rand</span>(yield_dist, m)</span>
+<span id="cb5-10"><a></a>        prices <span class="op">=</span> <span class="fl">1</span> <span class="op">.-</span> price_slope <span class="op">.*</span> (samples <span class="op">.-</span> <span class="fl">1</span>) <span class="op">.+</span> <span class="fu">rand</span>(price_noise, m)</span>
+<span id="cb5-11"><a></a>        plan, estimates[k, r] <span class="op">=</span> <span class="fu">farm_model</span>(samples, <span class="fu">fill</span>(<span class="fl">1</span> <span class="op">/</span> m, m);</span>
+<span id="cb5-12"><a></a>            price_factors<span class="op">=</span>prices)</span>
+<span id="cb5-13"><a></a>        beet_acres[k, r] <span class="op">=</span> plan[<span class="fl">3</span>]</span>
+<span id="cb5-14"><a></a>    <span class="cf">end</span></span>
+<span id="cb5-15"><a></a><span class="cf">end</span></span>
+<span id="cb5-16"><a></a></span>
+<span id="cb5-17"><a></a>p_sizes <span class="op">=</span> <span class="fu">plot</span>(xscale<span class="op">=:</span>log10, xticks<span class="op">=</span>(sample_sizes, <span class="fu">string</span>.(sample_sizes)),</span>
+<span id="cb5-18"><a></a>    xlabel<span class="op">=</span><span class="st">"Number of sampled years"</span>, ylabel<span class="op">=</span><span class="st">"Estimated profit  [\$1000]"</span>,</span>
+<span id="cb5-19"><a></a>    xlims<span class="op">=</span>(<span class="fl">7</span>, <span class="fl">1400</span>))</span>
+<span id="cb5-20"><a></a><span class="cf">for</span> k <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(sample_sizes)</span>
+<span id="cb5-21"><a></a>    <span class="fu">scatter!</span>(p_sizes, <span class="fu">fill</span>(sample_sizes[k], n_sets), estimates[k, <span class="op">:</span>] <span class="op">./</span> <span class="fl">1000</span>,</span>
+<span id="cb5-22"><a></a>        color<span class="op">=</span>cb_blue, markersize<span class="op">=</span><span class="fl">7</span>, markerstrokewidth<span class="op">=</span><span class="fl">0</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb5-23"><a></a><span class="cf">end</span></span>
+<span id="cb5-24"><a></a><span class="fu">plot!</span>(p_sizes, size<span class="op">=</span>(<span class="fl">1200</span>, <span class="fl">340</span>), left_margin<span class="op">=</span><span class="fl">12</span>mm, top_margin<span class="op">=</span><span class="fl">6</span>mm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<!--?xml version="1.0" encoding="utf-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="1200" height="340" viewbox="0 0 4800 1360">
+<defs>
+  <clippath id="clip600">
+    <rect x="0" y="0" width="4800" height="1360"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip600)" d="M0 1360 L4800 1360 L4800 3.55271e-14 L0 3.55271e-14  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip601">
+    <rect x="960" y="0" width="3361" height="1360"></rect>
+  </clippath>
+</defs>
+<path clip-path="url(#clip600)" d="M484.594 1060.2 L4752.76 1060.2 L4752.76 125.984 L484.594 125.984  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
+<defs>
+  <clippath id="clip602">
+    <rect x="484" y="125" width="4269" height="935"></rect>
+  </clippath>
+</defs>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="484.594,1060.2 4752.76,1060.2 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="484.594,125.984 4752.76,125.984 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="771.921,1060.2 771.921,1041.3 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1656.93,1060.2 1656.93,1041.3 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2626.81,1060.2 2626.81,1041.3 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3511.82,1060.2 3511.82,1041.3 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4481.7,1060.2 4481.7,1041.3 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="771.921,125.984 771.921,144.882 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="1656.93,125.984 1656.93,144.882 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2626.81,125.984 2626.81,144.882 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3511.82,125.984 3511.82,144.882 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4481.7,125.984 4481.7,144.882 "></polyline>
+<g clip-path="url(#clip600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 771.921, 1187.68)" x="771.921" y="1187.68">10</text>
+</g>
+<g clip-path="url(#clip600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 1656.93, 1187.68)" x="1656.93" y="1187.68">30</text>
+</g>
+<g clip-path="url(#clip600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 2626.81, 1187.68)" x="2626.81" y="1187.68">100</text>
+</g>
+<g clip-path="url(#clip600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 3511.82, 1187.68)" x="3511.82" y="1187.68">300</text>
+</g>
+<g clip-path="url(#clip600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 4481.7, 1187.68)" x="4481.7" y="1187.68">1000</text>
+</g>
+<g clip-path="url(#clip600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:112px; text-anchor:middle;" transform="rotate(0, 2618.68, 1348.59)" x="2618.68" y="1348.59">Number of sampled years</text>
+</g>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="484.594,1060.2 484.594,125.984 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4752.76,1060.2 4752.76,125.984 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="484.594,1023.06 503.492,1023.06 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="484.594,860.48 503.492,860.48 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="484.594,697.899 503.492,697.899 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="484.594,535.318 503.492,535.318 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="484.594,372.738 503.492,372.738 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="484.594,210.157 503.492,210.157 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4752.76,1023.06 4733.86,1023.06 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4752.76,860.48 4733.86,860.48 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4752.76,697.899 4733.86,697.899 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4752.76,535.318 4733.86,535.318 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4752.76,372.738 4733.86,372.738 "></polyline>
+<polyline clip-path="url(#clip600)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4752.76,210.157 4733.86,210.157 "></polyline>
+<g clip-path="url(#clip600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 362.652, 1057.56)" x="362.652" y="1057.56">80</text>
+</g>
+<g clip-path="url(#clip600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 362.652, 894.98)" x="362.652" y="894.98">90</text>
+</g>
+<g clip-path="url(#clip600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 337.681, 732.399)" x="337.681" y="732.399">100</text>
+</g>
+<g clip-path="url(#clip600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 337.681, 569.818)" x="337.681" y="569.818">110</text>
+</g>
+<g clip-path="url(#clip600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 337.681, 407.238)" x="337.681" y="407.238">120</text>
+</g>
+<g clip-path="url(#clip600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 337.681, 244.657)" x="337.681" y="244.657">130</text>
+</g>
+<g clip-path="url(#clip600)">
+<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:112px; text-anchor:middle;" transform="rotate(-90, 161.547, 593.09)" x="161.547" y="593.09">Estimated profit  [$1000]</text>
+</g>
+<circle clip-path="url(#clip602)" cx="771.921" cy="633.145" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="771.921" cy="221.766" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="771.921" cy="1033.76" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="771.921" cy="754.175" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="771.921" cy="543.939" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="771.921" cy="645.451" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="771.921" cy="478.349" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="771.921" cy="606.349" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="771.921" cy="152.424" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="771.921" cy="820.351" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="771.921" cy="719.826" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="771.921" cy="421.362" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="771.921" cy="563.15" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="771.921" cy="424.718" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="771.921" cy="519.019" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="771.921" cy="214.514" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="771.921" cy="784.792" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="771.921" cy="423.905" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="771.921" cy="591.251" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="771.921" cy="585.465" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="1656.93" cy="243.443" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="1656.93" cy="551.146" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="1656.93" cy="360.59" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="1656.93" cy="639.38" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="1656.93" cy="577.722" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="1656.93" cy="607.399" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="1656.93" cy="700.302" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="1656.93" cy="614.915" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="1656.93" cy="585.153" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="1656.93" cy="503.103" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="1656.93" cy="651.752" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="1656.93" cy="434.264" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="1656.93" cy="329.153" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="1656.93" cy="438.487" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="1656.93" cy="702.078" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="1656.93" cy="662.746" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="1656.93" cy="549.858" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="1656.93" cy="660.531" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="1656.93" cy="635.824" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="1656.93" cy="662.623" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="2626.81" cy="633.896" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="2626.81" cy="513.937" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="2626.81" cy="494.526" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="2626.81" cy="592.292" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="2626.81" cy="467.032" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="2626.81" cy="708.58" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="2626.81" cy="534.609" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="2626.81" cy="549.92" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="2626.81" cy="519.878" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="2626.81" cy="694.042" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="2626.81" cy="613.594" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="2626.81" cy="617.069" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="2626.81" cy="605.547" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="2626.81" cy="551.032" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="2626.81" cy="473.757" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="2626.81" cy="523.093" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="2626.81" cy="707.155" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="2626.81" cy="645.839" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="2626.81" cy="630.656" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="2626.81" cy="526.117" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="3511.82" cy="599.301" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="3511.82" cy="599.586" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="3511.82" cy="596.071" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="3511.82" cy="555.4" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="3511.82" cy="540.701" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="3511.82" cy="570.735" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="3511.82" cy="536.351" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="3511.82" cy="652.991" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="3511.82" cy="578.186" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="3511.82" cy="639.271" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="3511.82" cy="547.499" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="3511.82" cy="629.552" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="3511.82" cy="525.16" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="3511.82" cy="588.683" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="3511.82" cy="594.941" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="3511.82" cy="601.208" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="3511.82" cy="594.713" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="3511.82" cy="575.525" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="3511.82" cy="580.946" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="3511.82" cy="570.247" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="4481.7" cy="593.741" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="4481.7" cy="578.107" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="4481.7" cy="583.172" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="4481.7" cy="589.656" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="4481.7" cy="561.87" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="4481.7" cy="590.282" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="4481.7" cy="533.859" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="4481.7" cy="596.497" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="4481.7" cy="614.659" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="4481.7" cy="583.285" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="4481.7" cy="558.659" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="4481.7" cy="562.047" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="4481.7" cy="575.741" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="4481.7" cy="541.944" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="4481.7" cy="572.02" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="4481.7" cy="585.419" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="4481.7" cy="568.833" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="4481.7" cy="554.585" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="4481.7" cy="590.848" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+<circle clip-path="url(#clip602)" cx="4481.7" cy="581.731" r="25.2" fill="#0072b2" fill-rule="evenodd" fill-opacity="0.5" stroke="none"></circle>
+</svg>
+</div>
+</div>
+<p>Each estimate is a Monte Carlo average over <span class="math inline">\(n\)</span> sampled years, so the spread shrinks like <span class="math inline">\(1/\sqrt{n}\)</span>.</p>
+<aside class="notes">
+<p>Each column is 20 independent sets of samples. The standard deviation of the 20 estimates falls from $13,288 with 10 samples to $1,200 with 1,000. The plans settle too: with 1,000 samples, the beets range from 274.2 to 280.6 acres across the 20 sets.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section></section>
 <section>
 <section id="references" class="title-slide slide level1 center">
