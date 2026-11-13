@@ -140,7 +140,7 @@ website:
           text: "Homework 6"
         - href: hw/hw07/hw07.qmd
           text: "Homework 7"
-        - href: hw/hw08/hw08/qmd
+        - href: hw/hw08/hw08.qmd
           text: "Homework 8"
         - href: hw/index.qmd#schedule
           text: "Homework 9 (Nov. 18)"
