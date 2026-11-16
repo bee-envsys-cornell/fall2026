@@ -172,7 +172,7 @@ We relaxed divisibility with mixed integer programming; today we relax certainty
 
 $$\max_{\mathbf{x}} \; \underbrace{f(\mathbf{x})}_{\text{first stage}} + \mathbb{E}_{\boldsymbol{\xi}}\left[\underbrace{Q(\mathbf{x}; \boldsymbol{\xi})}_{\substack{\text{best recourse after} \\ \text{seeing } \boldsymbol{\xi}}}\right]$$
 
-With discrete scenarios $\boldsymbol{\xi}_s$ and probabilities $p_s$, the expectation is $\sum_s p_s\, Q(\mathbf{x}; \boldsymbol{\xi}_s)$, which is what the farmer model maximizes.
+With discrete scenarios $\boldsymbol{\xi}_s$ and probabilities $p_s$, the expectation is $\sum_s p_s\, Q(\mathbf{x}; \boldsymbol{\xi}_s)$, or can compute with Monte Carlo.
 
 
 # Land Allocation Example
@@ -301,7 +301,7 @@ The optimal planting decision depends on the yields for each year --- which we d
 Variable | Role
 :----: | :-----
 $x_i$, acres planted | fixed decision before the scenario is revealed
-$z_{ij}$, T sold | quantity sold sold scenario $j$
+$z_{ij}$, T sold | quantity sold in scenario $j$
 $y_{ij}$, T bought | quantity to buy in scenario $j$ (**recourse**)
 :::
 :::

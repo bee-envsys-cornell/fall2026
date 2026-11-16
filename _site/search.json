@@ -8384,7 +8384,7 @@
     "href": "slides/lecture13-1-stochastic-optimization.html#general-two-stage-decision-problems",
     "title": "Stochastic Optimization and Scenario Trees",
     "section": "General Two-Stage Decision Problems",
-    "text": "General Two-Stage Decision Problems\n\\[\\max_{\\mathbf{x}} \\; \\underbrace{f(\\mathbf{x})}_{\\text{first stage}} + \\mathbb{E}_{\\boldsymbol{\\xi}}\\left[\\underbrace{Q(\\mathbf{x}; \\boldsymbol{\\xi})}_{\\substack{\\text{best recourse after} \\\\ \\text{seeing } \\boldsymbol{\\xi}}}\\right]\\]\nWith discrete scenarios \\(\\boldsymbol{\\xi}_s\\) and probabilities \\(p_s\\), the expectation is \\(\\sum_s p_s\\, Q(\\mathbf{x}; \\boldsymbol{\\xi}_s)\\), which is what the farmer model maximizes."
+    "text": "General Two-Stage Decision Problems\n\\[\\max_{\\mathbf{x}} \\; \\underbrace{f(\\mathbf{x})}_{\\text{first stage}} + \\mathbb{E}_{\\boldsymbol{\\xi}}\\left[\\underbrace{Q(\\mathbf{x}; \\boldsymbol{\\xi})}_{\\substack{\\text{best recourse after} \\\\ \\text{seeing } \\boldsymbol{\\xi}}}\\right]\\]\nWith discrete scenarios \\(\\boldsymbol{\\xi}_s\\) and probabilities \\(p_s\\), the expectation is \\(\\sum_s p_s\\, Q(\\mathbf{x}; \\boldsymbol{\\xi}_s)\\), or can compute with Monte Carlo."
   },
   {
     "objectID": "slides/lecture13-1-stochastic-optimization.html#land-allocation-example-1",
@@ -8412,7 +8412,7 @@
     "href": "slides/lecture13-1-stochastic-optimization.html#what-changes-about-the-variables",
     "title": "Stochastic Optimization and Scenario Trees",
     "section": "What Changes About the Variables?",
-    "text": "What Changes About the Variables?\n\n\n\n\n\n\nVariable\nRole\n\n\n\n\n\\(x_i\\), acres planted\nfixed decision before the scenario is revealed\n\n\n\\(z_{ij}\\), T sold\nquantity sold sold scenario \\(j\\)\n\n\n\\(y_{ij}\\), T bought\nquantity to buy in scenario \\(j\\) (recourse)\n\n\n\n\n\n\n\n\n\nScenario tree\n\n\n\n\n\nPlanting happens once, so it has one copy. Buying and selling happen after the harvest, so there is a separate copy for each year type. The scenario tree lists the scenarios: one branch per scenario, with its probability. With more uncertainties or more stages, the tree branches again at each one."
+    "text": "What Changes About the Variables?\n\n\n\n\n\n\nVariable\nRole\n\n\n\n\n\\(x_i\\), acres planted\nfixed decision before the scenario is revealed\n\n\n\\(z_{ij}\\), T sold\nquantity sold in scenario \\(j\\)\n\n\n\\(y_{ij}\\), T bought\nquantity to buy in scenario \\(j\\) (recourse)\n\n\n\n\n\n\n\n\n\nScenario tree\n\n\n\n\n\nPlanting happens once, so it has one copy. Buying and selling happen after the harvest, so there is a separate copy for each year type. The scenario tree lists the scenarios: one branch per scenario, with its probability. With more uncertainties or more stages, the tree branches again at each one."
   },
   {
     "objectID": "slides/lecture13-1-stochastic-optimization.html#the-full-two-stage-constraints",
