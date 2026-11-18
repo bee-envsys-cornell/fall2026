@@ -202,23 +202,14 @@
       }
     };
   </script>
-  <!-- Mathjax 3 config -->
+  <!-- MathJax 3 config, read before reveal.js loads MathJax -->
   <script>
   window.MathJax = {
-      {
-        minScale: 0.5
-        loader: {load: ['[tex]/tagformat']},
-        tex: {packages: {'[+]': ['tagformat']}}
-      }
-    };
-    MathJax = {
-    options: {
-      menuOptions: {
-        settings: {
-          assistiveMml: false,   // true to enable assitive MathML
-          collapsible: false,   // true to enable collapsible math
-          explorer: false      // true to enable the expression explorer
-        }
+    tex: {
+      // \argmax and \argmin: upright, with limits set below in display math
+      macros: {
+        argmax: '\\operatorname*{arg\\,max}',
+        argmin: '\\operatorname*{arg\\,min}'
       }
     }
   };

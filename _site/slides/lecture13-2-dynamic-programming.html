@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head>
 <link href="../_assets/logos/favicon.png" rel="icon" type="image/png">
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-html/tabby.min.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -202,30 +202,18 @@
       }
     };
   </script>
-  <!-- Mathjax 3 config -->
+  <!-- MathJax 3 config, read before reveal.js loads MathJax -->
   <script>
   window.MathJax = {
-      {
-        minScale: 0.5
-        loader: {load: ['[tex]/tagformat']},
-        tex: {packages: {'[+]': ['tagformat']}}
-      }
-    };
-    MathJax = {
-    options: {
-      menuOptions: {
-        settings: {
-          assistiveMml: false,   // true to enable assitive MathML
-          collapsible: false,   // true to enable collapsible math
-          explorer: false      // true to enable the expression explorer
-        }
+    tex: {
+      // \argmax and \argmin: upright, with limits set below in display math
+      macros: {
+        argmax: '\\operatorname*{arg\\,max}',
+        argmin: '\\operatorname*{arg\\,min}'
       }
     }
   };
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
-  
-  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 <meta property="og:title" content="Sequential Decisions and Dynamic Programming – Environmental Systems Analysis">
 <meta property="og:description" content="Lecture 20">
 <meta property="og:site_name" content="Environmental Systems Analysis">
@@ -244,9 +232,8 @@
 <h2 id="toc-title">Overview</h2>
 <ul>
 <li><a href="#/review-of-last-class" id="/toc-review-of-last-class">Review of Last Class</a></li>
-<li><a href="#/multi-stage-scenario-trees" id="/toc-multi-stage-scenario-trees">Multi-Stage Scenario Trees</a></li>
-<li><a href="#/sequential-decisions" id="/toc-sequential-decisions">Sequential Decisions</a></li>
-<li><a href="#/backward-induction" id="/toc-backward-induction">Backward Induction</a></li>
+<li><a href="#/scenario-trees" id="/toc-scenario-trees">Scenario Trees</a></li>
+<li><a href="#/dynamic-programming" id="/toc-dynamic-programming">Dynamic Programming</a></li>
 <li><a href="#/uncertain-inflows" id="/toc-uncertain-inflows">Uncertain Inflows</a></li>
 <li><a href="#/key-takeaways" id="/toc-key-takeaways">Key Takeaways</a></li>
 <li><a href="#/upcoming-schedule" id="/toc-upcoming-schedule">Upcoming Schedule</a></li>
@@ -282,16 +269,15 @@
 </div></div>
 </section></section>
 <section>
-<section id="multi-stage-scenario-trees" class="title-slide slide level1 center">
-<h1>Multi-Stage Scenario Trees</h1>
+<section id="scenario-trees" class="title-slide slide level1 center">
+<h1>Scenario Trees</h1>
 
 </section>
-<section id="multi-stage-trees" class="slide level2">
-<h2>Multi-Stage Trees</h2>
-<p>Suppose good years tend to follow good years and bad follow bad, so year 2’s probabilities depend on year 1’s yield.</p>
+<section id="dependent-uncertainties-in-one-year" class="slide level2">
+<h2>Dependent Uncertainties in One Year</h2>
 
-<img data-src="figures/scenario-tree-two-years.svg" style="width:100.0%" alt="Scenario tree over two years: planting, three year 1 yields with probability 1/3 each, a node for each with buying, selling and the year 2 planting, then three year 2 yields whose probabilities depend on year 1: after a good year, good 1/2, average 1/3, bad 1/6; after an average year, 1/3 each; after a bad year, good 1/6, average 1/3, bad 1/2." class="r-stretch"><aside class="notes">
-<p>Each year on its own is still good, average or bad with probability 1/3; only the sequence of years changes. The tree figure is drawn by <code>figures/scenario-trees.jl</code>.</p>
+<img data-src="figures/scenario-tree-one-year.svg" style="width:100.0%" alt="One-year scenario tree: planting, then the yield (good, average or bad, 1/3 each), then the grain price, low or high, with probabilities that depend on the yield (after a good yield low 2/3, high 1/3; average 1/2 each; bad low 1/3, high 2/3), then the demand for grain, low or high, with probabilities that depend on the price (after a low price low 1/3, high 2/3; after a high price low 2/3, high 1/3). Buying and selling happen after all three are known." class="r-stretch"><aside class="notes">
+<p>Within one year the yield, the grain price and the demand are learned in turn, each depending on the one before. Nothing is decided in between, so there are still two stages: plant, then learn all three, then buy and sell. The probabilities are illustrative. If demand were a fixed function of the price, with no randomness of its own, it would add no branches: it would take a value at each leaf. The tree figures are drawn by <code>figures/scenario-trees.jl</code>.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -304,23 +290,120 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="probabilities-along-a-path" class="slide level2">
-<h2>Probabilities Along a Path</h2>
-<p><strong>How likely are two bad years in a row? A good year, then a bad one?</strong></p>
-<div class="fragment fade-in">
-<p>Multiply the branch probabilities along the path, each conditional on the branches before it:</p>
+<section id="conditional-probabilities" class="slide level2">
+<h2>Conditional Probabilities</h2>
+<p>A scenario’s probability is the product of the conditional probabilities along its path, with outcomes in order (yield, price, demand):</p>
 <p><span class="math display">\[
 \begin{aligned}
-P(\text{bad}, \text{bad}) &amp;= \tfrac{1}{3} \times \tfrac{1}{2} = \tfrac{1}{6} \\
-P(\text{good}, \text{bad}) &amp;= \tfrac{1}{3} \times \tfrac{1}{6} = \tfrac{1}{18}
+P(\text{bad}, \text{high}, \text{low}) &amp;= P(\text{bad})\, P(\text{high} \mid \text{bad})\, P(\text{low} \mid \text{high}) \\
+&amp;= 1/3 \times 2/3 \times 2/3 = 4/27
 \end{aligned}
 \]</span></p>
-<p>If the years were independent, both would be <span class="math inline">\(\frac{1}{9}\)</span>.</p>
-</div>
+</section>
+<section id="prices-in-the-objective" class="slide level2">
+<h2>Prices in the Objective</h2>
+<p>Each of the 12 scenarios has its own grain prices, so they change the objective, not only the constraints:</p>
+<p><span class="math display">\[\max_{\mathbf{x}, \mathbf{y}, \mathbf{z}} \; -\mathbf{c}^\top \mathbf{x} + \sum_{s=1}^{12} p_s \big( \mathbf{q}_s^\top \mathbf{z}_s - \mathbf{w}_s^\top \mathbf{y}_s \big)\]</span></p>
+<p><span class="math inline">\(\mathbf{c}\)</span> is the planting cost per acre, and <span class="math inline">\(p_s\)</span> the scenario’s probability from the tree.</p>
+</section>
+<section id="scenario-prices-and-demand" class="slide level2">
+<h2>Scenario Prices and Demand</h2>
+<ul>
+<li>Sale prices <span class="math inline">\(\mathbf{q}_s = (170 g_s,\ 150 g_s,\ 36,\ 10)\)</span> (wheat, corn, beets up to the demand, beets above it); purchase prices <span class="math inline">\(\mathbf{w}_s = (238 g_s,\ 210 g_s)\)</span>.</li>
+<li><span class="math inline">\(g_s = 0.9\)</span> for a low grain price, <span class="math inline">\(1.1\)</span> for a high one; beet prices are set by contract.</li>
+<li>The beet demand <span class="math inline">\(D_s\)</span>, 5,000 or 7,000 T, replaces the 6,000 T quota in the constraints.</li>
+</ul>
+</section>
+<section id="solving-the-more-complex-problem" class="slide level2">
+<h2>Solving the More Complex Problem</h2>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a><span class="co"># The 12 scenarios of the one-year tree: yield factor, grain price factor, beet</span></span>
+<span id="cb1-2"><a></a><span class="co"># demand, and probability (the product along the path)</span></span>
+<span id="cb1-3"><a></a>price_level <span class="op">=</span> [<span class="fl">0.9</span>, <span class="fl">1.1</span>]              <span class="co"># g: low or high grain price</span></span>
+<span id="cb1-4"><a></a>beet_demand <span class="op">=</span> [<span class="fl">5000</span>, <span class="fl">7000</span>]            <span class="co"># D [T]: low or high</span></span>
+<span id="cb1-5"><a></a>n_scenarios <span class="op">=</span> <span class="fl">12</span></span>
+<span id="cb1-6"><a></a>scenario_yield <span class="op">=</span> <span class="fu">zeros</span>(n_scenarios)</span>
+<span id="cb1-7"><a></a>scenario_price <span class="op">=</span> <span class="fu">zeros</span>(n_scenarios)</span>
+<span id="cb1-8"><a></a>scenario_demand <span class="op">=</span> <span class="fu">zeros</span>(n_scenarios)</span>
+<span id="cb1-9"><a></a>scenario_prob <span class="op">=</span> <span class="fu">zeros</span>(n_scenarios)</span>
+<span id="cb1-10"><a></a><span class="kw">let</span> k <span class="op">=</span> <span class="fl">0</span></span>
+<span id="cb1-11"><a></a>    <span class="cf">for</span> y <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, p <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, d <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span></span>
+<span id="cb1-12"><a></a>        k <span class="op">=</span> k <span class="op">+</span> <span class="fl">1</span></span>
+<span id="cb1-13"><a></a>        scenario_yield[k] <span class="op">=</span> yield_factor[y]</span>
+<span id="cb1-14"><a></a>        scenario_price[k] <span class="op">=</span> price_level[p]</span>
+<span id="cb1-15"><a></a>        scenario_demand[k] <span class="op">=</span> beet_demand[d]</span>
+<span id="cb1-16"><a></a>        scenario_prob[k] <span class="op">=</span> yield_prob[y] <span class="op">*</span> price_given_yield[y, p] <span class="op">*</span> demand_given_price[p, d]</span>
+<span id="cb1-17"><a></a>    <span class="cf">end</span></span>
+<span id="cb1-18"><a></a><span class="kw">end</span></span>
+<span id="cb1-19"><a></a>one_year_plan, one_year_profit <span class="op">=</span> <span class="fu">farm_model</span>(scenario_yield, scenario_prob;</span>
+<span id="cb1-20"><a></a>    price_factors<span class="op">=</span>scenario_price, quotas<span class="op">=</span>scenario_demand)</span>
+<span id="cb1-21"><a></a></span>
+<span id="cb1-22"><a></a><span class="fu">println</span>(<span class="st">"| Scenarios | Wheat | Corn | Beets |"</span>)</span>
+<span id="cb1-23"><a></a><span class="fu">println</span>(<span class="st">"|:--|--:|--:|--:|"</span>)</span>
+<span id="cb1-24"><a></a><span class="fu">println</span>(<span class="st">"| 3: yield only | "</span>, <span class="fu">join</span>(<span class="fu">fmt</span>.(stochastic_plan), <span class="st">" | "</span>), <span class="st">" |"</span>)</span>
+<span id="cb1-25"><a></a><span class="fu">println</span>(<span class="st">"| 12: yield, price, demand | "</span>, <span class="fu">join</span>(<span class="fu">fmt</span>.(one_year_plan), <span class="st">" | "</span>), <span class="st">" |"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Scenarios</th>
+<th style="text-align: right;">Wheat</th>
+<th style="text-align: right;">Corn</th>
+<th style="text-align: right;">Beets</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">3: yield only</td>
+<td style="text-align: right;">170</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">250</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">12: yield, price, demand</td>
+<td style="text-align: right;">128.33</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">291.67</td>
+</tr>
+</tbody>
+</table>
+<p>Good harvests make low grain prices and high beet demand more likely, so we plant more beets.</p>
+<aside class="notes">
+<p>In the 12 scenarios, this plan expects $104,349 and the 3-scenario plan $104,025. Wheat gives up the land: corn stays at the acreage that covers the feed.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="multi-stage-decisions" class="slide level2">
+<h2>Multi-Stage Decisions</h2>
+<p>Suppose that weather patterns have <strong>memory</strong> from year to year: growing conditions in Year 2 are influenced by Year 1’s conditions.</p>
+
+<img data-src="figures/scenario-tree-two-years.svg" style="width:100.0%" alt="Scenario tree over two years: planting, three year 1 yields with probability 1/3 each, a node for each with buying, selling and the year 2 planting, then three year 2 yields whose probabilities depend on year 1: after a good year, good 1/2, average 1/3, bad 1/6; after an average year, 1/3 each; after a bad year, good 1/6, average 1/3, bad 1/2." class="r-stretch"><aside class="notes">
+<p>Year 2 repeats year 1’s problem, with nothing physical carried over. Each year on its own is still good, average or bad with probability 1/3; only the joint probabilities change.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="two-year-decision-variables" class="slide level2">
 <h2>Two-Year Decision Variables</h2>
-<p>Let <span class="math inline">\(a\)</span> be year 1’s yield and <span class="math inline">\(b\)</span> year 2’s, each G, A or B (good, average, bad). <strong>Which yields can each decision depend on?</strong></p>
+<p>Let <span class="math inline">\(a\)</span> be year 1’s yield and <span class="math inline">\(b\)</span> year 2’s, each G, A or B (good, average, bad); bold symbols are vectors. <strong>Which yields can each decision depend on?</strong></p>
 <div class="fragment fade-in">
 <ul>
 <li><span class="math inline">\(\mathbf{x}^{(1)}\)</span>: year 1 planting, before any yield is known</li>
@@ -343,17 +426,17 @@ P(\text{good}, \text{bad}) &amp;= \tfrac{1}{3} \times \tfrac{1}{6} = \tfrac{1}{1
           display:block!important;
       }</style></aside>
 </section>
-<section id="two-year-objective" class="slide level2">
-<h2>Two-Year Objective</h2>
+<section id="profit-maximization-over-both-years" class="slide level2">
+<h2>Profit Maximization Over Both Years</h2>
 <p><span class="math display">\[
 \begin{aligned}
-\max \quad &amp; -\mathbf{c}^\top \mathbf{x}^{(1)} + \sum_a p_a \Big[ r\big(\mathbf{y}^{(1)}_a, \mathbf{z}^{(1)}_a\big) - \mathbf{c}^\top \mathbf{x}^{(2)}_a \\
-&amp; \qquad + \sum_b p_{b \mid a}\, r\big(\mathbf{y}^{(2)}_{ab}, \mathbf{z}^{(2)}_{ab}\big) \Big]
+\max_{\mathbf{x}, \mathbf{y}, \mathbf{z}} \quad &amp; -\mathbf{c}^\top \mathbf{x}^{(1)} + \sum_a p_a \Big[ \mathbf{q}^\top \mathbf{z}^{(1)}_a - \mathbf{w}^\top \mathbf{y}^{(1)}_a - \mathbf{c}^\top \mathbf{x}^{(2)}_a \\
+&amp; \qquad + \sum_b p_{b \mid a} \big( \mathbf{q}^\top \mathbf{z}^{(2)}_{ab} - \mathbf{w}^\top \mathbf{y}^{(2)}_{ab} \big) \Big]
 \end{aligned}
 \]</span></p>
-<p><span class="math inline">\(r\)</span> is the money from sales minus purchases, and <span class="math inline">\(p_{b \mid a}\)</span> the probability of year 2 yield <span class="math inline">\(b\)</span> after year 1 yield <span class="math inline">\(a\)</span>. The year 2 planting cost sits outside the sum over <span class="math inline">\(b\)</span>: one planting for all three year 2 outcomes.</p>
+<p><span class="math inline">\(\mathbf{c}\)</span> the planting costs per acre, <span class="math inline">\(\mathbf{q}\)</span> the sale prices, <span class="math inline">\(\mathbf{w}\)</span> the purchase prices, <span class="math inline">\(p_a = \tfrac{1}{3}\)</span>, and <span class="math inline">\(p_{b \mid a}\)</span> the probability of year 2 yield <span class="math inline">\(b\)</span> after <span class="math inline">\(a\)</span>.</p>
 <aside class="notes">
-<p>The constraints follow the same indexing. On path <span class="math inline">\(ab\)</span>, year 2’s wheat feed constraint is <span class="math inline">\(2.5 f_b\, x^{(2)}_{1,a} + y^{(2)}_{1,ab} - z^{(2)}_{1,ab} \geq 200\)</span>, where <span class="math inline">\(f_b\)</span> is the yield factor for year 2 yield <span class="math inline">\(b\)</span>: the same planting <span class="math inline">\(x^{(2)}_{1,a}\)</span> appears in the constraints for all three values of <span class="math inline">\(b\)</span>. The year 1 constraints are the two-stage ones, with <span class="math inline">\(\mathbf{x}^{(1)}\)</span> and <span class="math inline">\(f_a\)</span>.</p>
+<p><span class="math inline">\(\mathbf{q}\)</span> has four entries (wheat, corn, beets up to the quota, beets above it) and <span class="math inline">\(\mathbf{w}\)</span> two (wheat, corn).</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -366,118 +449,32 @@ P(\text{good}, \text{bad}) &amp;= \tfrac{1}{3} \times \tfrac{1}{6} = \tfrac{1}{1
           display:block!important;
       }</style></aside>
 </section>
-<section id="non-anticipativity" class="slide level2">
-<h2>Non-Anticipativity</h2>
-<p><strong>Why <span class="math inline">\(\mathbf{x}^{(2)}_a\)</span> and not <span class="math inline">\(\mathbf{x}^{(2)}_{ab}\)</span>, like the year 2 sales?</strong></p>
-<div class="fragment fade-in">
-<p>With <span class="math inline">\(\mathbf{x}^{(2)}_{ab}\)</span>, the planting for path BG could be chosen knowing year 2 will be good. A decision can depend only on what is known when it is made: <strong>non-anticipativity</strong>. Indexing by <span class="math inline">\(a\)</span> alone is the same as requiring</p>
-<p><span class="math display">\[\mathbf{x}^{(2)}_{aG} = \mathbf{x}^{(2)}_{aA} = \mathbf{x}^{(2)}_{aB} \quad \text{for each } a.\]</span></p>
-</div>
-<aside class="notes">
-<p>The year 2 planting is recourse for year 1 but a here-and-now decision for year 2, which is why the two-stage rule of one recourse copy per scenario doesn’t carry over. Indexing it by <span class="math inline">\(ab\)</span> would solve without error and plan as if each year 2 yield were known, overstating the expected profit. In the two-stage model the single planting <span class="math inline">\(\mathbf{x}\)</span> already satisfies non-anticipativity; giving each year type its own planting would give the perfect-information plans, whose extra expected profit is the EVPI. Because each node knows the whole path to it, a tree can carry any dependence on the past, as <span class="math inline">\(p_{b \mid a}\)</span> does here.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<section id="constraints" class="slide level2">
+<h2>Constraints</h2>
+<p>Constraints for each scenario include that year’s planting and yield factor (<span class="math inline">\(\phi_G = 1.2\)</span>, <span class="math inline">\(\phi_A = 1\)</span>, <span class="math inline">\(\phi_B = 0.8\)</span>). On a path <span class="math inline">\(ab\)</span>, for example:</p>
+<p><span class="math display">\[
+\begin{aligned}
+x^{(2)}_{\text{wheat},a} + x^{(2)}_{\text{corn},a} + x^{(2)}_{\text{beets},a} &amp;\leq 500 &amp;&amp; \text{(land)} \\
+2.5\,\phi_b\, x^{(2)}_{\text{wheat},a} + y^{(2)}_{\text{wheat},ab} - z^{(2)}_{\text{wheat},ab} &amp;\geq 200 &amp;&amp; \text{(wheat for feed)}
+\end{aligned}
+\]</span></p>
 </section>
-<section id="variables-in-jump" class="slide level2">
-<h2>Variables in <code>JuMP</code></h2>
-<div id="10" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" data-code-line-numbers="|3|4-5|6|7-8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a></a>two_year <span class="op">=</span> <span class="fu">Model</span>(HiGHS.Optimizer)</span>
-<span id="cb1-2"><a></a><span class="pp">@variables</span>(two_year, <span class="cf">begin</span></span>
-<span id="cb1-3"><a></a>    x1[<span class="fl">1</span><span class="op">:</span><span class="fl">3</span>] <span class="op">&gt;=</span> <span class="fl">0</span>                        <span class="co"># x^(1): year 1 planting</span></span>
-<span id="cb1-4"><a></a>    y1[<span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, a <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>] <span class="op">&gt;=</span> <span class="fl">0</span>              <span class="co"># y^(1)_a: year 1 purchases</span></span>
-<span id="cb1-5"><a></a>    z1[<span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, a <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>] <span class="op">&gt;=</span> <span class="fl">0</span>              <span class="co"># z^(1)_a: year 1 sales</span></span>
-<span id="cb1-6"><a></a>    x2[<span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, a <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>] <span class="op">&gt;=</span> <span class="fl">0</span>              <span class="co"># x^(2)_a: year 2 planting</span></span>
-<span id="cb1-7"><a></a>    y2[<span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, a <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, b <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>] <span class="op">&gt;=</span> <span class="fl">0</span>    <span class="co"># y^(2)_ab: year 2 purchases</span></span>
-<span id="cb1-8"><a></a>    z2[<span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, a <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, b <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>] <span class="op">&gt;=</span> <span class="fl">0</span>    <span class="co"># z^(2)_ab: year 2 sales</span></span>
-<span id="cb1-9"><a></a><span class="cf">end</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Each variable gets an index for each yield known when it is decided: <code>x2</code> has one for <code>a</code> but none for <code>b</code>.</p>
-</section>
-<section id="objective-in-jump" class="slide level2">
-<h2>Objective in <code>JuMP</code></h2>
-<div id="12" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" data-code-line-numbers="|1-2|4-8|10|11|12-13|14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a></a><span class="co"># p_{b|a}: probability of year 2 yield b (column) after year 1 yield a (row)</span></span>
-<span id="cb2-2"><a></a>persistence <span class="op">=</span> [<span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="fl">1</span><span class="op">/</span><span class="fl">3</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>; <span class="fl">1</span><span class="op">/</span><span class="fl">3</span> <span class="fl">1</span><span class="op">/</span><span class="fl">3</span> <span class="fl">1</span><span class="op">/</span><span class="fl">3</span>; <span class="fl">1</span><span class="op">/</span><span class="fl">6</span> <span class="fl">1</span><span class="op">/</span><span class="fl">3</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span>]</span>
-<span id="cb2-3"><a></a></span>
-<span id="cb2-4"><a></a><span class="kw">function</span> <span class="fu">net_sales</span>(y, z)    <span class="co"># r(y, z): money from sales minus purchases</span></span>
-<span id="cb2-5"><a></a>    sales <span class="op">=</span> sell_price[<span class="fl">1</span>] <span class="op">*</span> z[<span class="fl">1</span>] <span class="op">+</span> sell_price[<span class="fl">2</span>] <span class="op">*</span> z[<span class="fl">2</span>] <span class="op">+</span></span>
-<span id="cb2-6"><a></a>        beet_price <span class="op">*</span> z[<span class="fl">3</span>] <span class="op">+</span> beet_excess_price <span class="op">*</span> z[<span class="fl">4</span>]</span>
-<span id="cb2-7"><a></a>    <span class="cf">return</span> sales <span class="op">-</span> buy_price[<span class="fl">1</span>] <span class="op">*</span> y[<span class="fl">1</span>] <span class="op">-</span> buy_price[<span class="fl">2</span>] <span class="op">*</span> y[<span class="fl">2</span>]</span>
-<span id="cb2-8"><a></a><span class="kw">end</span></span>
-<span id="cb2-9"><a></a></span>
-<span id="cb2-10"><a></a><span class="pp">@objective</span>(two_year, Max, <span class="fu">-sum</span>(plant_cost <span class="op">.*</span> x1) <span class="op">+</span> <span class="fu">sum</span>(prob[a] <span class="op">*</span> (</span>
-<span id="cb2-11"><a></a>    <span class="fu">net_sales</span>(y1[<span class="op">:</span>, a], z1[<span class="op">:</span>, a]) <span class="op">-</span> <span class="fu">sum</span>(plant_cost <span class="op">.*</span> x2[<span class="op">:</span>, a]) <span class="op">+</span></span>
-<span id="cb2-12"><a></a>    <span class="fu">sum</span>(persistence[a, b] <span class="op">*</span> <span class="fu">net_sales</span>(y2[<span class="op">:</span>, a, b], z2[<span class="op">:</span>, a, b])</span>
-<span id="cb2-13"><a></a>        <span class="cf">for</span> b <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>))</span>
-<span id="cb2-14"><a></a>    <span class="cf">for</span> a <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p><code>prob[a]</code> is <span class="math inline">\(p_a\)</span> and <code>persistence[a, b]</code> is <span class="math inline">\(p_{b \mid a}\)</span>; the year 2 planting cost sits outside the sum over <code>b</code>.</p>
-</section>
-<section id="constraints-in-jump" class="slide level2">
-<h2>Constraints in <code>JuMP</code></h2>
-<div id="14" class="cell" data-execution_count="1">
+<section id="year-2-planting-decisions" class="slide level2">
+<h2>Year 2 Planting Decisions</h2>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a></a><span class="co"># One year's feed and beet constraints, for planting x, purchases y and</span></span>
-<span id="cb3-2"><a></a><span class="co"># sales z, in a year with yield factor f: the same as in the two-stage model</span></span>
-<span id="cb3-3"><a></a><span class="kw">function</span> <span class="fu">add_year_constraints!</span>(model, x, y, z, f)</span>
-<span id="cb3-4"><a></a>    crop_yield <span class="op">=</span> avg_yield <span class="op">.*</span> f</span>
-<span id="cb3-5"><a></a>    <span class="pp">@constraint</span>(model, crop_yield[<span class="fl">1</span>] <span class="op">*</span> x[<span class="fl">1</span>] <span class="op">+</span> y[<span class="fl">1</span>] <span class="op">-</span> z[<span class="fl">1</span>] <span class="op">&gt;=</span> feed_need[<span class="fl">1</span>])</span>
-<span id="cb3-6"><a></a>    <span class="pp">@constraint</span>(model, crop_yield[<span class="fl">2</span>] <span class="op">*</span> x[<span class="fl">2</span>] <span class="op">+</span> y[<span class="fl">2</span>] <span class="op">-</span> z[<span class="fl">2</span>] <span class="op">&gt;=</span> feed_need[<span class="fl">2</span>])</span>
-<span id="cb3-7"><a></a>    <span class="pp">@constraint</span>(model, z[<span class="fl">3</span>] <span class="op">+</span> z[<span class="fl">4</span>] <span class="op">&lt;=</span> crop_yield[<span class="fl">3</span>] <span class="op">*</span> x[<span class="fl">3</span>])</span>
-<span id="cb3-8"><a></a>    <span class="pp">@constraint</span>(model, z[<span class="fl">3</span>] <span class="op">&lt;=</span> beet_quota)</span>
-<span id="cb3-9"><a></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<div id="16" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" data-code-line-numbers="|1|2-5|6-10|12-13"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a></a><span class="pp">@constraint</span>(two_year, <span class="fu">sum</span>(x1) <span class="op">&lt;=</span> land)</span>
-<span id="cb4-2"><a></a><span class="cf">for</span> a <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
-<span id="cb4-3"><a></a>    <span class="co"># year 1, after yield a</span></span>
-<span id="cb4-4"><a></a>    <span class="fu">add_year_constraints!</span>(two_year, x1, y1[<span class="op">:</span>, a], z1[<span class="op">:</span>, a], yield_factor[a])</span>
-<span id="cb4-5"><a></a>    <span class="pp">@constraint</span>(two_year, <span class="fu">sum</span>(x2[<span class="op">:</span>, a]) <span class="op">&lt;=</span> land)</span>
-<span id="cb4-6"><a></a>    <span class="cf">for</span> b <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
-<span id="cb4-7"><a></a>        <span class="co"># year 2, after yields a and b: the same x2[:, a] for every b</span></span>
-<span id="cb4-8"><a></a>        <span class="fu">add_year_constraints!</span>(two_year, x2[<span class="op">:</span>, a], y2[<span class="op">:</span>, a, b], z2[<span class="op">:</span>, a, b],</span>
-<span id="cb4-9"><a></a>            yield_factor[b])</span>
-<span id="cb4-10"><a></a>    <span class="cf">end</span></span>
-<span id="cb4-11"><a></a><span class="cf">end</span></span>
-<span id="cb4-12"><a></a><span class="fu">set_silent</span>(two_year)</span>
-<span id="cb4-13"><a></a><span class="fu">optimize!</span>(two_year)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>The year 2 constraints use the same <code>x2[:, a]</code> for every <code>b</code>.</p>
-<aside class="notes">
-<p>One year 2 planting serves the three year 2 outcomes after yield <code>a</code>: that indexing is non-anticipativity. <code>add_year_constraints!</code> adds one year’s feed and beet constraints, the same as in the two-stage model.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="two-year-planting-plan" class="slide level2">
-<h2>Two-Year Planting Plan</h2>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a></a><span class="co"># The year 2 planting x^(2)_a after each year 1 yield a</span></span>
-<span id="cb5-2"><a></a><span class="fu">println</span>(<span class="st">"| Year 1 yield | Wheat (acres) | Corn (acres) | Beets (acres) |"</span>)</span>
-<span id="cb5-3"><a></a><span class="fu">println</span>(<span class="st">"|:--|--:|--:|--:|"</span>)</span>
-<span id="cb5-4"><a></a><span class="cf">for</span> a <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
-<span id="cb5-5"><a></a>    <span class="fu">println</span>(<span class="st">"| "</span>, scenarios[a], <span class="st">" | "</span>, <span class="fu">join</span>(<span class="fu">fmt</span>.(<span class="fu">value</span>.(x2[<span class="op">:</span>, a])), <span class="st">" | "</span>), <span class="st">" |"</span>)</span>
-<span id="cb5-6"><a></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a></a><span class="co"># No decision links the years, so the year 2 planting after year 1 yield a</span></span>
+<span id="cb2-2"><a></a><span class="co"># solves the two-stage problem with probabilities p_{b|a} (row a of persistence)</span></span>
+<span id="cb2-3"><a></a>year2_plan <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>, <span class="fl">3</span>)</span>
+<span id="cb2-4"><a></a>year2_profit <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">3</span>)</span>
+<span id="cb2-5"><a></a><span class="cf">for</span> a <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
+<span id="cb2-6"><a></a>    year2_plan[a, <span class="op">:</span>], year2_profit[a] <span class="op">=</span> <span class="fu">farm_model</span>(yield_factor, persistence[a, <span class="op">:</span>])</span>
+<span id="cb2-7"><a></a><span class="cf">end</span></span>
+<span id="cb2-8"><a></a><span class="fu">println</span>(<span class="st">"| Year 1 yield | Wheat (acres) | Corn (acres) | Beets (acres) |"</span>)</span>
+<span id="cb2-9"><a></a><span class="fu">println</span>(<span class="st">"|:--|--:|--:|--:|"</span>)</span>
+<span id="cb2-10"><a></a><span class="cf">for</span> a <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
+<span id="cb2-11"><a></a>    <span class="fu">println</span>(<span class="st">"| "</span>, scenarios[a], <span class="st">" | "</span>, <span class="fu">join</span>(<span class="fu">fmt</span>.(year2_plan[a, <span class="op">:</span>]), <span class="st">" | "</span>), <span class="st">" |"</span>)</span>
+<span id="cb2-12"><a></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <table class="caption-top">
 <thead>
@@ -509,9 +506,9 @@ P(\text{good}, \text{bad}) &amp;= \tfrac{1}{3} \times \tfrac{1}{6} = \tfrac{1}{1
 </tr>
 </tbody>
 </table>
-<p>After a bad year, the farmer plants enough wheat and corn to cover the feed even if year 2 is bad too.</p>
+<p>Each row solves the two-stage problem for <span class="math inline">\(p_{b \mid a}\)</span>. After a bad year, we plant more beets because the probability of a good yield is lower.</p>
 <aside class="notes">
-<p>With nothing carried between the years, the year 1 planting is the two-stage plan, 170/80/250 acres, and so is the year 2 planting after a good or an average year. After a bad year, another bad year has probability 1/2: the plan grows 100 acres of wheat and 100 of corn, just enough for the feed in a bad year, and 300 of beets. The expected year 2 profit is $128,087 after a good year, $108,390 after an average one and $92,067 after a bad one.</p>
+<p>The expected year 2 profit is $128,087 after a good year, $108,390 after an average one and $92,067 after a bad one. After a bad year the plan grows 100 acres of wheat and 100 of corn, just enough for the feed in a bad year, and 300 of beets.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -529,9 +526,9 @@ P(\text{good}, \text{bad}) &amp;= \tfrac{1}{3} \times \tfrac{1}{6} = \tfrac{1}{1
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Years</th>
-<th style="text-align: right;">Scenarios (leaves)</th>
-<th style="text-align: right;">Nodes</th>
+<th style="text-align: left;">Years <span class="math inline">\(T\)</span></th>
+<th style="text-align: right;">Scenarios (leaves) <span class="math inline">\(3^T\)</span></th>
+<th style="text-align: right;">Nodes <span class="math inline">\(1 + 3 + \cdots + 3^T\)</span></th>
 </tr>
 </thead>
 <tbody>
@@ -551,71 +548,40 @@ P(\text{good}, \text{bad}) &amp;= \tfrac{1}{3} \times \tfrac{1}{6} = \tfrac{1}{1
 <td style="text-align: right;">40</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">5</td>
-<td style="text-align: right;">243</td>
-<td style="text-align: right;">364</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">10</td>
 <td style="text-align: right;">59,049</td>
 <td style="text-align: right;">88,573</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Raises the question</strong>: how do we make decisions in a <strong>sequence</strong> without writing out the tree?</p>
-<aside class="notes">
-<p>With a decision and an uncertainty every year, the number of scenarios grows exponentially with the number of years. Each node carries its own copy of the decisions made there, so the model grows with the number of nodes. Sampling a finite set of branches is one way to keep a tree small. Most environmental decisions repeat: release water every month, set a loading every year, harvest every season. Writing out every path through the future quickly becomes impossible, and dynamic programming is the standard way around it.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<p>This is an example of the <strong>curse of dimensionality</strong>: new “levels” increase the number of scenarios exponentially.</p>
 </section></section>
 <section>
-<section id="sequential-decisions" class="title-slide slide level1 center">
-<h1>Sequential Decisions</h1>
+<section id="dynamic-programming" class="title-slide slide level1 center">
+<h1>Dynamic Programming</h1>
 
 </section>
 <section id="decisions-linked-over-time" class="slide level2">
 <h2>Decisions Linked Over Time</h2>
+<p>Often a decision at time <span class="math inline">\(t\)</span> changes the initial state for time <span class="math inline">\(t+1\)</span>:</p>
 <ul>
-<li><strong>Reservoir</strong>: water released this month is not there next month.</li>
-<li><strong>Lake</strong>: <span class="math inline">\(P_{t+1} = P_t + L_t - sP_t + R(P_t)\)</span>. This year’s loading <span class="math inline">\(L_t\)</span> changes next year’s phosphorus <span class="math inline">\(P_{t+1}\)</span>.</li>
+<li><strong>Reservoir</strong>: water stored for next year influences potential release levels and flooding probabilities.</li>
 <li><strong>Fishery</strong>: this season’s harvest changes next season’s stock.</li>
 </ul>
-<p><strong>Why not just optimize each month on its own?</strong></p>
-<aside class="notes">
-<p>Each example has a stock that carries the past into the future, so today’s decision changes tomorrow’s options.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<p>The “benefits” (or costs) of each state are also typically nonlinear (<em>e.g.</em> diminishing returns).</p>
 </section>
-<section id="a-reservoir-in-a-dry-season" class="slide level2">
-<h2>A Reservoir in a Dry Season</h2>
+<section id="reservoir-management" class="slide level2">
+<h2>Reservoir Management</h2>
 <ul>
-<li>Storage holds up to <strong>4 units</strong>, and starts <strong>full</strong>.</li>
-<li>Each month: <strong>release</strong> <span class="math inline">\(r\)</span> (at most what is stored), then the month’s <strong>inflow</strong> arrives; anything above 4 spills.</li>
-<li>Inflows over the season: 1, 1, 0.</li>
-<li>Benefit of a month’s release:</li>
+<li>Storage holds up to <strong>4 million m³</strong> and starts <strong>full</strong>: <span class="math inline">\(s_1 = 4\)</span>.</li>
+<li>Each month <span class="math inline">\(t\)</span>: <strong>release</strong> <span class="math inline">\(r_t \in \{0, 1, \ldots, s_t\}\)</span>, then the <strong>inflow</strong> <span class="math inline">\(I_t\)</span> arrives: <span class="math inline">\(I_1 = 1\)</span>, <span class="math inline">\(I_2 = 1\)</span>, <span class="math inline">\(I_3 = 0\)</span> million m³.</li>
+<li>Anything above 4 spills: <span class="math inline">\(s_{t+1} = \min(s_t - r_t + I_t,\ 4)\)</span>.</li>
+<li><strong>Goal</strong>: maximize <span class="math inline">\(\sum_t \text{benefit}(r_t)\)</span>; leftover water is worthless.</li>
 </ul>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Release</th>
+<th style="text-align: left;">Release <span class="math inline">\(r\)</span> [million m³]</th>
 <th style="text-align: right;">0</th>
 <th style="text-align: right;">1</th>
 <th style="text-align: right;">2</th>
@@ -625,17 +591,17 @@ P(\text{good}, \text{bad}) &amp;= \tfrac{1}{3} \times \tfrac{1}{6} = \tfrac{1}{1
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><strong>Benefit</strong></td>
+<td style="text-align: left;"><span class="math inline">\(\text{benefit}(r)\)</span> [$1,000]</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">13</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">130</td>
 </tr>
 </tbody>
 </table>
 <aside class="notes">
-<p>The benefits have diminishing returns: the first unit released in a month is worth 6, the second only 4 more, the third 2, the fourth 1. Think of water for irrigation or a city during a dry season.</p>
+<p>Think of a small irrigation reservoir in a dry season. The benefits have diminishing returns as water moves from high-value to low-value crops: the first million m³ released in a month adds $60,000 ($60 per 1,000 m³, about $74 an acre-foot), the second $40,000, the third $20,000 and the fourth $10,000 (about $12 an acre-foot). These are illustrative but in the range of US irrigation water values, which run from a few dollars an acre-foot for low-value crops to hundreds for vegetables (National Research Council; USDA ERS). Storage in steps of 1 million m³ and releasing before the inflow arrives are modeling conventions.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -650,14 +616,83 @@ P(\text{good}, \text{bad}) &amp;= \tfrac{1}{3} \times \tfrac{1}{6} = \tfrac{1}{1
 </section>
 <section id="the-greedy-plan" class="slide level2">
 <h2>The Greedy Plan</h2>
-<p><strong>Greedy</strong>: release everything available, every month.</p>
-<p>It releases 4, 1, 1, for a total benefit of <strong>25</strong>.</p>
-<p><strong>Can you beat 25?</strong></p>
-<div class="fragment fade-in">
-<p>Releasing 2, 2, 2 gives a total of <strong>30</strong>.</p>
-</div>
+<p>In a <strong>greedy</strong> plan, each decision maximizes only its own stage’s benefit with no forward planning.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Month <span class="math inline">\(t\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(s_t\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(r_t\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\text{benefit}(r_t)\)</span></th>
+<th style="text-align: left;"><span class="math inline">\(s_{t+1}\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">130</td>
+<td style="text-align: left;"><span class="math inline">\(\min(4 - 4 + 1,\ 4) = 1\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: left;"><span class="math inline">\(\min(1 - 1 + 1,\ 4) = 1\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: left;"><span class="math inline">\(\min(1 - 1 + 0,\ 4) = 0\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Total ($1,000): 130 + 60 + 60 = 250.</p>
+</section>
+<section id="spreading-the-releases" class="slide level2">
+<h2>Spreading the Releases</h2>
+<p>Releasing 2 million m³ a month keeps water for later months:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Month <span class="math inline">\(t\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(s_t\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(r_t\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\text{benefit}(r_t)\)</span></th>
+<th style="text-align: left;"><span class="math inline">\(s_{t+1}\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: left;"><span class="math inline">\(\min(4 - 2 + 1,\ 4) = 3\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: left;"><span class="math inline">\(\min(3 - 2 + 1,\ 4) = 2\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: left;"><span class="math inline">\(\min(2 - 2 + 0,\ 4) = 0\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Total ($1,000): 100 + 100 + 100 = <strong>300</strong> (greedy: 250).</p>
 <aside class="notes">
-<p>Greedy maximizes each month’s benefit separately: it empties the reservoir in month 1, then only has the inflow. The harder question is how to find the best plan when there are more months, more storage levels, or uncertain inflows: trial and error does not scale.</p>
+<p>Trial and error does not scale: more months, more storage levels or uncertain inflows quickly make it impossible to try every plan.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -673,15 +708,28 @@ P(\text{good}, \text{bad}) &amp;= \tfrac{1}{3} \times \tfrac{1}{6} = \tfrac{1}{1
 <section id="elements-of-a-dynamic-program" class="slide level2">
 <h2>Elements of a Dynamic Program</h2>
 <ul>
-<li><strong>Stage</strong> <span class="math inline">\(t\)</span>: the month.</li>
-<li><strong>State</strong> <span class="math inline">\(s_t\)</span>: storage at the start of the month; it carries the past forward.</li>
-<li><strong>Decision</strong> <span class="math inline">\(r_t\)</span>: the release, with <span class="math inline">\(0 \leq r_t \leq s_t\)</span>.</li>
-<li><strong>Transition</strong>: <span class="math inline">\(s_{t+1} = \min(s_t - r_t + I_t,\ 4)\)</span>.</li>
-<li><strong>Value function</strong> <span class="math inline">\(V_t(s)\)</span>: the best total benefit from month <span class="math inline">\(t\)</span> to the end, starting with storage <span class="math inline">\(s\)</span>.</li>
-<li><strong>Policy</strong>: the best release for each month and storage level.</li>
+<li><strong>Stage</strong> <span class="math inline">\(t = 1, \ldots, T\)</span>.</li>
+<li><strong>State</strong> <span class="math inline">\(s_t\)</span>.</li>
+<li><strong>Decision</strong> <span class="math inline">\(x_t \in \mathcal{X}_t(s_t)\)</span>.</li>
+</ul>
+</section>
+<section id="inputs-transitions-and-benefits" class="slide level2">
+<h2>Inputs, Transitions, and Benefits</h2>
+<ul>
+<li><strong>Input</strong> <span class="math inline">\(\xi_t\)</span>: exogenous changes to the post-decision state.</li>
+<li><strong>Transition</strong> <span class="math inline">\(s_{t+1} = f_t(s_t, x_t, \xi_t)\)</span>.</li>
+<li><strong>Benefit</strong> <span class="math inline">\(\text{benefit}_t(s_t, x_t)\)</span>: the utility of each decision.</li>
+</ul>
+</section>
+<section id="the-value-function" class="slide level2">
+<h2>The Value Function</h2>
+<ul>
+<li><strong>Terminal value</strong> <span class="math inline">\(V_{T+1}(s)\)</span>: value of ending with a particular state.</li>
+<li><strong>Value function</strong>: <span class="math inline">\(V_t(s) = \max_{x_t, \ldots, x_T} \big[\sum_{k=t}^{T} \text{benefit}_k(s_k, x_k) + V_{T+1}(s_{T+1})\big]\)</span> with <span class="math inline">\(s_t = s\)</span>, <span class="math inline">\(x_k \in \mathcal{X}_k(s_k)\)</span>, <span class="math inline">\(s_{k+1} = f_k(s_k, x_k, \xi_k)\)</span>: the best total benefit from stage <span class="math inline">\(t\)</span> on.</li>
+<li><strong>Policy</strong>: a rule giving a decision for every stage <span class="math inline">\(t\)</span> and state <span class="math inline">\(s\)</span>. The <strong>optimal policy</strong> <span class="math inline">\(x^*_t(s)\)</span> earns <span class="math inline">\(V_t(s)\)</span> from each.</li>
 </ul>
 <aside class="notes">
-<p>The value function is the key idea: it answers “how good is it to be here?” for every state, not only the one we start in. Once we know next month’s value function, choosing this month’s release is a one-step problem.</p>
+<p>The value function is the key idea: it answers “how good is it to be here?” for every state, not only the one we start in. Once we know the next stage’s value function, choosing this stage’s decision is a one-step problem.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -693,46 +741,47 @@ P(\text{good}, \text{bad}) &amp;= \tfrac{1}{3} \times \tfrac{1}{6} = \tfrac{1}{1
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section></section>
-<section>
-<section id="backward-induction" class="title-slide slide level1 center">
-<h1>Backward Induction</h1>
-
 </section>
-<section id="the-last-month" class="slide level2">
-<h2>The Last Month</h2>
-<p>In the <strong>last month</strong>, this model gives water left over no value, so release everything:</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: left;">Storage</th>
-<th style="text-align: right;">0</th>
-<th style="text-align: right;">1</th>
-<th style="text-align: right;">2</th>
-<th style="text-align: right;">3</th>
-<th style="text-align: right;">4</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><strong>Best release</strong></td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><strong>Value</strong> <span class="math inline">\(V_3(s)\)</span></td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">13</td>
-</tr>
-</tbody>
-</table>
-<p>Now step <strong>backwards</strong>: knowing <span class="math inline">\(V_3\)</span>, month 2 is a one-step problem.</p>
+<section id="the-bellman-equation" class="slide level2">
+<h2>The Bellman Equation</h2>
+<p>With known inputs, the optimal policy <span class="math inline">\(x^*_t(s)\)</span> maximizes this stage’s benefit plus <span class="math inline">\(V_{t+1}\)</span> at the next state:</p>
+<p><span class="math display">\[\begin{aligned}
+V_t(s) &amp;= \max_{x \in \mathcal{X}_t(s)} \Big[ \text{benefit}_t(s, x) + V_{t+1}\big(f_t(s, x, \xi_t)\big) \Big] \\
+x^*_t(s) &amp;= \argmax_{x \in \mathcal{X}_t(s)} \Big[ \text{benefit}_t(s, x) + V_{t+1}\big(f_t(s, x, \xi_t)\big) \Big]
+\end{aligned}\]</span></p>
+<p><strong>Backward induction</strong>: start from the terminal value <span class="math inline">\(V_{T+1}\)</span>, solve for <span class="math inline">\(V_T\)</span>, then <span class="math inline">\(V_{T-1}\)</span>, and so on back to <span class="math inline">\(V_1\)</span>.</p>
+<aside class="notes">
+<p>Here the inputs are known; with uncertain inputs we will average <span class="math inline">\(V_{t+1}\)</span> over them.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="backward-induction-for-the-reservoir" class="slide level2">
+<h2>Backward Induction for the Reservoir</h2>
+<div id="36" class="cell" data-execution_count="0">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a></a><span class="co"># The reservoir in code (defined once, at the top of the deck)</span></span>
+<span id="cb3-2"><a></a>capacity <span class="op">=</span> <span class="fl">4</span>                          <span class="co"># largest storage [million m³]</span></span>
+<span id="cb3-3"><a></a>inflow <span class="op">=</span> [<span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>]                    <span class="co"># I_1, I_2, I_3</span></span>
+<span id="cb3-4"><a></a>benefit_table <span class="op">=</span> [<span class="fl">0</span>, <span class="fl">60</span>, <span class="fl">100</span>, <span class="fl">120</span>, <span class="fl">130</span>]  <span class="co"># [$1,000] for releasing 0, ..., 4</span></span>
+<span id="cb3-5"><a></a><span class="fu">benefit</span>(r) <span class="op">=</span> benefit_table[r <span class="op">+</span> <span class="fl">1</span>]     <span class="co"># Julia arrays start at 1</span></span>
+<span id="cb3-6"><a></a><span class="fu">next_storage</span>(s, r, q) <span class="op">=</span> <span class="fu">min</span>(s <span class="op">-</span> r <span class="op">+</span> q, capacity)   <span class="co"># s_{t+1}</span></span>
+<span id="cb3-7"><a></a>n_months <span class="op">=</span> <span class="fu">length</span>(inflow)</span>
+<span id="cb3-8"><a></a>levels <span class="op">=</span> <span class="fl">0</span><span class="op">:</span>capacity                   <span class="co"># storage levels</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>With no carryover value, <span class="math inline">\(V_4(s) = 0\)</span>, and for each month <span class="math inline">\(t = 3, 2, 1\)</span> and storage <span class="math inline">\(s \in \{0, 1, \ldots, 4\}\)</span>:</p>
+<p><span class="math display">\[V_t(s) = \max_{r \in \{0, 1, \ldots, s\}} \Big[ \text{benefit}(r) + V_{t+1}\big(\min(s - r + I_t,\ 4)\big) \Big]\]</span></p>
+<p>In month 3, <span class="math inline">\(V_4 = 0\)</span> and the benefit increases with <span class="math inline">\(r\)</span>, so month 3 releases everything: <span class="math inline">\(V_3(s) = \text{benefit}(s)\)</span>.</p>
 <aside class="notes">
 <p>The last stage is the easy one, because no later month depends on it. That is why we start there.</p>
 <style type="text/css">
@@ -749,43 +798,17 @@ P(\text{good}, \text{bad}) &amp;= \tfrac{1}{3} \times \tfrac{1}{6} = \tfrac{1}{1
 </section>
 <section id="month-2-by-hand" class="slide level2">
 <h2>Month 2 by Hand</h2>
-<p>For each storage <span class="math inline">\(s\)</span>, try every release <span class="math inline">\(r \leq s\)</span> (month 2’s inflow is <span class="math inline">\(I_2 =\)</span> 1):</p>
-<p><span class="math display">\[V_2(s) = \max_{r \leq s} \left[\, \text{benefit}(r) + V_3\big(\min(s - r + I_2,\ 4)\big) \right]\]</span></p>
-<p><strong>Your turn: compute <span class="math inline">\(V_2(3)\)</span>.</strong></p>
-<div class="fragment fade-in">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: left;">Storage</th>
-<th style="text-align: right;">0</th>
-<th style="text-align: right;">1</th>
-<th style="text-align: right;">2</th>
-<th style="text-align: right;">3</th>
-<th style="text-align: right;">4</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><strong>Best release</strong></td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><strong>Value</strong> <span class="math inline">\(V_2(s)\)</span></td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">22</td>
-</tr>
-</tbody>
-</table>
-</div>
+<p><span class="math display">\[V_2(s) = \max_{r \in \{0, 1, \ldots, s\}} \Big[ \text{benefit}(r) + V_3\big(\min(s - r + 1,\ 4)\big) \Big]\]</span></p>
+<p>For example, from <span class="math inline">\(s = 3\)</span> with <span class="math inline">\(r = 1\)</span> (and <span class="math inline">\(I_2 = 1\)</span>):</p>
+<p><span class="math display">\[
+\begin{aligned}
+\text{next storage} &amp;= \min(3 - 1 + 1,\ 4) = 3 \\
+\text{benefit}(1) + V_3(3) &amp;= 60 + \text{benefit}(3) = 60 + 120 = 180
+\end{aligned}
+\]</span></p>
+<p>Releases 0, 2, 3 give 130, 200, 180: <span class="math inline">\(V_2(3) =\)</span> <strong>200</strong>, at <span class="math inline">\(r =\)</span> 2.</p>
 <aside class="notes">
-<p>Board item. Work V2(0) and V2(1) together on the board, then let students compute V2(3). For s = 3 the options are: release 0, benefit 0 plus V3 of min(3 + 1, 4) = 13, so 13; release 1, 6 plus V3(3) = 12, so 18; release 2, 10 plus V3(2) = 10, so 20; release 3, 12 plus V3(1) = 6, so 18. The best is 20, releasing 2. Fill in the rest of the table. At storage 2 and storage 4 two releases tie (1 or 2, and 2 or 3); the table reports the smaller one.</p>
+<p>Board item. Work <span class="math inline">\(r = 1\)</span> together on the board, then let students try <span class="math inline">\(r = 0\)</span> and <span class="math inline">\(r = 2\)</span>. Totals are in $1,000.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -797,28 +820,64 @@ P(\text{good}, \text{bad}) &amp;= \tfrac{1}{3} \times \tfrac{1}{6} = \tfrac{1}{1
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</section>
+<section id="month-2-every-storage-level" class="slide level2">
+<h2>Month 2: Every Storage Level</h2>
+<p>The same calculation for each storage level:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Storage <span class="math inline">\(s\)</span></th>
+<th style="text-align: right;">0</th>
+<th style="text-align: right;">1</th>
+<th style="text-align: right;">2</th>
+<th style="text-align: right;">3</th>
+<th style="text-align: right;">4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Best release <span class="math inline">\(r\)</span></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(V_2(s)\)</span></td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">160</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">220</td>
+</tr>
+</tbody>
+</table>
+<p>At storage 2, releases 1 and 2 both give 160; at storage 4, releases 2 and 3 both give 220.</p>
 </section>
 <section id="backward-induction-in-code" class="slide level2">
 <h2>Backward Induction in Code</h2>
-<div id="30" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a></a><span class="kw">function</span> <span class="fu">backward_induction</span>(inflow; end_value<span class="op">=</span><span class="fu">zeros</span>(capacity <span class="op">+</span> <span class="fl">1</span>))</span>
-<span id="cb6-2"><a></a>    value <span class="op">=</span> <span class="fu">fill</span>(<span class="op">-</span><span class="cn">Inf</span>, capacity <span class="op">+</span> <span class="fl">1</span>, n_months <span class="op">+</span> <span class="fl">1</span>)  <span class="co"># best total from month t</span></span>
-<span id="cb6-3"><a></a>    policy <span class="op">=</span> <span class="fu">zeros</span>(<span class="dt">Int</span>, capacity <span class="op">+</span> <span class="fl">1</span>, n_months)     <span class="co"># best release</span></span>
-<span id="cb6-4"><a></a>    value[<span class="op">:</span>, n_months <span class="op">+</span> <span class="fl">1</span>] <span class="op">=</span> end_value              <span class="co"># water left at the end</span></span>
-<span id="cb6-5"><a></a>    <span class="cf">for</span> t <span class="kw">in</span> n_months<span class="op">:-</span><span class="fl">1</span><span class="op">:</span><span class="fl">1</span>, s <span class="kw">in</span> levels</span>
-<span id="cb6-6"><a></a>        <span class="cf">for</span> r <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>s                                <span class="co"># at most what is stored</span></span>
-<span id="cb6-7"><a></a>            total <span class="op">=</span> <span class="fu">benefit</span>(r) <span class="op">+</span> value[<span class="fu">next_storage</span>(s, r, inflow[t]) <span class="op">+</span> <span class="fl">1</span>, t <span class="op">+</span> <span class="fl">1</span>]</span>
-<span id="cb6-8"><a></a>            <span class="cf">if</span> total <span class="op">&gt;</span> value[s <span class="op">+</span> <span class="fl">1</span>, t]              <span class="co"># ties keep the smaller r</span></span>
-<span id="cb6-9"><a></a>                value[s <span class="op">+</span> <span class="fl">1</span>, t] <span class="op">=</span> total</span>
-<span id="cb6-10"><a></a>                policy[s <span class="op">+</span> <span class="fl">1</span>, t] <span class="op">=</span> r</span>
-<span id="cb6-11"><a></a>            <span class="cf">end</span></span>
-<span id="cb6-12"><a></a>        <span class="cf">end</span></span>
-<span id="cb6-13"><a></a>    <span class="cf">end</span></span>
-<span id="cb6-14"><a></a>    <span class="cf">return</span> value, policy</span>
-<span id="cb6-15"><a></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="44" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a></a><span class="kw">function</span> <span class="fu">backward_induction</span>(inflow; carryover_value<span class="op">=</span><span class="fl">0</span>)</span>
+<span id="cb4-2"><a></a>    value_table <span class="op">=</span> <span class="fu">fill</span>(<span class="op">-</span><span class="cn">Inf</span>, capacity <span class="op">+</span> <span class="fl">1</span>, n_months <span class="op">+</span> <span class="fl">1</span>)  <span class="co"># V_t(s) in row s + 1</span></span>
+<span id="cb4-3"><a></a>    policy_table <span class="op">=</span> <span class="fu">zeros</span>(<span class="dt">Int</span>, capacity <span class="op">+</span> <span class="fl">1</span>, n_months)     <span class="co"># best release</span></span>
+<span id="cb4-4"><a></a>    value_table[<span class="op">:</span>, n_months <span class="op">+</span> <span class="fl">1</span>] <span class="op">=</span> carryover_value <span class="op">.*</span> levels  <span class="co"># V_4(s)</span></span>
+<span id="cb4-5"><a></a>    <span class="cf">for</span> t <span class="kw">in</span> n_months<span class="op">:-</span><span class="fl">1</span><span class="op">:</span><span class="fl">1</span>, s <span class="kw">in</span> levels       <span class="co"># months backwards, every storage</span></span>
+<span id="cb4-6"><a></a>        <span class="cf">for</span> r <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>s                          <span class="co"># every allowed release</span></span>
+<span id="cb4-7"><a></a>            next_s <span class="op">=</span> <span class="fu">next_storage</span>(s, r, inflow[t])</span>
+<span id="cb4-8"><a></a>            total <span class="op">=</span> <span class="fu">benefit</span>(r) <span class="op">+</span> value_table[next_s <span class="op">+</span> <span class="fl">1</span>, t <span class="op">+</span> <span class="fl">1</span>]</span>
+<span id="cb4-9"><a></a>            <span class="cf">if</span> total <span class="op">&gt;</span> value_table[s <span class="op">+</span> <span class="fl">1</span>, t]  <span class="co"># ties keep the smaller release</span></span>
+<span id="cb4-10"><a></a>                value_table[s <span class="op">+</span> <span class="fl">1</span>, t] <span class="op">=</span> total</span>
+<span id="cb4-11"><a></a>                policy_table[s <span class="op">+</span> <span class="fl">1</span>, t] <span class="op">=</span> r</span>
+<span id="cb4-12"><a></a>            <span class="cf">end</span></span>
+<span id="cb4-13"><a></a>        <span class="cf">end</span></span>
+<span id="cb4-14"><a></a>    <span class="cf">end</span></span>
+<span id="cb4-15"><a></a>    <span class="cf">return</span> value_table, policy_table</span>
+<span id="cb4-16"><a></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <aside class="notes">
-<p>The code is the hand calculation in a loop: months backwards, every storage level, every allowed release (no more than is stored). It keeps one table of values and one table of best releases, both allocated at full size before the loop. A release replaces the best so far only if it is strictly better, so ties keep the smaller release, as on the board.</p>
+<p>Storage <span class="math inline">\(s\)</span> is in row <span class="math inline">\(s + 1\)</span> of each table, because Julia arrays start at 1. The code is the hand calculation in a loop: months backwards, every storage level, every allowed release, each one an option in the Bellman equation. Both tables are allocated at full size before the loop. A release replaces the best so far only if it is strictly better, so ties keep the smaller release, as in the month 2 table.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -831,12 +890,65 @@ P(\text{good}, \text{bad}) &amp;= \tfrac{1}{3} \times \tfrac{1}{6} = \tfrac{1}{1
           display:block!important;
       }</style></aside>
 </section>
-<section id="month-1-and-the-optimal-plan" class="slide level2">
-<h2>Month 1 and the Optimal Plan</h2>
+<section id="month-1-with-storage-4" class="slide level2">
+<h2>Month 1 with Storage 4</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Storage</th>
+<th style="text-align: right;"><span class="math inline">\(r\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\text{benefit}(r)\)</span></th>
+<th style="text-align: left;">Next storage</th>
+<th style="text-align: right;"><span class="math inline">\(V_{2}\)</span> there</th>
+<th style="text-align: right;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;"><span class="math inline">\(\min(4 - 0 + 1,\ 4) = 4\)</span></td>
+<td style="text-align: right;">220</td>
+<td style="text-align: right;">220</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: left;"><span class="math inline">\(\min(4 - 1 + 1,\ 4) = 4\)</span></td>
+<td style="text-align: right;">220</td>
+<td style="text-align: right;">280</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: left;"><span class="math inline">\(\min(4 - 2 + 1,\ 4) = 3\)</span></td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">300</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: left;"><span class="math inline">\(\min(4 - 3 + 1,\ 4) = 2\)</span></td>
+<td style="text-align: right;">160</td>
+<td style="text-align: right;">280</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">130</td>
+<td style="text-align: left;"><span class="math inline">\(\min(4 - 4 + 1,\ 4) = 1\)</span></td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">250</td>
+</tr>
+</tbody>
+</table>
+<p>Best: release <strong>2</strong>, so <span class="math inline">\(V_1(4) =\)</span> <strong>300</strong>.</p>
+</section>
+<section id="the-optimal-policy" class="slide level2">
+<h2>The Optimal Policy</h2>
+<p>Repeating this for every month and storage:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Storage <span class="math inline">\(s\)</span></th>
 <th style="text-align: right;">0</th>
 <th style="text-align: right;">1</th>
 <th style="text-align: right;">2</th>
@@ -846,7 +958,7 @@ P(\text{good}, \text{bad}) &amp;= \tfrac{1}{3} \times \tfrac{1}{6} = \tfrac{1}{1
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><strong>Best release</strong></td>
+<td style="text-align: left;">Month 1: best release</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
@@ -854,221 +966,65 @@ P(\text{good}, \text{bad}) &amp;= \tfrac{1}{3} \times \tfrac{1}{6} = \tfrac{1}{1
 <td style="text-align: right;">2</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><strong>Value</strong> <span class="math inline">\(V_1(s)\)</span></td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">18</td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">26</td>
-<td style="text-align: right;">30</td>
+<td style="text-align: left;">Month 2: best release</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Month 3: best release</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
 </tr>
 </tbody>
 </table>
-<p>From a full reservoir, <span class="math inline">\(V_1(4) =\)</span> <strong>30</strong>. Following the policy forward gives releases <strong>2, 2, 2</strong>.</p>
-<aside class="notes">
-<p>The value function at the start answers the whole problem: 30, against greedy’s 25. To get the plan, follow the policy forward: release 2, see the storage, look up the next month’s best release, and so on.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<p>Tied cells (month 1 at storages 2 and 3, month 2 at 2 and 4) show the smaller release.</p>
 </section>
-<section id="checking-by-brute-force" class="slide level2">
-<h2>Checking by Brute Force</h2>
-<div id="36" class="cell" data-execution_count="1">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a></a><span class="co"># Try every release sequence (only feasible because the problem is tiny)</span></span>
-<span id="cb7-2"><a></a><span class="kw">function</span> <span class="fu">brute_force</span>()</span>
-<span id="cb7-3"><a></a>    best_total <span class="op">=</span> <span class="op">-</span><span class="fl">1</span></span>
-<span id="cb7-4"><a></a>    n_best <span class="op">=</span> <span class="fl">0</span>                  <span class="co"># how many sequences reach the best total</span></span>
-<span id="cb7-5"><a></a>    <span class="cf">for</span> r1 <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>start_storage</span>
-<span id="cb7-6"><a></a>        s2 <span class="op">=</span> <span class="fu">next_storage</span>(start_storage, r1, inflow[<span class="fl">1</span>])</span>
-<span id="cb7-7"><a></a>        <span class="cf">for</span> r2 <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>s2</span>
-<span id="cb7-8"><a></a>            s3 <span class="op">=</span> <span class="fu">next_storage</span>(s2, r2, inflow[<span class="fl">2</span>])</span>
-<span id="cb7-9"><a></a>            <span class="cf">for</span> r3 <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>s3</span>
-<span id="cb7-10"><a></a>                total <span class="op">=</span> <span class="fu">benefit</span>(r1) <span class="op">+</span> <span class="fu">benefit</span>(r2) <span class="op">+</span> <span class="fu">benefit</span>(r3)</span>
-<span id="cb7-11"><a></a>                <span class="cf">if</span> total <span class="op">&gt;</span> best_total</span>
-<span id="cb7-12"><a></a>                    best_total <span class="op">=</span> total</span>
-<span id="cb7-13"><a></a>                    n_best <span class="op">=</span> <span class="fl">1</span></span>
-<span id="cb7-14"><a></a>                <span class="cf">elseif</span> total <span class="op">==</span> best_total</span>
-<span id="cb7-15"><a></a>                    n_best <span class="op">+=</span> <span class="fl">1</span></span>
-<span id="cb7-16"><a></a>                <span class="cf">end</span></span>
-<span id="cb7-17"><a></a>            <span class="cf">end</span></span>
-<span id="cb7-18"><a></a>        <span class="cf">end</span></span>
-<span id="cb7-19"><a></a>    <span class="cf">end</span></span>
-<span id="cb7-20"><a></a>    <span class="cf">return</span> best_total, n_best</span>
-<span id="cb7-21"><a></a><span class="kw">end</span></span>
-<span id="cb7-22"><a></a>best_total, n_best <span class="op">=</span> <span class="fu">brute_force</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<p>Trying every release sequence gives the same best total, <strong>30</strong>, and only one sequence reaches it.</p>
+<section id="from-policy-to-plan" class="slide level2">
+<h2>From Policy to Plan</h2>
+<p>Following the optimal policy from <span class="math inline">\(s_1 = 4\)</span> gives the plan:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Month <span class="math inline">\(t\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(s_t\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(r_t\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\text{benefit}(r_t)\)</span></th>
+<th style="text-align: left;"><span class="math inline">\(s_{t+1}\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: left;"><span class="math inline">\(\min(4 - 2 + 1,\ 4) = 3\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: left;"><span class="math inline">\(\min(3 - 2 + 1,\ 4) = 2\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: left;"><span class="math inline">\(\min(2 - 2 + 0,\ 4) = 0\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Total ($1,000): 100 + 100 + 100 = 300 <span class="math inline">\(= V_1(4)\)</span>: the spread plan is optimal, as the appendix checks against every release sequence.</p>
 <aside class="notes">
-<p>On a problem this small we can try every sequence. On a realistic problem we cannot, so we check the method on cases where we can.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="why-spread-the-water" class="slide level2">
-<h2>Why Spread the Water?</h2>
-<div id="cell-fig-releases" class="cell" data-execution_count="1">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a></a>months <span class="op">=</span> <span class="fl">1</span><span class="op">:</span>n_months</span>
-<span id="cb8-2"><a></a>p_releases <span class="op">=</span> <span class="fu">bar</span>(months <span class="op">.-</span> <span class="fl">0.18</span>, greedy_release, bar_width<span class="op">=</span><span class="fl">0.35</span>, color<span class="op">=</span>cb_vermillion, linecolor<span class="op">=:</span>black,</span>
-<span id="cb8-3"><a></a>    label<span class="op">=</span><span class="st">"Greedy (total </span><span class="sc">$</span>(greedy_total)<span class="st">)"</span>, xlabel<span class="op">=</span><span class="st">"Month"</span>, ylabel<span class="op">=</span><span class="st">"Release  [units]"</span>,</span>
-<span id="cb8-4"><a></a>    legend<span class="op">=:</span>topright, ylims<span class="op">=</span>(<span class="fl">0</span>, <span class="fl">5</span>), xticks<span class="op">=</span>months)</span>
-<span id="cb8-5"><a></a><span class="fu">bar!</span>(p_releases, months <span class="op">.+</span> <span class="fl">0.18</span>, dp_release, bar_width<span class="op">=</span><span class="fl">0.35</span>, color<span class="op">=</span>cb_blue, linecolor<span class="op">=:</span>black,</span>
-<span id="cb8-6"><a></a>    fillstyle<span class="op">=:/</span>, label<span class="op">=</span><span class="st">"DP (total </span><span class="sc">$</span>(dp_total)<span class="st">)"</span>)</span>
-<span id="cb8-7"><a></a><span class="fu">plot!</span>(p_releases, size<span class="op">=</span>(<span class="fl">1050</span>, <span class="fl">330</span>), left_margin<span class="op">=</span><span class="fl">10</span>mm, bottom_margin<span class="op">=</span><span class="fl">10</span>mm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div id="fig-releases" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center" data-execution_count="1">
-<figure class="quarto-float quarto-float-fig">
-<div aria-describedby="fig-releases-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<!--?xml version="1.0" encoding="utf-8"?-->
-<svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="1050" height="330" viewbox="0 0 4200 1320">
-<defs>
-  <clippath id="clip510">
-    <rect x="0" y="0" width="4200" height="1320"></rect>
-  </clippath>
-</defs>
-<path clip-path="url(#clip510)" d="M0 1320 L4200 1320 L4200 2.66454e-14 L0 2.66454e-14  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
-<defs>
-  <clippath id="clip511">
-    <rect x="840" y="0" width="2941" height="1320"></rect>
-  </clippath>
-</defs>
-<path clip-path="url(#clip510)" d="M351.015 1013.42 L4152.76 1013.42 L4152.76 47.2441 L351.015 47.2441  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
-<defs>
-  <clippath id="clip512">
-    <rect x="351" y="47" width="3803" height="967"></rect>
-  </clippath>
-</defs>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="351.015,1013.42 4152.76,1013.42 "></polyline>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="351.015,47.2441 4152.76,47.2441 "></polyline>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="993.889,1013.42 993.889,994.518 "></polyline>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2251.89,1013.42 2251.89,994.518 "></polyline>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3509.88,1013.42 3509.88,994.518 "></polyline>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="993.889,47.2441 993.889,66.1417 "></polyline>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2251.89,47.2441 2251.89,66.1417 "></polyline>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="3509.88,47.2441 3509.88,66.1417 "></polyline>
-<g clip-path="url(#clip510)">
-<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 993.889, 1136.1)" x="993.889" y="1136.1">1</text>
-</g>
-<g clip-path="url(#clip510)">
-<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 2251.89, 1136.1)" x="2251.89" y="1136.1">2</text>
-</g>
-<g clip-path="url(#clip510)">
-<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 3509.88, 1136.1)" x="3509.88" y="1136.1">3</text>
-</g>
-<g clip-path="url(#clip510)">
-<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:112px; text-anchor:middle;" transform="rotate(0, 2251.89, 1292.81)" x="2251.89" y="1292.81">Month</text>
-</g>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="351.015,1013.42 351.015,47.2441 "></polyline>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4152.76,1013.42 4152.76,47.2441 "></polyline>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="351.015,1013.42 369.913,1013.42 "></polyline>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="351.015,820.181 369.913,820.181 "></polyline>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="351.015,626.947 369.913,626.947 "></polyline>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="351.015,433.713 369.913,433.713 "></polyline>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="351.015,240.478 369.913,240.478 "></polyline>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="351.015,47.2441 369.913,47.2441 "></polyline>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4152.76,1013.42 4133.86,1013.42 "></polyline>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4152.76,820.181 4133.86,820.181 "></polyline>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4152.76,626.947 4133.86,626.947 "></polyline>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4152.76,433.713 4133.86,433.713 "></polyline>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4152.76,240.478 4133.86,240.478 "></polyline>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="4152.76,47.2441 4133.86,47.2441 "></polyline>
-<g clip-path="url(#clip510)">
-<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 263.044, 1047.92)" x="263.044" y="1047.92">0</text>
-</g>
-<g clip-path="url(#clip510)">
-<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 263.044, 854.681)" x="263.044" y="854.681">1</text>
-</g>
-<g clip-path="url(#clip510)">
-<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 263.044, 661.447)" x="263.044" y="661.447">2</text>
-</g>
-<g clip-path="url(#clip510)">
-<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 263.044, 468.213)" x="263.044" y="468.213">3</text>
-</g>
-<g clip-path="url(#clip510)">
-<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 263.044, 274.978)" x="263.044" y="274.978">4</text>
-</g>
-<g clip-path="url(#clip510)">
-<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:middle;" transform="rotate(0, 263.044, 81.7441)" x="263.044" y="81.7441">5</text>
-</g>
-<g clip-path="url(#clip510)">
-<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:112px; text-anchor:middle;" transform="rotate(-90, 145.853, 530.33)" x="145.853" y="530.33">Release  [units]</text>
-</g>
-<path clip-path="url(#clip512)" d="M547.3 240.478 L547.3 1013.42 L987.599 1013.42 L987.599 240.478 L547.3 240.478 L547.3 240.478  Z" fill="#d55e00" fill-rule="evenodd" fill-opacity="1"></path>
-<polyline clip-path="url(#clip512)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:12; stroke-opacity:1; fill:none" points="547.3,240.478 547.3,1013.42 987.599,1013.42 987.599,240.478 547.3,240.478 "></polyline>
-<path clip-path="url(#clip512)" d="M1805.3 820.181 L1805.3 1013.42 L2245.6 1013.42 L2245.6 820.181 L1805.3 820.181 L1805.3 820.181  Z" fill="#d55e00" fill-rule="evenodd" fill-opacity="1"></path>
-<polyline clip-path="url(#clip512)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:12; stroke-opacity:1; fill:none" points="1805.3,820.181 1805.3,1013.42 2245.6,1013.42 2245.6,820.181 1805.3,820.181 "></polyline>
-<path clip-path="url(#clip512)" d="M3063.29 820.181 L3063.29 1013.42 L3503.59 1013.42 L3503.59 820.181 L3063.29 820.181 L3063.29 820.181  Z" fill="#d55e00" fill-rule="evenodd" fill-opacity="1"></path>
-<polyline clip-path="url(#clip512)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:12; stroke-opacity:1; fill:none" points="3063.29,820.181 3063.29,1013.42 3503.59,1013.42 3503.59,820.181 3063.29,820.181 "></polyline>
-<circle clip-path="url(#clip512)" style="fill:#d55e00; stroke:none; fill-opacity:0" cx="767.45" cy="240.478" r="2"></circle>
-<circle clip-path="url(#clip512)" style="fill:#d55e00; stroke:none; fill-opacity:0" cx="2025.45" cy="820.181" r="2"></circle>
-<circle clip-path="url(#clip512)" style="fill:#d55e00; stroke:none; fill-opacity:0" cx="3283.44" cy="820.181" r="2"></circle>
-<defs>
-  <pattern id="pattern1" patternunits="userSpaceOnUse" x="0" y="0" width="32" height="32">
-<g transform="scale(4)"><path d="M-4,4 l8,-8 M4,12 l8,-8 M-4,12 l16,-16" style="stroke:#0072b2; stroke-width:1; stroke-opacity:1"></path></g></pattern>
-</defs>
-<path clip-path="url(#clip512)" d="M1000.18 626.947 L1000.18 1013.42 L1440.48 1013.42 L1440.48 626.947 L1000.18 626.947 L1000.18 626.947  Z" fill="url(#pattern1)"></path>
-<polyline clip-path="url(#clip512)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:12; stroke-opacity:1; fill:none" points="1000.18,626.947 1000.18,1013.42 1440.48,1013.42 1440.48,626.947 1000.18,626.947 "></polyline>
-<defs>
-  <pattern id="pattern2" patternunits="userSpaceOnUse" x="0" y="0" width="32" height="32">
-<g transform="scale(4)"><path d="M-4,4 l8,-8 M4,12 l8,-8 M-4,12 l16,-16" style="stroke:#0072b2; stroke-width:1; stroke-opacity:1"></path></g></pattern>
-</defs>
-<path clip-path="url(#clip512)" d="M2258.18 626.947 L2258.18 1013.42 L2698.47 1013.42 L2698.47 626.947 L2258.18 626.947 L2258.18 626.947  Z" fill="url(#pattern2)"></path>
-<polyline clip-path="url(#clip512)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:12; stroke-opacity:1; fill:none" points="2258.18,626.947 2258.18,1013.42 2698.47,1013.42 2698.47,626.947 2258.18,626.947 "></polyline>
-<defs>
-  <pattern id="pattern3" patternunits="userSpaceOnUse" x="0" y="0" width="32" height="32">
-<g transform="scale(4)"><path d="M-4,4 l8,-8 M4,12 l8,-8 M-4,12 l16,-16" style="stroke:#0072b2; stroke-width:1; stroke-opacity:1"></path></g></pattern>
-</defs>
-<path clip-path="url(#clip512)" d="M3516.17 626.947 L3516.17 1013.42 L3956.47 1013.42 L3956.47 626.947 L3516.17 626.947 L3516.17 626.947  Z" fill="url(#pattern3)"></path>
-<polyline clip-path="url(#clip512)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:12; stroke-opacity:1; fill:none" points="3516.17,626.947 3516.17,1013.42 3956.47,1013.42 3956.47,626.947 3516.17,626.947 "></polyline>
-<circle clip-path="url(#clip512)" style="fill:#0072b2; stroke:none; fill-opacity:0" cx="1220.33" cy="626.947" r="2"></circle>
-<circle clip-path="url(#clip512)" style="fill:#0072b2; stroke:none; fill-opacity:0" cx="2478.32" cy="626.947" r="2"></circle>
-<circle clip-path="url(#clip512)" style="fill:#0072b2; stroke:none; fill-opacity:0" cx="3736.32" cy="626.947" r="2"></circle>
-<path clip-path="url(#clip510)" d="M2902.92 406.971 L4026.03 406.971 L4026.03 79.4498 L2902.92 79.4498  Z" fill="#ffffff" fill-rule="evenodd" fill-opacity="1"></path>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:4; stroke-opacity:1; fill:none" points="2902.92,406.971 4026.03,406.971 4026.03,79.4498 2902.92,79.4498 2902.92,406.971 "></polyline>
-<path clip-path="url(#clip510)" d="M2945.16 232.293 L3198.61 232.293 L3198.61 144.954 L2945.16 144.954 L2945.16 232.293  Z" fill="#d55e00" fill-rule="evenodd" fill-opacity="1"></path>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:24; stroke-opacity:1; fill:none" points="2945.16,232.293 3198.61,232.293 3198.61,144.954 2945.16,144.954 2945.16,232.293 "></polyline>
-<g clip-path="url(#clip510)">
-<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:start;" transform="rotate(0, 3240.85, 223.123)" x="3240.85" y="223.123">Greedy (total 25)</text>
-</g>
-<defs>
-  <pattern id="pattern4" patternunits="userSpaceOnUse" x="0" y="0" width="32" height="32">
-<g transform="scale(4)"><path d="M-4,4 l8,-8 M4,12 l8,-8 M-4,12 l16,-16" style="stroke:#0072b2; stroke-width:1; stroke-opacity:1"></path></g></pattern>
-</defs>
-<path clip-path="url(#clip510)" d="M2945.16 341.467 L3198.61 341.467 L3198.61 254.128 L2945.16 254.128 L2945.16 341.467  Z" fill="url(#pattern4)"></path>
-<polyline clip-path="url(#clip510)" style="stroke:#000000; stroke-linecap:round; stroke-linejoin:round; stroke-width:24; stroke-opacity:1; fill:none" points="2945.16,341.467 3198.61,341.467 3198.61,254.128 2945.16,254.128 2945.16,341.467 "></polyline>
-<g clip-path="url(#clip510)">
-<text style="fill:#000000; fill-opacity:1; font-family:Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif; font-size:99px; text-anchor:start;" transform="rotate(0, 3240.85, 332.297)" x="3240.85" y="332.297">DP (total 30)</text>
-</g>
-</svg>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-releases-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Monthly releases under the greedy plan and the dynamic programming plan.
-</figcaption>
-</figure>
-</div>
-</div>
-<p>Here, with diminishing returns, the best plan releases the same amount every month.</p>
-<aside class="notes">
-<p>With diminishing returns, moving a unit from a month with a large release to one with a small release gains, as long as storage allows the move. Greedy ignores that the water could have been used later.</p>
+<p>To get the plan, start from <span class="math inline">\(s_1 = 4\)</span>, look up the policy’s release, compute the next storage, and repeat.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1086,18 +1042,24 @@ Figure&nbsp;1: Monthly releases under the greedy plan and the dynamic programmin
 <h1>Uncertain Inflows</h1>
 
 </section>
-<section id="releasing-before-the-inflow-is-known" class="slide level2">
-<h2>Releasing Before the Inflow Is Known</h2>
-<p>Inflow is <strong>0 or 2 units</strong>, equally likely, and is unknown when we release, so we use the <strong>expected</strong> next value:</p>
+<section id="decisions-with-uncertain-inflows" class="slide level2">
+<h2>Decisions With Uncertain Inflows</h2>
+<p>Now each month’s inflow is <strong>0 (dry) or 2 (wet) million m³</strong>, each with probability <span class="math inline">\(\tfrac{1}{2}\)</span>, independent across months and unknown at the release. <span class="math inline">\(V_t(s)\)</span> is the best <strong>expected</strong> total benefit over policies:</p>
+<p><span class="math display">\[V_t(s) = \max_{x \in \mathcal{X}_t(s)} \Big\{ \text{benefit}_t(s, x) + \mathbb{E}_{\xi_t}\Big[ V_{t+1}\big(f_t(s, x, \xi_t)\big) \Big] \Big\}\]</span></p>
+<p><span class="math inline">\(\mathbb{E}_{\xi_t}\)</span> averages over the outcomes of <span class="math inline">\(\xi_t\)</span>; this needs their probabilities not to depend on earlier inputs.</p>
+</section>
+<section id="the-reservoir-with-uncertain-inflows" class="slide level2">
+<h2>The Reservoir With Uncertain Inflows</h2>
+<p>For each month <span class="math inline">\(t = 3, 2, 1\)</span> and storage <span class="math inline">\(s \in \{0, 1, \ldots, 4\}\)</span>, with <span class="math inline">\(V_4(s) = 0\)</span>:</p>
 <p><span class="math display">\[
 \begin{aligned}
-V_t(s) = \max_{r \leq s} \Big[\, \text{benefit}(r) &amp;+ \tfrac{1}{2} V_{t+1}\big(\min(s - r, 4)\big) \\
-&amp;+ \tfrac{1}{2} V_{t+1}\big(\min(s - r + 2, 4)\big) \Big]
+V_t(s) = \max_{r \in \{0, 1, \ldots, s\}} \Big[\, \text{benefit}(r) &amp;+ \tfrac{1}{2} V_{t+1}(s - r) \\
+&amp;+ \tfrac{1}{2} V_{t+1}\big(\min(s - r + 2,\ 4)\big) \Big]
 \end{aligned}
 \]</span></p>
-<p>The backward pass is the same, and the answer is a <strong>policy</strong>: the best release for each storage level.</p>
+<p>The first <span class="math inline">\(\tfrac{1}{2}\)</span> term is for a dry month, the second for a wet one.</p>
 <aside class="notes">
-<p>The only change from the deterministic case is that the next storage depends on an inflow we do not know yet, so we average the next month’s value over the two possibilities. Because we cannot know the future storage, the useful answer is a rule: what to release for any storage we might find ourselves in.</p>
+<p>The only change from known inflows is the average of <span class="math inline">\(V_{t+1}\)</span> over the two next storages. With inflow 0 the next storage is <span class="math inline">\(s - r\)</span>, which is never above 4. Every month’s inflow now averages 1, including month 3, so this is a different season from the dry one; month 3’s inflow arrives after the last release and doesn’t matter.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1110,58 +1072,96 @@ V_t(s) = \max_{r \leq s} \Big[\, \text{benefit}(r) &amp;+ \tfrac{1}{2} V_{t+1}\b
           display:block!important;
       }</style></aside>
 </section>
-<section id="hedging" class="slide level2">
-<h2>Hedging</h2>
-<div id="40" class="cell" data-execution_count="1">
+<section id="solving-with-uncertain-inflows" class="slide level2">
+<h2>Solving With Uncertain Inflows</h2>
+<div id="56" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a></a>inflow_outcomes <span class="op">=</span> [<span class="fl">0</span>, <span class="fl">2</span>]</span>
-<span id="cb9-2"><a></a>inflow_probs <span class="op">=</span> [<span class="fl">0.5</span>, <span class="fl">0.5</span>]</span>
-<span id="cb9-3"><a></a></span>
-<span id="cb9-4"><a></a><span class="kw">function</span> <span class="fu">backward_induction_uncertain</span>(n_periods)</span>
-<span id="cb9-5"><a></a>    value <span class="op">=</span> <span class="fu">fill</span>(<span class="op">-</span><span class="cn">Inf</span>, capacity <span class="op">+</span> <span class="fl">1</span>, n_periods <span class="op">+</span> <span class="fl">1</span>)</span>
-<span id="cb9-6"><a></a>    value[<span class="op">:</span>, n_periods <span class="op">+</span> <span class="fl">1</span>] <span class="op">.=</span> <span class="fl">0</span></span>
-<span id="cb9-7"><a></a>    policy <span class="op">=</span> <span class="fu">zeros</span>(<span class="dt">Int</span>, capacity <span class="op">+</span> <span class="fl">1</span>, n_periods)</span>
-<span id="cb9-8"><a></a>    <span class="cf">for</span> t <span class="kw">in</span> n_periods<span class="op">:-</span><span class="fl">1</span><span class="op">:</span><span class="fl">1</span></span>
-<span id="cb9-9"><a></a>        <span class="cf">for</span> s <span class="kw">in</span> levels</span>
-<span id="cb9-10"><a></a>            <span class="cf">for</span> r <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>s</span>
-<span id="cb9-11"><a></a>                <span class="co"># average next month's value over the possible inflows</span></span>
-<span id="cb9-12"><a></a>                expected_next <span class="op">=</span> <span class="fl">0.0</span></span>
-<span id="cb9-13"><a></a>                <span class="cf">for</span> k <span class="kw">in</span> <span class="fu">eachindex</span>(inflow_outcomes)</span>
-<span id="cb9-14"><a></a>                    next_s <span class="op">=</span> <span class="fu">next_storage</span>(s, r, inflow_outcomes[k])</span>
-<span id="cb9-15"><a></a>                    expected_next <span class="op">=</span> expected_next <span class="op">+</span> inflow_probs[k] <span class="op">*</span> value[next_s <span class="op">+</span> <span class="fl">1</span>, t <span class="op">+</span> <span class="fl">1</span>]</span>
-<span id="cb9-16"><a></a>                <span class="cf">end</span></span>
-<span id="cb9-17"><a></a>                total <span class="op">=</span> <span class="fu">benefit</span>(r) <span class="op">+</span> expected_next</span>
-<span id="cb9-18"><a></a>                <span class="cf">if</span> total <span class="op">&gt;</span> value[s <span class="op">+</span> <span class="fl">1</span>, t]</span>
-<span id="cb9-19"><a></a>                    value[s <span class="op">+</span> <span class="fl">1</span>, t] <span class="op">=</span> total</span>
-<span id="cb9-20"><a></a>                    policy[s <span class="op">+</span> <span class="fl">1</span>, t] <span class="op">=</span> r</span>
-<span id="cb9-21"><a></a>                <span class="cf">end</span></span>
-<span id="cb9-22"><a></a>            <span class="cf">end</span></span>
-<span id="cb9-23"><a></a>        <span class="cf">end</span></span>
-<span id="cb9-24"><a></a>    <span class="cf">end</span></span>
-<span id="cb9-25"><a></a>    <span class="cf">return</span> value, policy</span>
-<span id="cb9-26"><a></a><span class="kw">end</span></span>
-<span id="cb9-27"><a></a></span>
-<span id="cb9-28"><a></a>value_u, policy_u <span class="op">=</span> <span class="fu">backward_induction_uncertain</span>(n_months)</span>
-<span id="cb9-29"><a></a></span>
-<span id="cb9-30"><a></a><span class="co"># Expected benefit of releasing everything every month, from storage s in month t</span></span>
-<span id="cb9-31"><a></a><span class="kw">function</span> <span class="fu">release_all_expected</span>(s, t)</span>
-<span id="cb9-32"><a></a>    <span class="cf">if</span> t <span class="op">&gt;</span> n_months</span>
-<span id="cb9-33"><a></a>        <span class="cf">return</span> <span class="fl">0.0</span></span>
-<span id="cb9-34"><a></a>    <span class="cf">end</span></span>
-<span id="cb9-35"><a></a>    expected_next <span class="op">=</span> <span class="fl">0.0</span></span>
-<span id="cb9-36"><a></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="fu">eachindex</span>(inflow_outcomes)</span>
-<span id="cb9-37"><a></a>        next_s <span class="op">=</span> <span class="fu">next_storage</span>(s, s, inflow_outcomes[k])</span>
-<span id="cb9-38"><a></a>        expected_next <span class="op">=</span> expected_next <span class="op">+</span> inflow_probs[k] <span class="op">*</span> <span class="fu">release_all_expected</span>(next_s, t <span class="op">+</span> <span class="fl">1</span>)</span>
-<span id="cb9-39"><a></a>    <span class="cf">end</span></span>
-<span id="cb9-40"><a></a>    <span class="cf">return</span> <span class="fu">benefit</span>(s) <span class="op">+</span> expected_next</span>
-<span id="cb9-41"><a></a><span class="kw">end</span></span>
-<span id="cb9-42"><a></a>release_all_value <span class="op">=</span> <span class="fu">release_all_expected</span>(start_storage, <span class="fl">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a></a>inflow_outcomes <span class="op">=</span> [<span class="fl">0</span>, <span class="fl">2</span>]              <span class="co"># each month: dry or wet</span></span>
+<span id="cb5-2"><a></a>inflow_probs <span class="op">=</span> [<span class="fl">0.5</span>, <span class="fl">0.5</span>]</span>
+<span id="cb5-3"><a></a></span>
+<span id="cb5-4"><a></a><span class="kw">function</span> <span class="fu">backward_induction_uncertain</span>(; carryover_value<span class="op">=</span><span class="fl">0</span>)</span>
+<span id="cb5-5"><a></a>    value_table <span class="op">=</span> <span class="fu">fill</span>(<span class="op">-</span><span class="cn">Inf</span>, capacity <span class="op">+</span> <span class="fl">1</span>, n_months <span class="op">+</span> <span class="fl">1</span>)  <span class="co"># expected V_t(s)</span></span>
+<span id="cb5-6"><a></a>    policy_table <span class="op">=</span> <span class="fu">zeros</span>(<span class="dt">Int</span>, capacity <span class="op">+</span> <span class="fl">1</span>, n_months)</span>
+<span id="cb5-7"><a></a>    value_table[<span class="op">:</span>, n_months <span class="op">+</span> <span class="fl">1</span>] <span class="op">=</span> carryover_value <span class="op">.*</span> levels</span>
+<span id="cb5-8"><a></a>    <span class="cf">for</span> t <span class="kw">in</span> n_months<span class="op">:-</span><span class="fl">1</span><span class="op">:</span><span class="fl">1</span>, s <span class="kw">in</span> levels</span>
+<span id="cb5-9"><a></a>        <span class="cf">for</span> r <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>s</span>
+<span id="cb5-10"><a></a>            <span class="co"># the only change from known inflows: the expected V_{t+1}</span></span>
+<span id="cb5-11"><a></a>            expected_next <span class="op">=</span> <span class="fl">0</span></span>
+<span id="cb5-12"><a></a>            <span class="cf">for</span> k <span class="kw">in</span> <span class="fu">eachindex</span>(inflow_outcomes)</span>
+<span id="cb5-13"><a></a>                next_s <span class="op">=</span> <span class="fu">next_storage</span>(s, r, inflow_outcomes[k])</span>
+<span id="cb5-14"><a></a>                expected_next <span class="op">=</span> expected_next <span class="op">+</span></span>
+<span id="cb5-15"><a></a>                    inflow_probs[k] <span class="op">*</span> value_table[next_s <span class="op">+</span> <span class="fl">1</span>, t <span class="op">+</span> <span class="fl">1</span>]</span>
+<span id="cb5-16"><a></a>            <span class="cf">end</span></span>
+<span id="cb5-17"><a></a>            total <span class="op">=</span> <span class="fu">benefit</span>(r) <span class="op">+</span> expected_next</span>
+<span id="cb5-18"><a></a>            <span class="cf">if</span> total <span class="op">&gt;</span> value_table[s <span class="op">+</span> <span class="fl">1</span>, t]  <span class="co"># ties keep the smaller release</span></span>
+<span id="cb5-19"><a></a>                value_table[s <span class="op">+</span> <span class="fl">1</span>, t] <span class="op">=</span> total</span>
+<span id="cb5-20"><a></a>                policy_table[s <span class="op">+</span> <span class="fl">1</span>, t] <span class="op">=</span> r</span>
+<span id="cb5-21"><a></a>            <span class="cf">end</span></span>
+<span id="cb5-22"><a></a>        <span class="cf">end</span></span>
+<span id="cb5-23"><a></a>    <span class="cf">end</span></span>
+<span id="cb5-24"><a></a>    <span class="cf">return</span> value_table, policy_table</span>
+<span id="cb5-25"><a></a><span class="kw">end</span></span>
+<span id="cb5-26"><a></a></span>
+<span id="cb5-27"><a></a>uncertain_value_table, uncertain_policy_table <span class="op">=</span> <span class="fu">backward_induction_uncertain</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p>From a full reservoir the policy releases <strong>2</strong> and keeps 2 in case the inflow is 0. Its expected benefit is <strong>28.25</strong>; releasing everything every month has an expected benefit of 23.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Storage <span class="math inline">\(s\)</span></th>
+<th style="text-align: right;">0</th>
+<th style="text-align: right;">1</th>
+<th style="text-align: right;">2</th>
+<th style="text-align: right;">3</th>
+<th style="text-align: right;">4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(V_3(s)\)</span></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">130</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Month 2: best release</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(V_2(s)\)</span></td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">190</td>
+<td style="text-align: right;">215</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Month 1: best release</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(V_1(s)\)</span></td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">160</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">250</td>
+<td style="text-align: right;">282.5</td>
+</tr>
+</tbody>
+</table>
 <aside class="notes">
-<p>Even though the reservoir is full and inflow might come, the policy releases only 2 in the first month: holding water is insurance against a dry month. That is hedging. Releasing everything immediately does much worse in expectation.</p>
+<p>Month 3 releases everything, as before; months 2 and 1 average over the two inflows. In month 2 at storage 2, releases 1 and 2 tie (15); the table reports the smaller.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1174,34 +1174,135 @@ V_t(s) = \max_{r \leq s} \Big[\, \text{benefit}(r) &amp;+ \tfrac{1}{2} V_{t+1}\b
           display:block!important;
       }</style></aside>
 </section>
-<section id="check-it-against-the-scenario-tree" class="slide level2">
-<h2>Check It Against the Scenario Tree</h2>
-<div id="42" class="cell" data-execution_count="1">
+<section id="month-1-with-uncertain-inflows" class="slide level2">
+<h2>Month 1 With Uncertain Inflows</h2>
+<p>From <span class="math inline">\(s = 4\)</span>: <span class="math inline">\(s_\text{dry} = 4 - r\)</span> and <span class="math inline">\(s_\text{wet} = \min(4 - r + 2,\ 4)\)</span>.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;"><span class="math inline">\(r\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\text{benefit}(r)\)</span></th>
+<th style="text-align: left;"><span class="math inline">\(s_\text{dry}, s_\text{wet}\)</span></th>
+<th style="text-align: left;"><span class="math inline">\(\tfrac{1}{2} V_2(s_\text{dry}) + \tfrac{1}{2} V_2(s_\text{wet})\)</span></th>
+<th style="text-align: right;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">4, 4</td>
+<td style="text-align: left;"><span class="math inline">\(\tfrac{1}{2}(215) + \tfrac{1}{2}(215) = 215\)</span></td>
+<td style="text-align: right;">215</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: left;">3, 4</td>
+<td style="text-align: left;"><span class="math inline">\(\tfrac{1}{2}(190) + \tfrac{1}{2}(215) = 202.5\)</span></td>
+<td style="text-align: right;">262.5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">2, 4</td>
+<td style="text-align: left;"><span class="math inline">\(\tfrac{1}{2}(150) + \tfrac{1}{2}(215) = 182.5\)</span></td>
+<td style="text-align: right;"><strong>282.5</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: left;">1, 3</td>
+<td style="text-align: left;"><span class="math inline">\(\tfrac{1}{2}(110) + \tfrac{1}{2}(190) = 150\)</span></td>
+<td style="text-align: right;">270</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">130</td>
+<td style="text-align: left;">0, 2</td>
+<td style="text-align: left;"><span class="math inline">\(\tfrac{1}{2}(50) + \tfrac{1}{2}(150) = 100\)</span></td>
+<td style="text-align: right;">230</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="the-policy-with-uncertain-inflows" class="slide level2">
+<h2>The Policy With Uncertain Inflows</h2>
+<ul>
+<li>From a full reservoir, the optimal policy releases <strong>2 million m³</strong> in month 1.</li>
+<li>Later releases depend on the inflows so far, so the answer is a policy, not a single plan: month 3 releases 1, 3, 2, 4 after inflows (0, 0), (0, 2), (2, 0) and (2, 2).</li>
+<li>Expected total benefit: <strong>282.5</strong> ($1,000). With perfect information about the inflows it would be 290, so the EVPI is 7.5. The greedy policy’s expected total is 230.</li>
+</ul>
+<aside class="notes">
+<p>The optimal policy releases 2 million m³ from a full reservoir, as it would with inflows known to be 1 million m³ every month: here uncertainty doesn’t change that release, and the policy holds water back because of diminishing returns. Don’t compare 28.25 with the best total for inflows fixed at their mean (300): a value in the average scenario isn’t an expected value. Month 2 isn’t the evidence for a policy because at storage 2 releases 1 and 2 tie; month 3’s releases vary with the inflows under either tie rule (1, 3, 2, 4 here; 0, 2, 2, 4 if ties took the larger release). Releasing everything every month gives up 52.5 in expectation; its 23 equals the <span class="math inline">\(r = 4\)</span> row of the previous table because, after releasing 4, releasing everything is also optimal (month 2 ties at storage 2).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reservoir-states-as-a-scenario-tree" class="slide level2">
+<h2>Reservoir States as a Scenario Tree</h2>
+<div id="66" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a></a><span class="co"># The scenario-tree method: a decision at every node of the tree, then the best</span></span>
-<span id="cb10-2"><a></a><span class="co"># expected value, by brute-force recursion over all branches</span></span>
-<span id="cb10-3"><a></a><span class="kw">function</span> <span class="fu">tree_value</span>(s, t)</span>
-<span id="cb10-4"><a></a>    <span class="cf">if</span> t <span class="op">&gt;</span> n_months</span>
-<span id="cb10-5"><a></a>        <span class="cf">return</span> <span class="fl">0.0</span></span>
-<span id="cb10-6"><a></a>    <span class="cf">end</span></span>
-<span id="cb10-7"><a></a>    best <span class="op">=</span> <span class="op">-</span><span class="cn">Inf</span></span>
-<span id="cb10-8"><a></a>    <span class="cf">for</span> r <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>s</span>
-<span id="cb10-9"><a></a>        expected <span class="op">=</span> <span class="fl">0.0</span></span>
-<span id="cb10-10"><a></a>        <span class="cf">for</span> k <span class="kw">in</span> <span class="fu">eachindex</span>(inflow_outcomes)</span>
-<span id="cb10-11"><a></a>            next_s <span class="op">=</span> <span class="fu">next_storage</span>(s, r, inflow_outcomes[k])</span>
-<span id="cb10-12"><a></a>            expected <span class="op">=</span> expected <span class="op">+</span> inflow_probs[k] <span class="op">*</span> <span class="fu">tree_value</span>(next_s, t <span class="op">+</span> <span class="fl">1</span>)</span>
-<span id="cb10-13"><a></a>        <span class="cf">end</span></span>
-<span id="cb10-14"><a></a>        best <span class="op">=</span> <span class="fu">max</span>(best, <span class="fu">benefit</span>(r) <span class="op">+</span> expected)</span>
-<span id="cb10-15"><a></a>    <span class="cf">end</span></span>
-<span id="cb10-16"><a></a>    <span class="cf">return</span> best</span>
-<span id="cb10-17"><a></a><span class="kw">end</span></span>
-<span id="cb10-18"><a></a>tree_best <span class="op">=</span> <span class="fu">tree_value</span>(start_storage, <span class="fl">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a></a><span class="co"># The scenario-tree method: the best expected total from storage s in month t,</span></span>
+<span id="cb6-2"><a></a><span class="co"># trying every release at every node of the tree (no table)</span></span>
+<span id="cb6-3"><a></a><span class="kw">function</span> <span class="fu">tree_value</span>(s, t)</span>
+<span id="cb6-4"><a></a>    <span class="cf">if</span> t <span class="op">&gt;</span> n_months</span>
+<span id="cb6-5"><a></a>        <span class="cf">return</span> <span class="fl">0</span></span>
+<span id="cb6-6"><a></a>    <span class="cf">end</span></span>
+<span id="cb6-7"><a></a>    best <span class="op">=</span> <span class="op">-</span><span class="cn">Inf</span></span>
+<span id="cb6-8"><a></a>    <span class="cf">for</span> r <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>s</span>
+<span id="cb6-9"><a></a>        best <span class="op">=</span> <span class="fu">max</span>(best, <span class="fu">tree_total</span>(s, r, t))</span>
+<span id="cb6-10"><a></a>    <span class="cf">end</span></span>
+<span id="cb6-11"><a></a>    <span class="cf">return</span> best</span>
+<span id="cb6-12"><a></a><span class="kw">end</span></span>
+<span id="cb6-13"><a></a></span>
+<span id="cb6-14"><a></a><span class="co"># Release r's benefit plus the expected best total at the next nodes</span></span>
+<span id="cb6-15"><a></a><span class="kw">function</span> <span class="fu">tree_total</span>(s, r, t)</span>
+<span id="cb6-16"><a></a>    expected <span class="op">=</span> <span class="fl">0</span></span>
+<span id="cb6-17"><a></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="fu">eachindex</span>(inflow_outcomes)</span>
+<span id="cb6-18"><a></a>        next_s <span class="op">=</span> <span class="fu">next_storage</span>(s, r, inflow_outcomes[k])</span>
+<span id="cb6-19"><a></a>        expected <span class="op">=</span> expected <span class="op">+</span> inflow_probs[k] <span class="op">*</span> <span class="fu">tree_value</span>(next_s, t <span class="op">+</span> <span class="fl">1</span>)</span>
+<span id="cb6-20"><a></a>    <span class="cf">end</span></span>
+<span id="cb6-21"><a></a>    <span class="cf">return</span> <span class="fu">benefit</span>(r) <span class="op">+</span> expected</span>
+<span id="cb6-22"><a></a><span class="kw">end</span></span>
+<span id="cb6-23"><a></a></span>
+<span id="cb6-24"><a></a><span class="co"># The best release at a node (ties keep the smaller release)</span></span>
+<span id="cb6-25"><a></a><span class="kw">function</span> <span class="fu">tree_best_release</span>(s, t)</span>
+<span id="cb6-26"><a></a>    best_r <span class="op">=</span> <span class="fl">0</span></span>
+<span id="cb6-27"><a></a>    <span class="cf">for</span> r <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>s</span>
+<span id="cb6-28"><a></a>        <span class="cf">if</span> <span class="fu">tree_total</span>(s, r, t) <span class="op">&gt;</span> <span class="fu">tree_total</span>(s, best_r, t)</span>
+<span id="cb6-29"><a></a>            best_r <span class="op">=</span> r</span>
+<span id="cb6-30"><a></a>        <span class="cf">end</span></span>
+<span id="cb6-31"><a></a>    <span class="cf">end</span></span>
+<span id="cb6-32"><a></a>    <span class="cf">return</span> best_r</span>
+<span id="cb6-33"><a></a><span class="kw">end</span></span>
+<span id="cb6-34"><a></a></span>
+<span id="cb6-35"><a></a>tree_best <span class="op">=</span> <span class="fu">tree_value</span>(start_storage, <span class="fl">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p>Enumerating every branch of the scenario tree gives <strong>28.25</strong>, and dynamic programming gives the same <strong>28.25</strong>.</p>
+<ul>
+<li>The month 1 release is the <strong>here-and-now</strong> decision. Each later release is <strong>recourse</strong> for the inflows so far and here-and-now for its own month’s inflow.</li>
+<li>The tree has a decision node for each inflow history: <span class="math inline">\(1 + 2 + 4 = 7\)</span> over three months.</li>
+<li>As in the farmer’s tree, each node gets its own release. The code solves the Bellman equation separately at every node, with no table.</li>
+</ul>
 <aside class="notes">
-<p>The tree allows a different decision at every node; dynamic programming gets the same optimum because the best decision at a node depends only on the storage there, not on how we got there. That property is what lets the table replace the tree. It relies on the inflows being independent from month to month: with persistence like the farmer’s yields, the best release would also depend on last month’s inflow, so the state would have to include it.</p>
+<p>The same tree can be solved as one JuMP model, with a release variable per node, like the farmer’s two-year model.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1219,91 +1320,37 @@ V_t(s) = \max_{r \leq s} \Big[\, \text{benefit}(r) &amp;+ \tfrac{1}{2} V_{t+1}\b
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Months</th>
-<th style="text-align: right;">Tree leaves</th>
-<th style="text-align: right;">DP table entries</th>
+<th style="text-align: left;">Months <span class="math inline">\(T\)</span></th>
+<th style="text-align: right;">Tree decision nodes <span class="math inline">\(2^T - 1\)</span></th>
+<th style="text-align: right;">Table entries <span class="math inline">\(5T\)</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">3</td>
-<td style="text-align: right;">8</td>
+<td style="text-align: right;">7</td>
 <td style="text-align: right;">15</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">6</td>
-<td style="text-align: right;">64</td>
-<td style="text-align: right;">30</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">20</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">5</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">25</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">12</td>
-<td style="text-align: right;">4,096</td>
+<td style="text-align: right;">4,095</td>
 <td style="text-align: right;">60</td>
 </tr>
 </tbody>
 </table>
-<p>With 2 inflow outcomes a month and 5 storage levels, the tree grows exponentially with the number of months; the table grows linearly.</p>
+<p>Each tree node and each table entry is one release to choose. Tree: <span class="math inline">\(1 + 2 + \cdots + 2^{T-1} = 2^T - 1\)</span>, exponential in <span class="math inline">\(T\)</span>; table: <span class="math inline">\(5T\)</span>, linear. From 5 months on, the table is smaller.</p>
 <aside class="notes">
 <p>The tree records every possible history; the table records only the states that matter for the future. The appendix shows that the table grows exponentially with the number of state variables instead: the curse of dimensionality.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="what-is-water-worth-at-the-end" class="slide level2">
-<h2>What Is Water Worth at the End?</h2>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a></a>carryover_values <span class="op">=</span> [<span class="fl">0</span>, <span class="fl">3</span>, <span class="fl">6</span>]          <span class="co"># value of each unit left in storage at the end</span></span>
-<span id="cb11-2"><a></a><span class="fu">println</span>(<span class="st">"| Value per unit left at the end | Releases | Storage left |"</span>)</span>
-<span id="cb11-3"><a></a><span class="fu">println</span>(<span class="st">"|:--|:--|--:|"</span>)</span>
-<span id="cb11-4"><a></a><span class="cf">for</span> c <span class="kw">in</span> carryover_values</span>
-<span id="cb11-5"><a></a>    v, pol <span class="op">=</span> <span class="fu">backward_induction</span>(inflow; end_value<span class="op">=</span>c <span class="op">.*</span> levels)</span>
-<span id="cb11-6"><a></a>    rel <span class="op">=</span> <span class="fu">zeros</span>(<span class="dt">Int</span>, n_months)</span>
-<span id="cb11-7"><a></a>    s <span class="op">=</span> start_storage</span>
-<span id="cb11-8"><a></a>    <span class="cf">for</span> t <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_months</span>
-<span id="cb11-9"><a></a>        rel[t] <span class="op">=</span> pol[s <span class="op">+</span> <span class="fl">1</span>, t]</span>
-<span id="cb11-10"><a></a>        s <span class="op">=</span> <span class="fu">next_storage</span>(s, rel[t], inflow[t])</span>
-<span id="cb11-11"><a></a>    <span class="cf">end</span></span>
-<span id="cb11-12"><a></a>    <span class="fu">println</span>(<span class="st">"| "</span>, c, <span class="st">" | "</span>, <span class="fu">join</span>(rel, <span class="st">", "</span>), <span class="st">" | "</span>, s, <span class="st">" |"</span>)</span>
-<span id="cb11-13"><a></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: left;">Value per unit left at the end</th>
-<th style="text-align: left;">Releases</th>
-<th style="text-align: right;">Storage left</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">2, 2, 2</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">3</td>
-<td style="text-align: left;">2, 2, 2</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">6</td>
-<td style="text-align: left;">1, 1, 0</td>
-<td style="text-align: right;">4</td>
-</tr>
-</tbody>
-</table>
-<p>The <strong>end-of-horizon value</strong> is a modeling choice that can change the plan: what is water left at the end of the dry season worth?</p>
-<aside class="notes">
-<p>With no value on leftover water, the plan empties the reservoir by the end of the season. Value leftover water at 6 per unit and the plan holds most of it back. Neither is wrong: it depends on whether the reservoir refills in winter. The default today, zero, assumes it does.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1324,18 +1371,25 @@ V_t(s) = \max_{r \leq s} \Big[\, \text{benefit}(r) &amp;+ \tfrac{1}{2} V_{t+1}\b
 <section id="key-takeaways-scenario-trees" class="slide level2">
 <h2>Key Takeaways (Scenario Trees)</h2>
 <ul>
-<li>Each <strong>node</strong> of a scenario tree has its own decisions; a scenario’s probability is the product of the branch probabilities along its path, each conditional on the branches before it.</li>
-<li><strong>Non-anticipativity</strong>: a decision can depend only on what is known when it is made.</li>
+<li>Each <strong>node</strong> holds the decisions made there; a scenario’s probability is the product of its conditional branch probabilities.</li>
+<li>A branch’s probability can depend on earlier branches, in the same stage (prices on the yield) or in earlier stages (<strong>memory</strong>). Without memory, the tree after every decision in a stage is the same.</li>
 <li><strong>Scenario trees grow multiplicatively</strong> with every stage that has its own decision and uncertainty.</li>
 </ul>
 </section>
 <section id="key-takeaways-dp" class="slide level2">
 <h2>Key Takeaways (DP)</h2>
 <ul>
-<li>A <strong>sequential decision</strong> has stages, a <strong>state</strong> that carries the past forward, and a <strong>transition</strong>; deciding each month on its own (greedy) can be badly wrong.</li>
-<li><strong>Backward induction</strong>: start at the end, keep one <strong>value function</strong> per stage, step backwards.</li>
-<li>Under uncertainty, DP returns a <strong>policy</strong> and matches the scenario tree’s answer, with a table that grows linearly in the number of stages, where the tree grows exponentially.</li>
-<li>End-of-horizon values can change the whole plan.</li>
+<li>A dynamic program has stages, states, decisions, inputs, a transition and a benefit. Greedy decisions can lower the total benefit.</li>
+<li><strong>Backward induction</strong> solves the <strong>Bellman equation</strong> from the last stage back, giving the <strong>value function</strong> <span class="math inline">\(V_t(s)\)</span> and the <strong>optimal policy</strong>; following it from the start gives a <strong>plan</strong>.</li>
+<li><strong>Hedging</strong>: giving up some benefit now to keep water for later. A <strong>terminal value</strong>, such as a carryover value, sets only <span class="math inline">\(V_{T+1}\)</span>, but every earlier decision can change with it.</li>
+</ul>
+</section>
+<section id="key-takeaways-uncertainty" class="slide level2">
+<h2>Key Takeaways (Uncertainty)</h2>
+<ul>
+<li>With uncertain inputs, the Bellman equation averages <span class="math inline">\(V_{t+1}\)</span> over them, and the answer is a policy, not a single plan.</li>
+<li>With independent inputs, the table gives the scenario tree’s answer but grows linearly with the number of stages, not exponentially.</li>
+<li>Still suffers from <strong>curse of dimensionality</strong> — with lots of stages, decisions, or uncertainties, need to use a sampling-based method like <strong>approximate dynamic programming</strong>.</li>
 </ul>
 </section></section>
 <section>
@@ -1360,12 +1414,53 @@ V_t(s) = \max_{r \leq s} \Big[\, \text{benefit}(r) &amp;+ \tfrac{1}{2} V_{t+1}\b
 <h1>Appendix</h1>
 
 </section>
-<section id="the-bellman-recursion" class="slide level2">
-<h2>The Bellman Recursion</h2>
-<p>In general notation, with state <span class="math inline">\(s\)</span>, decision <span class="math inline">\(r\)</span>, benefit <span class="math inline">\(b\)</span>, and random inflow <span class="math inline">\(I\)</span>:</p>
-<p><span class="math display">\[V_t(s) = \max_{r} \left\{ b(r) + \mathbb{E}_I\left[V_{t+1}\big(f(s, r, I)\big)\right] \right\}\]</span></p>
-<p><span class="math display">\[V_{T+1}(s) = \text{terminal value}\]</span></p>
-<p>where <span class="math inline">\(f\)</span> is the transition.</p>
+<section id="checking-by-brute-force" class="slide level2">
+<h2>Checking by Brute Force</h2>
+<div id="70" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a></a><span class="co"># Try every release sequence from a full reservoir, with the known inflows</span></span>
+<span id="cb7-2"><a></a><span class="co"># (only possible because the problem is tiny)</span></span>
+<span id="cb7-3"><a></a><span class="kw">function</span> <span class="fu">brute_force</span>()</span>
+<span id="cb7-4"><a></a>    best_total <span class="op">=</span> <span class="op">-</span><span class="fl">1</span></span>
+<span id="cb7-5"><a></a>    n_best <span class="op">=</span> <span class="fl">0</span>                  <span class="co"># how many sequences reach the best total</span></span>
+<span id="cb7-6"><a></a>    n_sequences <span class="op">=</span> <span class="fl">0</span></span>
+<span id="cb7-7"><a></a>    <span class="cf">for</span> r1 <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>start_storage</span>
+<span id="cb7-8"><a></a>        s2 <span class="op">=</span> <span class="fu">next_storage</span>(start_storage, r1, inflow[<span class="fl">1</span>])</span>
+<span id="cb7-9"><a></a>        <span class="cf">for</span> r2 <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>s2</span>
+<span id="cb7-10"><a></a>            s3 <span class="op">=</span> <span class="fu">next_storage</span>(s2, r2, inflow[<span class="fl">2</span>])</span>
+<span id="cb7-11"><a></a>            <span class="cf">for</span> r3 <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>s3</span>
+<span id="cb7-12"><a></a>                n_sequences <span class="op">=</span> n_sequences <span class="op">+</span> <span class="fl">1</span></span>
+<span id="cb7-13"><a></a>                total <span class="op">=</span> <span class="fu">benefit</span>(r1) <span class="op">+</span> <span class="fu">benefit</span>(r2) <span class="op">+</span> <span class="fu">benefit</span>(r3)</span>
+<span id="cb7-14"><a></a>                <span class="cf">if</span> total <span class="op">&gt;</span> best_total</span>
+<span id="cb7-15"><a></a>                    best_total <span class="op">=</span> total</span>
+<span id="cb7-16"><a></a>                    n_best <span class="op">=</span> <span class="fl">1</span></span>
+<span id="cb7-17"><a></a>                <span class="cf">elseif</span> total <span class="op">==</span> best_total</span>
+<span id="cb7-18"><a></a>                    n_best <span class="op">=</span> n_best <span class="op">+</span> <span class="fl">1</span></span>
+<span id="cb7-19"><a></a>                <span class="cf">end</span></span>
+<span id="cb7-20"><a></a>            <span class="cf">end</span></span>
+<span id="cb7-21"><a></a>        <span class="cf">end</span></span>
+<span id="cb7-22"><a></a>    <span class="cf">end</span></span>
+<span id="cb7-23"><a></a>    <span class="cf">return</span> best_total, n_best, n_sequences</span>
+<span id="cb7-24"><a></a><span class="kw">end</span></span>
+<span id="cb7-25"><a></a>best_total, n_best, n_sequences <span class="op">=</span> <span class="fu">brute_force</span>()</span>
+<span id="cb7-26"><a></a><span class="pp">@assert</span> best_total <span class="op">==</span> dp_total <span class="op">&amp;&amp;</span> n_best <span class="op">==</span> <span class="fl">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Trying all 66 release sequences gives the same best total, <strong>300</strong>, and only one sequence, 2, 2, 2, reaches it.</p>
+<aside class="notes">
+<p>On a problem this small we can try every sequence. On a realistic problem we cannot, so we check the method on cases where we can.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="the-curse-of-dimensionality" class="slide level2">
 <h2>The Curse of Dimensionality</h2>
@@ -1397,71 +1492,74 @@ V_t(s) = \max_{r \leq s} \Big[\, \text{benefit}(r) &amp;+ \tfrac{1}{2} V_{t+1}\b
 <h2>Does the Storage Grid Matter?</h2>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a></a><span class="co"># Finer storage grids, with the benefit interpolated linearly between table points</span></span>
-<span id="cb12-2"><a></a><span class="kw">function</span> <span class="fu">benefit_interp</span>(r)</span>
-<span id="cb12-3"><a></a>    <span class="cf">if</span> r <span class="op">&gt;=</span> capacity</span>
-<span id="cb12-4"><a></a>        <span class="cf">return</span> <span class="fu">Float64</span>(benefit_table[<span class="kw">end</span>])</span>
-<span id="cb12-5"><a></a>    <span class="cf">end</span></span>
-<span id="cb12-6"><a></a>    k <span class="op">=</span> <span class="fu">floor</span>(<span class="dt">Int</span>, r)</span>
-<span id="cb12-7"><a></a>    fraction <span class="op">=</span> r <span class="op">-</span> k</span>
-<span id="cb12-8"><a></a>    <span class="cf">return</span> (<span class="fl">1</span> <span class="op">-</span> fraction) <span class="op">*</span> benefit_table[k <span class="op">+</span> <span class="fl">1</span>] <span class="op">+</span> fraction <span class="op">*</span> benefit_table[k <span class="op">+</span> <span class="fl">2</span>]</span>
-<span id="cb12-9"><a></a><span class="kw">end</span></span>
-<span id="cb12-10"><a></a></span>
-<span id="cb12-11"><a></a><span class="kw">function</span> <span class="fu">best_from_full</span>(spacing)</span>
-<span id="cb12-12"><a></a>    grid <span class="op">=</span> <span class="fl">0</span><span class="op">:</span>spacing<span class="op">:</span>capacity</span>
-<span id="cb12-13"><a></a>    n <span class="op">=</span> <span class="fu">length</span>(grid)</span>
-<span id="cb12-14"><a></a>    value <span class="op">=</span> <span class="fu">zeros</span>(n, n_months <span class="op">+</span> <span class="fl">1</span>)</span>
-<span id="cb12-15"><a></a>    <span class="cf">for</span> t <span class="kw">in</span> n_months<span class="op">:-</span><span class="fl">1</span><span class="op">:</span><span class="fl">1</span></span>
-<span id="cb12-16"><a></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n</span>
-<span id="cb12-17"><a></a>            s <span class="op">=</span> grid[i]</span>
-<span id="cb12-18"><a></a>            best <span class="op">=</span> <span class="op">-</span><span class="cn">Inf</span></span>
-<span id="cb12-19"><a></a>            <span class="cf">for</span> r <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>spacing<span class="op">:</span>s</span>
-<span id="cb12-20"><a></a>                j <span class="op">=</span> <span class="fu">round</span>(<span class="dt">Int</span>, <span class="fu">min</span>(s <span class="op">-</span> r <span class="op">+</span> inflow[t], capacity) <span class="op">/</span> spacing) <span class="op">+</span> <span class="fl">1</span></span>
-<span id="cb12-21"><a></a>                best <span class="op">=</span> <span class="fu">max</span>(best, <span class="fu">benefit_interp</span>(r) <span class="op">+</span> value[j, t <span class="op">+</span> <span class="fl">1</span>])</span>
-<span id="cb12-22"><a></a>            <span class="cf">end</span></span>
-<span id="cb12-23"><a></a>            value[i, t] <span class="op">=</span> best</span>
-<span id="cb12-24"><a></a>        <span class="cf">end</span></span>
-<span id="cb12-25"><a></a>    <span class="cf">end</span></span>
-<span id="cb12-26"><a></a>    <span class="cf">return</span> value[<span class="kw">end</span>, <span class="fl">1</span>]</span>
-<span id="cb12-27"><a></a><span class="kw">end</span></span>
-<span id="cb12-28"><a></a></span>
-<span id="cb12-29"><a></a><span class="fu">println</span>(<span class="st">"| Grid spacing (units) | Best total from a full reservoir |"</span>)</span>
-<span id="cb12-30"><a></a><span class="fu">println</span>(<span class="st">"|:--|--:|"</span>)</span>
-<span id="cb12-31"><a></a><span class="cf">for</span> spacing <span class="kw">in</span> [<span class="fl">1</span>, <span class="fl">0.5</span>, <span class="fl">0.25</span>]</span>
-<span id="cb12-32"><a></a>    <span class="fu">println</span>(<span class="st">"| "</span>, <span class="fu">fmt</span>(spacing), <span class="st">" | "</span>, <span class="fu">fmt</span>(<span class="fu">best_from_full</span>(spacing)), <span class="st">" |"</span>)</span>
-<span id="cb12-33"><a></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a></a><span class="co"># Finer storage grids, with the benefit interpolated linearly between</span></span>
+<span id="cb8-2"><a></a><span class="co"># table points</span></span>
+<span id="cb8-3"><a></a><span class="kw">function</span> <span class="fu">benefit_interp</span>(r)</span>
+<span id="cb8-4"><a></a>    <span class="cf">if</span> r <span class="op">&gt;=</span> capacity</span>
+<span id="cb8-5"><a></a>        <span class="cf">return</span> <span class="fu">Float64</span>(benefit_table[<span class="kw">end</span>])</span>
+<span id="cb8-6"><a></a>    <span class="cf">end</span></span>
+<span id="cb8-7"><a></a>    k <span class="op">=</span> <span class="fu">floor</span>(<span class="dt">Int</span>, r)</span>
+<span id="cb8-8"><a></a>    fraction <span class="op">=</span> r <span class="op">-</span> k</span>
+<span id="cb8-9"><a></a>    <span class="cf">return</span> (<span class="fl">1</span> <span class="op">-</span> fraction) <span class="op">*</span> benefit_table[k <span class="op">+</span> <span class="fl">1</span>] <span class="op">+</span></span>
+<span id="cb8-10"><a></a>        fraction <span class="op">*</span> benefit_table[k <span class="op">+</span> <span class="fl">2</span>]</span>
+<span id="cb8-11"><a></a><span class="kw">end</span></span>
+<span id="cb8-12"><a></a></span>
+<span id="cb8-13"><a></a><span class="kw">function</span> <span class="fu">best_from_full</span>(spacing)</span>
+<span id="cb8-14"><a></a>    grid <span class="op">=</span> <span class="fl">0</span><span class="op">:</span>spacing<span class="op">:</span>capacity</span>
+<span id="cb8-15"><a></a>    n <span class="op">=</span> <span class="fu">length</span>(grid)</span>
+<span id="cb8-16"><a></a>    value_table <span class="op">=</span> <span class="fu">zeros</span>(n, n_months <span class="op">+</span> <span class="fl">1</span>)</span>
+<span id="cb8-17"><a></a>    <span class="cf">for</span> t <span class="kw">in</span> n_months<span class="op">:-</span><span class="fl">1</span><span class="op">:</span><span class="fl">1</span></span>
+<span id="cb8-18"><a></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n</span>
+<span id="cb8-19"><a></a>            s <span class="op">=</span> grid[i]</span>
+<span id="cb8-20"><a></a>            best <span class="op">=</span> <span class="op">-</span><span class="cn">Inf</span></span>
+<span id="cb8-21"><a></a>            <span class="cf">for</span> r <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>spacing<span class="op">:</span>s</span>
+<span id="cb8-22"><a></a>                j <span class="op">=</span> <span class="fu">round</span>(<span class="dt">Int</span>, <span class="fu">min</span>(s <span class="op">-</span> r <span class="op">+</span> inflow[t], capacity) <span class="op">/</span> spacing) <span class="op">+</span> <span class="fl">1</span></span>
+<span id="cb8-23"><a></a>                best <span class="op">=</span> <span class="fu">max</span>(best, <span class="fu">benefit_interp</span>(r) <span class="op">+</span> value_table[j, t <span class="op">+</span> <span class="fl">1</span>])</span>
+<span id="cb8-24"><a></a>            <span class="cf">end</span></span>
+<span id="cb8-25"><a></a>            value_table[i, t] <span class="op">=</span> best</span>
+<span id="cb8-26"><a></a>        <span class="cf">end</span></span>
+<span id="cb8-27"><a></a>    <span class="cf">end</span></span>
+<span id="cb8-28"><a></a>    <span class="cf">return</span> value_table[<span class="kw">end</span>, <span class="fl">1</span>]</span>
+<span id="cb8-29"><a></a><span class="kw">end</span></span>
+<span id="cb8-30"><a></a></span>
+<span id="cb8-31"><a></a><span class="fu">println</span>(<span class="st">"| Grid spacing [million m³] | Best total [</span><span class="sc">\\</span><span class="st">\$1,000] |"</span>)</span>
+<span id="cb8-32"><a></a><span class="fu">println</span>(<span class="st">"|:--|--:|"</span>)</span>
+<span id="cb8-33"><a></a><span class="cf">for</span> spacing <span class="kw">in</span> [<span class="fl">1</span>, <span class="fl">0.5</span>, <span class="fl">0.25</span>]</span>
+<span id="cb8-34"><a></a>    <span class="fu">println</span>(<span class="st">"| "</span>, <span class="fu">fmt</span>(spacing), <span class="st">" | "</span>, <span class="fu">fmt</span>(<span class="fu">best_from_full</span>(spacing)), <span class="st">" |"</span>)</span>
+<span id="cb8-35"><a></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Grid spacing (units)</th>
-<th style="text-align: right;">Best total from a full reservoir</th>
+<th style="text-align: left;">Grid spacing [million m³]</th>
+<th style="text-align: right;">Best total [$1,000]</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">1</td>
-<td style="text-align: right;">30</td>
+<td style="text-align: right;">300</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">0.5</td>
-<td style="text-align: right;">30</td>
+<td style="text-align: right;">300</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">0.25</td>
-<td style="text-align: right;">30</td>
+<td style="text-align: right;">300</td>
 </tr>
 </tbody>
 </table>
-<p>Refining the grid to spacings of 0.5 and 0.25 units gives the same best total.</p>
+<p>Spacings of 0.5 and 0.25 million m³ give the same best total: with whole-million inflows and a benefit linear between whole millions, finer releases add nothing here.</p>
 </section>
 <section id="the-lake-as-a-dynamic-program" class="slide level2">
 <h2>The Lake as a Dynamic Program</h2>
 <ul>
+<li><strong>Stage</strong>: year <span class="math inline">\(t\)</span>.</li>
 <li><strong>State</strong>: phosphorus <span class="math inline">\(P_t\)</span> in the lake.</li>
-<li><strong>Decision</strong>: loading <span class="math inline">\(L_t\)</span> each year.</li>
-<li><strong>Transition</strong>: <span class="math inline">\(P_{t+1} = P_t + L_t - sP_t + R(P_t)\)</span>.</li>
-<li><strong>Benefit</strong>: the value of the loading (farm output, wastewater), minus damages when the lake is eutrophic.</li>
+<li><strong>Decision</strong>: loading <span class="math inline">\(L_t\)</span>.</li>
+<li><strong>Transition</strong>: the lake model, <span class="math inline">\(P_{t+1} = f(P_t, L_t)\)</span>.</li>
+<li><strong>Benefit</strong>: what the loading is worth (farm output, wastewater), minus damages when the lake is eutrophic.</li>
 </ul>
 <p>A continuous state with a threshold needs a fine grid in <span class="math inline">\(P\)</span>.</p>
 

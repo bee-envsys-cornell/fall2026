@@ -83,13 +83,13 @@ cb_purple = "#CC79A7"
 ```{julia}
 #| output: false
 
-# The reservoir: storage in whole units, 0 to 4; start full.
+# The reservoir: storage in million m³, in whole millions from 0 to 4; start full.
 # Each month: release r (at most what is stored), then that month's inflow
 # arrives; anything above capacity spills.
-capacity = 4
+capacity = 4                             # [million m³]
 start_storage = 4
-inflow = [1, 1, 0]                       # a three-month dry season
-benefit_table = [0, 6, 10, 12, 13]       # benefit of releasing 0, 1, 2, 3, 4 units
+inflow = [1, 1, 0]                       # [million m³]: a three-month dry season
+benefit_table = [0, 60, 100, 120, 130]   # [$1,000] for releasing 0, 1, 2, 3, 4 million m³
 benefit(r) = benefit_table[r + 1]
 next_storage(s, r, q) = min(s - r + q, capacity)
 n_months = length(inflow)
@@ -137,6 +137,66 @@ commas(n) = replace(string(round(Int, n)), r"(?<=\d)(?=(\d{3})+$)" => ",")
 ```{julia}
 #| output: false
 
+# Tables printed on the reservoir slides, with each step's arithmetic shown.
+# The slides write the capacity, starting storage and inflows as numbers in
+# their equations; stop if the data change under them.
+@assert capacity == 4 && start_storage == 4 && inflow == [1, 1, 0]
+
+# Follow a release sequence from a full reservoir, one row per month
+function print_trace(releases, inflows)
+    println("| Month \$t\$ | \$s_t\$ | \$r_t\$ | \$\\text{benefit}(r_t)\$ | \$s_{t+1}\$ |")
+    println("|:--|--:|--:|--:|:--|")
+    s = start_storage
+    for t in eachindex(releases)
+        r = releases[t]
+        @assert 0 <= r <= s                       # a release can't exceed storage
+        next_s = next_storage(s, r, inflows[t])
+        println("| ", t, " | ", s, " | ", r, " | ", benefit(r), " | \$\\min(", s, " - ", r,
+            " + ", inflows[t], ",\\ ", capacity, ") = ", next_s, "\$ |")
+        s = next_s
+    end
+    return nothing
+end
+
+# Every allowed release from storage s in month t with a known inflow, and its
+# total: benefit now plus V_{t+1} at the next storage. next_value[k] is
+# V_{t+1} at storage k - 1. Returns the totals.
+function print_options(s, t, inflow_t, next_value)
+    println("| \$r\$ | \$\\text{benefit}(r)\$ | Next storage | \$V_{", t + 1,
+        "}\$ there | Total |")
+    println("|--:|--:|:--|--:|--:|")
+    totals = zeros(s + 1)
+    for r in 0:s
+        next_s = next_storage(s, r, inflow_t)
+        totals[r + 1] = benefit(r) + next_value[next_s + 1]
+        println("| ", r, " | ", benefit(r), " | \$\\min(", s, " - ", r, " + ", inflow_t, ",\\ ",
+            capacity, ") = ", next_s, "\$ | ", fmt(next_value[next_s + 1]), " | ",
+            fmt(totals[r + 1]), " |")
+    end
+    return totals
+end
+
+# A table with one column per storage level and the given rows
+function print_storage_table(row_labels, rows)
+    println("| Storage \$s\$ | ", join(levels, " | "), " |")
+    println("|:--|", repeat("--:|", capacity + 1))
+    for k in eachindex(row_labels)
+        println("| ", row_labels[k], " | ", join(fmt.(rows[k]), " | "), " |")
+    end
+    return nothing
+end
+
+# Releases that tie for the best total from storage s, as text
+function tie_text(s, totals)
+    best = maximum(totals)
+    tied = [r for r in 0:s if totals[r + 1] == best]
+    return "at storage $(s), releases $(join(tied, " and ")) both give $(fmt(best))"
+end
+```
+
+```{julia}
+#| output: false
+
 # The farmer (Birge and Louveaux), from the two-stage example: wheat, corn and
 # sugar beets on 500 acres, planted before the yield is known
 land = 500                         # [acres]
@@ -151,11 +211,15 @@ beet_excess_price = 10             # [$/T] above the quota
 scenarios = ["Good", "Average", "Bad"]
 yield_factor = [1.2, 1, 0.8]       # yields relative to average
 prob = fill(1 / 3, 3)
+# p_{b|a}: probability of year 2 yield b (column) after year 1 yield a (row)
+persistence = [1/2 1/3 1/6; 1/3 1/3 1/3; 1/6 1/3 1/2]
 
 # The two-stage farm model: one planting x, and purchases y and sales z for each
-# scenario. Passing `plan` fixes the planting. Returns the planting and the
-# expected profit.
-function farm_model(factors, probs; plan=nothing)
+# scenario. Passing `plan` fixes the planting; `price_factors` scales the grain
+# prices and `quotas` sets the beet demand in each scenario. Returns the
+# planting and the expected profit.
+function farm_model(factors, probs; plan=nothing, price_factors=ones(length(factors)),
+        quotas=fill(beet_quota, length(factors)))
     n = length(factors)
     model = Model(HiGHS.Optimizer)
     set_silent(model)
@@ -171,11 +235,12 @@ function farm_model(factors, probs; plan=nothing)
         @constraint(model, crop_yield[1] * x[1] + y[1, s] - z[1, s] >= feed_need[1])
         @constraint(model, crop_yield[2] * x[2] + y[2, s] - z[2, s] >= feed_need[2])
         @constraint(model, z[3, s] + z[4, s] <= crop_yield[3] * x[3])
-        @constraint(model, z[3, s] <= beet_quota)
+        @constraint(model, z[3, s] <= quotas[s])
     end
     @objective(model, Max, -sum(plant_cost .* x) + sum(probs[s] * (
-        sell_price[1] * z[1, s] + sell_price[2] * z[2, s] + beet_price * z[3, s] +
-        beet_excess_price * z[4, s] - buy_price[1] * y[1, s] - buy_price[2] * y[2, s])
+        price_factors[s] * (sell_price[1] * z[1, s] + sell_price[2] * z[2, s] -
+            buy_price[1] * y[1, s] - buy_price[2] * y[2, s]) +
+        beet_price * z[3, s] + beet_excess_price * z[4, s])
         for s in 1:n))
     optimize!(model)
     return value.(x), objective_value(model)
@@ -197,38 +262,140 @@ stochastic_plan, stochastic_profit = farm_model(yield_factor, prob)
 
 {{< include _poll-prompt.qmd >}}
 
-# Multi-Stage Scenario Trees
+# Scenario Trees
 
-## Multi-Stage Trees
+## Dependent Uncertainties in One Year
 
-Suppose good years tend to follow good years and bad follow bad, so year 2's probabilities depend on year 1's yield.
+```{julia}
+#| echo: false
+#| output: false
+
+# P(price | yield): rows good, average, bad; columns low, high (the tree figure)
+price_given_yield = [2//3 1//3; 1//2 1//2; 1//3 2//3]
+yield_prob = [1//3, 1//3, 1//3]
+@assert all(sum(price_given_yield, dims=2) .== 1)
+@assert yield_prob[3] * price_given_yield[3, 2] == 2//9
+@assert sum(yield_prob .* price_given_yield[:, 2]) == 1//2
+@assert price_given_yield[3, 2] == 2 * price_given_yield[1, 2]
+# P(demand | price): rows price low, high; columns demand low, high
+demand_given_price = [1//3 2//3; 2//3 1//3]
+@assert all(sum(demand_given_price, dims=2) .== 1)
+@assert yield_prob[3] * price_given_yield[3, 2] * demand_given_price[2, 1] == 4//27
+@assert sum(yield_prob[y] * price_given_yield[y, p] * demand_given_price[p, d]
+    for y in 1:3, p in 1:2, d in 1:2) == 1
+```
+
+![](figures/scenario-tree-one-year.svg){width=100% fig-alt="One-year scenario tree: planting, then the yield (good, average or bad, 1/3 each), then the grain price, low or high, with probabilities that depend on the yield (after a good yield low 2/3, high 1/3; average 1/2 each; bad low 1/3, high 2/3), then the demand for grain, low or high, with probabilities that depend on the price (after a low price low 1/3, high 2/3; after a high price low 2/3, high 1/3). Buying and selling happen after all three are known."}
+
+::: {.notes}
+Within one year the yield, the grain price and the demand are learned in turn, each depending on the one before. Nothing is decided in between, so there are still two stages: plant, then learn all three, then buy and sell. The probabilities are illustrative. If demand were a fixed function of the price, with no randomness of its own, it would add no branches: it would take a value at each leaf. The tree figures are drawn by `figures/scenario-trees.jl`.
+:::
+
+## Conditional Probabilities
+
+A scenario's probability is the product of the conditional probabilities along its path, with outcomes in order (yield, price, demand):
+
+$$
+\begin{aligned}
+P(\text{bad}, \text{high}, \text{low}) &= P(\text{bad})\, P(\text{high} \mid \text{bad})\, P(\text{low} \mid \text{high}) \\
+&= 1/3 \times 2/3 \times 2/3 = 4/27
+\end{aligned}
+$$
+
+## Prices in the Objective
+
+```{julia}
+#| echo: false
+#| output: false
+
+# The prices written on the slide
+@assert sell_price == [170, 150] && buy_price ≈ [238, 210]
+@assert beet_price == 36 && beet_excess_price == 10 && beet_quota == 6000
+```
+
+Each of the 12 scenarios has its own grain prices, so they change the objective, not only the constraints:
+
+$$\max_{\mathbf{x}, \mathbf{y}, \mathbf{z}} \; -\mathbf{c}^\top \mathbf{x} + \sum_{s=1}^{12} p_s \big( \mathbf{q}_s^\top \mathbf{z}_s - \mathbf{w}_s^\top \mathbf{y}_s \big)$$
+
+$\mathbf{c}$ is the planting cost per acre, and $p_s$ the scenario's probability from the tree.
+
+## Scenario Prices and Demand
+
+- Sale prices $\mathbf{q}_s = (170 g_s,\ 150 g_s,\ 36,\ 10)$ (wheat, corn, beets up to the demand, beets above it); purchase prices $\mathbf{w}_s = (238 g_s,\ 210 g_s)$.
+- $g_s = 0.9$ for a low grain price, $1.1$ for a high one; beet prices are set by contract.
+- The beet demand $D_s$, 5,000 or 7,000 T, replaces the 6,000 T quota in the constraints.
+
+## Solving the More Complex Problem
+
+```{julia}
+#| echo: true
+#| code-fold: true
+#| output: asis
+
+# The 12 scenarios of the one-year tree: yield factor, grain price factor, beet
+# demand, and probability (the product along the path)
+price_level = [0.9, 1.1]              # g: low or high grain price
+beet_demand = [5000, 7000]            # D [T]: low or high
+n_scenarios = 12
+scenario_yield = zeros(n_scenarios)
+scenario_price = zeros(n_scenarios)
+scenario_demand = zeros(n_scenarios)
+scenario_prob = zeros(n_scenarios)
+let k = 0
+    for y in 1:3, p in 1:2, d in 1:2
+        k = k + 1
+        scenario_yield[k] = yield_factor[y]
+        scenario_price[k] = price_level[p]
+        scenario_demand[k] = beet_demand[d]
+        scenario_prob[k] = yield_prob[y] * price_given_yield[y, p] * demand_given_price[p, d]
+    end
+end
+one_year_plan, one_year_profit = farm_model(scenario_yield, scenario_prob;
+    price_factors=scenario_price, quotas=scenario_demand)
+
+println("| Scenarios | Wheat | Corn | Beets |")
+println("|:--|--:|--:|--:|")
+println("| 3: yield only | ", join(fmt.(stochastic_plan), " | "), " |")
+println("| 12: yield, price, demand | ", join(fmt.(one_year_plan), " | "), " |")
+```
+
+```{julia}
+#| echo: false
+#| output: false
+
+@assert isapprox(sum(scenario_prob), 1)
+# more beets, less wheat, the same corn; the beets fill the high demand in a good year
+@assert one_year_plan[3] > stochastic_plan[3] && one_year_plan[1] < stochastic_plan[1]
+@assert isapprox(one_year_plan[2], stochastic_plan[2]; atol=1e-6)
+beets_good_year = one_year_plan[3] * avg_yield[3] * yield_factor[1]
+@assert isapprox(beets_good_year, beet_demand[2]; atol=1e-6)
+# the 3-scenario plan, evaluated in the 12 scenarios
+old_plan_profit_12 = farm_model(scenario_yield, scenario_prob; plan=stochastic_plan,
+    price_factors=scenario_price, quotas=scenario_demand)[2]
+plan_gain = one_year_profit - old_plan_profit_12
+@assert plan_gain > 0
+```
+
+Good harvests make low grain prices and high beet demand more likely, so we plant more beets.
+
+::: {.notes}
+In the 12 scenarios, this plan expects \$`{julia} commas(one_year_profit)` and the 3-scenario plan \$`{julia} commas(old_plan_profit_12)`. Wheat gives up the land: corn stays at the acreage that covers the feed.
+:::
+
+## Multi-Stage Decisions
+
+Suppose that weather patterns have **memory** from year to year: growing conditions in Year 2 are influenced by Year 1's conditions.
 
 ![](figures/scenario-tree-two-years.svg){width=100% fig-alt="Scenario tree over two years: planting, three year 1 yields with probability 1/3 each, a node for each with buying, selling and the year 2 planting, then three year 2 yields whose probabilities depend on year 1: after a good year, good 1/2, average 1/3, bad 1/6; after an average year, 1/3 each; after a bad year, good 1/6, average 1/3, bad 1/2."}
 
 ::: {.notes}
-Each year on its own is still good, average or bad with probability 1/3; only the sequence of years changes. The tree figure is drawn by `figures/scenario-trees.jl`.
+Year 2 repeats year 1's problem, with nothing physical carried over. Each year on its own is still good, average or bad with probability 1/3; only the joint probabilities change.
 :::
 
-## Probabilities Along a Path
-
-**How likely are two bad years in a row? A good year, then a bad one?**
-
-::: {.fragment .fade-in}
-Multiply the branch probabilities along the path, each conditional on the branches before it:
-
-$$
-\begin{aligned}
-P(\text{bad}, \text{bad}) &= \tfrac{1}{3} \times \tfrac{1}{2} = \tfrac{1}{6} \\
-P(\text{good}, \text{bad}) &= \tfrac{1}{3} \times \tfrac{1}{6} = \tfrac{1}{18}
-\end{aligned}
-$$
-
-If the years were independent, both would be $\frac{1}{9}$.
-:::
 
 ## Two-Year Decision Variables
 
-Let $a$ be year 1's yield and $b$ year 2's, each G, A or B (good, average, bad). **Which yields can each decision depend on?**
+Let $a$ be year 1's yield and $b$ year 2's, each G, A or B (good, average, bad); bold symbols are vectors. **Which yields can each decision depend on?**
 
 ::: {.fragment .fade-in}
 - $\mathbf{x}^{(1)}$: year 1 planting, before any yield is known
@@ -241,139 +408,58 @@ Let $a$ be year 1's yield and $b$ year 2's, each G, A or B (good, average, bad).
 Each variable is indexed by the yields known when it is decided, so the subscripts match the nodes of the tree: one year 1 planting, three sets of year 1 purchases and sales, three year 2 plantings, and nine sets of year 2 purchases and sales.
 :::
 
-## Two-Year Objective
+## Profit Maximization Over Both Years
 
 $$
 \begin{aligned}
-\max \quad & -\mathbf{c}^\top \mathbf{x}^{(1)} + \sum_a p_a \Big[ r\big(\mathbf{y}^{(1)}_a, \mathbf{z}^{(1)}_a\big) - \mathbf{c}^\top \mathbf{x}^{(2)}_a \\
-& \qquad + \sum_b p_{b \mid a}\, r\big(\mathbf{y}^{(2)}_{ab}, \mathbf{z}^{(2)}_{ab}\big) \Big]
+\max_{\mathbf{x}, \mathbf{y}, \mathbf{z}} \quad & -\mathbf{c}^\top \mathbf{x}^{(1)} + \sum_a p_a \Big[ \mathbf{q}^\top \mathbf{z}^{(1)}_a - \mathbf{w}^\top \mathbf{y}^{(1)}_a - \mathbf{c}^\top \mathbf{x}^{(2)}_a \\
+& \qquad + \sum_b p_{b \mid a} \big( \mathbf{q}^\top \mathbf{z}^{(2)}_{ab} - \mathbf{w}^\top \mathbf{y}^{(2)}_{ab} \big) \Big]
 \end{aligned}
 $$
 
-$r$ is the money from sales minus purchases, and $p_{b \mid a}$ the probability of year 2 yield $b$ after year 1 yield $a$. The year 2 planting cost sits outside the sum over $b$: one planting for all three year 2 outcomes.
+$\mathbf{c}$ the planting costs per acre, $\mathbf{q}$ the sale prices, $\mathbf{w}$ the purchase prices, $p_a = \tfrac{1}{3}$, and $p_{b \mid a}$ the probability of year 2 yield $b$ after $a$.
 
 ::: {.notes}
-The constraints follow the same indexing. On path $ab$, year 2's wheat feed constraint is $2.5 f_b\, x^{(2)}_{1,a} + y^{(2)}_{1,ab} - z^{(2)}_{1,ab} \geq 200$, where $f_b$ is the yield factor for year 2 yield $b$: the same planting $x^{(2)}_{1,a}$ appears in the constraints for all three values of $b$. The year 1 constraints are the two-stage ones, with $\mathbf{x}^{(1)}$ and $f_a$.
+$\mathbf{q}$ has four entries (wheat, corn, beets up to the quota, beets above it) and $\mathbf{w}$ two (wheat, corn).
 :::
 
-## Non-Anticipativity
-
-**Why $\mathbf{x}^{(2)}_a$ and not $\mathbf{x}^{(2)}_{ab}$, like the year 2 sales?**
-
-::: {.fragment .fade-in}
-With $\mathbf{x}^{(2)}_{ab}$, the planting for path BG could be chosen knowing year 2 will be good. A decision can depend only on what is known when it is made: **non-anticipativity**. Indexing by $a$ alone is the same as requiring
-
-$$\mathbf{x}^{(2)}_{aG} = \mathbf{x}^{(2)}_{aA} = \mathbf{x}^{(2)}_{aB} \quad \text{for each } a.$$
-:::
-
-::: {.notes}
-The year 2 planting is recourse for year 1 but a here-and-now decision for year 2, which is why the two-stage rule of one recourse copy per scenario doesn't carry over. Indexing it by $ab$ would solve without error and plan as if each year 2 yield were known, overstating the expected profit. In the two-stage model the single planting $\mathbf{x}$ already satisfies non-anticipativity; giving each year type its own planting would give the perfect-information plans, whose extra expected profit is the EVPI. Because each node knows the whole path to it, a tree can carry any dependence on the past, as $p_{b \mid a}$ does here.
-:::
-
-## Variables in `JuMP`
+## Constraints
 
 ```{julia}
-#| echo: true
+#| echo: false
 #| output: false
-#| code-fold: false
-#| code-line-numbers: "|3|4-5|6|7-8"
 
-two_year = Model(HiGHS.Optimizer)
-@variables(two_year, begin
-    x1[1:3] >= 0                        # x^(1): year 1 planting
-    y1[1:2, a in 1:3] >= 0              # y^(1)_a: year 1 purchases
-    z1[1:4, a in 1:3] >= 0              # z^(1)_a: year 1 sales
-    x2[1:3, a in 1:3] >= 0              # x^(2)_a: year 2 planting
-    y2[1:2, a in 1:3, b in 1:3] >= 0    # y^(2)_ab: year 2 purchases
-    z2[1:4, a in 1:3, b in 1:3] >= 0    # z^(2)_ab: year 2 sales
-end)
+# The numbers written in the equations below
+@assert land == 500 && avg_yield[1] == 2.5 && feed_need[1] == 200 && yield_factor == [1.2, 1, 0.8]
 ```
 
-Each variable gets an index for each yield known when it is decided: `x2` has one for `a` but none for `b`.
+Constraints for each scenario include that year's planting and yield factor ($\phi_G = 1.2$, $\phi_A = 1$, $\phi_B = 0.8$). On a path $ab$, for example:
 
-## Objective in `JuMP`
+$$
+\begin{aligned}
+x^{(2)}_{\text{wheat},a} + x^{(2)}_{\text{corn},a} + x^{(2)}_{\text{beets},a} &\leq 500 && \text{(land)} \\
+2.5\,\phi_b\, x^{(2)}_{\text{wheat},a} + y^{(2)}_{\text{wheat},ab} - z^{(2)}_{\text{wheat},ab} &\geq 200 && \text{(wheat for feed)}
+\end{aligned}
+$$
 
-```{julia}
-#| echo: true
-#| output: false
-#| code-fold: false
-#| code-line-numbers: "|1-2|4-8|10|11|12-13|14"
-
-# p_{b|a}: probability of year 2 yield b (column) after year 1 yield a (row)
-persistence = [1/2 1/3 1/6; 1/3 1/3 1/3; 1/6 1/3 1/2]
-
-function net_sales(y, z)    # r(y, z): money from sales minus purchases
-    sales = sell_price[1] * z[1] + sell_price[2] * z[2] +
-        beet_price * z[3] + beet_excess_price * z[4]
-    return sales - buy_price[1] * y[1] - buy_price[2] * y[2]
-end
-
-@objective(two_year, Max, -sum(plant_cost .* x1) + sum(prob[a] * (
-    net_sales(y1[:, a], z1[:, a]) - sum(plant_cost .* x2[:, a]) +
-    sum(persistence[a, b] * net_sales(y2[:, a, b], z2[:, a, b])
-        for b in 1:3))
-    for a in 1:3))
-```
-
-`prob[a]` is $p_a$ and `persistence[a, b]` is $p_{b \mid a}$; the year 2 planting cost sits outside the sum over `b`.
-
-## Constraints in `JuMP`
-
-```{julia}
-#| echo: true
-#| output: false
-#| code-fold: true
-
-# One year's feed and beet constraints, for planting x, purchases y and
-# sales z, in a year with yield factor f: the same as in the two-stage model
-function add_year_constraints!(model, x, y, z, f)
-    crop_yield = avg_yield .* f
-    @constraint(model, crop_yield[1] * x[1] + y[1] - z[1] >= feed_need[1])
-    @constraint(model, crop_yield[2] * x[2] + y[2] - z[2] >= feed_need[2])
-    @constraint(model, z[3] + z[4] <= crop_yield[3] * x[3])
-    @constraint(model, z[3] <= beet_quota)
-end
-```
-
-```{julia}
-#| echo: true
-#| output: false
-#| code-fold: false
-#| code-line-numbers: "|1|2-5|6-10|12-13"
-
-@constraint(two_year, sum(x1) <= land)
-for a in 1:3
-    # year 1, after yield a
-    add_year_constraints!(two_year, x1, y1[:, a], z1[:, a], yield_factor[a])
-    @constraint(two_year, sum(x2[:, a]) <= land)
-    for b in 1:3
-        # year 2, after yields a and b: the same x2[:, a] for every b
-        add_year_constraints!(two_year, x2[:, a], y2[:, a, b], z2[:, a, b],
-            yield_factor[b])
-    end
-end
-set_silent(two_year)
-optimize!(two_year)
-```
-
-The year 2 constraints use the same `x2[:, a]` for every `b`.
-
-::: {.notes}
-One year 2 planting serves the three year 2 outcomes after yield `a`: that indexing is non-anticipativity. `add_year_constraints!` adds one year's feed and beet constraints, the same as in the two-stage model.
-:::
-
-## Two-Year Planting Plan
+## Year 2 Planting Decisions
 
 ```{julia}
 #| echo: true
 #| code-fold: true
 #| output: asis
 
-# The year 2 planting x^(2)_a after each year 1 yield a
+# No decision links the years, so the year 2 planting after year 1 yield a
+# solves the two-stage problem with probabilities p_{b|a} (row a of persistence)
+year2_plan = zeros(3, 3)
+year2_profit = zeros(3)
+for a in 1:3
+    year2_plan[a, :], year2_profit[a] = farm_model(yield_factor, persistence[a, :])
+end
 println("| Year 1 yield | Wheat (acres) | Corn (acres) | Beets (acres) |")
 println("|:--|--:|--:|--:|")
 for a in 1:3
-    println("| ", scenarios[a], " | ", join(fmt.(value.(x2[:, a])), " | "), " |")
+    println("| ", scenarios[a], " | ", join(fmt.(year2_plan[a, :]), " | "), " |")
 end
 ```
 
@@ -381,17 +467,44 @@ end
 #| echo: false
 #| output: false
 
-# The same plans from the two-stage model at each year 1 node, since nothing is
-# carried between the years; the notes use their expected year 2 profits
-year2_plan = zeros(3, 3)
-year2_profit = zeros(3)
-# the original two-stage plan, kept in year 2, with the same probabilities
-original_plan_profit = zeros(3)
-for a in 1:3
-    year2_plan[a, :], year2_profit[a] = farm_model(yield_factor, persistence[a, :])
-    original_plan_profit[a] = farm_model(yield_factor, persistence[a, :];
-        plan=stochastic_plan)[2]
+# Check: the full two-year model (a planting at each node of the tree) gives
+# last class's plan in year 1 and the table's plantings in year 2
+function sales_minus_purchases(y, z)    # q'z - w'y
+    sales = sell_price[1] * z[1] + sell_price[2] * z[2] +
+        beet_price * z[3] + beet_excess_price * z[4]
+    return sales - buy_price[1] * y[1] - buy_price[2] * y[2]
 end
+function add_year_constraints!(model, x, y, z, phi)
+    crop_yield = avg_yield .* phi
+    @constraint(model, crop_yield[1] * x[1] + y[1] - z[1] >= feed_need[1])
+    @constraint(model, crop_yield[2] * x[2] + y[2] - z[2] >= feed_need[2])
+    @constraint(model, z[3] + z[4] <= crop_yield[3] * x[3])
+    @constraint(model, z[3] <= beet_quota)
+end
+two_year = Model(HiGHS.Optimizer)
+set_silent(two_year)
+@variables(two_year, begin
+    x1[1:3] >= 0
+    y1[1:2, a in 1:3] >= 0
+    z1[1:4, a in 1:3] >= 0
+    x2[1:3, a in 1:3] >= 0
+    y2[1:2, a in 1:3, b in 1:3] >= 0
+    z2[1:4, a in 1:3, b in 1:3] >= 0
+end)
+@objective(two_year, Max, -sum(plant_cost .* x1) + sum(prob[a] * (
+    sales_minus_purchases(y1[:, a], z1[:, a]) - sum(plant_cost .* x2[:, a]) +
+    sum(persistence[a, b] * sales_minus_purchases(y2[:, a, b], z2[:, a, b])
+        for b in 1:3))
+    for a in 1:3))
+@constraint(two_year, sum(x1) <= land)
+for a in 1:3
+    add_year_constraints!(two_year, x1, y1[:, a], z1[:, a], yield_factor[a])
+    @constraint(two_year, sum(x2[:, a]) <= land)
+    for b in 1:3
+        add_year_constraints!(two_year, x2[:, a], y2[:, a, b], z2[:, a, b], yield_factor[b])
+    end
+end
+optimize!(two_year)
 @assert is_solved_and_feasible(two_year)
 @assert isapprox(value.(x1), stochastic_plan; atol=1e-6)
 for a in 1:3
@@ -404,22 +517,19 @@ for i in 1:3
     @assert isapprox(sum(persistence[i, :]), 1) && isapprox(sum(persistence[:, i]), 1)
 end
 @assert persistence[3, 3] == 1 / 2 && persistence[1, 3] == 1 / 6
-# After a good or an average year the plan is unchanged; after a bad year the
-# wheat and corn just cover the feed in another bad year, and the new plan
-# earns more than keeping the original one
+# After a good or an average year the planting is unchanged; after a bad year the
+# wheat and corn just cover the feed in another bad year
 for i in 1:2
     @assert isapprox(year2_plan[i, :], stochastic_plan; atol=1e-6)
 end
 @assert isapprox(year2_plan[3, 1] * avg_yield[1] * yield_factor[3], feed_need[1]; atol=1e-6)
 @assert isapprox(year2_plan[3, 2] * avg_yield[2] * yield_factor[3], feed_need[2]; atol=1e-6)
-bad_year_gain = year2_profit[3] - original_plan_profit[3]
-@assert bad_year_gain > 1
 ```
 
-After a bad year, the farmer plants enough wheat and corn to cover the feed even if year 2 is bad too.
+Each row solves the two-stage problem for $p_{b \mid a}$. After a bad year, we plant more beets because the probability of a good yield is lower.
 
 ::: {.notes}
-With nothing carried between the years, the year 1 planting is the two-stage plan, `{julia} join(fmt.(stochastic_plan), "/")` acres, and so is the year 2 planting after a good or an average year. After a bad year, another bad year has probability 1/2: the plan grows `{julia} fmt(year2_plan[3, 1])` acres of wheat and `{julia} fmt(year2_plan[3, 2])` of corn, just enough for the feed in a bad year, and `{julia} fmt(year2_plan[3, 3])` of beets. The expected year 2 profit is \$`{julia} commas(year2_profit[1])` after a good year, \$`{julia} commas(year2_profit[2])` after an average one and \$`{julia} commas(year2_profit[3])` after a bad one.
+The expected year 2 profit is \$`{julia} commas(year2_profit[1])` after a good year, \$`{julia} commas(year2_profit[2])` after an average one and \$`{julia} commas(year2_profit[3])` after a bad one. After a bad year the plan grows `{julia} fmt(year2_plan[3, 1])` acres of wheat and `{julia} fmt(year2_plan[3, 2])` of corn, just enough for the feed in a bad year, and `{julia} fmt(year2_plan[3, 3])` of beets.
 :::
 
 ## Scenario Trees Grow Fast
@@ -430,9 +540,9 @@ With nothing carried between the years, the year 1 planting is the two-stage pla
 
 # With three yield outcomes a year: 3^T leaves after T years, and
 # 1 + 3 + ... + 3^T nodes, each with its own copy of the decisions made there
-println("| Years | Scenarios (leaves) | Nodes |")
+println("| Years \$T\$ | Scenarios (leaves) \$3^T\$ | Nodes \$1 + 3 + \\cdots + 3^T\$ |")
 println("|:--|--:|--:|")
-for n_years in [1, 2, 3, 5, 10]
+for n_years in [1, 2, 3, 10]
     n_nodes = 0
     for t in 0:n_years
         n_nodes = n_nodes + 3^t
@@ -441,92 +551,138 @@ for n_years in [1, 2, 3, 5, 10]
 end
 ```
 
-**Raises the question**: how do we make decisions in a **sequence** without writing out the tree?
+This is an example of the **curse of dimensionality**: new "levels" increase the number of scenarios exponentially.
 
-::: {.notes}
-With a decision and an uncertainty every year, the number of scenarios grows exponentially with the number of years. Each node carries its own copy of the decisions made there, so the model grows with the number of nodes. Sampling a finite set of branches is one way to keep a tree small. Most environmental decisions repeat: release water every month, set a loading every year, harvest every season. Writing out every path through the future quickly becomes impossible, and dynamic programming is the standard way around it.
-:::
 
-# Sequential Decisions
+# Dynamic Programming
 
 ## Decisions Linked Over Time
 
-- **Reservoir**: water released this month is not there next month.
-- **Lake**: $P_{t+1} = P_t + L_t - sP_t + R(P_t)$. This year's loading $L_t$ changes next year's phosphorus $P_{t+1}$.
+Often a decision at time $t$ changes the initial state for time $t+1$:
+
+- **Reservoir**: water stored for next year influences potential release levels and flooding probabilities.
 - **Fishery**: this season's harvest changes next season's stock.
 
-**Why not just optimize each month on its own?**
+The "benefits" (or costs) of each state are also typically nonlinear (*e.g.* diminishing returns).
 
-::: {.notes}
-Each example has a stock that carries the past into the future, so today's decision changes tomorrow's options.
-:::
+## Reservoir Management
 
-## A Reservoir in a Dry Season
-
-- Storage holds up to **`{julia} capacity` units**, and starts **full**.
-- Each month: **release** $r$ (at most what is stored), then the month's **inflow** arrives; anything above `{julia} capacity` spills.
-- Inflows over the season: `{julia} join(inflow, ", ")`.
-- Benefit of a month's release:
+- Storage holds up to **`{julia} capacity` million m³** and starts **full**: $s_1 = 4$.
+- Each month $t$: **release** $r_t \in \{0, 1, \ldots, s_t\}$, then the **inflow** $I_t$ arrives: $I_1 = 1$, $I_2 = 1$, $I_3 = 0$ million m³.
+- Anything above `{julia} capacity` spills: $s_{t+1} = \min(s_t - r_t + I_t,\ 4)$.
+- **Goal**: maximize $\sum_t \text{benefit}(r_t)$; leftover water is worthless.
 
 ```{julia}
 #| echo: false
 #| output: asis
 
-println("| Release | ", join(0:capacity, " | "), " |")
+println("| Release \$r\$ [million m³] | ", join(0:capacity, " | "), " |")
 println("|:--|", repeat("--:|", capacity + 1))
-println("| **Benefit** | ", join(benefit_table, " | "), " |")
+println("| \$\\text{benefit}(r)\$ [\\\$1,000] | ", join(benefit_table, " | "), " |")
 ```
 
 ::: {.notes}
-The benefits have diminishing returns: the first unit released in a month is worth 6, the second only 4 more, the third 2, the fourth 1. Think of water for irrigation or a city during a dry season.
+Think of a small irrigation reservoir in a dry season. The benefits have diminishing returns as water moves from high-value to low-value crops: the first million m³ released in a month adds \$60,000 (\$60 per 1,000 m³, about \$74 an acre-foot), the second \$40,000, the third \$20,000 and the fourth \$10,000 (about \$12 an acre-foot). These are illustrative but in the range of US irrigation water values, which run from a few dollars an acre-foot for low-value crops to hundreds for vegetables (National Research Council; USDA ERS). Storage in steps of 1 million m³ and releasing before the inflow arrives are modeling conventions.
 :::
 
 ## The Greedy Plan
 
-**Greedy**: release everything available, every month.
-
-It releases `{julia} join(greedy_release, ", ")`, for a total benefit of **`{julia} greedy_total`**.
-
-**Can you beat `{julia} greedy_total`?**
-
-::: {.fragment .fade-in}
-Releasing 2, 2, 2 gives a total of **`{julia} 3 * benefit(2)`**.
-:::
-
-::: {.notes}
-Greedy maximizes each month's benefit separately: it empties the reservoir in month 1, then only has the inflow. The harder question is how to find the best plan when there are more months, more storage levels, or uncertain inflows: trial and error does not scale.
-:::
-
-## Elements of a Dynamic Program
-
-- **Stage** $t$: the month.
-- **State** $s_t$: storage at the start of the month; it carries the past forward.
-- **Decision** $r_t$: the release, with $0 \leq r_t \leq s_t$.
-- **Transition**: $s_{t+1} = \min(s_t - r_t + I_t,\ `{julia} capacity`)$.
-- **Value function** $V_t(s)$: the best total benefit from month $t$ to the end, starting with storage $s$.
-- **Policy**: the best release for each month and storage level.
-
-::: {.notes}
-The value function is the key idea: it answers "how good is it to be here?" for every state, not only the one we start in. Once we know next month's value function, choosing this month's release is a one-step problem.
-:::
-
-# Backward Induction
-
-## The Last Month
-
-In the **last month**, this model gives water left over no value, so release everything:
+In a **greedy** plan, each decision maximizes only its own stage's benefit with no forward planning.
 
 ```{julia}
 #| echo: false
 #| output: asis
 
-println("| Storage | ", join(levels, " | "), " |")
-println("|:--|", repeat("--:|", capacity + 1))
-println("| **Best release** | ", join(levels, " | "), " |")
-println("| **Value** $(raw"$V_3(s)$") | ", join(value_month3, " | "), " |")
+print_trace(greedy_release, inflow)
 ```
 
-Now step **backwards**: knowing $V_3$, month 2 is a one-step problem.
+Total (\$1,000): `{julia} join(benefit.(greedy_release), " + ")` = `{julia} greedy_total`.
+
+## Spreading the Releases
+
+```{julia}
+#| echo: false
+#| output: false
+
+spread_release = fill(2, n_months)
+spread_total = sum(benefit.(spread_release))
+@assert spread_total > greedy_total
+```
+
+Releasing 2 million m³ a month keeps water for later months:
+
+```{julia}
+#| echo: false
+#| output: asis
+
+print_trace(spread_release, inflow)
+```
+
+Total (\$1,000): `{julia} join(benefit.(spread_release), " + ")` = **`{julia} spread_total`** (greedy: `{julia} greedy_total`).
+
+::: {.notes}
+Trial and error does not scale: more months, more storage levels or uncertain inflows quickly make it impossible to try every plan.
+:::
+
+## Elements of a Dynamic Program
+
+- **Stage** $t = 1, \ldots, T$.
+- **State** $s_t$.
+- **Decision** $x_t \in \mathcal{X}_t(s_t)$.
+
+## Inputs, Transitions, and Benefits
+
+- **Input** $\xi_t$: exogenous changes to the post-decision state.
+- **Transition** $s_{t+1} = f_t(s_t, x_t, \xi_t)$.
+- **Benefit** $\text{benefit}_t(s_t, x_t)$: the utility of each decision.
+
+## The Value Function
+
+- **Terminal value** $V_{T+1}(s)$: value of ending with a particular state.
+- **Value function**: $V_t(s) = \max_{x_t, \ldots, x_T} \big[\sum_{k=t}^{T} \text{benefit}_k(s_k, x_k) + V_{T+1}(s_{T+1})\big]$ with $s_t = s$, $x_k \in \mathcal{X}_k(s_k)$, $s_{k+1} = f_k(s_k, x_k, \xi_k)$: the best total benefit from stage $t$ on.
+- **Policy**: a rule giving a decision for every stage $t$ and state $s$. The **optimal policy** $x^*_t(s)$ earns $V_t(s)$ from each.
+
+::: {.notes}
+The value function is the key idea: it answers "how good is it to be here?" for every state, not only the one we start in. Once we know the next stage's value function, choosing this stage's decision is a one-step problem.
+:::
+
+## The Bellman Equation
+
+With known inputs, the optimal policy $x^*_t(s)$ maximizes this stage's benefit plus $V_{t+1}$ at the next state:
+
+$$\begin{aligned}
+V_t(s) &= \max_{x \in \mathcal{X}_t(s)} \Big[ \text{benefit}_t(s, x) + V_{t+1}\big(f_t(s, x, \xi_t)\big) \Big] \\
+x^*_t(s) &= \argmax_{x \in \mathcal{X}_t(s)} \Big[ \text{benefit}_t(s, x) + V_{t+1}\big(f_t(s, x, \xi_t)\big) \Big]
+\end{aligned}$$
+
+**Backward induction**: start from the terminal value $V_{T+1}$, solve for $V_T$, then $V_{T-1}$, and so on back to $V_1$.
+
+::: {.notes}
+Here the inputs are known; with uncertain inputs we will average $V_{t+1}$ over them.
+:::
+
+## Backward Induction for the Reservoir
+
+```{julia}
+#| echo: true
+#| code-fold: true
+#| eval: false
+
+# The reservoir in code (defined once, at the top of the deck)
+capacity = 4                          # largest storage [million m³]
+inflow = [1, 1, 0]                    # I_1, I_2, I_3
+benefit_table = [0, 60, 100, 120, 130]  # [$1,000] for releasing 0, ..., 4
+benefit(r) = benefit_table[r + 1]     # Julia arrays start at 1
+next_storage(s, r, q) = min(s - r + q, capacity)   # s_{t+1}
+n_months = length(inflow)
+levels = 0:capacity                   # storage levels
+```
+
+With no carryover value, $V_4(s) = 0$, and for each month $t = 3, 2, 1$ and storage $s \in \{0, 1, \ldots, 4\}$:
+
+$$V_t(s) = \max_{r \in \{0, 1, \ldots, s\}} \Big[ \text{benefit}(r) + V_{t+1}\big(\min(s - r + I_t,\ 4)\big) \Big]$$
+
+In month 3, $V_4 = 0$ and the benefit increases with $r$, so month 3 releases everything: $V_3(s) = \text{benefit}(s)$.
 
 ::: {.notes}
 The last stage is the easy one, because no later month depends on it. That is why we start there.
@@ -534,27 +690,64 @@ The last stage is the easy one, because no later month depends on it. That is wh
 
 ## Month 2 by Hand
 
-For each storage $s$, try every release $r \leq s$ (month 2's inflow is $I_2 =$ `{julia} inflow[2]`):
+```{julia}
+#| echo: false
+#| output: false
 
-$$V_2(s) = \max_{r \leq s} \left[\, \text{benefit}(r) + V_3\big(\min(s - r + I_2,\ 4)\big) \right]$$
+# The worked example: storage 3 in month 2 with release 1, then the other releases
+example_s = 3
+example_r = 1
+example_next = next_storage(example_s, example_r, inflow[2])
+example_total = benefit(example_r) + value_month3[example_next + 1]
+example_totals = [benefit(r) + value_month3[next_storage(example_s, r, inflow[2]) + 1]
+    for r in 0:example_s]
+# the numbers written in the equations on the slide
+@assert inflow[2] == 1 && example_next == 3 && benefit(1) == 60
+@assert value_month3[example_next + 1] == benefit(3) == 120 && example_total == 180
+@assert maximum(example_totals) == value_month2[example_s + 1]
+@assert argmax(example_totals) - 1 == release_month2[example_s + 1]
+```
 
-**Your turn: compute $V_2(3)$.**
+$$V_2(s) = \max_{r \in \{0, 1, \ldots, s\}} \Big[ \text{benefit}(r) + V_3\big(\min(s - r + 1,\ 4)\big) \Big]$$
 
-::: {.fragment .fade-in}
+For example, from $s = 3$ with $r = 1$ (and $I_2 = 1$):
+
+$$
+\begin{aligned}
+\text{next storage} &= \min(3 - 1 + 1,\ 4) = 3 \\
+\text{benefit}(1) + V_3(3) &= 60 + \text{benefit}(3) = 60 + 120 = 180
+\end{aligned}
+$$
+
+Releases 0, 2, 3 give `{julia} example_totals[1]`, `{julia} example_totals[3]`, `{julia} example_totals[4]`: $V_2(3) =$ **`{julia} value_month2[example_s + 1]`**, at $r =$ `{julia} release_month2[example_s + 1]`.
+
+::: {.notes}
+Board item. Work $r = 1$ together on the board, then let students try $r = 0$ and $r = 2$. Totals are in \$1,000.
+:::
+
+## Month 2: Every Storage Level
+
+The same calculation for each storage level:
+
 ```{julia}
 #| echo: false
 #| output: asis
 
-println("| Storage | ", join(levels, " | "), " |")
-println("|:--|", repeat("--:|", capacity + 1))
-println("| **Best release** | ", join(release_month2, " | "), " |")
-println("| **Value** $(raw"$V_2(s)$") | ", join(value_month2, " | "), " |")
+print_storage_table(["Best release \$r\$", "\$V_2(s)\$"], [release_month2, value_month2])
 ```
-:::
 
-::: {.notes}
-Board item. Work V2(0) and V2(1) together on the board, then let students compute V2(3). For s = 3 the options are: release 0, benefit 0 plus V3 of min(3 + 1, 4) = 13, so 13; release 1, 6 plus V3(3) = 12, so 18; release 2, 10 plus V3(2) = 10, so 20; release 3, 12 plus V3(1) = 6, so 18. The best is 20, releasing 2. Fill in the rest of the table. At storage 2 and storage 4 two releases tie (1 or 2, and 2 or 3); the table reports the smaller one.
-:::
+```{julia}
+#| echo: false
+#| output: asis
+
+# Storage levels where two releases tie in month 2
+month2_totals = [[benefit(r) + value_month3[next_storage(s, r, inflow[2]) + 1] for r in 0:s]
+    for s in levels]
+tied_levels = [s for s in levels if count(==(maximum(month2_totals[s + 1])), month2_totals[s + 1]) > 1]
+tie_sentences = [tie_text(s, month2_totals[s + 1]) for s in tied_levels]
+@assert tied_levels == [2, 4]
+println(uppercasefirst(join(tie_sentences, "; ")), ".")
+```
 
 ## Backward Induction in Code
 
@@ -563,187 +756,246 @@ Board item. Work V2(0) and V2(1) together on the board, then let students comput
 #| code-fold: false
 #| output: false
 
-function backward_induction(inflow; end_value=zeros(capacity + 1))
-    value = fill(-Inf, capacity + 1, n_months + 1)  # best total from month t
-    policy = zeros(Int, capacity + 1, n_months)     # best release
-    value[:, n_months + 1] = end_value              # water left at the end
-    for t in n_months:-1:1, s in levels
-        for r in 0:s                                # at most what is stored
-            total = benefit(r) + value[next_storage(s, r, inflow[t]) + 1, t + 1]
-            if total > value[s + 1, t]              # ties keep the smaller r
-                value[s + 1, t] = total
-                policy[s + 1, t] = r
+function backward_induction(inflow; carryover_value=0)
+    value_table = fill(-Inf, capacity + 1, n_months + 1)  # V_t(s) in row s + 1
+    policy_table = zeros(Int, capacity + 1, n_months)     # best release
+    value_table[:, n_months + 1] = carryover_value .* levels  # V_4(s)
+    for t in n_months:-1:1, s in levels       # months backwards, every storage
+        for r in 0:s                          # every allowed release
+            next_s = next_storage(s, r, inflow[t])
+            total = benefit(r) + value_table[next_s + 1, t + 1]
+            if total > value_table[s + 1, t]  # ties keep the smaller release
+                value_table[s + 1, t] = total
+                policy_table[s + 1, t] = r
             end
         end
     end
-    return value, policy
+    return value_table, policy_table
 end
 ```
 
 ::: {.notes}
-The code is the hand calculation in a loop: months backwards, every storage level, every allowed release (no more than is stored). It keeps one table of values and one table of best releases, both allocated at full size before the loop. A release replaces the best so far only if it is strictly better, so ties keep the smaller release, as on the board.
+Storage $s$ is in row $s + 1$ of each table, because Julia arrays start at 1. The code is the hand calculation in a loop: months backwards, every storage level, every allowed release, each one an option in the Bellman equation. Both tables are allocated at full size before the loop. A release replaces the best so far only if it is strictly better, so ties keep the smaller release, as in the month 2 table.
 :::
 
-## Month 1 and the Optimal Plan
+## Month 1 with Storage 4
 
 ```{julia}
 #| echo: false
 #| output: false
 
-dp_value, policy = backward_induction(inflow)
+value_table, policy_table = backward_induction(inflow)
 
 # The function reproduces the hand calculation
-@assert dp_value[:, 3] == value_month3
-@assert dp_value[:, 2] == value_month2
+@assert value_table[:, 3] == value_month3
+@assert value_table[:, 2] == value_month2
+@assert policy_table[:, 2] == release_month2
 
-# Follow the policy forward from a full reservoir
+# Follow the policy forward from a full reservoir: the plan
 dp_release = zeros(Int, n_months)
 let s = start_storage
     for t in 1:n_months
-        dp_release[t] = policy[s + 1, t]
+        dp_release[t] = policy_table[s + 1, t]
         s = next_storage(s, dp_release[t], inflow[t])
     end
 end
 dp_total = sum(benefit.(dp_release))
+@assert dp_total == value_table[start_storage + 1, 1]
+@assert dp_release == spread_release
 ```
 
 ```{julia}
 #| echo: false
 #| output: asis
 
-println("| Storage | ", join(levels, " | "), " |")
-println("|:--|", repeat("--:|", capacity + 1))
-println("| **Best release** | ", join(policy[:, 1], " | "), " |")
-println("| **Value** $(raw"$V_1(s)$") | ", join(Int.(dp_value[:, 1]), " | "), " |")
+totals_month1_s4 = print_options(start_storage, 1, inflow[1], value_table[:, 2])
+@assert maximum(totals_month1_s4) == value_table[start_storage + 1, 1]
+@assert argmax(totals_month1_s4) - 1 == policy_table[start_storage + 1, 1]
 ```
 
-From a full reservoir, $V_1(`{julia} start_storage`) =$ **`{julia} Int(dp_value[start_storage + 1, 1])`**. Following the policy forward gives releases **`{julia} join(dp_release, ", ")`**.
+Best: release **`{julia} policy_table[start_storage + 1, 1]`**, so $V_1(4) =$ **`{julia} fmt(value_table[start_storage + 1, 1])`**.
 
-::: {.notes}
-The value function at the start answers the whole problem: `{julia} Int(dp_value[start_storage + 1, 1])`, against greedy's `{julia} greedy_total`. To get the plan, follow the policy forward: release 2, see the storage, look up the next month's best release, and so on.
-:::
+## The Optimal Policy
 
-## Checking by Brute Force
+Repeating this for every month and storage:
 
 ```{julia}
-#| echo: true
-#| code-fold: true
-#| output: false
+#| echo: false
+#| output: asis
 
-# Try every release sequence (only feasible because the problem is tiny)
-function brute_force()
-    best_total = -1
-    n_best = 0                  # how many sequences reach the best total
-    for r1 in 0:start_storage
-        s2 = next_storage(start_storage, r1, inflow[1])
-        for r2 in 0:s2
-            s3 = next_storage(s2, r2, inflow[2])
-            for r3 in 0:s3
-                total = benefit(r1) + benefit(r2) + benefit(r3)
-                if total > best_total
-                    best_total = total
-                    n_best = 1
-                elseif total == best_total
-                    n_best += 1
-                end
-            end
-        end
-    end
-    return best_total, n_best
+print_storage_table(["Month $(t): best release" for t in 1:n_months],
+    [policy_table[:, t] for t in 1:n_months])
+```
+
+```{julia}
+#| echo: false
+#| output: asis
+
+# Ties in months 1 and 2 (month 3 always releases everything)
+function tie_list(value_table, t)
+    tied = [s for s in levels if count(==(maximum([benefit(r) +
+        value_table[next_storage(s, r, inflow[t]) + 1, t + 1] for r in 0:s])),
+        [benefit(r) + value_table[next_storage(s, r, inflow[t]) + 1, t + 1] for r in 0:s]) > 1]
+    return tied
 end
-best_total, n_best = brute_force()
+ties_month1 = tie_list(value_table, 1)
+ties_month2 = tie_list(value_table, 2)
+@assert ties_month1 == [2, 3] && ties_month2 == [2, 4]
+println("Tied cells (month 1 at storages ", join(ties_month1, " and "), ", month 2 at ",
+    join(ties_month2, " and "), ") show the smaller release.")
 ```
 
-Trying every release sequence gives the same best total, **`{julia} best_total`**, and only one sequence reaches it.
+## From Policy to Plan
 
-::: {.notes}
-On a problem this small we can try every sequence. On a realistic problem we cannot, so we check the method on cases where we can.
-:::
-
-## Why Spread the Water?
+Following the optimal policy from $s_1 = 4$ gives the plan:
 
 ```{julia}
-#| echo: true
-#| code-fold: true
-#| label: fig-releases
-#| fig-cap: "Monthly releases under the greedy plan and the dynamic programming plan."
+#| echo: false
+#| output: asis
 
-months = 1:n_months
-p_releases = bar(months .- 0.18, greedy_release, bar_width=0.35, color=cb_vermillion, linecolor=:black,
-    label="Greedy (total $(greedy_total))", xlabel="Month", ylabel="Release  [units]",
-    legend=:topright, ylims=(0, 5), xticks=months)
-bar!(p_releases, months .+ 0.18, dp_release, bar_width=0.35, color=cb_blue, linecolor=:black,
-    fillstyle=:/, label="DP (total $(dp_total))")
-plot!(p_releases, size=(1050, 330), left_margin=10mm, bottom_margin=10mm)
+print_trace(dp_release, inflow)
 ```
 
-Here, with diminishing returns, the best plan releases the same amount every month.
+Total (\$1,000): `{julia} join(benefit.(dp_release), " + ")` = `{julia} dp_total` $= V_1(4)$: the spread plan is optimal, as the appendix checks against every release sequence.
 
 ::: {.notes}
-With diminishing returns, moving a unit from a month with a large release to one with a small release gains, as long as storage allows the move. Greedy ignores that the water could have been used later.
+To get the plan, start from $s_1 = 4$, look up the policy's release, compute the next storage, and repeat.
 :::
+
 
 # Uncertain Inflows
 
-## Releasing Before the Inflow Is Known
+## Decisions With Uncertain Inflows
 
-Inflow is **0 or 2 units**, equally likely, and is unknown when we release, so we use the **expected** next value:
+Now each month's inflow is **0 (dry) or 2 (wet) million m³**, each with probability $\tfrac{1}{2}$, independent across months and unknown at the release. $V_t(s)$ is the best **expected** total benefit over policies:
+
+$$V_t(s) = \max_{x \in \mathcal{X}_t(s)} \Big\{ \text{benefit}_t(s, x) + \mathbb{E}_{\xi_t}\Big[ V_{t+1}\big(f_t(s, x, \xi_t)\big) \Big] \Big\}$$
+
+$\mathbb{E}_{\xi_t}$ averages over the outcomes of $\xi_t$; this needs their probabilities not to depend on earlier inputs.
+
+## The Reservoir With Uncertain Inflows
+
+For each month $t = 3, 2, 1$ and storage $s \in \{0, 1, \ldots, 4\}$, with $V_4(s) = 0$:
 
 $$
 \begin{aligned}
-V_t(s) = \max_{r \leq s} \Big[\, \text{benefit}(r) &+ \tfrac{1}{2} V_{t+1}\big(\min(s - r, 4)\big) \\
-&+ \tfrac{1}{2} V_{t+1}\big(\min(s - r + 2, 4)\big) \Big]
+V_t(s) = \max_{r \in \{0, 1, \ldots, s\}} \Big[\, \text{benefit}(r) &+ \tfrac{1}{2} V_{t+1}(s - r) \\
+&+ \tfrac{1}{2} V_{t+1}\big(\min(s - r + 2,\ 4)\big) \Big]
 \end{aligned}
 $$
 
-The backward pass is the same, and the answer is a **policy**: the best release for each storage level.
+The first $\tfrac{1}{2}$ term is for a dry month, the second for a wet one.
 
 ::: {.notes}
-The only change from the deterministic case is that the next storage depends on an inflow we do not know yet, so we average the next month's value over the two possibilities. Because we cannot know the future storage, the useful answer is a rule: what to release for any storage we might find ourselves in.
+The only change from known inflows is the average of $V_{t+1}$ over the two next storages. With inflow 0 the next storage is $s - r$, which is never above 4. Every month's inflow now averages 1, including month 3, so this is a different season from the dry one; month 3's inflow arrives after the last release and doesn't matter.
 :::
 
-## Hedging
+## Solving With Uncertain Inflows
 
 ```{julia}
 #| echo: true
 #| code-fold: true
 #| output: false
 
-inflow_outcomes = [0, 2]
+inflow_outcomes = [0, 2]              # each month: dry or wet
 inflow_probs = [0.5, 0.5]
 
-function backward_induction_uncertain(n_periods)
-    value = fill(-Inf, capacity + 1, n_periods + 1)
-    value[:, n_periods + 1] .= 0
-    policy = zeros(Int, capacity + 1, n_periods)
-    for t in n_periods:-1:1
-        for s in levels
-            for r in 0:s
-                # average next month's value over the possible inflows
-                expected_next = 0.0
-                for k in eachindex(inflow_outcomes)
-                    next_s = next_storage(s, r, inflow_outcomes[k])
-                    expected_next = expected_next + inflow_probs[k] * value[next_s + 1, t + 1]
-                end
-                total = benefit(r) + expected_next
-                if total > value[s + 1, t]
-                    value[s + 1, t] = total
-                    policy[s + 1, t] = r
-                end
+function backward_induction_uncertain(; carryover_value=0)
+    value_table = fill(-Inf, capacity + 1, n_months + 1)  # expected V_t(s)
+    policy_table = zeros(Int, capacity + 1, n_months)
+    value_table[:, n_months + 1] = carryover_value .* levels
+    for t in n_months:-1:1, s in levels
+        for r in 0:s
+            # the only change from known inflows: the expected V_{t+1}
+            expected_next = 0
+            for k in eachindex(inflow_outcomes)
+                next_s = next_storage(s, r, inflow_outcomes[k])
+                expected_next = expected_next +
+                    inflow_probs[k] * value_table[next_s + 1, t + 1]
+            end
+            total = benefit(r) + expected_next
+            if total > value_table[s + 1, t]  # ties keep the smaller release
+                value_table[s + 1, t] = total
+                policy_table[s + 1, t] = r
             end
         end
     end
-    return value, policy
+    return value_table, policy_table
 end
 
-value_u, policy_u = backward_induction_uncertain(n_months)
+uncertain_value_table, uncertain_policy_table = backward_induction_uncertain()
+```
 
-# Expected benefit of releasing everything every month, from storage s in month t
+```{julia}
+#| echo: false
+#| output: asis
+
+print_storage_table(
+    ["\$V_3(s)\$", "Month 2: best release", "\$V_2(s)\$",
+        "Month 1: best release", "\$V_1(s)\$"],
+    [uncertain_value_table[:, 3],
+        uncertain_policy_table[:, 2], uncertain_value_table[:, 2],
+        uncertain_policy_table[:, 1], uncertain_value_table[:, 1]])
+```
+
+```{julia}
+#| echo: false
+#| output: false
+
+@assert uncertain_value_table[:, 3] == value_month3 && uncertain_policy_table[:, 3] == collect(levels)
+```
+
+::: {.notes}
+Month 3 releases everything, as before; months 2 and 1 average over the two inflows. In month 2 at storage 2, releases 1 and 2 tie (15); the table reports the smaller.
+:::
+
+## Month 1 With Uncertain Inflows
+
+From $s = 4$: $s_\text{dry} = 4 - r$ and $s_\text{wet} = \min(4 - r + 2,\ 4)$.
+
+```{julia}
+#| echo: false
+#| output: asis
+
+@assert inflow_outcomes == [0, 2] && inflow_probs == [0.5, 0.5]
+next_value = uncertain_value_table[:, 2]
+println("| \$r\$ | \$\\text{benefit}(r)\$ | \$s_\\text{dry}, s_\\text{wet}\$ | \$\\tfrac{1}{2} V_2(s_\\text{dry}) + \\tfrac{1}{2} V_2(s_\\text{wet})\$ | Total |")
+println("|--:|--:|:--|:--|--:|")
+uncertain_totals = zeros(start_storage + 1)
+uncertain_expected = zeros(start_storage + 1)
+for r in 0:start_storage
+    dry_s = next_storage(start_storage, r, 0)
+    wet_s = next_storage(start_storage, r, 2)
+    uncertain_expected[r + 1] = 0.5 * next_value[dry_s + 1] + 0.5 * next_value[wet_s + 1]
+    uncertain_totals[r + 1] = benefit(r) + uncertain_expected[r + 1]
+end
+for r in 0:start_storage
+    dry_s = next_storage(start_storage, r, 0)
+    wet_s = next_storage(start_storage, r, 2)
+    is_best = uncertain_totals[r + 1] == maximum(uncertain_totals)
+    total_text = is_best ? "**" * fmt(uncertain_totals[r + 1]) * "**" : fmt(uncertain_totals[r + 1])
+    println("| ", r, " | ", benefit(r), " | ", dry_s, ", ", wet_s, " | \$\\tfrac{1}{2}(",
+        fmt(next_value[dry_s + 1]), ") + \\tfrac{1}{2}(", fmt(next_value[wet_s + 1]), ") = ",
+        fmt(uncertain_expected[r + 1]), "\$ | ", total_text, " |")
+end
+best_uncertain_release = argmax(uncertain_totals) - 1
+@assert best_uncertain_release == uncertain_policy_table[start_storage + 1, 1]
+@assert maximum(uncertain_totals) == uncertain_value_table[start_storage + 1, 1]
+```
+
+
+## The Policy With Uncertain Inflows
+
+```{julia}
+#| echo: false
+#| output: false
+
+# Releasing everything every month, from storage s in month t: expected total
 function release_all_expected(s, t)
     if t > n_months
-        return 0.0
+        return 0
     end
-    expected_next = 0.0
+    expected_next = 0
     for k in eachindex(inflow_outcomes)
         next_s = next_storage(s, s, inflow_outcomes[k])
         expected_next = expected_next + inflow_probs[k] * release_all_expected(next_s, t + 1)
@@ -751,45 +1003,101 @@ function release_all_expected(s, t)
     return benefit(s) + expected_next
 end
 release_all_value = release_all_expected(start_storage, 1)
+
+# The best total if every inflow were known to be the mean
+mean_inflow = sum(inflow_probs .* inflow_outcomes)
+@assert isinteger(mean_inflow)        # storage levels are whole millions of m³
+known_mean_values, known_mean_policy = backward_induction(fill(Int(mean_inflow), n_months))
+known_mean_value = known_mean_values[start_storage + 1, 1]
+
+uncertain_value = uncertain_value_table[start_storage + 1, 1]
+first_release = uncertain_policy_table[start_storage + 1, 1]
+@assert first_release == known_mean_policy[start_storage + 1, 1]   # the notes' claim
+@assert release_all_value < uncertain_value
+# Month 2 at storage 2 ties, so the evidence that releases follow the inflows is
+# month 3: its release after each of the four inflow histories
+month2_tie = [benefit(r) + 0.5 * uncertain_value_table[next_storage(2, r, 0) + 1, 3] +
+    0.5 * uncertain_value_table[next_storage(2, r, 2) + 1, 3] for r in 0:2]
+@assert month2_tie[2] == month2_tie[3] == maximum(month2_tie)
+month3_release = zeros(Int, 4)
+histories = [(0, 0), (0, 2), (2, 0), (2, 2)]
+for h in 1:4
+    s1 = start_storage
+    s2 = next_storage(s1, uncertain_policy_table[s1 + 1, 1], histories[h][1])
+    s3 = next_storage(s2, uncertain_policy_table[s2 + 1, 2], histories[h][2])
+    month3_release[h] = uncertain_policy_table[s3 + 1, 3]
+end
+@assert length(unique(month3_release)) == 4
+# Perfect information: the best total for each inflow sequence, averaged
+sequences = vec(collect(Iterators.product(inflow_outcomes, inflow_outcomes, inflow_outcomes)))
+perfect_totals = zeros(length(sequences))
+for k in eachindex(sequences)
+    values_k, _ = backward_induction(collect(sequences[k]))
+    perfect_totals[k] = values_k[start_storage + 1, 1]
+end
+perfect_info_value = sum(perfect_totals) / length(sequences)
+evpi = perfect_info_value - uncertain_value
+@assert perfect_info_value == 290 && evpi == 7.5
 ```
 
-From a full reservoir the policy releases **`{julia} policy_u[start_storage + 1, 1]`** and keeps `{julia} start_storage - policy_u[start_storage + 1, 1]` in case the inflow is 0. Its expected benefit is **`{julia} fmt(value_u[start_storage + 1, 1])`**; releasing everything every month has an expected benefit of `{julia} fmt(release_all_value)`.
+- From a full reservoir, the optimal policy releases **`{julia} first_release` million m³** in month 1.
+- Later releases depend on the inflows so far, so the answer is a policy, not a single plan: month 3 releases `{julia} join(month3_release, ", ")` after inflows (0, 0), (0, 2), (2, 0) and (2, 2).
+- Expected total benefit: **`{julia} fmt(uncertain_value)`** (\$1,000). With perfect information about the inflows it would be `{julia} fmt(perfect_info_value)`, so the EVPI is `{julia} fmt(evpi)`. The greedy policy's expected total is `{julia} fmt(release_all_value)`.
 
 ::: {.notes}
-Even though the reservoir is full and inflow might come, the policy releases only `{julia} policy_u[start_storage + 1, 1]` in the first month: holding water is insurance against a dry month. That is hedging. Releasing everything immediately does much worse in expectation.
+The optimal policy releases 2 million m³ from a full reservoir, as it would with inflows known to be 1 million m³ every month: here uncertainty doesn't change that release, and the policy holds water back because of diminishing returns. Don't compare 28.25 with the best total for inflows fixed at their mean (`{julia} fmt(known_mean_value)`): a value in the average scenario isn't an expected value. Month 2 isn't the evidence for a policy because at storage 2 releases 1 and 2 tie; month 3's releases vary with the inflows under either tie rule (1, 3, 2, 4 here; 0, 2, 2, 4 if ties took the larger release). Releasing everything every month gives up `{julia} fmt(uncertain_value - release_all_value)` in expectation; its 23 equals the $r = 4$ row of the previous table because, after releasing 4, releasing everything is also optimal (month 2 ties at storage 2).
 :::
 
-## Check It Against the Scenario Tree
+## Reservoir States as a Scenario Tree
 
 ```{julia}
 #| echo: true
 #| code-fold: true
 #| output: false
 
-# The scenario-tree method: a decision at every node of the tree, then the best
-# expected value, by brute-force recursion over all branches
+# The scenario-tree method: the best expected total from storage s in month t,
+# trying every release at every node of the tree (no table)
 function tree_value(s, t)
     if t > n_months
-        return 0.0
+        return 0
     end
     best = -Inf
     for r in 0:s
-        expected = 0.0
-        for k in eachindex(inflow_outcomes)
-            next_s = next_storage(s, r, inflow_outcomes[k])
-            expected = expected + inflow_probs[k] * tree_value(next_s, t + 1)
-        end
-        best = max(best, benefit(r) + expected)
+        best = max(best, tree_total(s, r, t))
     end
     return best
 end
+
+# Release r's benefit plus the expected best total at the next nodes
+function tree_total(s, r, t)
+    expected = 0
+    for k in eachindex(inflow_outcomes)
+        next_s = next_storage(s, r, inflow_outcomes[k])
+        expected = expected + inflow_probs[k] * tree_value(next_s, t + 1)
+    end
+    return benefit(r) + expected
+end
+
+# The best release at a node (ties keep the smaller release)
+function tree_best_release(s, t)
+    best_r = 0
+    for r in 1:s
+        if tree_total(s, r, t) > tree_total(s, best_r, t)
+            best_r = r
+        end
+    end
+    return best_r
+end
+
 tree_best = tree_value(start_storage, 1)
 ```
 
-Enumerating every branch of the scenario tree gives **`{julia} fmt(tree_best)`**, and dynamic programming gives the same **`{julia} fmt(value_u[start_storage + 1, 1])`**.
+- The month 1 release is the **here-and-now** decision. Each later release is **recourse** for the inflows so far and here-and-now for its own month's inflow.
+- The tree has a decision node for each inflow history: $1 + 2 + 4 = 7$ over three months.
+- As in the farmer's tree, each node gets its own release. The code solves the Bellman equation separately at every node, with no table.
 
 ::: {.notes}
-The tree allows a different decision at every node; dynamic programming gets the same optimum because the best decision at a node depends only on the storage there, not on how we got there. That property is what lets the table replace the tree. It relies on the inflows being independent from month to month: with persistence like the farmer's yields, the best release would also depend on last month's inflow, so the state would have to include it.
+The same tree can be solved as one JuMP model, with a release variable per node, like the farmer's two-year model.
 :::
 
 ## Trees Versus Tables
@@ -798,61 +1106,43 @@ The tree allows a different decision at every node; dynamic programming gets the
 #| echo: false
 #| output: asis
 
-println("| Months | Tree leaves | DP table entries |")
+n_outcomes = length(inflow_outcomes)
+n_levels = capacity + 1
+println("| Months \$T\$ | Tree decision nodes \$2^T - 1\$ | Table entries \$", n_levels, "T\$ |")
 println("|:--|--:|--:|")
-for T in [3, 6, 12]
-    println("| ", T, " | ", commas(length(inflow_outcomes)^T), " | ", (capacity + 1) * T, " |")
+for T in [3, 4, 5, 12]
+    println("| ", T, " | ", commas(n_outcomes^T - 1), " | ", n_levels * T, " |")
 end
+# the first horizon at which the table is smaller than the tree
+first_smaller = findfirst(T -> n_levels * T < n_outcomes^T - 1, 1:20)
+@assert first_smaller == 5
 ```
 
-With 2 inflow outcomes a month and 5 storage levels, the tree grows exponentially with the number of months; the table grows linearly.
+Each tree node and each table entry is one release to choose. Tree: $1 + 2 + \cdots + 2^{T-1} = 2^T - 1$, exponential in $T$; table: $5T$, linear. From `{julia} first_smaller` months on, the table is smaller.
 
 ::: {.notes}
 The tree records every possible history; the table records only the states that matter for the future. The appendix shows that the table grows exponentially with the number of state variables instead: the curse of dimensionality.
-:::
-
-## What Is Water Worth at the End?
-
-```{julia}
-#| echo: true
-#| code-fold: true
-#| output: asis
-
-carryover_values = [0, 3, 6]          # value of each unit left in storage at the end
-println("| Value per unit left at the end | Releases | Storage left |")
-println("|:--|:--|--:|")
-for c in carryover_values
-    v, pol = backward_induction(inflow; end_value=c .* levels)
-    rel = zeros(Int, n_months)
-    s = start_storage
-    for t in 1:n_months
-        rel[t] = pol[s + 1, t]
-        s = next_storage(s, rel[t], inflow[t])
-    end
-    println("| ", c, " | ", join(rel, ", "), " | ", s, " |")
-end
-```
-
-The **end-of-horizon value** is a modeling choice that can change the plan: what is water left at the end of the dry season worth?
-
-::: {.notes}
-With no value on leftover water, the plan empties the reservoir by the end of the season. Value leftover water at 6 per unit and the plan holds most of it back. Neither is wrong: it depends on whether the reservoir refills in winter. The default today, zero, assumes it does.
 :::
 
 # Key Takeaways
 
 ## Key Takeaways (Scenario Trees)
 
-- Each **node** of a scenario tree has its own decisions; a scenario's probability is the product of the branch probabilities along its path, each conditional on the branches before it.
-- **Non-anticipativity**: a decision can depend only on what is known when it is made.
+- Each **node** holds the decisions made there; a scenario's probability is the product of its conditional branch probabilities.
+- A branch's probability can depend on earlier branches, in the same stage (prices on the yield) or in earlier stages (**memory**). Without memory, the tree after every decision in a stage is the same.
 - **Scenario trees grow multiplicatively** with every stage that has its own decision and uncertainty.
 
 ## Key Takeaways (DP)
 
-- A **sequential decision** has stages, a **state** that carries the past forward, and a **transition**; deciding each month on its own (greedy) can be badly wrong.
-- **Backward induction**: start at the end, keep one **value function** per stage, step backwards.
-- Under uncertainty, DP returns a **policy** and matches the scenario tree's answer, with a table that grows linearly in the number of stages, where the tree grows exponentially.
-- End-of-horizon values can change the whole plan.
+- A dynamic program has stages, states, decisions, inputs, a transition and a benefit. Greedy decisions can lower the total benefit.
+- **Backward induction** solves the **Bellman equation** from the last stage back, giving the **value function** $V_t(s)$ and the **optimal policy**; following it from the start gives a **plan**.
+- **Hedging**: giving up some benefit now to keep water for later. A **terminal value**, such as a carryover value, sets only $V_{T+1}$, but every earlier decision can change with it.
+
+## Key Takeaways (Uncertainty)
+
+- With uncertain inputs, the Bellman equation averages $V_{t+1}$ over them, and the answer is a policy, not a single plan.
+- With independent inputs, the table gives the scenario tree's answer but grows linearly with the number of stages, not exponentially.
+- Still suffers from **curse of dimensionality** --- with lots of stages, decisions, or uncertainties, need to use a sampling-based method like **approximate dynamic programming**.
 
 # Upcoming Schedule
 
@@ -874,15 +1164,46 @@ With no value on leftover water, the plan empties the reservoir by the end of th
 
 # Appendix
 
-## The Bellman Recursion
+## Checking by Brute Force
 
-In general notation, with state $s$, decision $r$, benefit $b$, and random inflow $I$:
+```{julia}
+#| echo: true
+#| code-fold: true
+#| output: false
 
-$$V_t(s) = \max_{r} \left\{ b(r) + \mathbb{E}_I\left[V_{t+1}\big(f(s, r, I)\big)\right] \right\}$$
+# Try every release sequence from a full reservoir, with the known inflows
+# (only possible because the problem is tiny)
+function brute_force()
+    best_total = -1
+    n_best = 0                  # how many sequences reach the best total
+    n_sequences = 0
+    for r1 in 0:start_storage
+        s2 = next_storage(start_storage, r1, inflow[1])
+        for r2 in 0:s2
+            s3 = next_storage(s2, r2, inflow[2])
+            for r3 in 0:s3
+                n_sequences = n_sequences + 1
+                total = benefit(r1) + benefit(r2) + benefit(r3)
+                if total > best_total
+                    best_total = total
+                    n_best = 1
+                elseif total == best_total
+                    n_best = n_best + 1
+                end
+            end
+        end
+    end
+    return best_total, n_best, n_sequences
+end
+best_total, n_best, n_sequences = brute_force()
+@assert best_total == dp_total && n_best == 1
+```
 
-$$V_{T+1}(s) = \text{terminal value}$$
+Trying all `{julia} n_sequences` release sequences gives the same best total, **`{julia} best_total`**, and only one sequence, `{julia} join(dp_release, ", ")`, reaches it.
 
-where $f$ is the transition.
+::: {.notes}
+On a problem this small we can try every sequence. On a realistic problem we cannot, so we check the method on cases where we can.
+:::
 
 ## The Curse of Dimensionality
 
@@ -906,48 +1227,51 @@ The table grows exponentially with the number of state variables: the **curse of
 #| code-fold: true
 #| output: asis
 
-# Finer storage grids, with the benefit interpolated linearly between table points
+# Finer storage grids, with the benefit interpolated linearly between
+# table points
 function benefit_interp(r)
     if r >= capacity
         return Float64(benefit_table[end])
     end
     k = floor(Int, r)
     fraction = r - k
-    return (1 - fraction) * benefit_table[k + 1] + fraction * benefit_table[k + 2]
+    return (1 - fraction) * benefit_table[k + 1] +
+        fraction * benefit_table[k + 2]
 end
 
 function best_from_full(spacing)
     grid = 0:spacing:capacity
     n = length(grid)
-    value = zeros(n, n_months + 1)
+    value_table = zeros(n, n_months + 1)
     for t in n_months:-1:1
         for i in 1:n
             s = grid[i]
             best = -Inf
             for r in 0:spacing:s
                 j = round(Int, min(s - r + inflow[t], capacity) / spacing) + 1
-                best = max(best, benefit_interp(r) + value[j, t + 1])
+                best = max(best, benefit_interp(r) + value_table[j, t + 1])
             end
-            value[i, t] = best
+            value_table[i, t] = best
         end
     end
-    return value[end, 1]
+    return value_table[end, 1]
 end
 
-println("| Grid spacing (units) | Best total from a full reservoir |")
+println("| Grid spacing [million m³] | Best total [\\\$1,000] |")
 println("|:--|--:|")
 for spacing in [1, 0.5, 0.25]
     println("| ", fmt(spacing), " | ", fmt(best_from_full(spacing)), " |")
 end
 ```
 
-Refining the grid to spacings of 0.5 and 0.25 units gives the same best total.
+Spacings of 0.5 and 0.25 million m³ give the same best total: with whole-million inflows and a benefit linear between whole millions, finer releases add nothing here.
 
 ## The Lake as a Dynamic Program
 
+- **Stage**: year $t$.
 - **State**: phosphorus $P_t$ in the lake.
-- **Decision**: loading $L_t$ each year.
-- **Transition**: $P_{t+1} = P_t + L_t - sP_t + R(P_t)$.
-- **Benefit**: the value of the loading (farm output, wastewater), minus damages when the lake is eutrophic.
+- **Decision**: loading $L_t$.
+- **Transition**: the lake model, $P_{t+1} = f(P_t, L_t)$.
+- **Benefit**: what the loading is worth (farm output, wastewater), minus damages when the lake is eutrophic.
 
 A continuous state with a threshold needs a fine grid in $P$.

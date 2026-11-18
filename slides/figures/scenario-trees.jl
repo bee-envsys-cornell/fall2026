@@ -1,8 +1,12 @@
-# Scenario tree for lecture 13-2 (multi-stage trees and dynamic programming): the farmer over two
-# years, where next year's yield probabilities depend on this year's yield.
-# The probabilities match the deck's `persistence` matrix.
+# Scenario trees for lecture 13-2 (scenario trees and dynamic programming):
+# - one year, where the grain price depends on the yield and the demand on the
+#   price (the deck's `price_given_yield` and `demand_given_price`):
+#   scenario-tree-one-year.svg
+# - two years without memory, year 2's yield independent of year 1's:
+#   scenario-tree-two-years-independent.svg
+# - two years with memory, year 2's yield probabilities depending on year 1's
+#   (the deck's `persistence` matrix): scenario-tree-two-years.svg
 # Run from this folder: julia scenario-trees.jl
-# Writes scenario-tree-two-years.svg.
 
 import Pkg
 Pkg.activate(joinpath(@__DIR__, ".."))
@@ -88,3 +92,26 @@ p_years = draw_tree([yield_names, yield_names],
     ["year 1 yield", "year 2 yield"])
 plot!(p_years, size=(1200, 460), margin=2mm)
 savefig(p_years, joinpath(@__DIR__, "scenario-tree-two-years.svg"))
+
+# One year: the yield, then the price, then the demand are learned in turn. A
+# good harvest makes a low price more likely, and a low price makes high demand
+# more likely, whatever the yield. Nothing is decided until all three are known.
+p_one_year = draw_tree([yield_names, ["low", "high"], ["low", "high"]],
+    [[["1/3", "1/3", "1/3"]],
+     [["2/3", "1/3"], ["1/2", "1/2"], ["1/3", "2/3"]],
+     [["1/3", "2/3"], ["2/3", "1/3"], ["1/3", "2/3"], ["2/3", "1/3"],
+      ["1/3", "2/3"], ["2/3", "1/3"]]],
+    ["plant", "", "", "buy and sell"],
+    ["yield", "price", "demand"])
+plot!(p_one_year, size=(1200, 560), margin=2mm)
+savefig(p_one_year, joinpath(@__DIR__, "scenario-tree-one-year.svg"))
+
+# Two years without memory: year 2's probabilities are the same after every
+# year 1 yield.
+p_independent = draw_tree([yield_names, yield_names],
+    [[["1/3", "1/3", "1/3"]],
+     [["1/3", "1/3", "1/3"], ["1/3", "1/3", "1/3"], ["1/3", "1/3", "1/3"]]],
+    ["plant", "buy, sell; plant again", "buy and sell"],
+    ["year 1 yield", "year 2 yield"])
+plot!(p_independent, size=(1200, 460), margin=2mm)
+savefig(p_independent, joinpath(@__DIR__, "scenario-tree-two-years-independent.svg"))
