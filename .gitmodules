@@ -44,3 +44,7 @@
 [submodule "hw/hw08"]
 	path = hw/hw08
 	url = https://github.com/bee-envsys-cornell/hw08.git
+[submodule "hw/hw09"]
+	path = hw/hw09
+	url = https://github.com/bee-envsys-cornell/hw09
+	branch = Fall26
